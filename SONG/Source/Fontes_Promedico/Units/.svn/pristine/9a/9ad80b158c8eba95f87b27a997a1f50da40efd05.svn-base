@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<doc><members><member name="TRVMarcadorItemInfo">/  protected
+/ procedure NewReaderText(Sender: TRVRTFReader; const Text: TRVAnsiString;
+/ Position: TRVRTFPosition);override;
+</member><member name="TWrapperMarcador.ppuRegistrarComponente(TTipoComponenteMarcador,TcxCustomEdit)"><summary>
+Registra um componente para receber o conteudo do marcador selecionado pelo usuario.
+ipTipo indica o tipo de conteudo que o componente irá receber
+</summary>
+		</member><member name="TWrapperMarcador.fpuAdicionarMarcador(string,string,Boolean)"><summary>
+Insere um novo marcador no RichEdit.
+ipIdentificador: é o identificador unico para esse marcador, deve ser o mesmo a ser utilizado posteriormente na funcao de ppuProcurarSubstituirMarcador
+</summary>
+		</member><member name="TWrapperMarcador.ppuReiniciarMarcadores"><summary>
+Percorre todos os marcadores atuais e os coloca com o style padrao, ou seja, não selecionado
+</summary>
+		</member></members></doc>

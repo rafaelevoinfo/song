@@ -1,0 +1,262 @@
+﻿<?xml version="1.0"?>
+<doc><members><member name="pmSetFocus(TObject)"><summary>Faz o setfocus no objeto passado.</summary>
+			<remarks>Testa se o objeto pode receber o foco, se puder então
+objeto.SetFocus;</remarks>
+		</member><member name="AtribuirValoresInfoRegistro(TClientDataSet,string[])"><summary>Pega os campos do clientdataset e colocar no array nas mesma
+posicao</summary>
+			<remarks>Result a variavel Preenchida com os valores do CDS por exemplo
+campo Filed[0] vai estar no vaArray[0];</remarks>
+		</member><member name="AtribuirValoresClientDataSet(string[],TClientDataSet)"><summary>Pega os campos do array e colocar no clientdataset nas mesma
+posicao</summary>
+			<remarks>Result o clientdataset Preenchido com os valores do array por exemplo
+valores vaArray[0] vai estar campo Filed[0] ;</remarks>
+		</member><member name="DateDiff(TDateTime,TDateTime,Word,Word,Word)"><summary>DateDiff</summary>
+			<remarks>Pega a data maior e diminui da data menor e retorna nas variaveis
+dia mes e ano;</remarks>
+		</member><member name="Pegar_Idade(TDate,TDate,Boolean)"><summary>
+				<para>Função para descobrir a idade devolve uma string com a idade no
+seguinte formato</para>
+				<para>30 ANOS</para>
+				<para>1 ANO 10 meses</para>
+				<para>etc</para>
+			</summary>
+			<param name="ipDataNascimento">Data de Nascimento</param>
+			<param name="ipData_Referencia">Data de referencia</param>
+			<param name="ipCacuclarMeses1Ano">Caso seja = true entao iremos calcular a
+quantidade de meses quando a idade for igual a 1 ano</param>
+		</member><member name="Idade_Exata(TDate,TDate,Integer,string)"><summary>Idade_Exata</summary>
+			<param name="Data_Nascimento">Data do Nascimento.</param>
+			<param name="Data_Atual">Data Atual.</param>
+			<param name="Idade">variavel que recebe a idade.</param>
+			<param name="IdadeEm">variavel que marca se idade esta em dia, Mes ou
+Ano.</param>
+			<remarks>Retorna a idade exata em Ano, mes e dia.</remarks>
+		</member><member name="ImpressoraPadrao"><summary>Impressora Padrão</summary>
+			<remarks>Retornar o Nome da Impressora Padrão do Windows.</remarks>
+			<example>Label1.Caption := ImpressoraPadrao;</example>
+		</member><member name="VerificaDataPadrao(TDateTime,TDateTime,TDateTime,Boolean)"><summary>Verificação Padrão duas Datas</summary>
+			<param name="ipMostrarMensagem">Se false, lança uma exceção ao invez de
+exibir uma mensagem</param>
+			<returns>Retorna True se as data estiver em intervalos validos e False se
+não estiver.</returns>
+			<remarks>Faz a verificação entre duas datas, verifica se as data são
+maiores que data atual, e verifica se a DataInicial é maior que
+DataFinal.</remarks>
+		</member><member name="AbrirExplorer(string,Boolean,Boolean)"><summary>Abre o Explorer</summary>
+			<param name="OpenAtPath">Endereço onde será o explorer irá abrir</param>
+			<param name="OpenWithExplorer"></param>
+			<param name="OpenAsRoot">Se marcado True e OpnWithExplore também true a
+barra de endereço abrir somente com a pasta final</param>
+			<remarks>Executa o Windows Explorer a partir de uma pasta especificada.
+Requer a unit ShellApi declarada em uses.</remarks>
+			<example>AbrirExplorer('C:\Temp', True,True);</example>
+		</member><member name="TemParametro(string)"><summary>Função para descobrir se foi passado algum parametro para o exe ou
+não</summary>
+			<param name="ipParametro">String contendo o parametro</param>
+		</member><member name="VerificaCodigoBarras(string)"><summary>{O CODIGO DE BARRAS EAN DE 13 NÚMEROS , O QUE NORMALMENTE É
+UTILIZADOEM REMÉDIOS, PRODUTOS DE SUPERMERCADOS ETC... TEM O ÚLTIMO
+DIGITOQUE É O RESULTADO DE UM CÁLCULO QUE ENVOVE OS DOZE PRIMEIROS
+NÚMEROSEXEMPLO O REFRIGERANTE Pepsi possui o cod de barras:
+7892840800000(13 digitos)portanto o 13º digito ( que é zero ) é o resultado
+de um calculoque envolve os doze primeiros(789284080000)a função abaixo faz
+justamente o calculo deste ultimo dígito que confere a validade do código
+de barras;para usá-la voce passa no parâmetro (ipCodigoBarras) e a funcao
+devolve true ou false</summary>
+		</member><member name="RemoverArquivosDiretorio(string)"><summary>Procedure que remove arquivos de um diretorio</summary>
+		</member><member name="Capitalize(string)"><summary>Efetua o capitalize da string informada (Primeira letra de cada
+palavra em maiuscula e o resto em minusculo)</summary>
+		</member><member name="verPalavraSensurada(string,Boolean)"><summary>verPalavraSensurada</summary>
+			<param name="ipTexto">Texto de entrada que sera testado se tem alguma
+palavra que nao pode ser usada</param>
+			<param name="ipMostrarMensagem">Se = True entao mostra mensagem para
+usuario, se False nao mostra mensagem.</param>
+			<returns>Se o Result = '' entao quer dizer que nao achou nenhuma palavra
+sensurada no texto de entrada</returns>
+		</member><member name="verPalavraReservadaBanco(string,Boolean)"><summary>verPalavraReservadaBanco</summary>
+			<param name="ipTexto">Texto de entrada que sera testado se tem alguma
+palavra que nao pode ser usada</param>
+			<param name="ipMostrarMensagem">Se = True entao mostra mensagem para
+usuario, se False nao mostra mensagem.</param>
+			<returns>Se o Result = '' entao quer dizer que nao achou nenhuma palavra
+sensurada no texto de entrada</returns>
+		</member><member name="Campos_Requeridos(TDataSet)"><summary>Verifica se existe algum campo obrigatorio que nao foi preenchido.
+Caso sim, retorna um TField com as informações deste campo.</summary>
+			<param name="ipDataSet">ClientDataSet a ser verificado.</param>
+		</member><member name="AppendToRichEdit(TcxRichEdit,TcxRichEdit)"><summary>Procedure para dar adicionar ao final de 1 richedit o conteudo de
+outro richedit formatado</summary>
+			<param name="source">RichEdit de Origem</param>
+			<param name="destination">RichEdit de Destino</param>
+		</member><member name="ConcatRichEdit(TcxRichEdit,TcxRichEdit)"><summary>Procedure para concatenar 2 richedit (respeitando aonde o primeiro
+terminou)</summary>
+			<param name="source">RichEdit de Origem</param>
+			<param name="destination">RichEdit de Destino</param>
+		</member><member name="HtmlParaColor(string)"><summary>Funcao para converter cores em html para cores do delphi</summary>
+		</member><member name="FocarForm(THandle)"><summary>Procedure que forca ao form ficar em primeiro plano</summary>
+		</member><member name="ResizeImg(TBitmap,Integer,Integer)"><summary>Procedure que irá alterar o tamanho de uma imagem</summary>
+			<param name="ipImg">Imagem a ser alterada</param>
+			<param name="ipLargura">Largura desejada</param>
+			<param name="ipAltura">Altura Desejada</param>
+		</member><member name="fpuStrToDate(string)"><summary>Converte uma string em qualquer formato de data válido para um
+TDateTime, sendo que caso a string não possua o dia será atribuido o ultimo
+dia do mes.</summary>
+			<remarks>
+				<para>Formatos suportados:</para>
+				<para>dd/mm/yyyy</para>
+				<para>dd/mm/yy</para>
+				<para>mm/yy</para>
+				<para>mm/yyyy</para>
+			</remarks>
+		</member><member name="ppuAlterarEditValue(TcxCustomEdit,Variant)"><summary>Altera o valor do EditValue do ipComponente para o valor do
+ipValue sem disparar qualquer evento como EditValueChanged.</summary>
+		</member><member name="HabilitarDesabilitarControls(Boolean,Boolean,TControl[])"><summary>Atribui para a propriedade visible ou enable de todos os
+componentes passados o valor do ipflag.</summary>
+			<param name="ipFlag">Valor a ser atribuido a propriedade visible ou
+enable.</param>
+			<param name="ipPropriedadeVisible">Se true, atribui o valor de ipFlag
+para visible, se false, atribui para enable.</param>
+			<param name="ipControls">Array de todos os elementos da tela que se
+deseja alterar.</param>
+		</member><member name="TruncTo(Double,Integer)"><summary>Pega um valor double e retira qualquer coisa que esteja apos a
+quantidade de casas decimais informado.</summary>
+			<remarks>Não é feito nenhum tipo de arrendondamento. Apenas se desconsidera
+as casas decimais excedente.</remarks>
+			<example>Ex.: 1,2568 com casas decimais igual a 2 fica 1,25.</example>
+		</member><member name="VerificarReferenciaCircular(TDictionary)"><summary>Verifica se existe referncia circular entre as formulas passadas
+pelo Dictionary</summary>
+			<param name="ipDic">
+				<para>Dictionary contendo em sua chave o nome e seu valor a
+formula.</para>
+				<para>ATENÇÃO: Na formula as referencias a outros campos devem estar
+entre colchetes</para>
+			</param>
+			<remarks>Se uma referencia circular existir uma excecao sera lançada e em
+sua mensagem haverá mais detalhes da referencia.</remarks>
+			<example>
+				<para>Exemplo de referência circular:</para>
+				<para>Exs.: A -&gt; [B]+1;B -&gt; [C]+2; C -&gt; [A]+2</para>
+			</example>
+		</member><member name="FileTimeToDTime(TFileTime)"><summary>Converte a data de criação pegada de um arquivo para um tipo
+TDateTime</summary>
+			<example>
+				<para>var</para>
+				<para>vaDataCri, vaDataIncrementada: TDateTime;</para>
+				<para>begin</para>
+				<para>vaArq := 'arquivo.xml';</para>
+				<para>if (FindFirst(vaArq, faAnyFile, vaSR) = 0) then</para>
+				<para>begin</para>
+				<para>repeat vaDataCri :=
+FileTimeToDTime(vaSR.FindData.ftCreationTime);</para>
+				<para>until FindNext(vaSR) &lt;&gt; 0;</para>
+				<para>FindClose(vaSR);</para>
+				<para>end;</para>
+				<para>end;</para>
+			</example>
+		</member><member name="BuscarArquivoRecente(string,Integer,string,string)"><summary>Busca o arquivo mais recente, baseado na data de criação do
+arquivo.</summary>
+			<param name="ipEndArq">Endereço onde procurar pelos arquivos</param>
+			<param name="ipDias">Quantidade de dias que um mesmo arquivo sera
+retornado.</param>
+			<param name="ipExtensao">Extensao do arquivo. ex. .xml, .dat, .txt,
+.pas</param>
+			<param name="ipInicioNome">
+				<para>Inicio do nome do arquivo. Ex. Log_</para>
+				<para>será adicionado um * apos o ipinicioNOme e antes do ipExtensao no
+momento da busca.</para>
+			</param>
+			<remarks>Busca em ipEndArq arquivos o arquivo mais recente baseado em
+ipDias. Ex. Supondo que hoje sejam 25/02/2013 e ipDias seja 7, a funcao ira
+procurar se existe algum arquivo que somado sua data de criacao com 7 nao
+ultrapasse o dia atual. Se encontrar retorna o endereço completo do
+arquivo, senao retorna uma string vazia.</remarks>
+		</member><member name="VerificarFaixaIdade(string,string,Integer,Integer,Integer)"><summary>Verifica se a idade e o tipo da idade do paciente passado se
+encaixa dentro da faixa de tipo e idade passada.</summary>
+			<param name="ipTipoAge">Tipo da idade a comparar
+(ANOS,MESES,DIAS)</param>
+			<param name="ipTipoAgePac">Tipo da idade do paciente (ANOS, MESES,
+DIAS)</param>
+			<param name="ipAge1">Idade inicial</param>
+			<param name="ipAge2">Idade final</param>
+			<param name="ipAgePac">Idade do paciente</param>
+		</member><member name="ExtrairNumero(string)"><summary>Tenta extrair somente numeros da string.</summary>
+			<param name="ipTexto">String contendo o número</param>
+			<returns>O número extraido da string ou zero caso não
+consiga.</returns>
+			<remarks>LEMBRE-SE: o ponto (.) será retirado do número e a virgula (,)
+será mantida.</remarks>
+		</member><member name="HoraParaSegundos(TTime)"><summary>Função que pega uma hora e retorna ela em segundos. Ex. 01:00:00 = 3600 segundos.</summary>
+			<param name="ipHora">Variável para a hora</param>
+		</member><member name="ListarArquivosDiretorio(string,Boolean,Boolean)"><summary>Funcao que devolve a lista de arquivos em um diretorio</summary>
+			<param name="ipDiretorio">Endereco</param>
+			<param name="ipSubDiretorio">Localizar subdiretorios tambem</param>
+			<param name="ipCaminhCompleto">Devolve o caminho completo do
+arquivo</param>
+			<example>Exame_Laudo olhar:Ac_ImportarImagensDicomExecute</example>
+		</member><member name="contaLinhasTXT(string)"><summary>Funcao que devolve o numero de linhas de um Arquivo TXT</summary>
+			<param name="vaNomeArquivo">Arquivo txt</param>
+			<returns>N° de linhas do Arquivo</returns>
+			<example>
+				<para>Importações de TXT.</para>
+				<para>pTbDiaTax_Layout</para>
+				<para>pMatMed_Tabela</para>
+				<para>pTabela</para>
+			</example>
+		</member><member name="FocarJanela(THandle)"><summary>Forca o foco para uma janela especifica</summary>
+		</member><member name="ExtrairValorTag(string)"><summary>Pega uma tag e extrai seu valor. (Retira o
+&lt;TAGPM&gt;)</summary>
+		</member><member name="MontarStringCodigo(Integer[],string)"><summary>Pega os codigos do array e retorna uma string no formato
+COD+delimitador+COD+delimitado+COD e assim sucessivamente.</summary>
+			<param name="ipCods">array contendo os codigos que irão formar a
+string</param>
+			<param name="ipDelimitador">delimitador a ser utilizado para separar os
+codigos.</param>
+		</member><member name="fpuParametroMultiplasInstancias"><summary>Retorna true se o parametro multInstancia foi passado ao iniciar o
+sistema.</summary>
+		</member><member name="fpuGetNomeUsuarioLogado"><summary>Retorna o nome do usuário logado.</summary>
+		</member><member name="PegarValorCdsBaseadoPivotCell(TcxPivotGridDataCellViewInfo,TClientDataSet,TClientDataSet,string)"><summary>Retorna o valor de ipFieldName caso a função locate encontre algum
+registro baseado no ipCell.column e ipCell.row.</summary>
+			<param name="ipCell">Celula do pivot</param>
+			<param name="ipCdsOriginal">Cds utilizado pelo pivot para gerar os
+registros</param>
+			<param name="ipCdsAux">Cds auxiliar para ser usado para se fazer um
+clonecursor do ipCdsOriginal. Obs: nao se pode usar o ipCdsOriginal no
+locate, por isso é necessario este cds aux. Nao foi criado dentro da funçao
+para evitar create e destroy de objetos a todo instante.</param>
+			<param name="ipFieldName">Nome do field que se deseja pegar.</param>
+			<remarks>Pega o texto (e o field ligado ao texto) exibido na linha e coluna
+do pivot e usa como parametro na função locate do ipCdsAux. Caso encontre,
+retorna o valor do ipCdsAux.fieldByname(ipFieldName) .asstring</remarks>
+		</member><member name="ProgramaAberto(string,Cardinal)"><summary>Retorna se um programa esta aberto ou não.</summary>
+			<param name="ipExeFileName">Nome do exe</param>
+			<param name="ipProcessId">Se estiver aberto, preenche o seu
+ProcessId</param>
+		</member><member name="ValorMediano(Extended[])"><summary>
+Obtem o valor mediano de um array de extened
+</summary>
+		</member><member name="ObterQuartiles(Extended[],Extended,Extended)"><summary>
+Retornar (em ioQ1 e ioQ3) o valor do primeiro e do terceiro quartilho
+</summary>
+		</member><member name="ObterMediaSemOutlier(Extended[])"><summary>
+				<para>
+Obtem a media removendo outlier
+</para>
+				<para>
+					<see href="http://en.wikipedia.org/wiki/Quartile"/>
+				</para>
+http://www.mathwords.com/o/outlier.htm
+</summary>
+		</member><member name="PercorrerCds(TClientDataSet,TProc,Boolean,Boolean)">Ver exemplos na pContaCorrente_Baixa
+</member><member name="PercorrerCds(TClientDataSet,TFunc,Boolean,Boolean)">Ver exemplos na pContaCorrente_Baixa
+</member><member name="FormAtivo(string)">/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+</member><member name="SubstituiTextoCDS(string,string,string,string,TDataSet)">/////////////////////////////////////////////////////////////////////////////
+função que irá receber um texto e irá substituir as tags encontradas por
+valores que estão entre as tags e estão no clientdataset;
+/////////////////////////////////////////////////////////////////////////////
+</member><member name="CriptoDecripto(Integer,string,string)">/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+</member><member name="SetFocus_Campo(TForm,string)">/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+</member><member name="Campos_Requeridos(TForm,TDataSet)">/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+</member><member name="SysNomeComputador"><summary>Retorna o nome do computador</summary>
+		</member></members></doc>

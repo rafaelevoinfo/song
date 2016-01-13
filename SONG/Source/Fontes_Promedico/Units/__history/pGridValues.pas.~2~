@@ -1,0 +1,48 @@
+unit pGridValues;
+
+interface
+
+uses
+  DBXJSONReflect, Rtti, Generics.Collections, sysUtils;
+
+type
+  TMyGridDefText = record
+    Row, Age1, Age2: Integer;
+    Tipo_Age, Sexo, Text, Condicao: String;
+  end;
+
+  TMyGridRefValues = record
+    Row, Age1, Age2: Integer;
+    Text, Tipo_Age, Sexo: String;
+    VlMin, VlMax, VlRefMin, VlRefMax, VlAbaixoDe, VlAcimaDe: Double;
+    // VlAbaixoDe e VlAcimaDe sao referentes aos valores a serem utilizados para saber se é necessario confirmar o exame ou nao.
+  end;
+
+  TMerge = (SEM_MERGE, INICIA_MERGE, PARTICIPA_MERGE);
+  TTipoDado = (TEXTO, VALOR);
+
+  TArrayOfRefValues = Array of TMyGridRefValues;
+  TArrayOfDefText = Array of TMyGridDefText;
+
+  TMyGridConf = record
+  public
+    Codigo, Row, Width, OrigemDado, FontColor, FontSize, FontAlignment, Contorno, Decimais, CountDefText, CountRefValues, Versao: Integer;
+    Merge_Status: TMerge;
+    TipoDado: TTipoDado;
+    Editavel: Boolean;
+    EditavelSemFoco:Boolean;
+    Visivel: Boolean;
+    ExibirApenasHistInterf:Boolean;
+    AutoPreencher: Boolean;
+    Col, Merge_Col_Ini, Merge_Col_Fim, FontName, FontBold, FontStyle, Unidade, NameCellRef,CellGrafRef, Formula, Condicao, Text, Tag, ReferenciaDescricaoResultado, DescricaoResultado, MascaraTag: String;
+    DefText: TArrayOfDefText;
+    RefValues: TArrayOfRefValues;
+  end;
+
+  TArrayOfTMyGridConf = array of TMyGridConf;
+  TArrayOfArrayOfTMyGridConf = Array of TArrayOfTMyGridConf;
+
+implementation
+
+
+end.

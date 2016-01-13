@@ -1,0 +1,221 @@
+inherited frmChatTelaModal: TfrmChatTelaModal
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSizeable
+  Caption = 'frmChatModal'
+  ClientHeight = 261
+  ClientWidth = 384
+  pmNaoAjustarTamTela = True
+  ExplicitWidth = 400
+  ExplicitHeight = 300
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 384
+    Height = 41
+    Align = alTop
+    Caption = 'Panel1'
+    ShowCaption = False
+    TabOrder = 0
+    object spStatusUsuario: TShape
+      Left = 1
+      Top = 4
+      Width = 5
+      Height = 33
+      Brush.Color = clGrayText
+      Pen.Style = psClear
+    end
+    object imgFotoUsuario: TImage
+      Left = 7
+      Top = 4
+      Width = 33
+      Height = 33
+      Center = True
+    end
+    object lblNomeUsuario: TLabel
+      Left = 42
+      Top = 6
+      Width = 114
+      Height = 13
+      AutoSize = False
+      Caption = 'lblNomeUsuario'
+    end
+    object lblStatusUsuario: TLabel
+      Left = 42
+      Top = 22
+      Width = 114
+      Height = 13
+      AutoSize = False
+      Caption = 'lblStatusUsuario'
+    end
+  end
+  object cxSplitter1: TcxSplitter
+    Left = 0
+    Top = 155
+    Width = 384
+    Height = 4
+    AlignSplitter = salBottom
+  end
+  object rveMensagens: TRichViewEdit
+    Left = 0
+    Top = 41
+    Width = 384
+    Height = 114
+    AcceptDragDropFormats = []
+    AcceptPasteFormats = []
+    ReadOnly = True
+    Align = alClient
+    TabOrder = 2
+    BottomMargin = 0
+    DoInPaletteMode = rvpaCreateCopies
+    HScrollVisible = False
+    LeftMargin = 0
+    RightMargin = 0
+    RTFReadProperties.TextStyleMode = rvrsAddIfNeeded
+    RTFReadProperties.ParaStyleMode = rvrsAddIfNeeded
+    RVFOptions = [rvfoSavePicturesBody, rvfoSaveControlsBody, rvfoSaveBinary, rvfoSaveTextStyles, rvfoSaveParaStyles, rvfoSaveDocProperties, rvfoLoadDocProperties]
+    Style = DMChat.RVStyle1
+    TopMargin = 0
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 223
+    Width = 384
+    Height = 38
+    Align = alBottom
+    Caption = 'Panel3'
+    ShowCaption = False
+    TabOrder = 3
+    object Button1: TButton
+      Left = 1
+      Top = 1
+      Width = 96
+      Height = 36
+      Action = DMChat.Ac_Retornar
+      Align = alLeft
+      Images = DMChat.ImgListBotoes32x32
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 287
+      Top = 1
+      Width = 96
+      Height = 36
+      Action = DMChat.Ac_VerTodasMensagens
+      Align = alRight
+      Images = DMChat.ImgListBotoes32x32
+      TabOrder = 1
+      WordWrap = True
+    end
+  end
+  object pnlConversaEdit: TPanel
+    Left = 0
+    Top = 159
+    Width = 384
+    Height = 64
+    Align = alBottom
+    BevelOuter = bvNone
+    Caption = 'pnlConversaEdit'
+    Constraints.MaxHeight = 135
+    Constraints.MinHeight = 64
+    ShowCaption = False
+    TabOrder = 4
+    object pnlConversaEditBotoes: TPanel
+      Left = 352
+      Top = 0
+      Width = 32
+      Height = 64
+      Align = alRight
+      BevelOuter = bvNone
+      Caption = 'pnlConversaEditBotoes'
+      ShowCaption = False
+      TabOrder = 1
+      object bttEnviar: TButton
+        Left = 0
+        Top = 31
+        Width = 33
+        Height = 33
+        Action = DMChat.Ac_Enviar
+        Images = DMChat.ImgListBotoes24x24
+        TabOrder = 0
+        TabStop = False
+      end
+      object bttSmiley: TButton
+        Left = 0
+        Top = -1
+        Width = 33
+        Height = 33
+        Action = DMChat.Ac_Smiles
+        ImageAlignment = iaCenter
+        Images = DMChat.ImgListBotoes24x24
+        TabOrder = 1
+        TabStop = False
+      end
+    end
+    object rveMensagensEdit: TRichViewEdit
+      Left = 0
+      Top = 0
+      Width = 352
+      Height = 64
+      AcceptDragDropFormats = [rvddText, rvddMetafile, rvddURL, rvddHTML]
+      AcceptPasteFormats = [rvddText, rvddMetafile, rvddURL, rvddHTML]
+      ReadOnly = False
+      Align = alClient
+      TabOrder = 0
+      DoInPaletteMode = rvpaCreateCopies
+      HScrollVisible = False
+      Options = [rvoAllowSelection, rvoShowPageBreaks, rvoAutoCopyUnicodeText, rvoAutoCopyRVF, rvoAutoCopyImage, rvoAutoCopyRTF, rvoFormatInvalidate, rvoDblClickSelectsWord, rvoRClickDeselects, rvoShowGridLines, rvoFastFormatting]
+      RTFReadProperties.TextStyleMode = rvrsAddIfNeeded
+      RTFReadProperties.ParaStyleMode = rvrsAddIfNeeded
+      RVFOptions = [rvfoSavePicturesBody, rvfoSaveControlsBody, rvfoSaveBinary, rvfoSaveTextStyles, rvfoSaveParaStyles, rvfoSaveDocProperties, rvfoLoadDocProperties]
+      Style = DMChat.RVStyle1
+    end
+  end
+  object dockSiteSmileys: TdxDockSite
+    Left = 72
+    Top = 72
+    Width = 92
+    Height = 48
+    DockingType = 5
+    OriginalWidth = 92
+    OriginalHeight = 48
+    object dxLayoutDockSite2: TdxLayoutDockSite
+      Left = 0
+      Top = 0
+      Width = 92
+      Height = 20
+      Visible = False
+      DockingType = 0
+      OriginalWidth = 300
+      OriginalHeight = 200
+    end
+    object dockPanelSmileys: TdxDockPanel
+      Left = 0
+      Top = -200
+      Width = 185
+      Height = 200
+      Visible = False
+      AllowFloating = True
+      AutoHide = True
+      Caption = 'Smileys'
+      CaptionButtons = [cbMaximize, cbHide]
+      CustomCaptionButtons.Buttons = <>
+      TabsProperties.CustomButtons.Buttons = <>
+      AutoHidePosition = 1
+      DockingType = 0
+      OriginalWidth = 185
+      OriginalHeight = 200
+      object slbSmileys: TcxScrollBox
+        Left = 0
+        Top = 0
+        Width = 0
+        Height = 172
+        Align = alClient
+        HorzScrollBar.Visible = False
+        TabOrder = 0
+        VertScrollBar.Increment = 24
+      end
+    end
+  end
+end

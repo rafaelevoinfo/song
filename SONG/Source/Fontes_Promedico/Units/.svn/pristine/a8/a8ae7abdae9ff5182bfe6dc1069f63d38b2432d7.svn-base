@@ -1,0 +1,1976 @@
+unit ppmClasse;
+
+interface
+
+uses
+  Generics.Collections, pTypes, Classes, cxTL, SysUtils, Forms, Menus, Dialogs, cxGridDBTableView, DBClient;
+
+{$REGION 'Constantes'}
+
+
+const
+  coSatO2 = 1;
+  coFC = 2;
+  coPA_Sistolica = 3;
+  coPA_Diastolica = 4;
+  coTemperatura = 5;
+  copCO2 = 6;
+  coPrimeiroHorarioAgora = -2;
+  coAnd = ' AND ';
+  coRgPesquisa = 'RGPESQUISA';
+  coEditPesquia = 'EDITPESQUISA';
+  coTrue = 'True';
+  coFalse = 'False';
+  coNumeroTrue = 1;
+  coNumeroFalse = 0;
+  coLoteUnicoData: TDate = 2958465; // data de 31/12/9999;
+  coLoteUnicoIdent = 'UNICO';
+  coTunel = 'Promedico';
+  coTissNomeAplicativoGeradorSOLUS = 'SOLUS';
+  coTissNomeAplicativoGeradorSulAmerica = 'Saude On Line';
+  coFindPanelTexto = 'Digite Aqui para Filtrar os Resultados Abaixo';
+  coTissSolusMatMed = 'MATERIAIS E MEDICAMENTOS';
+  coRegExNro = '(^[0-9]+$)';
+  coRegExNroIn = '(^(\([0-9]+)(,[0-9]+)*\)$)';
+  coRegExNroEntre = '(^\(([0-9]+-[0-9]+)\)+)$';
+  coRegExFaturamentoPesqLote = '^[0-9]+((,|-)?[0-9]+)*$';
+  coInicialCodigoBarras = 'PMB';
+  coInicialCodigoBarrasAbreviado = 'P';
+  coInicialCodigoBarrasWorkStation = '#';
+  coRegExCodigoBarrasWorkStation = '^#\d+$';
+  coRegExCodEntradaItem = coInicialCodigoBarras + '[1-9]\d*$';
+  coRegExCodBarraItem = '(^(-?)([1-9]\d*\*)?' + coInicialCodigoBarras + '\d+)|([0-9]{1,13}$)';
+  coHintGrid = '(ctrl+a) Seleciona todos, ctrl+click para seleção intercalada, shift+click para intervalo.';
+  coDelimitador = '|';
+  coDelimitadorDiferente = 'þ'; // codigo do caracter = 0254
+  coTamanhoPixel = 3.7;
+  coUF = '[AL][AP][AM][BA][CE][DF][ES][GO][MA][MT][MS][MG][PA][PB][PR][PE][PI][RJ][RN][RS][RO][RR][SC][SP][SE][TO]';
+  coRelModelo = 'MODELO - ';
+  coResultOK = 'OK!';
+  coExit = 'Exit';
+  coAlerta = '/*ALERTA*\';
+  coParametrosIni = 'Parametros.ini';
+  coModTabela = 'tbl.';
+  coReferenciaOutraPergunta = 'fk.';
+  coTagIni = '<campo>';
+  coTagFim = '</campo>';
+  coTagRepIni = '<repetir>';
+  coTagRepFim = '</repetir>';
+  coAcessoPermitido = 'Acesso Permitido';
+  coIncluir = 'Incluir';
+  coModificar = 'Modificar';
+  coDeletar = 'Deletar';
+  coImprimir = 'Imprimir';
+  coExportar = 'Exportar';
+  coFavoritosPadrao = 'Ac_Sistema_Usuario_Trocar_Usuario' + #13 +
+    'Ac_Recepcao_Pacientes' + #13 +
+    'Ac_Consultorios_FichaMedica' + #13 +
+    'Ac_Consultorios_AtestadoMedico' + #13 +
+    'Ac_Exames_Laudos' + #13 +
+    'Ac_Internacao_RegistrosInternacao' + #13 +
+    'Ac_Estoque_Saidas_Saidas' + #13 +
+    'Ac_Admin_CtaPagar_CtaPagar' + #13 +
+    'Ac_Admin_CtaReceber_ContasReceber' + #13 +
+    'Ac_Controle_Bancario' + #13 +
+    'Ac_BI_BI' + #13 +
+    'Ac_Recepcao_Agendas_Agenda_Telefonica' + #13 +
+    'Ac_Bd_Cid' + #13 +
+    'Ac_Sistema_Gerenciador_Msg' + #13 +
+    'Ac_Faturamento_FaturasConvenio' + #13 +
+    'Ac_Sistema_Sair';
+{$WRITEABLECONST ON}
+  coEndConfig: String = '\ProMedico\';
+  coMensagemSemAcesso: String = 'Você esta sem permissão de acesso.';
+{$WRITEABLECONST OFF}
+
+{$ENDREGION}
+
+{$REGION 'Tipo de Dados Customizados'}
+
+
+type
+  TCModulo = (cmAnamnesesAcesso, cmAnamnesesAlteracao, cmLaudos, cmCirurgias, cmInternacoes, cmFaturas, cmFicha_Medica, cmImagens);
+  TPrescricaoHorario = (phSN, phACM, phIntervaloSN, phCM); // quando for incluso algum tipo, tem que ir em fpuHorario_In_PrescSeNecessario para ajustar lá tb.
+  TTipoCategoria = (tcZero, tcCON, tcDT, tcEXM, tcHM, tcLAB, tcMM, tcPAC, tcSD, tcKit);
+  TSubTipoCategoria = (stcNenhum, stcMM_Detalhado); // caso alguma categoria tenha mais de uma tela de visualizacao, usara esse subtipo para identificar qual devera ser aberta
+  TTipoAcaoLaudo = (talImpressao, talVisualizar, talEditar, talIncluir);
+  TTipoPesquisa = (tpZero, tpFicha, tpProcedimento, tpItem, tpInternacao, tpReceita, tpProntoAtendimento, tpInterna_PA);
+  TMemuList = (mlSistema, mlBaseDados, mlRecepcao, mlConsultorio, mlExames,
+    mlCirurgia, mlInternacao, mlEstoqueGeral, mlFaturamento, mlSusAns, mlCaixa,
+    mlAdministracao, mlCusto, mlModulos);
+  TProAlerta = (paZero, paPedidoOrcamento, paNovaRequisicao, paPrescLibMatMed, paPrescSuspensa, paInternaRegistro, paExame_Laudo, paNovoExame, paExame_Laboratorio, paPontoReposicaoItem, paPrescEnfermagemDiagnostico, paAltaInternacao, paCCIH_Negado);
+  TEstSaiTipSai = (estsConsumo, estsDoacao, estsOutro, estsPerda, estsTransferencia, estsVenda);
+  TBcDiaTax = (bdtZero, bdtAluguel, bdtDiaria, bdtGas, bdtOutro, bdtTaxa);
+  TTipoEvolucao = (teEvolucaoEnfermagem, teEvolucaoMedica, teEvolucaoMultidisciplinar, teAnotacaoEnfermagem, tePlanoTerapeutico);
+  TTipoCampoInput = (tciZero, tciDBData, tciDBEdit, tciDBMemo, tciDBRichEdit, tciData, tciEdit, tciMemo, tciRichEdit, tciCheckBox, tciComboBox, tciTime);
+  TProcedureChamarLog = procedure(const ipTabela: String; const ipCodigo: Integer) of object;
+  TTipoImpressao = (tiSALVAR_PDF, tiIMPRIMIR, tiVISUALIZAR, tiNONE);
+  TTagsConhecidas = (IDADE, PESO, DATA_COLETA, DATA_EXAME, PESSOA_ENTREGOU, QUANT_INTERFACEAMENTO, RESULTADOS_ANTERIORES);
+  TArrayOfString = Array of string;
+  TTipoGrupo = (tgMedicamentos, tgMateriais, tgMateriais_Descartaveis, tgOrteseEProtese, tgOutros);
+  TTipoUnidade = (tuENTRADA, tuARMAZENAGEM, tuSAIDA);
+  TResultLocalizarItemCodigoBarras = (rlResult, rlTipoGrupo, rlCodItem, rlNomeItem, rlEstq_Lote_Codigo, rlEstq_Lote_Vencimento, rlQtde, rlPodeSairEstoque, rlIdentificacao, rlMedicoObrigatorioPaciente);
+  TResultHonomedInfoDiaTax = (rhResult, rhCodigo_Procedimento, rhCodigo_BcDiaTax, rhQtde_CH, rhValor_CH, rhValor_Procedimento, rhPVCodigo_Procedimento, rhPVCodigo_BcDiaTax, rhPVQtde_CH, rhPVValor_CH, rhPVValor_Procedimento, rhCodigo_Oficial_Insumo);
+  TResultPrecoProcedimento = (rppResult, rppInformacao, rppValor, rppValorInsumo, rppValorManual, rppQtdeCh, rppQtdeFilme, rppValorFilme);
+  TPrescMedStatus = (pmsIncluido, pmsRegistrado_Pela_Enfermagem, pmsRegistrado_No_MatMed, pmsNaoUsadoDelphiAinda, pmsMedicamento_Suspenso);
+  TTipoHonomedFuncao = (thfClinico, thfFisioterapeuta, thfFonoaudiologo, thfMedicoUti, thfPerfusionista, thfNutricionista, thfPsicologo, thfcCirurgicao, thfc1Auxiliar, thfc2Auxiliar, thfc3Auxiliar, thfc4Auxiliar, thfcAnestesista, thfcInstrumentador,
+    thfcPediatra, thfAnestesiologista, thfcIntensivista);
+  TGrupoFichaOftalmologica = (gfoAV_CC, gfoAV_SC, gfoCERATOMETRIA, gfoCID, gfoDP, gfoLENTE_CONTATO_PRESC, gfoLENTE_CONTATO_USO, gfoOLHO_DOMINANTE,
+    gfoRECEITA_OCULOS_PRESC, gfoRECEITA_OCULOS_USO, gfoRAD, gfoRAE, gfoRMD, gfoRME, gfoADICAO_OCULOS_USO, gfoADICAO_OCULOS_PRESC, gfoTIPO_MODELO_OCULOS_PRESC,
+    gfoTIPO_MODELO_OCULOS_USO, gfoPIO, gfoImpReceita, gfoDNP, gfoBttCopyRME_RMD);
+
+  // tabelas a serem verificadas antes de realizar uma transferencia de internacao
+  TTabelasTransferenciaInternacao = (ttiINTERNACAO, ttiEXAME, ttiHONOMED, ttiDIATAX, ttiESTSAI, ttiSDIVER, ttiPACOTES, ttiKITS, ttiTRANSCRICAO);
+  // categorias de opcoes medicas
+  TTabelasTransferenciaOpcoesMedicas = (ttomPRESCMEDICA, ttomEVOLMEDICA, ttomEVOLENFERMULTIDIS, ttomDESCCIRURGICA, ttomANESTESIOLOGIA, ttomANOTACAOENFERM, ttomSOLTRANSFUSAO, ttomSINAISVITAIS, ttomDIURESE, ttomDRENO, ttomQuestionarioCirurgiaSegura);
+
+  // Tipos para VidaPlus / Gerenciador;
+  TConfigCampos = (ccCodigoAgencia = 1, ccNumeroContaCorrente, ccCodigoCedente, ccInicioNossoNumero, ccFimNossoNumero, ccIdentificacaoCedente, ccLayOutBoleto, ccPercentualJurosDiaAtraso, ccPercentualMultaAtraso, ccPercentualDesconto,
+    ccValorOutrosAcrescimos, ccPadroesBoletoDemonstrativo, ccPadroesBoletoInstrucoesCaixa, ccHtmlPersonalizado, ccLocalPagamento, ccId_Bancos_Conta, ccNomeArquivoConf, ccLayoutRetRem);
+  TParcelas_PagtoStatus = (ppsNaoBaixado, ppsBaixaManual, ppsCancelado, ppsBaixaAutomatica);
+  TParcelas_Arquivo_Tipo = (patRemessa, patRetorno);
+  TLoginCampos = (lcResult, lcId_Usuario, lcId_Usuario_Perfil, lcNome, lcLogin);
+  TPermissaoAcesso = (paACESSO, paINCLUIR, paALTERAR, paEXCLUIR);
+  TStatusLaudo = (slNaoLiberado, slAguardandoConfirmacao, slConfirmado, slLiberado, slLiberadoDigitacao);
+  TCallBackLog = reference to procedure(ipMsg: string);
+
+  // TODO: Remover assim que não lançar mais build para a versao 2.1.65
+  TAgendaPadrao = (apGeral);
+
+  TConfiguracoesExtra = (ceObrigarPreencherCIDnaBaixaDePA, cePermitirVisualizarAnamnesePA, ceBloquearMensagemParaTodos, ceObrigarMedicoNoPA, ceListarApenasConsultaMedicoPA,
+    cePermitirQueConsultasMedicosNaoGeremDebito, ceLancamentoObrigatorioBancarioBxaCtaPagarCtaReceb, ceReceitaChkApenasPrescricao,
+    ceObrigarMedicoMotivoRetificacao, ceSalvarAnamneseAutomaticamente, ceVirMarcadoApenasPacientesComTriagem, ceDesabilitarRecuperacaoAnamnese, cePermitirMudarStatusListaEsperaPA,
+    ceBloquearEdicaoAnamnese, ceTornarObrigPreenchimentoPosicaoPacientePrescricao, ceNaoPermitirDigitacaoManualNroFicha, ceObrigarPreencimentoCPFCNPJEmitenteBaixaContaCorrente, ceTrocarMedicoConsultaPA,
+    ceNaoAlterarConsultasPAMarcadaAtendida, cePermitirLancarVariasCategoriasAmbulatorio, ceNaoPermitirFichaCPFDuplicado, ceExibirUnidadeAndFatorConversaoDeArmazenamento,
+    cePermitirQualquerMedicoSumarioDaAlta, ceObrigarCIDAnamnese, ceObrigarCIDPedidoExame, ceBloquearEdicaoAnamneseCampoVeioPreConsulta, ceObrigarInformarLaudoNormal,
+    ceObrigarEnvioSMS, ceVirZeradaQuantidadeLiberadaDispensacaoPrescricao, ceVirZeradaQuantidadeDispensadaDispensacaoRequisicao);
+
+const // campo se primeiro horario é maximo dois digitos
+  FuncoesClinico: set of TTipoHonomedFuncao = [thfClinico, thfFisioterapeuta, thfFonoaudiologo, thfMedicoUti, thfPerfusionista, thfNutricionista, thfPsicologo, thfAnestesiologista, thfcIntensivista];
+  TiposPrescricaoHorario: array [TPrescricaoHorario] of string = ('SN', 'ACM', 'S/N', 'CM');
+  TiposUnidade: array [TTipoUnidade] of string = ('Entrada', 'Armazenagem', 'Saída');
+  TiposHonomedFuncao: array [TTipoHonomedFuncao] of string = ('CLÍNICO', 'FISIOTERAPEUTA', 'FONOAUDIÓLOGO', 'MÉDICO UTI', 'PERFUSIONISTA', 'NUTRICIONISTA', 'PSICÓLOGO', 'CIRURGIÃO', '1º AUXILIAR', '2º AUXILIAR', '3º AUXILIAR', '4º AUXILIAR',
+    'ANESTESISTA', 'INSTRUMENTADOR', 'PEDIATRA', 'ANESTESIOLOGISTA', 'INTENSIVISTA');
+  TiposCategoria: array [TTipoCategoria] of string = ('Zero', 'CON', 'D.T', 'EXM', 'H.M', 'LAB', 'M.M', 'PAC', 'S.D', 'KIT');
+  GrupoFichaOftalmologica: array [TGrupoFichaOftalmologica] of string = ('Acuidade Visual CC', 'Acuidade Visual SC', 'Ceratometria', 'CID',
+    'Distância Pupilar(DP)', 'Lente de Contato Prescrito', 'Lente Contato Uso', 'Olho Dominante', 'Receita do Óculos Prescrito', 'Receita do Óculos em Uso', 'Refração Automática(RAD)',
+    'Refração Automática(RAE)', 'Refração Manual(RMD)', 'Refração Manual(RME)', 'Adição Óculos Uso', 'Adição Óculos Prescrito', 'Tipo/Modelo Óculos Prescrito', 'Tipo/Modelo Óculos em Uso', 'Tonometria de Aplanação (PIO)', 'Imprimir Receita',
+    'Distância Naso-Pupilar (DNP)', 'Botões Copiar RME e RMD');
+  TabelasTransferenciaInternacao: array [TTabelasTransferenciaInternacao] of string = ('Internação', 'Exames', 'Honorários Médicos', 'Diárias e Taxas', 'Materias/Medicamentos', 'Serviços Diversos', 'Pacotes', 'Kits', 'Transcrições');
+  TabelasTransferenciaOpcoesMedicas: array [TTabelasTransferenciaOpcoesMedicas] of string = ('Prescrição Médica', 'Evolução Médica', 'Evolução Multidisciplinar', 'Descrição Cirúrgica', 'Anestesiologia', 'Anotação Enfermagem',
+    'Solicitação Transfusão', 'Sinais Vitais', 'Diurese', 'Dreno', 'Questionário de Cirurgia Segura');
+  StatusLaudo: array [TStatusLaudo] of string = ('Não Liberado', 'Aguardando Confirmação', 'Confirmado', 'Liberado', 'Liberado para digitação');
+
+  PermissaoAcesso: array [TPermissaoAcesso] of string = ('ACESSO_PERMITIDO', 'INCLUIR', 'MODIFICAR', 'EXCLUIR');
+  ConfiguracoesExtra: array [TConfiguracoesExtra] of string = ('Obrigar preenchimento do CID na baixa do Pronto Atendimento',
+    'Permitir que as anamneses de pronto atendimento sejam visualizadas por todos os médicos',
+    'Bloquear o envio de mensagem para TODOS',
+    'Tornar o nome do médico obrigatório no Pronto Atendimento',
+    'Aparecer apenas consultas do médico no Pronto Atendimento',
+    'Permitir que as Consultas dos Médicos não Gerem Débito',
+    'Lançamento Obrigatório para o Controle Bancário nas Baixas de Contas a Pagar e Receber',
+    'Já vir marcado CheckBox "Apenas Prescrição do DEF" na Receita',
+    'Obrigar o médico a informar o motivo da retificação dos laudos',
+    'Salvar anamnese automaticamente(sem fazer a pergunta) ao sair da ficha médica',
+    'Já vir marcado CheckBox "Apenas Paciente Com Triagem" no Atendimentos(Ficha Médica)',
+    'Desabilitar Recuperação de Anamnese',
+    'Permitir mudar o STATUS (A Atender/Atendido) na Lista de Espera do Pronto Atendimento',
+    'Bloquear a edição de anamnese (deixará editar as de hoje e as que foram marcadas como Aguardando Exame)',
+    'Tornar obrigatório o preenchimento da posição do paciente na prescrição',
+    'Não Permitir a Digitação Manual do Número da Ficha no cadastro do Paciente',
+    'Obrigar o Preenchimento do CPF/CNPJ do Emitente na Baixa da Conta Corrente',
+    'Trocar médico da consulta (no PA) quando o mesmo fizer uma anamense',
+    'Não alterar o Médico nas consultas (no PA) quando a consulta já estiver marcada como Atendida',
+    'Permitir Lançar Várias Categorias no Ambulatório',
+    'Não permitir duplicação de CPF no cadastro de pacientes',
+    'Exibir unidade e fator de conversão de armazenamento',
+    'Permitir que qualquer médico tenha acesso ao Sumário da Alta, não apenas o médico responsável',
+    'Obrigar o preenchimento do CID na Anamnese',
+    'Obrigar o preenchimento do CID no Pedido de Exame',
+    'Bloquear edição na Anamnese dos campos que vieram da Pré-Consulta',
+    'Obrigar preencher o campo Laudo Normal durante a digitação do laudo.',
+    'Obrigar o envio do SMS no cadastro das fichas',
+    'Vir Zerada a Quantidade Liberada na Dispensação da Prescrição',
+    'Vir Zerada a Quantidade Dispensada na Dispensação da Requisição');
+  // Constantes do Vida Plus;
+  coVersaoVidaPlus = '"Vida Plus 1.0.1"';
+{$ENDREGION}
+
+{$REGION 'TMenuLista'}
+
+
+type
+  TMenuLista = Class
+  public
+    NomeMenu: String;
+    Permissoes: TStringList;
+    constructor Create;
+    destructor destroy; override;
+  End;
+{$ENDREGION}
+
+{$REGION 'Permissao Lista'}
+
+
+type
+  TPermissaoLista = Class
+  private
+
+  public
+    FMenuLista: TObjectList<TMenuLista>;
+
+    { Sistema }
+    siLogAcoes, siTransfProcedimentosPaciente, siRelatorios, siRecalcular,
+      siSenhaMensal, siConfigSistema, siConfigRateioFaturamento, siConfigRegrasHonorarioFaturamento,
+      siConfigBoletos, siUsuarios, siDeletaRegistrosPagmsAnteriores,
+      siLiberarHorario, siGerenciadorMensagem, siGerenciadorPermissaoRelatorio, siEnviarMensagemTodos, siConfigurarGuicheSenha,
+      siDicomPesquisa, siLogInterfaceamento, siLogComoOutroUsuario, siConfigRegrasExameFaturamento, siWorklist, siConfigPrestadoresDebRecepcao, siEmail_Enviar, siEmail_Config,
+      siTelasCustomizadas,siUsuarioPMOnline, siRegraSuspensaoMedico, siConfigSMSModulo,siImportarDef, siCertificadosRaiz, siValidarCertificado,
+      siBackupRestore, siEfetuarBackup, siEfetuarRestore, siConfiguracaoBackupRestore, siMonitorarBD, siMonitorarHDServidor, siControleAcesso, siDeclaracaoTermoUso,
+
+    { Base de Dados }
+    bdCCe, bdCidades, bdMotivosGlosa, bdDestinoP, bdDicionario, bdFeriado,
+      bdAdmissao, bdTbEspecial, bdCFuncao, bdBoletos, bdPreConsulta, bdNaTrata,
+      bdAlerta, bdAlertaEmail, bdEpidemia, bdFormaPagto, bdLabMaterial, bdUnidades, bdViaAdm,
+      bdSolicitantes, bdModeloTexto, bdTributos, bdCtExames, bdBcPlanilha, bdCid, bdTabGeralProcedimentos, bdAtualTabGeralProcedimentos,
+      bdTabGeralProcedimentosReajustarValores, bdTabGeralProcedimentosLayout, bdTabGeralDiaTax, bdAtualTabGeralDiaTax, bdTabGeralMatMed, bdAtualTabGeralMatMed,
+      bdGrpValFilmes, bdModFaturasEletronicas, bdModFaturasEletronicasExpotar,
+      bdModFaturasEletronicasImportar, bdCadGeralConvenios, bdTabPrestadores, bdTabMedicos,
+      bdTabIntrucoes, bdTabIndicadores, bdConfigFormularios, bdModCarteirinhas, bdTabProcedimentos,
+      bdTabProcedimentosModLaudos, bdTabDiaTax, bdTabGrpServicosDiversos, bdTabServicosDiversos,
+      bdTabPacotes, bdTabKits, bdTabOrigemExames, bdTabProcCirurgicos, bdTabProcedimentosCIH,
+      bdRelCustomizados, bdRelRelatorios, bdHistorico_Atendim, bdModelo_Chave, bdAla, bdTipo_Visita, bdModeloLab,
+      bdTabAbreviacoes, bdTabTipoOculos, bdOftalProdLimpeza, bdGrupoLancamento, bdPrioridade, bdPrescricaoIntervalo, bdGerenciarModeloTexto,
+      bdTabHonorarioFormula, bdProfissionais_Saude, bdProfissoes, bdTiposDigitalizacao, bdPrescricao_Servico, bdTabLaboratorios, bdDiagnostico_Enf,
+      bdServicosEnfermagem, bdCadGeralConveniosConfiguracoes, bdGrupoOutrosImpressos, bdExame_Sessao_Lab, bdConfigurar_Documentos, bdDocumentos_Gerais,
+      bdFilas,
+
+{ Recepcao }
+    reAlterarAtendimento, rePacientes, reRegCasosEspeciais, reAgendaGeral, reAgendaGeralCategorias,
+      rePermitirBaixaRetroativaParticular,
+      reAgmtoCirurgias, reAgmtoCirurgiasLiberar, reAgmtoCirurgiasBloquearDesbloquear,
+      reAgmtoConsultas, reAgmtoConsultasBloquearDesbloquear, reAgmtoExames, reAgmtoExamesBloquearDesbloquear,
+      reAgendaTelefonica, reRecibos, reFichario, reFicharioModeloImpressao,
+      reFicharioeArqMorto, reCtCorPaciente, reCtCorPacienteEfetBaixaParticular, reCtCorPacienteEfetBaixaConvenio,
+      reCtCorPacienteDelBaixaParticular, reCtCorPacienteDelBaixaConvenio, reRegProcAmbulatorio,
+      reRegProcInternacao, reRegMatMedAmbulatorio, reRelMalaDireta, reRelRegCasosEspeciais,
+      reRelAgendamentos,
+      reRelConsultasGeral, reRelExamesProcedimentos, reRelPlanilhaBancadaExamePeriodo, reRelEpidemias,
+      reRelProcsGeradosPeriodo, reRelProducaoMedico,
+      reRelHonorariosMedicos, reRelDiaTaxPeriodo, reRelSericosDiversos, reRelObitosPeriodo, reRelpacCadastradosPeriodo,
+      reRelUltimoAtendimento, reSessao, reVisitantes, reRelVisitantes, reRelPacotes, reListaEspera, reAgendaAlterarHorarios,
+      reFicharioPrioridade, reImpressaoFichaCadastral, reConfigAgenda, reConfigAgendaUsuarios, reConfigAgendaHorarios, reConfigAgendaRestricoes,
+      reConfigAgendaRestricoesConvenio, reChamarSenhas, reArquivo, reAlterarConvenioProcedimento, reMotivos_Cancelamento, reAlterarConvenioGuias,
+      reCirurgiaStatus, rePainelCirurgico, reCirurgiaUrgencia, reAlertaFicha, reRelReferenciaCruzada, reRelConsumoSMS, reRelProducaoPorUsuario,
+
+    { Consultorio / PEP }
+    coConsAtendimento, coAtestados, coModeloAtestado, coPedGuiaInternCirurgia, coSolicEntradaPac,
+      coModeloPresc, coRecibosMedicos, coFichaOftalmologica, coPlantao, coCopiarModeloAnamnese, coModeloAtestadoGeral, coModeloDefGeral, coModeloReceitaGeral,
+      coModeloAnamnese, coModeloAnamneseRespostasPadrao, coOutros_Imp, coOutros_Imp_Modelo, coOutros_Imp_Modelo_Geral,coProntuarioMedico,
+      coAnamnese, coImagensProntuario, coReceitas,coLogAnamnese,
+      coAmenorreia,coLembretePaciente,coPlanilhaAtendimento,coAlergiaAlerta,
+
+      //essas abaixo eram da internação estamos transferindo para o consultorio / PEP
+      coSumarioAlta, coPrescricaoMedica, coEvolucaoMedica, coEvolucaoEnfermagem, coAnestesiologia, coPlanoTerapeutico, coScorePrognostico,
+      coDescricaoCurativos, coEvolucaoMultidisciplinar, coPrescricaoEnfermagemDiagnostico, coAnotacoesEnfermagem, coBalancoHidrico,
+      coAlterDelAnotacaoEvolucaoEnfermagem, coPrescAprazamento, coModPrescricaoMedica, coTranscricaoPrescricao, coPrescricaoEnfermagem,
+      coImprimirSumario,coImprimirEtiqueta,coImprimirPulseira,coImprimirAIH, coImprimirGuiaSolicitacaoInternacao,coSolicitacaoTransfusao,
+      coEscalasIndices,coDelegacaoPoder,
+
+
+    { Exames }
+    exPodeTrocarLabComLaudo, exPedidoExame, exLaudos, exLaudosVisualizarBttIncluirNova, exLaudosLab, exLaudosAlterarTamanhoTexto,
+      exLaudosLabLiberar, exLaudosLabModificaImp, exModeloLaudo, exModeloLaudoLab, exRelatorios, exImportarImgDicom,
+      exEntregaLaudo, exMeusModelosExamesPadrao, exLaudosAlterarMedicoConferidor, exLaudosEnviarLaudoPorEmail, exInterfaceamento,
+      exInterfaceamento_Config, exInterfaceamento_Laboratorios, exInterfaceamento_Lotes, exLaudoExcluirImpresso, exLaudoExcluirEntregue, exFilaAtendimentos, exImagensExames,
+      exConfiguracoesPedidoExame,
+
+    { Cirurgia }
+    ciRegistroCirurgia, ciDescricaoCirurgia, ciRelCirurgiaProcedimento,
+
+    { Internação }
+    inRegistroMatMed, inAbrirFecharInternacao, inLocInternacaoLeitos, inRegistrosInternacao, inHonorariosedicos, inDiariasTaxas,
+      inServicosDiversos, inPacoates, inKits, inMapaOcupacaoLeitos, inDelTodosRegistrosInternacao, inRelPacientesInternados,
+      inRelPacientesInternadosPVez, inRelAltasGeral, inRelInternacoesGeral, inRelInternacoesMedico, inRelTaxaOcupacaoLeitos, inRelInternaNaturTratamtGeral,
+      inRelComparacaoPacotesSus, inRelKitsPeriodo, inRelVisitantes, inPodeAlterarPacote, inPodeAlterarConvenio,
+      inVisualizarContaInternacao, inTransferirInternacao, inTransferirLanctosInternacao, inDataFutura, inAltaDataFutura, inCCIH,
+      inConfigTelaMapaOcupacao, inTabelaPosicoesPaciente, inTransferenciaLeitos,
+
+    { Pronto Atendimento }
+    paRegistroMatMedPA, paAbrirFecharPA, paLocPALeitos, paRegistrosPA, paDelTodosRegistrosPA, paPodeAlterarPacotePA,
+      paPodeAlterarConvenioPA, paVisualizarContaPA, paTransferirPA, paTransferirLanctosPA,
+
+    { Terapia }
+    teRegistroMatMed, teAbrirFecharTerapia, teLocTerapiaLeitos, teRegistrosTerapia, teDelTodosRegistrosTerapia, tePodeAlterarPacote,
+      tePodeAlterarConvenio, teVisualizarContaTerapia, teTransferirTerapia, teTransferirLanctosTerapia, teRevisaoPrescricaoTerapica,
+      teEnviarConvenioPrescricaoTerapica,
+
+    { EstoqueGeral }
+    esDevolucaoEntrada, esDevolucaoRequisicao, esDevolucaoVenda, esEntradas, esGrpSubgpEstoque,
+      esVisualizarCusto,
+      esItens, esLotesSaldos, esPedidos, esPedidos_Aprovacao, esPedidos_Aprovados,
+      esPrescMedicaLibMatMed, esRestrItens, esRefItens, esItensRevisaoRef,
+      esRequisicoes, esRequisicoesDispensar, esSaidas, esSetores,
+      esTabRestrEstoque, esRelGeralEntradas, esRelGeralItens,
+      esRelSaidas, esRelLotesVencidosVencer,
+      esRelSaldoExtratoInventario, esRelItensPontoReposicao, esRelResumoSaidasItem,
+      esRelListaPrecos, esRelMapaComparaPrecos, esRelMedicamentosMedico,
+      esRelPacLancamMatMed, esRelTransfPeriodo, esRelItensMaisMenosVendidos,
+      esRelCustoSetor, esRelPrecoMedioPeriodo, esLocal_Uso, esAbrirNota, esFecharNota, esAcertoEstoque,
+      esRastreabilidade, esEditarRequisicaoOutroUsuario, esUnidades, esSubTipoSaida, esPodeEditarValorMatMed, esRequisicoesCompra, esRelCurvaABC,
+      esEnxovalItens, esEnxovalGrupos, esEnxovalControle, esEnxovalLoacais, esEnxovalMovimentacao, esRequisicoesMatMed, esRequisicoesCompraMatMed,
+      esRelEnxovais,
+
+    { Faturamento }
+    ftFaturConvenio, ftFaturConvenioLotes, ftFaturConvenioLotesAbreFecha,
+      ftFaturConvenioImprime, ftRegsInternacao, ftPreConta, ftPreContaExportar,
+      ftRelGuiasNaoEnviadas, ftRelGuiasEnviadas, ftRelGuiasPagasGlosadas, ftAbrirlote, ftFecharLote, ftFaturaRecebimento,
+      ftQuitarGlosarGuia, ftQuitarGlosarGuiaOutro, ftRelGuiasFaturadasPorGuia, ftAlterarNumeroSequencial, ftRecursoGlosa,
+
+    { SusAns }
+    suGerarArquivo, suRelBPA,
+
+    { Auditoria }
+    auAuditoria, auSetarChecado,
+
+    { Caixa }
+    cxEnvGuiasFaturamento, cxEnvGuiasFaturamRecebimento, cxFechaCaixa,
+      cxFechaCaixaConfirmar, cxFechaCaixaTiraConfirmar, cxRelMovDiarioCaixa,
+      cxRelProcAberto, cxRelGuiasMedico, cxRelMovDiarioProcedim, cxRelRateioPeriodo,
+
+    { Administracao }
+    adGrupos_CtApagar, adBcorigcr,
+      adClientes_Ctareceb, adCtExames, adPatrimonio, adPatrimonio_Local,
+      adContas_Balancete, adFornec, adLotesCtPagar, adPatrimEmprestimo, adCtPagar,
+      adCtPagarImprCheques, adCtReceber, adBancPessModelCheque, adBancPessHistoricos,
+      adBancPessContas, adBancPessLancamentos, adBancPessChecagemExtrato, adBancPessImprCheques,
+      adBancEmpresModelCheque, adBancEmpresHistoricos, adBancEmpresContas, adBancEmpresLancamentos,
+      adBancEmpresChecagemExtrato, adBancEmpresImprCheques, adBancEmpresConciliacao, adBancEmpresAlteraConciliados, adAntecipaPagamts,
+      adCadChequesSemFundo, adRepasseMedPrestador, adAdmContasTransf, adTermoConfisDivida, adTipoDocumento,
+      adCartasCobranca, adRelImprCartirinhas, adRelInfOnLine, adRelCtPagasPagar, adRelCtRenegociadas,
+      adRelExtratoCtBalancete, adRelNotasPagasPeriodo, adRelCtRecebidasReceber, adRelBalancFinanceiro,
+      adRelAntecPagmts, adRelBancPessSaldoGeralCts, adRelMovBancario, adRelFluxoCaixa,
+      adRelTermoConfDivida, adRelFaturamento,
+      adRelRelacPatrimonial, adRelChequesSemFundo, adRelResumoContasBalance, adGerarDemed, adFechamentoBancario, adPastaArquivo,
+      adContaBalanceteCategoria,
+    { BI }
+    biBI, biDashBoard, biModeloBi,
+    { Custo }
+    cuCentrosCusto, cuCentrosCustoDespesas,
+      cuCentrosCustoRateio, cuRelEstMargContribuicao,
+      cuDespesas: String;
+
+    constructor Create;
+    destructor destroy; override;
+    procedure ppuRetornaListaPermissaocds(ipCds: TClientDataSet; ipCdsPermissoesFormCustom: TClientDataSet = nil);
+  end;
+{$ENDREGION}
+
+{$REGION 'AlertaInfo'}
+
+
+type
+  TAlertaInfo = Record
+    AlertaOrigem: TProAlerta;
+    CodigoAlerta, NroFicha: Integer;
+    Descricao: String;
+  end;
+{$ENDREGION}
+
+{$REGION 'Classe para guardar os componentes importantes de um form'}
+
+
+Type
+  TListaComponentes = Class
+  const
+    coClasses = '[TcxGridDBTableView]';
+  private
+    lcFormAtual: TForm;
+  public
+    lcLista: TList;
+    FChamarLog: TProcedureChamarLog;
+    constructor Create(ipForm: TForm);
+    destructor destroy;
+    procedure PopClick(Sender: TObject);
+    procedure SalvarGrids;
+    procedure ResturarGrids;
+    procedure CriarPopUpLog(ipProcedure: TProcedureChamarLog);
+  End;
+{$ENDREGION}
+
+{$REGION 'Records com os parametros de lancamento e consulta de procedimentos'}
+
+  TParametrosLancamento = Record
+  public
+    NroFicha: Integer;
+    NroInternacao: Integer;
+    ProntoAtendimento: Boolean;
+    Terapia: Boolean;
+    FecharAoSalvar: Boolean;
+    TravarCampoMedico: Boolean;
+
+    TipoCategoria: TTipoCategoria;
+
+    NroRegistroAlterar: Integer;
+
+    CodigoProcPgos: Integer;
+
+    CodigoConvenio: Integer;
+
+    CodigoMedicoExaminador: Integer;
+
+    CategoriasEspecificas: String;
+
+    MedicosEspecificos: String;
+
+    MovimentandoPeloFaturamento: Boolean;
+
+    CodigoBXACORRE: Integer;
+
+    CodigoAgendaHs: Integer;
+
+    CodigoLocalUso: Integer;
+
+    DataRegistro: TDateTime;
+    // Usado apenas para a tela de insercao de exames
+    CategoriaExame: Integer;
+    // Indica se durante o lançamento deve realizar o agrupamento de exames.
+    ModoAgrupamento: Boolean;
+    // Usado no honorario para lançar um orçamento ou invez de lançar um honorario
+    CodigoPreConta: Integer;
+
+    CodigoModoConsulta: Integer;
+    SomenteLeitura: Boolean;
+    AbrirSomenteEdicaoModal: Boolean;
+
+    // Utilizado para se saber de onde foi feito a chamada para abrir a tela. Usado por enquando na consulta para nao
+    // imprimir o protocolo quando salvar
+    TelaOrigem: TTelaOrigem;
+    // Informa se vai permitir lancar o procedimento sem referencia(utilizado inicialmente pela consulta lancada da agenda)
+    PermitirProcedimentoSemReferencia: Boolean;
+
+    // Utilizado pela tela de mat/med para saber se deve-se editar somente as informacoes complementares
+    ApenasInfoComplementar: Boolean;
+
+    SubTipoCategoria: TSubTipoCategoria;
+
+    HoraInicio: TTime;
+
+    HoraFim: TTime;
+
+    DataInternacao, DataAlta: TDate;
+    // esse construtor tem q ter pelo menos um parametro pq senao da erro
+    constructor Create(ipCategoria: TTipoCategoria);
+  end;
+
+  TParametrosConsulta = record
+    NroFicha: Integer;
+    NroInternacao: Integer;
+    Codigo: Integer;
+    TipoCategoria: TTipoCategoria;
+    // Usado apenas para a tela de consulta de exames)
+    CategoriaExame: Integer;
+    ProntoAtendimento: Boolean;
+    Terapia: Boolean;
+    TravarCampoMedico: Boolean;
+    SubTipoCategoria: TSubTipoCategoria;
+    CodigoBxACorre:Integer;
+
+    // esse construtor tem q ter pelo menos um parametro pq senao da erro
+    constructor Create(ipCategoria: TTipoCategoria);
+  end;
+
+{$ENDREGION}
+
+  IContainerConsultaProcedimentos = interface
+    procedure ppuRecriarFrame(ipParametros: TParametrosConsulta);
+  end;
+
+function fpuHorario_In_PrescSeNecessario(ipHorario: Integer): Boolean;
+function TipoCategoriaToStr(ipTipoCategoria: TTipoCategoria): String;
+function StrToTipoCategoria(ipString: String): TTipoCategoria;
+function StrToTipoCampoInput(ipString: String): TTipoCampoInput;
+function TipoPesquisaToStr(ipTipoPesquisa: TTipoPesquisa): String;
+function StrToTipoPesquisa(ipTipoPesquisa: String): TTipoPesquisa;
+function ProAlertaToStr(ipAlerta: TProAlerta): String;
+function fcEstSaiTipSaiToStr(ipEstSaiTipSai: TEstSaiTipSai): String;
+function StrToProAlerta(ipString: String): TProAlerta;
+function StrToBcDiaTax(ipString: String): TBcDiaTax;
+
+implementation
+
+uses pMethod2009;
+{$REGION 'Funcoes Gerais}
+
+
+function fpuHorario_In_PrescSeNecessario(ipHorario: Integer): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  i := 0;
+
+  if ipHorario = -1 then
+    Result := True
+end;
+
+function TipoCategoriaToStr(ipTipoCategoria: TTipoCategoria): String;
+begin
+  case ipTipoCategoria of
+    tcZero:
+      Result := '';
+    tcCON:
+      Result := 'CON';
+    tcDT:
+      Result := 'D.T';
+    tcEXM:
+      Result := 'EXM';
+    tcHM:
+      Result := 'H.M';
+    tcLAB:
+      Result := 'LAB';
+    tcMM:
+      Result := 'M.M';
+    tcPAC:
+      Result := 'PAC';
+    tcSD:
+      Result := 'S.D';
+    tcKit:
+      Result := 'KIT';
+  end;
+end;
+
+function StrToTipoCategoria(ipString: String): TTipoCategoria;
+begin
+  if ipString = '' then
+    Result := tcZero
+  else if ipString = 'CON' then
+    Result := tcCON
+  else if ipString = 'D.T' then
+    Result := tcDT
+  else if ipString = 'EXM' then
+    Result := tcEXM
+  else if ipString = 'H.M' then
+    Result := tcHM
+  else if ipString = 'LAB' then
+    Result := tcLAB
+  else if ipString = 'M.M' then
+    Result := tcMM
+  else if ipString = 'PAC' then
+    Result := tcPAC
+  else if ipString = 'S.D' then
+    Result := tcSD
+  else if ipString = 'KIT' then
+    Result := tcKit;
+end;
+
+function StrToTipoCampoInput(ipString: String): TTipoCampoInput;
+begin
+  if ipString = 'tciDBData' then
+    Result := tciDBData
+  else if ipString = 'tciDBEdit' then
+    Result := tciDBEdit
+  else if ipString = 'tciDBMemo' then
+    Result := tciDBMemo
+  else if ipString = 'tciDBRichEdit' then
+    Result := tciDBRichEdit
+  else if ipString = 'tciData' then
+    Result := tciData
+  else if ipString = 'tciEdit' then
+    Result := tciEdit
+  else if ipString = 'tciMemo' then
+    Result := tciMemo
+  else if ipString = 'tciRichEdit' then
+    Result := tciRichEdit
+  else if ipString = 'tciCheckBox' then
+    Result := tciCheckBox
+  else
+    Result := tciZero;
+end;
+
+function TipoPesquisaToStr(ipTipoPesquisa: TTipoPesquisa): String;
+begin
+  Result := '';
+  case ipTipoPesquisa of
+    tpFicha:
+      Result := 'tpFicha';
+    tpProcedimento:
+      Result := 'tpProcedimento';
+    tpItem:
+      Result := 'tpItem';
+    tpInternacao:
+      Result := 'tpInternacao';
+    tpProntoAtendimento:
+      Result := 'tpProntoAtendimento';
+    tpInterna_PA:
+      Result := 'tpInterna_PA';
+  end;
+end;
+
+function StrToTipoPesquisa(ipTipoPesquisa: String): TTipoPesquisa;
+begin
+  Result := tpZero;
+  if ipTipoPesquisa = 'tpFicha' then
+    Result := tpFicha
+  else if ipTipoPesquisa = 'tpProcedimento' then
+    Result := tpProcedimento
+  else if ipTipoPesquisa = 'tpItem' then
+    Result := tpItem
+  else if ipTipoPesquisa = 'tpInternacao' then
+    Result := tpInternacao
+  else if ipTipoPesquisa = 'tpProntoAtendimento' then
+    Result := tpProntoAtendimento
+  else if ipTipoPesquisa = 'tpReceita' then
+    Result := tpReceita
+  else if ipTipoPesquisa = 'tpInterna_PA' then
+    Result := tpInterna_PA;
+end;
+
+function fcEstSaiTipSaiToStr(ipEstSaiTipSai: TEstSaiTipSai): String;
+begin
+  Result := '';
+  case ipEstSaiTipSai of
+    estsConsumo:
+      Result := 'CONSUMO';
+    estsDoacao:
+      Result := 'DOAÇÃO';
+    estsOutro:
+      Result := 'OUTRO';
+    estsPerda:
+      Result := 'PERDA';
+    estsTransferencia:
+      Result := 'TRANSFERÊNCIA';
+    estsVenda:
+      Result := 'VENDA';
+  end;
+end;
+
+function ProAlertaToStr(ipAlerta: TProAlerta): String;
+begin
+  Result := '';
+  case ipAlerta of
+    paPedidoOrcamento:
+      Result := 'PEDIDO DE ORÇAMENTO';
+    paNovaRequisicao:
+      Result := 'NOVA REQUISIÇÃO';
+    paPrescLibMatMed:
+      Result := 'LIBERAÇÃO MAT/MED PRESCRIÇÃO';
+    paPrescSuspensa:
+      Result := 'PRESCRIÇÃO SUSPENSA';
+    paInternaRegistro:
+      Result := 'REGISTRO DE INTERNAÇÃO';
+    paExame_Laudo:
+      Result := 'Exame Laudo';
+    paExame_Laboratorio:
+      Result := 'Exame Laboratório';
+    paPontoReposicaoItem:
+      Result := 'PONTO DE REPOSIÇÃO DO ITEM';
+    paNovoExame:
+      Result := 'NOVO EXAME';
+    paPrescEnfermagemDiagnostico:
+      Result := 'PRESCRIÇÃO DE ENFERMAGEM - DIAGNÓSTICO';
+    paAltaInternacao:
+      Result := 'ALTA DA INTERNAÇÃO';
+    paCCIH_Negado:
+      Result := 'CCIH ANTIMICROBIANO - NEGADO';
+  end;
+end;
+
+function StrToProAlerta(ipString: String): TProAlerta;
+begin
+  Result := paZero;
+  if ipString = 'PEDIDO DE ORÇAMENTO' then
+    Result := paPedidoOrcamento
+  else if ipString = 'NOVA REQUISIÇÃO' then
+    Result := paNovaRequisicao
+  else if ipString = 'LIBERAÇÃO MAT/MED PRESCRIÇÃO' then
+    Result := paPrescLibMatMed
+  else if ipString = 'PRESCRIÇÃO SUSPENSA' then
+    Result := paPrescSuspensa
+  else if ipString = 'REGISTRO DE INTERNAÇÃO' then
+    Result := paInternaRegistro
+  else if ipString = 'Exame Laudo' then
+    Result := paExame_Laudo
+  else if ipString = 'Exame Laboratório' then
+    Result := paExame_Laboratorio
+  else if ipString = 'PONTO DE REPOSIÇÃO DO ITEM' then
+    Result := paPontoReposicaoItem
+  else if ipString = 'NOVO EXAME' then
+    Result := paNovoExame
+  else if ipString = 'PRESCRIÇÃO DE ENFERMAGEM - DIAGNÓSTICO' then
+    Result := paPrescEnfermagemDiagnostico
+  else if ipString = 'ALTA DA INTERNAÇÃO' then
+    Result := paAltaInternacao
+  else if ipString = 'CCIH ANTIMICROBIANO - NEGADO' then
+    Result := paCCIH_Negado;
+end;
+
+function StrToBcDiaTax(ipString: String): TBcDiaTax;
+begin
+  Result := bdtZero;
+  if ipString = 'ALUGUEL' then
+    Result := bdtAluguel
+  else if ipString = 'DIÁRIA' then
+    Result := bdtDiaria
+  else if ipString = 'GÁS' then
+    Result := bdtGas
+  else if ipString = 'OUTRO' then
+    Result := bdtOutro
+  else if ipString = 'TAXA' then
+    Result := bdtTaxa;
+end;
+{$ENDREGION}
+{$REGION 'TPermissao'}
+
+
+{ TPermissao }
+constructor TPermissaoLista.Create;
+var
+  vaMenuLista: TMenuLista;
+begin
+  FMenuLista := TObjectList<TMenuLista>.Create;
+  { Sistema }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Sistema';
+
+  siLogAcoes := 'Log - Ações';
+  vaMenuLista.Permissoes.Add(siLogAcoes);
+  siEnviarMensagemTodos := 'Enviar Mensagem para TODOS';
+  vaMenuLista.Permissoes.Add(siEnviarMensagemTodos);
+  siTransfProcedimentosPaciente := 'Transferência de Procedimentos de Pacientes';
+  vaMenuLista.Permissoes.Add(siTransfProcedimentosPaciente);
+  siRelatorios := 'Relatórios';
+  vaMenuLista.Permissoes.Add(siRelatorios);
+  siRecalcular := 'Recalcular';
+  vaMenuLista.Permissoes.Add(siRecalcular);
+  siSenhaMensal := 'Senha Mensal';
+  vaMenuLista.Permissoes.Add(siSenhaMensal);
+  siConfigSistema := 'Configurações - Sistema';
+  vaMenuLista.Permissoes.Add(siConfigSistema);
+  siConfigRateioFaturamento := 'Configurações - Rateio do Faturamento';
+  vaMenuLista.Permissoes.Add(siConfigRateioFaturamento);
+  siConfigRegrasHonorarioFaturamento := 'Configurações - Regras do Honorário no Faturamento';
+  vaMenuLista.Permissoes.Add(siConfigRegrasHonorarioFaturamento);
+  siConfigRegrasExameFaturamento := 'Configurações - Regras dos Exames no Faturamento';
+  vaMenuLista.Permissoes.Add(siConfigRegrasExameFaturamento);
+  siConfigBoletos := 'Configurações - Boletos';
+  vaMenuLista.Permissoes.Add(siConfigBoletos);
+  siUsuarios := 'Usuários';
+  vaMenuLista.Permissoes.Add(siUsuarios);
+  siDeletaRegistrosPagmsAnteriores := 'Deletar Registros de Pagamentos de Períodos Anteriores';
+  vaMenuLista.Permissoes.Add(siDeletaRegistrosPagmsAnteriores);
+  siLiberarHorario := 'Liberar Horário (Agendamento Geral)';
+  vaMenuLista.Permissoes.Add(siLiberarHorario);
+  siDicomPesquisa := 'Pesquisar Imagens Dicom';
+  vaMenuLista.Permissoes.Add(siDicomPesquisa);
+  siLogComoOutroUsuario := 'Pode Entrar no Sistema em Nome de Outro Usuário';
+  vaMenuLista.Permissoes.Add(siLogComoOutroUsuario);
+  siLogInterfaceamento := 'Log do Interfaceamento';
+  vaMenuLista.Permissoes.Add(siLogInterfaceamento);
+  siGerenciadorMensagem := 'Gerenciador de Mensagem';
+  vaMenuLista.Permissoes.Add(siGerenciadorMensagem);
+  siGerenciadorPermissaoRelatorio := 'Gerenciador de Permissão Relatório';
+  vaMenuLista.Permissoes.Add(siGerenciadorPermissaoRelatorio);
+  siConfigurarGuicheSenha := 'Configurar Guiche para o Módulo de Senhas';
+  vaMenuLista.Permissoes.Add(siConfigurarGuicheSenha);
+  siConfigPrestadoresDebRecepcao := 'Configurar Prestadores que Irão Mostrar Débitos na tela de Recepção';
+  vaMenuLista.Permissoes.Add(siConfigPrestadoresDebRecepcao);
+  siEmail_Enviar := 'Enviar Emails';
+  vaMenuLista.Permissoes.Add(siEmail_Enviar);
+  siEmail_Config := 'Configurar Emails';
+  vaMenuLista.Permissoes.Add(siEmail_Config);
+  siWorklist := 'Worklist';
+  vaMenuLista.Permissoes.Add(siWorklist);
+  siTelasCustomizadas := 'Telas Customizadas';
+  vaMenuLista.Permissoes.Add(siTelasCustomizadas);
+  siUsuarioPMOnline := 'Usuários do Pró-Médico Online';
+  vaMenuLista.Permissoes.Add(siUsuarioPMOnline);
+  siRegraSuspensaoMedico := 'Regras de Suspensão de Médicos no Convênio';
+  vaMenuLista.Permissoes.Add(siRegraSuspensaoMedico);
+  siConfigSMSModulo := 'Configuração dos Módulos de SMS';
+  vaMenuLista.Permissoes.Add(siConfigSMSModulo);
+  siCertificadosRaiz := 'Gerenciar Certificados Raiz de Confiança';
+  vaMenuLista.Permissoes.Add(siCertificadosRaiz);
+  siValidarCertificado := 'Validação de Certificados';
+  vaMenuLista.Permissoes.Add(siValidarCertificado);
+  siImportarDef := 'Importar DEFs do Cloud';
+  vaMenuLista.Permissoes.Add(siImportarDef);
+  siBackupRestore := 'Entrar na tela de Backup/Restore';
+  vaMenuLista.Permissoes.Add(siBackupRestore);
+  siEfetuarBackup := 'Efetuar Backup';
+  vaMenuLista.Permissoes.Add(siEfetuarBackup);
+  siEfetuarRestore := 'Efetuar Restore';
+  vaMenuLista.Permissoes.Add(siEfetuarRestore);
+  siConfiguracaoBackupRestore := 'Configurar Backup/Restore';
+  vaMenuLista.Permissoes.Add(siConfiguracaoBackupRestore);
+  siMonitorarBD := 'Monitorar Uso do Banco de Dados';
+  vaMenuLista.Permissoes.Add(siMonitorarBD);
+  siMonitorarHDServidor := 'Monitorar Uso do HD do Servidor';
+  vaMenuLista.Permissoes.Add(siMonitorarHDServidor);
+  siControleAcesso := 'Controle de Acesso ao Servidor';
+  vaMenuLista.Permissoes.Add(siControleAcesso);
+  siDeclaracaoTermoUso := 'Declaração de Termo de Uso';
+  vaMenuLista.Permissoes.Add(siDeclaracaoTermoUso);
+
+  FMenuLista.Add(vaMenuLista);
+
+  { Base de Dados }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Base de Dados';
+
+  bdCCe := 'B.D. Cadastro de Casos Especiais';
+  vaMenuLista.Permissoes.Add(bdCCe);
+  bdCidades := 'B.D. Cidades';
+  vaMenuLista.Permissoes.Add(bdCidades);
+  bdMotivosGlosa := 'B.D. Tabela de Motivos de Glosa';
+  vaMenuLista.Permissoes.Add(bdMotivosGlosa);
+  bdDestinoP := 'B.D. Destino do Paciente Após Alta';
+  vaMenuLista.Permissoes.Add(bdDestinoP);
+  bdDicionario := 'B.D. Dicionário do Corretor Ortográfico';
+  vaMenuLista.Permissoes.Add(bdDicionario);
+  bdFeriado := 'B.D. Tabela de Feriados';
+  vaMenuLista.Permissoes.Add(bdFeriado);
+  bdAdmissao := 'B.D. Locais de Admissão';
+  vaMenuLista.Permissoes.Add(bdAdmissao);
+  bdTbEspecial := 'B.D. Especialidades';
+  vaMenuLista.Permissoes.Add(bdTbEspecial);
+  bdCFuncao := 'B.D. Funções dos Médicos';
+  vaMenuLista.Permissoes.Add(bdCFuncao);
+  bdBoletos := 'B.D. Modelos de Boletos Bancários';
+  vaMenuLista.Permissoes.Add(bdBoletos);
+  bdPreConsulta := 'B.D. Modelos Pré-Consulta';
+  vaMenuLista.Permissoes.Add(bdPreConsulta);
+  bdNaTrata := 'B.D. Naturezas de Tratamento';
+  vaMenuLista.Permissoes.Add(bdNaTrata);
+  bdAlerta := 'B.D. Tabela Alerta';
+  vaMenuLista.Permissoes.Add(bdAlerta);
+  bdAlertaEmail := 'B.D. Tabela Alerta e-mail';
+  vaMenuLista.Permissoes.Add(bdAlertaEmail);
+  bdEpidemia := 'B.D. Tabela de Epidemias';
+  vaMenuLista.Permissoes.Add(bdEpidemia);
+  bdFormaPagto := 'B.D. Formas Pagto';
+  vaMenuLista.Permissoes.Add(bdFormaPagto);
+  bdLabMaterial := 'B.D. Tabela de Materiais';
+  vaMenuLista.Permissoes.Add(bdLabMaterial);
+  bdUnidades := 'B.D. Unidades';
+  vaMenuLista.Permissoes.Add(bdUnidades);
+  bdViaAdm := 'B.D. Vias de Administração de Medicamentos';
+  vaMenuLista.Permissoes.Add(bdViaAdm);
+  bdSolicitantes := 'B.D. Tabelas de Médicos Solicitantes';
+  vaMenuLista.Permissoes.Add(bdSolicitantes);
+  bdModeloTexto := 'B.D. Modelos de Texto';
+  vaMenuLista.Permissoes.Add(bdModeloTexto);
+  bdTributos := 'B.D. Tabela Geral de Tributos';
+  vaMenuLista.Permissoes.Add(bdTributos);
+  bdCtExames := 'B.D. Tabela de Categorias';
+  vaMenuLista.Permissoes.Add(bdCtExames);
+  bdBcPlanilha := 'B.D. Planilhas de Exames';
+  vaMenuLista.Permissoes.Add(bdBcPlanilha);
+  bdCid := 'B.D. CID';
+  vaMenuLista.Permissoes.Add(bdCid);
+  bdTabGeralProcedimentos := 'B.D. Tabela Geral Procedimentos';
+  vaMenuLista.Permissoes.Add(bdTabGeralProcedimentos);
+  bdAtualTabGeralProcedimentos := 'B.D. Tabela Geral Procedimentos - Atualizações';
+  vaMenuLista.Permissoes.Add(bdAtualTabGeralProcedimentos);
+  bdTabGeralProcedimentosReajustarValores := 'B.D. Tabela Geral Procedimentos - Reajustar Valores';
+  vaMenuLista.Permissoes.Add(bdTabGeralProcedimentosReajustarValores);
+  bdTabGeralProcedimentosLayout := 'B.D. Tabela Geral Procedimentos - Layout';
+  vaMenuLista.Permissoes.Add(bdTabGeralProcedimentosLayout);
+  bdTabGeralDiaTax := 'B.D. Tabela Geral Diárias e Taxas';
+  vaMenuLista.Permissoes.Add(bdTabGeralDiaTax);
+  bdAtualTabGeralDiaTax := 'B.D. Tabela Geral Diárias e Taxas - Atualizações';
+  vaMenuLista.Permissoes.Add(bdAtualTabGeralDiaTax);
+  bdTabGeralMatMed := 'B.D. Tabela Geral de Mat/Med';
+  vaMenuLista.Permissoes.Add(bdTabGeralMatMed);
+  bdAtualTabGeralMatMed := 'B.D. Tabela Geral de Mat/Med - Atualizações';
+  vaMenuLista.Permissoes.Add(bdAtualTabGeralMatMed);
+  bdGrpValFilmes := 'B.D. Grupos Val. Filmes';
+  vaMenuLista.Permissoes.Add(bdGrpValFilmes);
+  bdModFaturasEletronicas := 'B.D. Modelos de Faturas Eletrônicas';
+  vaMenuLista.Permissoes.Add(bdModFaturasEletronicas);
+  bdModFaturasEletronicasExpotar := 'B.D. Modelos de Faturas Eletrônicas - Exportar';
+  vaMenuLista.Permissoes.Add(bdModFaturasEletronicasExpotar);
+  bdModFaturasEletronicasImportar := 'B.D. Modelos de Faturas Eletrônicas - Importar';
+  vaMenuLista.Permissoes.Add(bdModFaturasEletronicasImportar);
+  bdCadGeralConvenios := 'B.D. Cadastro Geral Convênios';
+  vaMenuLista.Permissoes.Add(bdCadGeralConvenios);
+  bdCadGeralConveniosConfiguracoes := 'B.D. Cadastro Geral Convênios - Configurações';
+  vaMenuLista.Permissoes.Add(bdCadGeralConveniosConfiguracoes);
+  bdTabPrestadores := 'B.D. Tabela de Prestadores';
+  vaMenuLista.Permissoes.Add(bdTabPrestadores);
+  bdTabMedicos := 'B.D. Tabela de Médicos (Corpo Clínico)';
+  vaMenuLista.Permissoes.Add(bdTabMedicos);
+  bdTabIntrucoes := 'B.D. Tabela de Instruções';
+  vaMenuLista.Permissoes.Add(bdTabIntrucoes);
+  bdTabIndicadores := 'B.D. Tabela de Indicadores';
+  vaMenuLista.Permissoes.Add(bdTabIndicadores);
+  bdConfigFormularios := 'B.D. Configurações de Formulários';
+  vaMenuLista.Permissoes.Add(bdConfigFormularios);
+  bdModCarteirinhas := 'B.D. Modelos de Carteirinhas';
+  vaMenuLista.Permissoes.Add(bdModCarteirinhas);
+  bdTabProcedimentos := 'B.D. Tabelas de Procedimentos';
+  vaMenuLista.Permissoes.Add(bdTabProcedimentos);
+  bdTabProcedimentosModLaudos := 'B.D. Tabelas de Procedimentos - Modelos de Laudos';
+  vaMenuLista.Permissoes.Add(bdTabProcedimentosModLaudos);
+  bdTabDiaTax := 'B.D. Tabela de Diárias e Taxas';
+  vaMenuLista.Permissoes.Add(bdTabDiaTax);
+  bdTabGrpServicosDiversos := 'B.D. Tabela de Grupos de Serviços Diversos';
+  vaMenuLista.Permissoes.Add(bdTabGrpServicosDiversos);
+  bdTabServicosDiversos := 'B.D. Tabela de Serviços Diversos';
+  vaMenuLista.Permissoes.Add(bdTabServicosDiversos);
+  bdTabPacotes := 'B.D. Tabela de Pacotes';
+  vaMenuLista.Permissoes.Add(bdTabPacotes);
+  bdTabKits := 'B.D. Tabela de Kits';
+  vaMenuLista.Permissoes.Add(bdTabKits);
+  bdTabOrigemExames := 'B.D. Tabela de Origem de Exames';
+  vaMenuLista.Permissoes.Add(bdTabOrigemExames);
+  bdTabProcCirurgicos := 'B.D. Tabela de Procedimentos Cirúrgicos';
+  vaMenuLista.Permissoes.Add(bdTabProcCirurgicos);
+  bdTabProcedimentosCIH := 'B.D. Tabela de Procedimentos (CIH)';
+  vaMenuLista.Permissoes.Add(bdTabProcedimentosCIH);
+  bdRelCustomizados := 'Relatórios Customizados';
+  vaMenuLista.Permissoes.Add(bdRelCustomizados);
+  bdRelRelatorios := 'B.D. Relatórios';
+  vaMenuLista.Permissoes.Add(bdRelRelatorios);
+  bdHistorico_Atendim := 'B.D. Histórico Atendimento';
+  vaMenuLista.Permissoes.Add(bdHistorico_Atendim);
+  bdModelo_Chave := 'B.D. Fórmulas';
+  vaMenuLista.Permissoes.Add(bdModelo_Chave);
+  bdAla := 'B.D. Ala';
+  vaMenuLista.Permissoes.Add(bdAla);
+  bdTipo_Visita := 'B.D. Tipo Visita';
+  vaMenuLista.Permissoes.Add(bdTipo_Visita);
+  bdModeloLab := 'B.D. Modelo de laudo de laboratório';
+  vaMenuLista.Permissoes.Add(bdModeloLab);
+  bdTabAbreviacoes := 'B.D. Tabela de Abreviações dos Médicos';
+  vaMenuLista.Permissoes.Add(bdTabAbreviacoes);
+  bdTabTipoOculos := 'B.D. Tabela de Tipo Óculos';
+  vaMenuLista.Permissoes.Add(bdTabTipoOculos);
+  bdOftalProdLimpeza := 'B.D. Tabela Produto de Limpeza Oftalmologico';
+  vaMenuLista.Permissoes.Add(bdOftalProdLimpeza);
+  bdGrupoLancamento := 'B.D. Tabela de Grupo de Lançamento';
+  vaMenuLista.Permissoes.Add(bdGrupoLancamento);
+  bdPrioridade := 'B.D. Prioridade';
+  vaMenuLista.Permissoes.Add(bdPrioridade);
+  bdPrescricaoIntervalo := 'B.D. Intervalo de Prescrições';
+  vaMenuLista.Permissoes.Add(bdPrescricaoIntervalo);
+  bdGerenciarModeloTexto := 'B.D. Gerenciar Modelos de Texto';
+  vaMenuLista.Permissoes.Add(bdGerenciarModeloTexto);
+  bdTabHonorarioFormula := 'B.D. Tabela de Fórmulas para Honorários';
+  vaMenuLista.Permissoes.Add(bdTabHonorarioFormula);
+  bdProfissionais_Saude := 'B.D. Tabela de Profissionais de Saúde';
+  vaMenuLista.Permissoes.Add(bdProfissionais_Saude);
+  bdProfissoes := 'B.D. Tabela de Profissões';
+  vaMenuLista.Permissoes.Add(bdProfissoes);
+  bdTiposDigitalizacao := 'B.D. Tabela de Tipos de Digitalização';
+  vaMenuLista.Permissoes.Add(bdTiposDigitalizacao);
+  bdPrescricao_Servico := 'Prescrição de Serviço';
+  vaMenuLista.Permissoes.Add(bdPrescricao_Servico);
+  bdTabLaboratorios := 'B.D. Tabela de Laboratórios';
+  vaMenuLista.Permissoes.Add(bdTabLaboratorios);
+  bdDiagnostico_Enf := 'B.D. Tabela de Diagnósticos de Enfermagem';
+  vaMenuLista.Permissoes.Add(bdDiagnostico_Enf);
+  bdServicosEnfermagem := 'B.D. Tabela de Serviços de Enfermagem';
+  vaMenuLista.Permissoes.Add(bdServicosEnfermagem);
+  bdGrupoOutrosImpressos := 'B.D. Tabela de Grupo de Outros Impressos';
+  vaMenuLista.Permissoes.Add(bdGrupoOutrosImpressos);
+  bdExame_Sessao_Lab := 'B.D. Sessões de Exames de Laboratório';
+  vaMenuLista.Permissoes.Add(bdExame_Sessao_Lab);
+  bdConfigurar_Documentos := 'B.D. Configurar Documentos';
+  vaMenuLista.Permissoes.Add(bdConfigurar_Documentos);
+  bdDocumentos_Gerais := 'B.D. Documentos Gerais';
+  vaMenuLista.Permissoes.Add(bdDocumentos_Gerais);
+  bdFilas := 'B.D. Tabela de Filas';
+  vaMenuLista.Permissoes.Add(bdFilas);
+  FMenuLista.Add(vaMenuLista);
+
+  { Recepcao }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Recepção';
+
+  reAlterarAtendimento := 'Alterar estado do ATENDIMENTO';
+  vaMenuLista.Permissoes.Add(reAlterarAtendimento);
+  rePacientes := 'Pacientes';
+  vaMenuLista.Permissoes.Add(rePacientes);
+  rePermitirBaixaRetroativaParticular := 'Permitir Baixa Retroativa no Particular';
+  vaMenuLista.Permissoes.Add(rePermitirBaixaRetroativaParticular);
+  reRegCasosEspeciais := 'Registros de Casos Especiais';
+  vaMenuLista.Permissoes.Add(reRegCasosEspeciais);
+  reAgendaGeral := 'Agenda Geral';
+  vaMenuLista.Permissoes.Add(reAgendaGeral);
+  reAgendaGeralCategorias := 'Agenda Geral - Categorias';
+  vaMenuLista.Permissoes.Add(reAgendaGeralCategorias);
+  reAgmtoCirurgias := 'Agendamento de Cirurgias';
+  vaMenuLista.Permissoes.Add(reAgmtoCirurgias);
+  reAgmtoCirurgiasLiberar := 'Agendamento de Cirurgias - Liberar Cirurgia';
+  vaMenuLista.Permissoes.Add(reAgmtoCirurgiasLiberar);
+  reAgmtoCirurgiasBloquearDesbloquear := 'Agendamento de Cirurgias - Bloquear/Desbloquear Horário';
+  vaMenuLista.Permissoes.Add(reAgmtoCirurgiasBloquearDesbloquear);
+  reAgmtoConsultas := 'Agendamento de Consultas';
+  vaMenuLista.Permissoes.Add(reAgmtoConsultas);
+  reAgmtoConsultasBloquearDesbloquear := 'Agendamento de Consultas - Bloquear/Desbloquear Horário';
+  vaMenuLista.Permissoes.Add(reAgmtoConsultasBloquearDesbloquear);
+  reAgmtoExames := 'Agendamento de Exames';
+  vaMenuLista.Permissoes.Add(reAgmtoExames);
+  reAgmtoExamesBloquearDesbloquear := 'Agendamento de Exames - Bloquear/Desbloquear Horário';
+  vaMenuLista.Permissoes.Add(reAgmtoExamesBloquearDesbloquear);
+  reAgendaTelefonica := 'Agenda Telefônica';
+  vaMenuLista.Permissoes.Add(reAgendaTelefonica);
+  reRecibos := 'Recibos';
+  vaMenuLista.Permissoes.Add(reRecibos);
+  reFichario := 'Fichário';
+  vaMenuLista.Permissoes.Add(reFichario);
+  reFicharioModeloImpressao := 'Fichário - Modelos de Impressão';
+  vaMenuLista.Permissoes.Add(reFicharioModeloImpressao);
+  reFicharioeArqMorto := 'Fichário - Arquivo Morto/Vivo';
+  vaMenuLista.Permissoes.Add(reFicharioeArqMorto);
+  reFicharioPrioridade := 'Fichário - Prioridade';
+  vaMenuLista.Permissoes.Add(reFicharioPrioridade);
+  reImpressaoFichaCadastral := 'Impressão da Ficha Cadastral';
+  vaMenuLista.Permissoes.Add(reImpressaoFichaCadastral);
+  reCtCorPaciente := 'Conta Corrente Pacientes';
+  vaMenuLista.Permissoes.Add(reCtCorPaciente);
+  reCtCorPacienteEfetBaixaParticular := 'Conta Corrente Pacientes - Efetuar Baixa Particular';
+  vaMenuLista.Permissoes.Add(reCtCorPacienteEfetBaixaParticular);
+  reCtCorPacienteEfetBaixaConvenio := 'Conta Corrente Pacientes - Efetuar Baixa Convênio';
+  vaMenuLista.Permissoes.Add(reCtCorPacienteEfetBaixaConvenio);
+  reCtCorPacienteDelBaixaParticular := 'Conta Corrente Pacientes - Deletar Baixa Particular';
+  vaMenuLista.Permissoes.Add(reCtCorPacienteDelBaixaParticular);
+  reCtCorPacienteDelBaixaConvenio := 'Conta Corrente Pacientes - Deletar Baixa Convênio';
+  vaMenuLista.Permissoes.Add(reCtCorPacienteDelBaixaConvenio);
+  reRegProcAmbulatorio := 'Registro de Procedimentos de Ambulatório';
+  vaMenuLista.Permissoes.Add(reRegProcAmbulatorio);
+  reRegProcInternacao := 'Registro de Procedimentos de Internação';
+  vaMenuLista.Permissoes.Add(reRegProcInternacao);
+  reRegMatMedAmbulatorio := 'Registro de Mat/Med de Ambulatório';
+  vaMenuLista.Permissoes.Add(reRegMatMedAmbulatorio);
+  reRelMalaDireta := 'Rel. Mala Direta/Aniversariantes';
+  vaMenuLista.Permissoes.Add(reRelMalaDireta);
+  reRelRegCasosEspeciais := 'Rel. Registros de Casos Especiais Por Código';
+  vaMenuLista.Permissoes.Add(reRelRegCasosEspeciais);
+  reRelAgendamentos := 'Rel. Agendamentos no Período';
+  vaMenuLista.Permissoes.Add(reRelAgendamentos);
+  reRelConsultasGeral := 'Rel. Consultas - Geral';
+  vaMenuLista.Permissoes.Add(reRelConsultasGeral);
+  reRelPlanilhaBancadaExamePeriodo := 'Rel. Ex. Laboratório - Planilha de Exames no Período';
+  vaMenuLista.Permissoes.Add(reRelPlanilhaBancadaExamePeriodo);
+  reRelEpidemias := 'Rel. Epidemias - Por Epidemia';
+  vaMenuLista.Permissoes.Add(reRelEpidemias);
+  reRelExamesProcedimentos := 'Rel. Exames e Procedimentos';
+  vaMenuLista.Permissoes.Add(reRelExamesProcedimentos);
+  reRelProcsGeradosPeriodo := 'Rel. Procedimentos Gerados no Período';
+  vaMenuLista.Permissoes.Add(reRelProcsGeradosPeriodo);
+  reRelProducaoMedico := 'Rel. Produção Por Médico no Período';
+  vaMenuLista.Permissoes.Add(reRelProducaoMedico);
+  reRelHonorariosMedicos := 'Rel. Honorários Médicos no Período';
+  vaMenuLista.Permissoes.Add(reRelHonorariosMedicos);
+  reRelDiaTaxPeriodo := 'Rel. Diárias e Taxas no Período';
+  vaMenuLista.Permissoes.Add(reRelDiaTaxPeriodo);
+  reRelSericosDiversos := 'Rel. Serviços Diversos no Período';
+  vaMenuLista.Permissoes.Add(reRelSericosDiversos);
+  reRelObitosPeriodo := 'Rel. Relação de Óbitos no Período';
+  vaMenuLista.Permissoes.Add(reRelObitosPeriodo);
+  reRelpacCadastradosPeriodo := 'Rel. Relação de Pacientes Cadastrados no Período';
+  vaMenuLista.Permissoes.Add(reRelpacCadastradosPeriodo);
+  reRelUltimoAtendimento := 'Rel. Último Atendimento';
+  vaMenuLista.Permissoes.Add(reRelUltimoAtendimento);
+  reAgendaAlterarHorarios := 'Agenda Geral - Alterar Horários';
+  vaMenuLista.Permissoes.Add(reAgendaAlterarHorarios);
+  reSessao := 'Sessão';
+  vaMenuLista.Permissoes.Add(reSessao);
+  reVisitantes := 'Visitantes';
+  vaMenuLista.Permissoes.Add(reVisitantes);
+  reRelVisitantes := 'Rel. Visitantes Por Período';
+  vaMenuLista.Permissoes.Add(reRelVisitantes);
+  reRelPacotes := 'Rel. Pacotes no Período';
+  vaMenuLista.Permissoes.Add(reRelPacotes);
+  reListaEspera := 'Lista de espera';
+  vaMenuLista.Permissoes.Add(reListaEspera);
+  reConfigAgenda := 'Configuração de Agenda';
+  vaMenuLista.Permissoes.Add(reConfigAgenda);
+  reConfigAgendaUsuarios := 'Configuração de Agenda - Configurar Usuários';
+  vaMenuLista.Permissoes.Add(reConfigAgendaUsuarios);
+  reConfigAgendaHorarios := 'Configuração de Agenda - Configurar Horários';
+  vaMenuLista.Permissoes.Add(reConfigAgendaHorarios);
+  reConfigAgendaRestricoes := 'Configuração de Agenda - Restrições';
+  vaMenuLista.Permissoes.Add(reConfigAgendaRestricoes);
+  reConfigAgendaRestricoesConvenio := 'Configuração de Agenda - Restrições de Convênio';
+  vaMenuLista.Permissoes.Add(reConfigAgendaRestricoesConvenio);
+  reChamarSenhas := 'Chamar Senhas';
+  vaMenuLista.Permissoes.Add(reChamarSenhas);
+  reArquivo := 'Arquivo';
+  vaMenuLista.Permissoes.Add(reArquivo);
+  reAlterarConvenioProcedimento := 'Alterar Convênio do Procedimento';
+  vaMenuLista.Permissoes.Add(reAlterarConvenioProcedimento);
+  reMotivos_Cancelamento := 'Motivos de Cancelamento';
+  vaMenuLista.Permissoes.Add(reMotivos_Cancelamento);
+  reAlterarConvenioGuias := 'Alterar Convênio da Guia';
+  vaMenuLista.Permissoes.Add(reAlterarConvenioGuias);
+  reCirurgiaStatus := 'Status de Cirurgia';
+  vaMenuLista.Permissoes.Add(reCirurgiaStatus);
+  rePainelCirurgico := 'Painel Cirúrgico';
+  vaMenuLista.Permissoes.Add(rePainelCirurgico);
+  reCirurgiaUrgencia := 'Cirugia de Urgência';
+  vaMenuLista.Permissoes.Add(reCirurgiaUrgencia);
+  reAlertaFicha := 'Alergias/Doenças Pré-Existentes de Pacientes';
+  vaMenuLista.Permissoes.Add(reAlertaFicha);
+  reRelReferenciaCruzada := 'Rel. de Exames - Referência Cruzada';
+  vaMenuLista.Permissoes.Add(reRelReferenciaCruzada);
+  reRelConsumoSMS := 'Rel. Consumo de SMS';
+  vaMenuLista.Permissoes.Add(reRelConsumoSMS);
+  reRelProducaoPorUsuario := 'Rel. Produção por Usuário';
+  vaMenuLista.Permissoes.Add(reRelProducaoPorUsuario);
+
+
+  FMenuLista.Add(vaMenuLista);
+
+  { Consultorio }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Consultório / PEP';
+
+  coConsAtendimento := 'Cons. Atendimentos';
+  vaMenuLista.Permissoes.Add(coConsAtendimento);
+  coAtestados := 'Atestados';
+  vaMenuLista.Permissoes.Add(coAtestados);
+  coModeloAtestado := 'Modelo de Atestados';
+  vaMenuLista.Permissoes.Add(coModeloAtestado);
+  coPedGuiaInternCirurgia := 'Pedido de Guia de Internação / Cirurgia';
+  vaMenuLista.Permissoes.Add(coPedGuiaInternCirurgia);
+  coSolicEntradaPac := 'Solicitações de Entrada de Pacientes';
+  vaMenuLista.Permissoes.Add(coSolicEntradaPac);
+  coModeloPresc := 'Modelo de Prescrição';
+  vaMenuLista.Permissoes.Add(coModeloPresc);
+  coRecibosMedicos := 'Recibos Médicos';
+  vaMenuLista.Permissoes.Add(coRecibosMedicos);
+  coFichaOftalmologica := 'Ficha Médica Oftalmologica';
+  vaMenuLista.Permissoes.Add(coFichaOftalmologica);
+  coPlantao := 'Plantão Médico';
+  vaMenuLista.Permissoes.Add(coPlantao);
+  coCopiarModeloAnamnese := 'Copiar Modelo de Anamnese';
+  vaMenuLista.Permissoes.Add(coCopiarModeloAnamnese);
+  coModeloAtestadoGeral := 'Modelo de Atestados Geral';
+  vaMenuLista.Permissoes.Add(coModeloAtestadoGeral);
+  coModeloDefGeral := 'Modelo de DEF Geral';
+  vaMenuLista.Permissoes.Add(coModeloDefGeral);
+  coModeloReceitaGeral := 'Modelo de Receita Geral';
+  vaMenuLista.Permissoes.Add(coModeloReceitaGeral);
+  coModeloAnamnese := 'Modelo de Anamnese';
+  vaMenuLista.Permissoes.Add(coModeloAnamnese);
+  coModeloAnamneseRespostasPadrao := 'Respostas para Anamneses Padrão';
+  vaMenuLista.Permissoes.Add(coModeloAnamneseRespostasPadrao);
+  coOutros_Imp := 'Outros Impressos';
+  vaMenuLista.Permissoes.Add(coOutros_Imp);
+  coOutros_Imp_Modelo := 'Modelos de Outros Impressos';
+  vaMenuLista.Permissoes.Add(coOutros_Imp_Modelo);
+  coOutros_Imp_Modelo_Geral := 'Modelos de Outros Impressos Geral';
+  vaMenuLista.Permissoes.Add(coOutros_Imp_Modelo_Geral);
+  coProntuarioMedico := 'Prontuário do Médico';
+  vaMenuLista.Permissoes.Add(coProntuarioMedico);
+  coAnamnese := 'Anamnese';
+  vaMenuLista.Permissoes.Add(coAnamnese);
+  coSumarioAlta := 'Sumário de Alta';
+  vaMenuLista.Permissoes.Add(coSumarioAlta);
+  coPrescricaoMedica := 'Prescrição Médica';
+  vaMenuLista.Permissoes.Add(coPrescricaoMedica);
+  coEvolucaoMedica := 'Evolução Médica';
+  vaMenuLista.Permissoes.Add(coEvolucaoMedica);
+  coEvolucaoEnfermagem := 'Evolução de Enfermagem';
+  vaMenuLista.Permissoes.Add(coEvolucaoEnfermagem);
+  coAnotacoesEnfermagem := 'Anotações de Enfermagem';
+  vaMenuLista.Permissoes.Add(coAnotacoesEnfermagem);
+  coAlterDelAnotacaoEvolucaoEnfermagem := 'Pode Alterar/Excluir Anotação e Evolução de Enfgm. Outros Usuários';
+  vaMenuLista.Permissoes.Add(coAlterDelAnotacaoEvolucaoEnfermagem);
+  coEvolucaoMultidisciplinar := 'Evolução Multidisciplinar';
+  vaMenuLista.Permissoes.Add(coEvolucaoMultidisciplinar);
+  coPlanoTerapeutico := 'Plano Terapêutico';
+  vaMenuLista.Permissoes.Add(coPlanoTerapeutico);
+  coDescricaoCurativos := 'Descrição de Curativos';
+  vaMenuLista.Permissoes.Add(coDescricaoCurativos);
+  coAnestesiologia := 'Anestesiologia';
+  vaMenuLista.Permissoes.Add(coAnestesiologia);
+  coTranscricaoPrescricao := 'Transcrição da Prescrição';
+  vaMenuLista.Permissoes.Add(coTranscricaoPrescricao);
+  coPrescAprazamento := 'Prescrição Médica - Aprazamento';
+  vaMenuLista.Permissoes.Add(coPrescAprazamento);
+  coModPrescricaoMedica := 'Modelo de Prescrição Médica';
+  vaMenuLista.Permissoes.Add(coModPrescricaoMedica);
+  coPrescricaoEnfermagemDiagnostico := 'Diagnóstico de Enfermagem';
+  vaMenuLista.Permissoes.Add(coPrescricaoEnfermagemDiagnostico);
+  coPrescricaoEnfermagem := 'Prescrição de Enfermagem';
+  vaMenuLista.Permissoes.Add(coPrescricaoEnfermagem);
+  coScorePrognostico := 'Score Prognóstico';
+  vaMenuLista.Permissoes.Add(coScorePrognostico);
+  coBalancoHidrico := 'Balanço Hídrico';
+  vaMenuLista.Permissoes.Add(coBalancoHidrico);
+  coImagensProntuario := 'Imagens do Prontuário';
+  vaMenuLista.Permissoes.Add(coImagensProntuario);
+  coReceitas := 'Receitas';
+  vaMenuLista.Permissoes.Add(coReceitas);
+  coAmenorreia := 'Amenorreia';
+  vaMenuLista.Permissoes.Add(coAmenorreia);
+  coLembretePaciente := 'Lembrete de Paciente';
+  vaMenuLista.Permissoes.Add(coLembretePaciente);
+  coLogAnamnese := 'Log da Anamnese';
+  vaMenuLista.Permissoes.Add(coLogAnamnese);
+  coPlanilhaAtendimento := 'Planilha de Atendimento';
+  vaMenuLista.Permissoes.Add(coPlanilhaAtendimento);
+  coAlergiaAlerta := 'Alergias e Alertas';
+  vaMenuLista.Permissoes.Add(coAlergiaAlerta);
+  coImprimirSumario := 'Imprimir Sumário';
+  vaMenuLista.Permissoes.Add(coImprimirSumario);
+  coImprimirEtiqueta := 'Imprimir Etiqueta';
+  vaMenuLista.Permissoes.Add(coImprimirEtiqueta);
+  coImprimirPulseira := 'Imprimir Pulseira';
+  vaMenuLista.Permissoes.Add(coImprimirPulseira);
+  coImprimirAIH := 'Imprimir AIH';
+  vaMenuLista.Permissoes.Add(coImprimirAIH);
+  coImprimirGuiaSolicitacaoInternacao := 'Imprimir Guia de Solicitação de Internação';
+  vaMenuLista.Permissoes.Add(coImprimirGuiaSolicitacaoInternacao);
+  coSolicitacaoTransfusao := 'Solicitação de Transfusão';
+  vaMenuLista.Permissoes.Add(coSolicitacaoTransfusao);
+  coEscalasIndices := 'Escalas e Índices';
+  vaMenuLista.Permissoes.Add(coEscalasIndices);
+  coDelegacaoPoder := 'Delegação de Poder';
+  vaMenuLista.Permissoes.Add(coDelegacaoPoder);
+
+  FMenuLista.Add(vaMenuLista);
+
+  { Exames }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Exames';
+
+  exPodeTrocarLabComLaudo := 'Pode Trocar Exames de Lab. Já com Laudo (Nome do Exame)';
+  vaMenuLista.Permissoes.Add(exPodeTrocarLabComLaudo);
+  exPedidoExame := 'Pedidos de Exames';
+  vaMenuLista.Permissoes.Add(exPedidoExame);
+  exConfiguracoesPedidoExame := 'Configurações dos Pedidos de Exames';
+  vaMenuLista.Permissoes.Add(exConfiguracoesPedidoExame);
+  exLaudos := 'Laudos';
+  vaMenuLista.Permissoes.Add(exLaudos);
+  exLaudosAlterarTamanhoTexto := 'Alterar Tamanho do Texto na Tela do Laudo';
+  vaMenuLista.Permissoes.Add(exLaudosAlterarTamanhoTexto);
+  exLaudosVisualizarBttIncluirNova := 'Visualizar Botão "Incluir Nova" Resposta nos Modelos';
+  vaMenuLista.Permissoes.Add(exLaudosVisualizarBttIncluirNova);
+  exLaudosLab := 'Laudos de Exames de Laboratório';
+  vaMenuLista.Permissoes.Add(exLaudosLab);
+  exLaudosLabLiberar := 'Laudos de Exames de Laboratório - Liberar Laudo';
+  vaMenuLista.Permissoes.Add(exLaudosLabLiberar);
+  exLaudosLabModificaImp := 'Laudos de Exames de Laboratório - Modificar Laudo Impresso';
+  vaMenuLista.Permissoes.Add(exLaudosLabModificaImp);
+  exModeloLaudo := 'Modelos de Laudos';
+  vaMenuLista.Permissoes.Add(exModeloLaudo);
+  exModeloLaudoLab := 'Modelos de Laudos de Exames de Laboratório';
+  vaMenuLista.Permissoes.Add(exModeloLaudoLab);
+  exRelatorios := 'Relatórios de Exames';
+  vaMenuLista.Permissoes.Add(exRelatorios);
+  exImportarImgDicom := 'Importar Imagens Dicom';
+  vaMenuLista.Permissoes.Add(exImportarImgDicom);
+
+  exEntregaLaudo := 'Entreda de Laudos';
+  vaMenuLista.Permissoes.Add(exEntregaLaudo);
+  exMeusModelosExamesPadrao := 'Meus Modelos/Exames - Modelos Gerais';
+  vaMenuLista.Permissoes.Add(exMeusModelosExamesPadrao);
+  exLaudosAlterarMedicoConferidor := 'Laudos - Alterar Médico Conferidor';
+  vaMenuLista.Permissoes.Add(exLaudosAlterarMedicoConferidor);
+  exLaudosEnviarLaudoPorEmail := 'Laudos - Enviar Laudo por Email';
+  vaMenuLista.Permissoes.Add(exLaudosEnviarLaudoPorEmail);
+  exInterfaceamento := 'Interfaceamento - Envio e Recebimento de Exames';
+  vaMenuLista.Permissoes.Add(exInterfaceamento);
+  exInterfaceamento_Config := 'Interfaceamento - Configurações de Interfaceamento';
+  vaMenuLista.Permissoes.Add(exInterfaceamento_Config);
+   exInterfaceamento_Laboratorios := 'Interfaceamento - Configurações de Laboratórios';
+  vaMenuLista.Permissoes.Add(exInterfaceamento_Laboratorios);
+    exInterfaceamento_Lotes := 'Interfaceamento - Configurações de Lotes';
+  vaMenuLista.Permissoes.Add(exInterfaceamento_Lotes);
+  exLaudoExcluirImpresso := 'Excluir Laudo - IMPRESSO';
+  vaMenuLista.Permissoes.Add(exLaudoExcluirImpresso);
+  exLaudoExcluirEntregue := 'Excluir Laudo - ENTREGUE';
+  vaMenuLista.Permissoes.Add(exLaudoExcluirEntregue);
+  exFilaAtendimentos := 'Fila de Atendimentos';
+  vaMenuLista.Permissoes.Add(exFilaAtendimentos);
+  exImagensExames := 'Imagens de Exames';
+  vaMenuLista.Permissoes.Add(exImagensExames);
+
+  FMenuLista.Add(vaMenuLista);
+
+  { Cirurgia }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Cirurgia';
+
+  ciRegistroCirurgia := 'Registros de Cirurgias';
+  vaMenuLista.Permissoes.Add(ciRegistroCirurgia);
+  ciDescricaoCirurgia := 'Descrição da Cirurgia';
+  vaMenuLista.Permissoes.Add(ciDescricaoCirurgia);
+  ciRelCirurgiaProcedimento := 'Rel. Geral de Cirurgias';
+  vaMenuLista.Permissoes.Add(ciRelCirurgiaProcedimento);
+  FMenuLista.Add(vaMenuLista);
+
+  { Internação }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Internação';
+
+  inRegistroMatMed := 'Registro de Mat/Med de Internação';
+  vaMenuLista.Permissoes.Add(inRegistroMatMed);
+  inAbrirFecharInternacao := 'Abrir/Fechar Internação';
+  vaMenuLista.Permissoes.Add(inAbrirFecharInternacao);
+  inLocInternacaoLeitos := 'Locais de Internação/Leitos';
+  vaMenuLista.Permissoes.Add(inLocInternacaoLeitos);
+  inRegistrosInternacao := 'Registros de Internação';
+  vaMenuLista.Permissoes.Add(inRegistrosInternacao);
+  inHonorariosedicos := 'Honorários Médicos';
+  vaMenuLista.Permissoes.Add(inHonorariosedicos);
+  inDiariasTaxas := 'Diárias e Taxas';
+  vaMenuLista.Permissoes.Add(inDiariasTaxas);
+  inServicosDiversos := 'Serviços Diversos';
+  vaMenuLista.Permissoes.Add(inServicosDiversos);
+  inPacoates := 'Pacotes';
+  vaMenuLista.Permissoes.Add(inPacoates);
+  inDataFutura := 'Internar Paciente com Data Futura';
+  vaMenuLista.Permissoes.Add(inDataFutura);
+  inAltaDataFutura := 'Efetuar Alta do Paciente com Data Futura';
+  vaMenuLista.Permissoes.Add(inAltaDataFutura);
+  inKits := 'Kits';
+  vaMenuLista.Permissoes.Add(inKits);
+  inCCIH := 'Centro de Controle de Infecção Hospitalar - CCIH';
+  vaMenuLista.Permissoes.Add(inCCIH);
+  inMapaOcupacaoLeitos := 'Mapa de Ocupação de Leitos';
+  vaMenuLista.Permissoes.Add(inMapaOcupacaoLeitos);
+  inDelTodosRegistrosInternacao := 'Deletar Todos os Registros da Internação';
+  vaMenuLista.Permissoes.Add(inDelTodosRegistrosInternacao);
+  inRelPacientesInternados := 'Rel. Pacientes Internados';
+  vaMenuLista.Permissoes.Add(inRelPacientesInternados);
+  inRelPacientesInternadosPVez := 'Rel. Pacientes Internados Pela 1º Vez';
+  vaMenuLista.Permissoes.Add(inRelPacientesInternadosPVez);
+  inRelAltasGeral := 'Rel. Altas no Período - Geral';
+  vaMenuLista.Permissoes.Add(inRelAltasGeral);
+  inRelInternacoesGeral := 'Rel. Internações no Período - Geral';
+  vaMenuLista.Permissoes.Add(inRelInternacoesGeral);
+  inRelInternacoesMedico := 'Rel. Internações no Período por Médico';
+  vaMenuLista.Permissoes.Add(inRelInternacoesMedico);
+  inRelTaxaOcupacaoLeitos := 'Rel. Taxa de Ocupação de Leitos';
+  vaMenuLista.Permissoes.Add(inRelTaxaOcupacaoLeitos);
+  inRelInternaNaturTratamtGeral := 'Rel. Internações por Natureza de Tratamento';
+  vaMenuLista.Permissoes.Add(inRelInternaNaturTratamtGeral);
+  inRelComparacaoPacotesSus := 'Rel. Comparação de Pacotes Sus';
+  vaMenuLista.Permissoes.Add(inRelComparacaoPacotesSus);
+  inRelKitsPeriodo := 'Rel. Kits no Período';
+  vaMenuLista.Permissoes.Add(inRelKitsPeriodo);
+  inRelVisitantes := 'Rel. Visitantes';
+  vaMenuLista.Permissoes.Add(inRelVisitantes);
+  inPodeAlterarPacote := 'Pode Alterar PACOTE na Internação';
+  vaMenuLista.Permissoes.Add(inPodeAlterarPacote);
+  inPodeAlterarConvenio := 'Pode Alterar CONVÊNIO na Internação';
+  vaMenuLista.Permissoes.Add(inPodeAlterarConvenio);
+  inVisualizarContaInternacao := 'Visualizar Conta da Internação';
+  vaMenuLista.Permissoes.Add(inVisualizarContaInternacao);
+  inTransferirInternacao := 'Transferir Internação Para Outro Paciente';
+  vaMenuLista.Permissoes.Add(inTransferirInternacao);
+  inTransferirLanctosInternacao := 'Transferir Lançamentos para Outra Internação';
+  vaMenuLista.Permissoes.Add(inTransferirLanctosInternacao);
+  inConfigTelaMapaOcupacao := 'Configuração da Tela - Mapa de Ocupação/Visitantes';
+  vaMenuLista.Permissoes.Add(inConfigTelaMapaOcupacao);
+  inTabelaPosicoesPaciente := 'Tabela de Posições do Paciente (Prescrição)';
+  vaMenuLista.Permissoes.Add(inTabelaPosicoesPaciente);
+  inTransferenciaLeitos := 'Transferência de Leitos';
+  vaMenuLista.Permissoes.Add(inTransferenciaLeitos);
+
+  FMenuLista.Add(vaMenuLista);
+
+{ Pronto Atendimento }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Pronto Atendimento';
+
+  paRegistroMatMedPA := 'Registro de Mat/Med de Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paRegistroMatMedPA);
+  paAbrirFecharPA := 'Abrir/Fechar Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paAbrirFecharPA);
+  paRegistrosPA := 'Registros de Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paRegistrosPA);
+  paDelTodosRegistrosPA := 'Deletar Todos os Registros do Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paDelTodosRegistrosPA);
+  paPodeAlterarPacotePA := 'Pode Alterar PACOTE no Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paPodeAlterarPacotePA);
+  paPodeAlterarConvenioPA := 'Pode Alterar CONVÊNIO no Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paPodeAlterarConvenioPA);
+  paVisualizarContaPA := 'Visualizar Conta do Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paVisualizarContaPA);
+  paTransferirPA := 'Transferir Pronto Atendimento Para Outro Paciente';
+  vaMenuLista.Permissoes.Add(paTransferirPA);
+  paTransferirLanctosPA := 'Transferir Lançamentos para Outro Pronto Atendimento';
+  vaMenuLista.Permissoes.Add(paTransferirLanctosPA);
+
+  FMenuLista.Add(vaMenuLista);
+
+{ Terapia }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Terapia';
+
+  teRegistroMatMed := 'Registro de Mat/Med de Terapia';
+  vaMenuLista.Permissoes.Add(teRegistroMatMed);
+  teAbrirFecharTerapia := 'Abrir/Fechar Terapia';
+  vaMenuLista.Permissoes.Add(teAbrirFecharTerapia);
+  teRegistrosTerapia := 'Registros de Terapia';
+  vaMenuLista.Permissoes.Add(teRegistrosTerapia);
+  teDelTodosRegistrosTerapia := 'Deletar Todos os Registros da Terapia';
+  vaMenuLista.Permissoes.Add(teDelTodosRegistrosTerapia);
+  tePodeAlterarPacote := 'Pode Alterar PACOTE na Terapia';
+  vaMenuLista.Permissoes.Add(tePodeAlterarPacote);
+  tePodeAlterarConvenio := 'Pode Alterar CONVÊNIO na Terapia';
+  vaMenuLista.Permissoes.Add(tePodeAlterarConvenio);
+  teVisualizarContaTerapia := 'Visualizar Conta da Terapia';
+  vaMenuLista.Permissoes.Add(teVisualizarContaTerapia);
+  teTransferirTerapia := 'Transferir Terapia Para Outro Paciente';
+  vaMenuLista.Permissoes.Add(teTransferirTerapia);
+  teTransferirLanctosTerapia := 'Transferir Lançamentos para Outra Terapia';
+  vaMenuLista.Permissoes.Add(teTransferirLanctosTerapia);
+  teRevisaoPrescricaoTerapica := 'Revisar Prescrição Terápica';
+  vaMenuLista.Permissoes.Add(teRevisaoPrescricaoTerapica);
+  teEnviarConvenioPrescricaoTerapica := 'Enviar ao Convênio Prescrição Terápica';
+  vaMenuLista.Permissoes.Add(teEnviarConvenioPrescricaoTerapica);
+
+  FMenuLista.Add(vaMenuLista);
+
+  { EstoqueGeral }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Estoque Geral';
+
+  esDevolucaoEntrada := 'Devoluções de Entrada';
+  vaMenuLista.Permissoes.Add(esDevolucaoEntrada);
+  esDevolucaoRequisicao := 'Devoluções de Requisição';
+  vaMenuLista.Permissoes.Add(esDevolucaoRequisicao);
+  esDevolucaoVenda := 'Devoluções de Venda';
+  vaMenuLista.Permissoes.Add(esDevolucaoVenda);
+  esEntradas := 'Entradas';
+  vaMenuLista.Permissoes.Add(esEntradas);
+  esGrpSubgpEstoque := 'Grupos e Subgrupos do Estoque';
+  vaMenuLista.Permissoes.Add(esGrpSubgpEstoque);
+  esVisualizarCusto := 'Visualizar Custo dos Itens nas Saídas';
+  vaMenuLista.Permissoes.Add(esVisualizarCusto);
+  esItens := 'Itens';
+  vaMenuLista.Permissoes.Add(esItens);
+  esLotesSaldos := 'Lotes e Saldos';
+  vaMenuLista.Permissoes.Add(esLotesSaldos);
+  esPedidos := 'Pedidos';
+  vaMenuLista.Permissoes.Add(esPedidos);
+  esPrescMedicaLibMatMed := 'Prescrição Médica Liberação Mat/Med';
+  vaMenuLista.Permissoes.Add(esPrescMedicaLibMatMed);
+  esRestrItens := 'Restrições dos Itens';
+  vaMenuLista.Permissoes.Add(esRestrItens);
+  esRefItens := 'Referências dos Itens';
+  vaMenuLista.Permissoes.Add(esRefItens);
+  esItensRevisaoRef := 'Revisão de Referências Zeradas';
+  vaMenuLista.Permissoes.Add(esItensRevisaoRef);
+  esRequisicoes := 'Requisições';
+  vaMenuLista.Permissoes.Add(esRequisicoes);
+  esRequisicoesDispensar := 'Requisições - Dispensar';
+  vaMenuLista.Permissoes.Add(esRequisicoesDispensar);
+  esSaidas := 'Saídas';
+  vaMenuLista.Permissoes.Add(esSaidas);
+  esSetores := 'Setores';
+  vaMenuLista.Permissoes.Add(esSetores);
+  esTabRestrEstoque := 'Tabela de Restrições do Estoque';
+  vaMenuLista.Permissoes.Add(esTabRestrEstoque);
+  esRelGeralEntradas := 'Rel. Relação de Entradas de Itens Por - Data/Grupo/Geral';
+  vaMenuLista.Permissoes.Add(esRelGeralEntradas);
+  esRelGeralItens := 'Rel. Relação Geral de Itens';
+  vaMenuLista.Permissoes.Add(esRelGeralItens);
+  esRelSaidas := 'Rel. Saídas Por Por Convênio/Item/Internação/Paciente no Período';
+  vaMenuLista.Permissoes.Add(esRelSaidas);
+  esRelLotesVencidosVencer := 'Rel. Lotes Vencidos e A Vencer';
+  vaMenuLista.Permissoes.Add(esRelLotesVencidosVencer);
+  esRelSaldoExtratoInventario := 'Rel. Saldos / Extratos / Inventários';
+  vaMenuLista.Permissoes.Add(esRelSaldoExtratoInventario);
+  esRelItensPontoReposicao := 'Rel. Itens Em Ponto de Reposição';
+  vaMenuLista.Permissoes.Add(esRelItensPontoReposicao);
+  esRelResumoSaidasItem := 'Rel. Resumo de Saídas Por Item';
+  vaMenuLista.Permissoes.Add(esRelResumoSaidasItem);
+  esRelListaPrecos := 'Rel. Lista de Preços';
+  vaMenuLista.Permissoes.Add(esRelListaPrecos);
+  esRelMapaComparaPrecos := 'Rel. Mapa de Comparação de Preços';
+  vaMenuLista.Permissoes.Add(esRelMapaComparaPrecos);
+  esRelMedicamentosMedico := 'Rel. de Medicamentos Por Médico';
+  vaMenuLista.Permissoes.Add(esRelMedicamentosMedico);
+  esRelPacLancamMatMed := 'Rel. Pacientes com Lançamentos de Mat/Med';
+  vaMenuLista.Permissoes.Add(esRelPacLancamMatMed);
+  esRelTransfPeriodo := 'Rel. Transferências no Período';
+  vaMenuLista.Permissoes.Add(esRelTransfPeriodo);
+  esRelItensMaisMenosVendidos := 'Rel. Itens Mais / Menos Vendidos';
+  vaMenuLista.Permissoes.Add(esRelItensMaisMenosVendidos);
+  esRelCustoSetor := 'Rel. de Custo Por Setor';
+  vaMenuLista.Permissoes.Add(esRelCustoSetor);
+  esRelPrecoMedioPeriodo := 'Rel. Preço Médio (Compra) no Período';
+  vaMenuLista.Permissoes.Add(esRelPrecoMedioPeriodo);
+  esLocal_Uso := 'Locais de Uso';
+  vaMenuLista.Permissoes.Add(esLocal_Uso);
+  esAbrirNota := 'Abrir Nota Fiscal';
+  vaMenuLista.Permissoes.Add(esAbrirNota);
+  esFecharNota := 'Fechar Nota Fiscal';
+  vaMenuLista.Permissoes.Add(esFecharNota);
+  esAcertoEstoque := 'Acerto de Estoque';
+  vaMenuLista.Permissoes.Add(esAcertoEstoque);
+  esRastreabilidade := 'Rastreabilidade';
+  vaMenuLista.Permissoes.Add(esRastreabilidade);
+  esEditarRequisicaoOutroUsuario := 'Editar Requisição Feita por Outro Usuário';
+  vaMenuLista.Permissoes.Add(esEditarRequisicaoOutroUsuario);
+  esUnidades := 'Unidades';
+  vaMenuLista.Permissoes.Add(esUnidades);
+  esSubTipoSaida := 'Cad. SubTipo de Saída';
+  vaMenuLista.Permissoes.Add(esSubTipoSaida);
+  esPodeEditarValorMatMed := 'Pode Editar Valor de Materias e Medicamentos';
+  vaMenuLista.Permissoes.Add(esPodeEditarValorMatMed);
+  esRequisicoesCompra := 'Requisições de Compra';
+  vaMenuLista.Permissoes.Add(esRequisicoesCompra);
+  esRelCurvaABC := 'Curva ABC';
+  vaMenuLista.Permissoes.Add(esRelCurvaABC);
+  esEnxovalItens := 'Itens de Enxoval';
+  vaMenuLista.Permissoes.Add(esEnxovalItens);
+  esEnxovalGrupos := 'Grupos de Enxoval';
+  vaMenuLista.Permissoes.Add(esEnxovalGrupos);
+  esEnxovalControle := 'Controle de Enxoval';
+  vaMenuLista.Permissoes.Add(esEnxovalControle);
+  esEnxovalLoacais := 'Locais de Movimentação de Enxoval';
+  vaMenuLista.Permissoes.Add(esEnxovalLoacais);
+  esEnxovalMovimentacao := 'Movimentação de Enxoval';
+  vaMenuLista.Permissoes.Add(esEnxovalMovimentacao);
+  esRequisicoesMatMed := 'Registro de Mat/Med de Requisição';
+  vaMenuLista.Permissoes.Add(esRequisicoesMatMed);
+  esRequisicoesCompraMatMed := 'Registro de Mat/Med de Requisição de Compra';
+  vaMenuLista.Permissoes.Add(esRequisicoesCompraMatMed);
+  esRelEnxovais := 'Rel. de Enxovais';
+  vaMenuLista.Permissoes.Add(esRelEnxovais);
+  FMenuLista.Add(vaMenuLista);
+
+  { Faturamento }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Faturamento';
+
+  ftFaturConvenio := 'Faturas de Convênios';
+  vaMenuLista.Permissoes.Add(ftFaturConvenio);
+  ftFaturaRecebimento := 'Faturas Recebimento';
+  vaMenuLista.Permissoes.Add(ftFaturaRecebimento);
+  ftFaturConvenioLotes := 'Faturas de Convênios - Lotes';
+  vaMenuLista.Permissoes.Add(ftFaturConvenioLotes);
+  ftFaturConvenioLotesAbreFecha := 'Faturas de Convênios - Lotes - Abrir/Fechar';
+  vaMenuLista.Permissoes.Add(ftFaturConvenioLotesAbreFecha);
+  ftFaturConvenioImprime := 'Faturas de Convênios - Imprimir Faturas';
+  vaMenuLista.Permissoes.Add(ftFaturConvenioImprime);
+  ftPreConta := 'Pré-Conta';
+  vaMenuLista.Permissoes.Add(ftPreConta);
+  ftPreContaExportar := 'Pré-Conta - Exportar';
+  vaMenuLista.Permissoes.Add(ftPreContaExportar);
+  ftRelGuiasNaoEnviadas := 'Rel. Guias Não Enviadas';
+  vaMenuLista.Permissoes.Add(ftRelGuiasNaoEnviadas);
+  ftRelGuiasEnviadas := 'Rel. Guias Enviadas';
+  vaMenuLista.Permissoes.Add(ftRelGuiasEnviadas);
+  ftRelGuiasFaturadasPorGuia := 'Rel. Guias Faturadas - Por Guia';
+  vaMenuLista.Permissoes.Add(ftRelGuiasFaturadasPorGuia);
+  ftRelGuiasPagasGlosadas := 'Rel. Guias Pagas/Glosadas no Período';
+  vaMenuLista.Permissoes.Add(ftRelGuiasPagasGlosadas);
+  ftAbrirlote := 'Abrir Lote (Faturamento)';
+  vaMenuLista.Permissoes.Add(ftAbrirlote);
+  ftFecharLote := 'Fechar Lote (Faturamento)';
+  vaMenuLista.Permissoes.Add(ftFecharLote);
+  ftQuitarGlosarGuia := 'Quitar/Glosar Guias';
+  vaMenuLista.Permissoes.Add(ftQuitarGlosarGuia);
+  ftQuitarGlosarGuiaOutro := 'Quitar/Glosar Guias de Outros Usuários';
+  vaMenuLista.Permissoes.Add(ftQuitarGlosarGuiaOutro);
+  ftAlterarNumeroSequencial := 'Alterar Número Sequencial nos Prestadores';
+  vaMenuLista.Permissoes.Add(ftAlterarNumeroSequencial);
+  ftRecursoGlosa := 'Recursos de Glosa';
+  vaMenuLista.Permissoes.Add(ftRecursoGlosa);
+
+  FMenuLista.Add(vaMenuLista);
+
+  { SusAns }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'SusAns';
+
+  suGerarArquivo := 'Gerar Arquivo (CIH)';
+  vaMenuLista.Permissoes.Add(suGerarArquivo);
+  FMenuLista.Add(vaMenuLista);
+
+  { Auditoria }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Auditoria';
+
+  auAuditoria := 'Auditoria';
+  vaMenuLista.Permissoes.Add(auAuditoria);
+  auSetarChecado := 'Marcar como Checado/Não Checado';
+  vaMenuLista.Permissoes.Add(auSetarChecado);
+  FMenuLista.Add(vaMenuLista);
+
+{ Caixa }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Caixa';
+
+  cxEnvGuiasFaturamento := 'Envio de Guias Para o Setor de Faturamento';
+  vaMenuLista.Permissoes.Add(cxEnvGuiasFaturamento);
+  cxEnvGuiasFaturamRecebimento := 'Envio de Guias Para o Setor de Faturamento - Recebimento';
+  vaMenuLista.Permissoes.Add(cxEnvGuiasFaturamRecebimento);
+  cxFechaCaixa := 'Fechamento de Caixa';
+  vaMenuLista.Permissoes.Add(cxFechaCaixa);
+  cxFechaCaixaConfirmar := 'Fechamento de Caixa - Confirmar';
+  vaMenuLista.Permissoes.Add(cxFechaCaixaConfirmar);
+  cxFechaCaixaTiraConfirmar := 'Fechamento de Caixa - Tirar Confirmação';
+  vaMenuLista.Permissoes.Add(cxFechaCaixaTiraConfirmar);
+  cxRelMovDiarioCaixa := 'Rel. Mov. Diário Caixa';
+  vaMenuLista.Permissoes.Add(cxRelMovDiarioCaixa);
+  cxRelProcAberto := 'Rel. Procedimentos em Aberto';
+  vaMenuLista.Permissoes.Add(cxRelProcAberto);
+  cxRelGuiasMedico := 'Rel. Guias Por Médico';
+  vaMenuLista.Permissoes.Add(cxRelGuiasMedico);
+  cxRelMovDiarioProcedim := 'Rel. Movimento Diário do Caixa Por Procedimento';
+  vaMenuLista.Permissoes.Add(cxRelMovDiarioProcedim);
+  cxRelRateioPeriodo := 'Rel. Rateio no Período';
+  vaMenuLista.Permissoes.Add(cxRelRateioPeriodo);
+  FMenuLista.Add(vaMenuLista);
+
+  { Administracao }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Administração';
+
+  adGrupos_CtApagar := 'Grupos de Contas a Pagar';
+  vaMenuLista.Permissoes.Add(adGrupos_CtApagar);
+  adBcorigcr := 'Tabela de Origem do Contas a Receber';
+  vaMenuLista.Permissoes.Add(adBcorigcr);
+  adClientes_Ctareceb := 'Tabela de Clientes do Contas a Receber';
+  vaMenuLista.Permissoes.Add(adClientes_Ctareceb);
+  adPatrimonio := 'Patrimônio';
+  vaMenuLista.Permissoes.Add(adPatrimonio);
+  adPatrimonio_Local := 'Cadastro de Localização de Patrimônio';
+  vaMenuLista.Permissoes.Add(adPatrimonio_Local);
+  adContas_Balancete := 'Contas do Balancete';
+  vaMenuLista.Permissoes.Add(adContas_Balancete);
+  adFornec := 'Fornecedores';
+  vaMenuLista.Permissoes.Add(adFornec);
+  adLotesCtPagar := 'Lotes de Contas a Pagar';
+  vaMenuLista.Permissoes.Add(adLotesCtPagar);
+  adPatrimEmprestimo := 'Patrimônio - Emprestimo';
+  vaMenuLista.Permissoes.Add(adPatrimEmprestimo);
+  adCtPagar := 'Contas a Pagar';
+  vaMenuLista.Permissoes.Add(adCtPagar);
+  adCtPagarImprCheques := 'Contas a Pagar - Imprimir Cheques';
+  vaMenuLista.Permissoes.Add(adCtPagarImprCheques);
+  adCtReceber := 'Contas a Receber';
+  vaMenuLista.Permissoes.Add(adCtReceber);
+  adBancPessModelCheque := 'Bancário Pessoal - Modelos de Cheque';
+  vaMenuLista.Permissoes.Add(adBancPessModelCheque);
+  adBancPessHistoricos := 'Bancário Pessoal - Históricos';
+  vaMenuLista.Permissoes.Add(adBancPessHistoricos);
+  adBancPessContas := 'Bancário Pessoal - Contas';
+  vaMenuLista.Permissoes.Add(adBancPessContas);
+  adBancPessLancamentos := 'Bancário Pessoal - Lançamentos';
+  vaMenuLista.Permissoes.Add(adBancPessLancamentos);
+  adBancPessChecagemExtrato := 'Bancário Pessoal - Checagem de Extrato';
+  vaMenuLista.Permissoes.Add(adBancPessChecagemExtrato);
+  adBancPessImprCheques := 'Bancário Pessoal - Impressão de Cheques';
+  vaMenuLista.Permissoes.Add(adBancPessImprCheques);
+  adBancEmpresModelCheque := 'Bancário Empresarial - Modelos de Cheque';
+  vaMenuLista.Permissoes.Add(adBancEmpresModelCheque);
+  adBancEmpresHistoricos := 'Bancário Empresarial - Históricos';
+  vaMenuLista.Permissoes.Add(adBancEmpresHistoricos);
+  adBancEmpresContas := 'Bancário Empresarial - Contas';
+  vaMenuLista.Permissoes.Add(adBancEmpresContas);
+  adBancEmpresLancamentos := 'Bancário Empresarial - Lançamentos';
+  vaMenuLista.Permissoes.Add(adBancEmpresLancamentos);
+  adBancEmpresChecagemExtrato := 'Bancário Empresarial - Checagem de Extrato';
+  vaMenuLista.Permissoes.Add(adBancEmpresChecagemExtrato);
+  adBancEmpresImprCheques := 'Bancário Empresarial - Impressão de Cheques';
+  vaMenuLista.Permissoes.Add(adBancEmpresImprCheques);
+  adBancEmpresConciliacao := 'Bancário Empresarial - Conciliação Bancária';
+  vaMenuLista.Permissoes.Add(adBancEmpresConciliacao);
+  adBancEmpresAlteraConciliados := 'Bancário Empresarial - Alterar Lançamentos Conciliados';
+  vaMenuLista.Permissoes.Add(adBancEmpresAlteraConciliados);
+  adAntecipaPagamts := 'Antecipação de Pagamentos';
+  vaMenuLista.Permissoes.Add(adAntecipaPagamts);
+  adCadChequesSemFundo := 'Cadastro de Cheques Sem Fundos';
+  vaMenuLista.Permissoes.Add(adCadChequesSemFundo);
+  adRepasseMedPrestador := 'Repasse Médico/Prestador';
+  vaMenuLista.Permissoes.Add(adRepasseMedPrestador);
+  adAdmContasTransf := 'Adm. de Contas (Transf.)';
+  vaMenuLista.Permissoes.Add(adAdmContasTransf);
+  adTermoConfisDivida := 'Termo de Confissão de Dívida';
+  vaMenuLista.Permissoes.Add(adTermoConfisDivida);
+  adTipoDocumento := 'Tipo de Documentos';
+  vaMenuLista.Permissoes.Add(adTipoDocumento);
+  adCartasCobranca := 'Cartas de Cobrança';
+  vaMenuLista.Permissoes.Add(adCartasCobranca);
+  adRelImprCartirinhas := 'Impressão de Carteirinhas';
+  vaMenuLista.Permissoes.Add(adRelImprCartirinhas);
+  adRelInfOnLine := 'Rel. Informações On Line';
+  vaMenuLista.Permissoes.Add(adRelInfOnLine);
+  adRelCtPagasPagar := 'Rel. Contas Pagas e a Pagar';
+  vaMenuLista.Permissoes.Add(adRelCtPagasPagar);
+  adRelCtRenegociadas := 'Rel. Contas Renegociadas';
+  vaMenuLista.Permissoes.Add(adRelCtRenegociadas);
+  adRelExtratoCtBalancete := 'Rel. Extrato por Contas do Balancete';
+  vaMenuLista.Permissoes.Add(adRelExtratoCtBalancete);
+  adRelNotasPagasPeriodo := 'Rel. Notas Pagas no Período (Contas a Pagar)';
+  vaMenuLista.Permissoes.Add(adRelNotasPagasPeriodo);
+  adRelCtRecebidasReceber := 'Rel. Contas Recebidas e a Receber';
+  vaMenuLista.Permissoes.Add(adRelCtRecebidasReceber);
+  adRelBalancFinanceiro := 'Rel. Balancete Financeiro';
+  vaMenuLista.Permissoes.Add(adRelBalancFinanceiro);
+  adRelAntecPagmts := 'Rel. Antecipação de Pagamentos';
+  vaMenuLista.Permissoes.Add(adRelAntecPagmts);
+  adRelBancPessSaldoGeralCts := 'Rel. Bancário Pessoal - Saldo Geral das Contas';
+  vaMenuLista.Permissoes.Add(adRelBancPessSaldoGeralCts);
+  adRelMovBancario := 'Rel. Movimento Bancário';
+  vaMenuLista.Permissoes.Add(adRelMovBancario);
+  adRelFluxoCaixa := 'Rel. Fluxo de Caixa';
+  vaMenuLista.Permissoes.Add(adRelFluxoCaixa);
+  adRelTermoConfDivida := 'Rel. Termo C. Dívida';
+  vaMenuLista.Permissoes.Add(adRelTermoConfDivida);
+  adRelFaturamento := 'Rel. Faturamento';
+  vaMenuLista.Permissoes.Add(adRelFaturamento);
+  adRelRelacPatrimonial := 'Rel. Relação Patrimonial';
+  vaMenuLista.Permissoes.Add(adRelRelacPatrimonial);
+  adRelChequesSemFundo := 'Rel. Cheques Sem Fundo';
+  vaMenuLista.Permissoes.Add(adRelChequesSemFundo);
+  adRelResumoContasBalance := 'Rel. Resumo das Contas do Balancete';
+  vaMenuLista.Permissoes.Add(adRelResumoContasBalance);
+  adGerarDemed := 'Gerar Arquivo Dmed';
+  vaMenuLista.Permissoes.Add(adGerarDemed);
+  adFechamentoBancario := 'Fechamento Bancário';
+  vaMenuLista.Permissoes.Add(adFechamentoBancario);
+  adPastaArquivo := 'Pastas do Arquivo';
+  vaMenuLista.Permissoes.Add(adPastaArquivo);
+  adContaBalanceteCategoria := 'Contas do Balancete por Categoria';
+  vaMenuLista.Permissoes.Add(adContaBalanceteCategoria);
+  FMenuLista.Add(vaMenuLista);
+  { bi }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'BI';
+
+  biBI := 'BI';
+  vaMenuLista.Permissoes.Add(biBI);
+  biDashBoard := 'DashBoards';
+  vaMenuLista.Permissoes.Add(biDashBoard);
+  biModeloBi := 'Modelos de B.I.';
+  vaMenuLista.Permissoes.Add(biModeloBi);
+  FMenuLista.Add(vaMenuLista);
+  { Custo }
+  vaMenuLista := TMenuLista.Create;
+  vaMenuLista.NomeMenu := 'Custo';
+
+  cuDespesas := 'Despesas';
+  vaMenuLista.Permissoes.Add(cuDespesas);
+  cuCentrosCusto := 'Centros de Custo';
+  vaMenuLista.Permissoes.Add(cuCentrosCusto);
+  cuCentrosCustoDespesas := 'Centros de Custo - Despesas';
+  vaMenuLista.Permissoes.Add(cuCentrosCustoDespesas);
+  cuCentrosCustoRateio := 'Centros de Custo - Rateio';
+  vaMenuLista.Permissoes.Add(cuCentrosCustoRateio);
+  cuRelEstMargContribuicao := 'Rel. Estudo da Margem de Contribuição';
+  vaMenuLista.Permissoes.Add(cuRelEstMargContribuicao);
+  FMenuLista.Add(vaMenuLista);
+
+end;
+
+destructor TPermissaoLista.destroy;
+begin
+  FreeAndNil(FMenuLista);
+  inherited;
+end;
+
+procedure TPermissaoLista.ppuRetornaListaPermissaocds(ipCds: TClientDataSet; ipCdsPermissoesFormCustom: TClientDataSet);
+var
+  i, j, vaCodigo: Integer;
+begin
+  for i := 0 to FMenuLista.Count - 1 do
+    Begin
+      ipCds.Insert;
+      ipCds.FieldByName('MODULO').AsString := TMenuLista(FMenuLista[i]).NomeMenu;
+      ipCds.Post;
+      vaCodigo := ipCds.FieldByName('CODIGO').AsInteger;
+      for j := 0 to TMenuLista(FMenuLista[i]).Permissoes.Count - 1 do
+        Begin
+          ipCds.Insert;
+          ipCds.FieldByName('MODULO').AsString := TMenuLista(FMenuLista[i]).Permissoes[j];
+          ipCds.FieldByName('CODIGO_GRUPO').AsInteger := vaCodigo;
+          ipCds.Post;
+        End;
+    End;
+  if Assigned(ipCdsPermissoesFormCustom) then
+    begin
+      // agora vamos add a lista das permissões dos Forms Customizados
+      ipCdsPermissoesFormCustom.First;
+      i := -3971;
+      while not ipCdsPermissoesFormCustom.Eof do
+        begin
+          if i <> ipCdsPermissoesFormCustom.FieldByName('TIPO').AsInteger then
+            begin
+              i := ipCdsPermissoesFormCustom.FieldByName('TIPO').AsInteger;
+              ipCds.Insert;
+              ipCds.FieldByName('MODULO').AsString := ipCdsPermissoesFormCustom.FieldByName('CALCTipo').AsString;
+              ipCds.Post;
+              vaCodigo := ipCds.FieldByName('CODIGO').AsInteger;
+            end;
+          ipCds.Insert;
+          ipCds.FieldByName('MODULO').AsString := ipCdsPermissoesFormCustom.FieldByName('NOME_PERMISSAO').AsString;
+          ipCds.FieldByName('CODIGO_GRUPO').AsInteger := vaCodigo;
+          ipCds.Post;
+          ipCdsPermissoesFormCustom.Next;
+        end;
+    end;
+end;
+
+{$ENDREGION}
+{ TListaComponentes }
+
+constructor TListaComponentes.Create(ipForm: TForm);
+var
+  cont: Integer;
+begin
+  lcLista := TList.Create;
+  lcFormAtual := ipForm;
+  // vamos percorrer os componentes do form e guardar na lista aqueles que forem importantes
+  for cont := 0 to (lcFormAtual.ComponentCount - 1) do
+    begin
+      if (Pos('[' + lcFormAtual.Components[cont].ClassName + ']', coClasses) > 0) then // é um tableview
+        lcLista.Add(lcFormAtual.Components[cont]);
+    end;
+end;
+
+procedure TListaComponentes.CriarPopUpLog(ipProcedure: TProcedureChamarLog);
+var
+  cont: Integer;
+  vaItemMenu: TMenuItem;
+  vaMenu: TPopupMenu;
+begin
+  if lcFormAtual.Name = 'frmLog_Sistema' then
+    Exit;
+  FChamarLog := ipProcedure;
+  for cont := 0 to lcLista.Count - 1 do
+    begin
+      if TComponent(lcLista.Items[cont]) is TcxGridDBTableView then
+        Begin
+          // verificar se o tableview ja nao tem popup atribuido
+          if TcxGridDBTableView(lcLista.Items[cont]).PopupMenu = nil then // nao tem popup, vamos criar um
+            Begin
+              vaMenu := TPopupMenu.Create(lcFormAtual);
+              TcxGridDBTableView(lcLista.Items[cont]).PopupMenu := vaMenu;
+            End;
+          vaItemMenu := TMenuItem.Create(TPopupMenu(TcxGridDBTableView(lcLista.Items[cont]).PopupMenu));
+          vaItemMenu.Name := TcxGridDBTableView(lcLista.Items[cont]).Name;
+          vaItemMenu.Caption := 'Ver Log Registro';
+          vaItemMenu.OnClick := PopClick;
+          TPopupMenu(TcxGridDBTableView(lcLista.Items[cont]).PopupMenu).Items.Add(vaItemMenu);
+        End;
+    end;
+
+end;
+
+destructor TListaComponentes.destroy;
+begin
+  FreeAndNil(lcLista);
+  inherited destroy;
+end;
+
+procedure TListaComponentes.PopClick(Sender: TObject);
+var
+  vaNomeDataSet: String;
+  vaCodigo: Integer;
+begin
+  if Sender is TMenuItem then
+    Begin
+      if not TcxGridDBTableView(lcFormAtual.FindComponent(TMenuItem(Sender).Name)).DataController.DataSource.DataSet.Active then
+        Exit;
+      vaNomeDataSet := TcxGridDBTableView(lcFormAtual.FindComponent(TMenuItem(Sender).Name)).DataController.DataSource.DataSet.Name;
+      vaCodigo := TcxGridDBTableView(lcFormAtual.FindComponent(TMenuItem(Sender).Name)).DataController.DataSource.DataSet.Fields[0].AsInteger;
+      FChamarLog(copy(vaNomeDataSet, 4), vaCodigo);
+    End;
+end;
+
+procedure TListaComponentes.ResturarGrids;
+var
+  cont: Integer;
+begin
+  for cont := 0 to lcLista.Count - 1 do
+    begin
+      if TComponent(lcLista.Items[cont]) is TcxGridDBTableView then
+        begin
+          RestoreLayoutGrid(coEndConfig, TcxGridDBTableView(lcLista.Items[cont]), lcFormAtual.Name + TcxGridDBTableView(lcLista.Items[cont]).Name);
+        end;
+    end;
+end;
+
+procedure TListaComponentes.SalvarGrids;
+var
+  cont: Integer;
+begin
+  for cont := 0 to lcLista.Count - 1 do
+    begin
+      if TComponent(lcLista.Items[cont]) is TcxGridDBTableView then
+        SalvarLayoutGrid(coEndConfig, TcxGridDBTableView(lcLista.Items[cont]), lcFormAtual.Name + TcxGridDBTableView(lcLista.Items[cont]).Name);
+    end;
+end;
+
+{ TMenuLista }
+
+constructor TMenuLista.Create;
+begin
+  Permissoes := TStringList.Create;
+end;
+
+destructor TMenuLista.destroy;
+begin
+  FreeAndNil(Permissoes);
+  inherited;
+end;
+
+{ TParametrosConsulta }
+
+constructor TParametrosConsulta.Create(ipCategoria: TTipoCategoria);
+begin
+  NroFicha := 0;
+  NroInternacao := 0;
+  Codigo := 0;
+  CategoriaExame := 0;
+  TipoCategoria := ipCategoria;
+  ProntoAtendimento := False;
+  TravarCampoMedico := False;
+  SubTipoCategoria := stcNenhum;
+  Terapia := False;
+  CodigoBxACorre := 0;
+end;
+
+{ TParametrosLancamento }
+
+constructor TParametrosLancamento.Create(ipCategoria: TTipoCategoria);
+begin
+  Self.NroFicha := 0;
+  Self.NroInternacao := 0;
+  Self.TipoCategoria := ipCategoria;
+  Self.NroRegistroAlterar := 0;
+  Self.CodigoProcPgos := 0;
+  Self.CodigoConvenio := 0;
+  Self.CodigoMedicoExaminador := 0;
+  Self.MovimentandoPeloFaturamento := False;
+  Self.CodigoBXACORRE := 0;
+  Self.CodigoAgendaHs := 0;
+  Self.CategoriasEspecificas := '';
+  Self.MedicosEspecificos := '';
+  Self.CodigoLocalUso := 0;
+  Self.DataRegistro := now;
+  Self.CategoriaExame := 0;
+  Self.CodigoPreConta := 0;
+  Self.ModoAgrupamento := False;
+  Self.CodigoModoConsulta := 0;
+  Self.SomenteLeitura := False;
+  Self.AbrirSomenteEdicaoModal := False;
+  Self.TelaOrigem := toRecepcao;
+  Self.PermitirProcedimentoSemReferencia := False;
+  Self.ApenasInfoComplementar := False;
+  Self.ProntoAtendimento := False;
+  Self.TravarCampoMedico := False;
+  Self.SubTipoCategoria := stcNenhum;
+  Self.FecharAoSalvar := False;
+  Self.HoraInicio := 0;
+  Self.HoraFim := 0;
+  Self.DataInternacao := 0;
+  Self.DataAlta := 0;
+  Self.Terapia := False;
+end;
+
+end.

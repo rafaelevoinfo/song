@@ -1,0 +1,38 @@
+﻿<?xml version="1.0"?>
+<doc><members><member name="TCarregaDados.DataSource"><summary>Adicona o DataSource a ser usado na pesquisa.</summary>
+		</member><member name="TCarregaDados.NomeTabela"><summary>
+				<para>Nome da tabela ser buscada.</para>
+				<para>Lembre-se: o nome DEVE iniciar com cds.</para>
+			</summary>
+			<remarks>Caso durante a busca esta property não tiver valores, será
+usado o nome do DataSet.</remarks>
+			<example>
+				<para>Nomes de tabelas:</para>
+				<para>cdsFicha_Medica; cdsExame_Procedimento.</para>
+			</example>
+		</member><member name="TCarregaDados.addParam(string,Variant)"><summary>Adiciona um parametros no List de parametros.</summary>
+			<param name="parametro">Nome do parâmetro.</param>
+			<param name="value">Valor do parâmetro.</param>
+		</member><member name="TCarregaDados.addParams(string[],Variant[])"><summary>Adiciona um array de parametros ao List de
+parametros.</summary>
+			<param name="parametros">Array de parâmetros a serem
+adicionados.</param>
+			<param name="values">Valores dos parâmetros. OBS.: Deve estar na mesma
+ordem do array 'parametros'.</param>
+		</member><member name="TCarregaDados.carregarDados"><summary>Carrega os dados do banco.</summary>
+			<remarks>Carrega os dados de acordo com os parametros e valores do List
+para a tabela do DataSet ou para a tabela passada através da property
+NomeTabela.</remarks>
+		</member><member name="TCarregaDados.carregarDados(TDataSource)"><summary>Faz o mesmo que o carregarDados porém utilizando o DataSource
+passado.</summary>
+			<param name="ds">DataSource a ser usado.</param>
+		</member><member name="TCarregaDados.carregarDados(TDataSource,string[],Variant[])"><summary>Faz o mesmo que o carregarDados.</summary>
+			<param name="ds">DataSource a ser usado.</param>
+			<param name="parametros">Parâmetros a serem passados.</param>
+			<param name="values">Valores a serem passados com os
+parâmetros.</param>
+			<remarks>Faz o mesmo que o carregarDados, porém usando o DataSource e
+os parametros passados.</remarks>
+		</member><member name="TCarregaDados.carregarDados(TDataSet,string[],Variant[])"><summary>Faz o mesmo que os outro carregaDados porém não precisa de um
+DataSource.</summary>
+		</member></members></doc>

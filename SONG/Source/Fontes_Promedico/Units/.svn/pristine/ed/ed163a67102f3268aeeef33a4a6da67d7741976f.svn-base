@@ -1,0 +1,220 @@
+unit pDMChat;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Vcl.Controls, dxGDIPlusClasses, cxClasses,
+  cxGraphics, Vcl.ImgList, cxEditRepositoryItems, cxEdit, cxDBEditRepository,
+  Vcl.Dialogs, Vcl.Graphics, RVStyle, System.Actions, Vcl.ActnList, Data.DB,
+  Datasnap.DBClient, pmClientDataSet, RichViewActions, Vcl.ExtCtrls,
+  System.ImageList;
+
+type
+  TDMChat = class(TDataModule)
+    cdsHospitais: TpmClientDataSet;
+    cdsHospitaisCODIGO: TIntegerField;
+    cdsHospitaisNOME_FANTASIA: TStringField;
+    cdsHospitaisRAZAO_SOCIAL: TStringField;
+    dsHospitais: TDataSource;
+    cdsGrupos: TpmClientDataSet;
+    cdsGruposCODIGO: TIntegerField;
+    cdsGruposCODIGO_HOSPITAL: TIntegerField;
+    cdsGruposNOME: TStringField;
+    dsGrupos: TDataSource;
+    cdsUsuarios: TpmClientDataSet;
+    cdsUsuariosCODIGO: TIntegerField;
+    cdsUsuariosCODIGO_HOSPITAL: TIntegerField;
+    cdsUsuariosEMAIL: TStringField;
+    cdsUsuariosNOME: TStringField;
+    cdsUsuariosFUNCAO: TStringField;
+    cdsUsuariosPROMEDICO: TIntegerField;
+    cdsUsuariosUSUARIO_GRUPO: TIntegerField;
+    cdsUsuariosFOTO: TBlobField;
+    cdsUsuariosFOTO_AJUSTAR: TIntegerField;
+    cdsUsuariosFOTO_THUMBNAIL: TBlobField;
+    cdsUsuariosFOTO_THUMBNAIL_AJUSTAR: TIntegerField;
+    cdsUsuariosSTATUS: TSmallintField;
+    dsUsuarios: TDataSource;
+    cdsMensagem: TpmClientDataSet;
+    cdsMensagemCODIGO: TIntegerField;
+    cdsMensagemCODIGO_DESTINATARIO: TIntegerField;
+    cdsMensagemCODIGO_HOSPITAL: TIntegerField;
+    cdsMensagemCODIGO_REMETENTE: TIntegerField;
+    cdsMensagemDATAHORA_ENVIO: TDateTimeField;
+    cdsMensagemMENSAGEM: TStringField;
+    cdsMensagemTIPO_MENSAGEM: TIntegerField;
+    cdsMensagem_Anexo: TpmClientDataSet;
+    cdsMensagem_AnexoCODIGO: TIntegerField;
+    cdsMensagem_AnexoCODIGO_REMETENTE: TIntegerField;
+    cdsMensagem_AnexoCODIGO_DESTINATARIO: TIntegerField;
+    cdsMensagem_AnexoDATAHORA_ENVIO: TDateTimeField;
+    cdsMensagem_AnexoLOCAL: TStringField;
+    cdsMensagem_AnexoNOME: TStringField;
+    cdsMensagem_AnexoTAMANHO_COMP: TLargeintField;
+    cdsMensagem_AnexoTAMANHO_ORIG: TLargeintField;
+    cdsMensagem_AnexoTHUMBNAIL: TBlobField;
+    RVStyle1: TRVStyle;
+    OpenDialog1: TOpenDialog;
+    cxEditRepository1: TcxEditRepository;
+    EditRepLkCbGrupos: TcxEditRepositoryLookupComboBoxItem;
+    EditRepLkCbHospitais: TcxEditRepositoryLookupComboBoxItem;
+    EditRepCbStatus: TcxEditRepositoryImageComboBoxItem;
+    ImgListStatus16x16: TcxImageList;
+    ImgCollection: TcxImageCollection;
+    ImgCollectionItemArquivoAudio: TcxImageCollectionItem;
+    ImgCollectionItemArquivoConfiguracao: TcxImageCollectionItem;
+    ImgCollectionItemArquivoDesconhecido: TcxImageCollectionItem;
+    ImgCollectionItemArquivoExcel: TcxImageCollectionItem;
+    ImgCollectionItemArquivoImagem: TcxImageCollectionItem;
+    ImgCollectionItemArquivoPDF: TcxImageCollectionItem;
+    ImgCollectionItemArquivoPowerPoint: TcxImageCollectionItem;
+    ImgCollectionItemArquivoRar: TcxImageCollectionItem;
+    ImgCollectionItemArquivoTexto: TcxImageCollectionItem;
+    ImgCollectionItemArquivoVideo: TcxImageCollectionItem;
+    ImgCollectionItemArquivoWord: TcxImageCollectionItem;
+    ImgCollectionItemArquivoXML: TcxImageCollectionItem;
+    ImgCollectionItemArquivoZip: TcxImageCollectionItem;
+    ImgCollectionItemGrupo: TcxImageCollectionItem;
+    ImgCollectionItemUsuario: TcxImageCollectionItem;
+    ImgCollectionItemUsuarioPerfil: TcxImageCollectionItem;
+    ActionList_Img24x24: TActionList;
+    Ac_Enviar: TAction;
+    Ac_Anexar: TAction;
+    Ac_Smiles: TAction;
+    Ac_Configuracao: TAction;
+    ActionList_Img32x32: TActionList;
+    Ac_ConfigGravar: TAction;
+    Ac_ConfigRestaurar: TAction;
+    ImgListBotoes32x32: TcxImageList;
+    Ac_PesquisarConversa: TAction;
+    ImgCollectionSmileys: TcxImageCollection;
+    People_AngryFace: TcxImageCollectionItem;
+    People_AnguishedFace: TcxImageCollectionItem;
+    People_AstonishedFace: TcxImageCollectionItem;
+    People_ConfoundedFace: TcxImageCollectionItem;
+    ImgCollectionItemStatusMensagemRecebida: TcxImageCollectionItem;
+    ImgCollectionItemStatusMensagemLida: TcxImageCollectionItem;
+    People_ConfusedFace: TcxImageCollectionItem;
+    cdsUsuariosATIVO_INATIVO: TIntegerField;
+    cdsMensagem_AnexoCODIGO_HOSPITAL: TIntegerField;
+    cdsMensagem_AnexoCODIGO_MENSAGEM: TIntegerField;
+    ImgCollectionItemIconeProMedico72x72: TcxImageCollectionItem;
+    ImgCollectionItemIconeProMedico32x32: TcxImageCollectionItem;
+    cdsUsuariosCARREGAR_MENSAGENS: TIntegerField;
+    cdsMensagemMENSAGEM_LIDA: TIntegerField;
+    ImgListBotoes24x24: TcxImageList;
+    People_CryingFace: TcxImageCollectionItem;
+    People_DisappointedButRelievedFace: TcxImageCollectionItem;
+    People_DisappointedFace: TcxImageCollectionItem;
+    People_DizzyFace: TcxImageCollectionItem;
+    People_ExpressionlessFace: TcxImageCollectionItem;
+    People_FaceSavouringDeliciousFood: TcxImageCollectionItem;
+    People_FaceScreamingInFear: TcxImageCollectionItem;
+    People_FaceThrowingAKiss: TcxImageCollectionItem;
+    People_FaceWithColdSweat: TcxImageCollectionItem;
+    People_FaceWithLookOfTriumph: TcxImageCollectionItem;
+    People_FaceWithMedicalMask: TcxImageCollectionItem;
+    People_FaceWithOpenMouth: TcxImageCollectionItem;
+    People_FaceWithOpenMouthAndColdSweat: TcxImageCollectionItem;
+    People_FaceWithStuckOutTongue: TcxImageCollectionItem;
+    People_FaceWithStuckOutTongueAndTightlyClosedEyes: TcxImageCollectionItem;
+    People_FaceWithStuckOutTongueAndWinkingEye: TcxImageCollectionItem;
+    People_FaceWithTearsOfJoy: TcxImageCollectionItem;
+    People_FaceWithoutMouth: TcxImageCollectionItem;
+    People_FearfulFace: TcxImageCollectionItem;
+    People_FlushedFace: TcxImageCollectionItem;
+    People_FrowningFaceWithOpenMouth: TcxImageCollectionItem;
+    People_GrimacingFace: TcxImageCollectionItem;
+    People_GrinningFace: TcxImageCollectionItem;
+    People_Imp: TcxImageCollectionItem;
+    People_KissingFace: TcxImageCollectionItem;
+    People_KissingFaceWithClosedEyes: TcxImageCollectionItem;
+    People_LoudlyCryingFace: TcxImageCollectionItem;
+    People_NeutralFace: TcxImageCollectionItem;
+    People_PensiveFace: TcxImageCollectionItem;
+    People_PoutingFace: TcxImageCollectionItem;
+    People_RelievedFace: TcxImageCollectionItem;
+    People_SleepingFace: TcxImageCollectionItem;
+    People_SleepyFace: TcxImageCollectionItem;
+    People_SmilingFaceWithHalo: TcxImageCollectionItem;
+    People_SmilingFaceWithHeartShapedEyes: TcxImageCollectionItem;
+    People_SmilingFaceWithHorns: TcxImageCollectionItem;
+    People_SmilingFaceWithOpenMouthAndColdSweat: TcxImageCollectionItem;
+    People_SmilingFaceWithSunglasses: TcxImageCollectionItem;
+    People_SmirkingFace: TcxImageCollectionItem;
+    People_TiredFace: TcxImageCollectionItem;
+    People_WearyFace: TcxImageCollectionItem;
+    People_WinkingFace: TcxImageCollectionItem;
+    People_WorriedFace: TcxImageCollectionItem;
+    People_Baby: TcxImageCollectionItem;
+    People_BabyAngel: TcxImageCollectionItem;
+    People_Boy: TcxImageCollectionItem;
+    People_Girl: TcxImageCollectionItem;
+    People_Man: TcxImageCollectionItem;
+    People_BrideWithVeil: TcxImageCollectionItem;
+    People_OlderMan: TcxImageCollectionItem;
+    People_OlderWoman: TcxImageCollectionItem;
+    People_Woman: TcxImageCollectionItem;
+    People_Princess: TcxImageCollectionItem;
+    People_ManAndWomanHoldingHands: TcxImageCollectionItem;
+    People_CoupleWithHeart: TcxImageCollectionItem;
+    People_Family: TcxImageCollectionItem;
+    People_FatherChristmas: TcxImageCollectionItem;
+    People_ConstructionWorker: TcxImageCollectionItem;
+    People_PoliceOfficer: TcxImageCollectionItem;
+    People_Skull: TcxImageCollectionItem;
+    People_Ghost: TcxImageCollectionItem;
+    Celebration_HeavyBlackHeart: TcxImageCollectionItem;
+    Celebration_BrokenHeart: TcxImageCollectionItem;
+    People_Footprints: TcxImageCollectionItem;
+    People_ClappingHandsSign: TcxImageCollectionItem;
+    People_PersonWithFoldedHands: TcxImageCollectionItem;
+    People_NailPolish: TcxImageCollectionItem;
+    People_RaisedHand: TcxImageCollectionItem;
+    People_ThumbsUpSign: TcxImageCollectionItem;
+    People_ThumbsDownSign: TcxImageCollectionItem;
+    People_OkHandSign: TcxImageCollectionItem;
+    People_WavingHandSign: TcxImageCollectionItem;
+    People_KissMark: TcxImageCollectionItem;
+    FoodDrink_HotBeverage: TcxImageCollectionItem;
+    FoodDrink_BeerMug: TcxImageCollectionItem;
+    FoodDrink_ClinkingBeerMugs: TcxImageCollectionItem;
+    FoodDrink_WineGlass: TcxImageCollectionItem;
+    People_VictoryHand: TcxImageCollectionItem;
+    FoodDrink_TropicalDrink: TcxImageCollectionItem;
+    FoodDrink_CocktailGlass: TcxImageCollectionItem;
+    Nature_Fire: TcxImageCollectionItem;
+    Nature_UmbrellaWithRainDrops: TcxImageCollectionItem;
+    Nature_SunBehindCloud: TcxImageCollectionItem;
+    Nature_Cloud: TcxImageCollectionItem;
+    Nature_Cactus: TcxImageCollectionItem;
+    Nature_PalmTree: TcxImageCollectionItem;
+    Nature_EvergreenTree: TcxImageCollectionItem;
+    Nature_DeciduousTree: TcxImageCollectionItem;
+    Nature_CherryBlossom: TcxImageCollectionItem;
+    Nature_Rose: TcxImageCollectionItem;
+    Nature_Sunflower: TcxImageCollectionItem;
+    Nature_Tulip: TcxImageCollectionItem;
+    cdsGrupos_Usuarios: TpmClientDataSet;
+    cdsGrupos_UsuariosCODIGO_HOSPITAL: TIntegerField;
+    cdsGrupos_UsuariosCODIGO_GRUPO: TIntegerField;
+    cdsGrupos_UsuariosCODIGO_USUARIO: TIntegerField;
+    ImgListBotoes16x16: TcxImageList;
+    Ac_ConfigCapturarImagem: TAction;
+    Ac_ConfigPegarArquivoImagem: TAction;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DMChat: TDMChat;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

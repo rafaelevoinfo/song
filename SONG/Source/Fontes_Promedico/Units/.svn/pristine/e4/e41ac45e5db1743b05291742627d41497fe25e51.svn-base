@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<doc><members><member name="TCModulo"><summary>Utilizado para saber o que esta sendo feito no laudo;</summary>
+		</member><member name="TParametrosLancamento.TipoCategoria"><remarks>puTipoCategoria para saber qual categoria pertence o registro,
+ex: 'D.T', 'EXM', ...</remarks>
+		</member><member name="TParametrosLancamento.NroRegistroAlterar"><remarks>Chave Primaria da Tabela que será alterada, exemplo, pode ser
+a chave primaria da DiaTax, ou da SDiver, para saber de qual sera tem
+que ver o puTipoCategoria</remarks>
+		</member><member name="TParametrosLancamento.CodigoProcPgos"><remarks>Valor chave primaria na tabela ProcPgos;</remarks>
+		</member><member name="TParametrosLancamento.MovimentandoPeloFaturamento"><remarks>Utilizada para marcar se a tela de lançamento foi chamada
+atravez da tela de faturamento ou não.</remarks>
+		</member><member name="TParametrosLancamento.CodigoBXACORRE"><summary>Codigo do BXACORRE</summary>
+		</member><member name="TParametrosLancamento.CodigoAgendaHs"><summary>Codigo da agenda caso tenha sido registrado atraves da tela de
+agendamento de exames.</summary>
+		</member><member name="TParametrosLancamento.CodigoModoConsulta"><summary>Código usado para quando se quer abrir em inserção, mas
+deseja-se que os procedimentos já estejam carregados no grid.</summary>
+			<remarks>Este código pode ser por exemplo o cod. do exame, o codigo da
+baixa, cod da internacao etc. Cada classe filha terá que saber ao que
+se refere este código e fazer a busca de acordo com isso.</remarks>
+		</member><member name="TParametrosLancamento.SomenteLeitura"><summary>Se true, faz com que todas os edits e botoes fiquem desabilitados.</summary>
+		</member><member name="TParametrosLancamento.AbrirSomenteEdicaoModal"><summary>Se true, faz apenas o panel que é exibido em modal(quando configurado no config) aparecer.
+Apos salvar será fechado o modal e a tela de edicao nem será exibida.</summary>
+		</member></members></doc>

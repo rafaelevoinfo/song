@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2015/12/12 22:40:14.000.641,=E:\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/01/12 21:53:08.990,=E:\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/01/12 21:53:09.110,=E:\Embarcadero\Studio\Projects\ServerContainerUnit1.pas</Transaction>
+    <Transaction>2016/01/12 21:53:49.082,E:\Desenvolvimento\Delphi\SONG\CodigoFonte\SongServer\fPrincipal.pas=E:\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/01/12 21:53:49.082,E:\Desenvolvimento\Delphi\SONG\CodigoFonte\SongServer\fPrincipal.dfm=E:\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2016/01/12 21:53:53.506,E:\Desenvolvimento\Delphi\SONG\CodigoFonte\SongServer\scPrincipal.dfm=E:\Embarcadero\Studio\Projects\ServerContainerUnit1.dfm</Transaction>
+    <Transaction>2016/01/12 21:53:53.506,E:\Desenvolvimento\Delphi\SONG\CodigoFonte\SongServer\scPrincipal.pas=E:\Embarcadero\Studio\Projects\ServerContainerUnit1.pas</Transaction>
+    <Transaction>2016/01/12 21:54:57.107,E:\Desenvolvimento\Delphi\SONG\CodigoFonte\SongServer\SONGServer.dproj=E:\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

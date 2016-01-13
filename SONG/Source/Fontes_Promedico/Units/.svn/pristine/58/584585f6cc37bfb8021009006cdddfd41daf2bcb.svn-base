@@ -1,0 +1,191 @@
+unit pChatTelaModal;
+
+interface
+
+uses
+  pDMChat, System.Generics.Collections, pChatTipos, pChatFuncoes,
+
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, pZero, Vcl.ExtCtrls, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore,
+  pmPromedicoSkin, cxSplitter, RVScroll, RichView, RVEdit, Vcl.StdCtrls, cxPC,
+  cxScrollBox, dxDockPanel, dxDockControl, cxContainer, cxEdit, cxGroupBox,
+  cxRadioGroup, cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
+  cxGridCustomView, cxGrid, cxImageComboBox, cxMaskEdit, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxCheckBox,
+  dxBarBuiltInMenu;
+
+type
+  TfrmChatTelaModal = class(TfrmZero)
+    pgcPrincipal: TcxPageControl;
+    tabConversa: TcxTabSheet;
+    TabConfiguracao: TcxTabSheet;
+    pnlConversaEdit: TPanel;
+    pnlConversaEditBotoes: TPanel;
+    bttEnviar: TButton;
+    bttSmiley: TButton;
+    rveMensagensEdit: TRichViewEdit;
+    Panel3: TPanel;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    cxSplitter1: TcxSplitter;
+    rveMensagens: TRichViewEdit;
+    Panel1: TPanel;
+    spStatusUsuario: TShape;
+    imgFotoUsuario: TImage;
+    lblNomeUsuario: TLabel;
+    lblStatusUsuario: TLabel;
+    lblNovaMensagem: TLabel;
+    dockSiteSmileys: TdxDockSite;
+    dxLayoutDockSite2: TdxLayoutDockSite;
+    dockPanelSmileys: TdxDockPanel;
+    slbSmileys: TcxScrollBox;
+    Panel2: TPanel;
+    Button4: TButton;
+    Button5: TButton;
+    rgConfigNovaMensagemApenasAlerta: TcxRadioGroup;
+    Button6: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure pmfrmZeroFormCloseQuery(Sender: TObject; var CanClose: Boolean);
+  private
+    DMChat: TDMChat;
+    FSmileys: TDictionary<string, string>;
+    FSmileysExpressaoRegular: string;
+    FTimer: TTimer;
+    FTimerQtdePiscadasNovaMensagem: Integer;
+    procedure ppvAdicionarSmileys(Sender: TObject);
+    procedure ppvAcConfigGravar(Sender: TObject);
+    procedure ppvAcConfigRestaurar(Sender: TObject);
+    procedure ppvAcConfiguracao(Sender: TObject);
+    procedure ppvAcEnviar(Sender: TObject);
+    procedure ppvAcRetornar(Sender: TObject);
+    procedure ppvAcSmiles(Sender: TObject);
+    procedure ppvOnTimer(Sender: TObject);
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChatTelaModal: TfrmChatTelaModal;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmChatTelaModal.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMChat := TDMChat.Create(Self);
+  DMChat.Name := '';
+
+  DMChat.Ac_Enviar.Caption := '';
+  lblNovaMensagem.Visible := False;
+
+  FTimerQtdePiscadasNovaMensagem := 0;
+  FTimer := TTimer.Create(Self);
+  FTimer.Enabled := False;
+  FTimer.Interval := 500;
+  FTimer.OnTimer := ppvOnTimer;
+  FTimer.Enabled := True;
+
+  // Configurações iniciais da tela
+  pgcPrincipal.ActivePage := TabConversa;
+  pgcPrincipal.HideTabs := True;
+
+  // Configurando os actions
+  DMChat.Ac_ConfigGravar.OnExecute := ppvAcConfigGravar;
+  DMChat.Ac_ConfigRestaurar.OnExecute := ppvAcConfigRestaurar;
+  DMChat.Ac_Configuracao.OnExecute := ppvAcConfiguracao;
+  DMChat.Ac_Enviar.OnExecute := ppvAcEnviar;
+  DMChat.Ac_Retornar.OnExecute := ppvAcRetornar;
+  DMChat.Ac_Smiles.OnExecute := ppvAcSmiles;
+
+  // Preparando a tela dos smileys
+  dockSiteSmileys.Height := 200;
+  dockSiteSmileys.Width := 318;
+  dockSiteSmileys.Visible := False;
+  dockSiteSmileys.AutoSize := False;
+  dockPanelSmileys.AutoHide := True;
+  dockPanelSmileys.CaptionButtons := [cbMaximize];
+
+  // Montando os smileys
+  TChatFuncoes.ppuAdicionarSmileysTela(dockSiteSmileys.Width, slbSmileys, DMChat.ImgCollectionSmileys.Items, ppvAdicionarSmileys, FSmileysExpressaoRegular, FSmileys);
+end;
+
+procedure TfrmChatTelaModal.pmfrmZeroFormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+//
+end;
+
+procedure TfrmChatTelaModal.ppvAcConfigGravar(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmChatTelaModal.ppvAcConfigRestaurar(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmChatTelaModal.ppvAcConfiguracao(Sender: TObject);
+begin
+  pgcPrincipal.ActivePage := TabConfiguracao;
+
+  // Carregando as configurações para a tela
+  ppvAcConfigRestaurar(Self);
+end;
+
+procedure TfrmChatTelaModal.ppvAcEnviar(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmChatTelaModal.ppvAcRetornar(Sender: TObject);
+begin
+  if pgcPrincipal.ActivePage = tabConversa then
+    Close
+  else
+    pgcPrincipal.ActivePage := tabConversa;
+end;
+
+procedure TfrmChatTelaModal.ppvAcSmiles(Sender: TObject);
+begin
+  dockSiteSmileys.AutoSize := False;
+  dockSiteSmileys.Height := 1;
+  dockPanelSmileys.Height := cxSplitter1.Top;
+  dockSiteSmileys.Top := pnlConversaEdit.Top - dockPanelSmileys.Height - 2;
+  dockSiteSmileys.Left := pnlConversaEditBotoes.Left - dockSiteSmileys.Width + bttSmiley.Width - 1;
+
+  dockPanelSmileys.Visible := True;
+  dockPanelSmileys.Activate;
+end;
+
+procedure TfrmChatTelaModal.ppvAdicionarSmileys(Sender: TObject);
+begin
+  if (Sender is TImage) and (TImage(Sender).Hint <> '') then
+    TChatFuncoes.ppuInserirSmileysRichViewEdit(TImage(Sender).Picture.Graphic, TImage(Sender).Hint, rveMensagensEdit);
+end;
+
+procedure TfrmChatTelaModal.ppvOnTimer(Sender: TObject);
+begin
+  if FTimerQtdePiscadasNovaMensagem < 0 then
+    FTimerQtdePiscadasNovaMensagem := 0;
+
+  Inc(FTimerQtdePiscadasNovaMensagem);
+  lblNovaMensagem.Visible := (FTimerQtdePiscadasNovaMensagem mod 2) <> 0;
+
+  if FTimerQtdePiscadasNovaMensagem >= 10 then
+    begin
+      FTimer.Enabled := False;
+      FTimerQtdePiscadasNovaMensagem := 0;
+      lblNovaMensagem.Visible := False;
+    end;
+end;
+
+end.

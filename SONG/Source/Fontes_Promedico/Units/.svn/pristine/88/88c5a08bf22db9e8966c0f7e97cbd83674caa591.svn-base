@@ -1,0 +1,43 @@
+﻿<?xml version="1.0"?>
+<doc><members><member name="TTipoArquivoPmf.taAudioLaudoOgg"><summary>Arquivos e Áudo Para os Laudos</summary>
+		</member><member name="TTipoCriptografia"><summary>Usado para definir o tipo de criptografia usada nos
+arquivos</summary>
+		</member><member name="TTipoCriptografia.tcNenhuma"><summary>Nenhuma Criptografia</summary>
+		</member><member name="TPmf"><summary>Estrutura que definie os arquivos salvos pelo
+promedico. NOVOS CAMPOS DEVEM SER COLOCANDOS NO FINAL</summary>
+		</member><member name="TPmf.Codigo"><summary>
+				<para>O valor deste campo varia de acordo com o tipo de arquivo</para>
+				<para>Para laudos: Codigo_Exame_Procedimento</para>
+			</summary>
+		</member><member name="TPmf.Versao"><summary>Versão do Arquivo pmf, deve ser passado a coVersaoPmf</summary>
+		</member><member name="TPmf.Usuario"><summary>Usuário que gerou o arquivo</summary>
+		</member><member name="TPmf.Autor"><summary>Usuario que Gravou o Arquivo</summary>
+		</member><member name="TPmf.Codigo_Usuario"><summary>Codigo do usuario que gerou o arquivo</summary>
+		</member><member name="TPmf.Empresa"><summary>Empresa aonde o arquivo foi gerado</summary>
+		</member><member name="TPmf.Titulo"><summary>Titulo do Arquivo</summary>
+		</member><member name="TPmf.SubTitulo"><summary>SubTitulo do Arquivo</summary>
+		</member><member name="TPmf.Data"><summary>Data do Arquivo (Pode ser a data do exame, data da anemanse,
+data da cirurgia, etc)</summary>
+		</member><member name="TPmf.DataHoraGravacao"><summary>Data e Hora da Gravacao</summary>
+		</member><member name="TPmf.TipoArquivo"><summary>Tipo do Arquivo</summary>
+		</member><member name="TPmf.TipoCriptografia"><summary>Tipo da Criptografia Utilizada</summary>
+		</member><member name="TFuncListarDiretorio"><summary>Funcao que ira retornar um Stream de um TStringList que contem a
+lista de enderecos dos arquivos a serem baixados depois.</summary>
+		</member><member name="TFuncDefinirDiretorio"><summary>
+Utilizado para pegar o endereco antes de enviar arquivos para o
+pserver
+</summary>
+		</member><member name="TStatusHorarioAgenda.shaLiberado"><summary>
+Horario foi liberado
+</summary>
+		</member><member name="TStatusHorarioAgenda.shaAdquirido"><summary>
+Horário foi requisitado, ou seja, ninguem pode mais usar enquando nao for
+liberado.
+</summary>
+		</member><member name="TStatusHorarioAgenda.shaBloqueado"><summary>
+O horario esta bloqueado por outro usuario.
+</summary>
+		</member><member name="TStatusHorarioAgenda.shaExpirado"><summary>
+O horario foi encontrado mas esta expirado.
+</summary>
+		</member></members></doc>
