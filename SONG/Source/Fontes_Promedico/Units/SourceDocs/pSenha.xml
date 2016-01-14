@@ -1,5 +1,0 @@
-﻿<?xml version="1.0"?>
-<doc><members><member name="TfrmSenha.fpuGerarSenha(Integer)"><summary>Gera uma senha aleatoria combinando numeros e letras</summary>
-			<param name="ipTamanho">Tamanho da senha a ser gerada. Deve ser um número maior ou igual a 2</param>
-			<remarks>Gera uma senha que contém pelo menos um número e um caracter não numérico.</remarks>
-		</member></members></doc>

@@ -1,5 +1,0 @@
-﻿<?xml version="1.0"?>
-<doc><members><member name="TColumn.Nome">Nome do Field no banco
-Caso precise configurar mais do que um nome separe-os por pipe(|). Isso é util quando se tem mais de um DataSet com nome de fields diferentes e precisa-se preencher a mesma classe
-Ex. CODIGO|CODIGO_MEDICO
-</member></members></doc>
