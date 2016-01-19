@@ -6,14 +6,13 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   IPPeerServer,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore,
-  dxSkinMetropolis, dxSkinscxPCPainter, dxBarBuiltInMenu, cxClasses,
-  dxSkinsForm, cxPC, Vcl.ExtCtrls, dxSkinBlue, dxSkinBlack, Vcl.StdCtrls,
+  dxBarBuiltInMenu, cxClasses, dxSkinsForm, cxPC, Vcl.ExtCtrls, dxSkinBlue, dxSkinBlack, Vcl.StdCtrls,
   cxPropertiesStore, dxLayoutcxEditAdapters, cxContainer, cxEdit, cxTextEdit,
   dxLayoutContainer, dxLayoutControl, cxGroupBox, cxMaskEdit, cxSpinEdit,
   dxGDIPlusClasses, cxImage, Vcl.Menus, cxButtons, dmuPrincipal, cxStyles,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, Datasnap.DBClient,
-  cxGridLevel, cxGridCustomView, cxGrid;
+  cxGridLevel, cxGridCustomView, cxGrid, dxSkinscxPCPainter;
 
 type
   TfrmPrincipal = class(TForm)

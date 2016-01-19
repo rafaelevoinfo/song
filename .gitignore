@@ -4,3 +4,8 @@
 #Ignorando pastas auxiliares e temporarias
 /SONG/Source/Fontes_Promedico/
 /SONG/Source/SongServer/__history/
+SONG/Source/SongServer/SONGServer.identcache
+SONG/Source/SongServer/Win32/
+SONG/Documentacao/
+SONG/BancoDados/
+SONG/Source/SongServer/SONGServer.res

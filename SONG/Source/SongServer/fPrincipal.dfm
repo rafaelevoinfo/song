@@ -1009,8 +1009,8 @@ object frmPrincipal: TfrmPrincipal
       Width = 160
       Height = 100
       Align = alRight
+      BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 760
       object lbStatus: TLabel
         Left = 31
         Top = 5
@@ -1018,7 +1018,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 23
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Rodando'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -19
@@ -1044,11 +1043,9 @@ object frmPrincipal: TfrmPrincipal
     Height = 258
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabConfiguracoes
+    Properties.ActivePage = tabLog
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
-    ExplicitTop = 23
-    ExplicitHeight = 335
     ClientRectBottom = 253
     ClientRectLeft = 2
     ClientRectRight = 835
@@ -1056,7 +1053,6 @@ object frmPrincipal: TfrmPrincipal
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
-      ExplicitHeight = 305
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3
@@ -1166,10 +1162,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 228
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 288
-        ExplicitTop = 16
-        ExplicitWidth = 250
-        ExplicitHeight = 200
         object viewLog: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsLog
@@ -1245,7 +1237,7 @@ object frmPrincipal: TfrmPrincipal
   end
   object dsLog: TDataSource
     DataSet = cdsLog
-    Left = 424
-    Top = 192
+    Left = 520
+    Top = 224
   end
 end

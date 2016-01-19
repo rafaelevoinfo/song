@@ -23,15 +23,19 @@ object dmPrincipal: TdmPrincipal
   end
   object conSong: TFDConnection
     Params.Strings = (
-      'Database=banco.fdb'
+      'Database=C:\Users\rafae\Repositorios\SONG\BancoDados\SONG.FDB'
       'Server=localhost'
-      'User_Name=masterkey'
-      'Password=sysdba'
+      'User_Name=sysdba'
+      'Password=masterkey'
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
     LoginPrompt = False
     Left = 192
+    Top = 64
+  end
+  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
+    Left = 288
     Top = 64
   end
 end

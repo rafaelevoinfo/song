@@ -1,5 +1,6 @@
-object DSServerModule1: TDSServerModule1
+object smBasico: TsmBasico
   OldCreateOrder = False
+  OnCreate = DSServerModuleCreate
   Height = 244
   Width = 321
 end
