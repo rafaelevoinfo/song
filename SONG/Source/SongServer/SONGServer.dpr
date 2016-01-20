@@ -7,7 +7,8 @@ uses
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
   dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
   smuBasico in 'smuBasico.pas' {smBasico: TDSServerModule},
-  smuAdministrativo in 'smuAdministrativo.pas' {smAdministrativo: TDSServerModule};
+  smuAdministrativo in 'smuAdministrativo.pas' {smAdministrativo: TDSServerModule},
+  uTypes in '..\Comuns\uTypes.pas';
 
 {$R *.res}
 

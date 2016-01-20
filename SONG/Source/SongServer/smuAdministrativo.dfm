@@ -1,4 +1,5 @@
 inherited smAdministrativo: TsmAdministrativo
+  OldCreateOrder = True
   Height = 364
   Width = 593
   object qPessoa: TFDQuery
@@ -12,9 +13,15 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.ENDERECO,'
       '       PESSOA.LOGIN,'
       '       PESSOA.SENHA'
-      'from PESSOA')
+      'from PESSOA'
+      '&WHERE')
     Left = 40
     Top = 32
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
     object qPessoaID: TLargeintField
       FieldName = 'ID'
       Origin = 'ID'
@@ -69,9 +76,15 @@ inherited smAdministrativo: TsmAdministrativo
       'select PERFIL.ID,'
       '       PERFIL.NOME,'
       '       PERFIL.DESCRICAO'
-      'from PERFIL')
+      'from PERFIL'
+      '&WHERE')
     Left = 40
     Top = 96
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
     object qPerfilID: TLargeintField
       FieldName = 'ID'
       Origin = 'ID'

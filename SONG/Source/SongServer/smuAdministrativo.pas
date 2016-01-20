@@ -26,6 +26,8 @@ type
     qPessoaSENHA: TStringField;
   private
     { Private declarations }
+  protected
+    function fprMontarWhere(ipTabela: string; ipParams: TParams): string; override;
   public
     { Public declarations }
   end;
@@ -36,5 +38,18 @@ var
 implementation
 
 {$R *.dfm}
+{ TsmAdministrativo }
+
+function TsmAdministrativo.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
+begin
+  if ipTabela = 'PESSOA' then
+    begin
+
+    end
+  else if ipTabela = 'PERFIL' then
+    begin
+
+    end;
+end;
 
 end.

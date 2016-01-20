@@ -18,6 +18,7 @@ type
     HttpServer: TDSHTTPService;
     conSong: TFDConnection;
     FDPhysFBDriverLink1: TFDPhysFBDriverLink;
+    FDManager1: TFDManager;
   private
     { Private declarations }
   public

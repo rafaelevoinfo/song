@@ -38,4 +38,16 @@ object dmPrincipal: TdmPrincipal
     Left = 288
     Top = 64
   end
+  object FDManager1: TFDManager
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
+    FormatOptions.AssignedValues = [fvMapRules, fvDefaultParamDataType, fvDataSnapCompatibility]
+    FormatOptions.OwnMapRules = True
+    FormatOptions.MapRules = <>
+    FormatOptions.DefaultParamDataType = ftInteger
+    FormatOptions.DataSnapCompatibility = True
+    Active = True
+    Left = 192
+    Top = 120
+  end
 end
