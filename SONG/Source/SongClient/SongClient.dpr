@@ -1,15 +1,11 @@
-program SONGServer;
+program SongClient;
 
 uses
   Vcl.Forms,
-  Web.WebReq,
-  IdHTTPWebBrokerBridge,
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
+  fBasico in 'fBasico.pas' {frmBasico},
   dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
-  smuBasico in 'smuBasico.pas' {smBasico: TDSServerModule},
-  smuAdministrativo in 'smuAdministrativo.pas' {smAdministrativo: TDSServerModule},
-  uTypes in '..\Comuns\uTypes.pas',
-  uSQLGenerator in '..\Comuns\uSQLGenerator.pas';
+  dmuBasico in 'dmuBasico.pas' {dmBasico: TDataModule};
 
 {$R *.res}
 
@@ -20,4 +16,3 @@ begin
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.Run;
 end.
-

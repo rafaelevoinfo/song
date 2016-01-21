@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dmuPrincipal;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dmuPrincipal, uTypes,
+  uSQLGenerator;
 
 type
   TsmAdministrativo = class(TsmBasico)
@@ -41,15 +42,24 @@ implementation
 { TsmAdministrativo }
 
 function TsmAdministrativo.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
+var
+  vaParam: TParam;
+  i: Integer;
 begin
-  if ipTabela = 'PESSOA' then
+  Result := inherited;
+  for i := 0 to ipParams.Count - 1 do
     begin
+      vaParam := ipParams[i];
+      if ipTabela = 'PESSOA' then
+        begin
 
-    end
-  else if ipTabela = 'PERFIL' then
-    begin
+        end
+      else if ipTabela = 'PERFIL' then
+        begin
 
+        end;
     end;
+
 end;
 
 end.

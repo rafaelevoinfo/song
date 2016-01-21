@@ -11,6 +11,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.RG,'
       '       PESSOA.CPF,'
       '       PESSOA.ENDERECO,'
+      '       PESSOA.BAIRRO,'
+      '       PESSOA.COMPLEMENTO,'
       '       PESSOA.LOGIN,'
       '       PESSOA.SENHA'
       'from PESSOA'

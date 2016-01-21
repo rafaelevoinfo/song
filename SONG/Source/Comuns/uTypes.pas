@@ -5,8 +5,21 @@ interface
 type
   TBancoDados = class
   public const
-    Tabela: string = 'TABELA';
-    MacroWhere:string = 'WHERE';
+    coMacroWhere:string = 'WHERE';
+    //campos comuns
+    coId = 'ID';
+    coNome = 'NOME';
+
+    //operadores
+    coAnd = ' and ';
+
+  end;
+
+  TParametros = class
+    public const
+      coID:string = 'ID';
+      coNome:string = 'NOME';
+      coActive:string = 'ACTIVE';
   end;
 
 implementation

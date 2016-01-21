@@ -1,7 +1,9 @@
 object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
-  Height = 271
-  Width = 415
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 442
+  Width = 911
   object Server: TDSServer
     AutoStart = False
     Left = 96
@@ -11,6 +13,7 @@ object dmPrincipal: TdmPrincipal
     Port = 3004
     Server = Server
     Filters = <>
+    AuthenticationManager = Authentication
     Left = 96
     Top = 73
   end
@@ -18,6 +21,7 @@ object dmPrincipal: TdmPrincipal
     HttpPort = 8080
     Server = Server
     Filters = <>
+    AuthenticationManager = Authentication
     Left = 96
     Top = 135
   end
@@ -49,5 +53,16 @@ object dmPrincipal: TdmPrincipal
     Active = True
     Left = 192
     Top = 120
+  end
+  object Authentication: TDSAuthenticationManager
+    Roles = <>
+    Left = 128
+    Top = 208
+  end
+  object SCAdministrativo: TDSServerClass
+    OnGetClass = SCAdministrativoGetClass
+    Server = Server
+    Left = 448
+    Top = 88
   end
 end

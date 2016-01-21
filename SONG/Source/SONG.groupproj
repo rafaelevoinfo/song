@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{4E0770D4-D7A1-400B-9EF2-E1C4B4EC57D3}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="SongServer\SONGServer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SongClient\SongClient.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SONGServer">
+        <MSBuild Projects="SongServer\SONGServer.dproj"/>
+    </Target>
+    <Target Name="SONGServer:Clean">
+        <MSBuild Projects="SongServer\SONGServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SONGServer:Make">
+        <MSBuild Projects="SongServer\SONGServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SongClient">
+        <MSBuild Projects="SongClient\SongClient.dproj"/>
+    </Target>
+    <Target Name="SongClient:Clean">
+        <MSBuild Projects="SongClient\SongClient.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SongClient:Make">
+        <MSBuild Projects="SongClient\SongClient.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SONGServer;SongClient"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SONGServer:Clean;SongClient:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SONGServer:Make;SongClient:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
