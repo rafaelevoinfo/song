@@ -5,7 +5,10 @@ uses
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
   fBasico in 'fBasico.pas' {frmBasico},
   dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
-  dmuBasico in 'dmuBasico.pas' {dmBasico: TDataModule};
+  dmuBasico in 'dmuBasico.pas' {dmBasico: TDataModule},
+  fSplash in 'fSplash.pas' {frmSplash},
+  fLogin in 'fLogin.pas' {frmLogin},
+  uTypes in '..\Comuns\uTypes.pas';
 
 {$R *.res}
 
@@ -14,5 +17,9 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TfrmSplash, frmSplash);
+  frmSplash.Show;
+
+  frmSplash.Close;
   Application.Run;
 end.

@@ -47,9 +47,9 @@ begin
     begin
       if Components[I] is TFDQuery then
         begin
-          FScriptsOriginais.Add(vaDataSet.Name, vaDataSet.SQL.Text);
           vaDataSet := TFDQuery(Components[I]);
           vaDataSet.Connection := Connection;
+          FScriptsOriginais.Add(vaDataSet.Name, vaDataSet.SQL.Text);
 
           pprCriarProvider(vaDataSet);
         end;

@@ -26,6 +26,7 @@ type
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
   private
+    FSyncro: TMultiReadExclusiveWriteSynchronizer;
     FConnections: TObjectDictionary<Integer, TFDConnection>;
     { Private declarations }
   public
@@ -48,23 +49,35 @@ uses smuAdministrativo;
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
   FConnections := TObjectDictionary<Integer, TFDConnection>.Create([doOwnsValues]);
+  FSyncro := TMultiReadExclusiveWriteSynchronizer.Create;
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 begin
   FConnections.Clear;
   FConnections.Free;
+
+  FSyncro.Free;
 end;
 
 function TdmPrincipal.fpuConnection: TFDConnection;
 begin
-  if not FConnections.TryGetValue(TDSSessionManager.GetThreadSession.Id, Result) then
-    begin
-      Result := TFDConnection.Create(nil);
-      Result.Params.Assign(conSong.Params);
-
-      FConnections.Add(TDSSessionManager.GetThreadSession.Id, Result);
-    end;
+  FSyncro.BeginRead;
+  try
+    if not FConnections.TryGetValue(TDSSessionManager.GetThreadSession.Id, Result) then
+      begin
+        Result := TFDConnection.Create(nil);
+        Result.Params.Assign(conSong.Params);
+        FSyncro.BeginWrite;
+        try
+          FConnections.Add(TDSSessionManager.GetThreadSession.Id, Result);
+        finally
+          FSyncro.EndWrite;
+        end;
+      end;
+  finally
+    FSyncro.EndRead;
+  end;
 
 end;
 

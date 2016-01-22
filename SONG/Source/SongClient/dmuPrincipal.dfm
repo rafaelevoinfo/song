@@ -19,4 +19,10 @@ object dmPrincipal: TdmPrincipal
     Left = 64
     Top = 48
   end
+  object dxSkinController1: TdxSkinController
+    NativeStyle = False
+    SkinName = 'Black'
+    Left = 216
+    Top = 120
+  end
 end
