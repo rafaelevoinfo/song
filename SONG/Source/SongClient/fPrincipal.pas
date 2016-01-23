@@ -4,7 +4,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, fLogin, uTypes;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, fLogin, uTypes,
+  cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
+  dxAlertWindow;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -32,6 +34,11 @@ procedure TfrmPrincipal.ppvAfterShow(var ipMsg: TMessage);
 begin
   Application.CreateForm(TfrmLogin, frmLogin);
   frmLogin.ShowModal;
+  if not frmLogin.LoginEfetuado then
+    begin
+      Application.Terminate;
+    end;
+
 end;
 
 end.

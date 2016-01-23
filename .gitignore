@@ -13,3 +13,6 @@ __history/
 SONG/Source/SongClient/Win32/
 SONG/Source/SongClient/SongClient.identcache
 SONG/Source/SongClient/SongClient.dproj.local
+Componentes/Bpls/
+Win32/
+Componentes/RafaelComponentes.dproj.local

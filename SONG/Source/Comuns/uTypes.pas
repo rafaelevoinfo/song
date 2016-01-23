@@ -15,7 +15,6 @@ type
 
     //operadores
     coAnd = ' and ';
-
   end;
 
   TParametros = class
@@ -26,7 +25,11 @@ type
   end;
 
 const
+//mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER+1;
+
+  coArquivoConfiguracao = 'song.sys';
+
 
 implementation
 

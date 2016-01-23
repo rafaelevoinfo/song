@@ -102,13 +102,19 @@
             <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="smuAdministrativo.pas">
+        <DCCReference Include="ServerModules\smuAdministrativo.pas">
             <Form>smAdministrativo</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uTypes.pas"/>
         <DCCReference Include="..\Comuns\uSQLGenerator.pas"/>
+        <DCCReference Include="..\Comuns\uRoles.pas"/>
+        <DCCReference Include="ServerModules\smuFuncoesGeral.pas">
+            <Form>smFuncoesGeral</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDSServerModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

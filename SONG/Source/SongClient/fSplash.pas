@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, dmuPrincipal, fBasico, cxGraphics,
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   dxSkinsCore, dxSkinBlack, Vcl.StdCtrls, cxImage, cxProgressBar,
-  dxGDIPlusClasses, fLogin;
+  dxGDIPlusClasses, fLogin, uUtils, uTypes;
 
 type
   TfrmSplash = class(TfrmBasico)
@@ -34,14 +34,31 @@ var
   I: Integer;
 begin
   inherited;
-  pbProgresso.Properties.Max := 10;
-  for I := 0 to 10 do
-    begin
-      pbProgresso.Properties.Text := 'Fase ' + I.ToString();
-      pbProgresso.Position := i;
-      Application.ProcessMessages;
-      Sleep(100);
-    end;
+  pbProgresso.Properties.Max := 1;
+  pbProgresso.Position := 0;
+  try
+    pbProgresso.Properties.Text := 'Configurando a conexão com o servidor.';
+    dmPrincipal.ppuConfigurarConexao('','');
+    pbProgresso.Position := pbProgresso.Position + 1;
+    Application.ProcessMessages;
+  except
+    on e: Exception do
+      begin
+        TMsg.ppuShowException('Erro ao conectar no servidor. Certifique-se que o arquivo de configuração "' +
+          coArquivoConfiguracao + '" está configurado corretamente.', e);
+
+        Application.Terminate;
+      end;
+  end;
+  // configurando a conexao
+
+  // for I := 0 to 10 do
+  // begin
+  // pbProgresso.Properties.Text := 'Fase ' + I.ToString();
+  // pbProgresso.Position := i;
+  // Application.ProcessMessages;
+  // Sleep(100);
+  // end;
 end;
 
 end.

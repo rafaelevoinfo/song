@@ -7,9 +7,11 @@ uses
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
   dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
   smuBasico in 'smuBasico.pas' {smBasico: TDSServerModule},
-  smuAdministrativo in 'smuAdministrativo.pas' {smAdministrativo: TDSServerModule},
+  smuAdministrativo in 'ServerModules\smuAdministrativo.pas' {smAdministrativo: TDSServerModule},
   uTypes in '..\Comuns\uTypes.pas',
-  uSQLGenerator in '..\Comuns\uSQLGenerator.pas';
+  uSQLGenerator in '..\Comuns\uSQLGenerator.pas',
+  uRoles in '..\Comuns\uRoles.pas',
+  smuFuncoesGeral in 'ServerModules\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule};
 
 {$R *.res}
 
@@ -18,6 +20,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TsmFuncoesGeral, smFuncoesGeral);
   Application.Run;
 end.
 

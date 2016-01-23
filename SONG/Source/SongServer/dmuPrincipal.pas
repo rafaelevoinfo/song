@@ -10,7 +10,8 @@ uses System.SysUtils, System.Classes,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, Data.DB,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase,
-  System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession;
+  System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
+  uRoles;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -22,9 +23,15 @@ type
     FDManager1: TFDManager;
     Authentication: TDSAuthenticationManager;
     SCAdministrativo: TDSServerClass;
+    SCFuncoesGeral: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
+      var valid: Boolean; UserRoles: TStrings);
+    procedure SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure AuthenticationUserAuthorize(Sender: TObject; AuthorizeEventObject: TDSAuthorizeEventObject;
+      var valid: Boolean);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
     FConnections: TObjectDictionary<Integer, TFDConnection>;
@@ -42,9 +49,31 @@ implementation
 
 {$R *.dfm}
 
-uses smuAdministrativo;
+uses smuAdministrativo, smuFuncoesGeral;
 
 { TdmPrincipal }
+
+procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
+  var valid: Boolean; UserRoles: TStrings);
+begin
+  valid := True;
+  // vamos permitir chamar a funcao de verificar a versao para qualquer um
+  UserRoles.add(TRoleGeral.coVerificarVersao);
+  if (User <> '') and (Password <> '') then
+    begin
+
+    end;
+end;
+
+procedure TdmPrincipal.AuthenticationUserAuthorize(Sender: TObject; AuthorizeEventObject: TDSAuthorizeEventObject;
+  var valid: Boolean);
+begin
+  valid := False;
+  if (AuthorizeEventObject.MethodAlias = 'TsmFuncoesGeral.fpuVerificarNovaVersao') then
+    valid := True
+  else if AuthorizeEventObject.UserName = 'admin' then
+    valid := True;
+end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
@@ -70,7 +99,7 @@ begin
         Result.Params.Assign(conSong.Params);
         FSyncro.BeginWrite;
         try
-          FConnections.Add(TDSSessionManager.GetThreadSession.Id, Result);
+          FConnections.add(TDSSessionManager.GetThreadSession.Id, Result);
         finally
           FSyncro.EndWrite;
         end;
@@ -99,6 +128,11 @@ end;
 procedure TdmPrincipal.SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuAdministrativo.TsmAdministrativo;
+end;
+
+procedure TdmPrincipal.SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := smuFuncoesGeral.TSMFuncoesGeral;
 end;
 
 end.

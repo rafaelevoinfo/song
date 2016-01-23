@@ -55,6 +55,8 @@ object dmPrincipal: TdmPrincipal
     Top = 120
   end
   object Authentication: TDSAuthenticationManager
+    OnUserAuthenticate = AuthenticationUserAuthenticate
+    OnUserAuthorize = AuthenticationUserAuthorize
     Roles = <>
     Left = 128
     Top = 208
@@ -64,5 +66,11 @@ object dmPrincipal: TdmPrincipal
     Server = Server
     Left = 448
     Top = 88
+  end
+  object SCFuncoesGeral: TDSServerClass
+    OnGetClass = SCFuncoesGeralGetClass
+    Server = Server
+    Left = 456
+    Top = 168
   end
 end

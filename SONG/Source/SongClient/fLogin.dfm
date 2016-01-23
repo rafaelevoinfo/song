@@ -986,5 +986,6 @@ inherited frmLogin: TfrmLogin
     Height = 33
     Caption = 'Logar'
     TabOrder = 3
+    OnClick = btnLogarClick
   end
 end

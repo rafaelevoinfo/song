@@ -8,7 +8,10 @@ uses
   dmuBasico in 'dmuBasico.pas' {dmBasico: TDataModule},
   fSplash in 'fSplash.pas' {frmSplash},
   fLogin in 'fLogin.pas' {frmLogin},
-  uTypes in '..\Comuns\uTypes.pas';
+  uTypes in '..\Comuns\uTypes.pas',
+  uUsuario in '..\Comuns\uUsuario.pas',
+  uUtils in '..\Comuns\uUtils.pas',
+  uFuncoes in 'uFuncoes.pas';
 
 {$R *.res}
 

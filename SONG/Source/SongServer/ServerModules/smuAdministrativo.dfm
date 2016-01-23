@@ -3,7 +3,6 @@ inherited smAdministrativo: TsmAdministrativo
   Height = 364
   Width = 593
   object qPessoa: TFDQuery
-    Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PESSOA.ID,'
       '       PESSOA.NOME,'
@@ -73,7 +72,6 @@ inherited smAdministrativo: TsmAdministrativo
     end
   end
   object qPerfil: TFDQuery
-    Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PERFIL.ID,'
       '       PERFIL.NOME,'

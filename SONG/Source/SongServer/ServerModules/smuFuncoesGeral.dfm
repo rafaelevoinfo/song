@@ -1,0 +1,2 @@
+inherited smFuncoesGeral: TsmFuncoesGeral
+end
