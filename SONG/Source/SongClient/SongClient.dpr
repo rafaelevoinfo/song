@@ -11,7 +11,9 @@ uses
   uTypes in '..\Comuns\uTypes.pas',
   uUsuario in '..\Comuns\uUsuario.pas',
   uUtils in '..\Comuns\uUtils.pas',
-  uFuncoes in 'uFuncoes.pas';
+  uFuncoes in 'uFuncoes.pas',
+  uExceptions in '..\Comuns\uExceptions.pas',
+  fBasicoCrud in 'fBasicoCrud.pas' {frmBasicoCrud};
 
 {$R *.res}
 

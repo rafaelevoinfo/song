@@ -2,7 +2,7 @@ inherited smAdministrativo: TsmAdministrativo
   OldCreateOrder = True
   Height = 364
   Width = 593
-  object qPessoa: TFDQuery
+  object qPessoa: TRfQuery
     SQL.Strings = (
       'select PESSOA.ID,'
       '       PESSOA.NOME,'
@@ -71,7 +71,7 @@ inherited smAdministrativo: TsmAdministrativo
       Size = 100
     end
   end
-  object qPerfil: TFDQuery
+  object qPerfil: TRfQuery
     SQL.Strings = (
       'select PERFIL.ID,'
       '       PERFIL.NOME,'

@@ -34,6 +34,7 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64
@@ -72,5 +73,46 @@ object dmPrincipal: TdmPrincipal
     Server = Server
     Left = 456
     Top = 168
+  end
+  object qLogin: TRFQuery
+    Connection = conSong
+    SQL.Strings = (
+      'select PESSOA.ID,'
+      '       Pessoa.login,'
+      '       Pessoa.Senha'
+      'from PESSOA'
+      'where PESSOA.LOGIN = :LOGIN and'
+      '      PESSOA.SENHA = :SENHA ')
+    Left = 472
+    Top = 256
+    ParamData = <
+      item
+        Name = 'LOGIN'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'SENHA'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qLoginID: TLargeintField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLoginLOGIN: TStringField
+      FieldName = 'LOGIN'
+      Origin = 'LOGIN'
+      Size = 100
+    end
+    object qLoginSENHA: TStringField
+      FieldName = 'SENHA'
+      Origin = 'SENHA'
+      Size = 100
+    end
   end
 end

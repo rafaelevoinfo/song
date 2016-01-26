@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, dxGDIPlusClasses, cxImage, Vcl.StdCtrls, Vcl.Menus, cxButtons,
-  cxTextEdit, dmuPrincipal, uUtils;
+  cxTextEdit, dmuPrincipal, uUtils, uExceptions;
 
 type
   TfrmLogin = class(TfrmBasico)
@@ -21,6 +21,7 @@ type
   private
     FLoginEfetuado: Boolean;
     procedure SetLoginEfetuado(const Value: Boolean);
+    procedure ppvValidarCampos;
 
     { Private declarations }
   public
@@ -43,13 +44,20 @@ begin
   ppuLogar(edtLogin.text, edtSenha.Text);
 end;
 
+procedure TfrmLogin.ppvValidarCampos;
+begin
+  if edtLogin.Text = '' then
+    raise TControlException.Create('Informe o login.', edtLogin);
+
+  if edtSenha.Text = '' then
+    raise TControlException.Create('Informe a senha.', edtSenha);
+end;
+
 procedure TfrmLogin.ppuLogar(ipUsuario, ipSenha: string);
 begin
+  ppvValidarCampos;
   try
     dmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha);
-//    dmPrincipal.FuncoesGeral.fpuVerificarNovaVersao('');
-//    ShowMessage('ok');
-//    dmPrincipal.FuncoesGeral.teste;
 
     LoginEfetuado := True;
   except

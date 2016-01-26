@@ -32,9 +32,13 @@ package RafaelComponentes;
 requires
   rtl,
   dbrtl,
-  dsnap;
+  dsnap,
+  FireDACCommon,
+  FireDAC,
+  FireDACCommonDriver;
 
 contains
-  uClientDataSet in 'uClientDataSet.pas';
+  uClientDataSet in 'uClientDataSet.pas',
+  uQuery in 'uQuery.pas';
 
 end.

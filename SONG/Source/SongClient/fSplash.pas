@@ -30,8 +30,6 @@ implementation
 {$R *.dfm}
 
 procedure TfrmSplash.FormActivate(Sender: TObject);
-var
-  I: Integer;
 begin
   inherited;
   pbProgresso.Properties.Max := 1;

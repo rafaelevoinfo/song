@@ -8,12 +8,12 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dmuPrincipal, uTypes,
-  uSQLGenerator;
+  uSQLGenerator, uQuery;
 
 type
   TsmAdministrativo = class(TsmBasico)
-    qPessoa: TFDQuery;
-    qPerfil: TFDQuery;
+    qPessoa: TRfQuery;
+    qPerfil: TRfQuery;
     qPerfilID: TLargeintField;
     qPerfilNOME: TStringField;
     qPerfilDESCRICAO: TStringField;

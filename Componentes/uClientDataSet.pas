@@ -6,7 +6,7 @@ uses
   Datasnap.DBClient, Classes;
 
 type
-  TRfClientDataSet = class(TClientDataSet)
+  TRFClientDataSet = class(TClientDataSet)
 
   end;
 
@@ -16,7 +16,7 @@ implementation
 
 procedure Register;
 begin
-  RegisterComponents('RafaelComponentes', [TRfClientDataSet]);
+  RegisterComponents('RafaelComponentes', [TRFClientDataSet]);
 end;
 
 end.

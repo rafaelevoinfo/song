@@ -67,6 +67,7 @@ begin
       vaProvider := TDataSetProvider.Create(Self);
       vaProvider.DataSet := ipDataSet;
       vaProvider.UpdateMode := upWhereKeyOnly;
+      vaProvider.Options := [];//remove o useQuotedStr para evitar problemas com maiusculo e minusculo nos nomes das tabelas
     end;
 
   if not Assigned(vaProvider.OnDataRequest) then

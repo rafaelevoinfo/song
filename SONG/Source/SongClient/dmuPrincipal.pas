@@ -7,7 +7,8 @@ uses
   Data.DBXCommon, Data.DB, Data.SqlExpr, dxSkinsCore, dxSkinBlack, cxClasses,
   cxLookAndFeels, dxSkinsForm, System.IOUtils, uTypes, uUtils,
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
-  Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes;
+  Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
+  uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -15,7 +16,12 @@ type
     dxSkinController1: TdxSkinController;
     ProxyGenerator: TDSProxyGenerator;
     DSConnectionMetaDataProvider1: TDSConnectionMetaDataProvider;
+    ApplicationEvents1: TApplicationEvents;
+    imgIcons_32: TcxImageList;
+    imgIcons_16: TcxImageList;
     procedure DataSnapConnAfterConnect(Sender: TObject);
+    procedure DataSnapConnAfterDisconnect(Sender: TObject);
+    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
     { Private declarations }
@@ -35,9 +41,33 @@ implementation
 {$R *.dfm}
 { TdmPrincipal }
 
+procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject;
+  E: Exception);
+begin
+  if E is TControlException then
+    begin
+      if TControlException(E).Control.CanFocus then
+        begin
+          try
+            TControlException(E).Control.SetFocus;
+          except
+            //ignora se nao conseguir focar
+          end;
+        end;
+    end;
+
+  TMsg.ppuShowException(e);
+end;
+
 procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
 begin
   FFuncoesGeral := TsmFuncoesGeralClient.Create(DataSnapConn.DBXConnection);
+end;
+
+procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
+begin
+  if Assigned(FFuncoesGeral) then
+    FreeAndNil(FFuncoesGeral);
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

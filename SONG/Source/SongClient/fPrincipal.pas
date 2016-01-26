@@ -6,10 +6,17 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, fLogin, uTypes,
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
-  dxAlertWindow;
+  dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus;
 
 type
   TfrmPrincipal = class(TfrmBasico)
+    mmMenuPrincipal: TMainMenu;
+    ActionList1: TActionList;
+    Ac_Pessoas: TAction;
+    miAdministrativo: TMenuItem;
+    Pessoa1: TMenuItem;
+    Ac_Perfis: TAction;
+    PerfisdeUsurios1: TMenuItem;
     procedure FormShow(Sender: TObject);
   private
     procedure ppvAfterShow(var ipMsg: TMessage); message MSG_AFTER_SHOW;

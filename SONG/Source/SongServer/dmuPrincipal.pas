@@ -11,7 +11,8 @@ uses System.SysUtils, System.Classes,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, Data.DB,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase,
   System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
-  uRoles;
+  uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet, uQuery;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -24,6 +25,10 @@ type
     Authentication: TDSAuthenticationManager;
     SCAdministrativo: TDSServerClass;
     SCFuncoesGeral: TDSServerClass;
+    qLogin: TRFQuery;
+    qLoginID: TLargeintField;
+    qLoginLOGIN: TStringField;
+    qLoginSENHA: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -61,8 +66,16 @@ begin
   UserRoles.add(TRoleGeral.coVerificarVersao);
   if (User <> '') and (Password <> '') then
     begin
-
+      if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
+        begin
+          qLogin.Close;
+          qLogin.ParamByName('LOGIN').AsString := User;
+          qLogin.ParamByName('SENHA').AsString := Password;
+          qLogin.Open();
+          valid := not qLogin.Eof;
+        end;
     end;
+
 end;
 
 procedure TdmPrincipal.AuthenticationUserAuthorize(Sender: TObject; AuthorizeEventObject: TDSAuthorizeEventObject;
@@ -112,14 +125,14 @@ end;
 
 procedure TdmPrincipal.ppuIniciarServidor(ipServidor, ipEnderecoBanco, ipUsuario, ipSenha: String; ipPorta: Integer);
 begin
-  conSong.close;
+  conSong.Close;
   conSong.Params.Values['SERVER'] := ipServidor;
   conSong.Params.Values['DATABASE'] := ipEnderecoBanco;
   conSong.Params.Values['USER_NAME'] := ipUsuario;
   conSong.Params.Values['PASSWORD'] := ipSenha;
   // vamos apenas validar a conexao com o banco
   conSong.Open();
-  conSong.close;
+  conSong.Close;
 
   ServerTransport.Port := ipPorta;
   Server.Start;

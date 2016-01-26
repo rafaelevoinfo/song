@@ -12,7 +12,6 @@ type
     { Private declarations }
   public
     function fpuVerificarNovaVersao(ipVersaoAtual: string): String;
-    procedure teste;
   end;
 
 var
@@ -28,9 +27,5 @@ begin
    Result := 'ok';
 end;
 
-procedure TsmFuncoesGeral.teste;
-begin
-
-end;
 
 end.
