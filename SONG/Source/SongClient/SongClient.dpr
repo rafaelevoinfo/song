@@ -13,7 +13,9 @@ uses
   uUtils in '..\Comuns\uUtils.pas',
   uFuncoes in 'uFuncoes.pas',
   uExceptions in '..\Comuns\uExceptions.pas',
-  fBasicoCrud in 'fBasicoCrud.pas' {frmBasicoCrud};
+  fBasicoCrud in 'fBasicoCrud.pas' {frmBasicoCrud},
+  fBasicoCrudMasterDetail in 'fBasicoCrudMasterDetail.pas' {frmBasicoCrudMasterDetail},
+  uMensagem in '..\Comuns\uMensagem.pas';
 
 {$R *.res}
 

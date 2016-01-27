@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, dmuPrincipal, fBasico, cxGraphics,
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   dxSkinsCore, dxSkinBlack, Vcl.StdCtrls, cxImage, cxProgressBar,
-  dxGDIPlusClasses, fLogin, uUtils, uTypes;
+  dxGDIPlusClasses, fLogin, uMensagem, uTypes;
 
 type
   TfrmSplash = class(TfrmBasico)

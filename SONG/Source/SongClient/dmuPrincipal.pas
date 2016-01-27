@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, Data.DBXDataSnap, IPPeerClient,
   Data.DBXCommon, Data.DB, Data.SqlExpr, dxSkinsCore, dxSkinBlack, cxClasses,
-  cxLookAndFeels, dxSkinsForm, System.IOUtils, uTypes, uUtils,
+  cxLookAndFeels, dxSkinsForm, System.IOUtils, uTypes, uMensagem,
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics;

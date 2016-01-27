@@ -1,7 +1,7 @@
-// 
+//
 // Created by the DataSnap proxy generator.
-// 23/01/2016 00:13:52
-// 
+// 26/01/2016 23:57:28
+//
 
 unit uFuncoes;
 
@@ -23,14 +23,14 @@ type
   TsmFuncoesGeralClient = class(TDSAdminClient)
   private
     FfpuVerificarNovaVersaoCommand: TDBXCommand;
-    FtesteCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuVerificarNovaVersao(ipVersaoAtual: string): string;
-    procedure teste;
+    function fpuGetId(ipTabela: string): Int64;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -94,16 +94,18 @@ begin
   Result := FfpuVerificarNovaVersaoCommand.Parameters[1].Value.GetWideString;
 end;
 
-procedure TsmFuncoesGeralClient.teste;
+function TsmFuncoesGeralClient.fpuGetId(ipTabela: string): Int64;
 begin
-  if FtesteCommand = nil then
+  if FfpuGetIdCommand = nil then
   begin
-    FtesteCommand := FDBXConnection.CreateCommand;
-    FtesteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FtesteCommand.Text := 'TsmFuncoesGeral.teste';
-    FtesteCommand.Prepare;
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesGeral.fpuGetId';
+    FfpuGetIdCommand.Prepare;
   end;
-  FtesteCommand.ExecuteUpdate;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt64;
 end;
 
 procedure TsmFuncoesGeralClient.DSServerModuleCreate(Sender: TObject);
@@ -147,9 +149,10 @@ end;
 destructor TsmFuncoesGeralClient.Destroy;
 begin
   FfpuVerificarNovaVersaoCommand.DisposeOf;
-  FtesteCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
 
 end.
+
