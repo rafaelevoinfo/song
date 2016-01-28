@@ -31,6 +31,8 @@ implementation
 
 function TsmFuncoesGeral.fpuGetId(ipTabela: string): Int64;
 begin
+  qId.Connection := dmPrincipal.Connection;
+
   qId.Close;
   qId.MacroByName('GENERATOR').AsRaw := 'GEN_'+ipTabela.ToUpper;
   qId.Open();

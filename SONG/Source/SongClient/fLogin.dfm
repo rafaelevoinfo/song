@@ -38,6 +38,7 @@ inherited frmLogin: TfrmLogin
   object cxImage1: TcxImage
     Left = 0
     Top = 0
+    TabStop = False
     Picture.Data = {
       0D546478536D617274496D616765FFD8FFE000104A4649460001010100600060
       0000FFDB00430001010101010101010101010101010101010101010101010101
@@ -975,7 +976,7 @@ inherited frmLogin: TfrmLogin
       94E86F2CAAF1EADB4A694A694A694A694A694A694A694A694A694A694A694A69
       4A694A694A694A694A694A694A694A694A694A694A694A694A694A694A694A69
       4A694A694A694AFFD9}
-    TabOrder = 2
+    TabOrder = 3
     Height = 137
     Width = 170
   end
@@ -985,7 +986,7 @@ inherited frmLogin: TfrmLogin
     Width = 97
     Height = 33
     Caption = 'Logar'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnLogarClick
   end
 end

@@ -10,6 +10,35 @@ inherited frmPrincipal: TfrmPrincipal
   ExplicitHeight = 446
   PixelsPerInch = 96
   TextHeight = 13
+  object pcPrincipal: TcxPageControl
+    Left = 0
+    Top = 0
+    Width = 785
+    Height = 387
+    Align = alClient
+    TabOrder = 0
+    Properties.ActivePage = tabDashBoard
+    Properties.AllowTabDragDrop = True
+    Properties.CloseButtonMode = cbmEveryTab
+    Properties.CustomButtons.Buttons = <>
+    ExplicitLeft = 256
+    ExplicitTop = 128
+    ExplicitWidth = 289
+    ExplicitHeight = 193
+    ClientRectBottom = 383
+    ClientRectLeft = 4
+    ClientRectRight = 781
+    ClientRectTop = 24
+    object tabDashBoard: TcxTabSheet
+      AllowCloseButton = False
+      Caption = 'Avisos'
+      ImageIndex = 0
+      ExplicitLeft = 2
+      ExplicitTop = 25
+      ExplicitWidth = 778
+      ExplicitHeight = 357
+    end
+  end
   object mmMenuPrincipal: TMainMenu
     Left = 232
     Top = 104
@@ -31,6 +60,7 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object Ac_Perfis: TAction
       Caption = 'Perfis de Usu'#225'rios'
+      OnExecute = Ac_PerfisExecute
     end
   end
 end

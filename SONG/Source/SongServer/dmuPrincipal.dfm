@@ -14,6 +14,7 @@ object dmPrincipal: TdmPrincipal
     Server = Server
     Filters = <>
     AuthenticationManager = Authentication
+    OnDisconnect = ServerTransportDisconnect
     Left = 96
     Top = 73
   end
@@ -34,7 +35,6 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64

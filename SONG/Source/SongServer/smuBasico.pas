@@ -22,10 +22,12 @@ type
     function fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): OleVariant;
     procedure SetConnection(const Value: TFDConnection);
     function GetConnection: TFDConnection;
+
   protected
     procedure pprCriarProvider(ipDataSet: TFDQuery); virtual;
     function fprMontarWhere(ipTabela: string; ipParams: TParams): string; virtual;
     function fprAjustarWhere(ipWhere: string): string; virtual;
+    function fprGetNomeTabela(ipProvider: TDataSetProvider): string;
   public
     property Connection: TFDConnection read GetConnection write SetConnection;
   end;
@@ -65,6 +67,7 @@ begin
   if not Assigned(vaProvider) then
     begin
       vaProvider := TDataSetProvider.Create(Self);
+      vaProvider.Name := 'dsp'+ipDataSet.Name;
       vaProvider.DataSet := ipDataSet;
       vaProvider.UpdateMode := upWhereKeyOnly;
       vaProvider.Options := [];//remove o useQuotedStr para evitar problemas com maiusculo e minusculo nos nomes das tabelas
@@ -77,6 +80,11 @@ end;
 procedure TsmBasico.SetConnection(const Value: TFDConnection);
 begin
   FConnection := Value;
+end;
+
+function TsmBasico.fprGetNomeTabela(ipProvider:TDataSetProvider):string;
+begin
+   Result := Copy(ipProvider.Name, 5, Length(ipProvider.Name));
 end;
 
 function TsmBasico.fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): OleVariant;
@@ -98,7 +106,7 @@ begin
         if Assigned(vaMacroWhere) and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
           begin
             vaDataSet.SQL.Text := vaScript;
-            vaTabela := Copy(TDataSetProvider(ipSender).Name, 5, Length(TDataSetProvider(ipSender).Name));
+            vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender));
             vaWhere := fprMontarWhere(vaTabela, vaParams);
             if vaWhere <> '' then
               begin
@@ -116,7 +124,7 @@ end;
 function TsmBasico.GetConnection: TFDConnection;
 begin
   if not Assigned(FConnection) then
-    FConnection := dmPrincipal.fpuConnection;
+    FConnection := dmPrincipal.Connection;
 
   Result := FConnection;
 end;

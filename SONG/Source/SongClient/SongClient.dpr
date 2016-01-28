@@ -15,7 +15,9 @@ uses
   uExceptions in '..\Comuns\uExceptions.pas',
   fBasicoCrud in 'fBasicoCrud.pas' {frmBasicoCrud},
   fBasicoCrudMasterDetail in 'fBasicoCrudMasterDetail.pas' {frmBasicoCrudMasterDetail},
-  uMensagem in '..\Comuns\uMensagem.pas';
+  uMensagem in '..\Comuns\uMensagem.pas',
+  fPerfil in 'Administrativo\fPerfil.pas' {frmPerfil},
+  dmuAdministrativo in 'Administrativo\dmuAdministrativo.pas' {dmAdministrativo: TDataModule};
 
 {$R *.res}
 

@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, fLogin, uTypes,
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
-  dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus;
+  dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
+  cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -17,7 +18,10 @@ type
     Pessoa1: TMenuItem;
     Ac_Perfis: TAction;
     PerfisdeUsurios1: TMenuItem;
+    pcPrincipal: TcxPageControl;
+    tabDashBoard: TcxTabSheet;
     procedure FormShow(Sender: TObject);
+    procedure Ac_PerfisExecute(Sender: TObject);
   private
     procedure ppvAfterShow(var ipMsg: TMessage); message MSG_AFTER_SHOW;
   public
@@ -30,6 +34,12 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmPrincipal.Ac_PerfisExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmPerfil>(pcPrincipal, TfrmPerfil, frmPerfil);
+end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin

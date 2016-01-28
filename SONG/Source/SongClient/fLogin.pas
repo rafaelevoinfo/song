@@ -42,6 +42,8 @@ procedure TfrmLogin.btnLogarClick(Sender: TObject);
 begin
   inherited;
   ppuLogar(edtLogin.text, edtSenha.Text);
+  if LoginEfetuado then
+    Close;
 end;
 
 procedure TfrmLogin.ppvValidarCampos;
@@ -55,6 +57,7 @@ end;
 
 procedure TfrmLogin.ppuLogar(ipUsuario, ipSenha: string);
 begin
+  LoginEfetuado := False;
   ppvValidarCampos;
   try
     dmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha);

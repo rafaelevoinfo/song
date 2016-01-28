@@ -37,14 +37,16 @@ type
     procedure SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure AuthenticationUserAuthorize(Sender: TObject; AuthorizeEventObject: TDSAuthorizeEventObject;
       var valid: Boolean);
+    procedure ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
-    FConnections: TObjectDictionary<Integer, TFDConnection>;
+    FConnections: TDictionary<Integer, TFDConnection>;
+    function GetConnection: TFDConnection;
     { Private declarations }
   public
     procedure ppuIniciarServidor(ipServidor, ipEnderecoBanco, ipUsuario, ipSenha: String; ipPorta: Integer);
 
-    function fpuConnection: TFDConnection;
+    property Connection: TFDConnection read GetConnection;
   end;
 
 var
@@ -90,7 +92,7 @@ end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
-  FConnections := TObjectDictionary<Integer, TFDConnection>.Create([doOwnsValues]);
+  FConnections := TDictionary<Integer, TFDConnection>.Create();
   FSyncro := TMultiReadExclusiveWriteSynchronizer.Create;
 end;
 
@@ -102,7 +104,7 @@ begin
   FSyncro.Free;
 end;
 
-function TdmPrincipal.fpuConnection: TFDConnection;
+function TdmPrincipal.GetConnection: TFDConnection;
 begin
   FSyncro.BeginRead;
   try
@@ -146,6 +148,24 @@ end;
 procedure TdmPrincipal.SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuFuncoesGeral.TSMFuncoesGeral;
+end;
+
+procedure TdmPrincipal.ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);
+var
+  vaConn: TFDConnection;
+begin
+  FSyncro.BeginWrite;
+  try
+    if FConnections.TryGetValue(TDSSessionManager.GetThreadSession.Id, vaConn) then
+      begin
+        vaConn.Close;
+        vaConn.Free;
+
+        FConnections.Remove(TDSSessionManager.GetThreadSession.Id);
+      end;
+  finally
+    FSyncro.EndWrite;
+  end;
 end;
 
 end.

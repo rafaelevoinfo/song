@@ -20,7 +20,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
-  Application.CreateForm(TsmFuncoesGeral, smFuncoesGeral);
   Application.Run;
 end.
 
