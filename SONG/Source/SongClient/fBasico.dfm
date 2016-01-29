@@ -13,6 +13,7 @@ object frmBasico: TfrmBasico
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
 end

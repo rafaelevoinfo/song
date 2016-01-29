@@ -17,13 +17,6 @@ type
     coAnd = ' and ';
   end;
 
-  TParametros = class
-    public const
-      coID:string = 'ID';
-      coNome:string = 'NOME';
-      coActive:string = 'ACTIVE';
-  end;
-
 const
 //mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER+1;

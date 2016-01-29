@@ -3,7 +3,7 @@ unit uMensagem;
 interface
 
 uses
-  System.SysUtils, Vcl.Dialogs;
+  System.SysUtils, Vcl.Dialogs, System.UITypes;
 
 type
   TPerguntaPadrao = (ppSimNao, ppSimNaoCancelar);
@@ -31,14 +31,21 @@ var
 begin
   case ipBotoes of
     ppSimNao:
-      vaResp := MessageDlg(ipPergunta, mtInformation, [mbYes, mbNo],0);
+      vaResp := MessageDlg(ipPergunta, mtInformation, [mbYes, mbNo], 0, mbNo);
     ppSimNaoCancelar:
-      vaResp := MessageDlg(ipPergunta, mtInformation, [mbYes, mbNo, mbCancel],0);
-    else
-      vaResp := Ord(rpCancelar);
+      vaResp := MessageDlg(ipPergunta, mtInformation, [mbYes, mbNo, mbCancel], 0);
+  else
+    vaResp := mrCancel;
   end;
 
-  Result := TRespostaPadrao(vaResp);
+  case vaResp of
+    6:
+      Result := rpSim;
+    7:
+      Result := rpNao;
+  else
+    Result := rpCancelar;
+  end;
 
 end;
 

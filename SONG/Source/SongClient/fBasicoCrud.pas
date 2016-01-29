@@ -13,7 +13,7 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
-  uTypes;
+  uTypes, uExceptions, uClientDataSet, System.Rtti;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -22,7 +22,6 @@ type
     tabCadastro: TcxTabSheet;
     pnPesquisa: TPanel;
     pnGrid: TPanel;
-    btnIncluir: TButton;
     ActionList1: TActionList;
     Ac_Incluir: TAction;
     pnEditsPesquisa: TPanel;
@@ -49,6 +48,9 @@ type
     btnCancelar: TButton;
     Ac_Cancelar: TAction;
     dsMaster: TDataSource;
+    btnPesquisar: TButton;
+    pnBotoes: TPanel;
+    btnIncluir: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -56,25 +58,41 @@ type
     procedure Ac_SalvarExecute(Sender: TObject);
     procedure Ac_CancelarExecute(Sender: TObject);
     procedure Ac_PesquisarExecute(Sender: TObject);
+    procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure EditPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
   protected
+    // SALVAR
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
-
     procedure pprValidarDados; virtual;
     procedure pprValidarCamposObrigatorios(ipDataSet: TDataSet); virtual;
-
     procedure pprBeforeSalvar; virtual;
     procedure pprExecutarSalvar; virtual;
     procedure pprAfterSalvar; virtual;
+    // PESQUISA
+    procedure pprRealizarPesquisaInicial; virtual;
+    procedure pprValidarPesquisa; virtual;
+    procedure pprEfetuarPesquisa; virtual;
+    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); virtual;
+    // GERAL
+    procedure pprConfigurarLabelsCamposObrigatorios;
   public
+    // CRUD
     procedure ppuIncluir; virtual;
     procedure ppuAlterar(ipId: Int64); virtual;
     function fpuExcluir(ipIds: TArray<Int64>): Boolean; virtual;
     function fpuSalvar: Boolean; virtual;
     procedure ppuCancelar; virtual;
+    // PESQUISA
+    procedure ppuPesquisar; virtual;
+  public const
+    coTodos = 0;
+    coID = 1;
   end;
 
 var
+
   frmBasicoCrud: TfrmBasicoCrud;
 
 implementation
@@ -84,7 +102,7 @@ implementation
 procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin
   inherited;
-  ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coId).AsLargeInt);
+  ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coID).AsLargeInt);
 end;
 
 procedure TfrmBasicoCrud.Ac_CancelarExecute(Sender: TObject);
@@ -99,7 +117,7 @@ var
 begin
   inherited;
   SetLength(vaIds, 1);
-  vaIds[0] := dsMaster.DataSet.FieldByName(TBancoDados.coId).AsLargeInt;
+  vaIds[0] := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsLargeInt;
   fpuExcluir(vaIds);
 end;
 
@@ -112,7 +130,7 @@ end;
 procedure TfrmBasicoCrud.Ac_PesquisarExecute(Sender: TObject);
 begin
   inherited;
-  //TODO:Fazer a pesquisa
+  ppuPesquisar;
 end;
 
 procedure TfrmBasicoCrud.Ac_SalvarExecute(Sender: TObject);
@@ -121,11 +139,41 @@ begin
   fpuSalvar;
 end;
 
+procedure TfrmBasicoCrud.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  EditPesquisa.Clear;
+
+  EditPesquisa.Properties.EditMask := '.*';
+  if cbPesquisarPor.ItemIndex = coID then
+    EditPesquisa.Properties.EditMask := '\d+';
+
+  EditPesquisa.SetFocus;
+end;
+
+procedure TfrmBasicoCrud.EditPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_RETURN then
+    begin
+      ppuPesquisar;
+      Key := 0;
+    end;
+end;
+
 procedure TfrmBasicoCrud.FormCreate(Sender: TObject);
 begin
   inherited;
   pcPrincipal.HideTabs := True;
   pcPrincipal.ActivePage := tabPesquisa;
+
+  pprConfigurarLabelsCamposObrigatorios;
+end;
+
+procedure TfrmBasicoCrud.FormShow(Sender: TObject);
+begin
+  inherited;
+  pprRealizarPesquisaInicial;
 end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar;
@@ -159,6 +207,21 @@ begin
   pprValidarDados;
 end;
 
+procedure TfrmBasicoCrud.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+begin
+  ipCds.ppuLimparParametros;
+  if cbPesquisarPor.ItemIndex = coTodos then
+    ipCds.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA')
+  else if cbPesquisarPor.ItemIndex = coID then
+    ipCds.ppuAddParametro(TParametros.coID, EditPesquisa.Text);
+
+end;
+
+procedure TfrmBasicoCrud.pprEfetuarPesquisa;
+begin
+  TRFClientDataSet(dsMaster.DataSet).ppuDataRequest();
+end;
+
 procedure TfrmBasicoCrud.pprExecutarSalvar;
 begin
   if (dsMaster.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
@@ -170,19 +233,25 @@ var
   vaField: TField;
   vaTabela: String;
 begin
-  vaField := ipDataSet.FindField(TBancoDados.coId);
+  vaField := ipDataSet.FindField(TBancoDados.coID);
   if Assigned(vaField) then
     begin
       if vaField.IsNull then
         begin
           if ipDataSet.State in [dsEdit, dsInsert] then
             begin
-              vaTabela := Copy(ipDataSet.Name, 4, length(ipDataSet.Name) - 4);
+              vaTabela := Copy(ipDataSet.Name, 4, Length(ipDataSet.Name) - 3);
               vaField.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId(vaTabela);
             end;
         end;
     end;
 
+end;
+
+procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
+begin
+  cbPesquisarPor.ItemIndex := coTodos;
+  ppuPesquisar;
 end;
 
 function TfrmBasicoCrud.fpuExcluir(ipIds: TArray<Int64>): Boolean;
@@ -194,7 +263,7 @@ begin
     begin
       for vaId in ipIds do
         begin
-          if dsMaster.DataSet.Locate(TBancoDados.coId, vaId, []) then
+          if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
             dsMaster.DataSet.Delete;
         end;
 
@@ -210,6 +279,13 @@ begin
   pcPrincipal.ActivePage := tabCadastro;
 end;
 
+procedure TfrmBasicoCrud.ppuPesquisar;
+begin
+  pprValidarPesquisa;
+  pprCarregarParametrosPesquisa(dsMaster.DataSet as TRFClientDataSet);
+  pprEfetuarPesquisa;
+end;
+
 function TfrmBasicoCrud.fpuSalvar: Boolean;
 begin
   Result := False;
@@ -218,6 +294,50 @@ begin
   pprAfterSalvar;
 
   Result := True;
+end;
+
+procedure TfrmBasicoCrud.pprConfigurarLabelsCamposObrigatorios();
+var
+  vaField: TField;
+  I: Integer;
+  vaContext: TRTTIContext;
+  vaLabel: TLabel;
+  vaProp: TRttiProperty;
+  vaDataBind: TObject;
+  vaDataSet: TDataSet;
+  vaFieldName: string;
+begin
+  for I := 0 to ComponentCount - 1 do
+    begin
+      if (Components[I] is TLabel) then
+        begin
+          vaLabel := TLabel(Components[I]);
+          if Assigned(vaLabel.FocusControl) then
+            begin
+              vaContext := TRTTIContext.Create;
+              vaProp := vaContext.GetType(vaLabel.FocusControl.ClassType).GetProperty('DataBinding');
+              if Assigned(vaProp) then
+                begin
+                  vaDataBind := vaProp.GetValue(vaLabel.FocusControl).AsObject;
+                  vaFieldName := vaContext.GetType(vaDataBind.ClassType).GetProperty('DataField')
+                    .GetValue(vaDataBind).AsString;
+                  vaProp := vaContext.GetType(vaDataBind.ClassType).GetProperty('DataSource');
+                  if Assigned(vaProp) then
+                    begin
+                      vaDataSet := (vaProp.GetValue(vaDataBind).AsObject as TDataSource).DataSet;
+                      if Assigned(vaDataSet) then
+                        begin
+                          vaField := vaDataSet.FindField(vaFieldName);
+                          if Assigned(vaField) and vaField.Required then
+                            begin
+                              vaLabel.Font.Color := clRed;
+                            end;
+                        end;
+                    end;
+                end;
+            end;
+        end;
+    end;
 end;
 
 procedure TfrmBasicoCrud.pprValidarCamposObrigatorios(ipDataSet: TDataSet);
@@ -247,6 +367,27 @@ end;
 procedure TfrmBasicoCrud.pprValidarDados;
 begin
   pprValidarCamposObrigatorios(dsMaster.DataSet);
+end;
+
+procedure TfrmBasicoCrud.pprValidarPesquisa;
+begin
+  if EditPesquisa.Visible and (cbPesquisarPor.ItemIndex <> coTodos) then
+    begin
+      if Trim(EditPesquisa.Text) = '' then
+        raise TControlException.Create('Informe algo a ser pesquisado', EditPesquisa);
+
+      if (cbPesquisarPor.ItemIndex <> coID) and (Length(EditPesquisa.Text) < 3) then
+        raise Exception.Create('Informe pelo menos três caracteres.');
+    end;
+  if pnData.Visible then
+    begin
+      if (EditDataInicial.Date = 0) then
+        raise Exception.Create('Informe a data inicial.');
+
+      if (EditDataFinal.Date = 0) then
+        raise Exception.Create('Informe a data final.');
+    end;
+
 end;
 
 end.

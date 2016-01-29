@@ -1,9 +1,11 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = pcPrincipal
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   ClientWidth = 862
   OnCreate = FormCreate
+  OnShow = FormShow
+  ExplicitTop = -33
   ExplicitWidth = 878
   ExplicitHeight = 515
   PixelsPerInch = 96
@@ -17,6 +19,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     TabOrder = 0
     Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
+    LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
     ClientRectLeft = 4
     ClientRectRight = 858
@@ -32,19 +35,20 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Left = 0
         Top = 0
         Width = 854
-        Height = 50
+        Height = 44
         Align = alTop
         TabOrder = 0
         ExplicitWidth = 855
         object pnEditsPesquisa: TPanel
-          Left = 335
+          Left = 295
           Top = 1
-          Width = 518
-          Height = 48
+          Width = 558
+          Height = 42
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 336
+          ExplicitLeft = 296
+          ExplicitHeight = 48
           object Label1: TLabel
             Left = 3
             Top = 2
@@ -53,42 +57,42 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Caption = 'Pesquisar por:'
           end
           object pnData: TPanel
-            Left = 223
+            Left = 183
             Top = 0
-            Width = 295
+            Width = 267
             Height = 48
-            Align = alRight
             BevelOuter = bvNone
             TabOrder = 2
+            Visible = False
             object De: TLabel
-              Left = 15
+              Left = 6
               Top = 21
               Width = 13
               Height = 13
               Caption = 'De'
             end
             object Label2: TLabel
-              Left = 144
+              Left = 135
               Top = 22
               Width = 17
               Height = 13
               Caption = 'At'#233
             end
             object EditDataInicial: TcxDateEdit
-              Left = 31
+              Left = 22
               Top = 18
               TabOrder = 0
               Width = 106
             end
             object EditDataFinal: TcxDateEdit
-              Left = 167
+              Left = 158
               Top = 18
               TabOrder = 1
               Width = 106
             end
           end
           object EditPesquisa: TcxButtonEdit
-            Left = 232
+            Left = 184
             Top = 18
             Properties.Buttons = <
               item
@@ -97,8 +101,11 @@ inherited frmBasicoCrud: TfrmBasicoCrud
                 Kind = bkGlyph
               end>
             Properties.Images = dmPrincipal.imgIcons_16
-            TabOrder = 0
+            Properties.MaskKind = emkRegExprEx
+            Properties.EditMask = '.*'
+            TabOrder = 1
             TextHint = 'Digite aqui a sua pesquisa'
+            OnKeyDown = EditPesquisaKeyDown
             Width = 265
           end
           object cbPesquisarPor: TcxImageComboBox
@@ -121,36 +128,57 @@ inherited frmBasicoCrud: TfrmBasicoCrud
                 Description = 'Nome'
                 Value = 2
               end>
-            TabOrder = 1
-            Width = 214
+            Properties.OnEditValueChanged = cbPesquisarPorPropertiesEditValueChanged
+            TabOrder = 0
+            Width = 174
+          end
+          object btnPesquisar: TButton
+            Left = 456
+            Top = 3
+            Width = 100
+            Height = 36
+            Action = Ac_Pesquisar
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 3
           end
         end
-        object btnIncluir: TButton
-          AlignWithMargins = True
-          Left = 4
-          Top = 4
-          Width = 85
+        object pnBotoes: TPanel
+          Left = 1
+          Top = 1
+          Width = 185
           Height = 42
-          Action = Ac_Incluir
           Align = alLeft
-          Images = dmPrincipal.imgIcons_32
+          BevelOuter = bvNone
           TabOrder = 0
+          ExplicitLeft = 336
+          ExplicitTop = 8
+          ExplicitHeight = 41
+          object btnIncluir: TButton
+            Left = 4
+            Top = 4
+            Width = 85
+            Height = 36
+            Action = Ac_Incluir
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 0
+          end
         end
       end
       object pnGrid: TPanel
         Left = 0
-        Top = 50
+        Top = 44
         Width = 854
-        Height = 398
+        Height = 404
         Align = alClient
         TabOrder = 1
+        ExplicitTop = 50
         ExplicitWidth = 855
         ExplicitHeight = 396
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
           Width = 852
-          Height = 396
+          Height = 402
           Align = alClient
           Images = dmPrincipal.imgIcons_16
           TabOrder = 0
@@ -158,6 +186,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           ExplicitHeight = 394
           object viewRegistros: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
+            DataController.DataSource = dsMaster
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
@@ -165,11 +194,11 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             OptionsData.CancelOnExit = False
             OptionsData.Deleting = False
             OptionsData.DeletingConfirmation = False
-            OptionsData.Editing = False
             OptionsData.Inserting = False
             OptionsSelection.MultiSelect = True
             OptionsView.ShowEditButtons = gsebAlways
             object ColumnAlterar: TcxGridDBColumn
+              Caption = 'Alterar'
               PropertiesClassName = 'TcxButtonEditProperties'
               Properties.Buttons = <
                 item
@@ -188,6 +217,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
               Options.Moving = False
             end
             object ColumnExcluir: TcxGridDBColumn
+              Caption = 'Excluir'
               PropertiesClassName = 'TcxButtonEditProperties'
               Properties.Buttons = <
                 item
@@ -225,7 +255,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Width = 854
         Height = 50
         Align = alTop
-        TabOrder = 0
+        TabOrder = 1
         ExplicitWidth = 855
         object btnSalvar: TButton
           AlignWithMargins = True
@@ -256,7 +286,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Width = 854
         Height = 398
         Align = alClient
-        TabOrder = 1
+        TabOrder = 0
         ExplicitWidth = 855
         ExplicitHeight = 396
       end

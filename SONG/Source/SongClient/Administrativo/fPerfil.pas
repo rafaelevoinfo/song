@@ -12,20 +12,32 @@ uses
   cxSplitter, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
-  Vcl.ExtCtrls, cxPC, dmuAdministrativo;
+  Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, uClientDataSet;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)
+    viewRegistrosID: TcxGridDBColumn;
+    viewRegistrosNOME: TcxGridDBColumn;
+    viewRegistrosDESCRICAO: TcxGridDBColumn;
+    lbl1: TLabel;
+    EditDescricao: TcxDBTextEdit;
+    Label3: TLabel;
+    EditNome: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     { Private declarations }
-  public
+  protected
+    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+  public const
+    coNome = 2;
+
     { Public declarations }
   end;
 
 var
   frmPerfil: TfrmPerfil;
+
 
 implementation
 
@@ -38,6 +50,13 @@ begin
 
   inherited;
 
+end;
+
+procedure TfrmPerfil.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+begin
+  inherited;
+  if cbPesquisarPor.ItemIndex = coNome then
+    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
 end;
 
 end.

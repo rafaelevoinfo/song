@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, Datasnap.Provider, Datasnap.DBClient,
   System.Generics.Collections, uTypes, System.RegularExpressions,
-  uSQLGenerator, dmuPrincipal;
+  uSQLGenerator, dmuPrincipal, uClientDataSet;
 
 type
   TsmBasico = class(TDSServerModule)

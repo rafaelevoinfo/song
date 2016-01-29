@@ -1,4 +1,5 @@
 inherited dmAdministrativo: TdmAdministrativo
+  OldCreateOrder = True
   Height = 323
   Width = 507
   object cdsPerfil: TRFClientDataSet
@@ -9,17 +10,20 @@ inherited dmAdministrativo: TdmAdministrativo
     Left = 240
     Top = 144
     object cdsPerfilID: TLargeintField
+      DisplayLabel = 'Id'
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsPerfilNOME: TStringField
+      DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
     object cdsPerfilDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 500

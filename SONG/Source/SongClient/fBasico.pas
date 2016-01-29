@@ -8,6 +8,7 @@ uses
 
 type
   TfrmBasico = class(TForm)
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -17,5 +18,11 @@ type
 implementation
 
 {$R *.dfm}
+
+procedure TfrmBasico.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = Char(VK_RETURN) then
+    Self.SelectNext(Self.ActiveControl,True,true);
+end;
 
 end.

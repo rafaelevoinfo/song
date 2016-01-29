@@ -8,7 +8,7 @@ uses
   cxLookAndFeels, dxSkinsForm, System.IOUtils, uTypes, uMensagem,
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
-  uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics;
+  uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -22,6 +22,8 @@ type
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
+    procedure dxSkinController1SkinControl(Sender: TObject;
+      AControl: TWinControl; var UseSkin: Boolean);
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
     { Private declarations }
@@ -68,6 +70,13 @@ procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
 begin
   if Assigned(FFuncoesGeral) then
     FreeAndNil(FFuncoesGeral);
+end;
+
+procedure TdmPrincipal.dxSkinController1SkinControl(Sender: TObject;
+  AControl: TWinControl; var UseSkin: Boolean);
+begin
+  if AControl is TButton then
+    UseSkin := False;
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

@@ -21,10 +21,7 @@ inherited frmPrincipal: TfrmPrincipal
     Properties.AllowTabDragDrop = True
     Properties.CloseButtonMode = cbmEveryTab
     Properties.CustomButtons.Buttons = <>
-    ExplicitLeft = 256
-    ExplicitTop = 128
-    ExplicitWidth = 289
-    ExplicitHeight = 193
+    LookAndFeel.NativeStyle = True
     ClientRectBottom = 383
     ClientRectLeft = 4
     ClientRectRight = 781
@@ -33,10 +30,6 @@ inherited frmPrincipal: TfrmPrincipal
       AllowCloseButton = False
       Caption = 'Avisos'
       ImageIndex = 0
-      ExplicitLeft = 2
-      ExplicitTop = 25
-      ExplicitWidth = 778
-      ExplicitHeight = 357
     end
   end
   object mmMenuPrincipal: TMainMenu

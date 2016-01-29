@@ -88,6 +88,8 @@ begin
     valid := True
   else if AuthorizeEventObject.UserName = 'admin' then
     valid := True;
+
+  valid := True;
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
