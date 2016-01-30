@@ -8,7 +8,8 @@ uses
   cxLookAndFeels, dxSkinsForm, System.IOUtils, uTypes, uMensagem,
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
-  uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls;
+  uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
+  Datasnap.DBClient, Datasnap.DSConnect;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -19,6 +20,7 @@ type
     ApplicationEvents1: TApplicationEvents;
     imgIcons_32: TcxImageList;
     imgIcons_16: TcxImageList;
+    ProviderAdministrativo: TDSProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);

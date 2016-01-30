@@ -1,26 +1,15 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
+  ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
-  ExplicitTop = 8
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      inherited pnPesquisa: TPanel
-        inherited pnEditsPesquisa: TPanel
-          ExplicitHeight = 42
-        end
-        inherited pnBotoes: TPanel
-          ExplicitLeft = 1
-          ExplicitTop = 1
-          ExplicitHeight = 42
-        end
-      end
       inherited pnGrid: TPanel
-        ExplicitTop = 44
-        ExplicitHeight = 402
         inherited cxGridRegistros: TcxGrid
           Height = 208
-          ExplicitHeight = 206
+          ExplicitHeight = 208
         end
         object cxSplitter1: TcxSplitter
           Left = 1
@@ -29,8 +18,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           Height = 6
           AlignSplitter = salBottom
           Control = pnDetail
-          ExplicitTop = 207
-          ExplicitWidth = 853
         end
         object pnDetail: TPanel
           Left = 1
@@ -39,8 +26,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           Height = 188
           Align = alBottom
           TabOrder = 2
-          ExplicitTop = 213
-          ExplicitWidth = 853
           object pcDetails: TcxPageControl
             Left = 1
             Top = 1
@@ -50,7 +35,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             TabOrder = 0
             Properties.ActivePage = tabDetail
             Properties.CustomButtons.Buttons = <>
-            ExplicitWidth = 851
             ClientRectBottom = 181
             ClientRectLeft = 2
             ClientRectRight = 845
@@ -58,36 +42,31 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
-              ExplicitWidth = 844
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
                 Width = 843
-                Height = 33
+                Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 844
                 object btnIncluirDetail: TButton
-                  AlignWithMargins = True
-                  Left = 4
-                  Top = 4
+                  Left = 0
+                  Top = 1
                   Width = 81
-                  Height = 25
+                  Height = 23
                   Action = Ac_Incluir_Detail
-                  Align = alLeft
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
                 end
               end
               object cxGrid1: TcxGrid
                 Left = 0
-                Top = 33
+                Top = 25
                 Width = 843
-                Height = 123
+                Height = 131
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
-                ExplicitWidth = 844
                 object viewRegistrosDetail: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsDetail
@@ -150,23 +129,13 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
       end
     end
-    inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-    end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object Panel1: TPanel
+      object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0
-        Width = 855
+        Width = 854
         Height = 50
         Align = alTop
         TabOrder = 0

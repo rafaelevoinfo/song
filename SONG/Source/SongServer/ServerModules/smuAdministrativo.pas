@@ -25,6 +25,14 @@ type
     qPessoaENDERECO: TStringField;
     qPessoaLOGIN: TStringField;
     qPessoaSENHA: TStringField;
+    qPerfil_Permissao: TRFQuery;
+    qPerfil_PermissaoID: TLargeintField;
+    qPerfil_PermissaoPERFIL_ID: TLargeintField;
+    qPerfil_PermissaoPERMISSAO: TStringField;
+    qPerfil_PermissaoVISUALIZAR: TSmallintField;
+    qPerfil_PermissaoINCLUIR: TSmallintField;
+    qPerfil_PermissaoALTERAR: TSmallintField;
+    qPerfil_PermissaoEXCLUIR: TSmallintField;
   private
     { Private declarations }
   protected

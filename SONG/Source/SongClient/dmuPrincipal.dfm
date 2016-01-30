@@ -1,7 +1,7 @@
 object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
-  Height = 279
-  Width = 458
+  Height = 427
+  Width = 783
   object DataSnapConn: TSQLConnection
     DriverName = 'DataSnap'
     LoginPrompt = False
@@ -1078,5 +1078,12 @@ object dmPrincipal: TdmPrincipal
           000000000000242247590D0D2731000000000000000000000000000000000000
           0000000000001A19374315143446000000000000000000000000}
       end>
+  end
+  object ProviderAdministrativo: TDSProviderConnection
+    ServerClassName = 'TsmAdministrativo'
+    Connected = True
+    SQLConnection = DataSnapConn
+    Left = 64
+    Top = 248
   end
 end

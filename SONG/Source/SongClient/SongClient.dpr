@@ -17,7 +17,8 @@ uses
   fBasicoCrudMasterDetail in 'fBasicoCrudMasterDetail.pas' {frmBasicoCrudMasterDetail},
   uMensagem in '..\Comuns\uMensagem.pas',
   fPerfil in 'Administrativo\fPerfil.pas' {frmPerfil},
-  dmuAdministrativo in 'Administrativo\dmuAdministrativo.pas' {dmAdministrativo: TDataModule};
+  dmuAdministrativo in 'Administrativo\dmuAdministrativo.pas' {dmAdministrativo: TDataModule},
+  uControleAcesso in '..\Comuns\uControleAcesso.pas';
 
 {$R *.res}
 

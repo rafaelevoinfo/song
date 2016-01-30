@@ -12,7 +12,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, cxDropDownEdit,
   cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC,
-  cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem;
+  cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem, MidasLib;
 
 type
   TfrmBasicoCrudMasterDetail = class(TfrmBasicoCrud)
@@ -33,7 +33,7 @@ type
     tabCadastroDetail: TcxTabSheet;
     Ac_Salvar_Detail: TAction;
     Ac_Cancelar_Detail: TAction;
-    Panel1: TPanel;
+    pnBotoesCadastroDetail: TPanel;
     btnSalvarDetail: TButton;
     btnCancelarDetail: TButton;
     dsDetail: TDataSource;
@@ -49,13 +49,15 @@ type
     procedure pprAfterSalvarDetail; virtual;
 
     procedure pprValidarDadosDetail; virtual;
+    // OVERRIDE
+    procedure pprEfetuarPesquisa; override;
   public
     procedure ppuIncluirDetail; virtual;
     procedure ppuAlterarDetail(ipId: Int64); virtual;
-    function fpuExcluirDetail(ipIds: TArray<Int64>):Boolean; virtual;
-    procedure ppuCancelarDetail;virtual;
+    function fpuExcluirDetail(ipIds: TArray<Int64>): Boolean; virtual;
+    procedure ppuCancelarDetail; virtual;
 
-    function fpuSalvarDetail:Boolean;
+    function fpuSalvarDetail: Boolean;
   end;
 
 var
@@ -80,10 +82,10 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Excluir_DetailExecute(Sender: TObject);
 var
-  vaIds:TArray<Int64>;
+  vaIds: TArray<Int64>;
 begin
   inherited;
-  SetLength(vaIds,1);
+  SetLength(vaIds, 1);
   vaIds[0] := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsLargeInt;
   fpuExcluirDetail(vaIds);
 end;
@@ -111,10 +113,19 @@ begin
   pprValidarDadosDetail;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.pprEfetuarPesquisa;
+begin
+  inherited;
+  dsDetail.DataSet.Open;
+end;
+
 procedure TfrmBasicoCrudMasterDetail.pprExecutarSalvarDetail;
 begin
-  if (dsDetail.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+  if (dsDetail.DataSet.State in [dsEdit, dsInsert]) then
     dsDetail.DataSet.Post;
+
+  if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+    TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprValidarDadosDetail;
@@ -131,7 +142,7 @@ procedure TfrmBasicoCrudMasterDetail.ppuCancelarDetail;
 begin
   if (dsDetail.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
     begin
-      if TMsg.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
+      if TMsg.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
           fpuSalvarDetail;
           Exit;
@@ -142,7 +153,7 @@ begin
   pcPrincipal.ActivePage := tabPesquisa;
 end;
 
-function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Int64>):Boolean;
+function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Int64>): Boolean;
 var
   vaId: integer;
 begin
@@ -164,7 +175,7 @@ begin
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;
 
-function TfrmBasicoCrudMasterDetail.fpuSalvarDetail:Boolean;
+function TfrmBasicoCrudMasterDetail.fpuSalvarDetail: Boolean;
 begin
   Result := False;
   pprBeforeSalvarDetail;

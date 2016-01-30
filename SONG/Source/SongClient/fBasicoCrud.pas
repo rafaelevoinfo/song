@@ -13,7 +13,7 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
-  uTypes, uExceptions, uClientDataSet, System.Rtti;
+  uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)

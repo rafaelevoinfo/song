@@ -5,7 +5,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   ClientWidth = 862
   OnCreate = FormCreate
   OnShow = FormShow
-  ExplicitTop = -33
   ExplicitWidth = 878
   ExplicitHeight = 515
   PixelsPerInch = 96
@@ -27,10 +26,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabPesquisa: TcxTabSheet
       Caption = 'tabPesquisa'
       ImageIndex = 0
-      ExplicitLeft = 2
-      ExplicitTop = 25
-      ExplicitWidth = 855
-      ExplicitHeight = 446
       object pnPesquisa: TPanel
         Left = 0
         Top = 0
@@ -38,7 +33,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 44
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 855
         object pnEditsPesquisa: TPanel
           Left = 295
           Top = 1
@@ -47,8 +41,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 296
-          ExplicitHeight = 48
           object Label1: TLabel
             Left = 3
             Top = 2
@@ -150,11 +142,8 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 336
-          ExplicitTop = 8
-          ExplicitHeight = 41
           object btnIncluir: TButton
-            Left = 4
+            Left = -1
             Top = 4
             Width = 85
             Height = 36
@@ -171,9 +160,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 404
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 50
-        ExplicitWidth = 855
-        ExplicitHeight = 396
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
@@ -182,8 +168,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alClient
           Images = dmPrincipal.imgIcons_16
           TabOrder = 0
-          ExplicitWidth = 853
-          ExplicitHeight = 394
           object viewRegistros: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.DataSource = dsMaster
@@ -245,10 +229,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 2
-      ExplicitTop = 25
-      ExplicitWidth = 855
-      ExplicitHeight = 446
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
@@ -256,7 +240,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 50
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 855
         object btnSalvar: TButton
           AlignWithMargins = True
           Left = 4
@@ -287,8 +270,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 398
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 855
-        ExplicitHeight = 396
       end
     end
   end

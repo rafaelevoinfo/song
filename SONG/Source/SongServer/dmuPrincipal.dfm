@@ -35,6 +35,7 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64
@@ -114,5 +115,10 @@ object dmPrincipal: TdmPrincipal
       Origin = 'SENHA'
       Size = 100
     end
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnException = ApplicationEvents1Exception
+    Left = 680
+    Top = 72
   end
 end

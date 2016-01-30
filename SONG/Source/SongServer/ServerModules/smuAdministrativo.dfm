@@ -3,6 +3,7 @@ inherited smAdministrativo: TsmAdministrativo
   Height = 364
   Width = 593
   object qPessoa: TRFQuery
+    Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PESSOA.ID,'
       '       PESSOA.NOME,'
@@ -72,6 +73,7 @@ inherited smAdministrativo: TsmAdministrativo
     end
   end
   object qPerfil: TRFQuery
+    Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PERFIL.ID,'
       '       PERFIL.NOME,'
@@ -103,6 +105,67 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+  end
+  object qPerfil_Permissao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PERFIL_PERMISSAO.ID,'
+      '       PERFIL_PERMISSAO.PERFIL_ID,'
+      '       PERFIL_PERMISSAO.PERMISSAO,'
+      '       PERFIL_PERMISSAO.VISUALIZAR,'
+      '       PERFIL_PERMISSAO.INCLUIR,'
+      '       PERFIL_PERMISSAO.ALTERAR,'
+      '       PERFIL_PERMISSAO.EXCLUIR'
+      'from PERFIL_PERMISSAO'
+      'where PERFIL_PERMISSAO.PERFIL_ID = :PERFIL_ID')
+    Left = 40
+    Top = 160
+    ParamData = <
+      item
+        Name = 'PERFIL_ID'
+        DataType = ftLargeint
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qPerfil_PermissaoID: TLargeintField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qPerfil_PermissaoPERFIL_ID: TLargeintField
+      FieldName = 'PERFIL_ID'
+      Origin = 'PERFIL_ID'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qPerfil_PermissaoPERMISSAO: TStringField
+      FieldName = 'PERMISSAO'
+      Origin = 'PERMISSAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qPerfil_PermissaoVISUALIZAR: TSmallintField
+      FieldName = 'VISUALIZAR'
+      Origin = 'VISUALIZAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPerfil_PermissaoINCLUIR: TSmallintField
+      FieldName = 'INCLUIR'
+      Origin = 'INCLUIR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPerfil_PermissaoALTERAR: TSmallintField
+      FieldName = 'ALTERAR'
+      Origin = 'ALTERAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPerfil_PermissaoEXCLUIR: TSmallintField
+      FieldName = 'EXCLUIR'
+      Origin = 'EXCLUIR'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

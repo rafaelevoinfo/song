@@ -33,10 +33,6 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 2
-      ExplicitTop = 25
-      ExplicitWidth = 855
-      ExplicitHeight = 446
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6
@@ -73,12 +69,95 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 2
-      ExplicitTop = 25
-      ExplicitWidth = 855
-      ExplicitHeight = 446
-      inherited Panel1: TPanel
+      object cxGrid2: TcxGrid
+        Left = 0
+        Top = 50
         Width = 854
+        Height = 398
+        Align = alClient
+        TabOrder = 1
+        ExplicitLeft = 4
+        ExplicitTop = 52
+        object viewPermissoes: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.DataSource = dsLocalPermissao
+          DataController.DetailKeyFieldNames = 'ID_MODULO'
+          DataController.KeyFieldNames = 'ID_MODULO'
+          DataController.MasterKeyFieldNames = 'ID'
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object viewPermissoesPERMISSAO: TcxGridDBColumn
+            DataBinding.FieldName = 'PERMISSAO'
+            Options.Editing = False
+            Width = 585
+          end
+          object viewPermissoesVISUALIZAR: TcxGridDBColumn
+            DataBinding.FieldName = 'VISUALIZAR'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Properties.OnEditValueChanged = viewPermissoesVISUALIZARPropertiesEditValueChanged
+          end
+          object viewPermissoesINCLUIR: TcxGridDBColumn
+            DataBinding.FieldName = 'INCLUIR'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Properties.OnEditValueChanged = viewPermissoesINCLUIRPropertiesEditValueChanged
+          end
+          object viewPermissoesALTERAR: TcxGridDBColumn
+            DataBinding.FieldName = 'ALTERAR'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Properties.OnEditValueChanged = viewPermissoesALTERARPropertiesEditValueChanged
+          end
+          object viewPermissoesEXCLUIR: TcxGridDBColumn
+            DataBinding.FieldName = 'EXCLUIR'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Properties.OnEditValueChanged = viewPermissoesEXCLUIRPropertiesEditValueChanged
+          end
+        end
+        object viewModulos: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.DataSource = dsLocalModulos
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object viewModulosMODULO: TcxGridDBColumn
+            DataBinding.FieldName = 'MODULO'
+            Width = 829
+          end
+          object viewModulosID: TcxGridDBColumn
+            DataBinding.FieldName = 'ID'
+            Visible = False
+            VisibleForCustomization = False
+          end
+        end
+        object levelGrid2Level1: TcxGridLevel
+          GridView = viewModulos
+          object cxGrid2Level1: TcxGridLevel
+            GridView = viewPermissoes
+          end
+        end
       end
     end
   end
@@ -86,7 +165,62 @@ inherited frmPerfil: TfrmPerfil
     DataSet = dmAdministrativo.cdsPerfil
   end
   inherited dsDetail: TDataSource
+    DataSet = dmAdministrativo.cdsPerfil_Permissao
     Left = 416
     Top = 176
+  end
+  object cdsLocalPermissoes: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 312
+    Top = 96
+    object cdsLocalPermissoesPERMISSAO: TStringField
+      DisplayLabel = 'Permiss'#227'o'
+      FieldName = 'PERMISSAO'
+      Size = 100
+    end
+    object cdsLocalPermissoesVISUALIZAR: TIntegerField
+      DisplayLabel = 'Visualizar'
+      FieldName = 'VISUALIZAR'
+    end
+    object cdsLocalPermissoesINCLUIR: TIntegerField
+      DisplayLabel = 'Incluir'
+      FieldName = 'INCLUIR'
+    end
+    object cdsLocalPermissoesALTERAR: TIntegerField
+      DisplayLabel = 'Alterar'
+      FieldName = 'ALTERAR'
+    end
+    object cdsLocalPermissoesEXCLUIR: TIntegerField
+      DisplayLabel = 'Excluir'
+      FieldName = 'EXCLUIR'
+    end
+    object cdsLocalPermissoesID_MODULO: TIntegerField
+      FieldName = 'ID_MODULO'
+    end
+  end
+  object dsLocalPermissao: TDataSource
+    DataSet = cdsLocalPermissoes
+    Left = 504
+    Top = 184
+  end
+  object cdsLocalModulos: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 424
+    Top = 240
+    object cdsLocalModulosMODULO: TStringField
+      DisplayLabel = 'M'#243'dulo'
+      FieldName = 'MODULO'
+      Size = 100
+    end
+    object cdsLocalModulosID: TIntegerField
+      FieldName = 'ID'
+    end
+  end
+  object dsLocalModulos: TDataSource
+    DataSet = cdsLocalModulos
+    Left = 552
+    Top = 240
   end
 end
