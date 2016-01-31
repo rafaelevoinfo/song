@@ -10,19 +10,19 @@ type
   TUtils = class
   public
     class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
-    class procedure fpuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
-    class procedure fpuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
+    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
+    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
   end;
 
 implementation
 
 { TUtils }
 
-class procedure TUtils.fpuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
+class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
 var
   vaRecNo: Integer;
 begin
-  TUtils.fpuPercorrerCds(ipCDS,
+  TUtils.ppuPercorrerCds(ipCDS,
     function: Boolean
     begin
       ipProc;
@@ -31,7 +31,7 @@ begin
     ipManterPosicao, ipOtimizarLoop);
 end;
 
-class procedure TUtils.fpuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
+class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
 var
   vaRecNo: Integer;
 begin

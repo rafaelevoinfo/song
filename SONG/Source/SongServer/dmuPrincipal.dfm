@@ -99,7 +99,7 @@ object dmPrincipal: TdmPrincipal
         ParamType = ptInput
         Value = Null
       end>
-    object qLoginID: TLargeintField
+    object qLoginID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]

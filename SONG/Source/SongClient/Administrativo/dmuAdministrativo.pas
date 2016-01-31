@@ -9,18 +9,18 @@ uses
 type
   TdmAdministrativo = class(TdmBasico)
     cdsPerfil: TRFClientDataSet;
-    cdsPerfilID: TLargeintField;
     cdsPerfilNOME: TStringField;
     cdsPerfilDESCRICAO: TStringField;
     cdsPerfil_Permissao: TRFClientDataSet;
     dsPerfil: TDataSource;
-    cdsPerfil_PermissaoID: TLargeintField;
-    cdsPerfil_PermissaoPERFIL_ID: TLargeintField;
     cdsPerfil_PermissaoPERMISSAO: TStringField;
     cdsPerfil_PermissaoVISUALIZAR: TSmallintField;
     cdsPerfil_PermissaoINCLUIR: TSmallintField;
     cdsPerfil_PermissaoALTERAR: TSmallintField;
     cdsPerfil_PermissaoEXCLUIR: TSmallintField;
+    cdsPerfilID: TIntegerField;
+    cdsPerfil_PermissaoID: TIntegerField;
+    cdsPerfil_PermissaoID_PERFIL: TIntegerField;
   private
     { Private declarations }
   public

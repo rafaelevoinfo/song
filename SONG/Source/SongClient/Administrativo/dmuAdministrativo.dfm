@@ -9,10 +9,8 @@ inherited dmAdministrativo: TdmAdministrativo
     RemoteServer = dmPrincipal.ProviderAdministrativo
     Left = 240
     Top = 144
-    object cdsPerfilID: TLargeintField
-      DisplayLabel = 'Id'
+    object cdsPerfilID: TIntegerField
       FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsPerfilNOME: TStringField
@@ -31,14 +29,14 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object cdsPerfil_Permissao: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'PERFIL_ID'
+    IndexFieldNames = 'ID_PERFIL'
     MasterFields = 'ID'
     MasterSource = dsPerfil
     PacketRecords = 0
     Params = <
       item
-        DataType = ftLargeint
-        Name = 'PERFIL_ID'
+        DataType = ftInteger
+        Name = 'ID_PERFIL'
         ParamType = ptInput
       end>
     ProviderName = 'dspqPerfil_Permissao'
@@ -46,16 +44,14 @@ inherited dmAdministrativo: TdmAdministrativo
     RFApplyAutomatico = False
     Left = 240
     Top = 200
-    object cdsPerfil_PermissaoID: TLargeintField
+    object cdsPerfil_PermissaoID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsPerfil_PermissaoPERFIL_ID: TLargeintField
+    object cdsPerfil_PermissaoID_PERFIL: TIntegerField
       DisplayLabel = 'Perfil'
-      FieldName = 'PERFIL_ID'
-      ProviderFlags = [pfInUpdate]
+      FieldName = 'ID_PERFIL'
       Required = True
     end
     object cdsPerfil_PermissaoPERMISSAO: TStringField
@@ -66,21 +62,25 @@ inherited dmAdministrativo: TdmAdministrativo
       Size = 100
     end
     object cdsPerfil_PermissaoVISUALIZAR: TSmallintField
+      Alignment = taCenter
       DisplayLabel = 'Visualizar'
       FieldName = 'VISUALIZAR'
       ProviderFlags = [pfInUpdate]
     end
     object cdsPerfil_PermissaoINCLUIR: TSmallintField
+      Alignment = taCenter
       DisplayLabel = 'Incluir'
       FieldName = 'INCLUIR'
       ProviderFlags = [pfInUpdate]
     end
     object cdsPerfil_PermissaoALTERAR: TSmallintField
+      Alignment = taCenter
       DisplayLabel = 'Alterar'
       FieldName = 'ALTERAR'
       ProviderFlags = [pfInUpdate]
     end
     object cdsPerfil_PermissaoEXCLUIR: TSmallintField
+      Alignment = taCenter
       DisplayLabel = 'Excluir'
       FieldName = 'EXCLUIR'
       ProviderFlags = [pfInUpdate]

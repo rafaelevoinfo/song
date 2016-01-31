@@ -1,10 +1,8 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
-  ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
@@ -77,7 +75,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   OptionsData.CancelOnExit = False
                   OptionsData.Deleting = False
                   OptionsData.DeletingConfirmation = False
-                  OptionsData.Editing = False
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.ShowEditButtons = gsebAlways

@@ -18,7 +18,8 @@ uses
   uMensagem in '..\Comuns\uMensagem.pas',
   fPerfil in 'Administrativo\fPerfil.pas' {frmPerfil},
   dmuAdministrativo in 'Administrativo\dmuAdministrativo.pas' {dmAdministrativo: TDataModule},
-  uControleAcesso in '..\Comuns\uControleAcesso.pas';
+  uControleAcesso in '..\Comuns\uControleAcesso.pas',
+  dmuLookup in 'Geral\dmuLookup.pas' {dmLookup: TDataModule};
 
 {$R *.res}
 

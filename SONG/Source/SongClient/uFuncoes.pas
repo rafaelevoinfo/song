@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 26/01/2016 23:57:28
+// 30/01/2016 23:09:35
 //
 
 unit uFuncoes;
@@ -30,7 +30,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuVerificarNovaVersao(ipVersaoAtual: string): string;
-    function fpuGetId(ipTabela: string): Int64;
+    function fpuGetId(ipTabela: string): Integer;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -94,7 +94,7 @@ begin
   Result := FfpuVerificarNovaVersaoCommand.Parameters[1].Value.GetWideString;
 end;
 
-function TsmFuncoesGeralClient.fpuGetId(ipTabela: string): Int64;
+function TsmFuncoesGeralClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
   begin
@@ -105,7 +105,7 @@ begin
   end;
   FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
   FfpuGetIdCommand.ExecuteUpdate;
-  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt64;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
 end;
 
 procedure TsmFuncoesGeralClient.DSServerModuleCreate(Sender: TObject);

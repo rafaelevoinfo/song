@@ -24,7 +24,7 @@ inherited smAdministrativo: TsmAdministrativo
         Value = Null
         Name = 'WHERE'
       end>
-    object qPessoaID: TLargeintField
+    object qPessoaID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -71,6 +71,16 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Size = 100
     end
+    object qPessoaBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      Size = 30
+    end
+    object qPessoaCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      Size = 100
+    end
   end
   object qPerfil: TRFQuery
     Connection = dmPrincipal.conSong
@@ -87,7 +97,7 @@ inherited smAdministrativo: TsmAdministrativo
         Value = Null
         Name = 'WHERE'
       end>
-    object qPerfilID: TLargeintField
+    object qPerfilID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -111,33 +121,31 @@ inherited smAdministrativo: TsmAdministrativo
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PERFIL_PERMISSAO.ID,'
-      '       PERFIL_PERMISSAO.PERFIL_ID,'
+      '       PERFIL_PERMISSAO.ID_PERFIL,'
       '       PERFIL_PERMISSAO.PERMISSAO,'
       '       PERFIL_PERMISSAO.VISUALIZAR,'
       '       PERFIL_PERMISSAO.INCLUIR,'
       '       PERFIL_PERMISSAO.ALTERAR,'
       '       PERFIL_PERMISSAO.EXCLUIR'
       'from PERFIL_PERMISSAO'
-      'where PERFIL_PERMISSAO.PERFIL_ID = :PERFIL_ID')
+      'where PERFIL_PERMISSAO.ID_PERFIL = :ID_PERFIL')
     Left = 40
     Top = 160
     ParamData = <
       item
-        Name = 'PERFIL_ID'
-        DataType = ftLargeint
+        Name = 'ID_PERFIL'
+        DataType = ftInteger
         ParamType = ptInput
-        Value = Null
       end>
-    object qPerfil_PermissaoID: TLargeintField
+    object qPerfil_PermissaoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qPerfil_PermissaoPERFIL_ID: TLargeintField
-      FieldName = 'PERFIL_ID'
-      Origin = 'PERFIL_ID'
-      ProviderFlags = [pfInUpdate]
+    object qPerfil_PermissaoID_PERFIL: TIntegerField
+      FieldName = 'ID_PERFIL'
+      Origin = 'ID_PERFIL'
       Required = True
     end
     object qPerfil_PermissaoPERMISSAO: TStringField

@@ -13,12 +13,12 @@ uses
 type
   TsmFuncoesGeral = class(TsmBasico)
     qId: TRFQuery;
-    qIdID: TLargeintField;
+    qIdID: TIntegerField;
   private
     { Private declarations }
   public
     function fpuVerificarNovaVersao(ipVersaoAtual: string): String;
-    function fpuGetId(ipTabela: string): Int64;
+    function fpuGetId(ipTabela: string): Integer;
   end;
 
 var
@@ -29,7 +29,7 @@ implementation
 {$R *.dfm}
 { TsmFuncoesGeral }
 
-function TsmFuncoesGeral.fpuGetId(ipTabela: string): Int64;
+function TsmFuncoesGeral.fpuGetId(ipTabela: string): Integer;
 begin
   qId.Connection := dmPrincipal.Connection;
 
@@ -37,7 +37,7 @@ begin
   qId.MacroByName('GENERATOR').AsRaw := 'GEN_'+ipTabela.ToUpper;
   qId.Open();
 
-  Result := qIdID.AsLargeInt;
+  Result := qIdID.AsInteger;
 end;
 
 function TsmFuncoesGeral.fpuVerificarNovaVersao(ipVersaoAtual: string): String;

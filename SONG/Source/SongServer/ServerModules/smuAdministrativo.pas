@@ -14,10 +14,8 @@ type
   TsmAdministrativo = class(TsmBasico)
     qPessoa: TRfQuery;
     qPerfil: TRfQuery;
-    qPerfilID: TLargeintField;
     qPerfilNOME: TStringField;
     qPerfilDESCRICAO: TStringField;
-    qPessoaID: TLargeintField;
     qPessoaNOME: TStringField;
     qPessoaCELULAR: TIntegerField;
     qPessoaRG: TStringField;
@@ -26,13 +24,17 @@ type
     qPessoaLOGIN: TStringField;
     qPessoaSENHA: TStringField;
     qPerfil_Permissao: TRFQuery;
-    qPerfil_PermissaoID: TLargeintField;
-    qPerfil_PermissaoPERFIL_ID: TLargeintField;
     qPerfil_PermissaoPERMISSAO: TStringField;
     qPerfil_PermissaoVISUALIZAR: TSmallintField;
     qPerfil_PermissaoINCLUIR: TSmallintField;
     qPerfil_PermissaoALTERAR: TSmallintField;
     qPerfil_PermissaoEXCLUIR: TSmallintField;
+    qPessoaID: TIntegerField;
+    qPessoaBAIRRO: TStringField;
+    qPessoaCOMPLEMENTO: TStringField;
+    qPerfilID: TIntegerField;
+    qPerfil_PermissaoID: TIntegerField;
+    qPerfil_PermissaoID_PERFIL: TIntegerField;
   private
     { Private declarations }
   protected

@@ -5,6 +5,7 @@ object frmBasico: TfrmBasico
   ClientHeight = 201
   ClientWidth = 447
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

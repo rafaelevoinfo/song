@@ -26,10 +26,10 @@ type
     SCAdministrativo: TDSServerClass;
     SCFuncoesGeral: TDSServerClass;
     qLogin: TRFQuery;
-    qLoginID: TLargeintField;
     qLoginLOGIN: TStringField;
     qLoginSENHA: TStringField;
     ApplicationEvents1: TApplicationEvents;
+    qLoginID: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
