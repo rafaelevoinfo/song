@@ -1,8 +1,10 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
+  ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
@@ -185,6 +187,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       Caption = 'Salvar'
       ImageIndex = 4
       OnExecute = Ac_Salvar_DetailExecute
+      OnUpdate = Ac_Salvar_DetailUpdate
     end
     object Ac_Cancelar_Detail: TAction
       Category = 'Detail'

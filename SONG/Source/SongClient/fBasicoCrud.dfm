@@ -1,5 +1,5 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnIncluir
+  ActiveControl = btnSalvar
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   ClientWidth = 862
@@ -16,7 +16,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -229,10 +229,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
@@ -306,6 +302,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       Caption = 'Salvar'
       ImageIndex = 4
       OnExecute = Ac_SalvarExecute
+      OnUpdate = Ac_SalvarUpdate
     end
     object Ac_Cancelar: TAction
       Category = 'Master'

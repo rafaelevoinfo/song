@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, uClientDataSet,
   Datasnap.DBClient, uControleAcesso, System.Generics.Collections, cxCheckBox,
   uUtils, MidasLib, dmuLookup, dmuPrincipal, cxTL, cxTLdxBarBuiltInMenu,
-  cxInplaceContainer, cxDBTL, cxTLData;
+  cxInplaceContainer, cxDBTL, cxTLData, uTypes;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)
@@ -33,18 +33,14 @@ type
     cdsLocalPermissoesALTERAR: TIntegerField;
     cdsLocalPermissoesEXCLUIR: TIntegerField;
     dsLocalPermissao: TDataSource;
-    cdsLocalModulos: TClientDataSet;
-    cdsLocalModulosMODULO: TStringField;
-    dsLocalModulos: TDataSource;
     cdsLocalPermissoesID_MODULO: TIntegerField;
-    cdsLocalModulosID: TIntegerField;
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailPERMISSAO: TcxGridDBColumn;
     viewRegistrosDetailVISUALIZAR: TcxGridDBColumn;
     viewRegistrosDetailINCLUIR: TcxGridDBColumn;
     viewRegistrosDetailALTERAR: TcxGridDBColumn;
     viewRegistrosDetailEXCLUIR: TcxGridDBColumn;
-    cxDBTreeList1: TcxDBTreeList;
+    tlPermissoes: TcxDBTreeList;
     cdsLocalPermissoesID: TIntegerField;
     cxDBTreeList1PERMISSAO: TcxDBTreeListColumn;
     cxDBTreeList1VISUALIZAR: TcxDBTreeListColumn;
@@ -54,17 +50,19 @@ type
     cxDBTreeList1ID_MODULO: TcxDBTreeListColumn;
     cxDBTreeList1ID: TcxDBTreeListColumn;
     procedure FormCreate(Sender: TObject);
+    procedure tlPermissoesEditValueChanged(Sender: TcxCustomTreeList; AColumn: TcxTreeListColumn);
   private
     FIdPerfilAtual: Integer;
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
     procedure ppvCarregarModulos;
     procedure ppvCarregarPermissoesPerfil;
-    procedure ppvAlterarOpcaoPermissao(ipOpcao: string);
+    procedure ppvZerarPermissoes;
     { Private declarations }
   protected
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprBeforeSalvarDetail; override;
+    function fprHabilitarSalvarDetail(): Boolean; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Int64); override;
@@ -95,12 +93,23 @@ begin
   ppvCarregarModulos;
 end;
 
+procedure TfrmPerfil.ppvZerarPermissoes;
+begin
+  if cdsLocalPermissoes.State in [dsEdit, dsInsert] then
+    begin
+      cdsLocalPermissoesVISUALIZAR.AsInteger := 0;
+      cdsLocalPermissoesINCLUIR.AsInteger := 0;
+      cdsLocalPermissoesALTERAR.AsInteger := 0;
+      cdsLocalPermissoesEXCLUIR.AsInteger := 0;
+    end;
+end;
+
 procedure TfrmPerfil.ppvCarregarModulos;
 var
   vaModulo, vaPermissao: string;
   vaControleAcesso: TControleAcesso;
   vaPermissoes: TList<string>;
-  vaIdModulo,vaId: Integer;
+  vaIdModulo, vaId: Integer;
 
 begin
   vaIdModulo := 0;
@@ -111,19 +120,15 @@ begin
   else
     cdsLocalPermissoes.CreateDataSet;
 
-  if cdsLocalModulos.Active then
-    cdsLocalModulos.EmptyDataSet
-  else
-    cdsLocalModulos.CreateDataSet;
-
   vaControleAcesso := TControleAcesso.fpuGetInstance;
   for vaModulo in vaControleAcesso.Modulos.Keys do
     begin
       Inc(vaId);
       vaIdModulo := vaId;
       cdsLocalPermissoes.Append;
-      cdsLocalPermissoesID.AsInteger := vaIdModulo;
+      cdsLocalPermissoesID.AsInteger := vaId;
       cdsLocalPermissoesPERMISSAO.AsString := vaModulo;
+      ppvZerarPermissoes;
       cdsLocalPermissoes.Post;
 
       vaPermissoes := vaControleAcesso.Modulos.Items[vaModulo];
@@ -134,10 +139,7 @@ begin
           cdsLocalPermissoesID.AsInteger := vaId;
           cdsLocalPermissoesID_MODULO.AsInteger := vaIdModulo;
           cdsLocalPermissoesPERMISSAO.AsString := vaPermissao;
-          cdsLocalPermissoesVISUALIZAR.AsInteger := 0;
-          cdsLocalPermissoesINCLUIR.AsInteger := 0;
-          cdsLocalPermissoesALTERAR.AsInteger := 0;
-          cdsLocalPermissoesEXCLUIR.AsInteger := 0;
+          ppvZerarPermissoes;
           cdsLocalPermissoes.Post;
         end;
     end;
@@ -145,19 +147,44 @@ begin
 end;
 
 procedure TfrmPerfil.pprBeforeSalvarDetail;
+var
+  vaPossuiPermissao: Boolean;
 begin
-  inherited;
-  TUtils.ppuPercorrerCds(dmAdministrativo.cdsPerfil_Permissao,
+  TUtils.ppuPercorrerCds(cdsLocalPermissoes,
     procedure
     begin
-      dmAdministrativo.cdsPerfil_Permissao.Edit;
-      //vamos garantir que ninguem estara com o valor null
-      dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger;
-      dmAdministrativo.cdsPerfil_PermissaoINCLUIR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoINCLUIR.AsInteger;
-      dmAdministrativo.cdsPerfil_PermissaoALTERAR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoALTERAR.AsInteger;
-      dmAdministrativo.cdsPerfil_PermissaoEXCLUIR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoEXCLUIR.AsInteger;
-      dmAdministrativo.cdsPerfil_Permissao.Post;
+      if not cdsLocalPermissoesID_MODULO.IsNull then
+        begin
+          vaPossuiPermissao := (cdsLocalPermissoesVISUALIZAR.AsInteger <> 0) or
+            (cdsLocalPermissoesINCLUIR.AsInteger <> 0) or (cdsLocalPermissoesALTERAR.AsInteger <> 0) or
+            (cdsLocalPermissoesEXCLUIR.AsInteger <> 0);
+
+          if dmAdministrativo.cdsPerfil_Permissao.Locate(dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.FieldName,
+            cdsLocalPermissoesPERMISSAO.AsString, [loCaseInsensitive]) then
+            begin
+              dmAdministrativo.cdsPerfil_Permissao.Edit;
+            end
+          else if vaPossuiPermissao then
+            begin
+              dmAdministrativo.cdsPerfil_Permissao.Append;
+              dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.AsString := cdsLocalPermissoesPERMISSAO.AsString;
+              pprPreencherCamposPadroes(dmAdministrativo.cdsPerfil_Permissao);
+
+            end;
+
+          if dmAdministrativo.cdsPerfil_Permissao.State in [dsEdit, dsInsert] then
+            begin
+              dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger := cdsLocalPermissoesVISUALIZAR.AsInteger;
+              dmAdministrativo.cdsPerfil_PermissaoINCLUIR.AsInteger := cdsLocalPermissoesINCLUIR.AsInteger;
+              dmAdministrativo.cdsPerfil_PermissaoALTERAR.AsInteger := cdsLocalPermissoesALTERAR.AsInteger;
+              dmAdministrativo.cdsPerfil_PermissaoEXCLUIR.AsInteger := cdsLocalPermissoesEXCLUIR.AsInteger;
+              dmAdministrativo.cdsPerfil_Permissao.Post
+            end;
+
+        end;
     end);
+
+  inherited;
 end;
 
 procedure TfrmPerfil.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -165,6 +192,13 @@ begin
   inherited;
   if cbPesquisarPor.ItemIndex = coNome then
     ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
+end;
+
+function TfrmPerfil.fprHabilitarSalvarDetail(): Boolean;
+begin
+  Result := inherited;
+  if not Result then
+    Result := (cdsLocalPermissoes.Active and (cdsLocalPermissoes.ChangeCount > 0));
 end;
 
 procedure TfrmPerfil.ppuAlterarDetail(ipId: Int64);
@@ -183,55 +217,59 @@ end;
 
 procedure TfrmPerfil.ppvCarregarPermissoesPerfil;
 begin
-  if FIdPerfilAtual <> dmAdministrativo.cdsPerfilID.AsInteger then
+  dmAdministrativo.cdsPerfil_Permissao.DisableControls;
+  try
+    TUtils.ppuPercorrerCds(cdsLocalPermissoes,
+      procedure
+      begin
+        cdsLocalPermissoes.Edit;
+        if dmAdministrativo.cdsPerfil_Permissao.Locate(dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.FieldName,
+          cdsLocalPermissoesPERMISSAO.AsString, [loCaseInsensitive]) then
+          begin
+            cdsLocalPermissoesVISUALIZAR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger;
+            cdsLocalPermissoesINCLUIR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoINCLUIR.AsInteger;
+            cdsLocalPermissoesALTERAR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoALTERAR.AsInteger;
+            cdsLocalPermissoesEXCLUIR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoEXCLUIR.AsInteger;
+          end
+        else
+          begin
+            ppvZerarPermissoes;
+          end;
+
+        cdsLocalPermissoes.Post;
+      end);
+  finally
+    dmAdministrativo.cdsPerfil_Permissao.EnableControls;
+  end;
+
+  cdsLocalPermissoes.MergeChangeLog;
+end;
+
+procedure TfrmPerfil.tlPermissoesEditValueChanged(Sender: TcxCustomTreeList; AColumn: TcxTreeListColumn);
+var
+  vaField: string;
+  vaValor, vaId: Integer;
+begin
+  inherited;
+  if cdsLocalPermissoesID_MODULO.IsNull then
     begin
-      FIdPerfilAtual := dmAdministrativo.cdsPerfilID.AsInteger;
+      vaField := TcxDBItemDataBinding(AColumn.DataBinding).FieldName;
+      vaValor := AColumn.Value;
+      vaId := cdsLocalPermissoesID.AsInteger;
 
       TUtils.ppuPercorrerCds(cdsLocalPermissoes,
         procedure
         begin
-          cdsLocalPermissoes.Edit;
-          if dmAdministrativo.cdsPerfil_Permissao.Locate(dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.FieldName,
-            cdsLocalPermissoesPERMISSAO.AsString, [loCaseInsensitive]) then
+          if cdsLocalPermissoesID_MODULO.AsInteger = vaId then
             begin
-              cdsLocalPermissoesVISUALIZAR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger;
-              cdsLocalPermissoesINCLUIR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoINCLUIR.AsInteger;
-              cdsLocalPermissoesALTERAR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoALTERAR.AsInteger;
-              cdsLocalPermissoesEXCLUIR.AsInteger := dmAdministrativo.cdsPerfil_PermissaoEXCLUIR.AsInteger;
-            end
-          else
-            begin
-              cdsLocalPermissoesVISUALIZAR.AsInteger := 0;
-              cdsLocalPermissoesINCLUIR.AsInteger := 0;
-              cdsLocalPermissoesALTERAR.AsInteger := 0;
-              cdsLocalPermissoesEXCLUIR.AsInteger := 0;
+              cdsLocalPermissoes.Edit;
+              cdsLocalPermissoes.FieldByName(vaField).AsInteger := vaValor;
+              cdsLocalPermissoes.Post;
             end;
-
-          cdsLocalPermissoes.Post;
         end);
-    end;
-end;
-
-procedure TfrmPerfil.ppvAlterarOpcaoPermissao(ipOpcao: string);
-begin
-  if dmAdministrativo.cdsPerfil_Permissao.Locate(dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.FieldName,
-    cdsLocalPermissoesPERMISSAO.AsString, [loCaseInsensitive]) then
-    begin
-      dmAdministrativo.cdsPerfil_Permissao.Edit;
-      dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.AsString := cdsLocalPermissoesPERMISSAO.AsString;
-      dmAdministrativo.cdsPerfil_Permissao.FieldByName(ipOpcao).AsInteger := cdsLocalPermissoes.FieldByName(ipOpcao)
-        .AsInteger;
-      dmAdministrativo.cdsPerfil_Permissao.Post;
     end
-  else if cdsLocalPermissoes.FieldByName(ipOpcao).AsInteger = 1 then
-    begin
-      dmAdministrativo.cdsPerfil_Permissao.Append;
-      pprPreencherCamposPadroes(dmAdministrativo.cdsPerfil_Permissao);
-      dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.AsString := cdsLocalPermissoesPERMISSAO.AsString;
-      dmAdministrativo.cdsPerfil_Permissao.FieldByName(ipOpcao).AsInteger := 1;
-      dmAdministrativo.cdsPerfil_Permissao.Post;
-    end;
+  else
+    tlPermissoes.Post;
 end;
-
 
 end.

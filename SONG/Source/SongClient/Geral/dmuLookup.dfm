@@ -1,4 +1,5 @@
 inherited dmLookup: TdmLookup
+  OldCreateOrder = True
   Height = 325
   Width = 523
   object Repositorio: TcxEditRepository
@@ -15,7 +16,6 @@ inherited dmLookup: TdmLookup
           Description = 'Sim'
           Value = 1
         end>
-      Properties.ShowDescriptions = False
     end
   end
 end

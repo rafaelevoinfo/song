@@ -1,17 +1,9 @@
 inherited frmPerfil: TfrmPerfil
-  ActiveControl = btnSalvarDetail
   Caption = 'Perfis de Usu'#225'rio'
-  ExplicitWidth = 878
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
@@ -36,10 +28,6 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 843
-              ExplicitHeight = 156
               inherited cxGrid1: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   OptionsView.GroupByBox = False
@@ -94,10 +82,6 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6
@@ -134,11 +118,7 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
-      object cxDBTreeList1: TcxDBTreeList
+      object tlPermissoes: TcxDBTreeList
         Left = 0
         Top = 50
         Width = 854
@@ -151,13 +131,11 @@ inherited frmPerfil: TfrmPerfil
         DataController.ParentField = 'ID_MODULO'
         DataController.KeyField = 'ID'
         Navigator.Buttons.CustomButtons = <>
+        OptionsBehavior.IncSearch = True
+        OptionsData.Deleting = False
         RootValue = -1
         TabOrder = 1
-        Visible = False
-        ExplicitLeft = 27
-        ExplicitTop = 128
-        ExplicitWidth = 250
-        ExplicitHeight = 150
+        OnEditValueChanged = tlPermissoesEditValueChanged
         object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
           DataBinding.FieldName = 'PERMISSAO'
           Options.Editing = False
@@ -170,6 +148,8 @@ inherited frmPerfil: TfrmPerfil
         end
         object cxDBTreeList1VISUALIZAR: TcxDBTreeListColumn
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.ImmediatePost = True
+          Properties.NullStyle = nssUnchecked
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
           DataBinding.FieldName = 'VISUALIZAR'
@@ -182,6 +162,8 @@ inherited frmPerfil: TfrmPerfil
         end
         object cxDBTreeList1INCLUIR: TcxDBTreeListColumn
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.ImmediatePost = True
+          Properties.NullStyle = nssUnchecked
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
           DataBinding.FieldName = 'INCLUIR'
@@ -194,6 +176,8 @@ inherited frmPerfil: TfrmPerfil
         end
         object cxDBTreeList1ALTERAR: TcxDBTreeListColumn
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.ImmediatePost = True
+          Properties.NullStyle = nssUnchecked
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
           DataBinding.FieldName = 'ALTERAR'
@@ -206,6 +190,8 @@ inherited frmPerfil: TfrmPerfil
         end
         object cxDBTreeList1EXCLUIR: TcxDBTreeListColumn
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.ImmediatePost = True
+          Properties.NullStyle = nssUnchecked
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
           DataBinding.FieldName = 'EXCLUIR'
@@ -296,24 +282,5 @@ inherited frmPerfil: TfrmPerfil
     DataSet = cdsLocalPermissoes
     Left = 504
     Top = 184
-  end
-  object cdsLocalModulos: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 424
-    Top = 240
-    object cdsLocalModulosMODULO: TStringField
-      DisplayLabel = 'M'#243'dulo'
-      FieldName = 'MODULO'
-      Size = 100
-    end
-    object cdsLocalModulosID: TIntegerField
-      FieldName = 'ID'
-    end
-  end
-  object dsLocalModulos: TDataSource
-    DataSet = cdsLocalModulos
-    Left = 552
-    Top = 240
   end
 end

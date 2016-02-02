@@ -2,7 +2,7 @@ object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
   Height = 427
   Width = 783
-  object DataSnapConn: TSQLConnection
+  object DataSnapConn: TRFSQLConnection
     DriverName = 'DataSnap'
     LoginPrompt = False
     Params.Strings = (
@@ -19,7 +19,6 @@ object dmPrincipal: TdmPrincipal
       'DSAuthenticationUser=admin')
     AfterConnect = DataSnapConnAfterConnect
     AfterDisconnect = DataSnapConnAfterDisconnect
-    Connected = True
     Left = 64
     Top = 48
   end
@@ -1081,7 +1080,6 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248

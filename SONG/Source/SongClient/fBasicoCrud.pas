@@ -61,6 +61,7 @@ type
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure EditPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Ac_SalvarUpdate(Sender: TObject);
   private
   protected
     // SALVAR
@@ -70,6 +71,7 @@ type
     procedure pprBeforeSalvar; virtual;
     procedure pprExecutarSalvar; virtual;
     procedure pprAfterSalvar; virtual;
+    function fprHabilitarSalvar(): Boolean; virtual;
     // PESQUISA
     procedure pprRealizarPesquisaInicial; virtual;
     procedure pprValidarPesquisa; virtual;
@@ -139,6 +141,13 @@ begin
   fpuSalvar;
 end;
 
+procedure TfrmBasicoCrud.Ac_SalvarUpdate(Sender: TObject);
+begin
+  inherited;
+  if Sender is TAction then
+    TAction(Sender).Enabled := fprHabilitarSalvar();
+end;
+
 procedure TfrmBasicoCrud.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
@@ -188,7 +197,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuCancelar;
 begin
-  if (dsMaster.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
+  if fprHabilitarSalvar then
     begin
       if TMsg.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
         begin
@@ -226,6 +235,12 @@ procedure TfrmBasicoCrud.pprExecutarSalvar;
 begin
   if (dsMaster.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
     dsMaster.DataSet.Post;
+end;
+
+function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
+begin
+  Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit, dsInsert]) or
+    (TClientDataSet(dsMaster.DataSet).ChangeCount > 0));
 end;
 
 procedure TfrmBasicoCrud.pprPreencherCamposPadroes(ipDataSet: TDataSet);

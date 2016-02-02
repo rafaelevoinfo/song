@@ -1,5 +1,7 @@
 #Ignorando executaveis
 *.exe
+#Ignorando arquivos de projetos
+*.identcache
 
 #Ignorando pastas auxiliares e temporarias
 /SONG/Source/Fontes_Promedico/

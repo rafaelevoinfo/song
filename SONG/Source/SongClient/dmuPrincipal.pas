@@ -9,11 +9,11 @@ uses
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
-  Datasnap.DBClient, Datasnap.DSConnect;
+  Datasnap.DBClient, Datasnap.DSConnect, uConnection;
 
 type
   TdmPrincipal = class(TDataModule)
-    DataSnapConn: TSQLConnection;
+    DataSnapConn: TRFSQLConnection;
     dxSkinController1: TdxSkinController;
     ProxyGenerator: TDSProxyGenerator;
     DSConnectionMetaDataProvider1: TDSConnectionMetaDataProvider;

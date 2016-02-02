@@ -42,11 +42,12 @@ type
     procedure Ac_Excluir_DetailExecute(Sender: TObject);
     procedure Ac_Salvar_DetailExecute(Sender: TObject);
     procedure Ac_Cancelar_DetailExecute(Sender: TObject);
-  private
+    procedure Ac_Salvar_DetailUpdate(Sender: TObject);
   protected
     procedure pprBeforeSalvarDetail; virtual;
     procedure pprExecutarSalvarDetail; virtual;
     procedure pprAfterSalvarDetail; virtual;
+    function fprHabilitarSalvarDetail():Boolean;virtual;
 
     procedure pprValidarDadosDetail; virtual;
     // OVERRIDE
@@ -102,6 +103,19 @@ begin
   fpuSalvarDetail;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailUpdate(Sender: TObject);
+begin
+  inherited;
+  if Sender is TAction then
+    TAction(Sender).Enabled := fprHabilitarSalvarDetail();
+end;
+
+function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail():Boolean;
+begin
+   Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or
+                                                    (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
+end;
+
 procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
 begin
   pcPrincipal.ActivePage := tabPesquisa;
@@ -140,7 +154,7 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuCancelarDetail;
 begin
-  if (dsDetail.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+  if fprHabilitarSalvarDetail then
     begin
       if TMsg.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
@@ -165,6 +179,9 @@ begin
           if dsDetail.DataSet.Locate(TBancoDados.coId, vaId, []) then
             dsDetail.DataSet.Delete;
         end;
+
+      if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+        TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
       Result := True;
     end;
 end;

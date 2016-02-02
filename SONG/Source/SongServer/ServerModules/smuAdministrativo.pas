@@ -35,6 +35,10 @@ type
     qPerfilID: TIntegerField;
     qPerfil_PermissaoID: TIntegerField;
     qPerfil_PermissaoID_PERFIL: TIntegerField;
+    qPessoa_Perfil: TRFQuery;
+    qPessoa_PerfilID: TIntegerField;
+    qPessoa_PerfilID_PESSOA: TIntegerField;
+    qPessoa_PerfilID_PERFIL: TIntegerField;
   private
     { Private declarations }
   protected

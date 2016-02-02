@@ -176,4 +176,39 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
     end
   end
+  object qPessoa_Perfil: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PESSOA_PERFIL.ID,'
+      '       PESSOA_PERFIL.ID_PESSOA,'
+      '       PESSOA_PERFIL.ID_PERFIL'
+      'from PESSOA_PERFIL'
+      'where PESSOA_PERFIL.ID_PESSOA = :ID_PESSOA')
+    Left = 48
+    Top = 232
+    ParamData = <
+      item
+        Name = 'ID_PESSOA'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qPessoa_PerfilID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qPessoa_PerfilID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qPessoa_PerfilID_PERFIL: TIntegerField
+      FieldName = 'ID_PERFIL'
+      Origin = 'ID_PERFIL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
 end

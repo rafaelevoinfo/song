@@ -35,10 +35,13 @@ requires
   dsnap,
   FireDACCommon,
   FireDAC,
-  FireDACCommonDriver;
+  FireDACCommonDriver,
+  DbxCommonDriver,
+  dbexpress;
 
 contains
   uClientDataSet in 'uClientDataSet.pas',
-  uQuery in 'uQuery.pas';
+  uQuery in 'uQuery.pas',
+  uConnection in 'uConnection.pas';
 
 end.
