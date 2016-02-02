@@ -4,6 +4,27 @@ inherited frmPerfil: TfrmPerfil
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      inherited pnPesquisa: TPanel
+        inherited pnEditsPesquisa: TPanel
+          inherited cbPesquisarPor: TcxImageComboBox
+            Properties.Items = <
+              item
+                Description = 'Todos'
+                ImageIndex = 0
+                Value = 0
+              end
+              item
+                Description = 'C'#243'digo'
+                ImageIndex = 0
+                Value = 1
+              end
+              item
+                Description = 'Nome'
+                Value = 2
+              end>
+          end
+        end
+      end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView

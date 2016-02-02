@@ -21,6 +21,21 @@ type
     cdsPerfilID: TIntegerField;
     cdsPerfil_PermissaoID: TIntegerField;
     cdsPerfil_PermissaoID_PERFIL: TIntegerField;
+    cdsPessoa: TRFClientDataSet;
+    cdsPessoa_Perfil: TRFClientDataSet;
+    cdsPessoaID: TIntegerField;
+    cdsPessoaNOME: TStringField;
+    cdsPessoaCELULAR: TIntegerField;
+    cdsPessoaRG: TStringField;
+    cdsPessoaCPF: TStringField;
+    cdsPessoaENDERECO: TStringField;
+    cdsPessoaLOGIN: TStringField;
+    cdsPessoaSENHA: TStringField;
+    cdsPessoaBAIRRO: TStringField;
+    cdsPessoaCOMPLEMENTO: TStringField;
+    cdsPessoa_PerfilID: TIntegerField;
+    cdsPessoa_PerfilID_PESSOA: TIntegerField;
+    cdsPessoa_PerfilID_PERFIL: TIntegerField;
   private
     { Private declarations }
   public

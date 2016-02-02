@@ -1,11 +1,32 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
-  ActiveControl = btnSalvarDetail
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrudMasterDetail'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
+      inherited pnPesquisa: TPanel
+        inherited pnEditsPesquisa: TPanel
+          inherited cbPesquisarPor: TcxImageComboBox
+            Properties.Items = <
+              item
+                Description = 'Todos'
+                ImageIndex = 0
+                Value = 0
+              end
+              item
+                Description = 'C'#243'digo'
+                ImageIndex = 0
+                Value = 1
+              end>
+          end
+        end
+      end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           Height = 208
@@ -127,6 +148,12 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           end
         end
       end
+    end
+    inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
     end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'

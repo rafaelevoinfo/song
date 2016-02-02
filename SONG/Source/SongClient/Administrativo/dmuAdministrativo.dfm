@@ -91,4 +91,82 @@ inherited dmAdministrativo: TdmAdministrativo
     Left = 336
     Top = 144
   end
+  object cdsPessoa: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqPessoa'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 128
+    Top = 72
+    object cdsPessoaID: TIntegerField
+      DisplayLabel = 'Id'
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsPessoaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsPessoaCELULAR: TIntegerField
+      DisplayLabel = 'Celular'
+      FieldName = 'CELULAR'
+    end
+    object cdsPessoaRG: TStringField
+      FieldName = 'RG'
+      Size = 30
+    end
+    object cdsPessoaCPF: TStringField
+      FieldName = 'CPF'
+    end
+    object cdsPessoaENDERECO: TStringField
+      DisplayLabel = 'Endere'#231'o'
+      FieldName = 'ENDERECO'
+      Size = 100
+    end
+    object cdsPessoaLOGIN: TStringField
+      DisplayLabel = 'Login'
+      FieldName = 'LOGIN'
+      Size = 100
+    end
+    object cdsPessoaSENHA: TStringField
+      DisplayLabel = 'Senha'
+      FieldName = 'SENHA'
+      Size = 100
+    end
+    object cdsPessoaBAIRRO: TStringField
+      DisplayLabel = 'Bairro'
+      FieldName = 'BAIRRO'
+      Size = 30
+    end
+    object cdsPessoaCOMPLEMENTO: TStringField
+      DisplayLabel = 'Complemento'
+      FieldName = 'COMPLEMENTO'
+      Size = 100
+    end
+  end
+  object cdsPessoa_Perfil: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqPessoa_Perfil'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 248
+    Top = 64
+    object cdsPessoa_PerfilID: TIntegerField
+      DisplayLabel = 'Id'
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsPessoa_PerfilID_PESSOA: TIntegerField
+      DisplayLabel = 'Pessoa'
+      FieldName = 'ID_PESSOA'
+      Required = True
+    end
+    object cdsPessoa_PerfilID_PERFIL: TIntegerField
+      DisplayLabel = 'Perfil'
+      FieldName = 'ID_PERFIL'
+      Required = True
+    end
+  end
 end

@@ -19,7 +19,8 @@ uses
   fPerfil in 'Administrativo\fPerfil.pas' {frmPerfil},
   dmuAdministrativo in 'Administrativo\dmuAdministrativo.pas' {dmAdministrativo: TDataModule},
   uControleAcesso in '..\Comuns\uControleAcesso.pas',
-  dmuLookup in 'Geral\dmuLookup.pas' {dmLookup: TDataModule};
+  dmuLookup in 'Geral\dmuLookup.pas' {dmLookup: TDataModule},
+  fPessoa in 'Administrativo\fPessoa.pas' {frmPessoa};
 
 {$R *.res}
 
