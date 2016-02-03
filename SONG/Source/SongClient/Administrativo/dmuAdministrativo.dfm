@@ -109,10 +109,6 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
       Size = 100
     end
-    object cdsPessoaCELULAR: TIntegerField
-      DisplayLabel = 'Celular'
-      FieldName = 'CELULAR'
-    end
     object cdsPessoaRG: TStringField
       FieldName = 'RG'
       Size = 30
@@ -144,6 +140,22 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Complemento'
       FieldName = 'COMPLEMENTO'
       Size = 100
+    end
+    object cdsPessoaEMAIL: TStringField
+      DisplayLabel = 'E-Mail'
+      FieldName = 'EMAIL'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsPessoaCELULAR: TStringField
+      DisplayLabel = 'Celular'
+      FieldName = 'CELULAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPessoaTELEFONE: TStringField
+      DisplayLabel = 'Telefone'
+      FieldName = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object cdsPessoa_Perfil: TRFClientDataSet

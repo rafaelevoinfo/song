@@ -40,8 +40,8 @@ type
     viewRegistrosDetailINCLUIR: TcxGridDBColumn;
     viewRegistrosDetailALTERAR: TcxGridDBColumn;
     viewRegistrosDetailEXCLUIR: TcxGridDBColumn;
-    tlPermissoes: TcxDBTreeList;
     cdsLocalPermissoesID: TIntegerField;
+    tlPermissoes: TcxDBTreeList;
     cxDBTreeList1PERMISSAO: TcxDBTreeListColumn;
     cxDBTreeList1VISUALIZAR: TcxDBTreeListColumn;
     cxDBTreeList1INCLUIR: TcxDBTreeListColumn;

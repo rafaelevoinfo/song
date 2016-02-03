@@ -25,7 +25,6 @@ type
     cdsPessoa_Perfil: TRFClientDataSet;
     cdsPessoaID: TIntegerField;
     cdsPessoaNOME: TStringField;
-    cdsPessoaCELULAR: TIntegerField;
     cdsPessoaRG: TStringField;
     cdsPessoaCPF: TStringField;
     cdsPessoaENDERECO: TStringField;
@@ -36,6 +35,9 @@ type
     cdsPessoa_PerfilID: TIntegerField;
     cdsPessoa_PerfilID_PESSOA: TIntegerField;
     cdsPessoa_PerfilID_PERFIL: TIntegerField;
+    cdsPessoaEMAIL: TStringField;
+    cdsPessoaCELULAR: TStringField;
+    cdsPessoaTELEFONE: TStringField;
   private
     { Private declarations }
   public

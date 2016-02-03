@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, Vcl.Dialogs, cxPC, Vcl.Forms, Vcl.Controls,
-  Datasnap.DBClient;
+  Datasnap.DBClient, IdHashSHA, System.RegularExpressions;
 
 type
   TUtils = class
@@ -12,11 +12,25 @@ type
     class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
     class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
     class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
+    class function fpuCriptografarSha1(ipValor: String): String;
+    class function fpuValidarEmail(ipEmail:String): Boolean;
   end;
 
 implementation
 
 { TUtils }
+
+class function TUtils.fpuCriptografarSha1(ipValor: String): String;
+var
+  vaSha1: TIdHashSHA1;
+begin
+  vaSha1 := TIdHashSHA1.Create;
+  try
+    Result := vaSha1.HashStringAsHex(ipValor);
+  finally
+    vaSha1.free;
+  end;
+end;
 
 class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
 var
@@ -62,6 +76,11 @@ begin
       end;
     end;
 
+end;
+
+class function TUtils.fpuValidarEmail(ipEmail:String): Boolean;
+begin
+  Result := TRegex.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' + '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$');
 end;
 
 class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);

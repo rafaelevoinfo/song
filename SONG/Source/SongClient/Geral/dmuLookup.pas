@@ -4,12 +4,17 @@ interface
 
 uses
   System.SysUtils, System.Classes, dmuBasico, cxEdit, cxEditRepositoryItems,
-  cxClasses;
+  cxClasses, Data.DB, Datasnap.DBClient, dmuPrincipal, cxDBEditRepository;
 
 type
   TdmLookup = class(TdmBasico)
     Repositorio: TcxEditRepository;
     RepIcbNaoSim: TcxEditRepositoryImageComboBoxItem;
+    cdslkPerfil: TClientDataSet;
+    cdslkPerfilID: TIntegerField;
+    cdslkPerfilNOME: TStringField;
+    repLcbPerfil: TcxEditRepositoryLookupComboBoxItem;
+    dslkPerfil: TDataSource;
   private
     { Private declarations }
   public
@@ -20,6 +25,8 @@ var
   dmLookup: TdmLookup;
 
 implementation
+
+
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 

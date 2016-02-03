@@ -37,6 +37,7 @@ type
     btnSalvarDetail: TButton;
     btnCancelarDetail: TButton;
     dsDetail: TDataSource;
+    pnEditsCadastroDetail: TPanel;
     procedure Ac_Incluir_DetailExecute(Sender: TObject);
     procedure Ac_Alterar_DetailExecute(Sender: TObject);
     procedure Ac_Excluir_DetailExecute(Sender: TObject);

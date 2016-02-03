@@ -8,7 +8,7 @@ uses
 type
   TRFSQLConnection = class(TSQLConnection)
   published
-    property Connected stored False;
+    property Connected stored False default false;
   end;
 
 procedure Register;

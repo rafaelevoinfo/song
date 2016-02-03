@@ -121,4 +121,10 @@ object dmPrincipal: TdmPrincipal
     Left = 680
     Top = 72
   end
+  object SCLookup: TDSServerClass
+    OnGetClass = SCLookupGetClass
+    Server = Server
+    Left = 576
+    Top = 168
+  end
 end

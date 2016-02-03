@@ -7,7 +7,9 @@ inherited smAdministrativo: TsmAdministrativo
     SQL.Strings = (
       'select PESSOA.ID,'
       '       PESSOA.NOME,'
+      '       PESSOA.EMAIL,'
       '       PESSOA.CELULAR,'
+      '       PESSOA.TELEFONE,'
       '       PESSOA.RG,'
       '       PESSOA.CPF,'
       '       PESSOA.ENDERECO,'
@@ -36,11 +38,6 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
-    end
-    object qPessoaCELULAR: TIntegerField
-      FieldName = 'CELULAR'
-      Origin = 'CELULAR'
-      ProviderFlags = [pfInUpdate]
     end
     object qPessoaRG: TStringField
       FieldName = 'RG'
@@ -80,6 +77,22 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'COMPLEMENTO'
       Origin = 'COMPLEMENTO'
       Size = 100
+    end
+    object qPessoaEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qPessoaCELULAR: TStringField
+      FieldName = 'CELULAR'
+      Origin = 'CELULAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaTELEFONE: TStringField
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qPerfil: TRFQuery

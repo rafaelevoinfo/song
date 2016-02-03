@@ -139,107 +139,114 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      object tlPermissoes: TcxDBTreeList
-        Left = 0
-        Top = 50
-        Width = 854
-        Height = 398
-        Align = alClient
-        Bands = <
-          item
-          end>
-        DataController.DataSource = dsLocalPermissao
-        DataController.ParentField = 'ID_MODULO'
-        DataController.KeyField = 'ID'
-        Navigator.Buttons.CustomButtons = <>
-        OptionsBehavior.IncSearch = True
-        OptionsData.Deleting = False
-        RootValue = -1
-        TabOrder = 1
-        OnEditValueChanged = tlPermissoesEditValueChanged
-        object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
-          DataBinding.FieldName = 'PERMISSAO'
-          Options.Editing = False
-          Width = 403
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-        object cxDBTreeList1VISUALIZAR: TcxDBTreeListColumn
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ImmediatePost = True
-          Properties.NullStyle = nssUnchecked
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          DataBinding.FieldName = 'VISUALIZAR'
-          Width = 100
-          Position.ColIndex = 1
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-        object cxDBTreeList1INCLUIR: TcxDBTreeListColumn
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ImmediatePost = True
-          Properties.NullStyle = nssUnchecked
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          DataBinding.FieldName = 'INCLUIR'
-          Width = 100
-          Position.ColIndex = 2
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-        object cxDBTreeList1ALTERAR: TcxDBTreeListColumn
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ImmediatePost = True
-          Properties.NullStyle = nssUnchecked
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          DataBinding.FieldName = 'ALTERAR'
-          Width = 100
-          Position.ColIndex = 3
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-        object cxDBTreeList1EXCLUIR: TcxDBTreeListColumn
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ImmediatePost = True
-          Properties.NullStyle = nssUnchecked
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          DataBinding.FieldName = 'EXCLUIR'
-          Width = 100
-          Position.ColIndex = 4
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-        object cxDBTreeList1ID_MODULO: TcxDBTreeListColumn
-          Visible = False
-          DataBinding.FieldName = 'ID_MODULO'
-          Position.ColIndex = 5
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-        object cxDBTreeList1ID: TcxDBTreeListColumn
-          Visible = False
-          DataBinding.FieldName = 'ID'
-          Position.ColIndex = 6
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
+      inherited pnEditsCadastroDetail: TPanel
+        ExplicitLeft = 0
+        ExplicitTop = 50
+        ExplicitWidth = 854
+        ExplicitHeight = 398
+        object tlPermissoes: TcxDBTreeList
+          Left = 0
+          Top = 0
+          Width = 854
+          Height = 398
+          Align = alClient
+          Bands = <
+            item
+            end>
+          DataController.DataSource = dsLocalPermissao
+          DataController.ParentField = 'ID_MODULO'
+          DataController.KeyField = 'ID'
+          Navigator.Buttons.CustomButtons = <>
+          OptionsBehavior.IncSearch = True
+          OptionsData.Deleting = False
+          RootValue = -1
+          TabOrder = 0
+          OnEditValueChanged = tlPermissoesEditValueChanged
+          ExplicitTop = 50
+          object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
+            DataBinding.FieldName = 'PERMISSAO'
+            Options.Editing = False
+            Width = 403
+            Position.ColIndex = 0
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
+          object cxDBTreeList1VISUALIZAR: TcxDBTreeListColumn
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            DataBinding.FieldName = 'VISUALIZAR'
+            Width = 100
+            Position.ColIndex = 1
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
+          object cxDBTreeList1INCLUIR: TcxDBTreeListColumn
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            DataBinding.FieldName = 'INCLUIR'
+            Width = 100
+            Position.ColIndex = 2
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
+          object cxDBTreeList1ALTERAR: TcxDBTreeListColumn
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            DataBinding.FieldName = 'ALTERAR'
+            Width = 100
+            Position.ColIndex = 3
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
+          object cxDBTreeList1EXCLUIR: TcxDBTreeListColumn
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.NullStyle = nssUnchecked
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            DataBinding.FieldName = 'EXCLUIR'
+            Width = 100
+            Position.ColIndex = 4
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
+          object cxDBTreeList1ID_MODULO: TcxDBTreeListColumn
+            Visible = False
+            DataBinding.FieldName = 'ID_MODULO'
+            Position.ColIndex = 5
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
+          object cxDBTreeList1ID: TcxDBTreeListColumn
+            Visible = False
+            DataBinding.FieldName = 'ID'
+            Position.ColIndex = 6
+            Position.RowIndex = 0
+            Position.BandIndex = 0
+            Summary.FooterSummaryItems = <>
+            Summary.GroupFooterSummaryItems = <>
+          end
         end
       end
     end

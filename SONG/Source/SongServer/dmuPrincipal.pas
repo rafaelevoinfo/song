@@ -12,7 +12,7 @@ uses System.SysUtils, System.Classes,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase,
   System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
   uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging;
+  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -30,6 +30,7 @@ type
     qLoginSENHA: TStringField;
     ApplicationEvents1: TApplicationEvents;
     qLoginID: TIntegerField;
+    SCLookup: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -40,6 +41,8 @@ type
       var valid: Boolean);
     procedure ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
+    procedure SCLookupGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
     FConnections: TDictionary<Integer, TFDConnection>;
@@ -58,7 +61,7 @@ implementation
 
 {$R *.dfm}
 
-uses smuAdministrativo, smuFuncoesGeral;
+uses smuAdministrativo, smuFuncoesGeral, smuLookup;
 
 { TdmPrincipal }
 
@@ -66,7 +69,7 @@ procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject;
   E: Exception);
 begin
     //TODO:Implementar log de erros
-  CodeSite.send(e.Message);
+
 end;
 
 procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
@@ -159,6 +162,12 @@ end;
 procedure TdmPrincipal.SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuFuncoesGeral.TSMFuncoesGeral;
+end;
+
+procedure TdmPrincipal.SCLookupGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+   PersistentClass := smuLookup.TsmLookup;
 end;
 
 procedure TdmPrincipal.ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);

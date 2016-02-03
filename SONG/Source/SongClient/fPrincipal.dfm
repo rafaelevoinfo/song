@@ -50,6 +50,7 @@ inherited frmPrincipal: TfrmPrincipal
     Top = 104
     object Ac_Pessoas: TAction
       Caption = 'Pessoas'
+      OnExecute = Ac_PessoasExecute
     end
     object Ac_Perfis: TAction
       Caption = 'Perfis de Usu'#225'rios'

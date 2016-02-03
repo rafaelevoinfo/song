@@ -17,5 +17,40 @@ inherited dmLookup: TdmLookup
           Value = 1
         end>
     end
+    object repLcbPerfil: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkPerfil
+    end
+  end
+  object cdslkPerfil: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkPerfil'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 248
+    Top = 144
+    object cdslkPerfilID: TIntegerField
+      DisplayLabel = 'Id'
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkPerfilNOME: TStringField
+      DisplayLabel = 'Perfil'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object dslkPerfil: TDataSource
+    DataSet = cdslkPerfil
+    Left = 352
+    Top = 144
   end
 end

@@ -11,7 +11,8 @@ uses
   uTypes in '..\Comuns\uTypes.pas',
   uSQLGenerator in '..\Comuns\uSQLGenerator.pas',
   uRoles in '..\Comuns\uRoles.pas',
-  smuFuncoesGeral in 'ServerModules\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule};
+  smuFuncoesGeral in 'ServerModules\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule},
+  smuLookup in 'ServerModules\smuLookup.pas' {smLookup: TDSServerModule};
 
 {$R *.res}
 

@@ -17,7 +17,6 @@ type
     qPerfilNOME: TStringField;
     qPerfilDESCRICAO: TStringField;
     qPessoaNOME: TStringField;
-    qPessoaCELULAR: TIntegerField;
     qPessoaRG: TStringField;
     qPessoaCPF: TStringField;
     qPessoaENDERECO: TStringField;
@@ -39,6 +38,9 @@ type
     qPessoa_PerfilID: TIntegerField;
     qPessoa_PerfilID_PESSOA: TIntegerField;
     qPessoa_PerfilID_PERFIL: TIntegerField;
+    qPessoaEMAIL: TStringField;
+    qPessoaCELULAR: TStringField;
+    qPessoaTELEFONE: TStringField;
   private
     { Private declarations }
   protected

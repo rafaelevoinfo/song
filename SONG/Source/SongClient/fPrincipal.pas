@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, fLogin, uTypes,
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
-  cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC;
+  cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
+  fPessoa;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -22,6 +23,7 @@ type
     tabDashBoard: TcxTabSheet;
     procedure FormShow(Sender: TObject);
     procedure Ac_PerfisExecute(Sender: TObject);
+    procedure Ac_PessoasExecute(Sender: TObject);
   private
     procedure ppvAfterShow(var ipMsg: TMessage); message MSG_AFTER_SHOW;
   public
@@ -39,6 +41,12 @@ procedure TfrmPrincipal.Ac_PerfisExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmPerfil>(pcPrincipal, TfrmPerfil, frmPerfil);
+end;
+
+procedure TfrmPrincipal.Ac_PessoasExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmPessoa>(pcPrincipal, TfrmPessoa, frmPessoa);
 end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
