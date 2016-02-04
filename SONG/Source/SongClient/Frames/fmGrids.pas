@@ -9,7 +9,8 @@ uses
   dxSkinsCore, dxSkinBlack, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, System.Actions, Vcl.ActnList, uUtils;
+  cxGrid, System.Actions, Vcl.ActnList, uUtils, System.Generics.Collections, System.Generics.Defaults,
+  uTypes;
 
 type
   TframeGrids = class(TFrame)
@@ -42,27 +43,52 @@ type
     procedure Ac_AddTodosExecute(Sender: TObject);
     procedure Ac_RemoverExecute(Sender: TObject);
     procedure Ac_RemoverTodosExecute(Sender: TObject);
+    procedure viewEsquerdaDblClick(Sender: TObject);
+    procedure viewDireitaDblClick(Sender: TObject);
   private
-    { Private declarations }
+    FMapaFields: TDictionary<String, string>;
+    procedure ppvPreencherCamposPadroes(ipDataSet: TDataSet);
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string;
+      ipRepositorio: TcxEditRepositoryItem); overload;
+    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean); overload;
+    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean;
+      ipRepositorio: TcxEditRepositoryItem); overload;
+
+    procedure ppuMapearFields(ipFieldEsquerda, ipFieldDireita: String);
   end;
 
 implementation
+
+uses
+  dmuPrincipal;
 
 {$R *.dfm}
 
 procedure TframeGrids.Ac_AddExecute(Sender: TObject);
 var
   vaField, vaFieldDestino: TField;
+  vaFieldName: String;
 begin
   dsDireita.DataSet.Append;
-  for vaField in dsEsquerda.DataSet.Fields do
+  for vaFieldName in FMapaFields.Keys do
     begin
-      vaFieldDestino := dsDireita.DataSet.FindField(vaField.FieldName);
-      if Assigned(vaFieldDestino) then
-        vaFieldDestino.Assign(vaField);
+      vaField := dsEsquerda.DataSet.FindField(vaFieldName);
+      if Assigned(vaField) then
+        begin
+          vaFieldDestino := dsDireita.DataSet.FindField(FMapaFields.Items[vaFieldName]);
+          if Assigned(vaFieldDestino) then
+            vaFieldDestino.Assign(vaField);
+        end;
     end;
+  ppvPreencherCamposPadroes(dsDireita.DataSet);
+  // for vaField in dsEsquerda.DataSet.Fields do
+  // begin
+  // vaFieldDestino := dsDireita.DataSet.FindField(vaField.FieldName);
+  // if Assigned(vaFieldDestino) then
+  // vaFieldDestino.Assign(vaField);
+  // end;
   dsEsquerda.DataSet.Delete;
   dsDireita.DataSet.Post;
 end;
@@ -71,8 +97,8 @@ procedure TframeGrids.Ac_AddTodosExecute(Sender: TObject);
 begin
   dsEsquerda.DataSet.DisableControls;
   try
-     dsEsquerda.DataSet.First;
-     while not dsEsquerda.DataSet.Eof do
+    dsEsquerda.DataSet.First;
+    while not dsEsquerda.DataSet.Eof do
       Ac_Add.Execute;
   finally
     dsEsquerda.DataSet.EnableControls;
@@ -84,17 +110,57 @@ begin
   TAction(Sender).Enabled := dsEsquerda.DataSet.Active and (dsEsquerda.DataSet.RecordCount > 0);
 end;
 
+procedure TframeGrids.ppvPreencherCamposPadroes(ipDataSet: TDataSet);
+var
+  vaField: TField;
+  vaTabela: String;
+begin
+  vaField := ipDataSet.FindField(TBancoDados.coID);
+  if Assigned(vaField) then
+    begin
+      if vaField.IsNull then
+        begin
+          if ipDataSet.State in [dsEdit, dsInsert] then
+            begin
+              vaTabela := Copy(ipDataSet.Name, 4, Length(ipDataSet.Name) - 3);
+              vaField.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId(vaTabela);
+            end;
+        end;
+    end;
+end;
+
+procedure TframeGrids.viewDireitaDblClick(Sender: TObject);
+begin
+  Ac_Remover.Execute;
+end;
+
+procedure TframeGrids.viewEsquerdaDblClick(Sender: TObject);
+begin
+  Ac_Add.Execute;
+end;
+
 procedure TframeGrids.Ac_RemoverExecute(Sender: TObject);
 var
   vaField, vaFieldDestino: TField;
+  vaFieldName: string;
 begin
   dsEsquerda.DataSet.Append;
-  for vaField in dsDireita.DataSet.Fields do
+  for vaFieldName in FMapaFields.Keys do
     begin
-      vaFieldDestino := dsEsquerda.DataSet.FindField(vaField.FieldName);
-      if Assigned(vaFieldDestino) then
-        vaFieldDestino.Assign(vaField);
+      vaField := dsEsquerda.DataSet.FindField(vaFieldName);
+      if Assigned(vaField) then
+        begin
+          vaFieldDestino := dsDireita.DataSet.FindField(FMapaFields.Items[vaFieldName]);
+          if Assigned(vaFieldDestino) then
+            vaField.Assign(vaFieldDestino);
+        end;
     end;
+  // for vaField in dsDireita.DataSet.Fields do
+  // begin
+  // vaFieldDestino := dsEsquerda.DataSet.FindField(vaField.FieldName);
+  // if Assigned(vaFieldDestino) then
+  // vaFieldDestino.Assign(vaField);
+  // end;
 
   dsDireita.DataSet.Delete;
 
@@ -106,8 +172,8 @@ procedure TframeGrids.Ac_RemoverTodosExecute(Sender: TObject);
 begin
   dsDireita.DataSet.DisableControls;
   try
-     dsDireita.DataSet.First;
-     while not dsDireita.DataSet.Eof do
+    dsDireita.DataSet.First;
+    while not dsDireita.DataSet.Eof do
       Ac_Remover.Execute;
   finally
     dsDireita.DataSet.EnableControls;
@@ -118,6 +184,40 @@ end;
 procedure TframeGrids.Ac_RemoverUpdate(Sender: TObject);
 begin
   TAction(Sender).Enabled := dsDireita.DataSet.Active and (dsDireita.DataSet.RecordCount > 0);
+end;
+
+constructor TframeGrids.Create(AOwner: TComponent);
+begin
+  inherited;
+  FMapaFields := TDictionary<string, String>.Create;
+end;
+
+procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string;
+  ipRepositorio: TcxEditRepositoryItem);
+begin
+  ppuAdicionarField(ipView,ipFieldName,true,ipRepositorio);
+end;
+
+procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean);
+begin
+  ppuAdicionarField(ipView,ipFieldName,ipVisible,nil);
+end;
+
+procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean;
+  ipRepositorio: TcxEditRepositoryItem);
+var
+  vaColumn: TcxGridDBColumn;
+begin
+  vaColumn := ipView.CreateColumn;
+  vaColumn.DataBinding.FieldName := ipFieldName;
+  vaColumn.RepositoryItem := ipRepositorio;
+  vaColumn.Visible := ipVisible;
+  vaColumn.Width := 150;
+end;
+
+procedure TframeGrids.ppuMapearFields(ipFieldEsquerda, ipFieldDireita: String);
+begin
+  FMapaFields.Add(ipFieldEsquerda, ipFieldDireita);
 end;
 
 end.

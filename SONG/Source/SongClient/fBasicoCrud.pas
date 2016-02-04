@@ -62,6 +62,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure EditPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Ac_SalvarUpdate(Sender: TObject);
+    procedure viewRegistrosDblClick(Sender: TObject);
   private
   protected
     // SALVAR
@@ -82,8 +83,8 @@ type
   public
     // CRUD
     procedure ppuIncluir; virtual;
-    procedure ppuAlterar(ipId: Int64); virtual;
-    function fpuExcluir(ipIds: TArray<Int64>): Boolean; virtual;
+    procedure ppuAlterar(ipId: Integer); virtual;
+    function fpuExcluir(ipIds: TArray<Integer>): Boolean; virtual;
     function fpuSalvar: Boolean; virtual;
     procedure ppuCancelar; virtual;
     // PESQUISA
@@ -104,7 +105,7 @@ implementation
 procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin
   inherited;
-  ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coID).AsLargeInt);
+  ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger);
 end;
 
 procedure TfrmBasicoCrud.Ac_CancelarExecute(Sender: TObject);
@@ -115,11 +116,11 @@ end;
 
 procedure TfrmBasicoCrud.Ac_ExcluirExecute(Sender: TObject);
 var
-  vaIds: TArray<Int64>;
+  vaIds: TArray<Integer>;
 begin
   inherited;
   SetLength(vaIds, 1);
-  vaIds[0] := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsLargeInt;
+  vaIds[0] := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
   fpuExcluir(vaIds);
 end;
 
@@ -190,7 +191,7 @@ begin
   pcPrincipal.ActivePage := tabPesquisa;
 end;
 
-procedure TfrmBasicoCrud.ppuAlterar(ipId: Int64);
+procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
   pcPrincipal.ActivePage := tabCadastro;
 end;
@@ -260,7 +261,6 @@ begin
             end;
         end;
     end;
-
 end;
 
 procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
@@ -269,7 +269,7 @@ begin
   ppuPesquisar;
 end;
 
-function TfrmBasicoCrud.fpuExcluir(ipIds: TArray<Int64>): Boolean;
+function TfrmBasicoCrud.fpuExcluir(ipIds: TArray<Integer>): Boolean;
 var
   vaId: Integer;
 begin
@@ -299,6 +299,13 @@ begin
   pprValidarPesquisa;
   pprCarregarParametrosPesquisa(dsMaster.DataSet as TRFClientDataSet);
   pprEfetuarPesquisa;
+end;
+
+procedure TfrmBasicoCrud.viewRegistrosDblClick(Sender: TObject);
+begin
+  inherited;
+  if dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) then
+    ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger);
 end;
 
 function TfrmBasicoCrud.fpuSalvar: Boolean;

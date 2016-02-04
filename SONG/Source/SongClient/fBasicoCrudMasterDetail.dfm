@@ -1,15 +1,9 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
-  ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -89,6 +83,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
                 object viewRegistrosDetail: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsDetail
                   DataController.Summary.DefaultGroupSummaryItems = <>
@@ -190,10 +185,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitLeft = 336
-        ExplicitTop = 208
-        ExplicitWidth = 185
-        ExplicitHeight = 41
       end
     end
   end

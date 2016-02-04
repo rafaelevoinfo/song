@@ -103,6 +103,10 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6
@@ -140,10 +144,6 @@ inherited frmPerfil: TfrmPerfil
     end
     inherited tabCadastroDetail: TcxTabSheet
       inherited pnEditsCadastroDetail: TPanel
-        ExplicitLeft = 0
-        ExplicitTop = 50
-        ExplicitWidth = 854
-        ExplicitHeight = 398
         object tlPermissoes: TcxDBTreeList
           Left = 0
           Top = 0
@@ -162,7 +162,6 @@ inherited frmPerfil: TfrmPerfil
           RootValue = -1
           TabOrder = 0
           OnEditValueChanged = tlPermissoesEditValueChanged
-          ExplicitTop = 50
           object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
             DataBinding.FieldName = 'PERMISSAO'
             Options.Editing = False

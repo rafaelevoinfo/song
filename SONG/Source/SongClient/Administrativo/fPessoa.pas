@@ -13,7 +13,7 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, cxGroupBox, uExceptions,
-  uUtils, Datasnap.DBClient, fmGrids, dmuLookup;
+  uUtils, Datasnap.DBClient, fmGrids, dmuLookup, uTypes;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)
@@ -40,9 +40,7 @@ type
     Label6: TLabel;
     EditEmail: TcxDBTextEdit;
     Label7: TLabel;
-    EditCelular: TcxDBMaskEdit;
     Label8: TLabel;
-    EditTelefone: TcxDBMaskEdit;
     Label9: TLabel;
     EditEndereco: TcxDBTextEdit;
     Label10: TLabel;
@@ -58,17 +56,23 @@ type
     frameGrids: TframeGrids;
     cdsLocalPerfis: TClientDataSet;
     cdsLocalPerfisID: TIntegerField;
-    cdsLocalPerfisNOME: TStringField;
+    EditCelular: TcxDBMaskEdit;
+    EditTelefone: TcxDBMaskEdit;
     procedure FormCreate(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
     procedure ppvCarregarPerfis;
+    procedure ppvConfigurarGrids;
   protected
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
   public
     procedure ppuIncluirDetail; override;
+    procedure ppuAlterarDetail(ipId: Integer); override;
+
+    procedure ppuAlterar(ipId: Integer); override;
+    procedure ppuIncluir; override;
   end;
 
 var
@@ -87,14 +91,33 @@ begin
   dmLookup.Name := '';
   inherited;
 
-  ppvCarregarPerfis;
+  dmLookup.cdslkPerfil.Open;
 
+  ppvConfigurarGrids;
+end;
+
+procedure TfrmPessoa.ppvConfigurarGrids;
+begin
+  // Esquerda
+  frameGrids.ppuAdicionarField(frameGrids.viewEsquerda, 'ID', dmLookup.repLcbPerfil);
+  // Direita
+  frameGrids.ppuAdicionarField(frameGrids.viewDireita, 'ID_PERFIL', dmLookup.repLcbPerfil);
+  // mapeando
+  frameGrids.ppuMapearFields('ID', 'ID_PERFIL');
 end;
 
 procedure TfrmPessoa.ppvCarregarPerfis;
 begin
-  dmLookup.cdslkPerfil.Open;
   cdsLocalPerfis.Data := dmLookup.cdslkPerfil.Data;
+  TUtils.ppuPercorrerCds(dmAdministrativo.cdsPessoa_Perfil,
+    procedure
+    begin
+      if cdsLocalPerfis.Locate(TBancoDados.coId, dmAdministrativo.cdsPessoa_PerfilID_PERFIL.AsInteger, []) then
+        begin
+          cdsLocalPerfis.delete;
+        end;
+    end);
+
 end;
 
 procedure TfrmPessoa.pprBeforeSalvar;
@@ -121,11 +144,30 @@ begin
 
 end;
 
+procedure TfrmPessoa.ppuAlterar(ipId: Integer);
+begin
+  inherited;
+  EditSenha.Clear;
+end;
+
+procedure TfrmPessoa.ppuAlterarDetail(ipId: Integer);
+begin
+  inherited;
+  ppvCarregarPerfis;
+end;
+
+procedure TfrmPessoa.ppuIncluir;
+begin
+  inherited;
+  EditSenha.Clear;
+end;
+
 procedure TfrmPessoa.ppuIncluirDetail;
 begin
   inherited;
-   // nao quero que fique em insert
+  // nao quero que fique em insert
   dmAdministrativo.cdsPessoa_Perfil.Cancel;
+  ppvCarregarPerfis;
 end;
 
 end.

@@ -49,6 +49,7 @@ object frameGrids: TframeGrids
       Align = alClient
       TabOrder = 0
       object viewEsquerda: TcxGridDBTableView
+        OnDblClick = viewEsquerdaDblClick
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dsEsquerda
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -122,6 +123,7 @@ object frameGrids: TframeGrids
       Align = alClient
       TabOrder = 2
       object viewDireita: TcxGridDBTableView
+        OnDblClick = viewDireitaDblClick
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dsDireita
         DataController.Summary.DefaultGroupSummaryItems = <>

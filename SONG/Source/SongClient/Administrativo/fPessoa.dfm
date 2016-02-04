@@ -1,11 +1,10 @@
 inherited frmPessoa: TfrmPessoa
-  ActiveControl = btnIncluir
+  ActiveControl = EditNome
   Caption = 'Pessoas'
-  ExplicitTop = -26
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -34,7 +33,6 @@ inherited frmPessoa: TfrmPessoa
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          ExplicitLeft = 2
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -95,6 +93,7 @@ inherited frmPessoa: TfrmPessoa
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
+              Caption = 'Perfis da Pessoa'
               inherited cxGrid1: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -105,6 +104,7 @@ inherited frmPessoa: TfrmPessoa
                     DataBinding.FieldName = 'ID_PERFIL'
                     RepositoryItem = dmLookup.repLcbPerfil
                     Options.Editing = False
+                    Options.ShowEditButtons = isebNever
                     Width = 216
                   end
                 end
@@ -195,7 +195,6 @@ inherited frmPessoa: TfrmPessoa
             Width = 33
             Height = 13
             Caption = 'Celular'
-            FocusControl = EditCelular
           end
           object Label8: TLabel
             Left = 504
@@ -203,7 +202,6 @@ inherited frmPessoa: TfrmPessoa
             Width = 42
             Height = 13
             Caption = 'Telefone'
-            FocusControl = EditTelefone
           end
           object Label9: TLabel
             Left = 9
@@ -237,30 +235,12 @@ inherited frmPessoa: TfrmPessoa
             TabOrder = 0
             Width = 366
           end
-          object EditCelular: TcxDBMaskEdit
-            Left = 379
-            Top = 31
-            DataBinding.DataField = 'CELULAR'
-            DataBinding.DataSource = dsMaster
-            Properties.EditMask = '!\(00\)0000-00009;0;_'
-            TabOrder = 1
-            Width = 123
-          end
-          object EditTelefone: TcxDBMaskEdit
-            Left = 504
-            Top = 31
-            DataBinding.DataField = 'TELEFONE'
-            DataBinding.DataSource = dsMaster
-            Properties.EditMask = '!\(00\)0000-0000;0;_'
-            TabOrder = 2
-            Width = 116
-          end
           object EditEndereco: TcxDBTextEdit
             Left = 8
             Top = 70
             DataBinding.DataField = 'ENDERECO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 3
+            TabOrder = 1
             Width = 612
           end
           object EditBairro: TcxDBTextEdit
@@ -268,7 +248,7 @@ inherited frmPessoa: TfrmPessoa
             Top = 111
             DataBinding.DataField = 'BAIRRO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 4
+            TabOrder = 2
             Width = 168
           end
           object EditComplemento: TcxDBTextEdit
@@ -276,8 +256,28 @@ inherited frmPessoa: TfrmPessoa
             Top = 111
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 5
+            TabOrder = 3
             Width = 437
+          end
+          object EditCelular: TcxDBMaskEdit
+            Left = 377
+            Top = 31
+            DataBinding.DataField = 'CELULAR'
+            DataBinding.DataSource = dsMaster
+            Properties.MaskKind = emkRegExprEx
+            Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
+            TabOrder = 4
+            Width = 121
+          end
+          object EditTelefone: TcxDBMaskEdit
+            Left = 503
+            Top = 31
+            DataBinding.DataField = 'TELEFONE'
+            DataBinding.DataSource = dsMaster
+            Properties.MaskKind = emkRegExprEx
+            Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
+            TabOrder = 5
+            Width = 118
           end
         end
         object rgInfoLogin: TcxGroupBox
@@ -323,8 +323,6 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 3
-      ExplicitTop = 25
       inherited pnEditsCadastroDetail: TPanel
         inline frameGrids: TframeGrids
           Left = 0
@@ -333,7 +331,8 @@ inherited frmPessoa: TfrmPessoa
           Height = 398
           Align = alClient
           TabOrder = 0
-          ExplicitTop = -52
+          ExplicitWidth = 854
+          ExplicitHeight = 398
           inherited gpGrids: TGridPanel
             Width = 854
             Height = 379
@@ -353,19 +352,41 @@ inherited frmPessoa: TfrmPessoa
                 Control = frameGrids.cxGrid2
                 Row = 0
               end>
+            ExplicitWidth = 854
+            ExplicitHeight = 379
             inherited cxGrid1: TcxGrid
               Width = 400
               Height = 377
+              ExplicitWidth = 400
+              ExplicitHeight = 377
             end
             inherited pnBotoes: TPanel
               Left = 401
               Width = 42
               Height = 377
+              ExplicitLeft = 401
+              ExplicitWidth = 42
+              ExplicitHeight = 377
+              inherited btnAdd: TButton
+                ExplicitWidth = 42
+              end
+              inherited btnAddTodos: TButton
+                ExplicitWidth = 42
+              end
+              inherited btnRemover: TButton
+                ExplicitWidth = 42
+              end
+              inherited btnRemoverTodos: TButton
+                ExplicitWidth = 42
+              end
             end
             inherited cxGrid2: TcxGrid
               Left = 443
               Width = 410
               Height = 377
+              ExplicitLeft = 443
+              ExplicitWidth = 410
+              ExplicitHeight = 377
               inherited viewDireita: TcxGridDBTableView
                 DataController.DataSource = dsDetail
               end
@@ -373,6 +394,7 @@ inherited frmPessoa: TfrmPessoa
           end
           inherited pnLabels: TPanel
             Width = 854
+            ExplicitWidth = 854
             inherited gpLabels: TGridPanel
               Width = 852
               ControlCollection = <
@@ -386,6 +408,7 @@ inherited frmPessoa: TfrmPessoa
                   Control = frameGrids.lbInfoGridDireita
                   Row = 0
                 end>
+              ExplicitWidth = 852
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
                 Caption = 'Perfis dispon'#237'veis'
@@ -432,17 +455,15 @@ inherited frmPessoa: TfrmPessoa
   end
   object cdsLocalPerfis: TClientDataSet
     Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
     Params = <>
+    StoreDefs = True
     Left = 248
     Top = 152
     object cdsLocalPerfisID: TIntegerField
+      DisplayLabel = 'Perfil'
       FieldName = 'ID'
-      ProviderFlags = []
-    end
-    object cdsLocalPerfisNOME: TStringField
-      FieldName = 'NOME'
-      ProviderFlags = []
-      Size = 100
     end
   end
 end

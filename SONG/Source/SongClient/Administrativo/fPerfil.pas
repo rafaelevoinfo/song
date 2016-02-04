@@ -65,7 +65,7 @@ type
     function fprHabilitarSalvarDetail(): Boolean; override;
   public
     procedure ppuIncluirDetail; override;
-    procedure ppuAlterarDetail(ipId: Int64); override;
+    procedure ppuAlterarDetail(ipId: Integer); override;
   public const
     coNome = 2;
 
@@ -201,7 +201,7 @@ begin
     Result := (cdsLocalPermissoes.Active and (cdsLocalPermissoes.ChangeCount > 0));
 end;
 
-procedure TfrmPerfil.ppuAlterarDetail(ipId: Int64);
+procedure TfrmPerfil.ppuAlterarDetail(ipId: Integer);
 begin
   inherited;
   ppvCarregarPermissoesPerfil;

@@ -44,6 +44,7 @@ type
     procedure Ac_Salvar_DetailExecute(Sender: TObject);
     procedure Ac_Cancelar_DetailExecute(Sender: TObject);
     procedure Ac_Salvar_DetailUpdate(Sender: TObject);
+    procedure viewRegistrosDetailDblClick(Sender: TObject);
   protected
     procedure pprBeforeSalvarDetail; virtual;
     procedure pprExecutarSalvarDetail; virtual;
@@ -55,8 +56,8 @@ type
     procedure pprEfetuarPesquisa; override;
   public
     procedure ppuIncluirDetail; virtual;
-    procedure ppuAlterarDetail(ipId: Int64); virtual;
-    function fpuExcluirDetail(ipIds: TArray<Int64>): Boolean; virtual;
+    procedure ppuAlterarDetail(ipId: Integer); virtual;
+    function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; virtual;
     procedure ppuCancelarDetail; virtual;
 
     function fpuSalvarDetail: Boolean;
@@ -84,11 +85,11 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Excluir_DetailExecute(Sender: TObject);
 var
-  vaIds: TArray<Int64>;
+  vaIds: TArray<Integer>;
 begin
   inherited;
   SetLength(vaIds, 1);
-  vaIds[0] := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsLargeInt;
+  vaIds[0] := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger;
   fpuExcluirDetail(vaIds);
 end;
 
@@ -148,7 +149,7 @@ begin
   pprValidarCamposObrigatorios(dsDetail.DataSet);
 end;
 
-procedure TfrmBasicoCrudMasterDetail.ppuAlterarDetail(ipId: Int64);
+procedure TfrmBasicoCrudMasterDetail.ppuAlterarDetail(ipId: Integer);
 begin
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;
@@ -168,7 +169,7 @@ begin
   pcPrincipal.ActivePage := tabPesquisa;
 end;
 
-function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Int64>): Boolean;
+function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
 var
   vaId: integer;
 begin
@@ -191,6 +192,14 @@ procedure TfrmBasicoCrudMasterDetail.ppuIncluirDetail;
 begin
   dsDetail.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastroDetail;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.viewRegistrosDetailDblClick(
+  Sender: TObject);
+begin
+  inherited;
+  if dsDetail.DataSet.Active and (dsDetail.DataSet.RecordCount > 0) then
+    ppuAlterarDetail(dsDetail.DataSet.FieldByName(TBancoDados.coID).AsInteger);
 end;
 
 function TfrmBasicoCrudMasterDetail.fpuSalvarDetail: Boolean;

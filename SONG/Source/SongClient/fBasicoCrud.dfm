@@ -1,5 +1,5 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   ClientWidth = 862
@@ -16,7 +16,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -169,6 +169,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Images = dmPrincipal.imgIcons_16
           TabOrder = 0
           object viewRegistros: TcxGridDBTableView
+            OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
             DataController.DataSource = dsMaster
             DataController.Summary.DefaultGroupSummaryItems = <>

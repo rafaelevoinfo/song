@@ -160,9 +160,14 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object cdsPessoa_Perfil: TRFClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'ID_PESSOA'
+    MasterFields = 'ID'
+    MasterSource = dsPessoa
+    PacketRecords = 0
     Params = <>
     ProviderName = 'dspqPessoa_Perfil'
     RemoteServer = dmPrincipal.ProviderAdministrativo
+    RFApplyAutomatico = False
     Left = 248
     Top = 64
     object cdsPessoa_PerfilID: TIntegerField
@@ -180,5 +185,10 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'ID_PERFIL'
       Required = True
     end
+  end
+  object dsPessoa: TDataSource
+    DataSet = cdsPessoa
+    Left = 120
+    Top = 144
   end
 end
