@@ -3,62 +3,98 @@ unit uControleAcesso;
 interface
 
 uses
-  System.Generics.Collections, System.Generics.Defaults;
+  System.Generics.Collections, System.Generics.Defaults, System.TypInfo,
+  Datasnap.DBClient;
 
 type
-  TControleAcesso = class
-  private
-    FModulos: TDictionary<string, TList<string>>;
+  TModulos = class
+  strict private
+    FItems: TDictionary<string, TList<string>>;
     constructor Create;
     destructor Destroy; override;
-  private
-    class var FInstance: TControleAcesso;
+  strict private
+    class var FInstance: TModulos;
   public
-    property Modulos: TDictionary < string, TList < string >> read FModulos;
+    property Items: TDictionary < string, TList < string >> read FItems;
 
-    class function fpuGetInstance: TControleAcesso;
-  public const
-    admPessoas: string = 'Gerenciamento de Pessoas';
-    admPerfis: string = 'Gerenciamento de Perfis';
+    class function fpuGetInstance: TModulos;
   end;
+
+  TInfoLogin = class
+  private
+    FPermissoes: TClientDataSet;
+    FSenhaUsuario: string;
+    FNomeUsuario: string;
+    procedure SetNomeUsuario(const Value: string);
+    procedure SetPermissoes(const Value: TClientDataSet);
+    procedure SetSenhaUsuario(const Value: string);
+    public
+      property NomeUsuario:string read FNomeUsuario write SetNomeUsuario;
+      property SenhaUsuario:string read FSenhaUsuario write SetSenhaUsuario;
+
+      property Permissoes:TClientDataSet read FPermissoes write SetPermissoes;
+  end;
+
+  TPermissao = (admPessoa, admPerfil);
+
+const
+  TPermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas',
+    'Gerenciamento de Perfis');
 
 implementation
 
 { TPermissoes }
 
-constructor TControleAcesso.Create;
+constructor TModulos.Create;
 var
   vaPermissoes: TList<string>;
 begin
-  FModulos := TDictionary < String, TList < String >>.Create();
+  FItems := TDictionary < String, TList < String >>.Create();
 
   vaPermissoes := TList<string>.Create;
   // administrativo
-  vaPermissoes.Add(admPessoas);
-  vaPermissoes.Add(admPerfis);
-  FModulos.Add('Administrativo', vaPermissoes);
+  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admPessoa)));
+  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admPerfil)));
+  FItems.Add('Administrativo', vaPermissoes);
 
 end;
 
-destructor TControleAcesso.Destroy;
+destructor TModulos.Destroy;
 var
   vaPermissoes: TList<String>;
 begin
-  for vaPermissoes in FModulos.Values do
+  for vaPermissoes in FItems.Values do
     begin
       vaPermissoes.Free;
     end;
-  FModulos.Clear;
-  FModulos.Free;
+  FItems.Clear;
+  FItems.Free;
   inherited;
 end;
 
-class function TControleAcesso.fpuGetInstance: TControleAcesso;
+class function TModulos.fpuGetInstance: TModulos;
 begin
   if Not Assigned(FInstance) then
-    FInstance := TControleAcesso.Create;
+    FInstance := TModulos.Create;
 
   Result := FInstance;
+end;
+
+{ TInfoLogin }
+
+procedure TInfoLogin.SetNomeUsuario(const Value: string);
+begin
+  FNomeUsuario := Value;
+end;
+
+procedure TInfoLogin.SetPermissoes(const Value: TClientDataSet);
+begin
+  FPermissoes := Value;
+end;
+
+procedure TInfoLogin.SetSenhaUsuario(const Value: string);
+begin
+  FSenhaUsuario := Value;
 end;
 
 end.

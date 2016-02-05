@@ -21,15 +21,19 @@ inherited frmPrincipal: TfrmPrincipal
     Properties.AllowTabDragDrop = True
     Properties.CloseButtonMode = cbmEveryTab
     Properties.CustomButtons.Buttons = <>
-    LookAndFeel.NativeStyle = True
-    ClientRectBottom = 383
-    ClientRectLeft = 4
-    ClientRectRight = 781
-    ClientRectTop = 24
+    LookAndFeel.NativeStyle = False
+    ClientRectBottom = 382
+    ClientRectLeft = 2
+    ClientRectRight = 780
+    ClientRectTop = 25
     object tabDashBoard: TcxTabSheet
       AllowCloseButton = False
       Caption = 'Avisos'
       ImageIndex = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 777
+      ExplicitHeight = 359
     end
   end
   object mmMenuPrincipal: TMainMenu
@@ -56,5 +60,12 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = 'Perfis de Usu'#225'rios'
       OnExecute = Ac_PerfisExecute
     end
+  end
+  object dxSkinController1: TdxSkinController
+    NativeStyle = False
+    SkinName = 'Black'
+    OnSkinControl = dxSkinController1SkinControl
+    Left = 384
+    Top = 208
   end
 end

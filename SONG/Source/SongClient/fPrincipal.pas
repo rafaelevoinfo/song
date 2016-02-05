@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
-  fPessoa;
+  fPessoa, dxSkinsForm,Vcl.StdCtrls;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -21,9 +21,11 @@ type
     PerfisdeUsurios1: TMenuItem;
     pcPrincipal: TcxPageControl;
     tabDashBoard: TcxTabSheet;
+    dxSkinController1: TdxSkinController;
     procedure FormShow(Sender: TObject);
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
+    procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
   private
     procedure ppvAfterShow(var ipMsg: TMessage); message MSG_AFTER_SHOW;
   public
@@ -47,6 +49,12 @@ procedure TfrmPrincipal.Ac_PessoasExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmPessoa>(pcPrincipal, TfrmPessoa, frmPessoa);
+end;
+
+procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
+begin
+  inherited;
+  UseSkin := not(AControl is TButton);
 end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);

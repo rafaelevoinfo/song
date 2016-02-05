@@ -10,10 +10,13 @@ type
   TUtils = class
   public
     class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
-    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
-    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);overload;
+    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True;
+      ipOtimizarLoop: Boolean = True); overload;
+    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True;
+      ipOtimizarLoop: Boolean = True); overload;
     class function fpuCriptografarSha1(ipValor: String): String;
-    class function fpuValidarEmail(ipEmail:String): Boolean;
+    class function fpuValidarEmail(ipEmail: String): Boolean;
+    class procedure ppuFocar(ipEdit: TWinControl);
   end;
 
 implementation
@@ -32,7 +35,8 @@ begin
   end;
 end;
 
-class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
+class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True;
+  ipOtimizarLoop: Boolean = True);
 var
   vaRecNo: Integer;
 begin
@@ -41,11 +45,11 @@ begin
     begin
       ipProc;
       Exit(True);
-    end,
-    ipManterPosicao, ipOtimizarLoop);
+    end, ipManterPosicao, ipOtimizarLoop);
 end;
 
-class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True; ipOtimizarLoop: Boolean = True);
+class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True;
+ipOtimizarLoop: Boolean = True);
 var
   vaRecNo: Integer;
 begin
@@ -78,9 +82,10 @@ begin
 
 end;
 
-class function TUtils.fpuValidarEmail(ipEmail:String): Boolean;
+class function TUtils.fpuValidarEmail(ipEmail: String): Boolean;
 begin
-  Result := TRegex.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' + '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$');
+  Result := TRegex.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
+    '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$');
 end;
 
 class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
@@ -120,6 +125,16 @@ begin
   ipPageControl.ActivePage := vaTab;
   ipForm.show;
 
+end;
+
+class procedure TUtils.ppuFocar(ipEdit: TWinControl);
+begin
+  try
+    if ipEdit.CanFocus and ipEdit.Visible and ipEdit.Enabled then
+      ipEdit.SetFocus;
+  except
+    //vamos ignorar
+  end;
 end;
 
 end.

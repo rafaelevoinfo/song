@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, dxGDIPlusClasses, cxImage, Vcl.StdCtrls, Vcl.Menus, cxButtons,
-  cxTextEdit, dmuPrincipal, uMensagem, uExceptions;
+  cxTextEdit, dmuPrincipal, uMensagem, uExceptions, uUtils;
 
 type
   TfrmLogin = class(TfrmBasico)
@@ -16,7 +16,7 @@ type
     edtLogin: TcxTextEdit;
     edtSenha: TcxTextEdit;
     cxImage1: TcxImage;
-    btnLogar: TcxButton;
+    btnLogar: TButton;
     procedure btnLogarClick(Sender: TObject);
   private
     FLoginEfetuado: Boolean;
@@ -41,7 +41,7 @@ implementation
 procedure TfrmLogin.btnLogarClick(Sender: TObject);
 begin
   inherited;
-  ppuLogar(edtLogin.text, edtSenha.Text);
+  ppuLogar(edtLogin.text, TUtils.fpuCriptografarSha1(edtSenha.Text));
   if LoginEfetuado then
     Close;
 end;

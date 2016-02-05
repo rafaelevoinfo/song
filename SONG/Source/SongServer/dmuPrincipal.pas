@@ -41,8 +41,7 @@ type
       var valid: Boolean);
     procedure ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
-    procedure SCLookupGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
+    procedure SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
     FConnections: TDictionary<Integer, TFDConnection>;
@@ -65,10 +64,9 @@ uses smuAdministrativo, smuFuncoesGeral, smuLookup;
 
 { TdmPrincipal }
 
-procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject;
-  E: Exception);
+procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
 begin
-    //TODO:Implementar log de erros
+  // TODO:Implementar log de erros
 
 end;
 
@@ -76,9 +74,7 @@ procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Pro
   var valid: Boolean; UserRoles: TStrings);
 begin
   valid := True;
-  // vamos permitir chamar a funcao de verificar a versao para qualquer um
-  UserRoles.add(TRoleGeral.coVerificarVersao);
-  if (User <> '') and (Password <> '') then
+  if (User <> '') or (Password <> '') then
     begin
       if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
         begin
@@ -95,13 +91,13 @@ end;
 procedure TdmPrincipal.AuthenticationUserAuthorize(Sender: TObject; AuthorizeEventObject: TDSAuthorizeEventObject;
   var valid: Boolean);
 begin
-  valid := False;
-  if (AuthorizeEventObject.MethodAlias = 'TsmFuncoesGeral.fpuVerificarNovaVersao') then
-    valid := True
-  else if AuthorizeEventObject.UserName = 'admin' then
-    valid := True;
-
   valid := True;
+  //se nao tiver logado com um usuario e senha valido a unica coisa permitida vai ser baixar uma nova versao
+  if (AuthorizeEventObject.UserName = '') and
+    (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuVerificarNovaVersao') then
+    begin
+      valid := false
+    end;
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
@@ -164,10 +160,9 @@ begin
   PersistentClass := smuFuncoesGeral.TSMFuncoesGeral;
 end;
 
-procedure TdmPrincipal.SCLookupGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TdmPrincipal.SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
-   PersistentClass := smuLookup.TsmLookup;
+  PersistentClass := smuLookup.TsmLookup;
 end;
 
 procedure TdmPrincipal.ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);

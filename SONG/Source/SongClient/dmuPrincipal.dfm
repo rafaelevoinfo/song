@@ -22,13 +22,6 @@ object dmPrincipal: TdmPrincipal
     Left = 64
     Top = 48
   end
-  object dxSkinController1: TdxSkinController
-    NativeStyle = False
-    SkinName = 'Black'
-    OnSkinControl = dxSkinController1SkinControl
-    Left = 216
-    Top = 120
-  end
   object ProxyGenerator: TDSProxyGenerator
     MetaDataProvider = DSConnectionMetaDataProvider1
     TargetUnitName = 'uFuncoes'
@@ -1080,14 +1073,12 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
   object ProviderLookup: TDSProviderConnection
     ServerClassName = 'TsmLookup'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304

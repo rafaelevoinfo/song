@@ -25,7 +25,7 @@ type
     Ac_Excluir_Detail: TAction;
     pnBotoesDetail: TPanel;
     btnIncluirDetail: TButton;
-    cxGrid1: TcxGrid;
+    cxGridRegistrosDetail: TcxGrid;
     viewRegistrosDetail: TcxGridDBTableView;
     ColumnAlterarDetail: TcxGridDBColumn;
     ColumnExcluirDetail: TcxGridDBColumn;
@@ -49,7 +49,7 @@ type
     procedure pprBeforeSalvarDetail; virtual;
     procedure pprExecutarSalvarDetail; virtual;
     procedure pprAfterSalvarDetail; virtual;
-    function fprHabilitarSalvarDetail():Boolean;virtual;
+    function fprHabilitarSalvarDetail(): Boolean; virtual;
 
     procedure pprValidarDadosDetail; virtual;
     // OVERRIDE
@@ -112,10 +112,10 @@ begin
     TAction(Sender).Enabled := fprHabilitarSalvarDetail();
 end;
 
-function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail():Boolean;
+function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail(): Boolean;
 begin
-   Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or
-                                                    (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
+  Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or
+    (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
@@ -131,8 +131,14 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.pprEfetuarPesquisa;
 begin
-  inherited;
-  dsDetail.DataSet.Open;
+  viewRegistrosDetail.BeginUpdate(lsimImmediate);
+  try
+    inherited;
+    dsDetail.DataSet.Open;
+  finally
+    viewRegistrosDetail.EndUpdate;
+  end;
+
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprExecutarSalvarDetail;
@@ -171,7 +177,7 @@ end;
 
 function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
 var
-  vaId: integer;
+  vaId: Integer;
 begin
   Result := False;
   if TMsg.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
@@ -194,12 +200,11 @@ begin
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;
 
-procedure TfrmBasicoCrudMasterDetail.viewRegistrosDetailDblClick(
-  Sender: TObject);
+procedure TfrmBasicoCrudMasterDetail.viewRegistrosDetailDblClick(Sender: TObject);
 begin
   inherited;
   if dsDetail.DataSet.Active and (dsDetail.DataSet.RecordCount > 0) then
-    ppuAlterarDetail(dsDetail.DataSet.FieldByName(TBancoDados.coID).AsInteger);
+    ppuAlterarDetail(dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger);
 end;
 
 function TfrmBasicoCrudMasterDetail.fpuSalvarDetail: Boolean;

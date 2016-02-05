@@ -13,6 +13,7 @@ type
     coID: string = 'ID';
     coNome: string = 'NOME';
     coActive: string = 'ACTIVE';
+    coLogin:string = 'LOGIN';
   end;
 
   TRFClientDataSet = class(TClientDataSet)
@@ -124,8 +125,11 @@ begin
     // percorre todo o TList criando os parametros
     for i := 0 to FParametros.Count - 1 do
       begin
-        vaParams.CreateParam(ftString, FParametros.Items[i], ptInput).AsString := FValores.Items[i];
+        //parametros sem valores nao serao considerados
+        if VarToStrDef(FValores.Items[i],'').Trim <> '' then
+          vaParams.CreateParam(ftString, FParametros.Items[i], ptInput).AsString := FValores.Items[i];
       end;
+    //se nenhum parametro foi passado entao passo o parametro active para evitar de carregar toda a tabela
     if vaParams.Count = 0 then
       vaParams.CreateParam(ftString, TParametros.coActive, ptInput).AsString := 'NAO_IMPORTA';
     // fecho o cds

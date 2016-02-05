@@ -50,17 +50,17 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             TabOrder = 0
             Properties.ActivePage = tabDetail
             Properties.CustomButtons.Buttons = <>
-            ClientRectBottom = 181
-            ClientRectLeft = 2
-            ClientRectRight = 845
-            ClientRectTop = 25
+            ClientRectBottom = 182
+            ClientRectLeft = 4
+            ClientRectRight = 846
+            ClientRectTop = 24
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
-                Width = 843
+                Width = 842
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -74,14 +74,17 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   TabOrder = 0
                 end
               end
-              object cxGrid1: TcxGrid
+              object cxGridRegistrosDetail: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 843
-                Height = 131
+                Width = 842
+                Height = 133
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
                 object viewRegistrosDetail: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -89,13 +92,17 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
+                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
+                  FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
                   OptionsData.Deleting = False
                   OptionsData.DeletingConfirmation = False
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
                   OptionsView.ShowEditButtons = gsebAlways
+                  OptionsView.GroupByBox = False
                   object ColumnAlterarDetail: TcxGridDBColumn
                     Caption = 'Alterar'
                     PropertiesClassName = 'TcxButtonEditProperties'
@@ -144,9 +151,19 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
       end
     end
+    inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0

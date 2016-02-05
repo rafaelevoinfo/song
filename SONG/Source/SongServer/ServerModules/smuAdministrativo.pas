@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dmuPrincipal, uTypes,
-  uSQLGenerator, uQuery, Datasnap.Provider;
+  uSQLGenerator, uQuery, Datasnap.Provider, uClientDataSet;
 
 type
   TsmAdministrativo = class(TsmBasico)
@@ -22,7 +22,7 @@ type
     qPessoaENDERECO: TStringField;
     qPessoaLOGIN: TStringField;
     qPessoaSENHA: TStringField;
-    qPerfil_Permissao: TRFQuery;
+    qPerfil_Permissao: TRfQuery;
     qPerfil_PermissaoPERMISSAO: TStringField;
     qPerfil_PermissaoVISUALIZAR: TSmallintField;
     qPerfil_PermissaoINCLUIR: TSmallintField;
@@ -34,7 +34,7 @@ type
     qPerfilID: TIntegerField;
     qPerfil_PermissaoID: TIntegerField;
     qPerfil_PermissaoID_PERFIL: TIntegerField;
-    qPessoa_Perfil: TRFQuery;
+    qPessoa_Perfil: TRfQuery;
     qPessoa_PerfilID: TIntegerField;
     qPessoa_PerfilID_PESSOA: TIntegerField;
     qPessoa_PerfilID_PERFIL: TIntegerField;
@@ -68,7 +68,8 @@ begin
       vaParam := ipParams[i];
       if ipTabela = 'PESSOA' then
         begin
-
+          if vaParam.Name = TParametros.coLogin then
+            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'login', vaParam.Text)
         end
       else if ipTabela = 'PERFIL' then
         begin

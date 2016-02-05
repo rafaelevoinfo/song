@@ -67,10 +67,11 @@ begin
   if not Assigned(vaProvider) then
     begin
       vaProvider := TDataSetProvider.Create(Self);
-      vaProvider.Name := 'dsp'+ipDataSet.Name;
+      vaProvider.Name := 'dsp' + ipDataSet.Name;
       vaProvider.DataSet := ipDataSet;
       vaProvider.UpdateMode := upWhereKeyOnly;
-      vaProvider.Options := [];//remove o useQuotedStr para evitar problemas com maiusculo e minusculo nos nomes das tabelas
+      vaProvider.Options := [];
+      // remove o useQuotedStr para evitar problemas com maiusculo e minusculo nos nomes das tabelas
     end;
 
   if not Assigned(vaProvider.OnDataRequest) then
@@ -82,9 +83,9 @@ begin
   FConnection := Value;
 end;
 
-function TsmBasico.fprGetNomeTabela(ipProvider:TDataSetProvider):string;
+function TsmBasico.fprGetNomeTabela(ipProvider: TDataSetProvider): string;
 begin
-   Result := Copy(ipProvider.Name, 5, Length(ipProvider.Name));
+  Result := Copy(ipProvider.Name, 5, Length(ipProvider.Name));
 end;
 
 function TsmBasico.fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): OleVariant;
@@ -106,12 +107,13 @@ begin
         if Assigned(vaMacroWhere) and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
           begin
             vaDataSet.SQL.Text := vaScript;
-            vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender));
+            vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
             vaWhere := fprMontarWhere(vaTabela, vaParams);
-            if vaWhere <> '' then
-              begin
-                vaWhere := fprAjustarWhere(vaWhere);
-              end;
+            if (vaWhere = '') and (not Assigned(vaParams.FindParam(TParametros.coTodos))) then
+              vaWhere := TSQLGenerator.fpuFilterInteger(vaWhere, vaTabela, TBancoDados.coID, -1); // vamos usar o active
+
+            vaWhere := fprAjustarWhere(vaWhere);
+
             vaMacroWhere.AsRaw := vaWhere;
           end;
       end;
@@ -132,11 +134,14 @@ end;
 function TsmBasico.fprAjustarWhere(ipWhere: string): string;
 begin
   Result := ipWhere;
-  // vamos adicionar o where e remover o ultimo and
-  if not TRegex.IsMatch(ipWhere, ' where ', [roIgnoreCase]) then
-    Result := ' where ' + ipWhere;
-  // remove o ultimo and
-  Result := TRegex.Replace(Result, 'and\s*$', '', [roIgnoreCase, roMultiLine]);
+  if ipWhere.Trim <> '' then
+    begin
+      // vamos adicionar o where e remover o ultimo and
+      if not TRegex.IsMatch(ipWhere, 'where ', [roIgnoreCase]) then
+        Result := ' where ' + ipWhere;
+      // remove o ultimo and
+      Result := TRegex.Replace(Result, 'and\s*$', '', [roIgnoreCase, roMultiLine]);
+    end;
 end;
 
 function TsmBasico.fprMontarWhere(ipTabela: string; ipParams: TParams): string;

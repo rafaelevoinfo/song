@@ -13,7 +13,8 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, cxGroupBox, uExceptions,
-  uUtils, Datasnap.DBClient, fmGrids, dmuLookup, uTypes;
+  uUtils, Datasnap.DBClient, fmGrids, dmuLookup, uTypes, uClientDataSet,
+  System.TypInfo, uControleAcesso;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)
@@ -67,12 +68,20 @@ type
   protected
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
+    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+    procedure pprRealizarPesquisaInicial; override;
+
+    function fprConfigurarPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
 
     procedure ppuAlterar(ipId: Integer); override;
     procedure ppuIncluir; override;
+  public const
+    coNome = 2;
+    coLogin = 3;
+
   end;
 
 var
@@ -120,12 +129,32 @@ begin
 
 end;
 
+function TfrmPessoa.fprConfigurarPermissao: String;
+begin
+  Result := GetEnumName(TypeInfo(TPermissao), Ord(admPessoa));
+end;
+
 procedure TfrmPessoa.pprBeforeSalvar;
 begin
   inherited;
   if Trim(EditSenha.Text) <> '' then
     dmAdministrativo.cdsPessoaSENHA.AsString := TUtils.fpuCriptografarSha1(Trim(EditSenha.Text));
 
+end;
+
+procedure TfrmPessoa.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+begin
+  inherited;
+  if cbPesquisarPor.ItemIndex = coNome then
+    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text)
+  else if (cbPesquisarPor.ItemIndex = coLogin) then
+    ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);
+end;
+
+procedure TfrmPessoa.pprRealizarPesquisaInicial;
+begin
+  inherited; // vai apenas abrir a tabela
+  cbPesquisarPor.ItemIndex := coNome;
 end;
 
 procedure TfrmPessoa.pprValidarDados;

@@ -13,7 +13,8 @@ uses
   cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
-  uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib;
+  uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
+  uControleAcesso;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -60,10 +61,12 @@ type
     procedure Ac_PesquisarExecute(Sender: TObject);
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure EditPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Ac_SalvarUpdate(Sender: TObject);
     procedure viewRegistrosDblClick(Sender: TObject);
+    procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
+    FPadraoPesquisa: TPadraoPesquisa;
+    procedure SetPadraoPesquisa(const Value: TPadraoPesquisa);
   protected
     // SALVAR
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
@@ -80,7 +83,11 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); virtual;
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios;
+    // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
+    function fprConfigurarPermissao: String; virtual; abstract;
+    procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
   public
+    property PadraoPesquisa: TPadraoPesquisa read FPadraoPesquisa write SetPadraoPesquisa;
     // CRUD
     procedure ppuIncluir; virtual;
     procedure ppuAlterar(ipId: Integer); virtual;
@@ -161,13 +168,14 @@ begin
   EditPesquisa.SetFocus;
 end;
 
-procedure TfrmBasicoCrud.EditPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TfrmBasicoCrud.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
-  if Key = VK_RETURN then
+  if Key = Char(VK_RETURN) then
     begin
       ppuPesquisar;
-      Key := 0;
+      TUtils.ppuFocar(EditPesquisa);
+      Key := #0;
     end;
 end;
 
@@ -222,14 +230,20 @@ begin
   ipCds.ppuLimparParametros;
   if cbPesquisarPor.ItemIndex = coTodos then
     ipCds.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA')
-  else if cbPesquisarPor.ItemIndex = coID then
+  else if (cbPesquisarPor.ItemIndex = coID) then
     ipCds.ppuAddParametro(TParametros.coID, EditPesquisa.Text);
 
 end;
 
 procedure TfrmBasicoCrud.pprEfetuarPesquisa;
 begin
-  TRFClientDataSet(dsMaster.DataSet).ppuDataRequest();
+  viewRegistros.BeginUpdate(lsimImmediate);
+  try
+    TRFClientDataSet(dsMaster.DataSet).ppuDataRequest();
+  finally
+    viewRegistros.EndUpdate;
+  end;
+
 end;
 
 procedure TfrmBasicoCrud.pprExecutarSalvar;
@@ -265,7 +279,14 @@ end;
 
 procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
 begin
-  cbPesquisarPor.ItemIndex := coTodos;
+  case PadraoPesquisa of
+    ppActive:
+      cbPesquisarPor.ItemIndex := coID;
+    // coloco o id, mas como nao vai ter valor no Edit nao vai trazer nada, vai apenas abrir a tabelas
+    ppTodos:
+      cbPesquisarPor.ItemIndex := coTodos;
+  end;
+
   ppuPesquisar;
 end;
 
@@ -299,6 +320,11 @@ begin
   pprValidarPesquisa;
   pprCarregarParametrosPesquisa(dsMaster.DataSet as TRFClientDataSet);
   pprEfetuarPesquisa;
+end;
+
+procedure TfrmBasicoCrud.SetPadraoPesquisa(const Value: TPadraoPesquisa);
+begin
+  FPadraoPesquisa := Value;
 end;
 
 procedure TfrmBasicoCrud.viewRegistrosDblClick(Sender: TObject);
@@ -391,15 +417,29 @@ begin
   pprValidarCamposObrigatorios(dsMaster.DataSet);
 end;
 
+procedure TfrmBasicoCrud.pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
+var
+  vaControleAcesso: TModulos;
+begin
+  vaControleAcesso := TModulos.fpuGetInstance;
+  case ipAcao of
+    atVisualizar:
+      ;
+    atIncluir:
+      ;
+    atAlterar:
+      ;
+    atExcluir:
+      ;
+  end;
+end;
+
 procedure TfrmBasicoCrud.pprValidarPesquisa;
 begin
-  if EditPesquisa.Visible and (cbPesquisarPor.ItemIndex <> coTodos) then
+  if EditPesquisa.Visible and (cbPesquisarPor.ItemIndex <> coTodos) and (cbPesquisarPor.ItemIndex <> coID) then
     begin
       if Trim(EditPesquisa.Text) = '' then
         raise TControlException.Create('Informe algo a ser pesquisado', EditPesquisa);
-
-      if (cbPesquisarPor.ItemIndex <> coID) and (Length(EditPesquisa.Text) < 3) then
-        raise Exception.Create('Informe pelo menos três caracteres.');
     end;
   if pnData.Visible then
     begin

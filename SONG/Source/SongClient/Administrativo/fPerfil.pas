@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, uClientDataSet,
   Datasnap.DBClient, uControleAcesso, System.Generics.Collections, cxCheckBox,
   uUtils, MidasLib, dmuLookup, dmuPrincipal, cxTL, cxTLdxBarBuiltInMenu,
-  cxInplaceContainer, cxDBTL, cxTLData, uTypes;
+  cxInplaceContainer, cxDBTL, cxTLData, uTypes, System.TypInfo;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)
@@ -49,8 +49,11 @@ type
     cxDBTreeList1EXCLUIR: TcxDBTreeListColumn;
     cxDBTreeList1ID_MODULO: TcxDBTreeListColumn;
     cxDBTreeList1ID: TcxDBTreeListColumn;
+    cdsLocalPermissoesDESCRICAO: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure tlPermissoesEditValueChanged(Sender: TcxCustomTreeList; AColumn: TcxTreeListColumn);
+    procedure viewRegistrosDetailPERMISSAOGetDisplayText(Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+      var AText: string);
   private
     FIdPerfilAtual: Integer;
     dmAdministrativo: TdmAdministrativo;
@@ -63,6 +66,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprBeforeSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
+    function fprConfigurarPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
@@ -88,6 +92,7 @@ begin
   dmLookup.Name := '';
 
   inherited;
+  PadraoPesquisa := ppTodos;
 
   // vamos alimentar o cds dos modulos
   ppvCarregarModulos;
@@ -106,8 +111,8 @@ end;
 
 procedure TfrmPerfil.ppvCarregarModulos;
 var
-  vaModulo, vaPermissao: string;
-  vaControleAcesso: TControleAcesso;
+  vaModulo, vaPermissao, vaDescricao: string;
+  vaControleAcesso: TModulos;
   vaPermissoes: TList<string>;
   vaIdModulo, vaId: Integer;
 
@@ -120,27 +125,34 @@ begin
   else
     cdsLocalPermissoes.CreateDataSet;
 
-  vaControleAcesso := TControleAcesso.fpuGetInstance;
-  for vaModulo in vaControleAcesso.Modulos.Keys do
+  vaControleAcesso := TModulos.fpuGetInstance;
+  for vaModulo in vaControleAcesso.Items.Keys do
     begin
       Inc(vaId);
       vaIdModulo := vaId;
       cdsLocalPermissoes.Append;
       cdsLocalPermissoesID.AsInteger := vaId;
-      cdsLocalPermissoesPERMISSAO.AsString := vaModulo;
+      cdsLocalPermissoesDESCRICAO.AsString := vaModulo;
       ppvZerarPermissoes;
       cdsLocalPermissoes.Post;
 
-      vaPermissoes := vaControleAcesso.Modulos.Items[vaModulo];
+      vaPermissoes := vaControleAcesso.Items.Items[vaModulo];
       for vaPermissao in vaPermissoes do
         begin
           Inc(vaId);
-          cdsLocalPermissoes.Append;
-          cdsLocalPermissoesID.AsInteger := vaId;
-          cdsLocalPermissoesID_MODULO.AsInteger := vaIdModulo;
-          cdsLocalPermissoesPERMISSAO.AsString := vaPermissao;
-          ppvZerarPermissoes;
-          cdsLocalPermissoes.Post;
+          try
+            vaDescricao := TPermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), vaPermissao))];
+
+            cdsLocalPermissoes.Append;
+            cdsLocalPermissoesID.AsInteger := vaId;
+            cdsLocalPermissoesID_MODULO.AsInteger := vaIdModulo;
+            cdsLocalPermissoesPERMISSAO.AsString := vaPermissao;
+            cdsLocalPermissoesDESCRICAO.AsString := vaDescricao;
+            ppvZerarPermissoes;
+            cdsLocalPermissoes.Post;
+          except
+            // vamos ignorar
+          end;
         end;
     end;
 
@@ -192,6 +204,11 @@ begin
   inherited;
   if cbPesquisarPor.ItemIndex = coNome then
     ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
+end;
+
+function TfrmPerfil.fprConfigurarPermissao: String;
+begin
+  Result := GetEnumName(TypeInfo(TPermissao), Ord(admPerfil));
 end;
 
 function TfrmPerfil.fprHabilitarSalvarDetail(): Boolean;
@@ -270,6 +287,20 @@ begin
     end
   else
     tlPermissoes.Post;
+end;
+
+procedure TfrmPerfil.viewRegistrosDetailPERMISSAOGetDisplayText(Sender: TcxCustomGridTableItem;
+ARecord: TcxCustomGridRecord; var AText: string);
+begin
+  inherited;
+  if AText <> '' then
+    begin
+      try
+        AText := TPermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), AText))];
+      except
+        AText := 'Permissão não existente';
+      end;
+    end;
 end;
 
 end.

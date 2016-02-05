@@ -9,12 +9,11 @@ uses
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
-  Datasnap.DBClient, Datasnap.DSConnect, uConnection;
+  Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo;
 
 type
   TdmPrincipal = class(TDataModule)
     DataSnapConn: TRFSQLConnection;
-    dxSkinController1: TdxSkinController;
     ProxyGenerator: TDSProxyGenerator;
     DSConnectionMetaDataProvider1: TDSConnectionMetaDataProvider;
     ApplicationEvents1: TApplicationEvents;
@@ -25,15 +24,13 @@ type
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
-    procedure dxSkinController1SkinControl(Sender: TObject;
-      AControl: TWinControl; var UseSkin: Boolean);
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
 
-    property FuncoesGeral:TsmFuncoesGeralClient read FFuncoesGeral;
+    property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
   end;
 
 var
@@ -46,22 +43,14 @@ implementation
 {$R *.dfm}
 { TdmPrincipal }
 
-procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject;
-  E: Exception);
+procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
 begin
   if E is TControlException then
     begin
-      if TControlException(E).Control.CanFocus then
-        begin
-          try
-            TControlException(E).Control.SetFocus;
-          except
-            //ignora se nao conseguir focar
-          end;
-        end;
+      TUtils.ppuFocar(TControlException(E).Control);
     end;
 
-  TMsg.ppuShowException(e);
+  TMsg.ppuShowException(E);
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
@@ -73,13 +62,6 @@ procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
 begin
   if Assigned(FFuncoesGeral) then
     FreeAndNil(FFuncoesGeral);
-end;
-
-procedure TdmPrincipal.dxSkinController1SkinControl(Sender: TObject;
-  AControl: TWinControl; var UseSkin: Boolean);
-begin
-  if AControl is TButton then
-    UseSkin := False;
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

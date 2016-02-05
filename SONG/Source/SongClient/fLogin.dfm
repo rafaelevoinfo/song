@@ -976,17 +976,17 @@ inherited frmLogin: TfrmLogin
       94E86F2CAAF1EADB4A694A694A694A694A694A694A694A694A694A694A694A69
       4A694A694A694A694A694A694A694A694A694A694A694A694A694A694A694A69
       4A694A694A694AFFD9}
-    TabOrder = 3
+    TabOrder = 2
     Height = 137
     Width = 170
   end
-  object btnLogar: TcxButton
-    Left = 344
+  object btnLogar: TButton
+    Left = 336
     Top = 88
-    Width = 97
-    Height = 33
+    Width = 105
+    Height = 44
     Caption = 'Logar'
-    TabOrder = 2
+    TabOrder = 3
     OnClick = btnLogarClick
   end
 end

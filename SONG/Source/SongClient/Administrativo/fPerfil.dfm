@@ -28,7 +28,6 @@ inherited frmPerfil: TfrmPerfil
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
-            OptionsView.GroupByBox = False
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
@@ -49,15 +48,20 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
-              inherited cxGrid1: TcxGrid
+              inherited pnBotoesDetail: TPanel
+                ExplicitWidth = 843
+              end
+              inherited cxGridRegistrosDetail: TcxGrid
+                LookAndFeel.NativeStyle = False
+                ExplicitHeight = 131
                 inherited viewRegistrosDetail: TcxGridDBTableView
-                  OptionsView.GroupByBox = False
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
                     Visible = False
                   end
                   object viewRegistrosDetailPERMISSAO: TcxGridDBColumn [1]
                     DataBinding.FieldName = 'PERMISSAO'
+                    OnGetDisplayText = viewRegistrosDetailPERMISSAOGetDisplayText
                     Options.Editing = False
                     Width = 229
                   end
@@ -103,10 +107,10 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6
@@ -143,6 +147,10 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object tlPermissoes: TcxDBTreeList
           Left = 0
@@ -163,7 +171,7 @@ inherited frmPerfil: TfrmPerfil
           TabOrder = 0
           OnEditValueChanged = tlPermissoesEditValueChanged
           object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
-            DataBinding.FieldName = 'PERMISSAO'
+            DataBinding.FieldName = 'DESCRICAO'
             Options.Editing = False
             Width = 403
             Position.ColIndex = 0
@@ -303,6 +311,11 @@ inherited frmPerfil: TfrmPerfil
     object cdsLocalPermissoesID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
+    end
+    object cdsLocalPermissoesDESCRICAO: TStringField
+      DisplayLabel = 'Permiss'#227'o'
+      FieldName = 'DESCRICAO'
+      Size = 100
     end
   end
   object dsLocalPermissao: TDataSource

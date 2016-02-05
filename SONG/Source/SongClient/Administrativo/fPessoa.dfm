@@ -1,10 +1,8 @@
 inherited frmPessoa: TfrmPessoa
-  ActiveControl = EditNome
   Caption = 'Pessoas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -94,7 +92,11 @@ inherited frmPessoa: TfrmPessoa
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Perfis da Pessoa'
-              inherited cxGrid1: TcxGrid
+              inherited pnBotoesDetail: TPanel
+                ExplicitWidth = 843
+              end
+              inherited cxGridRegistrosDetail: TcxGrid
+                ExplicitHeight = 131
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -323,6 +325,10 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         inline frameGrids: TframeGrids
           Left = 0

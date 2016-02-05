@@ -97,7 +97,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Properties.EditMask = '.*'
             TabOrder = 1
             TextHint = 'Digite aqui a sua pesquisa'
-            OnKeyDown = EditPesquisaKeyDown
+            OnKeyPress = EditPesquisaKeyPress
             Width = 265
           end
           object cbPesquisarPor: TcxImageComboBox
@@ -168,6 +168,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alClient
           Images = dmPrincipal.imgIcons_16
           TabOrder = 0
+          LockedStateImageOptions.Effect = lsieDark
+          LockedStateImageOptions.ShowText = True
+          LockedStateImageOptions.Text = 'Pesquisando...'
+          LookAndFeel.NativeStyle = False
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -175,13 +179,17 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
+            FilterRow.InfoText = 'Clique aqui para definir um filtro'
+            FilterRow.Visible = True
             OptionsCustomize.ColumnsQuickCustomization = True
             OptionsData.CancelOnExit = False
             OptionsData.Deleting = False
             OptionsData.DeletingConfirmation = False
             OptionsData.Inserting = False
             OptionsSelection.MultiSelect = True
+            OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
             OptionsView.ShowEditButtons = gsebAlways
+            OptionsView.GroupByBox = False
             object ColumnAlterar: TcxGridDBColumn
               Caption = 'Alterar'
               PropertiesClassName = 'TcxButtonEditProperties'
