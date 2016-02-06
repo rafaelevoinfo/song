@@ -12,7 +12,9 @@ uses
   uSQLGenerator in '..\Comuns\uSQLGenerator.pas',
   uRoles in '..\Comuns\uRoles.pas',
   smuFuncoesGeral in 'ServerModules\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule},
-  smuLookup in 'ServerModules\smuLookup.pas' {smLookup: TDSServerModule};
+  smuLookup in 'ServerModules\smuLookup.pas' {smLookup: TDSServerModule},
+  smuFuncoesAdministrativo in 'ServerModules\smuFuncoesAdministrativo.pas' {smFuncoesAdministrativo: TDSServerModule},
+  uUtils in '..\Comuns\uUtils.pas';
 
 {$R *.res}
 

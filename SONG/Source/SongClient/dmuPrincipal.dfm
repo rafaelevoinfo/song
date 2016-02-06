@@ -16,7 +16,10 @@ object dmPrincipal: TdmPrincipal
         '.Data.DbxClientDriver,Version=20.0.0.0,Culture=neutral,PublicKey' +
         'Token=91d62ebb5b0d1b1b'
       'Filters={}'
-      'DSAuthenticationUser=admin')
+      'DSAuthenticationUser=1'
+      
+        'DSAuthenticationPassword=356A192B7913B04C54574D18C28D46E6395428A' +
+        'B')
     AfterConnect = DataSnapConnAfterConnect
     AfterDisconnect = DataSnapConnAfterDisconnect
     Left = 64
@@ -1073,12 +1076,14 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
   object ProviderLookup: TDSProviderConnection
     ServerClassName = 'TsmLookup'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304

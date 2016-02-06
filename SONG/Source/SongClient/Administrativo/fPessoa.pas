@@ -71,7 +71,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprRealizarPesquisaInicial; override;
 
-    function fprConfigurarPermissao: String; override;
+    function fprGetPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
@@ -129,7 +129,7 @@ begin
 
 end;
 
-function TfrmPessoa.fprConfigurarPermissao: String;
+function TfrmPessoa.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissao), Ord(admPessoa));
 end;

@@ -47,11 +47,13 @@ inherited dmAdministrativo: TdmAdministrativo
     object cdsPerfil_PermissaoID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsPerfil_PermissaoID_PERFIL: TIntegerField
       DisplayLabel = 'Perfil'
       FieldName = 'ID_PERFIL'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsPerfil_PermissaoPERMISSAO: TStringField

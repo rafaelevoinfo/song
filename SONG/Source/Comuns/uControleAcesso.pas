@@ -4,7 +4,7 @@ interface
 
 uses
   System.Generics.Collections, System.Generics.Defaults, System.TypInfo,
-  Datasnap.DBClient;
+  Datasnap.DBClient, uTypes, System.Variants;
 
 type
   TModulos = class
@@ -21,25 +21,33 @@ type
   end;
 
   TInfoLogin = class
-  private
+  strict private
+    class var FInstance: TInfoLogin;
+  strict private
+
     FPermissoes: TClientDataSet;
     FSenhaUsuario: string;
     FNomeUsuario: string;
     procedure SetNomeUsuario(const Value: string);
     procedure SetPermissoes(const Value: TClientDataSet);
     procedure SetSenhaUsuario(const Value: string);
-    public
-      property NomeUsuario:string read FNomeUsuario write SetNomeUsuario;
-      property SenhaUsuario:string read FSenhaUsuario write SetSenhaUsuario;
 
-      property Permissoes:TClientDataSet read FPermissoes write SetPermissoes;
+    constructor Create;
+    destructor Destroy; override;
+  public
+    property NomeUsuario: string read FNomeUsuario write SetNomeUsuario;
+    property SenhaUsuario: string read FSenhaUsuario write SetSenhaUsuario;
+
+    property Permissoes: TClientDataSet read FPermissoes write SetPermissoes;
+
+    function fpuValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string): Boolean;
+    class function fpuGetInstance: TInfoLogin;
   end;
 
   TPermissao = (admPessoa, admPerfil);
 
 const
-  TPermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas',
-    'Gerenciamento de Perfis');
+  PermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas', 'Gerenciamento de Perfis');
 
 implementation
 
@@ -81,6 +89,45 @@ begin
 end;
 
 { TInfoLogin }
+
+constructor TInfoLogin.Create;
+begin
+  FPermissoes := TClientDataSet.Create(nil);
+end;
+
+destructor TInfoLogin.Destroy;
+begin
+  FPermissoes.Free;
+  inherited;
+end;
+
+class function TInfoLogin.fpuGetInstance: TInfoLogin;
+begin
+  if not Assigned(FInstance) then
+    FInstance := TInfoLogin.Create;
+
+  Result := FInstance;
+end;
+
+function TInfoLogin.fpuValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string): Boolean;
+var
+  vaField: string;
+begin
+  Result := False;
+  case ipAcao of
+    atVisualizar:
+      vaField := 'VISUALIZAR';
+    atIncluir:
+      vaField := 'INCLUIR';
+    atAlterar:
+      vaField := 'ALTERAR';
+    atExcluir:
+      vaField := 'EXCLUIR';
+  end;
+
+  Result := FPermissoes.Locate('PERMISSAO;'+vaField, VarArrayOf([ipPermissao, 1]), []);
+
+end;
 
 procedure TInfoLogin.SetNomeUsuario(const Value: string);
 begin

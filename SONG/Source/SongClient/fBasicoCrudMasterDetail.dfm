@@ -50,17 +50,17 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             TabOrder = 0
             Properties.ActivePage = tabDetail
             Properties.CustomButtons.Buttons = <>
-            ClientRectBottom = 182
-            ClientRectLeft = 4
-            ClientRectRight = 846
-            ClientRectTop = 24
+            ClientRectBottom = 181
+            ClientRectLeft = 2
+            ClientRectRight = 845
+            ClientRectTop = 25
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
-                Width = 842
+                Width = 843
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -77,8 +77,8 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               object cxGridRegistrosDetail: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 842
-                Height = 133
+                Width = 843
+                Height = 131
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1

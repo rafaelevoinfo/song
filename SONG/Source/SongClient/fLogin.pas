@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, dxGDIPlusClasses, cxImage, Vcl.StdCtrls, Vcl.Menus, cxButtons,
-  cxTextEdit, dmuPrincipal, uMensagem, uExceptions, uUtils;
+  cxTextEdit, dmuPrincipal, uMensagem, uExceptions, uUtils, uControleAcesso;
 
 type
   TfrmLogin = class(TfrmBasico)
@@ -27,7 +27,7 @@ type
   public
     property LoginEfetuado: Boolean read FLoginEfetuado write SetLoginEfetuado;
 
-    procedure ppuLogar(ipUsuario, ipSenha: string);
+    procedure ppuLogar(ipLogin, ipSenha: string);
   end;
 
 var
@@ -41,26 +41,33 @@ implementation
 procedure TfrmLogin.btnLogarClick(Sender: TObject);
 begin
   inherited;
-  ppuLogar(edtLogin.text, TUtils.fpuCriptografarSha1(edtSenha.Text));
+  ppuLogar(edtLogin.text, TUtils.fpuCriptografarSha1(edtSenha.text));
   if LoginEfetuado then
     Close;
 end;
 
 procedure TfrmLogin.ppvValidarCampos;
 begin
-  if edtLogin.Text = '' then
+  if edtLogin.text = '' then
     raise TControlException.Create('Informe o login.', edtLogin);
 
-  if edtSenha.Text = '' then
+  if edtSenha.text = '' then
     raise TControlException.Create('Informe a senha.', edtSenha);
 end;
 
-procedure TfrmLogin.ppuLogar(ipUsuario, ipSenha: string);
+procedure TfrmLogin.ppuLogar(ipLogin, ipSenha: string);
+var
+  vaInfoLogin: TInfoLogin;
 begin
   LoginEfetuado := False;
   ppvValidarCampos;
   try
-    dmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha);
+    dmPrincipal.ppuConfigurarConexao(ipLogin, ipSenha);
+
+    vaInfoLogin := TInfoLogin.fpuGetInstance;
+    vaInfoLogin.NomeUsuario := ipLogin;
+    vaInfoLogin.SenhaUsuario := ipSenha;
+    vaInfoLogin.Permissoes.Data := dmPrincipal.FuncoesAdm.fpuPermissoesUsuario(ipLogin);
 
     LoginEfetuado := True;
   except

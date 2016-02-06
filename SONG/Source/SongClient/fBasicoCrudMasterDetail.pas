@@ -157,6 +157,7 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuAlterarDetail(ipId: Integer);
 begin
+  pprValidarPermissao(atAlterar,Permissao);
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;
 
@@ -179,6 +180,7 @@ function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Bo
 var
   vaId: Integer;
 begin
+  pprValidarPermissao(atExcluir,Permissao);
   Result := False;
   if TMsg.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
     begin
@@ -196,6 +198,7 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuIncluirDetail;
 begin
+  pprValidarPermissao(atIncluir,Permissao);
   dsDetail.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;

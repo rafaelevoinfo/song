@@ -14,7 +14,7 @@ uses
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
-  uControleAcesso;
+  uControleAcesso, System.TypInfo;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -84,10 +84,13 @@ type
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios;
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
-    function fprConfigurarPermissao: String; virtual; abstract;
+    function fprGetPermissao: String; virtual; abstract;
     procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
   public
     property PadraoPesquisa: TPadraoPesquisa read FPadraoPesquisa write SetPadraoPesquisa;
+    property Permissao:string read fprGetPermissao;
+
+    constructor Create(AOwner: TComponent); override;
     // CRUD
     procedure ppuIncluir; virtual;
     procedure ppuAlterar(ipId: Integer); virtual;
@@ -108,6 +111,7 @@ var
 implementation
 
 {$R *.dfm}
+
 
 procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin
@@ -168,6 +172,12 @@ begin
   EditPesquisa.SetFocus;
 end;
 
+constructor TfrmBasicoCrud.Create(AOwner: TComponent);
+begin
+  inherited;
+  pprValidarPermissao(atVisualizar,fprGetPermissao);
+end;
+
 procedure TfrmBasicoCrud.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
@@ -182,6 +192,7 @@ end;
 procedure TfrmBasicoCrud.FormCreate(Sender: TObject);
 begin
   inherited;
+
   pcPrincipal.HideTabs := True;
   pcPrincipal.ActivePage := tabPesquisa;
 
@@ -201,6 +212,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
+  pprValidarPermissao(atAlterar,fprGetPermissao);
   pcPrincipal.ActivePage := tabCadastro;
 end;
 
@@ -294,6 +306,7 @@ function TfrmBasicoCrud.fpuExcluir(ipIds: TArray<Integer>): Boolean;
 var
   vaId: Integer;
 begin
+  pprValidarPermissao(atExcluir,fprGetPermissao);
   Result := False;
   if TMsg.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
     begin
@@ -311,6 +324,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuIncluir;
 begin
+  pprValidarPermissao(atIncluir,fprGetPermissao);
   dsMaster.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastro;
 end;
@@ -418,20 +432,10 @@ begin
 end;
 
 procedure TfrmBasicoCrud.pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
-var
-  vaControleAcesso: TModulos;
 begin
-  vaControleAcesso := TModulos.fpuGetInstance;
-  case ipAcao of
-    atVisualizar:
-      ;
-    atIncluir:
-      ;
-    atAlterar:
-      ;
-    atExcluir:
-      ;
-  end;
+  if not TInfoLogin.fpuGetInstance.fpuValidarPermissao(ipAcao, ipPermissao) then
+    raise Exception.Create('Operação não permitida.' + slineBreak + 'O usuário logado não possui a ação de ' +
+      AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + PermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), ipPermissao))].ToUpper);
 end;
 
 procedure TfrmBasicoCrud.pprValidarPesquisa;

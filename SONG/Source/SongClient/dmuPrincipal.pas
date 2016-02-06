@@ -26,11 +26,13 @@ type
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
+    FFuncoesAdministrativo:TsmFuncoesAdministrativoClient;
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
+    property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
   end;
 
 var
@@ -56,12 +58,16 @@ end;
 procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
 begin
   FFuncoesGeral := TsmFuncoesGeralClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesAdministrativo := TsmFuncoesAdministrativoClient.Create(DataSnapConn.DBXConnection);
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
 begin
   if Assigned(FFuncoesGeral) then
     FreeAndNil(FFuncoesGeral);
+
+  if Assigned(FFuncoesAdministrativo) then
+    FreeAndNil(FFuncoesAdministrativo);
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

@@ -49,11 +49,11 @@ inherited frmPerfil: TfrmPerfil
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
               inherited pnBotoesDetail: TPanel
-                ExplicitWidth = 843
+                Width = 843
               end
               inherited cxGridRegistrosDetail: TcxGrid
-                LookAndFeel.NativeStyle = False
-                ExplicitHeight = 131
+                Width = 843
+                Height = 131
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'

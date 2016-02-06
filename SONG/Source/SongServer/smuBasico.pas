@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, Datasnap.Provider, Datasnap.DBClient,
   System.Generics.Collections, uTypes, System.RegularExpressions,
-  uSQLGenerator, dmuPrincipal, uClientDataSet;
+  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery;
 
 type
   TsmBasico = class(TDSServerModule)
@@ -28,6 +28,10 @@ type
     function fprMontarWhere(ipTabela: string; ipParams: TParams): string; virtual;
     function fprAjustarWhere(ipWhere: string): string; virtual;
     function fprGetNomeTabela(ipProvider: TDataSetProvider): string;
+
+    procedure pprCriarDataSet(var opDataSet: TRFQuery);
+
+    procedure pprEncapsularConsulta(ipProc: TProc<TRFQuery>);
   public
     property Connection: TFDConnection read GetConnection write SetConnection;
   end;
@@ -59,6 +63,12 @@ begin
 
 end;
 
+procedure TsmBasico.pprCriarDataSet(var opDataSet: TRFQuery);
+begin
+  opDataSet := TRFQuery.Create(nil);
+  opDataSet.Connection := Connection;
+end;
+
 procedure TsmBasico.pprCriarProvider(ipDataSet: TFDQuery);
 var
   vaProvider: TDataSetProvider;
@@ -76,6 +86,19 @@ begin
 
   if not Assigned(vaProvider.OnDataRequest) then
     vaProvider.OnDataRequest := fpvOnDataRequest;
+end;
+
+procedure TsmBasico.pprEncapsularConsulta(ipProc: TProc<TRFQuery>);
+var
+  vaDataSet: TRFQuery;
+begin
+  pprCriarDataSet(vaDataSet);
+  try
+    ipProc(vaDataSet);
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+  end;
 end;
 
 procedure TsmBasico.SetConnection(const Value: TFDConnection);

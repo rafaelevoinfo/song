@@ -31,6 +31,7 @@ type
     ApplicationEvents1: TApplicationEvents;
     qLoginID: TIntegerField;
     SCLookup: TDSServerClass;
+    SCFuncoesAdministrativo: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -42,6 +43,8 @@ type
     procedure ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure SCFuncoesAdministrativoGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
     FConnections: TDictionary<Integer, TFDConnection>;
@@ -60,7 +63,7 @@ implementation
 
 {$R *.dfm}
 
-uses smuAdministrativo, smuFuncoesGeral, smuLookup;
+uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo;
 
 { TdmPrincipal }
 
@@ -153,6 +156,12 @@ end;
 procedure TdmPrincipal.SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuAdministrativo.TsmAdministrativo;
+end;
+
+procedure TdmPrincipal.SCFuncoesAdministrativoGetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := smuFuncoesAdministrativo.TsmFuncoesAdministrativo;
 end;
 
 procedure TdmPrincipal.SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);

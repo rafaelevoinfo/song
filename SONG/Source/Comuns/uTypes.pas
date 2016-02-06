@@ -27,6 +27,8 @@ const
 
   coArquivoConfiguracao = 'song.sys';
 
+  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir');
+
 implementation
 
 end.

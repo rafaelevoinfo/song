@@ -66,7 +66,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprBeforeSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
-    function fprConfigurarPermissao: String; override;
+    function fprGetPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
@@ -82,6 +82,7 @@ var
 implementation
 
 {$R *.dfm}
+
 
 procedure TfrmPerfil.FormCreate(Sender: TObject);
 begin
@@ -112,7 +113,7 @@ end;
 procedure TfrmPerfil.ppvCarregarModulos;
 var
   vaModulo, vaPermissao, vaDescricao: string;
-  vaControleAcesso: TModulos;
+  vaModulos: TModulos;
   vaPermissoes: TList<string>;
   vaIdModulo, vaId: Integer;
 
@@ -125,8 +126,8 @@ begin
   else
     cdsLocalPermissoes.CreateDataSet;
 
-  vaControleAcesso := TModulos.fpuGetInstance;
-  for vaModulo in vaControleAcesso.Items.Keys do
+  vaModulos := TModulos.fpuGetInstance;
+  for vaModulo in vaModulos.Items.Keys do
     begin
       Inc(vaId);
       vaIdModulo := vaId;
@@ -136,12 +137,12 @@ begin
       ppvZerarPermissoes;
       cdsLocalPermissoes.Post;
 
-      vaPermissoes := vaControleAcesso.Items.Items[vaModulo];
+      vaPermissoes := vaModulos.Items.Items[vaModulo];
       for vaPermissao in vaPermissoes do
         begin
           Inc(vaId);
           try
-            vaDescricao := TPermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), vaPermissao))];
+            vaDescricao := PermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), vaPermissao))];
 
             cdsLocalPermissoes.Append;
             cdsLocalPermissoesID.AsInteger := vaId;
@@ -195,7 +196,6 @@ begin
 
         end;
     end);
-
   inherited;
 end;
 
@@ -206,7 +206,7 @@ begin
     ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
 end;
 
-function TfrmPerfil.fprConfigurarPermissao: String;
+function TfrmPerfil.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissao), Ord(admPerfil));
 end;
@@ -226,10 +226,10 @@ end;
 
 procedure TfrmPerfil.ppuIncluirDetail;
 begin
-  inherited;
-  // nao quero que fique em insert
-  dmAdministrativo.cdsPerfil_Permissao.Cancel;
-  ppvCarregarPermissoesPerfil;
+   inherited;
+   // nao quero que fique em insert
+   dmAdministrativo.cdsPerfil_Permissao.Cancel;
+   ppvCarregarPermissoesPerfil;
 end;
 
 procedure TfrmPerfil.ppvCarregarPermissoesPerfil;
@@ -296,7 +296,7 @@ begin
   if AText <> '' then
     begin
       try
-        AText := TPermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), AText))];
+        AText := PermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), AText))];
       except
         AText := 'Permissão não existente';
       end;
