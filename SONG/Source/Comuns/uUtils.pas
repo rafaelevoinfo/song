@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, Vcl.Dialogs, cxPC, Vcl.Forms, Vcl.Controls,
-  Datasnap.DBClient, IdHashSHA, System.RegularExpressions;
+  Datasnap.DBClient, IdHashSHA, System.RegularExpressions,
+  System.Types, Winapi.Windows, uTypes, System.Classes;
 
 type
   TUtils = class
@@ -17,11 +18,35 @@ type
     class function fpuCriptografarSha1(ipValor: String): String;
     class function fpuValidarEmail(ipEmail: String): Boolean;
     class procedure ppuFocar(ipEdit: TWinControl);
+    class function fpuVersaoExecutavel(ipArquivo: String; ipVersaoAte: TVersaoInfo): string;
+    class procedure ppuCopyStreamToByteStream(ipOrigem: TStream; var ipDestino: TBytesStream);
   end;
 
 implementation
 
 { TUtils }
+
+class procedure TUtils.ppuCopyStreamToByteStream(ipOrigem: TStream; var ipDestino: TBytesStream);
+const
+  LBufSize = $F000;
+var
+  LBuffer: PByte;
+  LReadCount: Integer;
+begin
+  GetMem(LBuffer, LBufSize);
+  ipDestino.Clear;
+  try
+    repeat
+      LReadCount := ipOrigem.Read(LBuffer^, LBufSize);
+      if LReadCount > 0 then
+        ipDestino.WriteBuffer(LBuffer^, LReadCount);
+    until LReadCount < LBufSize;
+  finally
+    FreeMem(LBuffer, LBufSize);
+  end;
+
+  ipDestino.Seek(0, TSeekOrigin.soBeginning);
+end;
 
 class function TUtils.fpuCriptografarSha1(ipValor: String): String;
 var
@@ -88,6 +113,38 @@ begin
     '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$');
 end;
 
+class function TUtils.fpuVersaoExecutavel(ipArquivo: String; ipVersaoAte: TVersaoInfo): string;
+var
+  VerInfoSize, VerValueSize, dummy: DWORD;
+  VerInfo: Pointer;
+  VerValue: PVSFixedFileInfo;
+  V1, V2, V3, V4: Word;
+begin
+  VerInfoSize := GetFileVersionInfoSize(PChar(ipArquivo), dummy);
+  GetMem(VerInfo, VerInfoSize);
+  GetFileVersionInfo(PChar(ipArquivo), 0, VerInfoSize, VerInfo);
+  VerQueryValue(VerInfo, '', Pointer(VerValue), VerValueSize);
+  with VerValue^ do
+    begin
+      V1 := dwFileVersionMS shr 16;
+      V2 := dwFileVersionMS and $FFFF;
+      V3 := dwFileVersionLS shr 16;
+      V4 := dwFileVersionLS and $FFFF;
+    end;
+  FreeMem(VerInfo, VerInfoSize);
+  case ipVersaoAte of
+    viMaJorVersion:
+      Result := IntToStr(V1);
+    viMinorVersion:
+      Result := IntToStr(V1) + '.' + IntToStr(V2);
+    viRelease:
+      Result := IntToStr(V1) + '.' + IntToStr(V2) + '.' + IntToStr(V3);
+    viBuild:
+      Result := IntToStr(V1) + '.' + IntToStr(V2) + '.' + IntToStr(V3) + '.' + IntToStr(V4);
+  end;
+
+end;
+
 class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
 var
   vaTab: TcxTabSheet;
@@ -133,7 +190,7 @@ begin
     if ipEdit.CanFocus and ipEdit.Visible and ipEdit.Enabled then
       ipEdit.SetFocus;
   except
-    //vamos ignorar
+    // vamos ignorar
   end;
 end;
 

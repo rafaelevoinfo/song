@@ -12,7 +12,8 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, cxDropDownEdit,
   cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC,
-  cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem, MidasLib;
+  cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem, MidasLib,
+  cxGroupBox, cxRadioGroup;
 
 type
   TfrmBasicoCrudMasterDetail = class(TfrmBasicoCrud)

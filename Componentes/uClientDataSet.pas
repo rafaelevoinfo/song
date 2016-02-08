@@ -14,6 +14,7 @@ type
     coNome: string = 'NOME';
     coActive: string = 'ACTIVE';
     coLogin:string = 'LOGIN';
+    coAtivo:string = 'ATIVO';
   end;
 
   TRFClientDataSet = class(TClientDataSet)

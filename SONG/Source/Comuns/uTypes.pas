@@ -12,6 +12,7 @@ type
     // campos comuns
     coId = 'ID';
     coNome = 'NOME';
+    coAtivo = 'ATIVO';
 
     // operadores
     coAnd = ' and ';
@@ -19,15 +20,23 @@ type
 
   TPadraoPesquisa = (ppActive, ppTodos);
 
-  TAcaoTela = (atVisualizar, atIncluir, atAlterar, atExcluir);
+  TAcaoTela = (atVisualizar, atIncluir, atAlterar, atExcluir, atAtivar, atInativar);
+
+  TVersaoInfo = (viMaJorVersion, viMinorVersion, viRelease, viBuild);
+
 
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;
+  coRegistroAtivo = 0;
+  coRegistroInativo = 1;
 
   coArquivoConfiguracao = 'song.sys';
+  coNomePadraoSongClient = 'SongClientV';
+  coPastaAtualizacoes = 'Atualizacoes/';
+  coExtensaoCompactacao = '.zip';
 
-  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir');
+  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir','Ativar', 'Inativar');
 
 implementation
 

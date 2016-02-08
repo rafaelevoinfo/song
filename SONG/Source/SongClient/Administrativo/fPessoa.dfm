@@ -92,11 +92,7 @@ inherited frmPessoa: TfrmPessoa
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Perfis da Pessoa'
-              inherited pnBotoesDetail: TPanel
-                ExplicitWidth = 843
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                ExplicitHeight = 131
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'

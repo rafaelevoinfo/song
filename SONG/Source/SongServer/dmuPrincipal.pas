@@ -79,14 +79,14 @@ begin
   valid := True;
   if (User <> '') or (Password <> '') then
     begin
-      if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
-        begin
+//      if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
+//        begin
           qLogin.Close;
           qLogin.ParamByName('LOGIN').AsString := User;
           qLogin.ParamByName('SENHA').AsString := Password;
           qLogin.Open();
           valid := not qLogin.Eof;
-        end;
+//        end;
     end;
 
 end;
@@ -97,7 +97,8 @@ begin
   valid := True;
   //se nao tiver logado com um usuario e senha valido a unica coisa permitida vai ser baixar uma nova versao
   if (AuthorizeEventObject.UserName = '') and
-    (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuVerificarNovaVersao') then
+    (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuVerificarNovaVersao') and
+    (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuBaixarAtualizacao') then
     begin
       valid := false
     end;

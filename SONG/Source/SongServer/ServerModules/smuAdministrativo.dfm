@@ -16,7 +16,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.BAIRRO,'
       '       PESSOA.COMPLEMENTO,'
       '       PESSOA.LOGIN,'
-      '       PESSOA.SENHA'
+      '       PESSOA.SENHA,'
+      '       PESSOA.ATIVO'
       'from PESSOA'
       '&WHERE')
     Left = 40
@@ -82,6 +83,7 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'EMAIL'
       Origin = 'EMAIL'
       ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 100
     end
     object qPessoaCELULAR: TStringField
@@ -92,6 +94,11 @@ inherited smAdministrativo: TsmAdministrativo
     object qPessoaTELEFONE: TStringField
       FieldName = 'TELEFONE'
       Origin = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaATIVO: TSmallintField
+      FieldName = 'ATIVO'
+      Origin = 'ATIVO'
       ProviderFlags = [pfInUpdate]
     end
   end

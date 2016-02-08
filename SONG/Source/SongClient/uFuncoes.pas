@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/02/2016 23:33:41
+// 08/02/2016 14:39:47
 //
 
 unit uFuncoes;
@@ -24,6 +24,7 @@ type
   private
     FfpuVerificarNovaVersaoCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
+    FfpuBaixarAtualizacaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -31,6 +32,7 @@ type
     destructor Destroy; override;
     function fpuVerificarNovaVersao(ipVersaoAtual: string): string;
     function fpuGetId(ipTabela: string): Integer;
+    function fpuBaixarAtualizacao(ipVersao: string): TStream;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -130,6 +132,20 @@ begin
   Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
 end;
 
+function TsmFuncoesGeralClient.fpuBaixarAtualizacao(ipVersao: string): TStream;
+begin
+  if FfpuBaixarAtualizacaoCommand = nil then
+  begin
+    FfpuBaixarAtualizacaoCommand := FDBXConnection.CreateCommand;
+    FfpuBaixarAtualizacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBaixarAtualizacaoCommand.Text := 'TsmFuncoesGeral.fpuBaixarAtualizacao';
+    FfpuBaixarAtualizacaoCommand.Prepare;
+  end;
+  FfpuBaixarAtualizacaoCommand.Parameters[0].Value.SetWideString(ipVersao);
+  FfpuBaixarAtualizacaoCommand.ExecuteUpdate;
+  Result := FfpuBaixarAtualizacaoCommand.Parameters[1].Value.GetStream(FInstanceOwner);
+end;
+
 procedure TsmFuncoesGeralClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -172,6 +188,7 @@ destructor TsmFuncoesGeralClient.Destroy;
 begin
   FfpuVerificarNovaVersaoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
+  FfpuBaixarAtualizacaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

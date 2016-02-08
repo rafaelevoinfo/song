@@ -14,7 +14,7 @@ uses
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, cxGroupBox, uExceptions,
   uUtils, Datasnap.DBClient, fmGrids, dmuLookup, uTypes, uClientDataSet,
-  System.TypInfo, uControleAcesso;
+  System.TypInfo, uControleAcesso, cxRadioGroup;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)

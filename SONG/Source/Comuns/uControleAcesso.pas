@@ -121,11 +121,11 @@ begin
       vaField := 'INCLUIR';
     atAlterar:
       vaField := 'ALTERAR';
-    atExcluir:
+    atExcluir, atAtivar, atInativar:
       vaField := 'EXCLUIR';
   end;
 
-  Result := FPermissoes.Locate('PERMISSAO;'+vaField, VarArrayOf([ipPermissao, 1]), []);
+  Result := FPermissoes.Locate('PERMISSAO;' + vaField, VarArrayOf([ipPermissao, 1]), []);
 
 end;
 

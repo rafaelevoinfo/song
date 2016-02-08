@@ -147,6 +147,7 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'E-Mail'
       FieldName = 'EMAIL'
       ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 100
     end
     object cdsPessoaCELULAR: TStringField
@@ -157,6 +158,10 @@ inherited dmAdministrativo: TdmAdministrativo
     object cdsPessoaTELEFONE: TStringField
       DisplayLabel = 'Telefone'
       FieldName = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPessoaATIVO: TSmallintField
+      FieldName = 'ATIVO'
       ProviderFlags = [pfInUpdate]
     end
   end

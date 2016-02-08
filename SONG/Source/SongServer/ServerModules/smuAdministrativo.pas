@@ -41,6 +41,7 @@ type
     qPessoaEMAIL: TStringField;
     qPessoaCELULAR: TStringField;
     qPessoaTELEFONE: TStringField;
+    qPessoaATIVO: TSmallintField;
   private
     { Private declarations }
   protected

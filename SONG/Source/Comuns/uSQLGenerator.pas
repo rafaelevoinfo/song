@@ -3,13 +3,14 @@ unit uSQLGenerator;
 interface
 
 uses
-  System.SysUtils, uTypes;
+  System.SysUtils, uTypes, System.Variants;
 
 type
   TSQLGenerator = class
   public
     class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValor: Integer): string; overload;
-    class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValor: Integer; ipAnd: Boolean)
+    class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValores: Array of Variant): string; overload;
+    class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValores: Array of Variant; ipAnd: Boolean)
       : string; overload;
     class function fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string): string; overload;
     class function fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string; ipStartWith, ipEndWith, ipAnd: Boolean)
@@ -20,20 +21,49 @@ implementation
 
 { TSQLGenerator }
 
-class function TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela, ipCampo: String; ipValor: Integer): string;
-begin
-  Result := TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela, ipCampo, ipValor, true);
-end;
-
-class function TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela, ipCampo: String; ipValor: Integer;
-  ipAnd: Boolean): string;
-begin
-  Result := ipWhere + Format(' (%s.%s = %d) %s', [ipTabela, ipCampo, ipValor, ' and ']);
-end;
-
 class function TSQLGenerator.fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string): string;
 begin
   Result := TSQLGenerator.fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor, true, false, true);
+end;
+
+class function TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela,
+  ipCampo: string; ipValores: Array of Variant): string;
+begin
+  Result := TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela, ipCampo, ipValores, true);
+end;
+
+class function TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela,
+  ipCampo: string; ipValores: Array of Variant; ipAnd: Boolean): string;
+var
+  I: Integer;
+  vaWhere: string;
+begin
+  vaWhere := '(';
+  for I := 0 to High(ipValores) do
+    begin
+      if not VarIsNull(ipValores[I]) then
+        vaWhere := vaWhere + Format(' (%s.%s = %d)', [ipTabela, ipCampo, VarToStr(ipValores[I]).ToInteger])
+      else
+        vaWhere := vaWhere + Format(' (%s.%s is null)', [ipTabela, ipCampo]);
+
+      if I <> High(ipValores) then
+        begin
+          if ipAnd then
+            vaWhere := vaWhere + ' and '
+          else
+            vaWhere := vaWhere + ' or ';
+        end;
+    end;
+
+  vaWhere := vaWhere + ') AND ';
+
+  Result := ipWhere + vaWhere;
+end;
+
+class function TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela,
+  ipCampo: string; ipValor: Integer): string;
+begin
+   Result := TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela, ipCampo, [ipValor]);
 end;
 
 class function TSQLGenerator.fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string;

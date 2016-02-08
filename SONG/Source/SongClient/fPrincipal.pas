@@ -22,12 +22,11 @@ type
     pcPrincipal: TcxPageControl;
     tabDashBoard: TcxTabSheet;
     dxSkinController1: TdxSkinController;
-    procedure FormShow(Sender: TObject);
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
-  private
-    procedure ppvAfterShow(var ipMsg: TMessage); message MSG_AFTER_SHOW;
+  protected
+    procedure pprAfterShow(var ipMsg: TMessage); override;
   public
     { Public declarations }
   end;
@@ -57,13 +56,7 @@ begin
   UseSkin := not(AControl is TButton);
 end;
 
-procedure TfrmPrincipal.FormShow(Sender: TObject);
-begin
-  inherited;
-  PostMessage(Self.Handle, MSG_AFTER_SHOW, 0, 0);
-end;
-
-procedure TfrmPrincipal.ppvAfterShow(var ipMsg: TMessage);
+procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);
 begin
   Application.CreateForm(TfrmLogin, frmLogin);
   frmLogin.ShowModal;

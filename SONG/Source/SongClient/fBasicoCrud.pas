@@ -14,7 +14,7 @@ uses
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
-  uControleAcesso, System.TypInfo;
+  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -52,6 +52,7 @@ type
     btnPesquisar: TButton;
     pnBotoes: TPanel;
     btnIncluir: TButton;
+    rgStatus: TcxRadioGroup;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -64,6 +65,8 @@ type
     procedure Ac_SalvarUpdate(Sender: TObject);
     procedure viewRegistrosDblClick(Sender: TObject);
     procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
+    procedure ColumnExcluirGetProperties(Sender: TcxCustomGridTableItem;
+      ARecord: TcxCustomGridRecord; var AProperties: TcxCustomEditProperties);
   private
     FPadraoPesquisa: TPadraoPesquisa;
     procedure SetPadraoPesquisa(const Value: TPadraoPesquisa);
@@ -82,13 +85,14 @@ type
     procedure pprEfetuarPesquisa; virtual;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); virtual;
     // GERAL
-    procedure pprConfigurarLabelsCamposObrigatorios;
+    procedure pprConfigurarLabelsCamposObrigatorios; virtual;
+    procedure pprVerificarExisteStatus; virtual;
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
     function fprGetPermissao: String; virtual; abstract;
     procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
   public
     property PadraoPesquisa: TPadraoPesquisa read FPadraoPesquisa write SetPadraoPesquisa;
-    property Permissao:string read fprGetPermissao;
+    property Permissao: string read fprGetPermissao;
 
     constructor Create(AOwner: TComponent); override;
     // CRUD
@@ -172,10 +176,28 @@ begin
   EditPesquisa.SetFocus;
 end;
 
+procedure TfrmBasicoCrud.ColumnExcluirGetProperties(
+  Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+  var AProperties: TcxCustomEditProperties);
+begin
+  inherited;
+  if Assigned(dsMaster.DataSet) and dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) then
+    begin
+      if rgStatus.Visible then
+        begin
+          if dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger = coRegistroAtivo then
+            AProperties.Buttons.Items[0].ImageIndex := 7
+          else
+            AProperties.Buttons.Items[0].ImageIndex := 6;
+        end;
+    end;
+
+end;
+
 constructor TfrmBasicoCrud.Create(AOwner: TComponent);
 begin
   inherited;
-  pprValidarPermissao(atVisualizar,fprGetPermissao);
+  pprValidarPermissao(atVisualizar, fprGetPermissao);
 end;
 
 procedure TfrmBasicoCrud.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
@@ -197,6 +219,7 @@ begin
   pcPrincipal.ActivePage := tabPesquisa;
 
   pprConfigurarLabelsCamposObrigatorios;
+  pprVerificarExisteStatus;
 end;
 
 procedure TfrmBasicoCrud.FormShow(Sender: TObject);
@@ -212,7 +235,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
-  pprValidarPermissao(atAlterar,fprGetPermissao);
+  pprValidarPermissao(atAlterar, fprGetPermissao);
   pcPrincipal.ActivePage := tabCadastro;
 end;
 
@@ -244,6 +267,9 @@ begin
     ipCds.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA')
   else if (cbPesquisarPor.ItemIndex = coID) then
     ipCds.ppuAddParametro(TParametros.coID, EditPesquisa.Text);
+
+  if rgStatus.Visible then
+    ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
 
 end;
 
@@ -291,40 +317,83 @@ end;
 
 procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
 begin
-  case PadraoPesquisa of
-    ppActive:
-      cbPesquisarPor.ItemIndex := coID;
-    // coloco o id, mas como nao vai ter valor no Edit nao vai trazer nada, vai apenas abrir a tabelas
-    ppTodos:
+  if PadraoPesquisa = ppTodos then
+    begin
       cbPesquisarPor.ItemIndex := coTodos;
-  end;
-
-  ppuPesquisar;
+      ppuPesquisar;
+    end
+  else // vai apenas abrir o cds sem trazer nada
+    pprEfetuarPesquisa;
 end;
 
 function TfrmBasicoCrud.fpuExcluir(ipIds: TArray<Integer>): Boolean;
 var
   vaId: Integer;
+  vaPergunta: string;
+  vaAcao: TAcaoTela;
 begin
-  pprValidarPermissao(atExcluir,fprGetPermissao);
   Result := False;
-  if TMsg.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
+
+  vaAcao := atExcluir;
+  if rgStatus.Visible then
     begin
-      for vaId in ipIds do
-        begin
-          if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-            dsMaster.DataSet.Delete;
-        end;
+      if rgStatus.ItemIndex = coRegistroAtivo then
+        vaAcao := atInativar
+      else
+        vaAcao := atAtivar;
+    end;
 
-      Result := True;
+  vaPergunta := 'Realmente deseja ' + AcaoTelaDescricao[vaAcao] + '?';
 
+  pprValidarPermissao(vaAcao, fprGetPermissao);
+
+  if TMsg.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
+    begin
+      viewRegistros.BeginUpdate(lsimImmediate);
+      try
+        for vaId in ipIds do
+          begin
+            case vaAcao of
+              atExcluir:
+                begin
+                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                    dsMaster.DataSet.Delete;
+                end;
+              atAtivar:
+                begin
+                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                    begin
+                      dsMaster.DataSet.Edit;
+                      dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
+                      dsMaster.DataSet.Post;
+                    end;
+                end;
+              atInativar:
+                begin
+                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                    begin
+                      dsMaster.DataSet.Edit;
+                      dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
+                      dsMaster.DataSet.Post;
+                    end;
+                end;
+            end;
+
+          end;
+
+        Result := True;
+
+        ppuPesquisar;
+      finally
+        viewRegistros.EndUpdate;
+      end;
     end;
 
 end;
 
 procedure TfrmBasicoCrud.ppuIncluir;
 begin
-  pprValidarPermissao(atIncluir,fprGetPermissao);
+  pprValidarPermissao(atIncluir, fprGetPermissao);
   dsMaster.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastro;
 end;
@@ -435,7 +504,8 @@ procedure TfrmBasicoCrud.pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: str
 begin
   if not TInfoLogin.fpuGetInstance.fpuValidarPermissao(ipAcao, ipPermissao) then
     raise Exception.Create('Operação não permitida.' + slineBreak + 'O usuário logado não possui a ação de ' +
-      AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + PermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), ipPermissao))].ToUpper);
+      AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + PermissaoDescricao
+      [TPermissao(GetEnumValue(TypeInfo(TPermissao), ipPermissao))].ToUpper);
 end;
 
 procedure TfrmBasicoCrud.pprValidarPesquisa;
@@ -454,6 +524,22 @@ begin
         raise Exception.Create('Informe a data final.');
     end;
 
+end;
+
+procedure TfrmBasicoCrud.pprVerificarExisteStatus;
+var
+  vaField: TField;
+  I: Integer;
+begin
+  for I := 0 to dsMaster.DataSet.FieldCount - 1 do
+    begin
+      vaField := dsMaster.DataSet.Fields[I];
+      if vaField.FieldName = TBancoDados.coAtivo then
+        begin
+          rgStatus.Visible := True;
+          Break;
+        end;
+    end;
 end;
 
 end.

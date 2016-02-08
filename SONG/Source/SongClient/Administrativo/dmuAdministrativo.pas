@@ -39,6 +39,7 @@ type
     cdsPessoaCELULAR: TStringField;
     cdsPessoaTELEFONE: TStringField;
     dsPessoa: TDataSource;
+    cdsPessoaATIVO: TSmallintField;
   private
     { Private declarations }
   public

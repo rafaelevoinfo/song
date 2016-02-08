@@ -14,6 +14,7 @@ type
     class procedure ppuShowException(ipEx: Exception); overload;
 
     class function fpuPerguntar(ipPergunta: string; ipBotoes: TPerguntaPadrao): TRespostaPadrao;
+    class procedure ppuShowMessage(ipMsg:String);
   end;
 
 implementation
@@ -52,6 +53,11 @@ end;
 class procedure TMsg.ppuShowException(ipEx: Exception);
 begin
   ShowMessage(ipEx.Message);
+end;
+
+class procedure TMsg.ppuShowMessage(ipMsg:String);
+begin
+  ShowMessage(ipMsg);
 end;
 
 end.

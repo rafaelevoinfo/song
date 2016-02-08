@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, Datasnap.Provider, Datasnap.DBClient,
   System.Generics.Collections, uTypes, System.RegularExpressions,
-  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery;
+  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery, System.Variants;
 
 type
   TsmBasico = class(TDSServerModule)
@@ -182,7 +182,15 @@ begin
       else if vaParam.Name = TParametros.coNome then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaParam.Text)
       else if vaParam.Name = TParametros.coActive then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1);
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1)
+      else if vaParam.Name = TParametros.coAtivo then
+        begin
+          if vaParam.Text.ToInteger <> coRegistroAtivo then
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaParam.Text.ToInteger())
+          else
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo,
+              [vaParam.Text.ToInteger(), null], false)
+        end;
     end;
 
 end;

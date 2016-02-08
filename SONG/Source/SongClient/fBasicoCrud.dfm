@@ -42,50 +42,51 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           BevelOuter = bvNone
           TabOrder = 1
           object Label1: TLabel
-            Left = 3
-            Top = 2
+            Left = 139
+            Top = 4
             Width = 69
             Height = 13
             Caption = 'Pesquisar por:'
           end
           object pnData: TPanel
-            Left = 183
+            Left = 320
             Top = 0
-            Width = 267
-            Height = 48
+            Width = 129
+            Height = 41
+            AutoSize = True
             BevelOuter = bvNone
             TabOrder = 2
             Visible = False
             object De: TLabel
-              Left = 6
-              Top = 21
+              Left = 1
+              Top = 4
               Width = 13
               Height = 13
               Caption = 'De'
             end
             object Label2: TLabel
-              Left = 135
+              Left = 0
               Top = 22
               Width = 17
               Height = 13
               Caption = 'At'#233
             end
             object EditDataInicial: TcxDateEdit
-              Left = 22
-              Top = 18
+              Left = 23
+              Top = 0
               TabOrder = 0
               Width = 106
             end
             object EditDataFinal: TcxDateEdit
-              Left = 158
-              Top = 18
+              Left = 23
+              Top = 20
               TabOrder = 1
               Width = 106
             end
           end
           object EditPesquisa: TcxButtonEdit
-            Left = 184
-            Top = 18
+            Left = 272
+            Top = 20
             Properties.Buttons = <
               item
                 Action = Ac_Pesquisar
@@ -98,11 +99,11 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             TabOrder = 1
             TextHint = 'Digite aqui a sua pesquisa'
             OnKeyPress = EditPesquisaKeyPress
-            Width = 265
+            Width = 177
           end
           object cbPesquisarPor: TcxImageComboBox
-            Left = 3
-            Top = 18
+            Left = 139
+            Top = 20
             EditValue = 1
             Properties.ImmediatePost = True
             Properties.Items = <
@@ -122,7 +123,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
               end>
             Properties.OnEditValueChanged = cbPesquisarPorPropertiesEditValueChanged
             TabOrder = 0
-            Width = 174
+            Width = 131
           end
           object btnPesquisar: TButton
             Left = 456
@@ -132,6 +133,24 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Action = Ac_Pesquisar
             Images = dmPrincipal.imgIcons_32
             TabOrder = 3
+          end
+          object rgStatus: TcxRadioGroup
+            Left = 3
+            Top = 1
+            Caption = 'Status'
+            Properties.Columns = 2
+            Properties.Items = <
+              item
+                Caption = 'Ativo'
+              end
+              item
+                Caption = 'Inativo'
+              end>
+            ItemIndex = 0
+            TabOrder = 4
+            Visible = False
+            Height = 40
+            Width = 131
           end
         end
         object pnBotoes: TPanel
@@ -172,6 +191,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
+          ExplicitTop = 2
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -220,6 +240,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
                 end>
               Properties.Images = dmPrincipal.imgIcons_16
               Properties.ViewStyle = vsButtonsOnly
+              OnGetProperties = ColumnExcluirGetProperties
               MinWidth = 64
               Options.Filtering = False
               Options.ShowEditButtons = isebAlways

@@ -31,8 +31,7 @@ begin
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TfrmSplash, frmSplash);
-  frmSplash.Show;
+  frmSplash.ShowModal;
 
-  frmSplash.Close;
   Application.Run;
 end.

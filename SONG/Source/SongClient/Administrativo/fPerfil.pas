@@ -15,7 +15,8 @@ uses
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, uClientDataSet,
   Datasnap.DBClient, uControleAcesso, System.Generics.Collections, cxCheckBox,
   uUtils, MidasLib, dmuLookup, dmuPrincipal, cxTL, cxTLdxBarBuiltInMenu,
-  cxInplaceContainer, cxDBTL, cxTLData, uTypes, System.TypInfo;
+  cxInplaceContainer, cxDBTL, cxTLData, uTypes, System.TypInfo, cxGroupBox,
+  cxRadioGroup;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)

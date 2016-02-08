@@ -4,7 +4,6 @@ inherited frmSplash: TfrmSplash
   Caption = 'SONG'
   ClientHeight = 267
   ClientWidth = 543
-  OnActivate = FormActivate
   ExplicitWidth = 543
   ExplicitHeight = 267
   PixelsPerInch = 96

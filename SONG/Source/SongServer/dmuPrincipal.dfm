@@ -35,6 +35,7 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64
@@ -82,7 +83,8 @@ object dmPrincipal: TdmPrincipal
       '       Pessoa.Senha'
       'from PESSOA'
       'where PESSOA.LOGIN = :LOGIN and'
-      '      PESSOA.SENHA = :SENHA ')
+      '      PESSOA.SENHA = :SENHA and'
+      '      ((PESSOA.Ativo = 0) or (PESSOA.ATIVO is Null));')
     Left = 472
     Top = 256
     ParamData = <
