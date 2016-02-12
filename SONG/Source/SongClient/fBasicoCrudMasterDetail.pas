@@ -39,6 +39,8 @@ type
     btnCancelarDetail: TButton;
     dsDetail: TDataSource;
     pnEditsCadastroDetail: TPanel;
+    btnSalvarIncluirDetail: TButton;
+    Ac_Salvar_Incluir_Detail: TAction;
     procedure Ac_Incluir_DetailExecute(Sender: TObject);
     procedure Ac_Alterar_DetailExecute(Sender: TObject);
     procedure Ac_Excluir_DetailExecute(Sender: TObject);
@@ -46,16 +48,20 @@ type
     procedure Ac_Cancelar_DetailExecute(Sender: TObject);
     procedure Ac_Salvar_DetailUpdate(Sender: TObject);
     procedure viewRegistrosDetailDblClick(Sender: TObject);
+    procedure Ac_Salvar_Incluir_DetailExecute(Sender: TObject);
   protected
     procedure pprBeforeSalvarDetail; virtual;
     procedure pprExecutarSalvarDetail; virtual;
     procedure pprAfterSalvarDetail; virtual;
     function fprHabilitarSalvarDetail(): Boolean; virtual;
+    procedure pprBeforeIncluirDetail; virtual;
+    procedure pprBeforeAlterarDetail; virtual;
 
     procedure pprValidarDadosDetail; virtual;
     // OVERRIDE
     procedure pprEfetuarPesquisa; override;
   public
+
     procedure ppuIncluirDetail; virtual;
     procedure ppuAlterarDetail(ipId: Integer); virtual;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; virtual;
@@ -103,7 +109,8 @@ end;
 procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailExecute(Sender: TObject);
 begin
   inherited;
-  fpuSalvarDetail;
+  if fpuSalvarDetail then
+    pcPrincipal.ActivePage := tabPesquisa;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailUpdate(Sender: TObject);
@@ -111,6 +118,14 @@ begin
   inherited;
   if Sender is TAction then
     TAction(Sender).Enabled := fprHabilitarSalvarDetail();
+end;
+
+procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_Incluir_DetailExecute(
+  Sender: TObject);
+begin
+  inherited;
+  if fpuSalvarDetail then
+    ppuIncluirDetail;
 end;
 
 function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail(): Boolean;
@@ -121,7 +136,7 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
 begin
-  pcPrincipal.ActivePage := tabPesquisa;
+
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprBeforeSalvarDetail;
@@ -158,7 +173,7 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuAlterarDetail(ipId: Integer);
 begin
-  pprValidarPermissao(atAlterar,Permissao);
+  pprBeforeAlterarDetail;
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;
 
@@ -174,14 +189,14 @@ begin
     end;
 
   TClientDataSet(dsDetail.DataSet).CancelUpdates;
-  pcPrincipal.ActivePage := tabPesquisa;
+  ppuRetornar;
 end;
 
 function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
 var
   vaId: Integer;
 begin
-  pprValidarPermissao(atExcluir,Permissao);
+  pprValidarPermissao(atExcluir, Permissao);
   Result := False;
   if TMsg.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
     begin
@@ -197,9 +212,19 @@ begin
     end;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.pprBeforeAlterarDetail;
+begin
+   pprValidarPermissao(atAlterar, Permissao);
+end;
+
+procedure TfrmBasicoCrudMasterDetail.pprBeforeIncluirDetail;
+begin
+  pprValidarPermissao(atIncluir, Permissao);
+end;
+
 procedure TfrmBasicoCrudMasterDetail.ppuIncluirDetail;
 begin
-  pprValidarPermissao(atIncluir,Permissao);
+  pprBeforeIncluirDetail;
   dsDetail.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;

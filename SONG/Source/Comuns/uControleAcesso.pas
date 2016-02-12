@@ -44,10 +44,10 @@ type
     class function fpuGetInstance: TInfoLogin;
   end;
 
-  TPermissao = (admPessoa, admPerfil);
+  TPermissao = (admPessoa, admPerfil, admOrganizacao);
 
 const
-  PermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas', 'Gerenciamento de Perfis');
+  PermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas', 'Gerenciamento de Perfis', 'Organizações');
 
 implementation
 
@@ -63,6 +63,7 @@ begin
   // administrativo
   vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admPessoa)));
   vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admPerfil)));
+  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admOrganizacao)));
   FItems.Add('Administrativo', vaPermissoes);
 
 end;

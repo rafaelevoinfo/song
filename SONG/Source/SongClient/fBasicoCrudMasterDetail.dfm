@@ -1,15 +1,11 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
+  ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -63,10 +59,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
@@ -164,10 +156,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0
@@ -188,7 +176,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
         object btnCancelarDetail: TButton
           AlignWithMargins = True
-          Left = 95
+          Left = 215
           Top = 4
           Width = 85
           Height = 42
@@ -196,6 +184,20 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
           TabOrder = 1
+          ExplicitLeft = 95
+        end
+        object btnSalvarIncluirDetail: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 114
+          Height = 42
+          Action = Ac_Salvar_Incluir_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 2
+          ExplicitLeft = 103
+          ExplicitTop = 8
         end
       end
       object pnEditsCadastroDetail: TPanel
@@ -210,36 +212,43 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
     end
   end
   inherited ActionList1: TActionList
-    object Ac_Incluir_Detail: TAction
+    object Ac_Incluir_Detail: TAction [6]
       Category = 'Detail'
       Caption = 'Incluir'
       ImageIndex = 3
       OnExecute = Ac_Incluir_DetailExecute
     end
-    object Ac_Alterar_Detail: TAction
+    object Ac_Alterar_Detail: TAction [7]
       Category = 'Detail'
       Caption = 'Alterar'
       ImageIndex = 1
       OnExecute = Ac_Alterar_DetailExecute
     end
-    object Ac_Excluir_Detail: TAction
+    object Ac_Excluir_Detail: TAction [8]
       Category = 'Detail'
       Caption = 'Excluir'
       ImageIndex = 2
       OnExecute = Ac_Excluir_DetailExecute
     end
-    object Ac_Salvar_Detail: TAction
+    object Ac_Salvar_Detail: TAction [9]
       Category = 'Detail'
       Caption = 'Salvar'
       ImageIndex = 4
       OnExecute = Ac_Salvar_DetailExecute
       OnUpdate = Ac_Salvar_DetailUpdate
     end
-    object Ac_Cancelar_Detail: TAction
+    object Ac_Cancelar_Detail: TAction [10]
       Category = 'Detail'
       Caption = 'Cancelar'
       ImageIndex = 5
       OnExecute = Ac_Cancelar_DetailExecute
+    end
+    object Ac_Salvar_Incluir_Detail: TAction
+      Category = 'Detail'
+      Caption = 'Salvar/Incluir'
+      ImageIndex = 4
+      OnExecute = Ac_Salvar_Incluir_DetailExecute
+      OnUpdate = Ac_Salvar_DetailUpdate
     end
   end
   object dsDetail: TDataSource

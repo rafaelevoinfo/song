@@ -42,6 +42,22 @@ type
     qPessoaCELULAR: TStringField;
     qPessoaTELEFONE: TStringField;
     qPessoaATIVO: TSmallintField;
+    qOrganizacao: TRFQuery;
+    qOrganizacao_Pessoa: TRFQuery;
+    qOrganizacaoID: TIntegerField;
+    qOrganizacaoNOME: TStringField;
+    qOrganizacaoCNPJ: TStringField;
+    qOrganizacaoINSCRICAO_ESTADUAL: TStringField;
+    qOrganizacaoENDERECO: TStringField;
+    qOrganizacaoBAIRRO: TStringField;
+    qOrganizacaoCOMPLEMENTO: TStringField;
+    qOrganizacaoCIDADE: TStringField;
+    qOrganizacaoTELEFONE: TStringField;
+    qOrganizacao_PessoaID: TIntegerField;
+    qOrganizacao_PessoaID_PESSOA: TIntegerField;
+    qOrganizacao_PessoaID_ORGANIZACAO: TIntegerField;
+    qOrganizacao_PessoaFUNCAO: TStringField;
+    qOrganizacao_PessoaOBSERVACAO: TStringField;
   private
     { Private declarations }
   protected

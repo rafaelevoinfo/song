@@ -1,10 +1,9 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnIncluir
+  ActiveControl = btnSalvar
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   ClientWidth = 862
   OnCreate = FormCreate
-  OnShow = FormShow
   ExplicitWidth = 878
   ExplicitHeight = 515
   PixelsPerInch = 96
@@ -16,7 +15,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -191,7 +190,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
-          ExplicitTop = 2
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -276,10 +274,11 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
           TabOrder = 0
+          ExplicitLeft = -4
         end
         object btnCancelar: TButton
           AlignWithMargins = True
-          Left = 95
+          Left = 215
           Top = 4
           Width = 85
           Height = 42
@@ -287,6 +286,18 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
           TabOrder = 1
+          ExplicitLeft = 95
+        end
+        object btnSalvarIncluir: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 114
+          Height = 42
+          Action = Ac_Salvar_Incluir
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 2
         end
       end
       object pnEditsCadastro: TPanel
@@ -339,6 +350,13 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       Caption = 'Cancelar'
       ImageIndex = 5
       OnExecute = Ac_CancelarExecute
+    end
+    object Ac_Salvar_Incluir: TAction
+      Category = 'Master'
+      Caption = 'Salvar/Incluir'
+      ImageIndex = 4
+      OnExecute = Ac_Salvar_IncluirExecute
+      OnUpdate = Ac_SalvarUpdate
     end
   end
   object dsMaster: TDataSource

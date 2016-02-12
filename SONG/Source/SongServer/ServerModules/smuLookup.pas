@@ -15,6 +15,7 @@ type
     qlkPerfil: TRFQuery;
     qlkPerfilID: TIntegerField;
     qlkPerfilNOME: TStringField;
+    qlkPessoa: TRFQuery;
   private
     { Private declarations }
   public

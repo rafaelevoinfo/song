@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
-  fPessoa, dxSkinsForm,Vcl.StdCtrls;
+  fPessoa, dxSkinsForm,Vcl.StdCtrls, fOrganizacao;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -22,9 +22,12 @@ type
     pcPrincipal: TcxPageControl;
     tabDashBoard: TcxTabSheet;
     dxSkinController1: TdxSkinController;
+    Ac_Organizacao: TAction;
+    AcOrganizacao1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
+    procedure Ac_OrganizacaoExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -37,6 +40,12 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmPrincipal.Ac_OrganizacaoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmOrganizacao>(pcPrincipal, TfrmOrganizacao, frmOrganizacao);
+end;
 
 procedure TfrmPrincipal.Ac_PerfisExecute(Sender: TObject);
 begin

@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, dmuBasico, cxEdit, cxEditRepositoryItems,
-  cxClasses, Data.DB, Datasnap.DBClient, dmuPrincipal, cxDBEditRepository;
+  cxClasses, Data.DB, Datasnap.DBClient, dmuPrincipal, cxDBEditRepository,
+  uClientDataSet;
 
 type
   TdmLookup = class(TdmBasico)
@@ -15,6 +16,11 @@ type
     cdslkPerfilNOME: TStringField;
     repLcbPerfil: TcxEditRepositoryLookupComboBoxItem;
     dslkPerfil: TDataSource;
+    cdslkPessoa: TRFClientDataSet;
+    cdslkPessoaID: TIntegerField;
+    cdslkPessoaNOME: TStringField;
+    repLcbPessoa: TcxEditRepositoryLookupComboBoxItem;
+    dslkPessoa: TDataSource;
   private
     { Private declarations }
   public

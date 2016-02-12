@@ -53,6 +53,8 @@ type
     pnBotoes: TPanel;
     btnIncluir: TButton;
     rgStatus: TcxRadioGroup;
+    btnSalvarIncluir: TButton;
+    Ac_Salvar_Incluir: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -67,11 +69,12 @@ type
     procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
     procedure ColumnExcluirGetProperties(Sender: TcxCustomGridTableItem;
       ARecord: TcxCustomGridRecord; var AProperties: TcxCustomEditProperties);
+    procedure Ac_Salvar_IncluirExecute(Sender: TObject);
   private
     FPadraoPesquisa: TPadraoPesquisa;
     procedure SetPadraoPesquisa(const Value: TPadraoPesquisa);
   protected
-    // SALVAR
+    // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
     procedure pprValidarDados; virtual;
     procedure pprValidarCamposObrigatorios(ipDataSet: TDataSet); virtual;
@@ -79,6 +82,9 @@ type
     procedure pprExecutarSalvar; virtual;
     procedure pprAfterSalvar; virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
+    procedure ppuRetornar;virtual;
+    procedure pprBeforeIncluir;virtual;
+    procedure pprBeforeAlterar;virtual;
     // PESQUISA
     procedure pprRealizarPesquisaInicial; virtual;
     procedure pprValidarPesquisa; virtual;
@@ -87,9 +93,11 @@ type
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios; virtual;
     procedure pprVerificarExisteStatus; virtual;
+    //PERMISSOES
+    procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
     function fprGetPermissao: String; virtual; abstract;
-    procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
+
   public
     property PadraoPesquisa: TPadraoPesquisa read FPadraoPesquisa write SetPadraoPesquisa;
     property Permissao: string read fprGetPermissao;
@@ -154,7 +162,8 @@ end;
 procedure TfrmBasicoCrud.Ac_SalvarExecute(Sender: TObject);
 begin
   inherited;
-  fpuSalvar;
+  if fpuSalvar then
+    ppuRetornar;
 end;
 
 procedure TfrmBasicoCrud.Ac_SalvarUpdate(Sender: TObject);
@@ -162,6 +171,13 @@ begin
   inherited;
   if Sender is TAction then
     TAction(Sender).Enabled := fprHabilitarSalvar();
+end;
+
+procedure TfrmBasicoCrud.Ac_Salvar_IncluirExecute(Sender: TObject);
+begin
+  inherited;
+  if fpuSalvar then
+    ppuIncluir;
 end;
 
 procedure TfrmBasicoCrud.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
@@ -230,14 +246,16 @@ end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar;
 begin
-  pcPrincipal.ActivePage := tabPesquisa;
+
 end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
-  pprValidarPermissao(atAlterar, fprGetPermissao);
+  pprBeforeAlterar;
   pcPrincipal.ActivePage := tabCadastro;
 end;
+
+
 
 procedure TfrmBasicoCrud.ppuCancelar;
 begin
@@ -251,7 +269,7 @@ begin
     end;
 
   TClientDataSet(dsMaster.DataSet).CancelUpdates;
-  pcPrincipal.ActivePage := tabPesquisa;
+  ppuRetornar;
 end;
 
 procedure TfrmBasicoCrud.pprBeforeSalvar;
@@ -391,9 +409,19 @@ begin
 
 end;
 
-procedure TfrmBasicoCrud.ppuIncluir;
+procedure TfrmBasicoCrud.pprBeforeAlterar;
+begin
+   pprValidarPermissao(atAlterar, fprGetPermissao);
+end;
+
+procedure TfrmBasicoCrud.pprBeforeIncluir;
 begin
   pprValidarPermissao(atIncluir, fprGetPermissao);
+end;
+
+procedure TfrmBasicoCrud.ppuIncluir;
+begin
+  pprBeforeIncluir;
   dsMaster.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastro;
 end;
@@ -403,6 +431,11 @@ begin
   pprValidarPesquisa;
   pprCarregarParametrosPesquisa(dsMaster.DataSet as TRFClientDataSet);
   pprEfetuarPesquisa;
+end;
+
+procedure TfrmBasicoCrud.ppuRetornar;
+begin
+   pcPrincipal.ActivePage := tabPesquisa;
 end;
 
 procedure TfrmBasicoCrud.SetPadraoPesquisa(const Value: TPadraoPesquisa);

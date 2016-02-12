@@ -231,4 +231,127 @@ inherited smAdministrativo: TsmAdministrativo
       Required = True
     end
   end
+  object qOrganizacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ORGANIZACAO.ID,'
+      '       ORGANIZACAO.NOME,'
+      '       ORGANIZACAO.CNPJ,'
+      '       ORGANIZACAO.INSCRICAO_ESTADUAL,'
+      '       ORGANIZACAO.ENDERECO,'
+      '       ORGANIZACAO.BAIRRO,'
+      '       ORGANIZACAO.COMPLEMENTO,'
+      '       ORGANIZACAO.CIDADE,'
+      '       ORGANIZACAO.TELEFONE'
+      'from ORGANIZACAO  '
+      '&WHERE')
+    Left = 128
+    Top = 40
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qOrganizacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrganizacaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qOrganizacaoCNPJ: TStringField
+      FieldName = 'CNPJ'
+      Origin = 'CNPJ'
+      ProviderFlags = [pfInUpdate]
+      Size = 14
+    end
+    object qOrganizacaoINSCRICAO_ESTADUAL: TStringField
+      FieldName = 'INSCRICAO_ESTADUAL'
+      Origin = 'INSCRICAO_ESTADUAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qOrganizacaoENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qOrganizacaoBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qOrganizacaoCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qOrganizacaoCIDADE: TStringField
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qOrganizacaoTELEFONE: TStringField
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object qOrganizacao_Pessoa: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ORGANIZACAO_PESSOA.ID,'
+      '       ORGANIZACAO_PESSOA.ID_PESSOA,'
+      '       ORGANIZACAO_PESSOA.ID_ORGANIZACAO,'
+      '       ORGANIZACAO_PESSOA.FUNCAO,'
+      '       ORGANIZACAO_PESSOA.OBSERVACAO'
+      'from ORGANIZACAO_PESSOA  '
+      'Where ORGANIZACAO_PESSOA.ID_ORGANIZACAO = :ID_ORGANIZACAO')
+    Left = 120
+    Top = 104
+    ParamData = <
+      item
+        Name = 'ID_ORGANIZACAO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qOrganizacao_PessoaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrganizacao_PessoaID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrganizacao_PessoaID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrganizacao_PessoaFUNCAO: TStringField
+      FieldName = 'FUNCAO'
+      Origin = 'FUNCAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object qOrganizacao_PessoaOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
 end

@@ -21,12 +21,25 @@ inherited dmLookup: TdmLookup
       Properties.ClearKey = 46
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
           FieldName = 'NOME'
         end>
       Properties.ListSource = dslkPerfil
+    end
+    object repLcbPessoa: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkPessoa
     end
   end
   object cdslkPerfil: TClientDataSet
@@ -52,5 +65,28 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkPerfil
     Left = 352
     Top = 144
+  end
+  object cdslkPessoa: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkPessoa'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 248
+    Top = 216
+    object cdslkPessoaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdslkPessoaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkPessoa: TDataSource
+    DataSet = cdslkPessoa
+    Left = 344
+    Top = 224
   end
 end

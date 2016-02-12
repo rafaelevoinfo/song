@@ -40,6 +40,23 @@ type
     cdsPessoaTELEFONE: TStringField;
     dsPessoa: TDataSource;
     cdsPessoaATIVO: TSmallintField;
+    cdsOrganizacao: TRFClientDataSet;
+    cdsOrganizacao_Pessoa: TRFClientDataSet;
+    cdsOrganizacaoID: TIntegerField;
+    cdsOrganizacaoNOME: TStringField;
+    cdsOrganizacaoCNPJ: TStringField;
+    cdsOrganizacaoINSCRICAO_ESTADUAL: TStringField;
+    cdsOrganizacaoENDERECO: TStringField;
+    cdsOrganizacaoBAIRRO: TStringField;
+    cdsOrganizacaoCOMPLEMENTO: TStringField;
+    cdsOrganizacaoCIDADE: TStringField;
+    cdsOrganizacaoTELEFONE: TStringField;
+    cdsOrganizacao_PessoaID: TIntegerField;
+    cdsOrganizacao_PessoaID_PESSOA: TIntegerField;
+    cdsOrganizacao_PessoaID_ORGANIZACAO: TIntegerField;
+    cdsOrganizacao_PessoaFUNCAO: TStringField;
+    cdsOrganizacao_PessoaOBSERVACAO: TStringField;
+    dsOrganizacao: TDataSource;
   private
     { Private declarations }
   public

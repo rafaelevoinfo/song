@@ -21,7 +21,8 @@ uses
   uControleAcesso in '..\Comuns\uControleAcesso.pas',
   dmuLookup in 'Geral\dmuLookup.pas' {dmLookup: TDataModule},
   fPessoa in 'Administrativo\fPessoa.pas' {frmPessoa},
-  fmGrids in 'Frames\fmGrids.pas' {frameGrids: TFrame};
+  fmGrids in 'Frames\fmGrids.pas' {frameGrids: TFrame},
+  fOrganizacao in 'Administrativo\fOrganizacao.pas' {frmOrganizacao};
 
 {$R *.res}
 

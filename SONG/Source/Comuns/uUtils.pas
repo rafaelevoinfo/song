@@ -5,12 +5,13 @@ interface
 uses
   System.SysUtils, Vcl.Dialogs, cxPC, Vcl.Forms, Vcl.Controls,
   Datasnap.DBClient, IdHashSHA, System.RegularExpressions,
-  System.Types, Winapi.Windows, uTypes, System.Classes;
+  System.Types, Winapi.Windows, uTypes, System.Classes, Data.DB,
+  System.Generics.Collections;
 
 type
   TUtils = class
   public
-    class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
+    class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var ipForm: T);
     class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True;
       ipOtimizarLoop: Boolean = True); overload;
     class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True;
@@ -20,6 +21,13 @@ type
     class procedure ppuFocar(ipEdit: TWinControl);
     class function fpuVersaoExecutavel(ipArquivo: String; ipVersaoAte: TVersaoInfo): string;
     class procedure ppuCopyStreamToByteStream(ipOrigem: TStream; var ipDestino: TBytesStream);
+    class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String): String; overload;
+    class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String; ipQtde: Integer)
+      : String; overload;
+    class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String;
+      ipIgnorarDuplicados: Boolean): String; overload;
+    class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String; ipQtde: Integer;
+      ipIgnorarDuplicados: Boolean): String; overload;
   end;
 
 implementation
@@ -107,6 +115,65 @@ begin
 
 end;
 
+class function TUtils.fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField,
+  ipDelimitador: String): String;
+begin
+  Result := TUtils.fpuMontarStringCodigo(ipDataSet, ipNomeField, ipDelimitador, ipDataSet.RecordCount);
+end;
+
+class function TUtils.fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField,
+  ipDelimitador: String; ipQtde: Integer): String;
+begin
+  Result := TUtils.fpuMontarStringCodigo(ipDataSet, ipNomeField, ipDelimitador, ipQtde, false);
+end;
+
+class function TUtils.fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField,
+  ipDelimitador: String; ipIgnorarDuplicados: Boolean): String;
+begin
+  Result := TUtils.fpuMontarStringCodigo(ipDataSet, ipNomeField, ipDelimitador, ipDataSet.RecordCount,
+    ipIgnorarDuplicados);
+end;
+
+class function TUtils.fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField,
+  ipDelimitador: String; ipQtde: Integer; ipIgnorarDuplicados: Boolean): String;
+var
+  vaCod: Variant;
+  vaList: TList<String>;
+  vaRecNo:Integer;
+begin
+  Result := '';
+  vaList := TList<String>.Create;
+  try
+    ipDataSet.DisableControls;
+    try
+      vaRecNo := ipDataSet.RecNo;
+      ipDataSet.First;
+      while (ipDataSet.RecNo <= ipQtde) and (not ipDataSet.Eof) do
+        begin
+          if ipIgnorarDuplicados and vaList.Contains(ipDataSet.FieldByName(ipNomeField).AsString) then
+            begin
+              ipDataSet.Next;
+              continue;
+            end;
+          vaList.Add(ipDataSet.FieldByName(ipNomeField).AsString);
+
+          if ipDataSet.FieldByName(ipNomeField).AsString <> '' then
+            Result := Result + ipDataSet.FieldByName(ipNomeField).AsString + ipDelimitador;
+          ipDataSet.Next;
+        end;
+      if (ipDataSet.RecordCount > 0) and (vaRecNo > 0) and (vaRecNo < ipDataSet.RecordCount) then
+        ipDataSet.RecNo := vaRecNo;
+    finally
+      ipDataSet.EnableControls;
+    end;
+  finally
+    vaList.free;
+  end;
+
+  Result := Copy(Result, 1, length(Result) - length(ipDelimitador)); // retirando o ultimo delimitador
+
+end;
+
 class function TUtils.fpuValidarEmail(ipEmail: String): Boolean;
 begin
   Result := TRegex.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
@@ -145,31 +212,32 @@ begin
 
 end;
 
-class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; ipForm: T);
+class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var ipForm: T);
 var
   vaTab: TcxTabSheet;
   vaFormCriado: Boolean;
   I: Integer;
+  vaChildTab: TControl;
 begin
-  vaFormCriado := False;
+  vaFormCriado := false;
 
-  if ipForm = nil then
-    begin
+//  if ipForm = nil then
+//    begin
       ipForm := T(ipClassForm.Create(nil));
       vaFormCriado := True;
-    end;
+//    end;
 
-  for I := 0 to ipPageControl.PageCount - 1 do
-    begin
-      vaTab := ipPageControl.Pages[I];
-      if vaTab.Caption = ipForm.Caption then
-        begin
-          if vaFormCriado then
-            FreeAndNil(ipForm);
-          ipPageControl.ActivePage := vaTab;
-          Exit;
-        end;
-    end;
+//  for I := 0 to ipPageControl.PageCount - 1 do
+//    begin
+//      vaTab := ipPageControl.Pages[I];
+//      if vaTab.Caption = ipForm.Caption then
+//        begin
+//          if vaFormCriado then
+//            FreeAndNil(ipForm);
+//          ipPageControl.ActivePage := vaTab;
+//          Exit;
+//        end;
+//    end;
 
   vaTab := TcxTabSheet.Create(ipPageControl);
   vaTab.Caption := ipForm.Caption;

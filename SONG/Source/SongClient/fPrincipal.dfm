@@ -5,7 +5,6 @@ inherited frmPrincipal: TfrmPrincipal
   Menu = mmMenuPrincipal
   Position = poMainFormCenter
   WindowState = wsMaximized
-  OnShow = FormShow
   ExplicitWidth = 801
   ExplicitHeight = 446
   PixelsPerInch = 96
@@ -43,18 +42,28 @@ inherited frmPrincipal: TfrmPrincipal
       object PerfisdeUsurios1: TMenuItem
         Action = Ac_Perfis
       end
+      object AcOrganizacao1: TMenuItem
+        Action = Ac_Organizacao
+      end
     end
   end
   object ActionList1: TActionList
     Left = 488
     Top = 104
     object Ac_Pessoas: TAction
+      Category = 'Administrativo'
       Caption = 'Pessoas'
       OnExecute = Ac_PessoasExecute
     end
     object Ac_Perfis: TAction
+      Category = 'Administrativo'
       Caption = 'Perfis de Usu'#225'rios'
       OnExecute = Ac_PerfisExecute
+    end
+    object Ac_Organizacao: TAction
+      Category = 'Administrativo'
+      Caption = 'Organiza'#231#245'es'
+      OnExecute = Ac_OrganizacaoExecute
     end
   end
   object dxSkinController1: TdxSkinController

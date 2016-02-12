@@ -1,8 +1,10 @@
 inherited frmPessoa: TfrmPessoa
+  ActiveControl = btnIncluir
   Caption = 'Pessoas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -113,6 +115,14 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastro: TcxTabSheet
+      inherited pnBotoesCadastro: TPanel
+        inherited btnSalvar: TButton
+          ExplicitLeft = 4
+        end
+        inherited btnCancelar: TButton
+          ExplicitLeft = 215
+        end
+      end
       inherited pnEditsCadastro: TPanel
         object rgInfoPessoais: TcxGroupBox
           Left = 4
@@ -321,10 +331,15 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
+      inherited pnBotoesCadastroDetail: TPanel
+        inherited btnCancelarDetail: TButton
+          ExplicitLeft = 215
+        end
+        inherited btnSalvarIncluirDetail: TButton
+          ExplicitLeft = 95
+          ExplicitTop = 4
+        end
+      end
       inherited pnEditsCadastroDetail: TPanel
         inline frameGrids: TframeGrids
           Left = 0
@@ -413,12 +428,14 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 852
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
+                Height = 15
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 442
                 Width = 91
+                Height = 15
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 442
                 ExplicitWidth = 91
