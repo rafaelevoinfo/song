@@ -45,7 +45,7 @@ type
     Label9: TLabel;
     EditEndereco: TcxDBTextEdit;
     Label10: TLabel;
-    EditBairro: TcxDBTextEdit;
+    EditCidade: TcxDBTextEdit;
     Label11: TLabel;
     EditComplemento: TcxDBTextEdit;
     lbl1: TLabel;
@@ -59,6 +59,8 @@ type
     cdsLocalPerfisID: TIntegerField;
     EditCelular: TcxDBMaskEdit;
     EditTelefone: TcxDBMaskEdit;
+    Label12: TLabel;
+    EditBairro: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
@@ -79,7 +81,6 @@ type
     procedure ppuAlterar(ipId: Integer); override;
     procedure ppuIncluir; override;
   public const
-    coNome = 2;
     coLogin = 3;
 
   end;
@@ -99,6 +100,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
+  PadraoPesquisa := tpNome;
 
   dmLookup.cdslkPerfil.Open;
 
@@ -145,16 +147,14 @@ end;
 procedure TfrmPessoa.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
-  if cbPesquisarPor.ItemIndex = coNome then
-    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text)
-  else if (cbPesquisarPor.ItemIndex = coLogin) then
+  if (cbPesquisarPor.ItemIndex = coLogin) then
     ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);
 end;
 
 procedure TfrmPessoa.pprRealizarPesquisaInicial;
 begin
   inherited; // vai apenas abrir a tabela
-  cbPesquisarPor.ItemIndex := coNome;
+  //cbPesquisarPor.ItemIndex := Ord(tpNome);
 end;
 
 procedure TfrmPessoa.pprValidarDados;

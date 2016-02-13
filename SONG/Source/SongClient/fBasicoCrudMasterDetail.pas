@@ -181,7 +181,7 @@ procedure TfrmBasicoCrudMasterDetail.ppuCancelarDetail;
 begin
   if fprHabilitarSalvarDetail then
     begin
-      if TMsg.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
+      if TMensagem.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
           fpuSalvarDetail;
           Exit;
@@ -198,7 +198,7 @@ var
 begin
   pprValidarPermissao(atExcluir, Permissao);
   Result := False;
-  if TMsg.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
+  if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
     begin
       for vaId in ipIds do
         begin

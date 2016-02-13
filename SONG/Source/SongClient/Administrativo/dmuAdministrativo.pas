@@ -57,6 +57,11 @@ type
     cdsOrganizacao_PessoaFUNCAO: TStringField;
     cdsOrganizacao_PessoaOBSERVACAO: TStringField;
     dsOrganizacao: TDataSource;
+    cdsPessoaCIDADE: TStringField;
+    cdsFinanciador: TRFClientDataSet;
+    cdsFinanciadorID: TIntegerField;
+    cdsFinanciadorNOME: TStringField;
+    cdsFinanciadorID_PESSOA: TIntegerField;
   private
     { Private declarations }
   public

@@ -118,7 +118,7 @@ begin
   except
     on e: Exception do
       begin
-        TMsg.ppuShowException('Erro ao conectar no servidor. Certifique-se que o arquivo de configuração "' +
+        TMensagem.ppuShowException('Erro ao conectar no servidor. Certifique-se que o arquivo de configuração "' +
           coArquivoConfiguracao + '" está preenchido corretamente.', e);
 
         Application.Terminate;

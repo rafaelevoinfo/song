@@ -11,7 +11,8 @@ uses
 type
   TUtils = class
   public
-    class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var ipForm: T);
+    class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var opForm: T;
+      ipCriarSeNecessario: Boolean=true);
     class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True;
       ipOtimizarLoop: Boolean = True); overload;
     class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True;
@@ -139,7 +140,7 @@ class function TUtils.fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField,
 var
   vaCod: Variant;
   vaList: TList<String>;
-  vaRecNo:Integer;
+  vaRecNo: Integer;
 begin
   Result := '';
   vaList := TList<String>.Create;
@@ -212,43 +213,35 @@ begin
 
 end;
 
-class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var ipForm: T);
+class procedure TUtils.ppuAbrirFormAba<T>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var opForm: T;
+ipCriarSeNecessario: Boolean);
 var
   vaTab: TcxTabSheet;
-  vaFormCriado: Boolean;
   I: Integer;
-  vaChildTab: TControl;
 begin
-  vaFormCriado := false;
+  for I := 0 to ipPageControl.PageCount - 1 do
+    begin
+      vaTab := ipPageControl.Pages[I];
+      if (vaTab.ControlCount > 0) and (vaTab.Controls[0] is T) then
+        begin
+          ipPageControl.ActivePage := vaTab;
+          Exit;
+        end;
+    end;
 
-//  if ipForm = nil then
-//    begin
-      ipForm := T(ipClassForm.Create(nil));
-      vaFormCriado := True;
-//    end;
-
-//  for I := 0 to ipPageControl.PageCount - 1 do
-//    begin
-//      vaTab := ipPageControl.Pages[I];
-//      if vaTab.Caption = ipForm.Caption then
-//        begin
-//          if vaFormCriado then
-//            FreeAndNil(ipForm);
-//          ipPageControl.ActivePage := vaTab;
-//          Exit;
-//        end;
-//    end;
+  if ipCriarSeNecessario then
+    opForm := T(ipClassForm.Create(nil));
 
   vaTab := TcxTabSheet.Create(ipPageControl);
-  vaTab.Caption := ipForm.Caption;
+  vaTab.Caption := opForm.Caption;
   vaTab.Parent := ipPageControl;
 
-  ipForm.Align := alClient;
-  ipForm.BorderStyle := bsNone;
-  ipForm.Parent := vaTab;
+  opForm.Align := alClient;
+  opForm.BorderStyle := bsNone;
+  opForm.Parent := vaTab;
 
   ipPageControl.ActivePage := vaTab;
-  ipForm.show;
+  opForm.show;
 
 end;
 

@@ -167,6 +167,14 @@
             <Form>frmOrganizacao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Administrativo\fProjeto.pas">
+            <Form>frmProjeto</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Administrativo\fFinanciador.pas">
+            <Form>frmFinanciador</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

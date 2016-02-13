@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
-  fPessoa, dxSkinsForm,Vcl.StdCtrls, fOrganizacao;
+  fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -24,10 +24,16 @@ type
     dxSkinController1: TdxSkinController;
     Ac_Organizacao: TAction;
     AcOrganizacao1: TMenuItem;
+    Ac_Projeto: TAction;
+    Ac_Financiador: TAction;
+    Financiadores1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
     procedure Ac_OrganizacaoExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Ac_ProjetoExecute(Sender: TObject);
+    procedure Ac_FinanciadorExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -40,6 +46,13 @@ var
 implementation
 
 {$R *.dfm}
+
+
+procedure TfrmPrincipal.Ac_FinanciadorExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmFinanciador>(pcPrincipal, TfrmFinanciador, frmFinanciador);
+end;
 
 procedure TfrmPrincipal.Ac_OrganizacaoExecute(Sender: TObject);
 begin
@@ -59,10 +72,22 @@ begin
   TUtils.ppuAbrirFormAba<TfrmPessoa>(pcPrincipal, TfrmPessoa, frmPessoa);
 end;
 
+procedure TfrmPrincipal.Ac_ProjetoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmProjeto>(pcPrincipal, TfrmProjeto, frmProjeto);
+end;
+
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
 begin
   inherited;
   UseSkin := not(AControl is TButton);
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  inherited;
+  ReportMemoryLeaksOnShutdown := True;
 end;
 
 procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);

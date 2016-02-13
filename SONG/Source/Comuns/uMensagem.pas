@@ -9,7 +9,7 @@ type
   TPerguntaPadrao = (ppSimNao, ppSimNaoCancelar);
   TRespostaPadrao = (rpSim, rpNao, rpCancelar);
 
-  TMsg = class
+  TMensagem = class
     class procedure ppuShowException(ipMsg: string; ipEx: Exception); overload;
     class procedure ppuShowException(ipEx: Exception); overload;
 
@@ -21,12 +21,12 @@ implementation
 
 { TMsg }
 
-class procedure TMsg.ppuShowException(ipMsg: string; ipEx: Exception);
+class procedure TMensagem.ppuShowException(ipMsg: string; ipEx: Exception);
 begin
   ShowMessage(ipMsg + slinebreak + ipEx.Message);
 end;
 
-class function TMsg.fpuPerguntar(ipPergunta: string; ipBotoes: TPerguntaPadrao): TRespostaPadrao;
+class function TMensagem.fpuPerguntar(ipPergunta: string; ipBotoes: TPerguntaPadrao): TRespostaPadrao;
 var
   vaResp: Integer;
 begin
@@ -50,12 +50,12 @@ begin
 
 end;
 
-class procedure TMsg.ppuShowException(ipEx: Exception);
+class procedure TMensagem.ppuShowException(ipEx: Exception);
 begin
   ShowMessage(ipEx.Message);
 end;
 
-class procedure TMsg.ppuShowMessage(ipMsg:String);
+class procedure TMensagem.ppuShowMessage(ipMsg:String);
 begin
   ShowMessage(ipMsg);
 end;

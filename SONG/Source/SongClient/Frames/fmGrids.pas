@@ -50,6 +50,7 @@ type
     procedure ppvPreencherCamposPadroes(ipDataSet: TDataSet);
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy;override;
     procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string;
       ipRepositorio: TcxEditRepositoryItem); overload;
     procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean); overload;
@@ -190,6 +191,12 @@ constructor TframeGrids.Create(AOwner: TComponent);
 begin
   inherited;
   FMapaFields := TDictionary<string, String>.Create;
+end;
+
+destructor TframeGrids.Destroy;
+begin
+  FMapaFields.Free;
+  inherited;
 end;
 
 procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string;

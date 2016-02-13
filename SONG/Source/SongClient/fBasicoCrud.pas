@@ -71,8 +71,8 @@ type
       ARecord: TcxCustomGridRecord; var AProperties: TcxCustomEditProperties);
     procedure Ac_Salvar_IncluirExecute(Sender: TObject);
   private
-    FPadraoPesquisa: TPadraoPesquisa;
-    procedure SetPadraoPesquisa(const Value: TPadraoPesquisa);
+    FPadraoPesquisa: TTipoPesquisa;
+    procedure SetPadraoPesquisa(const Value: TTipoPesquisa);
   protected
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
@@ -82,9 +82,9 @@ type
     procedure pprExecutarSalvar; virtual;
     procedure pprAfterSalvar; virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
-    procedure ppuRetornar;virtual;
-    procedure pprBeforeIncluir;virtual;
-    procedure pprBeforeAlterar;virtual;
+    procedure ppuRetornar; virtual;
+    procedure pprBeforeIncluir; virtual;
+    procedure pprBeforeAlterar; virtual;
     // PESQUISA
     procedure pprRealizarPesquisaInicial; virtual;
     procedure pprValidarPesquisa; virtual;
@@ -93,13 +93,13 @@ type
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios; virtual;
     procedure pprVerificarExisteStatus; virtual;
-    //PERMISSOES
+    // PERMISSOES
     procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
     function fprGetPermissao: String; virtual; abstract;
 
   public
-    property PadraoPesquisa: TPadraoPesquisa read FPadraoPesquisa write SetPadraoPesquisa;
+    property PadraoPesquisa: TTipoPesquisa read FPadraoPesquisa write SetPadraoPesquisa;
     property Permissao: string read fprGetPermissao;
 
     constructor Create(AOwner: TComponent); override;
@@ -111,9 +111,6 @@ type
     procedure ppuCancelar; virtual;
     // PESQUISA
     procedure ppuPesquisar; virtual;
-  public const
-    coTodos = 0;
-    coID = 1;
   end;
 
 var
@@ -186,10 +183,11 @@ begin
   EditPesquisa.Clear;
 
   EditPesquisa.Properties.EditMask := '.*';
-  if cbPesquisarPor.ItemIndex = coID then
+  if cbPesquisarPor.ItemIndex = Ord(tpId) then
     EditPesquisa.Properties.EditMask := '\d+';
 
-  EditPesquisa.SetFocus;
+  EditPesquisa.Enabled := cbPesquisarPor.ItemIndex <> Ord(tpTodos);
+  TUtils.ppuFocar(EditPesquisa);
 end;
 
 procedure TfrmBasicoCrud.ColumnExcluirGetProperties(
@@ -213,6 +211,7 @@ end;
 constructor TfrmBasicoCrud.Create(AOwner: TComponent);
 begin
   inherited;
+  FPadraoPesquisa := tpActive;
   pprValidarPermissao(atVisualizar, fprGetPermissao);
 end;
 
@@ -230,7 +229,6 @@ end;
 procedure TfrmBasicoCrud.FormCreate(Sender: TObject);
 begin
   inherited;
-
   pcPrincipal.HideTabs := True;
   pcPrincipal.ActivePage := tabPesquisa;
 
@@ -255,13 +253,11 @@ begin
   pcPrincipal.ActivePage := tabCadastro;
 end;
 
-
-
 procedure TfrmBasicoCrud.ppuCancelar;
 begin
   if fprHabilitarSalvar then
     begin
-      if TMsg.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
+      if TMensagem.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
         begin
           fpuSalvar;
           Exit;
@@ -281,10 +277,12 @@ end;
 procedure TfrmBasicoCrud.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   ipCds.ppuLimparParametros;
-  if cbPesquisarPor.ItemIndex = coTodos then
+  if cbPesquisarPor.ItemIndex = Ord(tpTodos) then
     ipCds.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA')
-  else if (cbPesquisarPor.ItemIndex = coID) then
-    ipCds.ppuAddParametro(TParametros.coID, EditPesquisa.Text);
+  else if (cbPesquisarPor.ItemIndex = Ord(tpId)) then
+    ipCds.ppuAddParametro(TParametros.coID, EditPesquisa.Text)
+  else if (cbPesquisarPor.ItemIndex = Ord(tpNome)) then
+    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
 
   if rgStatus.Visible then
     ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
@@ -335,11 +333,11 @@ end;
 
 procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
 begin
-  if PadraoPesquisa = ppTodos then
-    begin
-      cbPesquisarPor.ItemIndex := coTodos;
-      ppuPesquisar;
-    end
+  if PadraoPesquisa <> tpActive then
+    cbPesquisarPor.ItemIndex := Ord(PadraoPesquisa);
+
+  if PadraoPesquisa = tpTodos then
+    ppuPesquisar
   else // vai apenas abrir o cds sem trazer nada
     pprEfetuarPesquisa;
 end;
@@ -365,7 +363,7 @@ begin
 
   pprValidarPermissao(vaAcao, fprGetPermissao);
 
-  if TMsg.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
+  if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
     begin
       viewRegistros.BeginUpdate(lsimImmediate);
       try
@@ -411,7 +409,7 @@ end;
 
 procedure TfrmBasicoCrud.pprBeforeAlterar;
 begin
-   pprValidarPermissao(atAlterar, fprGetPermissao);
+  pprValidarPermissao(atAlterar, fprGetPermissao);
 end;
 
 procedure TfrmBasicoCrud.pprBeforeIncluir;
@@ -435,10 +433,10 @@ end;
 
 procedure TfrmBasicoCrud.ppuRetornar;
 begin
-   pcPrincipal.ActivePage := tabPesquisa;
+  pcPrincipal.ActivePage := tabPesquisa;
 end;
 
-procedure TfrmBasicoCrud.SetPadraoPesquisa(const Value: TPadraoPesquisa);
+procedure TfrmBasicoCrud.SetPadraoPesquisa(const Value: TTipoPesquisa);
 begin
   FPadraoPesquisa := Value;
 end;
@@ -543,7 +541,7 @@ end;
 
 procedure TfrmBasicoCrud.pprValidarPesquisa;
 begin
-  if EditPesquisa.Visible and (cbPesquisarPor.ItemIndex <> coTodos) and (cbPesquisarPor.ItemIndex <> coID) then
+  if EditPesquisa.Visible and (cbPesquisarPor.ItemIndex <> Ord(tpTodos)) then
     begin
       if Trim(EditPesquisa.Text) = '' then
         raise TControlException.Create('Informe algo a ser pesquisado', EditPesquisa);

@@ -1,5 +1,7 @@
 object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
   Height = 427
   Width = 783
   object DataSnapConn: TRFSQLConnection

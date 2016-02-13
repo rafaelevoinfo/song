@@ -1,10 +1,9 @@
 inherited frmPessoa: TfrmPessoa
-  ActiveControl = btnIncluir
   Caption = 'Pessoas'
+  ExplicitTop = -22
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -115,14 +114,6 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastro: TcxTabSheet
-      inherited pnBotoesCadastro: TPanel
-        inherited btnSalvar: TButton
-          ExplicitLeft = 4
-        end
-        inherited btnCancelar: TButton
-          ExplicitLeft = 215
-        end
-      end
       inherited pnEditsCadastro: TPanel
         object rgInfoPessoais: TcxGroupBox
           Left = 4
@@ -222,10 +213,10 @@ inherited frmPessoa: TfrmPessoa
           object Label10: TLabel
             Left = 10
             Top = 96
-            Width = 28
+            Width = 33
             Height = 13
-            Caption = 'Bairro'
-            FocusControl = EditBairro
+            Caption = 'Cidade'
+            FocusControl = EditCidade
           end
           object Label11: TLabel
             Left = 184
@@ -234,6 +225,14 @@ inherited frmPessoa: TfrmPessoa
             Height = 13
             Caption = 'Complemento'
             FocusControl = EditComplemento
+          end
+          object Label12: TLabel
+            Left = 506
+            Top = 55
+            Width = 28
+            Height = 13
+            Caption = 'Bairro'
+            FocusControl = EditBairro
           end
           object EditEmail: TcxDBTextEdit
             Left = 7
@@ -248,15 +247,15 @@ inherited frmPessoa: TfrmPessoa
             Top = 70
             DataBinding.DataField = 'ENDERECO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 1
-            Width = 612
+            TabOrder = 3
+            Width = 490
           end
-          object EditBairro: TcxDBTextEdit
-            Left = 9
+          object EditCidade: TcxDBTextEdit
+            Left = 8
             Top = 111
-            DataBinding.DataField = 'BAIRRO'
+            DataBinding.DataField = 'CIDADE'
             DataBinding.DataSource = dsMaster
-            TabOrder = 2
+            TabOrder = 5
             Width = 168
           end
           object EditComplemento: TcxDBTextEdit
@@ -264,7 +263,7 @@ inherited frmPessoa: TfrmPessoa
             Top = 111
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 3
+            TabOrder = 6
             Width = 437
           end
           object EditCelular: TcxDBMaskEdit
@@ -274,7 +273,7 @@ inherited frmPessoa: TfrmPessoa
             DataBinding.DataSource = dsMaster
             Properties.MaskKind = emkRegExprEx
             Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
-            TabOrder = 4
+            TabOrder = 1
             Width = 121
           end
           object EditTelefone: TcxDBMaskEdit
@@ -284,8 +283,16 @@ inherited frmPessoa: TfrmPessoa
             DataBinding.DataSource = dsMaster
             Properties.MaskKind = emkRegExprEx
             Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
-            TabOrder = 5
+            TabOrder = 2
             Width = 118
+          end
+          object EditBairro: TcxDBTextEdit
+            Left = 504
+            Top = 70
+            DataBinding.DataField = 'BAIRRO'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 4
+            Width = 117
           end
         end
         object rgInfoLogin: TcxGroupBox
@@ -331,15 +338,6 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      inherited pnBotoesCadastroDetail: TPanel
-        inherited btnCancelarDetail: TButton
-          ExplicitLeft = 215
-        end
-        inherited btnSalvarIncluirDetail: TButton
-          ExplicitLeft = 95
-          ExplicitTop = 4
-        end
-      end
       inherited pnEditsCadastroDetail: TPanel
         inline frameGrids: TframeGrids
           Left = 0
@@ -385,15 +383,19 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 42
               ExplicitHeight = 377
               inherited btnAdd: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
               inherited btnAddTodos: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
               inherited btnRemover: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
               inherited btnRemoverTodos: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
             end
@@ -428,14 +430,12 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 852
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
-                Height = 15
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 442
                 Width = 91
-                Height = 15
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 442
                 ExplicitWidth = 91

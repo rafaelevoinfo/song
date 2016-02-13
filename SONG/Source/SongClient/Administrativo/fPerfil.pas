@@ -64,15 +64,12 @@ type
     procedure ppvZerarPermissoes;
     { Private declarations }
   protected
-    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprBeforeSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     function fprGetPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
-  public const
-    coNome = 2;
 
     { Public declarations }
   end;
@@ -94,7 +91,7 @@ begin
   dmLookup.Name := '';
 
   inherited;
-  PadraoPesquisa := ppTodos;
+  PadraoPesquisa := tpTodos;
 
   // vamos alimentar o cds dos modulos
   ppvCarregarModulos;
@@ -200,12 +197,6 @@ begin
   inherited;
 end;
 
-procedure TfrmPerfil.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
-begin
-  inherited;
-  if cbPesquisarPor.ItemIndex = coNome then
-    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
-end;
 
 function TfrmPerfil.fprGetPermissao: String;
 begin

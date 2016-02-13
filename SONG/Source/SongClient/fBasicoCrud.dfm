@@ -112,13 +112,9 @@ inherited frmBasicoCrud: TfrmBasicoCrud
                 Value = 0
               end
               item
-                Description = 'C'#243'digo'
+                Description = 'ID'
                 ImageIndex = 0
                 Value = 1
-              end
-              item
-                Description = 'Nome'
-                Value = 2
               end>
             Properties.OnEditValueChanged = cbPesquisarPorPropertiesEditValueChanged
             TabOrder = 0
@@ -274,7 +270,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
           TabOrder = 0
-          ExplicitLeft = -4
         end
         object btnCancelar: TButton
           AlignWithMargins = True
@@ -285,8 +280,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Action = Ac_Cancelar
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
-          TabOrder = 1
-          ExplicitLeft = 95
+          TabOrder = 2
         end
         object btnSalvarIncluir: TButton
           AlignWithMargins = True
@@ -297,7 +291,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Action = Ac_Salvar_Incluir
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
-          TabOrder = 2
+          TabOrder = 1
         end
       end
       object pnEditsCadastro: TPanel

@@ -58,6 +58,18 @@ type
     qOrganizacao_PessoaID_ORGANIZACAO: TIntegerField;
     qOrganizacao_PessoaFUNCAO: TStringField;
     qOrganizacao_PessoaOBSERVACAO: TStringField;
+    qPessoaCIDADE: TStringField;
+    qFinanciador: TRFQuery;
+    qProjeto: TRFQuery;
+    qFinanciadorID: TIntegerField;
+    qFinanciadorNOME: TStringField;
+    qFinanciadorID_PESSOA: TIntegerField;
+    qProjetoID: TIntegerField;
+    qProjetoNOME: TStringField;
+    qProjetoDATA_INICIO: TDateField;
+    qProjetoDATA_TERMINO: TDateField;
+    qProjetoSTATUS: TSmallintField;
+    qProjetoDESCRICAO: TStringField;
   private
     { Private declarations }
   protected

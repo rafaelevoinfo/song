@@ -15,6 +15,7 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.ENDERECO,'
       '       PESSOA.BAIRRO,'
       '       PESSOA.COMPLEMENTO,'
+      '       PESSOA.CIDADE,'
       '       PESSOA.LOGIN,'
       '       PESSOA.SENHA,'
       '       PESSOA.ATIVO'
@@ -99,6 +100,11 @@ inherited smAdministrativo: TsmAdministrativo
     object qPessoaATIVO: TSmallintField
       FieldName = 'ATIVO'
       Origin = 'ATIVO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaCIDADE: TStringField
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -350,6 +356,95 @@ inherited smAdministrativo: TsmAdministrativo
     object qOrganizacao_PessoaOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
+  object qFinanciador: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select FINANCIADOR.ID,'
+      '       FINANCIADOR.NOME,'
+      '       FINANCIADOR.ID_PESSOA'
+      'from FINANCIADOR'
+      '&WHERE')
+    Left = 128
+    Top = 176
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qFinanciadorID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qFinanciadorNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qFinanciadorID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qProjeto: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PROJETO.ID,'
+      '       PROJETO.NOME,'
+      '       PROJETO.DATA_INICIO,'
+      '       PROJETO.DATA_TERMINO,'
+      '       PROJETO.STATUS,'
+      '       PROJETO.DESCRICAO'
+      'from PROJETO  '
+      '&WHERE')
+    Left = 128
+    Top = 240
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qProjetoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjetoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qProjetoDATA_INICIO: TDateField
+      FieldName = 'DATA_INICIO'
+      Origin = 'DATA_INICIO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qProjetoDATA_TERMINO: TDateField
+      FieldName = 'DATA_TERMINO'
+      Origin = 'DATA_TERMINO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qProjetoSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjetoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
     end

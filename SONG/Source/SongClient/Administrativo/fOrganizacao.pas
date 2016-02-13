@@ -45,21 +45,20 @@ type
     EditComplemento: TcxDBTextEdit;
     Label9: TLabel;
     EditCidade: TcxDBTextEdit;
-    Label10: TLabel;
-    EditTelefone: TcxDBMaskEdit;
     Label11: TLabel;
     EditFuncao: TcxDBTextEdit;
     Label12: TLabel;
     cbPessoa: TcxDBLookupComboBox;
     Label13: TLabel;
     EditObs: TcxDBMemo;
+    Label10: TLabel;
+    EditTelefone: TcxDBMaskEdit;
     procedure FormCreate(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
   protected
     function fprGetPermissao: String; override;
-    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterarDetail; override;
 
@@ -89,22 +88,14 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
+  PadraoPesquisa := tpTodos;
 
   dmLookup.cdslkPessoa.Open;
-  PadraoPesquisa := ppTodos;
 end;
 
 function TfrmOrganizacao.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissao), Ord(admOrganizacao));
-end;
-
-procedure TfrmOrganizacao.pprCarregarParametrosPesquisa(
-  ipCds: TRFClientDataSet);
-begin
-  inherited;
-  if cbPesquisarPor.ItemIndex = coNome then
-    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
 end;
 
 procedure TfrmOrganizacao.pprFiltrarPessoas(ipIdPessoaIgnorar: Integer);

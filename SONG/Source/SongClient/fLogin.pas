@@ -73,7 +73,7 @@ begin
   except
     on e: Exception do
       begin
-        TMsg.ppuShowMessage('Erro ao realizar o login. Possíveis causas:' + slineBreak +
+        TMensagem.ppuShowMessage('Erro ao realizar o login. Possíveis causas:' + slineBreak +
           'Usuário e/ou senha incorretos.' + slineBreak +
           'Usuário desativado.' + slineBreak +
           'Servidor fora do ar.');

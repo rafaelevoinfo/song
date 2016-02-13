@@ -22,7 +22,9 @@ uses
   dmuLookup in 'Geral\dmuLookup.pas' {dmLookup: TDataModule},
   fPessoa in 'Administrativo\fPessoa.pas' {frmPessoa},
   fmGrids in 'Frames\fmGrids.pas' {frameGrids: TFrame},
-  fOrganizacao in 'Administrativo\fOrganizacao.pas' {frmOrganizacao};
+  fOrganizacao in 'Administrativo\fOrganizacao.pas' {frmOrganizacao},
+  fProjeto in 'Administrativo\fProjeto.pas' {frmProjeto},
+  fFinanciador in 'Administrativo\fFinanciador.pas' {frmFinanciador};
 
 {$R *.res}
 

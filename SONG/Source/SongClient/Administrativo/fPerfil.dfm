@@ -1,17 +1,9 @@
 inherited frmPerfil: TfrmPerfil
-  ActiveControl = btnSalvarDetail
   Caption = 'Perfis de Usu'#225'rio'
-  ExplicitWidth = 878
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -35,7 +27,6 @@ inherited frmPerfil: TfrmPerfil
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          ExplicitTop = 1
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -57,10 +48,6 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 843
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -151,10 +138,6 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object tlPermissoes: TcxDBTreeList
           Left = 0

@@ -9,7 +9,8 @@ uses
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
-  Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo;
+  Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
+  uControleAcesso, Winapi.Windows, Winapi.Messages;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -24,6 +25,8 @@ type
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
     FFuncoesAdministrativo:TsmFuncoesAdministrativoClient;
@@ -52,7 +55,23 @@ begin
       TUtils.ppuFocar(TControlException(E).Control);
     end;
 
-  TMsg.ppuShowException(E);
+  TMensagem.ppuShowException(E);
+end;
+
+procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
+begin
+  //desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
+  SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
+end;
+
+procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
+var
+  vaMsg:TMsg;
+begin
+  //volta o Beep do windows
+  SystemParametersInfo(SPI_SETBEEP, 1, nil, SPIF_SENDWININICHANGE);
+  TInfoLogin.fpuGetInstance.Free;
+  TModulos.fpuGetInstance.Free;
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);

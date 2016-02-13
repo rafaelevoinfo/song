@@ -76,6 +76,7 @@ inherited frmOrganizacao: TfrmOrganizacao
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
+              Caption = 'Contatos da Organiza'#231#227'o'
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -126,6 +127,13 @@ inherited frmOrganizacao: TfrmOrganizacao
           Caption = 'Inscri'#231#227'o Estadual'
           FocusControl = EditInscricaoEstadual
         end
+        object Label10: TLabel
+          Left = 7
+          Top = 45
+          Width = 42
+          Height = 13
+          Caption = 'Telefone'
+        end
         object EditNome: TcxDBTextEdit
           Left = 6
           Top = 22
@@ -153,9 +161,9 @@ inherited frmOrganizacao: TfrmOrganizacao
         end
         object rgEndereco: TcxGroupBox
           Left = 6
-          Top = 46
+          Top = 86
           Caption = 'Endere'#231'o'
-          TabOrder = 3
+          TabOrder = 4
           Height = 96
           Width = 640
           object Label6: TLabel
@@ -167,7 +175,7 @@ inherited frmOrganizacao: TfrmOrganizacao
             FocusControl = EditEndereco
           end
           object Label7: TLabel
-            Left = 364
+            Left = 503
             Top = 16
             Width = 28
             Height = 13
@@ -175,7 +183,7 @@ inherited frmOrganizacao: TfrmOrganizacao
             FocusControl = EditBairro
           end
           object Label8: TLabel
-            Left = 5
+            Left = 149
             Top = 52
             Width = 65
             Height = 13
@@ -183,19 +191,12 @@ inherited frmOrganizacao: TfrmOrganizacao
             FocusControl = EditComplemento
           end
           object Label9: TLabel
-            Left = 502
-            Top = 16
+            Left = 5
+            Top = 52
             Width = 33
             Height = 13
             Caption = 'Cidade'
             FocusControl = EditCidade
-          end
-          object Label10: TLabel
-            Left = 502
-            Top = 52
-            Width = 42
-            Height = 13
-            Caption = 'Telefone'
           end
           object EditEndereco: TcxDBTextEdit
             Left = 3
@@ -203,10 +204,10 @@ inherited frmOrganizacao: TfrmOrganizacao
             DataBinding.DataField = 'ENDERECO'
             DataBinding.DataSource = dsMaster
             TabOrder = 0
-            Width = 357
+            Width = 496
           end
           object EditBairro: TcxDBTextEdit
-            Left = 362
+            Left = 501
             Top = 30
             DataBinding.DataField = 'BAIRRO'
             DataBinding.DataSource = dsMaster
@@ -214,43 +215,36 @@ inherited frmOrganizacao: TfrmOrganizacao
             Width = 136
           end
           object EditComplemento: TcxDBTextEdit
-            Left = 3
+            Left = 147
             Top = 66
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
             TabOrder = 3
-            Width = 495
+            Width = 490
           end
           object EditCidade: TcxDBTextEdit
-            Left = 500
-            Top = 30
+            Left = 3
+            Top = 66
             DataBinding.DataField = 'CIDADE'
             DataBinding.DataSource = dsMaster
             TabOrder = 2
-            Width = 136
+            Width = 142
           end
-          object EditTelefone: TcxDBMaskEdit
-            Left = 501
-            Top = 66
-            DataBinding.DataField = 'TELEFONE'
-            DataBinding.DataSource = dsMaster
-            Properties.MaskKind = emkRegExprEx
-            Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
-            TabOrder = 4
-            Width = 135
-          end
+        end
+        object EditTelefone: TcxDBMaskEdit
+          Left = 6
+          Top = 59
+          DataBinding.DataField = 'TELEFONE'
+          DataBinding.DataSource = dsMaster
+          Properties.MaskKind = emkRegExprEx
+          Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
+          TabOrder = 3
+          Width = 135
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      inherited pnBotoesCadastroDetail: TPanel
-        inherited btnSalvarIncluirDetail: TButton
-          ExplicitLeft = 95
-          ExplicitTop = 4
-        end
-      end
       inherited pnEditsCadastroDetail: TPanel
-        ExplicitTop = 52
         object Label11: TLabel
           Left = 258
           Top = 6

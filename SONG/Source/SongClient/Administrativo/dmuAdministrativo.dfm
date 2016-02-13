@@ -164,6 +164,10 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'ATIVO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsPessoaCIDADE: TStringField
+      FieldName = 'CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsPessoa_Perfil: TRFClientDataSet
     Aggregates = <>
@@ -301,5 +305,32 @@ inherited dmAdministrativo: TdmAdministrativo
     DataSet = cdsOrganizacao
     Left = 32
     Top = 192
+  end
+  object cdsFinanciador: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqFinanciador'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 280
+    Top = 184
+    object cdsFinanciadorID: TIntegerField
+      DisplayLabel = 'Id'
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsFinanciadorNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsFinanciadorID_PESSOA: TIntegerField
+      DisplayLabel = 'Contato'
+      FieldName = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
 end
