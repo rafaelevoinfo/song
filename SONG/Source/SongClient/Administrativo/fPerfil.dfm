@@ -1,9 +1,15 @@
 inherited frmPerfil: TfrmPerfil
   Caption = 'Perfis de Usu'#225'rio'
+  ExplicitWidth = 878
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -48,6 +54,10 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 843
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -119,6 +129,14 @@ inherited frmPerfil: TfrmPerfil
           Caption = 'Descri'#231#227'o'
           FocusControl = EditDescricao
         end
+        object Label4: TLabel
+          Left = 6
+          Top = 86
+          Width = 20
+          Height = 13
+          Caption = 'Tipo'
+          FocusControl = cbTipo
+        end
         object EditDescricao: TcxDBTextEdit
           Left = 4
           Top = 62
@@ -135,15 +153,29 @@ inherited frmPerfil: TfrmPerfil
           TabOrder = 0
           Width = 333
         end
+        object cbTipo: TcxDBImageComboBox
+          Left = 4
+          Top = 102
+          RepositoryItem = dmLookup.repIcbTipoPerfil
+          DataBinding.DataField = 'TIPO'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 2
+          Width = 333
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object tlPermissoes: TcxDBTreeList
           Left = 0
-          Top = 0
+          Top = 21
           Width = 854
-          Height = 398
+          Height = 377
           Align = alClient
           Bands = <
             item
@@ -157,6 +189,7 @@ inherited frmPerfil: TfrmPerfil
           RootValue = -1
           TabOrder = 0
           OnEditValueChanged = tlPermissoesEditValueChanged
+          ExplicitTop = 24
           object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
             DataBinding.FieldName = 'DESCRICAO'
             Options.Editing = False
@@ -242,6 +275,51 @@ inherited frmPerfil: TfrmPerfil
             Summary.GroupFooterSummaryItems = <>
           end
         end
+        object pnNomePerfil: TPanel
+          AlignWithMargins = True
+          Left = 0
+          Top = 0
+          Width = 854
+          Height = 18
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Align = alTop
+          AutoSize = True
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Label5: TLabel
+            Left = 0
+            Top = 2
+            Width = 148
+            Height = 16
+            Caption = 'Permiss'#245'es para o perfil: '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lbNomePerfil: TcxDBLabel
+            Left = 148
+            Top = 0
+            DataBinding.DataField = 'NOME'
+            DataBinding.DataSource = dsMaster
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -13
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = []
+            Style.TextStyle = [fsBold]
+            Style.TransparentBorder = True
+            Style.IsFontAssigned = True
+            Transparent = True
+            Height = 17
+            Width = 695
+          end
+        end
       end
     end
   end
@@ -250,8 +328,8 @@ inherited frmPerfil: TfrmPerfil
   end
   inherited dsDetail: TDataSource
     DataSet = dmAdministrativo.cdsPerfil_Permissao
-    Left = 416
-    Top = 176
+    Left = 384
+    Top = 200
   end
   object cdsLocalPermissoes: TClientDataSet
     Aggregates = <>

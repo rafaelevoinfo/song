@@ -95,7 +95,7 @@ end;
 
 function TfrmOrganizacao.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissao), Ord(admOrganizacao));
+  Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admOrganizacao));
 end;
 
 procedure TfrmOrganizacao.pprFiltrarPessoas(ipIdPessoaIgnorar: Integer);

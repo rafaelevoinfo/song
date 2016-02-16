@@ -18,6 +18,7 @@ type
     cxImage1: TcxImage;
     btnLogar: TButton;
     procedure btnLogarClick(Sender: TObject);
+    procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
   private
     FLoginEfetuado: Boolean;
     procedure SetLoginEfetuado(const Value: Boolean);
@@ -55,6 +56,13 @@ begin
     raise TControlException.Create('Informe a senha.', edtSenha);
 end;
 
+procedure TfrmLogin.edtSenhaKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+  if Ord(Key) = VK_RETURN then
+    btnLogar.Click;
+end;
+
 procedure TfrmLogin.ppuLogar(ipLogin, ipSenha: string);
 var
   vaInfoLogin: TInfoLogin;
@@ -68,6 +76,7 @@ begin
     vaInfoLogin.NomeUsuario := ipLogin;
     vaInfoLogin.SenhaUsuario := ipSenha;
     vaInfoLogin.Permissoes.Data := dmPrincipal.FuncoesAdm.fpuPermissoesUsuario(ipLogin);
+    vaInfoLogin.ppuChecarAdministrador;
 
     LoginEfetuado := True;
   except

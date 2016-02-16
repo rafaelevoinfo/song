@@ -33,6 +33,7 @@ inherited frmLogin: TfrmLogin
     Properties.EchoMode = eemPassword
     Properties.PasswordChar = '*'
     TabOrder = 1
+    OnKeyPress = edtSenhaKeyPress
     Width = 265
   end
   object cxImage1: TcxImage

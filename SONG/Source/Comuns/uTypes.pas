@@ -24,6 +24,8 @@ type
 
   TVersaoInfo = (viMaJorVersion, viMinorVersion, viRelease, viBuild);
 
+  TTipoPerfil = (tpNormal,tpAdministrador);
+
 
 const
   // mensagens customizadas do windows

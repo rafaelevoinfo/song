@@ -26,6 +26,12 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Size = 500
     end
+    object cdsPerfilTIPO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsPerfil_Permissao: TRFClientDataSet
     Aggregates = <>

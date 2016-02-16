@@ -1,6 +1,8 @@
 inherited frmFinanciador: TfrmFinanciador
   ActiveControl = btnIncluir
   Caption = 'Financiadores'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -51,6 +53,10 @@ inherited frmFinanciador: TfrmFinanciador
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 4

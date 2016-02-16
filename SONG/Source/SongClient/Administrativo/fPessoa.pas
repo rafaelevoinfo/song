@@ -14,7 +14,7 @@ uses
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, cxGroupBox, uExceptions,
   uUtils, Datasnap.DBClient, fmGrids, dmuLookup, uTypes, uClientDataSet,
-  System.TypInfo, uControleAcesso, cxRadioGroup;
+  System.TypInfo, uControleAcesso, cxRadioGroup, dmuPrincipal;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)
@@ -62,6 +62,9 @@ type
     Label12: TLabel;
     EditBairro: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
+    procedure ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
+      var ADone: Boolean);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -80,6 +83,7 @@ type
 
     procedure ppuAlterar(ipId: Integer); override;
     procedure ppuIncluir; override;
+
   public const
     coLogin = 3;
 
@@ -91,6 +95,23 @@ var
 implementation
 
 {$R *.dfm}
+
+
+procedure TfrmPessoa.ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
+  ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
+  var ADone: Boolean);
+begin
+  inherited;
+  if dmAdministrativo.cdsPessoa.Active and (dmAdministrativo.cdsPessoa.RecordCount > 0) then
+    begin
+      if dmAdministrativo.cdsPessoaATIVO.AsInteger = 0 then
+        AViewInfo.Text := 'Inativar'
+      else
+        AViewInfo.Text := 'Ativar';
+    end
+  else
+    AViewInfo.Text := 'Ativar/Inativar';
+end;
 
 procedure TfrmPessoa.FormCreate(Sender: TObject);
 begin
@@ -133,7 +154,7 @@ end;
 
 function TfrmPessoa.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissao), Ord(admPessoa));
+  Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
 end;
 
 procedure TfrmPessoa.pprBeforeSalvar;
@@ -154,7 +175,7 @@ end;
 procedure TfrmPessoa.pprRealizarPesquisaInicial;
 begin
   inherited; // vai apenas abrir a tabela
-  //cbPesquisarPor.ItemIndex := Ord(tpNome);
+  // cbPesquisarPor.ItemIndex := Ord(tpNome);
 end;
 
 procedure TfrmPessoa.pprValidarDados;
@@ -171,6 +192,9 @@ begin
     (not TUtils.fpuValidarEmail(dmAdministrativo.cdsPessoaEMAIL.AsString)) then
     raise TControlException.Create('Formato de e-mail de inválido. Deve seguir o formato xxx@xxxx.xxx', EditEmail);
 
+  if not dmPrincipal.FuncoesAdm.fpuValidarLogin(dmAdministrativo.cdsPessoaID.AsInteger,
+    dmAdministrativo.cdsPessoaNOME.AsString) then
+    raise TControlException.Create('O login informado já foi cadastrado. Por favor, informe outro.', EditLogin);
 end;
 
 procedure TfrmPessoa.ppuAlterar(ipId: Integer);

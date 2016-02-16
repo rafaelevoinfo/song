@@ -1,6 +1,5 @@
 inherited frmPessoa: TfrmPessoa
   Caption = 'Pessoas'
-  ExplicitTop = -22
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -36,17 +35,17 @@ inherited frmPessoa: TfrmPessoa
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
-              Width = 53
+              Width = 30
             end
             object viewRegistrosNOME: TcxGridDBColumn [1]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
-              Width = 285
+              Width = 213
             end
             object viewRegistrosEMAIL: TcxGridDBColumn [2]
               DataBinding.FieldName = 'EMAIL'
               Options.Editing = False
-              Width = 155
+              Width = 181
             end
             object viewRegistrosCELULAR: TcxGridDBColumn [3]
               DataBinding.FieldName = 'CELULAR'
@@ -55,7 +54,7 @@ inherited frmPessoa: TfrmPessoa
             object viewRegistrosLOGIN: TcxGridDBColumn [4]
               DataBinding.FieldName = 'LOGIN'
               Options.Editing = False
-              Width = 176
+              Width = 128
             end
             object viewRegistrosRG: TcxGridDBColumn [5]
               DataBinding.FieldName = 'RG'
@@ -87,6 +86,12 @@ inherited frmPessoa: TfrmPessoa
               Visible = False
               Options.Editing = False
             end
+            inherited ColumnExcluir: TcxGridDBColumn
+              Caption = 'Ativar/Desativar'
+              MinWidth = 90
+              Width = 90
+              OnCustomDrawHeader = ColumnExcluirCustomDrawHeader
+            end
           end
         end
         inherited pnDetail: TPanel
@@ -114,6 +119,10 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object rgInfoPessoais: TcxGroupBox
           Left = 4
@@ -338,6 +347,10 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         inline frameGrids: TframeGrids
           Left = 0
@@ -459,18 +472,18 @@ inherited frmPessoa: TfrmPessoa
     end
   end
   inherited ActionList1: TActionList
-    Left = 272
-    Top = 24
+    Left = 280
+    Top = 120
   end
   inherited dsMaster: TDataSource
     DataSet = dmAdministrativo.cdsPessoa
     Left = 216
-    Top = 24
+    Top = 128
   end
   inherited dsDetail: TDataSource
     DataSet = dmAdministrativo.cdsPessoa_Perfil
-    Left = 352
-    Top = 24
+    Left = 360
+    Top = 104
   end
   object cdsLocalPerfis: TClientDataSet
     Aggregates = <>

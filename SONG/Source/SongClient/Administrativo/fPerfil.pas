@@ -16,7 +16,7 @@ uses
   Datasnap.DBClient, uControleAcesso, System.Generics.Collections, cxCheckBox,
   uUtils, MidasLib, dmuLookup, dmuPrincipal, cxTL, cxTLdxBarBuiltInMenu,
   cxInplaceContainer, cxDBTL, cxTLData, uTypes, System.TypInfo, cxGroupBox,
-  cxRadioGroup;
+  cxRadioGroup, cxLabel, cxDBLabel;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)
@@ -51,6 +51,11 @@ type
     cxDBTreeList1ID_MODULO: TcxDBTreeListColumn;
     cxDBTreeList1ID: TcxDBTreeListColumn;
     cdsLocalPermissoesDESCRICAO: TStringField;
+    Label4: TLabel;
+    cbTipo: TcxDBImageComboBox;
+    pnNomePerfil: TPanel;
+    lbNomePerfil: TcxDBLabel;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure tlPermissoesEditValueChanged(Sender: TcxCustomTreeList; AColumn: TcxTreeListColumn);
     procedure viewRegistrosDetailPERMISSAOGetDisplayText(Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
@@ -60,7 +65,7 @@ type
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
     procedure ppvCarregarModulos;
-    procedure ppvCarregarPermissoesPerfil;
+    procedure ppvCarregarPermissoesPerfil(ipPermissaoDefault: String);
     procedure ppvZerarPermissoes;
     { Private declarations }
   protected
@@ -69,6 +74,7 @@ type
     function fprGetPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
+    procedure ppuIncluir; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
 
     { Public declarations }
@@ -110,10 +116,11 @@ end;
 
 procedure TfrmPerfil.ppvCarregarModulos;
 var
-  vaModulo, vaPermissao, vaDescricao: string;
+  vaModulo: string;
   vaModulos: TModulos;
-  vaPermissoes: TList<string>;
+  vaPermissoes: TList<TPermissao>;
   vaIdModulo, vaId: Integer;
+  vaPermissao: TPermissao;
 
 begin
   vaIdModulo := 0;
@@ -140,13 +147,11 @@ begin
         begin
           Inc(vaId);
           try
-            vaDescricao := PermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), vaPermissao))];
-
             cdsLocalPermissoes.Append;
             cdsLocalPermissoesID.AsInteger := vaId;
             cdsLocalPermissoesID_MODULO.AsInteger := vaIdModulo;
-            cdsLocalPermissoesPERMISSAO.AsString := vaPermissao;
-            cdsLocalPermissoesDESCRICAO.AsString := vaDescricao;
+            cdsLocalPermissoesPERMISSAO.AsString := vaPermissao.Permissao;
+            cdsLocalPermissoesDESCRICAO.AsString := vaPermissao.Descricao;
             ppvZerarPermissoes;
             cdsLocalPermissoes.Post;
           except
@@ -170,7 +175,8 @@ begin
             (cdsLocalPermissoesINCLUIR.AsInteger <> 0) or (cdsLocalPermissoesALTERAR.AsInteger <> 0) or
             (cdsLocalPermissoesEXCLUIR.AsInteger <> 0);
 
-          if dmAdministrativo.cdsPerfil_Permissao.Locate(dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.FieldName,
+          if dmAdministrativo.cdsPerfil_Permissao.Locate
+            (dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.FieldName,
             cdsLocalPermissoesPERMISSAO.AsString, [loCaseInsensitive]) then
             begin
               dmAdministrativo.cdsPerfil_Permissao.Edit;
@@ -185,7 +191,8 @@ begin
 
           if dmAdministrativo.cdsPerfil_Permissao.State in [dsEdit, dsInsert] then
             begin
-              dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger := cdsLocalPermissoesVISUALIZAR.AsInteger;
+              dmAdministrativo.cdsPerfil_PermissaoVISUALIZAR.AsInteger :=
+                cdsLocalPermissoesVISUALIZAR.AsInteger;
               dmAdministrativo.cdsPerfil_PermissaoINCLUIR.AsInteger := cdsLocalPermissoesINCLUIR.AsInteger;
               dmAdministrativo.cdsPerfil_PermissaoALTERAR.AsInteger := cdsLocalPermissoesALTERAR.AsInteger;
               dmAdministrativo.cdsPerfil_PermissaoEXCLUIR.AsInteger := cdsLocalPermissoesEXCLUIR.AsInteger;
@@ -197,10 +204,9 @@ begin
   inherited;
 end;
 
-
 function TfrmPerfil.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissao), Ord(admPerfil));
+  Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPerfil));
 end;
 
 function TfrmPerfil.fprHabilitarSalvarDetail(): Boolean;
@@ -213,18 +219,24 @@ end;
 procedure TfrmPerfil.ppuAlterarDetail(ipId: Integer);
 begin
   inherited;
-  ppvCarregarPermissoesPerfil;
+  ppvCarregarPermissoesPerfil(dmAdministrativo.cdsPerfil_PermissaoPERMISSAO.AsString);
+end;
+
+procedure TfrmPerfil.ppuIncluir;
+begin
+  inherited;
+  dmAdministrativo.cdsPerfilTIPO.AsInteger := Ord(tpNormal);
 end;
 
 procedure TfrmPerfil.ppuIncluirDetail;
 begin
-   inherited;
-   // nao quero que fique em insert
-   dmAdministrativo.cdsPerfil_Permissao.Cancel;
-   ppvCarregarPermissoesPerfil;
+  inherited;
+  // nao quero que fique em insert
+  dmAdministrativo.cdsPerfil_Permissao.Cancel;
+  ppvCarregarPermissoesPerfil('');
 end;
 
-procedure TfrmPerfil.ppvCarregarPermissoesPerfil;
+procedure TfrmPerfil.ppvCarregarPermissoesPerfil(ipPermissaoDefault: String);
 begin
   dmAdministrativo.cdsPerfil_Permissao.DisableControls;
   try
@@ -247,6 +259,11 @@ begin
 
         cdsLocalPermissoes.Post;
       end);
+
+    // vamos focar no registro que foi clicado no editar
+    cdsLocalPermissoes.Locate(cdsLocalPermissoesPERMISSAO.FieldName,
+      ipPermissaoDefault, [loCaseInsensitive]);
+
   finally
     dmAdministrativo.cdsPerfil_Permissao.EnableControls;
   end;
@@ -288,7 +305,7 @@ begin
   if AText <> '' then
     begin
       try
-        AText := PermissaoDescricao[TPermissao(GetEnumValue(TypeInfo(TPermissao), AText))];
+        AText := TModulos.fpuGetInstance.fpuGetDescricao(AText);
       except
         AText := 'Permissão não existente';
       end;

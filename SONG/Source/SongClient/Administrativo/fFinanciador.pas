@@ -13,7 +13,8 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup, uTypes, uControleAcesso,
-  System.TypInfo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit;
+  System.TypInfo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit,
+  dmuPrincipal, uExceptions;
 
 type
   TfrmFinanciador = class(TfrmBasicoCrud)
@@ -29,8 +30,8 @@ type
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
   protected
-     function fprGetPermissao: String; override;
-     procedure pprValidarDados; override;
+    function fprGetPermissao: String; override;
+    procedure pprValidarDados; override;
   public
     { Public declarations }
   end;
@@ -58,13 +59,16 @@ end;
 
 function TfrmFinanciador.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissao), Ord(admFinanciador));
+  Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admFinanciador));
 end;
 
 procedure TfrmFinanciador.pprValidarDados;
 begin
   inherited;
-  //TODO: Validar nome duplicado
+  if not dmPrincipal.FuncoesAdm.fpuValidarNomeFinanciador(dmAdministrativo.cdsFinanciadorID.AsInteger,
+    dmAdministrativo.cdsFinanciadorNOME.AsString) then
+    raise TControlException.Create('O nome informado já foi cadastrado. Por favor selecione outro.', EditNome);
+
 end;
 
 end.

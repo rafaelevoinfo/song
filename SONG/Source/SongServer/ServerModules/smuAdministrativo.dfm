@@ -113,7 +113,8 @@ inherited smAdministrativo: TsmAdministrativo
     SQL.Strings = (
       'select PERFIL.ID,'
       '       PERFIL.NOME,'
-      '       PERFIL.DESCRICAO'
+      '       PERFIL.DESCRICAO,'
+      '       PERFIL.TIPO'
       'from PERFIL'
       '&WHERE')
     Left = 40
@@ -141,6 +142,11 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+    object qPerfilTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qPerfil_Permissao: TRFQuery

@@ -21,6 +21,7 @@ type
     cdslkPessoaNOME: TStringField;
     repLcbPessoa: TcxEditRepositoryLookupComboBoxItem;
     dslkPessoa: TDataSource;
+    repIcbTipoPerfil: TcxEditRepositoryImageComboBoxItem;
   private
     { Private declarations }
   public

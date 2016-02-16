@@ -7,17 +7,30 @@ uses
   Datasnap.DBClient, uTypes, System.Variants;
 
 type
+  TPermissao = record
+  private
+    FPermissao: string;
+    FDescricao: string;
+    procedure SetDescricao(const Value: string);
+    procedure SetPermissao(const Value: string);
+  public
+    constructor Create(ipPermissao, ipDescricao: String);
+    property Permissao: string read FPermissao write SetPermissao;
+    property Descricao: string read FDescricao write SetDescricao;
+  end;
+
   TModulos = class
   strict private
-    FItems: TDictionary<string, TList<string>>;
+    FItems: TDictionary<string, TList<TPermissao>>;
     constructor Create;
     destructor Destroy; override;
   strict private
     class var FInstance: TModulos;
   public
-    property Items: TDictionary < string, TList < string >> read FItems;
-
+    property Items: TDictionary < string, TList < TPermissao >> read FItems;
     class function fpuGetInstance: TModulos;
+
+    function fpuGetDescricao(ipPermissao: String): string;
   end;
 
   TInfoLogin = class
@@ -28,8 +41,8 @@ type
     FPermissoes: TClientDataSet;
     FSenhaUsuario: string;
     FNomeUsuario: string;
+    FAdministrador: Boolean;
     procedure SetNomeUsuario(const Value: string);
-    procedure SetPermissoes(const Value: TClientDataSet);
     procedure SetSenhaUsuario(const Value: string);
 
     constructor Create;
@@ -37,18 +50,19 @@ type
   public
     property NomeUsuario: string read FNomeUsuario write SetNomeUsuario;
     property SenhaUsuario: string read FSenhaUsuario write SetSenhaUsuario;
+    property Permissoes: TClientDataSet read FPermissoes;
+    property Administrador: Boolean read FAdministrador;
 
-    property Permissoes: TClientDataSet read FPermissoes write SetPermissoes;
-
+    procedure ppuChecarAdministrador;
     function fpuValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string): Boolean;
     class function fpuGetInstance: TInfoLogin;
   end;
 
-  TPermissao = (admPessoa, admPerfil, admOrganizacao,admProjeto,admFinanciador);
+  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admFinanciador);
 
-const
-  PermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas', 'Gerenciamento de Perfis', 'Organizações',
-  'Projetos', 'Financiadores');
+  // const
+  // PermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas', 'Gerenciamento de Perfis', 'Organizações',
+  // 'Projetos', 'Financiadores');
 
 implementation
 
@@ -56,24 +70,33 @@ implementation
 
 constructor TModulos.Create;
 var
-  vaPermissoes: TList<string>;
-begin
-  FItems := TDictionary < String, TList < String >>.Create();
+  vaPermissoes: TList<TPermissao>;
 
-  vaPermissoes := TList<string>.Create;
+  procedure plAddAdministrativo(ipPermissao: TPermissaoAdministrativo; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
+begin
+  FItems := TDictionary < String, TList < TPermissao >>.Create();
+
+  vaPermissoes := TList<TPermissao>.Create;
   // administrativo
-  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admPessoa)));
-  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admPerfil)));
-  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admOrganizacao)));
-  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admProjeto)));
-  vaPermissoes.Add(GetEnumName(TypeInfo(TPermissao), Ord(admFinanciador)));
+  plAddAdministrativo(admPessoa, 'Gerenciamento de Pessoas');
+  plAddAdministrativo(admPerfil, 'Gerenciamento de Perfis');
+  plAddAdministrativo(admOrganizacao, 'Organizações');
+  plAddAdministrativo(admFinanciador, 'Financiadores');
+  plAddAdministrativo(admProjeto, 'Projetos');
   FItems.Add('Administrativo', vaPermissoes);
 
 end;
 
 destructor TModulos.Destroy;
 var
-  vaPermissoes: TList<String>;
+  vaPermissoes: TList<TPermissao>;
 begin
   for vaPermissoes in FItems.Values do
     begin
@@ -82,6 +105,23 @@ begin
   FItems.Clear;
   FItems.Free;
   inherited;
+end;
+
+function TModulos.fpuGetDescricao(ipPermissao: String): string;
+var
+  vaModulo: TList<TPermissao>;
+  vaPermissao: TPermissao;
+begin
+  Result := '';
+  for vaModulo in FItems.Values do
+    begin
+      for vaPermissao in vaModulo do
+        begin
+          if vaPermissao.Permissao = ipPermissao then
+            Exit(vaPermissao.Descricao);
+
+        end;
+    end;
 end;
 
 class function TModulos.fpuGetInstance: TModulos;
@@ -117,6 +157,10 @@ function TInfoLogin.fpuValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string):
 var
   vaField: string;
 begin
+  // se for administrador pode tudo
+  if FAdministrador then
+    Exit(True);
+
   Result := False;
   case ipAcao of
     atVisualizar:
@@ -133,19 +177,37 @@ begin
 
 end;
 
+procedure TInfoLogin.ppuChecarAdministrador;
+begin
+  FAdministrador := FPermissoes.Locate('TIPO', Ord(tpAdministrador), []);
+end;
+
 procedure TInfoLogin.SetNomeUsuario(const Value: string);
 begin
   FNomeUsuario := Value;
 end;
 
-procedure TInfoLogin.SetPermissoes(const Value: TClientDataSet);
-begin
-  FPermissoes := Value;
-end;
-
 procedure TInfoLogin.SetSenhaUsuario(const Value: string);
 begin
   FSenhaUsuario := Value;
+end;
+
+{ TPermissao }
+
+constructor TPermissao.Create(ipPermissao, ipDescricao: String);
+begin
+  FPermissao := ipPermissao;
+  FDescricao := ipDescricao;
+end;
+
+procedure TPermissao.SetDescricao(const Value: string);
+begin
+  FDescricao := Value;
+end;
+
+procedure TPermissao.SetPermissao(const Value: string);
+begin
+  FPermissao := Value;
 end;
 
 end.

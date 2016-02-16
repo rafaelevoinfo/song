@@ -70,6 +70,7 @@ type
     qProjetoDATA_TERMINO: TDateField;
     qProjetoSTATUS: TSmallintField;
     qProjetoDESCRICAO: TStringField;
+    qPerfilTIPO: TSmallintField;
   private
     { Private declarations }
   protected

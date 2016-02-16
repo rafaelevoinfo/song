@@ -62,6 +62,7 @@ type
     cdsFinanciadorID: TIntegerField;
     cdsFinanciadorNOME: TStringField;
     cdsFinanciadorID_PESSOA: TIntegerField;
+    cdsPerfilTIPO: TSmallintField;
   private
     { Private declarations }
   public

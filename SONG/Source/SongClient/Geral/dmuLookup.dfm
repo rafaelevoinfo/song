@@ -41,6 +41,18 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkPessoa
     end
+    object repIcbTipoPerfil: TcxEditRepositoryImageComboBoxItem
+      Properties.Items = <
+        item
+          Description = 'Normal'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Administrador'
+          Value = 1
+        end>
+    end
   end
   object cdslkPerfil: TClientDataSet
     Aggregates = <>

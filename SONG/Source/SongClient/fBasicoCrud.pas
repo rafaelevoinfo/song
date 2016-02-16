@@ -347,16 +347,21 @@ var
   vaId: Integer;
   vaPergunta: string;
   vaAcao: TAcaoTela;
+  vaField: TField;
 begin
   Result := False;
 
   vaAcao := atExcluir;
   if rgStatus.Visible then
     begin
-      if rgStatus.ItemIndex = coRegistroAtivo then
-        vaAcao := atInativar
-      else
-        vaAcao := atAtivar;
+      vaField := dsMaster.DataSet.FindField(TBancoDados.coAtivo);
+      if Assigned(vaField) then
+        begin
+          if vaField.AsInteger = coRegistroAtivo then
+            vaAcao := atInativar
+          else
+            vaAcao := atAtivar;
+        end;
     end;
 
   vaPergunta := 'Realmente deseja ' + AcaoTelaDescricao[vaAcao] + '?';
@@ -535,8 +540,7 @@ procedure TfrmBasicoCrud.pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: str
 begin
   if not TInfoLogin.fpuGetInstance.fpuValidarPermissao(ipAcao, ipPermissao) then
     raise Exception.Create('Operação não permitida.' + slineBreak + 'O usuário logado não possui a ação de ' +
-      AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + PermissaoDescricao
-      [TPermissao(GetEnumValue(TypeInfo(TPermissao), ipPermissao))].ToUpper);
+      AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + TModulos.fpuGetInstance.fpuGetDescricao(ipPermissao).ToUpper);
 end;
 
 procedure TfrmBasicoCrud.pprValidarPesquisa;

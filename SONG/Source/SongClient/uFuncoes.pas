@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 08/02/2016 14:39:47
+// 15/02/2016 22:46:10
 //
 
 unit uFuncoes;
@@ -49,12 +49,16 @@ type
   TsmFuncoesAdministrativoClient = class(TDSAdminClient)
   private
     FfpuPermissoesUsuarioCommand: TDBXCommand;
+    FfpuValidarNomeFinanciadorCommand: TDBXCommand;
+    FfpuValidarLoginCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuPermissoesUsuario(ipLogin: string): OleVariant;
+    function fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
+    function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -251,6 +255,36 @@ begin
   Result := FfpuPermissoesUsuarioCommand.Parameters[1].Value.AsVariant;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
+begin
+  if FfpuValidarNomeFinanciadorCommand = nil then
+  begin
+    FfpuValidarNomeFinanciadorCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeFinanciadorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeFinanciadorCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeFinanciador';
+    FfpuValidarNomeFinanciadorCommand.Prepare;
+  end;
+  FfpuValidarNomeFinanciadorCommand.Parameters[0].Value.SetInt32(ipIdFinanciador);
+  FfpuValidarNomeFinanciadorCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeFinanciadorCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeFinanciadorCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TsmFuncoesAdministrativoClient.fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
+begin
+  if FfpuValidarLoginCommand = nil then
+  begin
+    FfpuValidarLoginCommand := FDBXConnection.CreateCommand;
+    FfpuValidarLoginCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarLoginCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarLogin';
+    FfpuValidarLoginCommand.Prepare;
+  end;
+  FfpuValidarLoginCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuValidarLoginCommand.Parameters[1].Value.SetWideString(ipLogin);
+  FfpuValidarLoginCommand.ExecuteUpdate;
+  Result := FfpuValidarLoginCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesAdministrativoClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -292,6 +326,8 @@ end;
 destructor TsmFuncoesAdministrativoClient.Destroy;
 begin
   FfpuPermissoesUsuarioCommand.DisposeOf;
+  FfpuValidarNomeFinanciadorCommand.DisposeOf;
+  FfpuValidarLoginCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
