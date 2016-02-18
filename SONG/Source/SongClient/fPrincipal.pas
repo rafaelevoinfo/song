@@ -15,7 +15,7 @@ type
     mmMenuPrincipal: TMainMenu;
     ActionList1: TActionList;
     Ac_Pessoas: TAction;
-    miAdministrativo: TMenuItem;
+    miRecursosHumanos: TMenuItem;
     Pessoa1: TMenuItem;
     Ac_Perfis: TAction;
     PerfisdeUsurios1: TMenuItem;
@@ -23,10 +23,12 @@ type
     tabDashBoard: TcxTabSheet;
     dxSkinController1: TdxSkinController;
     Ac_Organizacao: TAction;
-    AcOrganizacao1: TMenuItem;
     Ac_Projeto: TAction;
     Ac_Financiador: TAction;
-    Financiadores1: TMenuItem;
+    miGestao: TMenuItem;
+    Financiadores2: TMenuItem;
+    Organizaes1: TMenuItem;
+    Projetos1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);

@@ -1,5 +1,5 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   ClientWidth = 862
@@ -15,7 +15,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -109,12 +109,12 @@ inherited frmBasicoCrud: TfrmBasicoCrud
               item
                 Description = 'Todos'
                 ImageIndex = 0
-                Value = 0
+                Value = 1
               end
               item
                 Description = 'ID'
                 ImageIndex = 0
-                Value = 1
+                Value = 2
               end>
             Properties.OnEditValueChanged = cbPesquisarPorPropertiesEditValueChanged
             TabOrder = 0

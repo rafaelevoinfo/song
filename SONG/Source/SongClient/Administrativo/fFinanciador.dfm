@@ -1,12 +1,8 @@
 inherited frmFinanciador: TfrmFinanciador
-  ActiveControl = btnIncluir
   Caption = 'Financiadores'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -15,16 +11,16 @@ inherited frmFinanciador: TfrmFinanciador
               item
                 Description = 'Todos'
                 ImageIndex = 0
-                Value = 0
+                Value = 1
               end
               item
                 Description = 'ID'
                 ImageIndex = 0
-                Value = 1
+                Value = 2
               end
               item
                 Description = 'Nome'
-                Value = 2
+                Value = 3
               end>
           end
         end
@@ -53,10 +49,6 @@ inherited frmFinanciador: TfrmFinanciador
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 4

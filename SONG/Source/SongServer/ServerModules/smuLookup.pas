@@ -16,6 +16,12 @@ type
     qlkPerfilID: TIntegerField;
     qlkPerfilNOME: TStringField;
     qlkPessoa: TRFQuery;
+    qlkOrganizacao: TRFQuery;
+    qlkOrganizacaoID: TIntegerField;
+    qlkOrganizacaoNOME: TStringField;
+    qlkFinanciador: TRFQuery;
+    qlkFinanciadorID: TIntegerField;
+    qlkFinanciadorNOME: TStringField;
   private
     { Private declarations }
   public

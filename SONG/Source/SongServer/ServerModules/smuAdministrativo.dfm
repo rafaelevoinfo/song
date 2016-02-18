@@ -408,8 +408,9 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO.NOME,'
       '       PROJETO.DATA_INICIO,'
       '       PROJETO.DATA_TERMINO,'
-      '       PROJETO.STATUS,'
-      '       PROJETO.DESCRICAO'
+      '       PROJETO.SITUACAO,'
+      '       PROJETO.DESCRICAO,'
+      '       PROJETO.ORCAMENTO'
       'from PROJETO  '
       '&WHERE')
     Left = 128
@@ -442,9 +443,9 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DATA_TERMINO'
       ProviderFlags = [pfInUpdate]
     end
-    object qProjetoSTATUS: TSmallintField
-      FieldName = 'STATUS'
-      Origin = 'STATUS'
+    object qProjetoSITUACAO: TSmallintField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
@@ -453,6 +454,194 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+    object qProjetoORCAMENTO: TBCDField
+      FieldName = 'ORCAMENTO'
+      Origin = 'ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+  end
+  object qProjeto_Organizacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PROJETO_ORGANIZACAO.ID,'
+      '       PROJETO_ORGANIZACAO.ID_PROJETO,'
+      '       PROJETO_ORGANIZACAO.ID_ORGANIZACAO'
+      'from PROJETO_ORGANIZACAO  '
+      'where PROJETO_ORGANIZACAO.ID_PROJETO = :ID_PROJETO')
+    Left = 232
+    Top = 48
+    ParamData = <
+      item
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    object qProjeto_OrganizacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_OrganizacaoID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qProjeto_Financiador: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PROJETO_FINANCIADOR.ID,'
+      '       PROJETO_FINANCIADOR.ID_PROJETO,'
+      '       PROJETO_FINANCIADOR.ID_FINANCIADOR,'
+      '       PROJETO_FINANCIADOR.VALOR_FINANCIADO,'
+      '       PROJETO_FINANCIADOR.DATA_PAGAMENTO,'
+      '       PROJETO_FINANCIADOR.OBSERVACAO'
+      'from PROJETO_FINANCIADOR  '
+      'where PROJETO_FINANCIADOR.ID_PROJETO = :ID_PROJETO')
+    Left = 232
+    Top = 112
+    ParamData = <
+      item
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    object qProjeto_FinanciadorID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_FinanciadorID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_FinanciadorID_FINANCIADOR: TIntegerField
+      FieldName = 'ID_FINANCIADOR'
+      Origin = 'ID_FINANCIADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField
+      FieldName = 'VALOR_FINANCIADO'
+      Origin = 'VALOR_FINANCIADO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField
+      FieldName = 'DATA_PAGAMENTO'
+      Origin = 'DATA_PAGAMENTO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qProjeto_FinanciadorOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
+  object qProjeto_Documento: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PROJETO_DOCUMENTO.ID,'
+      '       PROJETO_DOCUMENTO.ID_PROJETO,'
+      '       PROJETO_DOCUMENTO.NOME,'
+      '       PROJETO_DOCUMENTO.DATA_UPLOAD,'
+      '       PROJETO_DOCUMENTO.DOCUMENTO'
+      'from PROJETO_DOCUMENTO  '
+      'where PROJETO_DOCUMENTO.ID_PROJETO = :ID_PROJETO')
+    Left = 232
+    Top = 176
+    ParamData = <
+      item
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    object qProjeto_DocumentoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_DocumentoID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_DocumentoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qProjeto_DocumentoDATA_UPLOAD: TSQLTimeStampField
+      FieldName = 'DATA_UPLOAD'
+      Origin = 'DATA_UPLOAD'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_DocumentoDOCUMENTO: TBlobField
+      FieldName = 'DOCUMENTO'
+      Origin = 'DOCUMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qProjeto_Pessoa: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PROJETO_PESSOA.ID,'
+      '       PROJETO_PESSOA.ID_PROJETO,'
+      '       PROJETO_PESSOA.ID_PESSOA,'
+      '       PROJETO_PESSOA.FUNCAO'
+      'from PROJETO_PESSOA  '
+      'where PROJETO_PESSOA.ID_PROJETO = :ID_PROJETO')
+    Left = 232
+    Top = 240
+    ParamData = <
+      item
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    object qProjeto_PessoaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_PessoaID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_PessoaID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_PessoaFUNCAO: TStringField
+      FieldName = 'FUNCAO'
+      Origin = 'FUNCAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 150
     end
   end
 end

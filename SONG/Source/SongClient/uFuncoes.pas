@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 15/02/2016 22:46:10
+// 18/02/2016 00:20:08
 //
 
 unit uFuncoes;
@@ -25,6 +25,7 @@ type
     FfpuVerificarNovaVersaoCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuBaixarAtualizacaoCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -33,6 +34,7 @@ type
     function fpuVerificarNovaVersao(ipVersaoAtual: string): string;
     function fpuGetId(ipTabela: string): Integer;
     function fpuBaixarAtualizacao(ipVersao: string): TStream;
+    function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -51,6 +53,7 @@ type
     FfpuPermissoesUsuarioCommand: TDBXCommand;
     FfpuValidarNomeFinanciadorCommand: TDBXCommand;
     FfpuValidarLoginCommand: TDBXCommand;
+    FfpuValidarNomeProjetoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -59,6 +62,7 @@ type
     function fpuPermissoesUsuario(ipLogin: string): OleVariant;
     function fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
+    function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -150,6 +154,19 @@ begin
   Result := FfpuBaixarAtualizacaoCommand.Parameters[1].Value.GetStream(FInstanceOwner);
 end;
 
+function TsmFuncoesGeralClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesGeral.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
 procedure TsmFuncoesGeralClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -193,6 +210,7 @@ begin
   FfpuVerificarNovaVersaoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuBaixarAtualizacaoCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -285,6 +303,21 @@ begin
   Result := FfpuValidarLoginCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
+begin
+  if FfpuValidarNomeProjetoCommand = nil then
+  begin
+    FfpuValidarNomeProjetoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeProjetoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeProjetoCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeProjeto';
+    FfpuValidarNomeProjetoCommand.Prepare;
+  end;
+  FfpuValidarNomeProjetoCommand.Parameters[0].Value.SetInt32(ipIdProjeto);
+  FfpuValidarNomeProjetoCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeProjetoCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeProjetoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesAdministrativoClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -328,6 +361,7 @@ begin
   FfpuPermissoesUsuarioCommand.DisposeOf;
   FfpuValidarNomeFinanciadorCommand.DisposeOf;
   FfpuValidarLoginCommand.DisposeOf;
+  FfpuValidarNomeProjetoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

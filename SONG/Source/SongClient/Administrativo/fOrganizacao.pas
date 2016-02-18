@@ -71,9 +71,6 @@ type
 var
   frmOrganizacao: TfrmOrganizacao;
 
-const
-  coNome = 2;
-
 implementation
 
 {$R *.dfm}
@@ -88,7 +85,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PadraoPesquisa := tpTodos;
+  PesquisaPadrao := tppTodos;
 
   dmLookup.cdslkPessoa.Open;
 end;

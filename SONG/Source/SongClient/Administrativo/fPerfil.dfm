@@ -1,15 +1,9 @@
 inherited frmPerfil: TfrmPerfil
   Caption = 'Perfis de Usu'#225'rio'
-  ExplicitWidth = 878
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -17,16 +11,16 @@ inherited frmPerfil: TfrmPerfil
               item
                 Description = 'Todos'
                 ImageIndex = 0
-                Value = 0
+                Value = 1
               end
               item
                 Description = 'C'#243'digo'
                 ImageIndex = 0
-                Value = 1
+                Value = 2
               end
               item
                 Description = 'Nome'
-                Value = 2
+                Value = 3
               end>
           end
         end
@@ -54,10 +48,6 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 843
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -189,7 +179,6 @@ inherited frmPerfil: TfrmPerfil
           RootValue = -1
           TabOrder = 0
           OnEditValueChanged = tlPermissoesEditValueChanged
-          ExplicitTop = 24
           object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
             DataBinding.FieldName = 'DESCRICAO'
             Options.Editing = False

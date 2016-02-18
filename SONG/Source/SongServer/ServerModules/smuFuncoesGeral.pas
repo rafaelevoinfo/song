@@ -21,6 +21,7 @@ type
     function fpuVerificarNovaVersao(ipVersaoAtual: string): String;
     function fpuGetId(ipTabela: string): Integer;
     function fpuBaixarAtualizacao(ipVersao: string): TStream;
+    function fpuDataHoraAtual:string;
   end;
 
 var
@@ -42,6 +43,11 @@ begin
       TBytesStream(Result).LoadFromFile(vaFile);
       Result.Position := 0;
     end;
+end;
+
+function TsmFuncoesGeral.fpuDataHoraAtual: string;
+begin
+  Result := DateTimeToStr(now);
 end;
 
 function TsmFuncoesGeral.fpuGetId(ipTabela: string): Integer;

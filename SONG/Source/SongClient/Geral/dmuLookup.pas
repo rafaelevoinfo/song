@@ -22,6 +22,17 @@ type
     repLcbPessoa: TcxEditRepositoryLookupComboBoxItem;
     dslkPessoa: TDataSource;
     repIcbTipoPerfil: TcxEditRepositoryImageComboBoxItem;
+    repIcbSituacaoProjeto: TcxEditRepositoryImageComboBoxItem;
+    cdslkOrganizacao: TRFClientDataSet;
+    cdslkFinanciador: TRFClientDataSet;
+    repLcbOrganizacao: TcxEditRepositoryLookupComboBoxItem;
+    dslkOrganizacao: TDataSource;
+    dslkFinanciador: TDataSource;
+    repLcbFinanciador: TcxEditRepositoryLookupComboBoxItem;
+    cdslkOrganizacaoID: TIntegerField;
+    cdslkOrganizacaoNOME: TStringField;
+    cdslkFinanciadorID: TIntegerField;
+    cdslkFinanciadorNOME: TStringField;
   private
     { Private declarations }
   public

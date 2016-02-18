@@ -15,6 +15,7 @@ type
 
     function fpuValidarNomeFinanciador(ipIdFinanciador: integer; ipNome: String): Boolean;
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
+    function fpuValidarNomeProjeto(ipIdProjeto:Integer; ipNome:String):Boolean;
 
   end;
 
@@ -64,6 +65,12 @@ function TsmFuncoesAdministrativo.fpuValidarNomeFinanciador(
   ipIdFinanciador: integer; ipNome: String): Boolean;
 begin
   Result := fpvValidarCampoUnico('financiador', 'nome', ipIdFinanciador, ipNome);
+end;
+
+function TsmFuncoesAdministrativo.fpuValidarNomeProjeto(ipIdProjeto: Integer;
+  ipNome: String): Boolean;
+begin
+  Result := fpvValidarCampoUnico('PROJETO','NOME',ipIdProjeto,ipNome);
 end;
 
 function TsmFuncoesAdministrativo.fpvValidarCampoUnico(ipTabela,

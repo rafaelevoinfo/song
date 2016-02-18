@@ -52,7 +52,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PadraoPesquisa := tpTodos;
+  PesquisaPadrao := tppTodos;
 
   dmLookup.cdslkPessoa.Open;
 end;

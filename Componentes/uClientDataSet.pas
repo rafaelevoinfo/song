@@ -15,6 +15,7 @@ type
     coActive: string = 'ACTIVE';
     coLogin:string = 'LOGIN';
     coAtivo:string = 'ATIVO';
+    coSituacao:string = 'SITUACAO';
   end;
 
   TRFClientDataSet = class(TClientDataSet)
@@ -142,8 +143,8 @@ begin
       Open;
     finally
       // limpo os TList
-      FParametros.Clear;
-      FValores.Clear;
+//      FParametros.Clear;
+//      FValores.Clear;
     end;
   finally
     vaParams.Free;

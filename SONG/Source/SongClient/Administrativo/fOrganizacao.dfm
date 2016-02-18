@@ -11,16 +11,16 @@ inherited frmOrganizacao: TfrmOrganizacao
               item
                 Description = 'Todos'
                 ImageIndex = 0
-                Value = 0
+                Value = 1
               end
               item
                 Description = 'C'#243'digo'
                 ImageIndex = 0
-                Value = 1
+                Value = 2
               end
               item
                 Description = 'Nome'
-                Value = 2
+                Value = 3
               end>
           end
         end
@@ -102,10 +102,6 @@ inherited frmOrganizacao: TfrmOrganizacao
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 8
@@ -248,6 +244,10 @@ inherited frmOrganizacao: TfrmOrganizacao
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 258

@@ -18,7 +18,7 @@ type
     coAnd = ' and ';
   end;
 
-  TTipoPesquisa = (tpActive=-1, tpTodos, tpId, tpNome);
+  TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome);
 
   TAcaoTela = (atVisualizar, atIncluir, atAlterar, atExcluir, atAtivar, atInativar);
 

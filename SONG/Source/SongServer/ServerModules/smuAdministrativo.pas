@@ -68,9 +68,32 @@ type
     qProjetoNOME: TStringField;
     qProjetoDATA_INICIO: TDateField;
     qProjetoDATA_TERMINO: TDateField;
-    qProjetoSTATUS: TSmallintField;
     qProjetoDESCRICAO: TStringField;
     qPerfilTIPO: TSmallintField;
+    qProjetoORCAMENTO: TBCDField;
+    qProjeto_Organizacao: TRFQuery;
+    qProjeto_Financiador: TRFQuery;
+    qProjeto_FinanciadorID: TIntegerField;
+    qProjeto_FinanciadorID_PROJETO: TIntegerField;
+    qProjeto_FinanciadorID_FINANCIADOR: TIntegerField;
+    qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
+    qProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField;
+    qProjeto_FinanciadorOBSERVACAO: TStringField;
+    qProjeto_OrganizacaoID: TIntegerField;
+    qProjeto_OrganizacaoID_PROJETO: TIntegerField;
+    qProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
+    qProjeto_Documento: TRFQuery;
+    qProjeto_DocumentoID: TIntegerField;
+    qProjeto_DocumentoID_PROJETO: TIntegerField;
+    qProjeto_DocumentoNOME: TStringField;
+    qProjeto_DocumentoDATA_UPLOAD: TSQLTimeStampField;
+    qProjeto_DocumentoDOCUMENTO: TBlobField;
+    qProjeto_Pessoa: TRFQuery;
+    qProjeto_PessoaID: TIntegerField;
+    qProjeto_PessoaID_PROJETO: TIntegerField;
+    qProjeto_PessoaID_PESSOA: TIntegerField;
+    qProjeto_PessoaFUNCAO: TStringField;
+    qProjetoSITUACAO: TSmallintField;
   private
     { Private declarations }
   protected
@@ -101,9 +124,10 @@ begin
           if vaParam.Name = TParametros.coLogin then
             Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'login', vaParam.Text)
         end
-      else if ipTabela = 'PERFIL' then
+      else if ipTabela = 'PROJETO' then
         begin
-
+           if vaParam.Name = TParametros.coSituacao then
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'SITUACAO', vaParam.Text.ToInteger())
         end;
     end;
 

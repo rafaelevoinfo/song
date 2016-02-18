@@ -35,14 +35,20 @@ inherited frmPrincipal: TfrmPrincipal
   object mmMenuPrincipal: TMainMenu
     Left = 232
     Top = 104
-    object miAdministrativo: TMenuItem
-      Caption = 'Recursos Humanos'
-      object Financiadores1: TMenuItem
+    object miGestao: TMenuItem
+      Caption = 'Gest'#227'o'
+      object Financiadores2: TMenuItem
         Action = Ac_Financiador
       end
-      object AcOrganizacao1: TMenuItem
+      object Organizaes1: TMenuItem
         Action = Ac_Organizacao
       end
+      object Projetos1: TMenuItem
+        Action = Ac_Projeto
+      end
+    end
+    object miRecursosHumanos: TMenuItem
+      Caption = 'Recursos Humanos'
       object Pessoa1: TMenuItem
         Action = Ac_Pessoas
       end

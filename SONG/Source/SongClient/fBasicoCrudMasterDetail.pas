@@ -49,6 +49,9 @@ type
     procedure Ac_Salvar_DetailUpdate(Sender: TObject);
     procedure viewRegistrosDetailDblClick(Sender: TObject);
     procedure Ac_Salvar_Incluir_DetailExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+
   protected
     procedure pprBeforeSalvarDetail; virtual;
     procedure pprExecutarSalvarDetail; virtual;
@@ -56,6 +59,7 @@ type
     function fprHabilitarSalvarDetail(): Boolean; virtual;
     procedure pprBeforeIncluirDetail; virtual;
     procedure pprBeforeAlterarDetail; virtual;
+    procedure pprDefinirTabDetailCadastro;virtual;
 
     procedure pprValidarDadosDetail; virtual;
     // OVERRIDE
@@ -128,6 +132,12 @@ begin
     ppuIncluirDetail;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.FormCreate(Sender: TObject);
+begin
+  inherited;
+  pcDetails.ActivePage := tabDetail;
+end;
+
 function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail(): Boolean;
 begin
   Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or
@@ -174,7 +184,7 @@ end;
 procedure TfrmBasicoCrudMasterDetail.ppuAlterarDetail(ipId: Integer);
 begin
   pprBeforeAlterarDetail;
-  pcPrincipal.ActivePage := tabCadastroDetail;
+  pprDefinirTabDetailCadastro;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuCancelarDetail;
@@ -226,6 +236,11 @@ procedure TfrmBasicoCrudMasterDetail.ppuIncluirDetail;
 begin
   pprBeforeIncluirDetail;
   dsDetail.DataSet.Append;
+  pprDefinirTabDetailCadastro;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.pprDefinirTabDetailCadastro;
+begin
   pcPrincipal.ActivePage := tabCadastroDetail;
 end;
 

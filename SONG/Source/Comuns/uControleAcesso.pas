@@ -60,10 +60,6 @@ type
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admFinanciador);
 
-  // const
-  // PermissaoDescricao: array [TPermissao] of string = ('Gerenciamento de Pessoas', 'Gerenciamento de Perfis', 'Organizações',
-  // 'Projetos', 'Financiadores');
-
 implementation
 
 { TPermissoes }

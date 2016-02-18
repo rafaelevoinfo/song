@@ -85,7 +85,7 @@ type
     procedure ppuIncluir; override;
 
   public const
-    coLogin = 3;
+    coLogin = 4;
 
   end;
 
@@ -121,7 +121,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PadraoPesquisa := tpNome;
+  PesquisaPadrao := tppNome;
 
   dmLookup.cdslkPerfil.Open;
 
@@ -168,7 +168,7 @@ end;
 procedure TfrmPessoa.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
-  if (cbPesquisarPor.ItemIndex = coLogin) then
+  if (cbPesquisarPor.EditValue = coLogin) then
     ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);
 end;
 

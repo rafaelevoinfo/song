@@ -63,6 +63,37 @@ type
     cdsFinanciadorNOME: TStringField;
     cdsFinanciadorID_PESSOA: TIntegerField;
     cdsPerfilTIPO: TSmallintField;
+    cdsProjeto: TRFClientDataSet;
+    cdsProjeto_Pessoa: TRFClientDataSet;
+    cdsProjeto_Organizacao: TRFClientDataSet;
+    cdsProjeto_Financiador: TRFClientDataSet;
+    cdsProjeto_Documento: TRFClientDataSet;
+    cdsProjeto_FinanciadorID: TIntegerField;
+    cdsProjeto_FinanciadorID_PROJETO: TIntegerField;
+    cdsProjeto_FinanciadorID_FINANCIADOR: TIntegerField;
+    cdsProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
+    cdsProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField;
+    cdsProjeto_FinanciadorOBSERVACAO: TStringField;
+    cdsProjeto_OrganizacaoID: TIntegerField;
+    cdsProjeto_OrganizacaoID_PROJETO: TIntegerField;
+    cdsProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
+    cdsProjeto_PessoaID: TIntegerField;
+    cdsProjeto_PessoaID_PROJETO: TIntegerField;
+    cdsProjeto_PessoaID_PESSOA: TIntegerField;
+    cdsProjeto_PessoaFUNCAO: TStringField;
+    cdsProjeto_DocumentoID: TIntegerField;
+    cdsProjeto_DocumentoID_PROJETO: TIntegerField;
+    cdsProjeto_DocumentoNOME: TStringField;
+    cdsProjeto_DocumentoDATA_UPLOAD: TSQLTimeStampField;
+    cdsProjeto_DocumentoDOCUMENTO: TBlobField;
+    cdsProjetoID: TIntegerField;
+    cdsProjetoNOME: TStringField;
+    cdsProjetoDATA_INICIO: TDateField;
+    cdsProjetoDATA_TERMINO: TDateField;
+    cdsProjetoDESCRICAO: TStringField;
+    cdsProjetoORCAMENTO: TBCDField;
+    cdsProjetoSITUACAO: TSmallintField;
+    dsProjeto: TDataSource;
   private
     { Private declarations }
   public

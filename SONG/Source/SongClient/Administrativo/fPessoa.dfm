@@ -1,9 +1,15 @@
 inherited frmPessoa: TfrmPessoa
   Caption = 'Pessoas'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -11,20 +17,20 @@ inherited frmPessoa: TfrmPessoa
               item
                 Description = 'Todos'
                 ImageIndex = 0
-                Value = 0
+                Value = 1
               end
               item
                 Description = 'C'#243'digo'
                 ImageIndex = 0
-                Value = 1
-              end
-              item
-                Description = 'Nome'
                 Value = 2
               end
               item
-                Description = 'Login'
+                Description = 'Nome'
                 Value = 3
+              end
+              item
+                Description = 'Login'
+                Value = 4
               end>
           end
         end
@@ -98,6 +104,10 @@ inherited frmPessoa: TfrmPessoa
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Perfis da Pessoa'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]

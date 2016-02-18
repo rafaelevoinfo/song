@@ -339,4 +339,242 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
     end
   end
+  object cdsProjeto: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqProjeto'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 32
+    Top = 256
+    object cdsProjetoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjetoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsProjetoDATA_INICIO: TDateField
+      DisplayLabel = 'Data do In'#237'cio'
+      FieldName = 'DATA_INICIO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsProjetoDATA_TERMINO: TDateField
+      DisplayLabel = 'Data do T'#233'rmino'
+      FieldName = 'DATA_TERMINO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsProjetoSITUACAO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Situa'#231#227'o'
+      FieldName = 'SITUACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjetoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object cdsProjetoORCAMENTO: TBCDField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Or'#231'amento'
+      FieldName = 'ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+  end
+  object cdsProjeto_Pessoa: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqProjeto_Pessoa'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 288
+    Top = 264
+    object cdsProjeto_PessoaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsProjeto_PessoaID_PROJETO: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Projeto'
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_PessoaID_PESSOA: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Pessoa'
+      FieldName = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_PessoaFUNCAO: TStringField
+      DisplayLabel = 'Fun'#231#227'o'
+      FieldName = 'FUNCAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 150
+    end
+  end
+  object cdsProjeto_Organizacao: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqProjeto_Organizacao'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 232
+    Top = 232
+    object cdsProjeto_OrganizacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjeto_OrganizacaoID_PROJETO: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Projeto'
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Organiza'#231#227'o'
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object cdsProjeto_Financiador: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqProjeto_Financiador'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 144
+    Top = 208
+    object cdsProjeto_FinanciadorID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjeto_FinanciadorID_PROJETO: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Projeto'
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_FinanciadorID_FINANCIADOR: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Financiador'
+      FieldName = 'ID_FINANCIADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_FinanciadorVALOR_FINANCIADO: TBCDField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Valor financiado'
+      FieldName = 'VALOR_FINANCIADO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField
+      DisplayLabel = 'Data do Pagamento'
+      FieldName = 'DATA_PAGAMENTO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsProjeto_FinanciadorOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
+  object cdsProjeto_Documento: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqProjeto_Documento'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 368
+    Top = 248
+    object cdsProjeto_DocumentoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjeto_DocumentoID_PROJETO: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Projeto'
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_DocumentoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsProjeto_DocumentoDATA_UPLOAD: TSQLTimeStampField
+      DisplayLabel = 'Data de Upload'
+      FieldName = 'DATA_UPLOAD'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_DocumentoDOCUMENTO: TBlobField
+      DisplayLabel = 'Documento'
+      FieldName = 'DOCUMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object dsProjeto: TDataSource
+    DataSet = cdsProjeto
+    Left = 88
+    Top = 264
+  end
 end

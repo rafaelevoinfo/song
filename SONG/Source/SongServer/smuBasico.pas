@@ -108,7 +108,10 @@ end;
 
 function TsmBasico.fprGetNomeTabela(ipProvider: TDataSetProvider): string;
 begin
-  Result := Copy(ipProvider.Name, 5, Length(ipProvider.Name));
+  if TRegEx.IsMatch(ipProvider.Name,'^dspqlk',[]) then//lookups
+    Result := Copy(ipProvider.Name, 7, Length(ipProvider.Name))
+  else
+    Result := Copy(ipProvider.Name, 5, Length(ipProvider.Name));
 end;
 
 function TsmBasico.fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): OleVariant;
