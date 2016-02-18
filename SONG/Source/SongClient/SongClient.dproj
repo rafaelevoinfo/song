@@ -175,6 +175,15 @@
             <Form>frmFinanciador</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Financeiro\dmuFinanceiro.pas">
+            <Form>dmFinanceiro</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Financeiro\fBanco.pas">
+            <Form>frmBanco</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

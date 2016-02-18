@@ -8,7 +8,8 @@ uses
   cxLookAndFeelPainters, cxGraphics, dxSkinsCore, dxSkinBlack, cxClasses,
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
-  fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador;
+  fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
+  fBanco;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -29,6 +30,9 @@ type
     Financiadores2: TMenuItem;
     Organizaes1: TMenuItem;
     Projetos1: TMenuItem;
+    Ac_Banco: TAction;
+    miFinanceiro: TMenuItem;
+    Bancos1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -36,6 +40,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Ac_ProjetoExecute(Sender: TObject);
     procedure Ac_FinanciadorExecute(Sender: TObject);
+    procedure Ac_BancoExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -49,6 +54,12 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmPrincipal.Ac_BancoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmBanco>(pcPrincipal, TfrmBanco, frmBanco);
+end;
 
 procedure TfrmPrincipal.Ac_FinanciadorExecute(Sender: TObject);
 begin

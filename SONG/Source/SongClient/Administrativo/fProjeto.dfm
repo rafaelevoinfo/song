@@ -1,10 +1,15 @@
 inherited frmProjeto: TfrmProjeto
   Caption = 'Projetos'
-  ExplicitTop = -122
+  ExplicitWidth = 878
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -70,7 +75,11 @@ inherited frmProjeto: TfrmProjeto
               Options.ShowEditButtons = isebNever
               Width = 84
             end
-            object viewRegistrosSTATUS: TcxGridDBColumn [4]
+            object viewRegistrosID_BANCO_CONTA_CORRENTE: TcxGridDBColumn [4]
+              DataBinding.FieldName = 'ID_BANCO_CONTA_CORRENTE'
+              Width = 157
+            end
+            object viewRegistrosSTATUS: TcxGridDBColumn [5]
               DataBinding.FieldName = 'SITUACAO'
               RepositoryItem = dmLookup.repIcbSituacaoProjeto
               Options.Editing = False
@@ -78,7 +87,7 @@ inherited frmProjeto: TfrmProjeto
               Options.SortByDisplayText = isbtOn
               Width = 156
             end
-            object viewRegistrosORCAMENTO: TcxGridDBColumn [5]
+            object viewRegistrosORCAMENTO: TcxGridDBColumn [6]
               DataBinding.FieldName = 'ORCAMENTO'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = 'R$ ,0.00'
@@ -93,6 +102,10 @@ inherited frmProjeto: TfrmProjeto
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 843
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -120,8 +133,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
-              ExplicitLeft = 3
-              ExplicitTop = 27
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -129,7 +140,6 @@ inherited frmProjeto: TfrmProjeto
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirOrganizacao: TButton
                   Left = 0
                   Top = 1
@@ -233,7 +243,6 @@ inherited frmProjeto: TfrmProjeto
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirFinanciador: TButton
                   Left = 0
                   Top = 1
@@ -349,7 +358,6 @@ inherited frmProjeto: TfrmProjeto
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirDocumento: TButton
                   Left = 0
                   Top = 1
@@ -451,6 +459,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -461,7 +473,7 @@ inherited frmProjeto: TfrmProjeto
           FocusControl = EditNome
         end
         object Label4: TLabel
-          Left = 330
+          Left = 430
           Top = 2
           Width = 66
           Height = 13
@@ -469,7 +481,7 @@ inherited frmProjeto: TfrmProjeto
           FocusControl = EditDataInicio
         end
         object Label5: TLabel
-          Left = 419
+          Left = 519
           Top = 2
           Width = 79
           Height = 13
@@ -477,8 +489,8 @@ inherited frmProjeto: TfrmProjeto
           FocusControl = EditDataTermino
         end
         object Label6: TLabel
-          Left = 646
-          Top = 2
+          Left = 4
+          Top = 44
           Width = 41
           Height = 13
           Caption = 'Situa'#231#227'o'
@@ -486,19 +498,27 @@ inherited frmProjeto: TfrmProjeto
         end
         object Label7: TLabel
           Left = 5
-          Top = 45
+          Top = 93
           Width = 46
           Height = 13
           Caption = 'Descri'#231#227'o'
           FocusControl = EditDescricao
         end
         object Label8: TLabel
-          Left = 508
+          Left = 608
           Top = 2
           Width = 53
           Height = 13
           Caption = 'Or'#231'amento'
           FocusControl = EditOrcamento
+        end
+        object Label17: TLabel
+          Left = 206
+          Top = 44
+          Width = 75
+          Height = 13
+          Caption = 'Conta Corrente'
+          FocusControl = cbContaCorrente
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -506,10 +526,10 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'NOME'
           DataBinding.DataSource = dsMaster
           TabOrder = 0
-          Width = 317
+          Width = 421
         end
         object EditDataInicio: TcxDBDateEdit
-          Left = 328
+          Left = 428
           Top = 18
           DataBinding.DataField = 'DATA_INICIO'
           DataBinding.DataSource = dsMaster
@@ -519,7 +539,7 @@ inherited frmProjeto: TfrmProjeto
           Width = 84
         end
         object EditDataTermino: TcxDBDateEdit
-          Left = 417
+          Left = 517
           Top = 18
           DataBinding.DataField = 'DATA_TERMINO'
           DataBinding.DataSource = dsMaster
@@ -529,8 +549,8 @@ inherited frmProjeto: TfrmProjeto
           Width = 84
         end
         object cbSituacao: TcxDBImageComboBox
-          Left = 646
-          Top = 18
+          Left = 4
+          Top = 60
           RepositoryItem = dmLookup.repIcbSituacaoProjeto
           DataBinding.DataField = 'SITUACAO'
           DataBinding.DataSource = dsMaster
@@ -540,7 +560,7 @@ inherited frmProjeto: TfrmProjeto
         end
         object EditDescricao: TcxDBMemo
           Left = 4
-          Top = 61
+          Top = 109
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
           TabOrder = 5
@@ -548,7 +568,7 @@ inherited frmProjeto: TfrmProjeto
           Width = 838
         end
         object EditOrcamento: TcxDBCalcEdit
-          Left = 507
+          Left = 607
           Top = 18
           DataBinding.DataField = 'ORCAMENTO'
           DataBinding.DataSource = dsMaster
@@ -558,6 +578,16 @@ inherited frmProjeto: TfrmProjeto
           Properties.UseThousandSeparator = True
           TabOrder = 3
           Width = 133
+        end
+        object cbContaCorrente: TcxDBLookupComboBox
+          Left = 205
+          Top = 60
+          RepositoryItem = dmLookup.repLcbContaCorrente
+          DataBinding.DataField = 'ID_BANCO_CONTA_CORRENTE'
+          DataBinding.DataSource = dsMaster
+          Properties.ListColumns = <>
+          TabOrder = 6
+          Width = 220
         end
       end
     end
@@ -631,7 +661,6 @@ inherited frmProjeto: TfrmProjeto
         Height = 50
         Align = alTop
         TabOrder = 1
-        ExplicitTop = 8
         object btnSalvarDetailOrganizacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -701,7 +730,6 @@ inherited frmProjeto: TfrmProjeto
         Height = 50
         Align = alTop
         TabOrder = 3
-        ExplicitTop = 8
         object btnSalvarDetailFinanciador: TButton
           AlignWithMargins = True
           Left = 4
@@ -772,8 +800,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailDocumento: TcxTabSheet
       Caption = 'tabCadastroDetailDocumento'
       ImageIndex = 5
-      ExplicitLeft = 3
-      ExplicitTop = 25
       object Label15: TLabel
         Left = 5
         Top = 54
@@ -797,7 +823,6 @@ inherited frmProjeto: TfrmProjeto
         Height = 50
         Align = alTop
         TabOrder = 2
-        ExplicitTop = 8
         object btnSalvarDetailDocumento: TButton
           AlignWithMargins = True
           Left = 4

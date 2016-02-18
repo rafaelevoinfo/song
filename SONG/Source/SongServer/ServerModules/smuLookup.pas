@@ -22,6 +22,20 @@ type
     qlkFinanciador: TRFQuery;
     qlkFinanciadorID: TIntegerField;
     qlkFinanciadorNOME: TStringField;
+    qlkBanco: TRFQuery;
+    qlkBancoID: TIntegerField;
+    qlkBancoNOME: TStringField;
+    qlkBanco_Conta_Corrente: TRFQuery;
+    qlkBanco_Conta_CorrenteID: TIntegerField;
+    qlkBanco_Conta_CorrenteID_BANCO: TIntegerField;
+    qlkBanco_Conta_CorrenteAGENCIA: TStringField;
+    qlkBanco_Conta_CorrenteCONTA: TStringField;
+    qlkConta_Corrente: TRFQuery;
+    qlkConta_CorrenteID: TIntegerField;
+    qlkConta_CorrenteID_BANCO: TIntegerField;
+    qlkConta_CorrenteNOME: TStringField;
+    qlkConta_CorrenteAGENCIA: TStringField;
+    qlkConta_CorrenteCONTA: TStringField;
   private
     { Private declarations }
   public

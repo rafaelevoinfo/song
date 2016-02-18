@@ -94,6 +94,7 @@ type
     qProjeto_PessoaID_PESSOA: TIntegerField;
     qProjeto_PessoaFUNCAO: TStringField;
     qProjetoSITUACAO: TSmallintField;
+    qProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
   private
     { Private declarations }
   protected

@@ -306,8 +306,6 @@ begin
     dsMaster.DataSet.Post;
 end;
 
-
-
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
 begin
   Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit, dsInsert]) or
@@ -336,7 +334,17 @@ end;
 procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
 begin
   if PesquisaPadrao <> tppActive then
-    cbPesquisarPor.EditValue := Ord(PesquisaPadrao);
+    begin
+      cbPesquisarPor.LockChangeEvents(True);
+      try
+        cbPesquisarPor.EditValue := Ord(PesquisaPadrao);
+        cbPesquisarPor.PostEditValue;
+
+        cbPesquisarPorPropertiesEditValueChanged(cbPesquisarPor);
+      finally
+        cbPesquisarPor.LockChangeEvents(false, false);
+      end;
+    end;
 
   if PesquisaPadrao = tppTodos then
     ppuPesquisar
@@ -351,7 +359,7 @@ var
   vaAcao: TAcaoTela;
   vaField: TField;
 begin
-  Result := False;
+  Result := false;
 
   vaAcao := atExcluir;
   if rgStatus.Visible then
@@ -457,7 +465,7 @@ end;
 
 function TfrmBasicoCrud.fpuSalvar: Boolean;
 begin
-  Result := False;
+  Result := false;
   pprBeforeSalvar;
   pprExecutarSalvar;
   pprAfterSalvar;

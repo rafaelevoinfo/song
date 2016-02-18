@@ -410,7 +410,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO.DATA_TERMINO,'
       '       PROJETO.SITUACAO,'
       '       PROJETO.DESCRICAO,'
-      '       PROJETO.ORCAMENTO'
+      '       PROJETO.ORCAMENTO,'
+      '       PROJETO.ID_BANCO_CONTA_CORRENTE'
       'from PROJETO  '
       '&WHERE')
     Left = 128
@@ -461,6 +462,12 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
+    end
+    object qProjetoID_BANCO_CONTA_CORRENTE: TIntegerField
+      FieldName = 'ID_BANCO_CONTA_CORRENTE'
+      Origin = 'ID_BANCO_CONTA_CORRENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object qProjeto_Organizacao: TRFQuery

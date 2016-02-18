@@ -1430,4 +1430,11 @@ object dmPrincipal: TdmPrincipal
     Left = 56
     Top = 304
   end
+  object ProviderFinanceiro: TDSProviderConnection
+    ServerClassName = 'TsmFinanceiro'
+    Connected = True
+    SQLConnection = DataSnapConn
+    Left = 56
+    Top = 368
+  end
 end

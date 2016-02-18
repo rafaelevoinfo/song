@@ -110,6 +110,9 @@ type
     viewProjetoDocumentoID: TcxGridDBColumn;
     viewProjetoDocumentoNOME: TcxGridDBColumn;
     viewProjetoDocumentoDATA_UPLOAD: TcxGridDBColumn;
+    Label17: TLabel;
+    cbContaCorrente: TcxDBLookupComboBox;
+    viewRegistrosID_BANCO_CONTA_CORRENTE: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
@@ -179,6 +182,7 @@ begin
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coAtivo], [coRegistroAtivo]);
   dmLookup.cdslkOrganizacao.Open;
   dmLookup.cdslkFinanciador.Open;
+  dmLookup.cdslkConta_Corrente.Open;
 end;
 
 function TfrmProjeto.fprGetPermissao: string;

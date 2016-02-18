@@ -35,6 +35,12 @@ inherited frmPrincipal: TfrmPrincipal
   object mmMenuPrincipal: TMainMenu
     Left = 232
     Top = 104
+    object miFinanceiro: TMenuItem
+      Caption = 'Financeiro'
+      object Bancos1: TMenuItem
+        Action = Ac_Banco
+      end
+    end
     object miGestao: TMenuItem
       Caption = 'Gest'#227'o'
       object Financiadores2: TMenuItem
@@ -84,6 +90,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Administrativo'
       Caption = 'Financiadores'
       OnExecute = Ac_FinanciadorExecute
+    end
+    object Ac_Banco: TAction
+      Category = 'Financeiro'
+      Caption = 'Bancos'
+      OnExecute = Ac_BancoExecute
     end
   end
   object dxSkinController1: TdxSkinController

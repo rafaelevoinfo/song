@@ -24,7 +24,9 @@ uses
   fmGrids in 'Frames\fmGrids.pas' {frameGrids: TFrame},
   fOrganizacao in 'Administrativo\fOrganizacao.pas' {frmOrganizacao},
   fProjeto in 'Administrativo\fProjeto.pas' {frmProjeto},
-  fFinanciador in 'Administrativo\fFinanciador.pas' {frmFinanciador};
+  fFinanciador in 'Administrativo\fFinanciador.pas' {frmFinanciador},
+  dmuFinanceiro in 'Financeiro\dmuFinanceiro.pas' {dmFinanceiro: TDataModule},
+  fBanco in 'Financeiro\fBanco.pas' {frmBanco};
 
 {$R *.res}
 

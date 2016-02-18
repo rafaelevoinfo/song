@@ -94,6 +94,7 @@ type
     cdsProjetoORCAMENTO: TBCDField;
     cdsProjetoSITUACAO: TSmallintField;
     dsProjeto: TDataSource;
+    cdsProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
   private
     { Private declarations }
   public

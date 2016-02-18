@@ -32,6 +32,7 @@ type
     qLoginID: TIntegerField;
     SCLookup: TDSServerClass;
     SCFuncoesAdministrativo: TDSServerClass;
+    SCFinanceiro: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -44,6 +45,8 @@ type
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure SCFuncoesAdministrativoGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCFinanceiroGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
@@ -63,7 +66,8 @@ implementation
 
 {$R *.dfm}
 
-uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo;
+uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
+  smuFinanceiro;
 
 { TdmPrincipal }
 
@@ -157,6 +161,12 @@ end;
 procedure TdmPrincipal.SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuAdministrativo.TsmAdministrativo;
+end;
+
+procedure TdmPrincipal.SCFinanceiroGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := smuFinanceiro.TsmFinanceiro;
 end;
 
 procedure TdmPrincipal.SCFuncoesAdministrativoGetClass(

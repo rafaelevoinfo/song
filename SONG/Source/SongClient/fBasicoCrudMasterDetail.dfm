@@ -11,12 +11,12 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               item
                 Description = 'Todos'
                 ImageIndex = 0
-                Value = 0
+                Value = 1
               end
               item
                 Description = 'C'#243'digo'
                 ImageIndex = 0
-                Value = 1
+                Value = 2
               end>
           end
         end
@@ -154,10 +154,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0

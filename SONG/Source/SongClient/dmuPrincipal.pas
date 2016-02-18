@@ -22,6 +22,7 @@ type
     imgIcons_16: TcxImageList;
     ProviderAdministrativo: TDSProviderConnection;
     ProviderLookup: TDSProviderConnection;
+    ProviderFinanceiro: TDSProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);

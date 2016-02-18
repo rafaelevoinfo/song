@@ -59,6 +59,7 @@ type
   end;
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admFinanciador);
+  TPermissaoFinanceiro = (finBanco);
 
 implementation
 
@@ -76,17 +77,29 @@ var
     vaPermissoes.Add(vaPermissao);
   end;
 
+  procedure plAddFinanceiro(ipPermissao: TPermissaoFinanceiro; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
 begin
   FItems := TDictionary < String, TList < TPermissao >>.Create();
 
-  vaPermissoes := TList<TPermissao>.Create;
   // administrativo
+  vaPermissoes := TList<TPermissao>.Create;
   plAddAdministrativo(admPessoa, 'Gerenciamento de Pessoas');
   plAddAdministrativo(admPerfil, 'Gerenciamento de Perfis');
   plAddAdministrativo(admOrganizacao, 'Organizações');
   plAddAdministrativo(admFinanciador, 'Financiadores');
   plAddAdministrativo(admProjeto, 'Projetos');
   FItems.Add('Administrativo', vaPermissoes);
+   //Financeiro
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddFinanceiro(finBanco, 'Bancos');
+  FItems.Add('Financeiro', vaPermissoes);
 
 end;
 

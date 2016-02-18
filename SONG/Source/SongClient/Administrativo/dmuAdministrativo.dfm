@@ -389,6 +389,12 @@ inherited dmAdministrativo: TdmAdministrativo
       Precision = 18
       Size = 2
     end
+    object cdsProjetoID_BANCO_CONTA_CORRENTE: TIntegerField
+      DisplayLabel = 'Conta Corrente'
+      FieldName = 'ID_BANCO_CONTA_CORRENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object cdsProjeto_Pessoa: TRFClientDataSet
     Aggregates = <>
