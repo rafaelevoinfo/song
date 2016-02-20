@@ -1,4 +1,5 @@
 inherited smFinanceiro: TsmFinanceiro
+  OldCreateOrder = True
   object qBanco: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -42,7 +43,9 @@ inherited smFinanceiro: TsmFinanceiro
     ParamData = <
       item
         Name = 'ID_BANCO'
+        DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     MacroData = <
       item
@@ -71,6 +74,41 @@ inherited smFinanceiro: TsmFinanceiro
     object qBanco_Conta_CorrenteCONTA: TStringField
       FieldName = 'CONTA'
       Origin = 'CONTA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qFinanciador: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select FINANCIADOR.ID,'
+      '       FINANCIADOR.NOME,'
+      '       FINANCIADOR.ID_PESSOA'
+      'from FINANCIADOR'
+      '&WHERE')
+    Left = 32
+    Top = 88
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qFinanciadorID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qFinanciadorNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qFinanciadorID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end

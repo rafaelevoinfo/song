@@ -59,11 +59,13 @@ type
     function fprHabilitarSalvarDetail(): Boolean; virtual;
     procedure pprBeforeIncluirDetail; virtual;
     procedure pprBeforeAlterarDetail; virtual;
-    procedure pprDefinirTabDetailCadastro;virtual;
+    procedure pprDefinirTabDetailCadastro; virtual;
+    procedure pprEfetuarCancelarDetail; virtual;
 
     procedure pprValidarDadosDetail; virtual;
     // OVERRIDE
     procedure pprEfetuarPesquisa; override;
+
   public
 
     procedure ppuIncluirDetail; virtual;
@@ -159,6 +161,7 @@ procedure TfrmBasicoCrudMasterDetail.pprEfetuarPesquisa;
 begin
   viewRegistrosDetail.BeginUpdate(lsimImmediate);
   try
+    dsDetail.DataSet.Close;
     inherited;
     dsDetail.DataSet.Open;
   finally
@@ -172,8 +175,8 @@ begin
   if (dsDetail.DataSet.State in [dsEdit, dsInsert]) then
     dsDetail.DataSet.Post;
 
-  if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
-    TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
+  // if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+  // TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprValidarDadosDetail;
@@ -198,8 +201,14 @@ begin
         end;
     end;
 
-  TClientDataSet(dsDetail.DataSet).CancelUpdates;
+  pprEfetuarCancelarDetail;
+
   ppuRetornar;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.pprEfetuarCancelarDetail;
+begin
+  TClientDataSet(dsDetail.DataSet).CancelUpdates;
 end;
 
 function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
@@ -224,7 +233,7 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.pprBeforeAlterarDetail;
 begin
-   pprValidarPermissao(atAlterar, Permissao);
+  pprValidarPermissao(atAlterar, Permissao);
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprBeforeIncluirDetail;

@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, uTypes, dmuAdministrativo, cxCalc,
   cxDBEdit, cxMemo, dmuLookup, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
-  uExceptions, Vcl.ExtDlgs, System.IOUtils;
+  uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -55,11 +55,6 @@ type
     btnIncluirOrganizacao: TButton;
     Panel2: TPanel;
     btnIncluirFinanciador: TButton;
-    cxGrid2: TcxGrid;
-    viewProjetoFinanciador: TcxGridDBTableView;
-    ColumnAlterarDetailFinanciador: TcxGridDBColumn;
-    ColumnExcluirDetailFinanciador: TcxGridDBColumn;
-    cxGridLevel3: TcxGridLevel;
     Panel3: TPanel;
     btnIncluirDocumento: TButton;
     cxGrid3: TcxGrid;
@@ -91,10 +86,6 @@ type
     btnSalvarIncluirDetailDocumento: TButton;
     Label12: TLabel;
     cbFinanciador: TcxDBLookupComboBox;
-    Label13: TLabel;
-    EditDataPagamento: TcxDBDateEdit;
-    Label14: TLabel;
-    EditValorFinanciamento: TcxDBCalcEdit;
     Label15: TLabel;
     EditNomeDocumento: TcxDBTextEdit;
     Label16: TLabel;
@@ -103,23 +94,57 @@ type
     Ac_CarregarArquivo: TAction;
     viewProjetoOrganizacaoID: TcxGridDBColumn;
     viewProjetoOrganizacaoID_ORGANIZACAO: TcxGridDBColumn;
-    viewProjetoFinanciadorID: TcxGridDBColumn;
-    viewProjetoFinanciadorID_FINANCIADOR: TcxGridDBColumn;
-    viewProjetoFinanciadorVALOR_FINANCIADO: TcxGridDBColumn;
-    viewProjetoFinanciadorDATA_PAGAMENTO: TcxGridDBColumn;
     viewProjetoDocumentoID: TcxGridDBColumn;
     viewProjetoDocumentoNOME: TcxGridDBColumn;
     viewProjetoDocumentoDATA_UPLOAD: TcxGridDBColumn;
     Label17: TLabel;
     cbContaCorrente: TcxDBLookupComboBox;
     viewRegistrosID_BANCO_CONTA_CORRENTE: TcxGridDBColumn;
+    EditObservacao: TcxDBMemo;
+    Label18: TLabel;
+    pnProjetoFinanciador: TPanel;
+    cxGrid2: TcxGrid;
+    viewProjetoFinanciador: TcxGridDBTableView;
+    viewProjetoFinanciadorID: TcxGridDBColumn;
+    viewProjetoFinanciadorID_FINANCIADOR: TcxGridDBColumn;
+    ColumnAlterarDetailFinanciador: TcxGridDBColumn;
+    ColumnExcluirDetailFinanciador: TcxGridDBColumn;
+    cxGridLevel3: TcxGridLevel;
+    cxGrid4: TcxGrid;
+    viewPagamentos: TcxGridDBTableView;
+    cxGridDBColumn4: TcxGridDBColumn;
+    cxGridLevel2: TcxGridLevel;
+    dsFinanciador_Pagto: TDataSource;
+    viewPagamentosID: TcxGridDBColumn;
+    viewPagamentosVALOR: TcxGridDBColumn;
+    viewPagamentosDATA: TcxGridDBColumn;
+    Ac_Excluir_Pagamento: TAction;
+    rgPagamentos: TcxGroupBox;
+    pnEditsPagamento: TPanel;
+    Label14: TLabel;
+    Label13: TLabel;
+    cxGrid5: TcxGrid;
+    viewPagamentosCadastro: TcxGridDBTableView;
+    Column1: TcxGridDBColumn;
+    Column2: TcxGridDBColumn;
+    Column3: TcxGridDBColumn;
+    Column4: TcxGridDBColumn;
+    level2: TcxGridLevel;
+    btnSalvarPagamento: TButton;
+    Ac_Salvar_Pagamento: TAction;
+    EditDataPagamento: TcxDateEdit;
+    Label19: TLabel;
+    EditValorPagamento: TcxCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
+    procedure Ac_Excluir_PagamentoExecute(Sender: TObject);
+    procedure Ac_Salvar_PagamentoExecute(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
+    procedure ppvLimparEditsPagamento;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -127,8 +152,13 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprValidarPesquisa; override;
     procedure pprDefinirTabDetailCadastro; override;
+    procedure pprEfetuarPesquisa; override;
     procedure ppuIncluirDetail; override;
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
+
+    procedure pprExecutarSalvarDetail; override;
+    function fprHabilitarSalvarDetail(): Boolean; override;
+    procedure pprEfetuarCancelarDetail; override;
   public const
     coPesqPorSituacao = 4;
 
@@ -155,6 +185,41 @@ begin
     end
   else
     EditCaminhoDocumento.Text := '';
+end;
+
+procedure TfrmProjeto.Ac_Excluir_PagamentoExecute(Sender: TObject);
+begin
+  inherited;
+  dmAdministrativo.cdsProjeto_Financiador_Pagto.Delete;
+end;
+
+procedure TfrmProjeto.Ac_Salvar_PagamentoExecute(Sender: TObject);
+begin
+  inherited;
+  if VarIsNull(EditValorPagamento.EditValue) then
+    raise TControlException.Create('Informe o valor do pagamento.', EditValorPagamento);
+
+  if VarIsNull(EditDataPagamento.EditValue) then
+    raise TControlException.Create('Informe a data do pagamento.', EditDataPagamento);
+
+  try
+    if dmAdministrativo.cdsProjeto_FinanciadorID.IsNull then
+      pprPreencherCamposPadroes(dmAdministrativo.cdsProjeto_Financiador);
+
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.Append;
+    pprPreencherCamposPadroes(dmAdministrativo.cdsProjeto_Financiador_Pagto);
+
+    dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat := EditValorPagamento.Value;
+    dmAdministrativo.cdsProjeto_Financiador_PagtoDATA.AsDateTime := EditDataPagamento.Date;
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.Post;
+  except
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.Cancel;
+    raise;
+  end;
+
+  ppvLimparEditsPagamento;
+
+  TUtils.ppuFocar(EditValorPagamento);
 end;
 
 procedure TfrmProjeto.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
@@ -188,6 +253,12 @@ end;
 function TfrmProjeto.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admProjeto));
+end;
+
+function TfrmProjeto.fprHabilitarSalvarDetail: Boolean;
+begin
+  Result := inherited or (dmAdministrativo.cdsProjeto_Financiador_Pagto.Active and (dmAdministrativo.cdsProjeto_Financiador_Pagto.ChangeCount > 0));
+
 end;
 
 procedure TfrmProjeto.pcDetailsChange(Sender: TObject);
@@ -234,6 +305,31 @@ begin
     pcPrincipal.ActivePage := tabCadastroDetailDocumento
 end;
 
+procedure TfrmProjeto.pprEfetuarCancelarDetail;
+begin
+  inherited;
+  dmAdministrativo.cdsProjeto_Financiador_Pagto.CancelUpdates;
+end;
+
+procedure TfrmProjeto.pprEfetuarPesquisa;
+begin
+  viewRegistrosDetail.BeginUpdate(lsimImmediate);
+  try
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.Close;
+    inherited;
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.Open;
+  finally
+    viewRegistrosDetail.EndUpdate;
+  end;
+end;
+
+procedure TfrmProjeto.pprExecutarSalvarDetail;
+begin
+  inherited;
+  if dmAdministrativo.cdsProjeto_Financiador_Pagto.ChangeCount > 0 then
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.ApplyUpdates(0);
+end;
+
 procedure TfrmProjeto.pprPreencherCamposPadroes(ipDataSet: TDataSet);
 begin
   inherited;
@@ -255,7 +351,15 @@ procedure TfrmProjeto.ppuIncluirDetail;
 begin
   inherited;
   if pcDetails.ActivePage = tabCadastroDetailDocumento then
-    EditCaminhoDocumento.Text := '';
+    EditCaminhoDocumento.Text := ''
+  else if pcDetails.ActivePage = tabCadastroDetailFinanciador then
+    ppvLimparEditsPagamento;
+end;
+
+procedure TfrmProjeto.ppvLimparEditsPagamento;
+begin
+  EditValorPagamento.Clear;
+  EditDataPagamento.Clear;
 end;
 
 end.

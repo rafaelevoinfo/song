@@ -117,6 +117,10 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkConta_Corrente
     end
+    object repCurPadrao: TcxEditRepositoryCurrencyItem
+      Properties.ClearKey = 46
+      Properties.UseThousandSeparator = True
+    end
   end
   object cdslkPerfil: TClientDataSet
     Aggregates = <>

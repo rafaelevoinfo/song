@@ -12,7 +12,7 @@ uses System.SysUtils, System.Classes,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase,
   System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
   uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts;
+  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -42,7 +42,6 @@ type
     procedure AuthenticationUserAuthorize(Sender: TObject; AuthorizeEventObject: TDSAuthorizeEventObject;
       var valid: Boolean);
     procedure ServerTransportDisconnect(Event: TDSTCPDisconnectEventObject);
-    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure SCFuncoesAdministrativoGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
@@ -70,12 +69,6 @@ uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
   smuFinanceiro;
 
 { TdmPrincipal }
-
-procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
-begin
-  // TODO:Implementar log de erros
-
-end;
 
 procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
   var valid: Boolean; UserRoles: TStrings);

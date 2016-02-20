@@ -58,10 +58,6 @@ type
     cdsOrganizacao_PessoaOBSERVACAO: TStringField;
     dsOrganizacao: TDataSource;
     cdsPessoaCIDADE: TStringField;
-    cdsFinanciador: TRFClientDataSet;
-    cdsFinanciadorID: TIntegerField;
-    cdsFinanciadorNOME: TStringField;
-    cdsFinanciadorID_PESSOA: TIntegerField;
     cdsPerfilTIPO: TSmallintField;
     cdsProjeto: TRFClientDataSet;
     cdsProjeto_Pessoa: TRFClientDataSet;
@@ -71,8 +67,6 @@ type
     cdsProjeto_FinanciadorID: TIntegerField;
     cdsProjeto_FinanciadorID_PROJETO: TIntegerField;
     cdsProjeto_FinanciadorID_FINANCIADOR: TIntegerField;
-    cdsProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
-    cdsProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField;
     cdsProjeto_FinanciadorOBSERVACAO: TStringField;
     cdsProjeto_OrganizacaoID: TIntegerField;
     cdsProjeto_OrganizacaoID_PROJETO: TIntegerField;
@@ -95,6 +89,12 @@ type
     cdsProjetoSITUACAO: TSmallintField;
     dsProjeto: TDataSource;
     cdsProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
+    cdsProjeto_Financiador_Pagto: TRFClientDataSet;
+    cdsProjeto_Financiador_PagtoID: TIntegerField;
+    cdsProjeto_Financiador_PagtoID_PROJETO_FINANCIADOR: TIntegerField;
+    cdsProjeto_Financiador_PagtoVALOR: TBCDField;
+    cdsProjeto_Financiador_PagtoDATA: TDateField;
+    dsProjeto_Financiador: TDataSource;
   private
     { Private declarations }
   public

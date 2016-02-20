@@ -366,41 +366,6 @@ inherited smAdministrativo: TsmAdministrativo
       Size = 500
     end
   end
-  object qFinanciador: TRFQuery
-    Connection = dmPrincipal.conSong
-    SQL.Strings = (
-      'select FINANCIADOR.ID,'
-      '       FINANCIADOR.NOME,'
-      '       FINANCIADOR.ID_PESSOA'
-      'from FINANCIADOR'
-      '&WHERE')
-    Left = 128
-    Top = 176
-    MacroData = <
-      item
-        Value = Null
-        Name = 'WHERE'
-      end>
-    object qFinanciadorID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qFinanciadorNOME: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 100
-    end
-    object qFinanciadorID_PESSOA: TIntegerField
-      FieldName = 'ID_PESSOA'
-      Origin = 'ID_PESSOA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-  end
   object qProjeto: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -510,8 +475,6 @@ inherited smAdministrativo: TsmAdministrativo
       'select PROJETO_FINANCIADOR.ID,'
       '       PROJETO_FINANCIADOR.ID_PROJETO,'
       '       PROJETO_FINANCIADOR.ID_FINANCIADOR,'
-      '       PROJETO_FINANCIADOR.VALOR_FINANCIADO,'
-      '       PROJETO_FINANCIADOR.DATA_PAGAMENTO,'
       '       PROJETO_FINANCIADOR.OBSERVACAO'
       'from PROJETO_FINANCIADOR  '
       'where PROJETO_FINANCIADOR.ID_PROJETO = :ID_PROJETO')
@@ -539,19 +502,6 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'ID_FINANCIADOR'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField
-      FieldName = 'VALOR_FINANCIADO'
-      Origin = 'VALOR_FINANCIADO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
-    end
-    object qProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField
-      FieldName = 'DATA_PAGAMENTO'
-      Origin = 'DATA_PAGAMENTO'
-      ProviderFlags = [pfInUpdate]
     end
     object qProjeto_FinanciadorOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
@@ -649,6 +599,52 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 150
+    end
+  end
+  object qProjeto_Financiador_Pagto: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select PROJETO_FINANCIADOR_PAGTO.ID,'
+      '       PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR,'
+      '       PROJETO_FINANCIADOR_PAGTO.VALOR,'
+      '       PROJETO_FINANCIADOR_PAGTO.DATA'
+      'from PROJETO_FINANCIADOR_PAGTO'
+      
+        'where PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR = :ID_PRO' +
+        'JETO_FINANCIADOR  ')
+    Left = 400
+    Top = 48
+    ParamData = <
+      item
+        Name = 'ID_PROJETO_FINANCIADOR'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qProjeto_Financiador_PagtoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_Financiador_PagtoID_PROJETO_FINANCIADOR: TIntegerField
+      FieldName = 'ID_PROJETO_FINANCIADOR'
+      Origin = 'ID_PROJETO_FINANCIADOR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qProjeto_Financiador_PagtoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_Financiador_PagtoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
 end

@@ -12,7 +12,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
-  Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup, uTypes, uControleAcesso,
+  Vcl.ExtCtrls, cxPC, dmuFinanceiro, dmuLookup, uTypes, uControleAcesso,
   System.TypInfo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit,
   dmuPrincipal, uExceptions;
 
@@ -27,7 +27,7 @@ type
     cbContato: TcxDBLookupComboBox;
     procedure FormCreate(Sender: TObject);
   private
-    dmAdministrativo: TdmAdministrativo;
+    dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
   protected
     function fprGetPermissao: String; override;
@@ -46,8 +46,8 @@ implementation
 
 procedure TfrmFinanciador.FormCreate(Sender: TObject);
 begin
-  dmAdministrativo := TdmAdministrativo.Create(Self);
-  dmAdministrativo.Name := '';
+  dmFinanceiro := TdmFinanceiro.Create(Self);
+  dmFinanceiro.Name := '';
 
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
@@ -59,14 +59,14 @@ end;
 
 function TfrmFinanciador.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admFinanciador));
+  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finFinanciador));
 end;
 
 procedure TfrmFinanciador.pprValidarDados;
 begin
   inherited;
-  if not dmPrincipal.FuncoesAdm.fpuValidarNomeFinanciador(dmAdministrativo.cdsFinanciadorID.AsInteger,
-    dmAdministrativo.cdsFinanciadorNOME.AsString) then
+  if not dmPrincipal.FuncoesAdm.fpuValidarNomeFinanciador(dmFinanceiro.cdsFinanciadorID.AsInteger,
+    dmFinanceiro.cdsFinanciadorNOME.AsString) then
     raise TControlException.Create('O nome informado já foi cadastrado. Por favor selecione outro.', EditNome);
 
 end;

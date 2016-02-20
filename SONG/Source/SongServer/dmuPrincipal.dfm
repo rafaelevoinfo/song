@@ -35,7 +35,6 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64
@@ -45,11 +44,7 @@ object dmPrincipal: TdmPrincipal
     Top = 64
   end
   object FDManager1: TFDManager
-    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
-    FetchOptions.Mode = fmAll
-    FormatOptions.AssignedValues = [fvMapRules, fvDefaultParamDataType, fvDataSnapCompatibility]
-    FormatOptions.OwnMapRules = True
-    FormatOptions.MapRules = <>
+    FormatOptions.AssignedValues = [fvDefaultParamDataType, fvDataSnapCompatibility]
     FormatOptions.DefaultParamDataType = ftInteger
     FormatOptions.DataSnapCompatibility = True
     Active = True
@@ -118,7 +113,6 @@ object dmPrincipal: TdmPrincipal
     end
   end
   object ApplicationEvents1: TApplicationEvents
-    OnException = ApplicationEvents1Exception
     Left = 680
     Top = 72
   end

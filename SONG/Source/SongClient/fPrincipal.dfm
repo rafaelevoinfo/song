@@ -40,12 +40,12 @@ inherited frmPrincipal: TfrmPrincipal
       object Bancos1: TMenuItem
         Action = Ac_Banco
       end
-    end
-    object miGestao: TMenuItem
-      Caption = 'Gest'#227'o'
       object Financiadores2: TMenuItem
         Action = Ac_Financiador
       end
+    end
+    object miGestao: TMenuItem
+      Caption = 'Gest'#227'o'
       object Organizaes1: TMenuItem
         Action = Ac_Organizacao
       end

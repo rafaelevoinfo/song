@@ -10,7 +10,7 @@ uses
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
-  uControleAcesso, Winapi.Windows, Winapi.Messages;
+  uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -30,7 +30,7 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
-    FFuncoesAdministrativo:TsmFuncoesAdministrativoClient;
+    FFuncoesAdministrativo: TsmFuncoesAdministrativoClient;
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
@@ -50,26 +50,41 @@ implementation
 { TdmPrincipal }
 
 procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
+var
+  vaException: Exception;
 begin
+  vaException := nil;
   if E is TControlException then
     begin
       TUtils.ppuFocar(TControlException(E).Control);
-    end;
+    end
+  else
+    begin
+      if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
+        vaException := Exception.Create('O registro atual não pode ser excluido pois está sendo utilizado em outra tabela.');
 
-  TMensagem.ppuShowException(E);
+    end;
+  if Assigned(vaException) then
+    begin
+      TMensagem.ppuShowException(vaException);
+      vaException.Free;
+    end
+  else
+    TMensagem.ppuShowException(E);
+
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
-  //desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
+  // desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 var
-  vaMsg:TMsg;
+  vaMsg: TMsg;
 begin
-  //volta o Beep do windows
+  // volta o Beep do windows
   SystemParametersInfo(SPI_SETBEEP, 1, nil, SPIF_SENDWININICHANGE);
   TInfoLogin.fpuGetInstance.Free;
   TModulos.fpuGetInstance.Free;
@@ -111,7 +126,7 @@ begin
         if vaFile.Count > 1 then
           vaPorta := StrToIntDef(vaFile.Strings[1], 3004);
       finally
-        vaFile.free;
+        vaFile.Free;
       end;
     end;
 

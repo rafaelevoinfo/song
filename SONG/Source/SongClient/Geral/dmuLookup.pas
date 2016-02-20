@@ -51,6 +51,7 @@ type
     cdslkConta_CorrenteAGENCIA: TStringField;
     cdslkConta_CorrenteCONTA: TStringField;
     cdslkConta_CorrenteCALC_BANCO_CONTA: TStringField;
+    repCurPadrao: TcxEditRepositoryCurrencyItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

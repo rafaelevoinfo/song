@@ -1,4 +1,5 @@
 inherited dmFinanceiro: TdmFinanceiro
+  OldCreateOrder = True
   Height = 345
   Width = 590
   object cdsBanco: TRFClientDataSet
@@ -27,7 +28,12 @@ inherited dmFinanceiro: TdmFinanceiro
     MasterFields = 'ID'
     MasterSource = dsBanco
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_BANCO'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqBanco_Conta_Corrente'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     Left = 400
@@ -61,5 +67,32 @@ inherited dmFinanceiro: TdmFinanceiro
     DataSet = cdsBanco
     Left = 272
     Top = 16
+  end
+  object cdsFinanciador: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqFinanciador'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 400
+    Top = 160
+    object cdsFinanciadorID: TIntegerField
+      DisplayLabel = 'Id'
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsFinanciadorNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsFinanciadorID_PESSOA: TIntegerField
+      DisplayLabel = 'Contato'
+      FieldName = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
 end

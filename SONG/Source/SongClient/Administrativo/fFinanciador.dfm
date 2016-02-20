@@ -1,8 +1,10 @@
 inherited frmFinanciador: TfrmFinanciador
+  ActiveControl = EditNome
   Caption = 'Financiadores'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -49,6 +51,10 @@ inherited frmFinanciador: TfrmFinanciador
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 4
@@ -88,6 +94,6 @@ inherited frmFinanciador: TfrmFinanciador
     end
   end
   inherited dsMaster: TDataSource
-    DataSet = dmAdministrativo.cdsFinanciador
+    DataSet = dmFinanceiro.cdsFinanciador
   end
 end

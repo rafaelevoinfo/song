@@ -41,6 +41,7 @@ inherited frmBanco: TfrmBanco
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
+              Caption = 'Contas'
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -65,6 +66,10 @@ inherited frmBanco: TfrmBanco
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 4
@@ -85,6 +90,10 @@ inherited frmBanco: TfrmBanco
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 854
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 5

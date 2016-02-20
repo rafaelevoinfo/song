@@ -312,33 +312,6 @@ inherited dmAdministrativo: TdmAdministrativo
     Left = 32
     Top = 192
   end
-  object cdsFinanciador: TRFClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspqFinanciador'
-    RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 280
-    Top = 184
-    object cdsFinanciadorID: TIntegerField
-      DisplayLabel = 'Id'
-      FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cdsFinanciadorNOME: TStringField
-      DisplayLabel = 'Nome'
-      FieldName = 'NOME'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 100
-    end
-    object cdsFinanciadorID_PESSOA: TIntegerField
-      DisplayLabel = 'Contato'
-      FieldName = 'ID_PESSOA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-  end
   object cdsProjeto: TRFClientDataSet
     Aggregates = <>
     Params = <>
@@ -509,20 +482,6 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsProjeto_FinanciadorVALOR_FINANCIADO: TBCDField
-      Alignment = taLeftJustify
-      DisplayLabel = 'Valor financiado'
-      FieldName = 'VALOR_FINANCIADO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
-    end
-    object cdsProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField
-      DisplayLabel = 'Data do Pagamento'
-      FieldName = 'DATA_PAGAMENTO'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsProjeto_FinanciadorOBSERVACAO: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
@@ -582,5 +541,51 @@ inherited dmAdministrativo: TdmAdministrativo
     DataSet = cdsProjeto
     Left = 88
     Top = 264
+  end
+  object cdsProjeto_Financiador_Pagto: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO_FINANCIADOR'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto_Financiador
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_PROJETO_FINANCIADOR'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqProjeto_Financiador_Pagto'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    RFApplyAutomatico = False
+    Left = 352
+    Top = 136
+    object cdsProjeto_Financiador_PagtoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjeto_Financiador_PagtoID_PROJETO_FINANCIADOR: TIntegerField
+      FieldName = 'ID_PROJETO_FINANCIADOR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsProjeto_Financiador_PagtoVALOR: TBCDField
+      DisplayLabel = 'Valor'
+      FieldName = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_Financiador_PagtoDATA: TDateField
+      DisplayLabel = 'Data do Pagamento'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object dsProjeto_Financiador: TDataSource
+    DataSet = cdsProjeto_Financiador
+    Left = 304
+    Top = 88
   end
 end

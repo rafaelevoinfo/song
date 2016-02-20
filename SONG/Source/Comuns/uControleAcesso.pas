@@ -58,8 +58,8 @@ type
     class function fpuGetInstance: TInfoLogin;
   end;
 
-  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admFinanciador);
-  TPermissaoFinanceiro = (finBanco);
+  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto);
+  TPermissaoFinanceiro = (finBanco,finFinanciador);
 
 implementation
 
@@ -93,13 +93,14 @@ begin
   plAddAdministrativo(admPessoa, 'Gerenciamento de Pessoas');
   plAddAdministrativo(admPerfil, 'Gerenciamento de Perfis');
   plAddAdministrativo(admOrganizacao, 'Organizações');
-  plAddAdministrativo(admFinanciador, 'Financiadores');
   plAddAdministrativo(admProjeto, 'Projetos');
   FItems.Add('Administrativo', vaPermissoes);
    //Financeiro
   vaPermissoes := TList<TPermissao>.Create;
   plAddFinanceiro(finBanco, 'Bancos');
+  plAddFinanceiro(finFinanciador, 'Financiadores');
   FItems.Add('Financeiro', vaPermissoes);
+
 
 end;
 

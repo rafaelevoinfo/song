@@ -59,11 +59,7 @@ type
     qOrganizacao_PessoaFUNCAO: TStringField;
     qOrganizacao_PessoaOBSERVACAO: TStringField;
     qPessoaCIDADE: TStringField;
-    qFinanciador: TRFQuery;
     qProjeto: TRFQuery;
-    qFinanciadorID: TIntegerField;
-    qFinanciadorNOME: TStringField;
-    qFinanciadorID_PESSOA: TIntegerField;
     qProjetoID: TIntegerField;
     qProjetoNOME: TStringField;
     qProjetoDATA_INICIO: TDateField;
@@ -76,8 +72,6 @@ type
     qProjeto_FinanciadorID: TIntegerField;
     qProjeto_FinanciadorID_PROJETO: TIntegerField;
     qProjeto_FinanciadorID_FINANCIADOR: TIntegerField;
-    qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
-    qProjeto_FinanciadorDATA_PAGAMENTO: TSQLTimeStampField;
     qProjeto_FinanciadorOBSERVACAO: TStringField;
     qProjeto_OrganizacaoID: TIntegerField;
     qProjeto_OrganizacaoID_PROJETO: TIntegerField;
@@ -95,6 +89,11 @@ type
     qProjeto_PessoaFUNCAO: TStringField;
     qProjetoSITUACAO: TSmallintField;
     qProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
+    qProjeto_Financiador_Pagto: TRFQuery;
+    qProjeto_Financiador_PagtoID: TIntegerField;
+    qProjeto_Financiador_PagtoID_PROJETO_FINANCIADOR: TIntegerField;
+    qProjeto_Financiador_PagtoVALOR: TBCDField;
+    qProjeto_Financiador_PagtoDATA: TDateField;
   private
     { Private declarations }
   protected

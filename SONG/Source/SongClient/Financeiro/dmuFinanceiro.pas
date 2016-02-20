@@ -17,6 +17,10 @@ type
     cdsBanco_Conta_CorrenteAGENCIA: TStringField;
     cdsBanco_Conta_CorrenteCONTA: TStringField;
     dsBanco: TDataSource;
+    cdsFinanciador: TRFClientDataSet;
+    cdsFinanciadorID: TIntegerField;
+    cdsFinanciadorNOME: TStringField;
+    cdsFinanciadorID_PESSOA: TIntegerField;
   private
     { Private declarations }
   public
