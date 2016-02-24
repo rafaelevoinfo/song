@@ -52,6 +52,7 @@ type
     cdslkConta_CorrenteCONTA: TStringField;
     cdslkConta_CorrenteCALC_BANCO_CONTA: TStringField;
     repCurPadrao: TcxEditRepositoryCurrencyItem;
+    repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -65,15 +66,16 @@ var
 implementation
 
 
-
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
+
 
 procedure TdmLookup.cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  cdslkConta_CorrenteCALC_BANCO_CONTA.AsString := cdslkConta_CorrenteNOME.AsString+' - '+cdslkConta_CorrenteAGENCIA.AsString+'/'+cdslkConta_CorrenteCONTA.AsString;
+  cdslkConta_CorrenteCALC_BANCO_CONTA.AsString := cdslkConta_CorrenteNOME.AsString + ' - ' + cdslkConta_CorrenteAGENCIA.AsString + '/' +
+    cdslkConta_CorrenteCONTA.AsString;
 end;
 
 end.

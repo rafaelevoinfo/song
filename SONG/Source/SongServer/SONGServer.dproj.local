@@ -33,8 +33,8 @@
     <Transaction>2016/02/05 23:00:50.000.263,C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.pas=C:\Users\rafae\Repositorios\SONG\Source\SongServer\ServerModules\smuFuncoesAdministrativo.pas</Transaction>
     <Transaction>2016/02/05 23:00:50.000.267,C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.dfm=C:\Users\rafae\Repositorios\SONG\Source\SongServer\ServerModules\smuFuncoesAdministrativo.dfm</Transaction>
     <Transaction>2016/02/05 23:20:35.000.843,=C:\Users\rafae\Repositorios\SONG\Source\Comuns\uUtils.pas</Transaction>
-    <Transaction>2016/02/18 20:18:46.662,=C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.pas</Transaction>
-    <Transaction>2016/02/18 20:19:08.191,C:\Users\rafae\Repositorios\SONG\Source\SongServer\ServerModules\smuFinanceiro.dfm=C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.dfm</Transaction>
-    <Transaction>2016/02/18 20:19:08.191,C:\Users\rafae\Repositorios\SONG\Source\SongServer\ServerModules\smuFinanceiro.pas=C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.pas</Transaction>
+    <Transaction>2016/02/18 20:18:46.000.662,=C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.pas</Transaction>
+    <Transaction>2016/02/18 20:19:08.000.191,C:\Users\rafae\Repositorios\SONG\Source\SongServer\ServerModules\smuFinanceiro.dfm=C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.dfm</Transaction>
+    <Transaction>2016/02/18 20:19:08.000.191,C:\Users\rafae\Repositorios\SONG\Source\SongServer\ServerModules\smuFinanceiro.pas=C:\Users\rafae\Repositorios\SONG\Source\SongServer\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

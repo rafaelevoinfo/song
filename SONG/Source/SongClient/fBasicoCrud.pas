@@ -308,8 +308,7 @@ end;
 
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
 begin
-  Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit, dsInsert]) or
-    (TClientDataSet(dsMaster.DataSet).ChangeCount > 0));
+  Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit,dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0));
 end;
 
 procedure TfrmBasicoCrud.pprPreencherCamposPadroes(ipDataSet: TDataSet);

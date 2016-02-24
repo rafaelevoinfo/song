@@ -135,12 +135,17 @@ type
     EditDataPagamento: TcxDateEdit;
     Label19: TLabel;
     EditValorPagamento: TcxCurrencyEdit;
+    ColumnDownloadProjetoDocumento: TcxGridDBColumn;
+    Ac_Download: TAction;
+    SaveDialogDocumento: TSaveDialog;
     procedure FormCreate(Sender: TObject);
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
     procedure Ac_Excluir_PagamentoExecute(Sender: TObject);
     procedure Ac_Salvar_PagamentoExecute(Sender: TObject);
+    procedure Ac_DownloadExecute(Sender: TObject);
+    procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -154,11 +159,12 @@ type
     procedure pprDefinirTabDetailCadastro; override;
     procedure pprEfetuarPesquisa; override;
     procedure ppuIncluirDetail; override;
-    procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
 
     procedure pprExecutarSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     procedure pprEfetuarCancelarDetail; override;
+  public
+    procedure ppuBaixarArquivo(ipId: Integer);
   public const
     coPesqPorSituacao = 4;
 
@@ -180,11 +186,23 @@ begin
       if not TFile.Exists(FileDialog.FileName) then
         raise Exception.Create('Arquivo não encontrado.');
 
+      if not(dmAdministrativo.cdsProjeto_Documento.State in [dsEdit, dsInsert]) then
+        dmAdministrativo.cdsProjeto_Documento.Edit;
+
       EditCaminhoDocumento.Text := FileDialog.FileName;
       dmAdministrativo.cdsProjeto_DocumentoDOCUMENTO.LoadFromFile(FileDialog.FileName);
+      dmAdministrativo.cdsProjeto_DocumentoNOME_ORIGINAL.AsString := TPath.GetFileName(FileDialog.FileName);
+      dmAdministrativo.cdsProjeto_DocumentoDATA_UPLOAD.AsDateTime := StrToDateTime(dmPrincipal.FuncoesGeral.fpuDataHoraAtual);
     end
   else
     EditCaminhoDocumento.Text := '';
+end;
+
+procedure TfrmProjeto.Ac_DownloadExecute(Sender: TObject);
+begin
+  inherited;
+  ppuBaixarArquivo(dmAdministrativo.cdsProjeto_DocumentoID.AsInteger);
+
 end;
 
 procedure TfrmProjeto.Ac_Excluir_PagamentoExecute(Sender: TObject);
@@ -330,16 +348,6 @@ begin
     dmAdministrativo.cdsProjeto_Financiador_Pagto.ApplyUpdates(0);
 end;
 
-procedure TfrmProjeto.pprPreencherCamposPadroes(ipDataSet: TDataSet);
-begin
-  inherited;
-  if pcDetails.ActivePage = tabCadastroDetailDocumento then
-    begin
-      if (dmAdministrativo.cdsProjeto_Documento.State = dsInsert) or (not VarIsNull(dmAdministrativo.cdsProjeto_DocumentoDOCUMENTO.NewValue)) then
-        dmAdministrativo.cdsProjeto_DocumentoDATA_UPLOAD.AsDateTime := StrToDateTime(dmPrincipal.FuncoesGeral.fpuDataHoraAtual);
-    end;
-end;
-
 procedure TfrmProjeto.pprValidarPesquisa;
 begin
   inherited;
@@ -347,10 +355,29 @@ begin
     raise TControlException.Create('Informe a situação a ser pesquisada.', cbSituacaoPesquisa);
 end;
 
+procedure TfrmProjeto.ppuBaixarArquivo(ipId: Integer);
+begin
+  if dmAdministrativo.cdsProjeto_Documento.Locate(TBancoDados.coId, ipId, []) then
+    begin
+      if not dmAdministrativo.cdsProjeto_DocumentoDOCUMENTO.IsNull then
+        begin
+          SaveDialogDocumento.FileName := dmAdministrativo.cdsProjeto_DocumentoNOME_ORIGINAL.AsString;
+          if SaveDialogDocumento.Execute then
+            begin
+              dmAdministrativo.cdsProjeto_DocumentoDOCUMENTO.SaveToFile(SaveDialogDocumento.FileName);
+            end;
+        end
+      else
+        raise Exception.Create('Nenhum documento foi carregado para poder ser baixado.');
+    end
+  else
+    raise Exception.Create('Registro não encontrado.');
+end;
+
 procedure TfrmProjeto.ppuIncluirDetail;
 begin
   inherited;
-  if pcDetails.ActivePage = tabCadastroDetailDocumento then
+  if pcPrincipal.ActivePage = tabCadastroDetailDocumento then
     EditCaminhoDocumento.Text := ''
   else if pcDetails.ActivePage = tabCadastroDetailFinanciador then
     ppvLimparEditsPagamento;
@@ -360,6 +387,14 @@ procedure TfrmProjeto.ppvLimparEditsPagamento;
 begin
   EditValorPagamento.Clear;
   EditDataPagamento.Clear;
+end;
+
+procedure TfrmProjeto.viewRegistrosSTATUSPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if dmAdministrativo.cdsProjeto.State in [dsEdit,dsInsert] then
+    dmAdministrativo.cdsProjeto.Post;
 end;
 
 end.

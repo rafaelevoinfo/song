@@ -2,53 +2,62 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
-  ClientWidth = 862
   OnCreate = FormCreate
-  ExplicitWidth = 878
+  ExplicitTop = -2
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   object pcPrincipal: TcxPageControl
     Left = 0
     Top = 0
-    Width = 862
+    Width = 984
     Height = 476
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
+    ExplicitWidth = 862
     ClientRectBottom = 472
     ClientRectLeft = 4
-    ClientRectRight = 858
+    ClientRectRight = 980
     ClientRectTop = 24
     object tabPesquisa: TcxTabSheet
       Caption = 'tabPesquisa'
       ImageIndex = 0
+      ExplicitWidth = 854
       object pnPesquisa: TPanel
         Left = 0
         Top = 0
-        Width = 854
+        Width = 976
         Height = 44
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 854
         object pnEditsPesquisa: TPanel
-          Left = 295
+          Left = 420
           Top = 1
-          Width = 558
+          Width = 555
           Height = 42
           Align = alRight
+          AutoSize = True
           BevelOuter = bvNone
+          Color = clMedGray
+          DoubleBuffered = True
+          Padding.Left = 2
+          ParentBackground = False
+          ParentDoubleBuffered = False
           TabOrder = 1
+          ExplicitLeft = 298
           object Label1: TLabel
-            Left = 139
+            Left = 140
             Top = 4
             Width = 69
             Height = 13
             Caption = 'Pesquisar por:'
           end
           object pnData: TPanel
-            Left = 320
+            Left = 319
             Top = 0
             Width = 129
             Height = 41
@@ -84,7 +93,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             end
           end
           object EditPesquisa: TcxButtonEdit
-            Left = 272
+            Left = 271
             Top = 20
             Properties.Buttons = <
               item
@@ -101,7 +110,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Width = 177
           end
           object cbPesquisarPor: TcxImageComboBox
-            Left = 139
+            Left = 138
             Top = 20
             EditValue = 1
             Properties.ImmediatePost = True
@@ -121,7 +130,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Width = 131
           end
           object btnPesquisar: TButton
-            Left = 456
+            Left = 455
             Top = 3
             Width = 100
             Height = 36
@@ -130,7 +139,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             TabOrder = 3
           end
           object rgStatus: TcxRadioGroup
-            Left = 3
+            Left = 2
             Top = 1
             Caption = 'Status'
             Properties.Columns = 2
@@ -170,14 +179,15 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       object pnGrid: TPanel
         Left = 0
         Top = 44
-        Width = 854
+        Width = 976
         Height = 404
         Align = alClient
         TabOrder = 1
+        ExplicitWidth = 854
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
-          Width = 852
+          Width = 974
           Height = 402
           Align = alClient
           Images = dmPrincipal.imgIcons_16
@@ -186,6 +196,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
+          ExplicitWidth = 852
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -253,6 +264,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

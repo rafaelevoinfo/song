@@ -61,6 +61,10 @@ type
     EditTelefone: TcxDBMaskEdit;
     Label12: TLabel;
     EditBairro: TcxDBTextEdit;
+    Label13: TLabel;
+    cbTipo: TcxDBImageComboBox;
+    viewRegistrosCIDADE: TcxGridDBColumn;
+    viewRegistrosTIPO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;

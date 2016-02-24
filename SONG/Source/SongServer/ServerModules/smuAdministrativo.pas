@@ -94,6 +94,8 @@ type
     qProjeto_Financiador_PagtoID_PROJETO_FINANCIADOR: TIntegerField;
     qProjeto_Financiador_PagtoVALOR: TBCDField;
     qProjeto_Financiador_PagtoDATA: TDateField;
+    qProjeto_DocumentoNOME_ORIGINAL: TStringField;
+    qPessoaTIPO: TSmallintField;
   private
     { Private declarations }
   protected

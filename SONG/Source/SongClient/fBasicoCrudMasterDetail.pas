@@ -50,6 +50,7 @@ type
     procedure viewRegistrosDetailDblClick(Sender: TObject);
     procedure Ac_Salvar_Incluir_DetailExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Ac_Incluir_DetailUpdate(Sender: TObject);
   private
 
   protected
@@ -57,6 +58,7 @@ type
     procedure pprExecutarSalvarDetail; virtual;
     procedure pprAfterSalvarDetail; virtual;
     function fprHabilitarSalvarDetail(): Boolean; virtual;
+    function fprHabilitarIncluirDetail:Boolean;virtual;
     procedure pprBeforeIncluirDetail; virtual;
     procedure pprBeforeAlterarDetail; virtual;
     procedure pprDefinirTabDetailCadastro; virtual;
@@ -112,6 +114,12 @@ begin
   ppuIncluirDetail;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.Ac_Incluir_DetailUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarIncluirDetail;
+end;
+
 procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailExecute(Sender: TObject);
 begin
   inherited;
@@ -140,10 +148,14 @@ begin
   pcDetails.ActivePage := tabDetail;
 end;
 
+function TfrmBasicoCrudMasterDetail.fprHabilitarIncluirDetail: Boolean;
+begin
+  Result := dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) and dsDetail.DataSet.Active;
+end;
+
 function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail(): Boolean;
 begin
-  Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or
-    (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
+  Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit,dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
@@ -238,6 +250,8 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.pprBeforeIncluirDetail;
 begin
+  if not fprHabilitarIncluirDetail then
+    raise Exception.Create('Não é possível incluir um registro filho sem um vínculo a um registro pai.');
   pprValidarPermissao(atIncluir, Permissao);
 end;
 

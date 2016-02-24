@@ -2,8 +2,8 @@ object frmBasico: TfrmBasico
   Left = 0
   Top = 0
   Caption = 'frmBasico'
-  ClientHeight = 201
-  ClientWidth = 447
+  ClientHeight = 681
+  ClientWidth = 984
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET

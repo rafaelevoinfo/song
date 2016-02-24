@@ -18,7 +18,9 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.CIDADE,'
       '       PESSOA.LOGIN,'
       '       PESSOA.SENHA,'
-      '       PESSOA.ATIVO'
+      '       PESSOA.ATIVO,'
+      '       PESSOA.TIPO'
+      ' '
       'from PESSOA'
       '&WHERE')
     Left = 40
@@ -105,6 +107,11 @@ inherited smAdministrativo: TsmAdministrativo
     object qPessoaCIDADE: TStringField
       FieldName = 'CIDADE'
       Origin = 'CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -517,7 +524,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO_DOCUMENTO.ID_PROJETO,'
       '       PROJETO_DOCUMENTO.NOME,'
       '       PROJETO_DOCUMENTO.DATA_UPLOAD,'
-      '       PROJETO_DOCUMENTO.DOCUMENTO'
+      '       PROJETO_DOCUMENTO.DOCUMENTO,'
+      '       PROJETO_DOCUMENTO.NOME_ORIGINAL'
       'from PROJETO_DOCUMENTO  '
       'where PROJETO_DOCUMENTO.ID_PROJETO = :ID_PROJETO')
     Left = 232
@@ -525,6 +533,7 @@ inherited smAdministrativo: TsmAdministrativo
     ParamData = <
       item
         Name = 'ID_PROJETO'
+        DataType = ftInteger
         ParamType = ptInput
       end>
     object qProjeto_DocumentoID: TIntegerField
@@ -557,6 +566,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DOCUMENTO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qProjeto_DocumentoNOME_ORIGINAL: TStringField
+      FieldName = 'NOME_ORIGINAL'
+      Origin = 'NOME_ORIGINAL'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
     end
   end
   object qProjeto_Pessoa: TRFQuery
@@ -598,7 +613,7 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'FUNCAO'
       ProviderFlags = [pfInUpdate]
       Required = True
-      Size = 150
+      Size = 50
     end
   end
   object qProjeto_Financiador_Pagto: TRFQuery

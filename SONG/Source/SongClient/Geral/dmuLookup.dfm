@@ -54,6 +54,7 @@ inherited dmLookup: TdmLookup
         end>
     end
     object repIcbSituacaoProjeto: TcxEditRepositoryImageComboBoxItem
+      Properties.ImmediatePost = True
       Properties.Items = <
         item
           Description = 'Em elabora'#231#227'o'
@@ -120,6 +121,28 @@ inherited dmLookup: TdmLookup
     object repCurPadrao: TcxEditRepositoryCurrencyItem
       Properties.ClearKey = 46
       Properties.UseThousandSeparator = True
+    end
+    object repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Funcion'#225'rio/Membro da diretoria'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Estagi'#225'rio'
+          Value = 1
+        end
+        item
+          Description = 'Volunt'#225'rio'
+          Value = 2
+        end
+        item
+          Description = 'Outro'
+          Value = 3
+        end>
     end
   end
   object cdslkPerfil: TClientDataSet

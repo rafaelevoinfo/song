@@ -4,7 +4,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailFinanciador
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -28,10 +28,6 @@ inherited frmProjeto: TfrmProjeto
                 Description = 'Situa'#231#227'o'
                 Value = 4
               end>
-          end
-          inherited rgStatus: TcxRadioGroup
-            Left = 2
-            ExplicitLeft = 2
           end
           object cbSituacaoPesquisa: TcxImageComboBox
             Left = 272
@@ -81,9 +77,10 @@ inherited frmProjeto: TfrmProjeto
             end
             object viewRegistrosSTATUS: TcxGridDBColumn [5]
               DataBinding.FieldName = 'SITUACAO'
+              PropertiesClassName = 'TcxImageComboBoxProperties'
+              Properties.Items = <>
+              Properties.OnEditValueChanged = viewRegistrosSTATUSPropertiesEditValueChanged
               RepositoryItem = dmLookup.repIcbSituacaoProjeto
-              Options.Editing = False
-              Options.ShowEditButtons = isebNever
               Options.SortByDisplayText = isbtOn
               Width = 156
             end
@@ -197,6 +194,7 @@ inherited frmProjeto: TfrmProjeto
                     DataBinding.FieldName = 'ID_ORGANIZACAO'
                     RepositoryItem = dmLookup.repLcbOrganizacao
                     Options.Editing = False
+                    Options.ShowEditButtons = isebNever
                     Width = 335
                   end
                   object ColumnAlterarDetailOrganizacao: TcxGridDBColumn
@@ -324,6 +322,7 @@ inherited frmProjeto: TfrmProjeto
                       DataBinding.FieldName = 'ID_FINANCIADOR'
                       RepositoryItem = dmLookup.repLcbFinanciador
                       Options.Editing = False
+                      Options.ShowEditButtons = isebNever
                       Width = 263
                     end
                     object ColumnAlterarDetailFinanciador: TcxGridDBColumn
@@ -500,6 +499,26 @@ inherited frmProjeto: TfrmProjeto
                   object viewProjetoDocumentoDATA_UPLOAD: TcxGridDBColumn
                     DataBinding.FieldName = 'DATA_UPLOAD'
                     Options.Editing = False
+                    Options.ShowEditButtons = isebNever
+                  end
+                  object ColumnDownloadProjetoDocumento: TcxGridDBColumn
+                    Caption = 'Baixar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Download
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
                   end
                   object ColumnAlterarDetailDocumento: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -922,8 +941,6 @@ inherited frmProjeto: TfrmProjeto
           LockedStateImageOptions.Effect = lsieDark
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
-          ExplicitTop = 57
-          ExplicitHeight = 127
           object viewPagamentosCadastro: TcxGridDBTableView
             OnDblClick = viewRegistrosDetailDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -1086,6 +1103,12 @@ inherited frmProjeto: TfrmProjeto
       ImageIndex = 4
       OnExecute = Ac_Salvar_PagamentoExecute
     end
+    object Ac_Download: TAction
+      Category = 'Detail'
+      Caption = 'Baixar'
+      ImageIndex = 8
+      OnExecute = Ac_DownloadExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmAdministrativo.cdsProjeto
@@ -1118,5 +1141,9 @@ inherited frmProjeto: TfrmProjeto
     DataSet = dmAdministrativo.cdsProjeto_Financiador_Pagto
     Left = 552
     Top = 144
+  end
+  object SaveDialogDocumento: TSaveDialog
+    Left = 424
+    Top = 240
   end
 end

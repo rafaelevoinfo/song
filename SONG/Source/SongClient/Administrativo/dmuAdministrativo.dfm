@@ -167,11 +167,19 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
     end
     object cdsPessoaATIVO: TSmallintField
+      DisplayLabel = 'Ativo'
       FieldName = 'ATIVO'
       ProviderFlags = [pfInUpdate]
     end
     object cdsPessoaCIDADE: TStringField
+      DisplayLabel = 'Cidade'
       FieldName = 'CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPessoaTIPO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Tipo de V'#237'nculo'
+      FieldName = 'TIPO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -408,7 +416,7 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'FUNCAO'
       ProviderFlags = [pfInUpdate]
       Required = True
-      Size = 150
+      Size = 50
     end
   end
   object cdsProjeto_Organizacao: TRFClientDataSet
@@ -535,6 +543,12 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DOCUMENTO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsProjeto_DocumentoNOME_ORIGINAL: TStringField
+      DisplayLabel = 'Nome do Arquivo'
+      FieldName = 'NOME_ORIGINAL'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
     end
   end
   object dsProjeto: TDataSource

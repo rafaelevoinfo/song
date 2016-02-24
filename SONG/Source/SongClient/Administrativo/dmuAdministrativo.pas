@@ -95,6 +95,8 @@ type
     cdsProjeto_Financiador_PagtoVALOR: TBCDField;
     cdsProjeto_Financiador_PagtoDATA: TDateField;
     dsProjeto_Financiador: TDataSource;
+    cdsProjeto_DocumentoNOME_ORIGINAL: TStringField;
+    cdsPessoaTIPO: TSmallintField;
   private
     { Private declarations }
   public
