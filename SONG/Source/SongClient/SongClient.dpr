@@ -26,7 +26,8 @@ uses
   fProjeto in 'Administrativo\fProjeto.pas' {frmProjeto},
   fFinanciador in 'Administrativo\fFinanciador.pas' {frmFinanciador},
   dmuFinanceiro in 'Financeiro\dmuFinanceiro.pas' {dmFinanceiro: TDataModule},
-  fBanco in 'Financeiro\fBanco.pas' {frmBanco};
+  fBanco in 'Financeiro\fBanco.pas' {frmBanco},
+  fAtividade in 'Administrativo\fAtividade.pas' {frmAtividade};
 
 {$R *.res}
 

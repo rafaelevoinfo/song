@@ -237,7 +237,7 @@ begin
 
   ppvLimparEditsPagamento;
 
-  TUtils.ppuFocar(EditValorPagamento);
+  TUtils.fpuFocar(EditValorPagamento);
 end;
 
 procedure TfrmProjeto.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
@@ -247,7 +247,7 @@ begin
   if cbPesquisarPor.EditValue <> coPesqPorSituacao then
     inherited
   else
-    TUtils.ppuFocar(cbSituacao);
+    TUtils.fpuFocar(cbSituacao);
 
 end;
 

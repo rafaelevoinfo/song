@@ -97,6 +97,44 @@ type
     dsProjeto_Financiador: TDataSource;
     cdsProjeto_DocumentoNOME_ORIGINAL: TStringField;
     cdsPessoaTIPO: TSmallintField;
+    cdsAtividade: TRFClientDataSet;
+    cdsAtividade_Projeto: TRFClientDataSet;
+    cdsAtividade_Pessoa: TRFClientDataSet;
+    cdsAtividade_Arquivo: TRFClientDataSet;
+    cdsAtividade_Vinculo: TRFClientDataSet;
+    cdsAtividade_Comentario: TRFClientDataSet;
+    cdsAtividadeID: TIntegerField;
+    cdsAtividadeNOME: TStringField;
+    cdsAtividadeID_SOLICITANTE: TIntegerField;
+    cdsAtividadeID_RESPONSAVEL: TIntegerField;
+    cdsAtividadeSTATUS: TSmallintField;
+    cdsAtividadeDATA_INICIAL: TSQLTimeStampField;
+    cdsAtividadeDATA_FINAL: TSQLTimeStampField;
+    cdsAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField;
+    cdsAtividade_ProjetoID: TIntegerField;
+    cdsAtividade_ProjetoID_ATIVIDADE: TIntegerField;
+    cdsAtividade_ProjetoID_PROJETO: TIntegerField;
+    cdsAtividade_ProjetoOBSERVACAO: TStringField;
+    cdsAtividade_PessoaID: TIntegerField;
+    cdsAtividade_PessoaID_ATIVIDADE: TIntegerField;
+    cdsAtividade_PessoaID_PESSOA: TIntegerField;
+    cdsAtividade_PessoaFUNCAO: TStringField;
+    cdsAtividade_ArquivoID: TIntegerField;
+    cdsAtividade_ArquivoID_ATIVIDADE: TIntegerField;
+    cdsAtividade_ArquivoNOME: TStringField;
+    cdsAtividade_ArquivoNOME_ORIGINAL: TStringField;
+    cdsAtividade_ArquivoDESCRICAO: TStringField;
+    cdsAtividade_ArquivoARQUIVO: TBlobField;
+    cdsAtividade_VinculoID: TIntegerField;
+    cdsAtividade_VinculoID_ATIVIDADE: TIntegerField;
+    cdsAtividade_VinculoTIPO_VINCULO: TSmallintField;
+    cdsAtividade_VinculoOBSERVACAO: TStringField;
+    cdsAtividade_ComentarioID: TIntegerField;
+    cdsAtividade_ComentarioID_ATIVIDADE: TIntegerField;
+    cdsAtividade_ComentarioID_PESSOA: TIntegerField;
+    cdsAtividade_ComentarioCOMENTARIO: TStringField;
+    cdsAtividade_ComentarioDATA_HORA: TSQLTimeStampField;
+    dsAtividade: TDataSource;
   private
     { Private declarations }
   public

@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico, uQuery;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico, uQuery, uControleAcesso;
 
 type
   TsmFuncoesAdministrativo = class(TsmBasico)
@@ -15,7 +15,8 @@ type
 
     function fpuValidarNomeFinanciador(ipIdFinanciador: integer; ipNome: String): Boolean;
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
-    function fpuValidarNomeProjeto(ipIdProjeto:Integer; ipNome:String):Boolean;
+    function fpuValidarNomeProjeto(ipIdProjeto: integer; ipNome: String): Boolean;
+    function fpuInfoUsuario(ipLogin: string): TInfoLogin;
 
   end;
 
@@ -26,6 +27,30 @@ implementation
 
 {$R *.dfm}
 { TsmFuncoesAdministrativo }
+
+function TsmFuncoesAdministrativo.fpuInfoUsuario(ipLogin: string): TInfoLogin;
+var
+  vaInfoLogin: TInfoLogin;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+
+    begin
+      ipDataSet.SQL.Text := 'select PESSOA.ID, ' +
+        '                           PESSOA.NOME '+
+        ' from PESSOA' +
+        ' where PESSOA.LOGIN = :LOGIN';
+
+      ipDataSet.ParamByName('LOGIN').AsString := ipLogin;
+      ipDataSet.Open();
+
+      vaInfoLogin := TInfoLogin.fpuGetInstance;
+      vaInfoLogin.IdUsuario := ipDataSet.FieldByName('ID').AsInteger;
+      vaInfoLogin.NomeUsuario := ipDataSet.FieldByName('NOME').AsString;
+    end);
+
+  Result := vaInfoLogin;
+end;
 
 function TsmFuncoesAdministrativo.fpuPermissoesUsuario(ipLogin: String): OleVariant;
 var
@@ -67,10 +92,10 @@ begin
   Result := fpvValidarCampoUnico('financiador', 'nome', ipIdFinanciador, ipNome);
 end;
 
-function TsmFuncoesAdministrativo.fpuValidarNomeProjeto(ipIdProjeto: Integer;
-  ipNome: String): Boolean;
+function TsmFuncoesAdministrativo.fpuValidarNomeProjeto(ipIdProjeto: integer;
+ipNome: String): Boolean;
 begin
-  Result := fpvValidarCampoUnico('PROJETO','NOME',ipIdProjeto,ipNome);
+  Result := fpvValidarCampoUnico('PROJETO', 'NOME', ipIdProjeto, ipNome);
 end;
 
 function TsmFuncoesAdministrativo.fpvValidarCampoUnico(ipTabela,

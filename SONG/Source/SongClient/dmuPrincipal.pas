@@ -56,7 +56,7 @@ begin
   vaException := nil;
   if E is TControlException then
     begin
-      TUtils.ppuFocar(TControlException(E).Control);
+      TUtils.fpuFocar(TControlException(E).Control);
     end
   else
     begin

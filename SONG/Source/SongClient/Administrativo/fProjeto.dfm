@@ -4,7 +4,6 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -111,7 +110,11 @@ inherited frmProjeto: TfrmProjeto
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
               ExplicitHeight = 218
+              inherited pnBotoesDetail: TPanel
+                Width = 965
+              end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
                 Height = 193
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
@@ -143,7 +146,7 @@ inherited frmProjeto: TfrmProjeto
               object Panel1: TPanel
                 Left = 0
                 Top = 0
-                Width = 843
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -160,7 +163,7 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid1: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 843
+                Width = 965
                 Height = 193
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
@@ -247,7 +250,7 @@ inherited frmProjeto: TfrmProjeto
               object Panel2: TPanel
                 Left = 0
                 Top = 0
-                Width = 843
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -372,7 +375,7 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid4: TcxGrid
                 Left = 424
                 Top = 25
-                Width = 419
+                Width = 541
                 Height = 193
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
@@ -444,7 +447,7 @@ inherited frmProjeto: TfrmProjeto
               object Panel3: TPanel
                 Left = 0
                 Top = 0
-                Width = 843
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -461,7 +464,7 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 843
+                Width = 965
                 Height = 193
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
@@ -698,7 +701,11 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      inherited pnBotoesCadastroDetail: TPanel
+        Width = 976
+      end
       inherited pnEditsCadastroDetail: TPanel
+        Width = 976
         object Label9: TLabel
           Left = 5
           Top = 6
@@ -759,7 +766,7 @@ inherited frmProjeto: TfrmProjeto
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 854
+        Width = 976
         Height = 50
         Align = alTop
         TabOrder = 1
@@ -820,7 +827,7 @@ inherited frmProjeto: TfrmProjeto
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 854
+        Width = 976
         Height = 50
         Align = alTop
         TabOrder = 3
@@ -1021,7 +1028,7 @@ inherited frmProjeto: TfrmProjeto
       object Panel6: TPanel
         Left = 0
         Top = 0
-        Width = 854
+        Width = 976
         Height = 50
         Align = alTop
         TabOrder = 2

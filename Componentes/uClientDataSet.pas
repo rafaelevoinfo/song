@@ -12,6 +12,7 @@ type
     coTodos: string = 'TODOS';
     coID: string = 'ID';
     coNome: string = 'NOME';
+    coData:string = 'DATA';
     coActive: string = 'ACTIVE';
     coLogin:string = 'LOGIN';
     coAtivo:string = 'ATIVO';

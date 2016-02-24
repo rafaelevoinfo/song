@@ -1,4 +1,4 @@
-program SONGServer;
+program SongServer;
 
 uses
   Vcl.Forms,
@@ -15,7 +15,8 @@ uses
   smuLookup in 'ServerModules\smuLookup.pas' {smLookup: TDSServerModule},
   smuFuncoesAdministrativo in 'ServerModules\smuFuncoesAdministrativo.pas' {smFuncoesAdministrativo: TDSServerModule},
   uUtils in '..\Comuns\uUtils.pas',
-  smuFinanceiro in 'ServerModules\smuFinanceiro.pas' {smFinanceiro: TDSServerModule};
+  smuFinanceiro in 'ServerModules\smuFinanceiro.pas' {smFinanceiro: TDSServerModule},
+  uControleAcesso in '..\Comuns\uControleAcesso.pas';
 
 {$R *.res}
 

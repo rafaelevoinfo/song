@@ -37,17 +37,21 @@ type
   strict private
     class var FInstance: TInfoLogin;
   strict private
-
+    FIdUsuario: Integer;
     FPermissoes: TClientDataSet;
     FSenhaUsuario: string;
     FNomeUsuario: string;
     FAdministrador: Boolean;
+    procedure SetIdUsuario(const Value: Integer);
     procedure SetNomeUsuario(const Value: string);
     procedure SetSenhaUsuario(const Value: string);
 
     constructor Create;
     destructor Destroy; override;
+
+
   public
+    property IdUsuario:Integer read FIdUsuario write SetIdUsuario;
     property NomeUsuario: string read FNomeUsuario write SetNomeUsuario;
     property SenhaUsuario: string read FSenhaUsuario write SetSenhaUsuario;
     property Permissoes: TClientDataSet read FPermissoes;
@@ -58,7 +62,7 @@ type
     class function fpuGetInstance: TInfoLogin;
   end;
 
-  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto);
+  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco,finFinanciador);
 
 implementation
@@ -190,6 +194,11 @@ end;
 procedure TInfoLogin.ppuChecarAdministrador;
 begin
   FAdministrador := FPermissoes.Locate('TIPO', Ord(tpAdministrador), []);
+end;
+
+procedure TInfoLogin.SetIdUsuario(const Value: Integer);
+begin
+  FIdUsuario := Value;
 end;
 
 procedure TInfoLogin.SetNomeUsuario(const Value: string);

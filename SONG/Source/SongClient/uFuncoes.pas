@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 18/02/2016 00:20:08
+// 24/02/2016 00:20:43
 //
 
 unit uFuncoes;
 
 interface
 
-uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, Data.DBXJSONReflect;
+uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uControleAcesso, Data.DBXJSONReflect;
 
 type
   TsmAdministrativoClient = class(TDSAdminClient)
@@ -54,6 +54,7 @@ type
     FfpuValidarNomeFinanciadorCommand: TDBXCommand;
     FfpuValidarLoginCommand: TDBXCommand;
     FfpuValidarNomeProjetoCommand: TDBXCommand;
+    FfpuInfoUsuarioCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -63,6 +64,17 @@ type
     function fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
+    function fpuInfoUsuario(ipLogin: string): TInfoLogin;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFinanceiroClient = class(TDSAdminClient)
+  private
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -318,6 +330,32 @@ begin
   Result := FfpuValidarNomeProjetoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuInfoUsuario(ipLogin: string): TInfoLogin;
+begin
+  if FfpuInfoUsuarioCommand = nil then
+  begin
+    FfpuInfoUsuarioCommand := FDBXConnection.CreateCommand;
+    FfpuInfoUsuarioCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuInfoUsuarioCommand.Text := 'TsmFuncoesAdministrativo.fpuInfoUsuario';
+    FfpuInfoUsuarioCommand.Prepare;
+  end;
+  FfpuInfoUsuarioCommand.Parameters[0].Value.SetWideString(ipLogin);
+  FfpuInfoUsuarioCommand.ExecuteUpdate;
+  if not FfpuInfoUsuarioCommand.Parameters[1].Value.IsNull then
+  begin
+    FUnMarshal := TDBXClientCommand(FfpuInfoUsuarioCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TInfoLogin(FUnMarshal.UnMarshal(FfpuInfoUsuarioCommand.Parameters[1].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FfpuInfoUsuarioCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
 procedure TsmFuncoesAdministrativoClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -362,6 +400,51 @@ begin
   FfpuValidarNomeFinanciadorCommand.DisposeOf;
   FfpuValidarLoginCommand.DisposeOf;
   FfpuValidarNomeProjetoCommand.DisposeOf;
+  FfpuInfoUsuarioCommand.DisposeOf;
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+procedure TsmFinanceiroClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFinanceiro.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFinanceiroClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFinanceiroClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFinanceiroClient.Destroy;
+begin
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

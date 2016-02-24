@@ -23,8 +23,8 @@ inherited smAdministrativo: TsmAdministrativo
       ' '
       'from PESSOA'
       '&WHERE')
-    Left = 40
-    Top = 32
+    Left = 32
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -124,8 +124,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PERFIL.TIPO'
       'from PERFIL'
       '&WHERE')
-    Left = 40
-    Top = 96
+    Left = 32
+    Top = 80
     MacroData = <
       item
         Value = Null
@@ -168,8 +168,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PERFIL_PERMISSAO.EXCLUIR'
       'from PERFIL_PERMISSAO'
       'where PERFIL_PERMISSAO.ID_PERFIL = :ID_PERFIL')
-    Left = 40
-    Top = 160
+    Left = 32
+    Top = 144
     ParamData = <
       item
         Name = 'ID_PERFIL'
@@ -223,8 +223,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA_PERFIL.ID_PERFIL'
       'from PESSOA_PERFIL'
       'where PESSOA_PERFIL.ID_PESSOA = :ID_PESSOA')
-    Left = 48
-    Top = 232
+    Left = 32
+    Top = 208
     ParamData = <
       item
         Name = 'ID_PESSOA'
@@ -264,8 +264,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       ORGANIZACAO.TELEFONE'
       'from ORGANIZACAO  '
       '&WHERE')
-    Left = 128
-    Top = 40
+    Left = 120
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -334,7 +334,7 @@ inherited smAdministrativo: TsmAdministrativo
       'from ORGANIZACAO_PESSOA  '
       'Where ORGANIZACAO_PESSOA.ID_ORGANIZACAO = :ID_ORGANIZACAO')
     Left = 120
-    Top = 104
+    Top = 80
     ParamData = <
       item
         Name = 'ID_ORGANIZACAO'
@@ -386,8 +386,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO.ID_BANCO_CONTA_CORRENTE'
       'from PROJETO  '
       '&WHERE')
-    Left = 128
-    Top = 240
+    Left = 120
+    Top = 224
     MacroData = <
       item
         Value = Null
@@ -451,7 +451,7 @@ inherited smAdministrativo: TsmAdministrativo
       'from PROJETO_ORGANIZACAO  '
       'where PROJETO_ORGANIZACAO.ID_PROJETO = :ID_PROJETO')
     Left = 232
-    Top = 48
+    Top = 16
     ParamData = <
       item
         Name = 'ID_PROJETO'
@@ -486,7 +486,7 @@ inherited smAdministrativo: TsmAdministrativo
       'from PROJETO_FINANCIADOR  '
       'where PROJETO_FINANCIADOR.ID_PROJETO = :ID_PROJETO')
     Left = 232
-    Top = 112
+    Top = 80
     ParamData = <
       item
         Name = 'ID_PROJETO'
@@ -528,8 +528,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO_DOCUMENTO.NOME_ORIGINAL'
       'from PROJETO_DOCUMENTO  '
       'where PROJETO_DOCUMENTO.ID_PROJETO = :ID_PROJETO')
-    Left = 232
-    Top = 176
+    Left = 224
+    Top = 160
     ParamData = <
       item
         Name = 'ID_PROJETO'
@@ -583,8 +583,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO_PESSOA.FUNCAO'
       'from PROJETO_PESSOA  '
       'where PROJETO_PESSOA.ID_PROJETO = :ID_PROJETO')
-    Left = 232
-    Top = 240
+    Left = 224
+    Top = 224
     ParamData = <
       item
         Name = 'ID_PROJETO'
@@ -627,8 +627,8 @@ inherited smAdministrativo: TsmAdministrativo
       
         'where PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR = :ID_PRO' +
         'JETO_FINANCIADOR  ')
-    Left = 400
-    Top = 48
+    Left = 360
+    Top = 16
     ParamData = <
       item
         Name = 'ID_PROJETO_FINANCIADOR'
@@ -658,6 +658,312 @@ inherited smAdministrativo: TsmAdministrativo
     object qProjeto_Financiador_PagtoDATA: TDateField
       FieldName = 'DATA'
       Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qAtividade: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE.ID,'
+      '       ATIVIDADE.NOME,'
+      '       ATIVIDADE.ID_SOLICITANTE,'
+      '       ATIVIDADE.ID_RESPONSAVEL,'
+      '       ATIVIDADE.STATUS,'
+      '       ATIVIDADE.DATA_INICIAL,'
+      '       ATIVIDADE.DATA_FINAL,'
+      '       ATIVIDADE.NOTIFICAR_ENVOLVIDOS'
+      'from ATIVIDADE  '
+      
+        'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
+        ' ATIVIDADE.ID)'
+      '&WHERE')
+    Left = 360
+    Top = 80
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qAtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAtividadeNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qAtividadeID_SOLICITANTE: TIntegerField
+      FieldName = 'ID_SOLICITANTE'
+      Origin = 'ID_SOLICITANTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividadeID_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividadeSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividadeDATA_INICIAL: TSQLTimeStampField
+      FieldName = 'DATA_INICIAL'
+      Origin = 'DATA_INICIAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeDATA_FINAL: TSQLTimeStampField
+      FieldName = 'DATA_FINAL'
+      Origin = 'DATA_FINAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField
+      FieldName = 'NOTIFICAR_ENVOLVIDOS'
+      Origin = 'NOTIFICAR_ENVOLVIDOS'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object qAtividade_Pessoa: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE_PESSOA.ID,'
+      '       ATIVIDADE_PESSOA.ID_ATIVIDADE,'
+      '       ATIVIDADE_PESSOA.ID_PESSOA,'
+      '       ATIVIDADE_PESSOA.FUNCAO'
+      'from ATIVIDADE_PESSOA '
+      'where ATIVIDADE_PESSOA.ID_ATIVIDADE = :ID_ATIVIDADE')
+    Left = 360
+    Top = 144
+    ParamData = <
+      item
+        Name = 'ID_ATIVIDADE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qAtividade_PessoaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAtividade_PessoaID_ATIVIDADE: TIntegerField
+      FieldName = 'ID_ATIVIDADE'
+      Origin = 'ID_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_PessoaID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_PessoaFUNCAO: TStringField
+      FieldName = 'FUNCAO'
+      Origin = 'FUNCAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 50
+    end
+  end
+  object qAtividade_Projeto: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE_PROJETO.ID,'
+      '       ATIVIDADE_PROJETO.ID_ATIVIDADE,'
+      '       ATIVIDADE_PROJETO.ID_PROJETO,'
+      '       ATIVIDADE_PROJETO.OBSERVACAO'
+      'from ATIVIDADE_PROJETO  '
+      'where ATIVIDADE_PROJETO.ID_ATIVIDADE = :ID_ATIVIDADE')
+    Left = 360
+    Top = 208
+    ParamData = <
+      item
+        Name = 'ID_ATIVIDADE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qAtividade_ProjetoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAtividade_ProjetoID_ATIVIDADE: TIntegerField
+      FieldName = 'ID_ATIVIDADE'
+      Origin = 'ID_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_ProjetoID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_ProjetoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
+  object qAtividade_Arquivo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE_ARQUIVO.ID,'
+      '       ATIVIDADE_ARQUIVO.ID_ATIVIDADE,'
+      '       ATIVIDADE_ARQUIVO.NOME,'
+      '       ATIVIDADE_ARQUIVO.NOME_ORIGINAL,'
+      '       ATIVIDADE_ARQUIVO.ARQUIVO,'
+      '       ATIVIDADE_ARQUIVO.DESCRICAO'
+      'from ATIVIDADE_ARQUIVO'
+      'where ATIVIDADE_ARQUIVO.ID_ATIVIDADE = :ID_ATIVIDADE')
+    Left = 360
+    Top = 280
+    ParamData = <
+      item
+        Name = 'ID_ATIVIDADE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qAtividade_ArquivoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAtividade_ArquivoID_ATIVIDADE: TIntegerField
+      FieldName = 'ID_ATIVIDADE'
+      Origin = 'ID_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_ArquivoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qAtividade_ArquivoNOME_ORIGINAL: TStringField
+      FieldName = 'NOME_ORIGINAL'
+      Origin = 'NOME_ORIGINAL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qAtividade_ArquivoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object qAtividade_ArquivoARQUIVO: TBlobField
+      FieldName = 'ARQUIVO'
+      Origin = 'ARQUIVO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qAtividade_Vinculo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE_VINCULO.ID,'
+      '       ATIVIDADE_VINCULO.ID_ATIVIDADE,'
+      '       ATIVIDADE_VINCULO.TIPO_VINCULO,'
+      '       ATIVIDADE_VINCULO.OBSERVACAO'
+      'from ATIVIDADE_VINCULO'
+      'where ATIVIDADE_VINCULO.ID_ATIVIDADE = :ID_ATIVIDADE   ')
+    Left = 480
+    Top = 80
+    ParamData = <
+      item
+        Name = 'ID_ATIVIDADE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qAtividade_VinculoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAtividade_VinculoID_ATIVIDADE: TIntegerField
+      FieldName = 'ID_ATIVIDADE'
+      Origin = 'ID_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_VinculoTIPO_VINCULO: TSmallintField
+      FieldName = 'TIPO_VINCULO'
+      Origin = 'TIPO_VINCULO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_VinculoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
+  object qAtividade_Comentario: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE_COMENTARIO.ID,'
+      '       ATIVIDADE_COMENTARIO.ID_ATIVIDADE,'
+      '       ATIVIDADE_COMENTARIO.ID_PESSOA,'
+      '       ATIVIDADE_COMENTARIO.COMENTARIO,'
+      '       ATIVIDADE_COMENTARIO.DATA_HORA'
+      'from ATIVIDADE_COMENTARIO'
+      'where ATIVIDADE_COMENTARIO.ID_ATIVIDADE = :ID_ATIVIDADE   ')
+    Left = 480
+    Top = 152
+    ParamData = <
+      item
+        Name = 'ID_ATIVIDADE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qAtividade_ComentarioID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAtividade_ComentarioID_ATIVIDADE: TIntegerField
+      FieldName = 'ID_ATIVIDADE'
+      Origin = 'ID_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_ComentarioID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_ComentarioCOMENTARIO: TStringField
+      FieldName = 'COMENTARIO'
+      Origin = 'COMENTARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 500
+    end
+    object qAtividade_ComentarioDATA_HORA: TSQLTimeStampField
+      FieldName = 'DATA_HORA'
+      Origin = 'DATA_HORA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end

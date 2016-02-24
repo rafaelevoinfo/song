@@ -46,6 +46,9 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object miGestao: TMenuItem
       Caption = 'Gest'#227'o'
+      object Atividades1: TMenuItem
+        Action = Ac_Atividade
+      end
       object Organizaes1: TMenuItem
         Action = Ac_Organizacao
       end
@@ -95,6 +98,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Bancos'
       OnExecute = Ac_BancoExecute
+    end
+    object Ac_Atividade: TAction
+      Category = 'Administrativo'
+      Caption = 'Atividades'
+      OnExecute = Ac_AtividadeExecute
     end
   end
   object dxSkinController1: TdxSkinController

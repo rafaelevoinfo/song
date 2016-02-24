@@ -3,7 +3,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
-  ExplicitTop = -2
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -17,7 +16,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
-    ExplicitWidth = 862
     ClientRectBottom = 472
     ClientRectLeft = 4
     ClientRectRight = 980
@@ -25,7 +23,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabPesquisa: TcxTabSheet
       Caption = 'tabPesquisa'
       ImageIndex = 0
-      ExplicitWidth = 854
       object pnPesquisa: TPanel
         Left = 0
         Top = 0
@@ -33,7 +30,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 44
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 854
         object pnEditsPesquisa: TPanel
           Left = 420
           Top = 1
@@ -48,7 +44,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           ParentBackground = False
           ParentDoubleBuffered = False
           TabOrder = 1
-          ExplicitLeft = 298
           object Label1: TLabel
             Left = 140
             Top = 4
@@ -183,7 +178,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 404
         Align = alClient
         TabOrder = 1
-        ExplicitWidth = 854
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
@@ -196,7 +190,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
-          ExplicitWidth = 852
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -264,14 +257,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
-        Width = 854
+        Width = 976
         Height = 50
         Align = alTop
         TabOrder = 1
@@ -312,7 +301,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       object pnEditsCadastro: TPanel
         Left = 0
         Top = 50
-        Width = 854
+        Width = 976
         Height = 398
         Align = alClient
         TabOrder = 0

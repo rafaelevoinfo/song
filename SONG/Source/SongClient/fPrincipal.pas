@@ -9,7 +9,7 @@ uses
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
-  fBanco;
+  fBanco, fAtividade;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -33,6 +33,8 @@ type
     Ac_Banco: TAction;
     miFinanceiro: TMenuItem;
     Bancos1: TMenuItem;
+    Ac_Atividade: TAction;
+    Atividades1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -41,6 +43,7 @@ type
     procedure Ac_ProjetoExecute(Sender: TObject);
     procedure Ac_FinanciadorExecute(Sender: TObject);
     procedure Ac_BancoExecute(Sender: TObject);
+    procedure Ac_AtividadeExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -54,6 +57,12 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmPrincipal.Ac_AtividadeExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmAtividade>(pcPrincipal, TfrmAtividade, frmAtividade);
+end;
 
 procedure TfrmPrincipal.Ac_BancoExecute(Sender: TObject);
 begin

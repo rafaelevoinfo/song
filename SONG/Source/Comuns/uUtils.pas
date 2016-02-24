@@ -12,14 +12,14 @@ type
   TUtils = class
   public
     class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var opForm: T;
-      ipCriarSeNecessario: Boolean=true);
-    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True;
-      ipOtimizarLoop: Boolean = True); overload;
-    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True;
-      ipOtimizarLoop: Boolean = True); overload;
+      ipCriarSeNecessario: Boolean = true);
+    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
+      ipOtimizarLoop: Boolean = true); overload;
+    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = true;
+      ipOtimizarLoop: Boolean = true); overload;
     class function fpuCriptografarSha1(ipValor: String): String;
     class function fpuValidarEmail(ipEmail: String): Boolean;
-    class procedure ppuFocar(ipEdit: TWinControl);
+    class function fpuFocar(ipEdit: TWinControl): Boolean;
     class function fpuVersaoExecutavel(ipArquivo: String; ipVersaoAte: TVersaoInfo): string;
     class procedure ppuCopyStreamToByteStream(ipOrigem: TStream; var ipDestino: TBytesStream);
     class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String): String; overload;
@@ -29,6 +29,7 @@ type
       ipIgnorarDuplicados: Boolean): String; overload;
     class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String; ipQtde: Integer;
       ipIgnorarDuplicados: Boolean): String; overload;
+    class function fpuExtrairData(ipDateString: string; ipPosicao: Integer): TDateTime;
   end;
 
 implementation
@@ -69,8 +70,8 @@ begin
   end;
 end;
 
-class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = True;
-  ipOtimizarLoop: Boolean = True);
+class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
+  ipOtimizarLoop: Boolean = true);
 var
   vaRecNo: Integer;
 begin
@@ -78,12 +79,12 @@ begin
     function: Boolean
     begin
       ipProc;
-      Exit(True);
+      Exit(true);
     end, ipManterPosicao, ipOtimizarLoop);
 end;
 
-class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = True;
-ipOtimizarLoop: Boolean = True);
+class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = true;
+ipOtimizarLoop: Boolean = true);
 var
   vaRecNo: Integer;
 begin
@@ -245,13 +246,33 @@ begin
 
 end;
 
-class procedure TUtils.ppuFocar(ipEdit: TWinControl);
+class function TUtils.fpuExtrairData(ipDateString: string;
+ipPosicao: Integer): TDateTime;
+var
+  vaDatas: TArray<string>;
 begin
+  vaDatas := TRegex.Split(ipDateString, ';', [roIgnoreCase]);
+  if ipPosicao < length(vaDatas) then
+    begin
+      if not TryStrToDateTime(vaDatas[ipPosicao], Result) then
+        raise Exception.Create('Data inválida.');
+    end
+  else
+    raise Exception.Create('Posição inválida.');
+end;
+
+class function TUtils.fpuFocar(ipEdit: TWinControl): Boolean;
+begin
+  Result := false;
   try
     if ipEdit.CanFocus and ipEdit.Visible and ipEdit.Enabled then
-      ipEdit.SetFocus;
+      begin
+        ipEdit.SetFocus;
+        Result := true;
+      end;
   except
     // vamos ignorar
+    Result := false;
   end;
 end;
 

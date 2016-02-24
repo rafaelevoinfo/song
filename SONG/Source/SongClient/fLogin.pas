@@ -65,14 +65,16 @@ end;
 
 procedure TfrmLogin.ppuLogar(ipLogin, ipSenha: string);
 var
-  vaInfoLogin: TInfoLogin;
+  vaInfoLogin,vaInfoLoginServer: TInfoLogin;
 begin
   LoginEfetuado := False;
   ppvValidarCampos;
   try
     dmPrincipal.ppuConfigurarConexao(ipLogin, ipSenha);
-
+//  REVER ISSO AQUI
+    //vaInfoLoginServer := dmPrincipal.FuncoesAdm.fpuInfoUsuario(ipLogin);
     vaInfoLogin := TInfoLogin.fpuGetInstance;
+    vaInfoLogin.IdUsuario := 8;//vaInfoLoginServer.IdUsuario;
     vaInfoLogin.NomeUsuario := ipLogin;
     vaInfoLogin.SenhaUsuario := ipSenha;
     vaInfoLogin.Permissoes.Data := dmPrincipal.FuncoesAdm.fpuPermissoesUsuario(ipLogin);

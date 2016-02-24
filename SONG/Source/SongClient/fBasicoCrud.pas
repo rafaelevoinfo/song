@@ -186,8 +186,14 @@ begin
   if cbPesquisarPor.EditValue = Ord(tppId) then
     EditPesquisa.Properties.EditMask := '\d+';
 
+  pnData.Visible := cbPesquisarPor.EditValue = Ord(tppData);
+  EditPesquisa.Visible := not pnData.Visible;
   EditPesquisa.Enabled := cbPesquisarPor.EditValue <> Ord(tppTodos);
-  TUtils.ppuFocar(EditPesquisa);
+
+  if EditPesquisa.Visible then
+    TUtils.fpuFocar(EditPesquisa)
+  else if pnData.Visible then
+    TUtils.fpuFocar(EditDataInicial);
 end;
 
 procedure TfrmBasicoCrud.ColumnExcluirGetProperties(
@@ -221,7 +227,7 @@ begin
   if Key = Char(VK_RETURN) then
     begin
       ppuPesquisar;
-      TUtils.ppuFocar(EditPesquisa);
+      TUtils.fpuFocar(EditPesquisa);
       Key := #0;
     end;
 end;
@@ -282,7 +288,9 @@ begin
   else if (cbPesquisarPor.EditValue = Ord(tppId)) then
     ipCds.ppuAddParametro(TParametros.coID, EditPesquisa.Text)
   else if (cbPesquisarPor.EditValue = Ord(tppNome)) then
-    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text);
+    ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text)
+  else if (cbPesquisarPor.EditValue = Ord(tppData)) then
+    ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicial.Date)+';'+DateToStr(EditDataFinal.Date));
 
   if rgStatus.Visible then
     ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
@@ -308,7 +316,7 @@ end;
 
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
 begin
-  Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit,dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0));
+  Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0));
 end;
 
 procedure TfrmBasicoCrud.pprPreencherCamposPadroes(ipDataSet: TDataSet);
