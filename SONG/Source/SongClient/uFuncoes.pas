@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 24/02/2016 00:20:43
+// 24/02/2016 21:03:56
 //
 
 unit uFuncoes;
@@ -54,7 +54,7 @@ type
     FfpuValidarNomeFinanciadorCommand: TDBXCommand;
     FfpuValidarLoginCommand: TDBXCommand;
     FfpuValidarNomeProjetoCommand: TDBXCommand;
-    FfpuInfoUsuarioCommand: TDBXCommand;
+    FfpuInfoPessoaCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -64,7 +64,7 @@ type
     function fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
-    function fpuInfoUsuario(ipLogin: string): TInfoLogin;
+    function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -330,24 +330,24 @@ begin
   Result := FfpuValidarNomeProjetoCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TsmFuncoesAdministrativoClient.fpuInfoUsuario(ipLogin: string): TInfoLogin;
+function TsmFuncoesAdministrativoClient.fpuInfoPessoa(ipLogin: string): TPessoa;
 begin
-  if FfpuInfoUsuarioCommand = nil then
+  if FfpuInfoPessoaCommand = nil then
   begin
-    FfpuInfoUsuarioCommand := FDBXConnection.CreateCommand;
-    FfpuInfoUsuarioCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuInfoUsuarioCommand.Text := 'TsmFuncoesAdministrativo.fpuInfoUsuario';
-    FfpuInfoUsuarioCommand.Prepare;
+    FfpuInfoPessoaCommand := FDBXConnection.CreateCommand;
+    FfpuInfoPessoaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuInfoPessoaCommand.Text := 'TsmFuncoesAdministrativo.fpuInfoPessoa';
+    FfpuInfoPessoaCommand.Prepare;
   end;
-  FfpuInfoUsuarioCommand.Parameters[0].Value.SetWideString(ipLogin);
-  FfpuInfoUsuarioCommand.ExecuteUpdate;
-  if not FfpuInfoUsuarioCommand.Parameters[1].Value.IsNull then
+  FfpuInfoPessoaCommand.Parameters[0].Value.SetWideString(ipLogin);
+  FfpuInfoPessoaCommand.ExecuteUpdate;
+  if not FfpuInfoPessoaCommand.Parameters[1].Value.IsNull then
   begin
-    FUnMarshal := TDBXClientCommand(FfpuInfoUsuarioCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
+    FUnMarshal := TDBXClientCommand(FfpuInfoPessoaCommand.Parameters[1].ConnectionHandler).GetJSONUnMarshaler;
     try
-      Result := TInfoLogin(FUnMarshal.UnMarshal(FfpuInfoUsuarioCommand.Parameters[1].Value.GetJSONValue(True)));
+      Result := TPessoa(FUnMarshal.UnMarshal(FfpuInfoPessoaCommand.Parameters[1].Value.GetJSONValue(True)));
       if FInstanceOwner then
-        FfpuInfoUsuarioCommand.FreeOnExecute(Result);
+        FfpuInfoPessoaCommand.FreeOnExecute(Result);
     finally
       FreeAndNil(FUnMarshal)
     end
@@ -400,7 +400,7 @@ begin
   FfpuValidarNomeFinanciadorCommand.DisposeOf;
   FfpuValidarLoginCommand.DisposeOf;
   FfpuValidarNomeProjetoCommand.DisposeOf;
-  FfpuInfoUsuarioCommand.DisposeOf;
+  FfpuInfoPessoaCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

@@ -669,10 +669,12 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE.NOME,'
       '       ATIVIDADE.ID_SOLICITANTE,'
       '       ATIVIDADE.ID_RESPONSAVEL,'
+      '       ATIVIDADE.ID_PROJETO,'
       '       ATIVIDADE.STATUS,'
       '       ATIVIDADE.DATA_INICIAL,'
       '       ATIVIDADE.DATA_FINAL,'
-      '       ATIVIDADE.NOTIFICAR_ENVOLVIDOS'
+      '       ATIVIDADE.NOTIFICAR_ENVOLVIDOS,'
+      '       ATIVIDADE.DESCRICAO'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
@@ -729,6 +731,17 @@ inherited smAdministrativo: TsmAdministrativo
     object qAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField
       FieldName = 'NOTIFICAR_ENVOLVIDOS'
       Origin = 'NOTIFICAR_ENVOLVIDOS'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object qAtividadeID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -825,6 +838,7 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE_ARQUIVO.ID_ATIVIDADE,'
       '       ATIVIDADE_ARQUIVO.NOME,'
       '       ATIVIDADE_ARQUIVO.NOME_ORIGINAL,'
+      '       ATIVIDADE_ARQUIVO.DATA_UPLOAD,'
       '       ATIVIDADE_ARQUIVO.ARQUIVO,'
       '       ATIVIDADE_ARQUIVO.DESCRICAO'
       'from ATIVIDADE_ARQUIVO'
@@ -875,34 +889,37 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField
+      FieldName = 'DATA_UPLOAD'
+      Origin = 'DATA_UPLOAD'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object qAtividade_Vinculo: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select ATIVIDADE_VINCULO.ID,'
-      '       ATIVIDADE_VINCULO.ID_ATIVIDADE,'
+      '       ATIVIDADE_VINCULO.ID_ATIVIDADE_ORIGEM,'
+      '       ATIVIDADE_VINCULO.ID_ATIVIDADE_ALVO,'
       '       ATIVIDADE_VINCULO.TIPO_VINCULO,'
       '       ATIVIDADE_VINCULO.OBSERVACAO'
       'from ATIVIDADE_VINCULO'
-      'where ATIVIDADE_VINCULO.ID_ATIVIDADE = :ID_ATIVIDADE   ')
+      
+        'where ATIVIDADE_VINCULO.ID_ATIVIDADE_ORIGEM = :ID_ATIVIDADE_ORIG' +
+        'EM OR'
+      '      ATIVIDADE_VINCULO.ID_ATIVIDADE_ALVO = :ID_ATIVIDADE_ORIGEM')
     Left = 480
     Top = 80
     ParamData = <
       item
-        Name = 'ID_ATIVIDADE'
-        DataType = ftInteger
+        Name = 'ID_ATIVIDADE_ORIGEM'
         ParamType = ptInput
       end>
     object qAtividade_VinculoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qAtividade_VinculoID_ATIVIDADE: TIntegerField
-      FieldName = 'ID_ATIVIDADE'
-      Origin = 'ID_ATIVIDADE'
-      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object qAtividade_VinculoTIPO_VINCULO: TSmallintField
@@ -916,6 +933,18 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+    object qAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField
+      FieldName = 'ID_ATIVIDADE_ORIGEM'
+      Origin = 'ID_ATIVIDADE_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField
+      FieldName = 'ID_ATIVIDADE_ALVO'
+      Origin = 'ID_ATIVIDADE_ALVO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object qAtividade_Comentario: TRFQuery

@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dmuPrincipal, uTypes,
-  uSQLGenerator, uQuery, Datasnap.Provider, uClientDataSet, uUtils;
+  uSQLGenerator, uQuery, Datasnap.Provider, uClientDataSet, uUtils,
+  System.RegularExpressions;
 
 type
   TsmAdministrativo = class(TsmBasico)
@@ -123,7 +124,6 @@ type
     qAtividade_ArquivoDESCRICAO: TStringField;
     qAtividade_Vinculo: TRfQuery;
     qAtividade_VinculoID: TIntegerField;
-    qAtividade_VinculoID_ATIVIDADE: TIntegerField;
     qAtividade_VinculoTIPO_VINCULO: TSmallintField;
     qAtividade_VinculoOBSERVACAO: TStringField;
     qAtividade_Comentario: TRfQuery;
@@ -133,6 +133,11 @@ type
     qAtividade_ComentarioCOMENTARIO: TStringField;
     qAtividade_ComentarioDATA_HORA: TSQLTimeStampField;
     qAtividade_ArquivoARQUIVO: TBlobField;
+    qAtividadeDESCRICAO: TStringField;
+    qAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
+    qAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField;
+    qAtividadeID_PROJETO: TIntegerField;
+    qAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField;
   private
     { Private declarations }
   protected
@@ -178,8 +183,12 @@ begin
               Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_FINAL', TUtils.fpuExtrairData(vaParam.Text, 0),
                 TUtils.fpuExtrairData(vaParam.Text, 1), true);
             end
-          else if vaParam.Name = 'PROJETO' then
-            Result := Result + ' ATIVIDADE_PROJETO.ID_PROJETO IN (' + vaParam.Text + ') AND ';
+          else if vaParam.Name = 'PROJETOS' then
+            begin
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+            end;
+         //   Result := Result + '(ATIVIDADE.ID_PROJETO IN ('+vaParam.Text+')) OR (ATIVIDADE_PROJETO.ID_PROJETO IN (' + vaParam.Text + ')) AND ';
         end;
     end;
 

@@ -26,6 +26,10 @@ type
 
   TTipoPerfil = (tpNormal,tpAdministrador);
 
+  TSituacaoProjeto = (spElaboracao, spAguardandoAnalise, spRecusado, spEmExecucao, spExecutado, spCancelado);
+
+  TTipoVinculo = (tvRelacionado, tvDependente);
+
 
 const
   // mensagens customizadas do windows

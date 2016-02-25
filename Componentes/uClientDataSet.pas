@@ -17,6 +17,8 @@ type
     coLogin:string = 'LOGIN';
     coAtivo:string = 'ATIVO';
     coSituacao:string = 'SITUACAO';
+    coSituacaoDiferente:string = 'SITUACAO_DIFERENTE';
+    coProjetos:string = 'PROJETOS';
   end;
 
   TRFClientDataSet = class(TClientDataSet)
@@ -29,6 +31,9 @@ type
   protected
     procedure InternalDelete; override;
   public
+    property Parametros:TList<string> read FParametros;
+    property ValoresParametros:TList<Variant> read FValores;
+
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 

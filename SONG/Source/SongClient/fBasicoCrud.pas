@@ -555,7 +555,7 @@ end;
 
 procedure TfrmBasicoCrud.pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
 begin
-  if not TInfoLogin.fpuGetInstance.fpuValidarPermissao(ipAcao, ipPermissao) then
+  if not TInfoLogin.fpuGetInstance.Usuario.fpuValidarPermissao(ipAcao, ipPermissao) then
     raise Exception.Create('Operação não permitida.' + slineBreak + 'O usuário logado não possui a ação de ' +
       AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + TModulos.fpuGetInstance.fpuGetDescricao(ipPermissao).ToUpper);
 end;

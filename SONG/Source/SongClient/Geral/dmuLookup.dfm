@@ -173,6 +173,43 @@ inherited dmLookup: TdmLookup
           Value = 5
         end>
     end
+    object repIcbTipoVinculo: TcxEditRepositoryImageComboBoxItem
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Relacionada'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Depend'#234'ncia'
+          Value = 1
+        end>
+    end
+    object repLcbProjeto: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkProjeto
+    end
+    object repLcbAtividade: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkAtividade
+    end
   end
   object cdslkPerfil: TClientDataSet
     Aggregates = <>
@@ -378,5 +415,61 @@ inherited dmLookup: TdmLookup
       Size = 150
       Calculated = True
     end
+  end
+  object cdslkProjeto: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkProjeto'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 408
+    Top = 216
+    object cdslkProjetoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkProjetoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object cdslkAtividade: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkAtividade'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 176
+    Top = 248
+    object cdslkAtividadeID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkAtividadeNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdslkAtividadeSTATUS: TSmallintField
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object dslkAtividade: TDataSource
+    DataSet = cdslkAtividade
+    Left = 96
+    Top = 256
+  end
+  object dslkProjeto: TDataSource
+    DataSet = cdslkProjeto
+    Left = 432
+    Top = 264
   end
 end

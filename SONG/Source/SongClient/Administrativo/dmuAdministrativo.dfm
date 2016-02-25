@@ -658,6 +658,15 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'NOTIFICAR_ENVOLVIDOS'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsAtividadeDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object cdsAtividadeID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsAtividade_Projeto: TRFClientDataSet
     Aggregates = <>
@@ -676,12 +685,14 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
     end
     object cdsAtividade_ProjetoID_ATIVIDADE: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Atividade'
       FieldName = 'ID_ATIVIDADE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsAtividade_ProjetoID_PROJETO: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Projeto'
       FieldName = 'ID_PROJETO'
       ProviderFlags = [pfInUpdate]
@@ -717,6 +728,7 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
     end
     object cdsAtividade_PessoaID_PESSOA: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Pessoa'
       FieldName = 'ID_PESSOA'
       ProviderFlags = [pfInUpdate]
@@ -747,6 +759,7 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
     end
     object cdsAtividade_ArquivoID_ATIVIDADE: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Atividade'
       FieldName = 'ID_ATIVIDADE'
       ProviderFlags = [pfInUpdate]
@@ -778,10 +791,16 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Size = 500
     end
+    object cdsAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField
+      DisplayLabel = 'Data de Upload'
+      FieldName = 'DATA_UPLOAD'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object cdsAtividade_Vinculo: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_ATIVIDADE'
+    IndexFieldNames = 'ID_ATIVIDADE_ORIGEM'
     MasterFields = 'ID'
     MasterSource = dsAtividade
     PacketRecords = 0
@@ -795,13 +814,8 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsAtividade_VinculoID_ATIVIDADE: TIntegerField
-      DisplayLabel = 'Atividade'
-      FieldName = 'ID_ATIVIDADE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object cdsAtividade_VinculoTIPO_VINCULO: TSmallintField
+      Alignment = taLeftJustify
       DisplayLabel = 'Tipo de v'#237'nculo'
       FieldName = 'TIPO_VINCULO'
       ProviderFlags = [pfInUpdate]
@@ -812,6 +826,18 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+    object cdsAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField
+      DisplayLabel = 'Atividade de Origem'
+      FieldName = 'ID_ATIVIDADE_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField
+      DisplayLabel = 'Atividade Vinculada'
+      FieldName = 'ID_ATIVIDADE_ALVO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object cdsAtividade_Comentario: TRFClientDataSet
@@ -836,12 +862,14 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
     end
     object cdsAtividade_ComentarioID_ATIVIDADE: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Atividade'
       FieldName = 'ID_ATIVIDADE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsAtividade_ComentarioID_PESSOA: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Pessoa'
       FieldName = 'ID_PESSOA'
       ProviderFlags = [pfInUpdate]

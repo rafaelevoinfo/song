@@ -29,7 +29,10 @@ type
       ipIgnorarDuplicados: Boolean): String; overload;
     class function fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField, ipDelimitador: String; ipQtde: Integer;
       ipIgnorarDuplicados: Boolean): String; overload;
+    class function fpuMontarStringCodigo(ipCods: Array of Integer; ipDelimitador: String): String; overload;
     class function fpuExtrairData(ipDateString: string; ipPosicao: Integer): TDateTime;
+
+    class function fpuConverterStringToArrayInteger(ipValor: string; ipDelimitador: string = ';'): TArray<Integer>;
   end;
 
 implementation
@@ -56,6 +59,20 @@ begin
   end;
 
   ipDestino.Seek(0, TSeekOrigin.soBeginning);
+end;
+
+class function TUtils.fpuConverterStringToArrayInteger(ipValor: string; ipDelimitador: string): TArray<Integer>;
+var
+  vaArray: TArray<string>;
+  I: Integer;
+begin
+  vaArray := TRegEx.Split(ipValor, ';');
+  SetLength(Result, Length(vaArray));
+  for I := 0 to High(vaArray) do
+    begin
+       Result[i] := StrToIntDef(vaArray[i],0);
+    end;
+
 end;
 
 class function TUtils.fpuCriptografarSha1(ipValor: String): String;
@@ -172,13 +189,13 @@ begin
     vaList.free;
   end;
 
-  Result := Copy(Result, 1, length(Result) - length(ipDelimitador)); // retirando o ultimo delimitador
+  Result := Copy(Result, 1, Length(Result) - Length(ipDelimitador)); // retirando o ultimo delimitador
 
 end;
 
 class function TUtils.fpuValidarEmail(ipEmail: String): Boolean;
 begin
-  Result := TRegex.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
+  Result := TRegEx.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
     '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$');
 end;
 
@@ -251,8 +268,8 @@ ipPosicao: Integer): TDateTime;
 var
   vaDatas: TArray<string>;
 begin
-  vaDatas := TRegex.Split(ipDateString, ';', [roIgnoreCase]);
-  if ipPosicao < length(vaDatas) then
+  vaDatas := TRegEx.Split(ipDateString, ';', [roIgnoreCase]);
+  if ipPosicao < Length(vaDatas) then
     begin
       if not TryStrToDateTime(vaDatas[ipPosicao], Result) then
         raise Exception.Create('Data inválida.');
@@ -274,6 +291,22 @@ begin
     // vamos ignorar
     Result := false;
   end;
+end;
+
+class function TUtils.fpuMontarStringCodigo(ipCods: array of Integer;
+ipDelimitador: String): String;
+var
+  vaCod: Variant;
+begin
+  Result := '';
+  for vaCod in ipCods do
+    begin
+      if Result = '' then
+        Result := IntToStr(vaCod)
+      else
+        Result := Result + ' ' + ipDelimitador + ' ' + IntToStr(vaCod);
+    end;
+
 end;
 
 end.

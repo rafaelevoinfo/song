@@ -65,20 +65,27 @@ end;
 
 procedure TfrmLogin.ppuLogar(ipLogin, ipSenha: string);
 var
-  vaInfoLogin,vaInfoLoginServer: TInfoLogin;
+  vaInfoLogin: TInfoLogin;
+  vaPessoa: TPessoa;
 begin
   LoginEfetuado := False;
   ppvValidarCampos;
   try
     dmPrincipal.ppuConfigurarConexao(ipLogin, ipSenha);
-//  REVER ISSO AQUI
-    //vaInfoLoginServer := dmPrincipal.FuncoesAdm.fpuInfoUsuario(ipLogin);
-    vaInfoLogin := TInfoLogin.fpuGetInstance;
-    vaInfoLogin.IdUsuario := 8;//vaInfoLoginServer.IdUsuario;
-    vaInfoLogin.NomeUsuario := ipLogin;
-    vaInfoLogin.SenhaUsuario := ipSenha;
-    vaInfoLogin.Permissoes.Data := dmPrincipal.FuncoesAdm.fpuPermissoesUsuario(ipLogin);
-    vaInfoLogin.ppuChecarAdministrador;
+
+    vaPessoa := dmPrincipal.FuncoesAdm.fpuInfoPessoa(ipLogin);
+    if Assigned(vaPessoa) then
+      begin
+        vaInfoLogin := TInfoLogin.fpuGetInstance;
+        vaInfoLogin.Usuario.Id := vaPessoa.Id;
+        vaInfoLogin.Usuario.Nome := vaPessoa.Nome;
+        vaInfoLogin.Usuario.Login := ipLogin;
+        vaInfoLogin.Usuario.Senha := ipSenha;
+        vaInfoLogin.Usuario.Permissoes.Data := dmPrincipal.FuncoesAdm.fpuPermissoesUsuario(ipLogin);
+        vaInfoLogin.Usuario.ppuChecarAdministrador;
+      end
+    else
+      raise Exception.Create('Login inválido.');
 
     LoginEfetuado := True;
   except

@@ -126,7 +126,6 @@ type
     cdsAtividade_ArquivoDESCRICAO: TStringField;
     cdsAtividade_ArquivoARQUIVO: TBlobField;
     cdsAtividade_VinculoID: TIntegerField;
-    cdsAtividade_VinculoID_ATIVIDADE: TIntegerField;
     cdsAtividade_VinculoTIPO_VINCULO: TSmallintField;
     cdsAtividade_VinculoOBSERVACAO: TStringField;
     cdsAtividade_ComentarioID: TIntegerField;
@@ -135,6 +134,11 @@ type
     cdsAtividade_ComentarioCOMENTARIO: TStringField;
     cdsAtividade_ComentarioDATA_HORA: TSQLTimeStampField;
     dsAtividade: TDataSource;
+    cdsAtividadeDESCRICAO: TStringField;
+    cdsAtividadeID_PROJETO: TIntegerField;
+    cdsAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
+    cdsAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField;
+    cdsAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField;
   private
     { Private declarations }
   public

@@ -54,6 +54,18 @@ type
     repCurPadrao: TcxEditRepositoryCurrencyItem;
     repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem;
     repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem;
+    repIcbTipoVinculo: TcxEditRepositoryImageComboBoxItem;
+    cdslkProjeto: TRFClientDataSet;
+    cdslkProjetoID: TIntegerField;
+    cdslkProjetoNOME: TStringField;
+    repLcbProjeto: TcxEditRepositoryLookupComboBoxItem;
+    cdslkAtividade: TRFClientDataSet;
+    cdslkAtividadeID: TIntegerField;
+    cdslkAtividadeNOME: TStringField;
+    cdslkAtividadeSTATUS: TSmallintField;
+    repLcbAtividade: TcxEditRepositoryLookupComboBoxItem;
+    dslkAtividade: TDataSource;
+    dslkProjeto: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

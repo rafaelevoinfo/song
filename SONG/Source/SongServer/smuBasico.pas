@@ -191,8 +191,11 @@ begin
           if vaParam.Text.ToInteger <> coRegistroAtivo then
             Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaParam.Text.ToInteger())
           else
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo,
-              [vaParam.Text.ToInteger(), null], false)
+            begin
+              Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, coRegistroAtivo, false);
+              Result := Result + ipTabela+'.'+TBancoDados.coAtivo +' is null AND';
+            end;
+
         end;
     end;
 

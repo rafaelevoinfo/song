@@ -16,7 +16,7 @@ type
     function fpuValidarNomeFinanciador(ipIdFinanciador: integer; ipNome: String): Boolean;
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: integer; ipNome: String): Boolean;
-    function fpuInfoUsuario(ipLogin: string): TInfoLogin;
+    function fpuInfoPessoa(ipLogin: string): TPessoa;
 
   end;
 
@@ -28,9 +28,9 @@ implementation
 {$R *.dfm}
 { TsmFuncoesAdministrativo }
 
-function TsmFuncoesAdministrativo.fpuInfoUsuario(ipLogin: string): TInfoLogin;
+function TsmFuncoesAdministrativo.fpuInfoPessoa(ipLogin: string): TPessoa;
 var
-  vaInfoLogin: TInfoLogin;
+  vaPessoa: TPessoa;
 begin
   pprEncapsularConsulta(
     procedure(ipDataSet: TRFQuery)
@@ -44,12 +44,12 @@ begin
       ipDataSet.ParamByName('LOGIN').AsString := ipLogin;
       ipDataSet.Open();
 
-      vaInfoLogin := TInfoLogin.fpuGetInstance;
-      vaInfoLogin.IdUsuario := ipDataSet.FieldByName('ID').AsInteger;
-      vaInfoLogin.NomeUsuario := ipDataSet.FieldByName('NOME').AsString;
+      vaPessoa := TPessoa.Create;
+      vaPessoa.Id := ipDataSet.FieldByName('ID').AsInteger;
+      vaPessoa.Nome := ipDataSet.FieldByName('NOME').AsString;
     end);
 
-  Result := vaInfoLogin;
+  Result := vaPessoa;
 end;
 
 function TsmFuncoesAdministrativo.fpuPermissoesUsuario(ipLogin: String): OleVariant;

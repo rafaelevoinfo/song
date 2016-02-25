@@ -1,10 +1,17 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetailDocumento
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -95,16 +102,19 @@ inherited frmProjeto: TfrmProjeto
         inherited cxSplitter1: TcxSplitter
           Top = 147
           ExplicitTop = 147
+          ExplicitWidth = 974
         end
         inherited pnDetail: TPanel
           Top = 153
           Height = 250
           ExplicitTop = 153
+          ExplicitWidth = 974
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
             Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
+            ExplicitWidth = 972
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
@@ -112,10 +122,12 @@ inherited frmProjeto: TfrmProjeto
               ExplicitHeight = 218
               inherited pnBotoesDetail: TPanel
                 Width = 965
+                ExplicitWidth = 965
               end
               inherited cxGridRegistrosDetail: TcxGrid
                 Width = 965
                 Height = 193
+                ExplicitWidth = 965
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -703,9 +715,11 @@ inherited frmProjeto: TfrmProjeto
     inherited tabCadastroDetail: TcxTabSheet
       inherited pnBotoesCadastroDetail: TPanel
         Width = 976
+        ExplicitWidth = 976
       end
       inherited pnEditsCadastroDetail: TPanel
         Width = 976
+        ExplicitWidth = 976
         object Label9: TLabel
           Left = 5
           Top = 6

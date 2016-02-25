@@ -1,5 +1,7 @@
 inherited smLookup: TsmLookup
   OldCreateOrder = True
+  Height = 311
+  Width = 488
   object qlkPerfil: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -199,5 +201,57 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
     end
+  end
+  object qlkAtividade: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ATIVIDADE.ID,'
+      '       ATIVIDADE.NOME,'
+      '       ATIVIDADE.STATUS'
+      'from ATIVIDADE'
+      
+        'left join ATIVIDADE_PROJETO on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
+        ' ATIVIDADE.ID)  '
+      '&WHERE')
+    Left = 320
+    Top = 48
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkAtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkAtividadeNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qlkAtividadeSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object qlkProjeto: TRFQuery
+    SQL.Strings = (
+      'select PROJETO.ID,'
+      '       PROJETO.NOME'
+      'from PROJETO  '
+      '&WHERE')
+    Left = 320
+    Top = 112
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
   end
 end
