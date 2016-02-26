@@ -53,7 +53,7 @@ inherited dmLookup: TdmLookup
           Value = 1
         end>
     end
-    object repIcbSituacaoProjeto: TcxEditRepositoryImageComboBoxItem
+    object repIcbStatusProjeto: TcxEditRepositoryImageComboBoxItem
       Properties.ImmediatePost = True
       Properties.Items = <
         item
@@ -418,6 +418,7 @@ inherited dmLookup: TdmLookup
   end
   object cdslkProjeto: TRFClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'NOME'
     Params = <>
     ProviderName = 'dspqlkProjeto'
     RemoteServer = dmPrincipal.ProviderLookup

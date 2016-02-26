@@ -1,17 +1,11 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailDocumento
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -31,14 +25,14 @@ inherited frmProjeto: TfrmProjeto
                 Value = 3
               end
               item
-                Description = 'Situa'#231#227'o'
+                Description = 'Status'
                 Value = 4
               end>
           end
-          object cbSituacaoPesquisa: TcxImageComboBox
+          object cbStatusPesquisa: TcxImageComboBox
             Left = 272
             Top = 20
-            RepositoryItem = dmLookup.repIcbSituacaoProjeto
+            RepositoryItem = dmLookup.repIcbStatusProjeto
             Properties.Items = <>
             TabOrder = 5
             Visible = False
@@ -82,13 +76,9 @@ inherited frmProjeto: TfrmProjeto
               Width = 157
             end
             object viewRegistrosSTATUS: TcxGridDBColumn [5]
-              DataBinding.FieldName = 'SITUACAO'
-              PropertiesClassName = 'TcxImageComboBoxProperties'
-              Properties.Items = <>
-              Properties.OnEditValueChanged = viewRegistrosSTATUSPropertiesEditValueChanged
-              RepositoryItem = dmLookup.repIcbSituacaoProjeto
-              Options.SortByDisplayText = isbtOn
-              Width = 156
+              DataBinding.FieldName = 'STATUS'
+              RepositoryItem = dmLookup.repIcbStatusProjeto
+              Width = 151
             end
             object viewRegistrosORCAMENTO: TcxGridDBColumn [6]
               DataBinding.FieldName = 'ORCAMENTO'
@@ -102,32 +92,23 @@ inherited frmProjeto: TfrmProjeto
         inherited cxSplitter1: TcxSplitter
           Top = 147
           ExplicitTop = 147
-          ExplicitWidth = 974
         end
         inherited pnDetail: TPanel
           Top = 153
           Height = 250
           ExplicitTop = 153
-          ExplicitWidth = 974
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
             Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
-            ExplicitWidth = 972
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
               ExplicitHeight = 218
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
                 Height = 193
-                ExplicitWidth = 965
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -411,7 +392,6 @@ inherited frmProjeto: TfrmProjeto
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
                   object viewPagamentosID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
@@ -584,6 +564,7 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitWidth = 976
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -612,10 +593,10 @@ inherited frmProjeto: TfrmProjeto
         object Label6: TLabel
           Left = 4
           Top = 44
-          Width = 41
+          Width = 31
           Height = 13
-          Caption = 'Situa'#231#227'o'
-          FocusControl = cbSituacao
+          Caption = 'Status'
+          FocusControl = cbStatusProjeto
         end
         object Label7: TLabel
           Left = 5
@@ -669,10 +650,10 @@ inherited frmProjeto: TfrmProjeto
           TabOrder = 2
           Width = 84
         end
-        object cbSituacao: TcxDBImageComboBox
+        object cbStatusProjeto: TcxDBImageComboBox
           Left = 4
           Top = 60
-          RepositoryItem = dmLookup.repIcbSituacaoProjeto
+          RepositoryItem = dmLookup.repIcbStatusProjeto
           DataBinding.DataField = 'SITUACAO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
@@ -684,7 +665,7 @@ inherited frmProjeto: TfrmProjeto
           Top = 109
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 5
+          TabOrder = 6
           Height = 89
           Width = 838
         end
@@ -707,12 +688,16 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'ID_BANCO_CONTA_CORRENTE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 6
+          TabOrder = 5
           Width = 220
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         Width = 976
         ExplicitWidth = 976
@@ -759,31 +744,13 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailOrganizacao: TcxTabSheet
       Caption = 'tabCadastroDetailOrganizacao'
       ImageIndex = 3
-      object Label11: TLabel
-        Left = 5
-        Top = 54
-        Width = 60
-        Height = 13
-        Caption = 'Organiza'#231#227'o'
-        FocusControl = cbOrganizacao
-      end
-      object cbOrganizacao: TcxDBLookupComboBox
-        Left = 4
-        Top = 70
-        RepositoryItem = dmLookup.repLcbOrganizacao
-        DataBinding.DataField = 'ID_ORGANIZACAO'
-        DataBinding.DataSource = dsOrganizacao
-        Properties.ListColumns = <>
-        TabOrder = 0
-        Width = 237
-      end
       object Panel4: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetailOrganizacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -818,33 +785,45 @@ inherited frmProjeto: TfrmProjeto
           TabOrder = 1
         end
       end
+      object pnCadastroOrganizacao: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitTop = 52
+        object Label11: TLabel
+          Left = 5
+          Top = 6
+          Width = 60
+          Height = 13
+          Caption = 'Organiza'#231#227'o'
+          FocusControl = cbOrganizacao
+        end
+        object cbOrganizacao: TcxDBLookupComboBox
+          Left = 4
+          Top = 22
+          RepositoryItem = dmLookup.repLcbOrganizacao
+          DataBinding.DataField = 'ID_ORGANIZACAO'
+          DataBinding.DataSource = dsOrganizacao
+          Properties.ListColumns = <>
+          TabOrder = 0
+          Width = 237
+        end
+      end
     end
     object tabCadastroDetailFinanciador: TcxTabSheet
       Caption = 'tabCadastroDetailFinanciador'
       ImageIndex = 4
-      object Label12: TLabel
-        Left = 7
-        Top = 54
-        Width = 55
-        Height = 13
-        Caption = 'Financiador'
-        FocusControl = cbFinanciador
-      end
-      object Label18: TLabel
-        Left = 7
-        Top = 96
-        Width = 58
-        Height = 13
-        Caption = 'Observa'#231#227'o'
-        FocusControl = EditObservacao
-      end
       object Panel5: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 3
+        TabOrder = 0
         object btnSalvarDetailFinanciador: TButton
           AlignWithMargins = True
           Left = 4
@@ -879,143 +858,180 @@ inherited frmProjeto: TfrmProjeto
           TabOrder = 1
         end
       end
-      object cbFinanciador: TcxDBLookupComboBox
-        Left = 6
-        Top = 70
-        RepositoryItem = dmLookup.repLcbFinanciador
-        DataBinding.DataField = 'ID_FINANCIADOR'
-        DataBinding.DataSource = dsFinanciador
-        Properties.ListColumns = <>
-        TabOrder = 0
-        Width = 237
-      end
-      object EditObservacao: TcxDBMemo
-        Left = 6
-        Top = 112
-        DataBinding.DataField = 'OBSERVACAO'
-        DataBinding.DataSource = dsFinanciador
+      object pnCadastroFinanciador: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'pnCadastroFinanciador'
         TabOrder = 1
-        Height = 57
-        Width = 837
-      end
-      object rgPagamentos: TcxGroupBox
-        Left = 6
-        Top = 175
-        Caption = 'Pagamentos'
-        TabOrder = 2
-        Height = 274
-        Width = 837
-        object pnEditsPagamento: TPanel
-          Left = 3
-          Top = 15
-          Width = 831
-          Height = 46
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 0
-          object Label14: TLabel
-            Left = 2
-            Top = 4
-            Width = 78
-            Height = 13
-            Caption = 'Valor Financiado'
-          end
-          object Label13: TLabel
-            Left = 139
-            Top = 4
-            Width = 95
-            Height = 13
-            Caption = 'Data do Pagamento'
-          end
-          object btnSalvarPagamento: TButton
-            Left = 268
-            Top = 18
-            Width = 81
-            Height = 23
-            Action = Ac_Salvar_Pagamento
-            Images = dmPrincipal.imgIcons_16
-            TabOrder = 2
-          end
-          object EditDataPagamento: TcxDateEdit
-            Left = 139
-            Top = 20
-            TabOrder = 1
-            Width = 121
-          end
-          object EditValorPagamento: TcxCurrencyEdit
-            Left = 1
-            Top = 20
-            RepositoryItem = dmLookup.repCurPadrao
-            TabOrder = 0
-            Width = 134
-          end
+        ExplicitLeft = 400
+        ExplicitTop = 208
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label12: TLabel
+          Left = 4
+          Top = 6
+          Width = 55
+          Height = 13
+          Caption = 'Financiador'
+          FocusControl = cbFinanciador
         end
-        object cxGrid5: TcxGrid
+        object Label18: TLabel
+          Left = 4
+          Top = 48
+          Width = 58
+          Height = 13
+          Caption = 'Observa'#231#227'o'
+          FocusControl = EditObservacao
+        end
+        object cbFinanciador: TcxDBLookupComboBox
           Left = 3
-          Top = 61
-          Width = 831
-          Height = 203
-          Align = alClient
-          Images = dmPrincipal.imgIcons_16
+          Top = 22
+          RepositoryItem = dmLookup.repLcbFinanciador
+          DataBinding.DataField = 'ID_FINANCIADOR'
+          DataBinding.DataSource = dsFinanciador
+          Properties.ListColumns = <>
+          TabOrder = 0
+          Width = 237
+        end
+        object EditObservacao: TcxDBMemo
+          Left = 3
+          Top = 64
+          DataBinding.DataField = 'OBSERVACAO'
+          DataBinding.DataSource = dsFinanciador
           TabOrder = 1
-          TabStop = False
-          LockedStateImageOptions.Effect = lsieDark
-          LockedStateImageOptions.ShowText = True
-          LockedStateImageOptions.Text = 'Pesquisando...'
-          object viewPagamentosCadastro: TcxGridDBTableView
-            OnDblClick = viewRegistrosDetailDblClick
-            Navigator.Buttons.CustomButtons = <>
-            DataController.DataSource = dsFinanciador_Pagto
-            DataController.Summary.DefaultGroupSummaryItems = <>
-            DataController.Summary.FooterSummaryItems = <>
-            DataController.Summary.SummaryGroups = <>
-            FilterRow.InfoText = 'Clique aqui para definir um filtro'
-            FilterRow.Visible = True
-            OptionsCustomize.ColumnsQuickCustomization = True
-            OptionsData.CancelOnExit = False
-            OptionsData.Deleting = False
-            OptionsData.DeletingConfirmation = False
-            OptionsData.Inserting = False
-            OptionsSelection.MultiSelect = True
-            OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-            OptionsView.ShowEditButtons = gsebAlways
-            OptionsView.GroupByBox = False
-            object Column1: TcxGridDBColumn
-              DataBinding.FieldName = 'ID'
-              Options.Editing = False
+          Height = 57
+          Width = 837
+        end
+        object rgPagamentos: TcxGroupBox
+          Left = 3
+          Top = 124
+          Caption = 'Pagamentos'
+          TabOrder = 2
+          Height = 274
+          Width = 837
+          object pnEditsPagamento: TPanel
+            Left = 3
+            Top = 15
+            Width = 831
+            Height = 46
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 0
+            ExplicitLeft = 2
+            ExplicitTop = -2
+            ExplicitWidth = 833
+            object Label14: TLabel
+              Left = 2
+              Top = 4
+              Width = 78
+              Height = 13
+              Caption = 'Valor Financiado'
             end
-            object Column2: TcxGridDBColumn
-              DataBinding.FieldName = 'VALOR'
+            object Label13: TLabel
+              Left = 139
+              Top = 4
+              Width = 95
+              Height = 13
+              Caption = 'Data do Pagamento'
+            end
+            object btnSalvarPagamento: TButton
+              Left = 268
+              Top = 18
+              Width = 81
+              Height = 23
+              Action = Ac_Salvar_Pagamento
+              Images = dmPrincipal.imgIcons_16
+              TabOrder = 2
+            end
+            object EditDataPagamento: TcxDateEdit
+              Left = 139
+              Top = 20
+              TabOrder = 1
+              Width = 121
+            end
+            object EditValorPagamento: TcxCurrencyEdit
+              Left = 1
+              Top = 20
               RepositoryItem = dmLookup.repCurPadrao
-              Options.Editing = False
-            end
-            object Column3: TcxGridDBColumn
-              DataBinding.FieldName = 'DATA'
-              Options.Editing = False
-              Width = 147
-            end
-            object Column4: TcxGridDBColumn
-              Caption = 'Excluir'
-              PropertiesClassName = 'TcxButtonEditProperties'
-              Properties.Buttons = <
-                item
-                  Action = Ac_Excluir_Pagamento
-                  Default = True
-                  Kind = bkGlyph
-                end>
-              Properties.Images = dmPrincipal.imgIcons_16
-              Properties.ViewStyle = vsButtonsOnly
-              MinWidth = 64
-              Options.Filtering = False
-              Options.ShowEditButtons = isebAlways
-              Options.GroupFooters = False
-              Options.Grouping = False
-              Options.HorzSizing = False
-              Options.Moving = False
+              TabOrder = 0
+              Width = 134
             end
           end
-          object level2: TcxGridLevel
-            GridView = viewPagamentosCadastro
+          object cxGrid5: TcxGrid
+            Left = 3
+            Top = 61
+            Width = 831
+            Height = 203
+            Align = alClient
+            Images = dmPrincipal.imgIcons_16
+            TabOrder = 1
+            TabStop = False
+            LockedStateImageOptions.Effect = lsieDark
+            LockedStateImageOptions.ShowText = True
+            LockedStateImageOptions.Text = 'Pesquisando...'
+            ExplicitLeft = 2
+            ExplicitTop = 44
+            ExplicitWidth = 833
+            ExplicitHeight = 228
+            object viewPagamentosCadastro: TcxGridDBTableView
+              OnDblClick = viewRegistrosDetailDblClick
+              Navigator.Buttons.CustomButtons = <>
+              DataController.DataSource = dsFinanciador_Pagto
+              DataController.Summary.DefaultGroupSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.SummaryGroups = <>
+              FilterRow.InfoText = 'Clique aqui para definir um filtro'
+              FilterRow.Visible = True
+              OptionsCustomize.ColumnsQuickCustomization = True
+              OptionsData.CancelOnExit = False
+              OptionsData.Deleting = False
+              OptionsData.DeletingConfirmation = False
+              OptionsData.Inserting = False
+              OptionsSelection.MultiSelect = True
+              OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+              OptionsView.ShowEditButtons = gsebAlways
+              OptionsView.GroupByBox = False
+              object Column1: TcxGridDBColumn
+                DataBinding.FieldName = 'ID'
+                Options.Editing = False
+              end
+              object Column2: TcxGridDBColumn
+                DataBinding.FieldName = 'VALOR'
+                RepositoryItem = dmLookup.repCurPadrao
+                Options.Editing = False
+              end
+              object Column3: TcxGridDBColumn
+                DataBinding.FieldName = 'DATA'
+                Options.Editing = False
+                Width = 147
+              end
+              object Column4: TcxGridDBColumn
+                Caption = 'Excluir'
+                PropertiesClassName = 'TcxButtonEditProperties'
+                Properties.Buttons = <
+                  item
+                    Action = Ac_Excluir_Pagamento
+                    Default = True
+                    Kind = bkGlyph
+                  end>
+                Properties.Images = dmPrincipal.imgIcons_16
+                Properties.ViewStyle = vsButtonsOnly
+                MinWidth = 64
+                Options.Filtering = False
+                Options.ShowEditButtons = isebAlways
+                Options.GroupFooters = False
+                Options.Grouping = False
+                Options.HorzSizing = False
+                Options.Moving = False
+              end
+            end
+            object level2: TcxGridLevel
+              GridView = viewPagamentosCadastro
+            end
           end
         end
       end
@@ -1023,29 +1039,13 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailDocumento: TcxTabSheet
       Caption = 'tabCadastroDetailDocumento'
       ImageIndex = 5
-      object Label15: TLabel
-        Left = 5
-        Top = 54
-        Width = 99
-        Height = 13
-        Caption = 'Nome do Documento'
-        FocusControl = EditNomeDocumento
-      end
-      object Label16: TLabel
-        Left = 5
-        Top = 97
-        Width = 131
-        Height = 13
-        Caption = 'Caminho para o documento'
-        FocusControl = EditNomeDocumento
-      end
       object Panel6: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 2
+        TabOrder = 0
         object btnSalvarDetailDocumento: TButton
           AlignWithMargins = True
           Left = 4
@@ -1080,26 +1080,55 @@ inherited frmProjeto: TfrmProjeto
           TabOrder = 1
         end
       end
-      object EditNomeDocumento: TcxDBTextEdit
-        Left = 4
-        Top = 70
-        DataBinding.DataField = 'NOME'
-        DataBinding.DataSource = dsDocumento
-        TabOrder = 0
-        Width = 317
-      end
-      object EditCaminhoDocumento: TcxButtonEdit
-        Left = 5
-        Top = 113
-        Properties.Buttons = <
-          item
-            Action = Ac_CarregarArquivo
-            Default = True
-            Kind = bkGlyph
-          end>
-        Properties.Images = dmPrincipal.imgIcons_16
+      object pnCadastroDocumento: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
         TabOrder = 1
-        Width = 316
+        ExplicitLeft = 400
+        ExplicitTop = 208
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label15: TLabel
+          Left = 5
+          Top = 6
+          Width = 99
+          Height = 13
+          Caption = 'Nome do Documento'
+          FocusControl = EditNomeDocumento
+        end
+        object Label16: TLabel
+          Left = 5
+          Top = 49
+          Width = 131
+          Height = 13
+          Caption = 'Caminho para o documento'
+          FocusControl = EditNomeDocumento
+        end
+        object EditNomeDocumento: TcxDBTextEdit
+          Left = 4
+          Top = 22
+          DataBinding.DataField = 'NOME'
+          DataBinding.DataSource = dsDocumento
+          TabOrder = 0
+          Width = 317
+        end
+        object EditCaminhoDocumento: TcxButtonEdit
+          Left = 4
+          Top = 65
+          Properties.Buttons = <
+            item
+              Action = Ac_CarregarArquivo
+              Default = True
+              Kind = bkGlyph
+            end>
+          Properties.Images = dmPrincipal.imgIcons_16
+          TabOrder = 1
+          Width = 317
+        end
       end
     end
   end

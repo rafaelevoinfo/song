@@ -88,7 +88,6 @@ type
     qProjeto_PessoaID_PROJETO: TIntegerField;
     qProjeto_PessoaID_PESSOA: TIntegerField;
     qProjeto_PessoaFUNCAO: TStringField;
-    qProjetoSITUACAO: TSmallintField;
     qProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
     qProjeto_Financiador_Pagto: TRfQuery;
     qProjeto_Financiador_PagtoID: TIntegerField;
@@ -135,9 +134,14 @@ type
     qAtividade_ArquivoARQUIVO: TBlobField;
     qAtividadeDESCRICAO: TStringField;
     qAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
-    qAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField;
     qAtividadeID_PROJETO: TIntegerField;
     qAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField;
+    qAtividade_ProjetoNOME_PROJETO: TStringField;
+    qAtividade_VinculoNOME_ATIVIDADE_ORIGEM: TStringField;
+    qAtividade_VinculoID_ATIVIDADE_VINCULO: TIntegerField;
+    qAtividade_VinculoNOME_ATIVIDADE_VINCULO: TStringField;
+    qProjetoSTATUS: TSmallintField;
+    qAtividadeNOME_PROJETO: TStringField;
   private
     { Private declarations }
   protected
@@ -171,7 +175,7 @@ begin
         end
       else if ipTabela = 'PROJETO' then
         begin
-          if vaParam.Name = TParametros.coSituacao then
+          if vaParam.Name = TParametros.coStatus then
             Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'SITUACAO', vaParam.Text.ToInteger())
         end
       else if ipTabela = 'ATIVIDADE' then
@@ -183,9 +187,9 @@ begin
               Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_FINAL', TUtils.fpuExtrairData(vaParam.Text, 0),
                 TUtils.fpuExtrairData(vaParam.Text, 1), true);
             end
-          else if vaParam.Name = 'PROJETOS' then
+          else if vaParam.Name = TParametros.coProjeto then
             begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text),False);
               Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
             end;
          //   Result := Result + '(ATIVIDADE.ID_PROJETO IN ('+vaParam.Text+')) OR (ATIVIDADE_PROJETO.ID_PROJETO IN (' + vaParam.Text + ')) AND ';

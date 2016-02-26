@@ -380,7 +380,7 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO.NOME,'
       '       PROJETO.DATA_INICIO,'
       '       PROJETO.DATA_TERMINO,'
-      '       PROJETO.SITUACAO,'
+      '       PROJETO.STATUS,'
       '       PROJETO.DESCRICAO,'
       '       PROJETO.ORCAMENTO,'
       '       PROJETO.ID_BANCO_CONTA_CORRENTE'
@@ -416,12 +416,6 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DATA_TERMINO'
       ProviderFlags = [pfInUpdate]
     end
-    object qProjetoSITUACAO: TSmallintField
-      FieldName = 'SITUACAO'
-      Origin = 'SITUACAO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object qProjetoDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
       Origin = 'DESCRICAO'
@@ -438,6 +432,12 @@ inherited smAdministrativo: TsmAdministrativo
     object qProjetoID_BANCO_CONTA_CORRENTE: TIntegerField
       FieldName = 'ID_BANCO_CONTA_CORRENTE'
       Origin = 'ID_BANCO_CONTA_CORRENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjetoSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
@@ -665,7 +665,7 @@ inherited smAdministrativo: TsmAdministrativo
   object qAtividade: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select ATIVIDADE.ID,'
+      'select DISTINCT ATIVIDADE.ID,'
       '       ATIVIDADE.NOME,'
       '       ATIVIDADE.ID_SOLICITANTE,'
       '       ATIVIDADE.ID_RESPONSAVEL,'
@@ -674,11 +674,13 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE.DATA_INICIAL,'
       '       ATIVIDADE.DATA_FINAL,'
       '       ATIVIDADE.NOTIFICAR_ENVOLVIDOS,'
-      '       ATIVIDADE.DESCRICAO'
+      '       ATIVIDADE.DESCRICAO,'
+      '       PROJETO.NOME AS NOME_PROJETO'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
         ' ATIVIDADE.ID)'
+      'left join projeto on (projeto.id = atividade.id_projeto)'
       '&WHERE')
     Left = 360
     Top = 80
@@ -743,6 +745,14 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'ID_PROJETO'
       Origin = 'ID_PROJETO'
       ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAtividadeNOME_PROJETO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_PROJETO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qAtividade_Pessoa: TRFQuery
@@ -751,9 +761,13 @@ inherited smAdministrativo: TsmAdministrativo
       'select ATIVIDADE_PESSOA.ID,'
       '       ATIVIDADE_PESSOA.ID_ATIVIDADE,'
       '       ATIVIDADE_PESSOA.ID_PESSOA,'
-      '       ATIVIDADE_PESSOA.FUNCAO'
-      'from ATIVIDADE_PESSOA '
-      'where ATIVIDADE_PESSOA.ID_ATIVIDADE = :ID_ATIVIDADE')
+      '       ATIVIDADE_PESSOA.FUNCAO,'
+      '       ATIVIDADE.NOME as NOME_ATIVIDADE'
+      'from ATIVIDADE_PESSOA'
+      
+        'inner join ATIVIDADE on (ATIVIDADE_PESSOA.ID_ATIVIDADE = ATIVIDA' +
+        'DE.ID)'
+      'where ATIVIDADE_PESSOA.ID_ATIVIDADE = :ID_ATIVIDADE   ')
     Left = 360
     Top = 144
     ParamData = <
@@ -795,9 +809,13 @@ inherited smAdministrativo: TsmAdministrativo
       'select ATIVIDADE_PROJETO.ID,'
       '       ATIVIDADE_PROJETO.ID_ATIVIDADE,'
       '       ATIVIDADE_PROJETO.ID_PROJETO,'
+      '       PROJETO.NOME as NOME_PROJETO,'
       '       ATIVIDADE_PROJETO.OBSERVACAO'
-      'from ATIVIDADE_PROJETO  '
-      'where ATIVIDADE_PROJETO.ID_ATIVIDADE = :ID_ATIVIDADE')
+      'from ATIVIDADE_PROJETO'
+      
+        'inner join PROJETO on (PROJETO.ID = ATIVIDADE_PROJETO.ID_PROJETO' +
+        ')'
+      'where ATIVIDADE_PROJETO.ID_ATIVIDADE = :ID_ATIVIDADE   ')
     Left = 360
     Top = 208
     ParamData = <
@@ -829,6 +847,13 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+    object qAtividade_ProjetoNOME_PROJETO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_PROJETO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qAtividade_Arquivo: TRFQuery
@@ -901,20 +926,32 @@ inherited smAdministrativo: TsmAdministrativo
     SQL.Strings = (
       'select ATIVIDADE_VINCULO.ID,'
       '       ATIVIDADE_VINCULO.ID_ATIVIDADE_ORIGEM,'
-      '       ATIVIDADE_VINCULO.ID_ATIVIDADE_ALVO,'
+      '       ATIVIDADE.NOME as NOME_ATIVIDADE_ORIGEM,'
+      '       ATIVIDADE_VINCULO.ID_ATIVIDADE_VINCULO,'
+      '       VINCULO.NOME as NOME_ATIVIDADE_VINCULO,'
       '       ATIVIDADE_VINCULO.TIPO_VINCULO,'
       '       ATIVIDADE_VINCULO.OBSERVACAO'
       'from ATIVIDADE_VINCULO'
       
+        'inner join ATIVIDADE on (ATIVIDADE.ID = ATIVIDADE_VINCULO.ID_ATI' +
+        'VIDADE_ORIGEM)'
+      
+        'inner join ATIVIDADE VINCULO on (VINCULO.ID = ATIVIDADE_VINCULO.' +
+        'ID_ATIVIDADE_VINCULO)'
+      
         'where ATIVIDADE_VINCULO.ID_ATIVIDADE_ORIGEM = :ID_ATIVIDADE_ORIG' +
-        'EM OR'
-      '      ATIVIDADE_VINCULO.ID_ATIVIDADE_ALVO = :ID_ATIVIDADE_ORIGEM')
+        'EM or'
+      
+        '      ATIVIDADE_VINCULO.ID_ATIVIDADE_VINCULO = :ID_ATIVIDADE_ORI' +
+        'GEM')
     Left = 480
     Top = 80
     ParamData = <
       item
         Name = 'ID_ATIVIDADE_ORIGEM'
+        DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object qAtividade_VinculoID: TIntegerField
       FieldName = 'ID'
@@ -940,11 +977,25 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField
-      FieldName = 'ID_ATIVIDADE_ALVO'
-      Origin = 'ID_ATIVIDADE_ALVO'
+    object qAtividade_VinculoID_ATIVIDADE_VINCULO: TIntegerField
+      FieldName = 'ID_ATIVIDADE_VINCULO'
+      Origin = 'ID_ATIVIDADE_VINCULO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qAtividade_VinculoNOME_ATIVIDADE_ORIGEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ATIVIDADE_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qAtividade_VinculoNOME_ATIVIDADE_VINCULO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ATIVIDADE_VINCULO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qAtividade_Comentario: TRFQuery

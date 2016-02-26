@@ -34,8 +34,8 @@ type
     level: TcxGridLevel;
     cxGridRegistros: TcxGrid;
     pnData: TPanel;
-    EditDataInicial: TcxDateEdit;
-    EditDataFinal: TcxDateEdit;
+    EditDataInicialPesquisa: TcxDateEdit;
+    EditDataFinalPesquisa: TcxDateEdit;
     De: TLabel;
     Label2: TLabel;
     ColumnAlterar: TcxGridDBColumn;
@@ -193,7 +193,7 @@ begin
   if EditPesquisa.Visible then
     TUtils.fpuFocar(EditPesquisa)
   else if pnData.Visible then
-    TUtils.fpuFocar(EditDataInicial);
+    TUtils.fpuFocar(EditDataInicialPesquisa);
 end;
 
 procedure TfrmBasicoCrud.ColumnExcluirGetProperties(
@@ -290,7 +290,7 @@ begin
   else if (cbPesquisarPor.EditValue = Ord(tppNome)) then
     ipCds.ppuAddParametro(TParametros.coNome, EditPesquisa.Text)
   else if (cbPesquisarPor.EditValue = Ord(tppData)) then
-    ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicial.Date)+';'+DateToStr(EditDataFinal.Date));
+    ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 
   if rgStatus.Visible then
     ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
@@ -298,10 +298,23 @@ begin
 end;
 
 procedure TfrmBasicoCrud.pprEfetuarPesquisa;
+var
+  vaRecNo: Integer;
 begin
+  vaRecNo := -1;
   viewRegistros.BeginUpdate(lsimImmediate);
   try
+    if dsMaster.DataSet.Active then
+      vaRecNo := dsMaster.DataSet.RecNo;
     TRFClientDataSet(dsMaster.DataSet).ppuDataRequest();
+    if dsMaster.DataSet.RecordCount > 0 then
+      begin
+        if (vaRecNo > 0) and (vaRecNo <= dsMaster.DataSet.RecordCount) then
+          dsMaster.DataSet.RecNo := vaRecNo
+        else if (vaRecNo > 0) then
+          dsMaster.DataSet.RecNo := dsMaster.DataSet.RecordCount - 1;
+      end;
+
   finally
     viewRegistros.EndUpdate;
   end;
@@ -353,7 +366,7 @@ begin
       end;
     end;
 
-  if PesquisaPadrao = tppTodos then
+  if PesquisaPadrao in [tppData, tppTodos] then
     ppuPesquisar
   else // vai apenas abrir o cds sem trazer nada
     pprEfetuarPesquisa;
@@ -456,6 +469,7 @@ end;
 procedure TfrmBasicoCrud.ppuRetornar;
 begin
   pcPrincipal.ActivePage := tabPesquisa;
+  pprEfetuarPesquisa;
 end;
 
 procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
@@ -569,10 +583,10 @@ begin
     end;
   if pnData.Visible then
     begin
-      if (EditDataInicial.Date = 0) then
+      if (EditDataInicialPesquisa.Date = 0) then
         raise Exception.Create('Informe a data inicial.');
 
-      if (EditDataFinal.Date = 0) then
+      if (EditDataFinalPesquisa.Date = 0) then
         raise Exception.Create('Informe a data final.');
     end;
 

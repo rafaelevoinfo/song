@@ -16,9 +16,10 @@ type
     coActive: string = 'ACTIVE';
     coLogin:string = 'LOGIN';
     coAtivo:string = 'ATIVO';
-    coSituacao:string = 'SITUACAO';
-    coSituacaoDiferente:string = 'SITUACAO_DIFERENTE';
-    coProjetos:string = 'PROJETOS';
+    coStatus:string = 'STATUS';
+    coStatusDiferente = 'STATUS_DIFERENTE';
+    coProjeto:string = 'PROJETO';
+
   end;
 
   TRFClientDataSet = class(TClientDataSet)

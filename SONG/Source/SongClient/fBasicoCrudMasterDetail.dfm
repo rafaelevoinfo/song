@@ -29,7 +29,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         object cxSplitter1: TcxSplitter
           Left = 1
           Top = 209
-          Width = 852
+          Width = 974
           Height = 6
           AlignSplitter = salBottom
           Control = pnDetail
@@ -37,14 +37,14 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         object pnDetail: TPanel
           Left = 1
           Top = 215
-          Width = 852
+          Width = 974
           Height = 188
           Align = alBottom
           TabOrder = 2
           object pcDetails: TcxPageControl
             Left = 1
             Top = 1
-            Width = 850
+            Width = 972
             Height = 186
             Align = alClient
             TabOrder = 0
@@ -52,7 +52,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             Properties.CustomButtons.Buttons = <>
             ClientRectBottom = 181
             ClientRectLeft = 2
-            ClientRectRight = 845
+            ClientRectRight = 967
             ClientRectTop = 25
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
@@ -60,7 +60,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
-                Width = 843
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -77,7 +77,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               object cxGridRegistrosDetail: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 843
+                Width = 965
                 Height = 131
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
@@ -101,7 +101,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
                   object ColumnAlterarDetail: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -151,19 +150,13 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
       end
     end
-    inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
-    end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0
-        Width = 854
+        Width = 976
         Height = 50
         Align = alTop
         TabOrder = 1
@@ -204,7 +197,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       object pnEditsCadastroDetail: TPanel
         Left = 0
         Top = 50
-        Width = 854
+        Width = 976
         Height = 398
         Align = alClient
         BevelOuter = bvNone

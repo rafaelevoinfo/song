@@ -205,7 +205,7 @@ inherited smLookup: TsmLookup
   object qlkAtividade: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select ATIVIDADE.ID,'
+      'select DISTINCT ATIVIDADE.ID,'
       '       ATIVIDADE.NOME,'
       '       ATIVIDADE.STATUS'
       'from ATIVIDADE'

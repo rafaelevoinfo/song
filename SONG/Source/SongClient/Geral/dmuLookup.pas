@@ -22,7 +22,7 @@ type
     repLcbPessoa: TcxEditRepositoryLookupComboBoxItem;
     dslkPessoa: TDataSource;
     repIcbTipoPerfil: TcxEditRepositoryImageComboBoxItem;
-    repIcbSituacaoProjeto: TcxEditRepositoryImageComboBoxItem;
+    repIcbStatusProjeto: TcxEditRepositoryImageComboBoxItem;
     cdslkOrganizacao: TRFClientDataSet;
     cdslkFinanciador: TRFClientDataSet;
     repLcbOrganizacao: TcxEditRepositoryLookupComboBoxItem;

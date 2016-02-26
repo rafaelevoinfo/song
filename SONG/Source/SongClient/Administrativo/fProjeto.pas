@@ -29,7 +29,7 @@ type
     Label5: TLabel;
     EditDataTermino: TcxDBDateEdit;
     Label6: TLabel;
-    cbSituacao: TcxDBImageComboBox;
+    cbStatusProjeto: TcxDBImageComboBox;
     Label7: TLabel;
     EditDescricao: TcxDBMemo;
     Label8: TLabel;
@@ -42,12 +42,11 @@ type
     viewRegistrosNOME: TcxGridDBColumn;
     viewRegistrosDATA_INICIO: TcxGridDBColumn;
     viewRegistrosDATA_TERMINO: TcxGridDBColumn;
-    viewRegistrosSTATUS: TcxGridDBColumn;
     viewRegistrosORCAMENTO: TcxGridDBColumn;
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailID_PESSOA: TcxGridDBColumn;
     viewRegistrosDetailFUNCAO: TcxGridDBColumn;
-    cbSituacaoPesquisa: TcxImageComboBox;
+    cbStatusPesquisa: TcxImageComboBox;
     tabDetailOrganizacao: TcxTabSheet;
     tabDetailFinanciador: TcxTabSheet;
     tabDetailDocumento: TcxTabSheet;
@@ -70,8 +69,6 @@ type
     ColumnAlterarDetailOrganizacao: TcxGridDBColumn;
     ColumnExcluirDetailOrganizacao: TcxGridDBColumn;
     level1: TcxGridLevel;
-    Label11: TLabel;
-    cbOrganizacao: TcxDBLookupComboBox;
     Panel4: TPanel;
     btnSalvarDetailOrganizacao: TButton;
     btnCancelarDetailOrganizacao: TButton;
@@ -84,13 +81,7 @@ type
     btnSalvarDetailDocumento: TButton;
     btnCancelarDetailDocumento: TButton;
     btnSalvarIncluirDetailDocumento: TButton;
-    Label12: TLabel;
-    cbFinanciador: TcxDBLookupComboBox;
-    Label15: TLabel;
-    EditNomeDocumento: TcxDBTextEdit;
-    Label16: TLabel;
     FileDialog: TOpenTextFileDialog;
-    EditCaminhoDocumento: TcxButtonEdit;
     Ac_CarregarArquivo: TAction;
     viewProjetoOrganizacaoID: TcxGridDBColumn;
     viewProjetoOrganizacaoID_ORGANIZACAO: TcxGridDBColumn;
@@ -100,8 +91,6 @@ type
     Label17: TLabel;
     cbContaCorrente: TcxDBLookupComboBox;
     viewRegistrosID_BANCO_CONTA_CORRENTE: TcxGridDBColumn;
-    EditObservacao: TcxDBMemo;
-    Label18: TLabel;
     pnProjetoFinanciador: TPanel;
     cxGrid2: TcxGrid;
     viewProjetoFinanciador: TcxGridDBTableView;
@@ -119,10 +108,26 @@ type
     viewPagamentosVALOR: TcxGridDBColumn;
     viewPagamentosDATA: TcxGridDBColumn;
     Ac_Excluir_Pagamento: TAction;
+    Ac_Salvar_Pagamento: TAction;
+    Label19: TLabel;
+    ColumnDownloadProjetoDocumento: TcxGridDBColumn;
+    Ac_Download: TAction;
+    SaveDialogDocumento: TSaveDialog;
+    pnCadastroOrganizacao: TPanel;
+    Label11: TLabel;
+    cbOrganizacao: TcxDBLookupComboBox;
+    pnCadastroFinanciador: TPanel;
+    Label12: TLabel;
+    cbFinanciador: TcxDBLookupComboBox;
+    Label18: TLabel;
+    EditObservacao: TcxDBMemo;
     rgPagamentos: TcxGroupBox;
     pnEditsPagamento: TPanel;
     Label14: TLabel;
     Label13: TLabel;
+    btnSalvarPagamento: TButton;
+    EditDataPagamento: TcxDateEdit;
+    EditValorPagamento: TcxCurrencyEdit;
     cxGrid5: TcxGrid;
     viewPagamentosCadastro: TcxGridDBTableView;
     Column1: TcxGridDBColumn;
@@ -130,14 +135,12 @@ type
     Column3: TcxGridDBColumn;
     Column4: TcxGridDBColumn;
     level2: TcxGridLevel;
-    btnSalvarPagamento: TButton;
-    Ac_Salvar_Pagamento: TAction;
-    EditDataPagamento: TcxDateEdit;
-    Label19: TLabel;
-    EditValorPagamento: TcxCurrencyEdit;
-    ColumnDownloadProjetoDocumento: TcxGridDBColumn;
-    Ac_Download: TAction;
-    SaveDialogDocumento: TSaveDialog;
+    pnCadastroDocumento: TPanel;
+    Label15: TLabel;
+    EditNomeDocumento: TcxDBTextEdit;
+    Label16: TLabel;
+    EditCaminhoDocumento: TcxButtonEdit;
+    viewRegistrosSTATUS: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
@@ -166,7 +169,7 @@ type
   public
     procedure ppuBaixarArquivo(ipId: Integer);
   public const
-    coPesqPorSituacao = 4;
+    coPesqPorStatus = 4;
 
   end;
 
@@ -242,12 +245,12 @@ end;
 
 procedure TfrmProjeto.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
 begin
-  EditPesquisa.Visible := cbPesquisarPor.EditValue <> coPesqPorSituacao;
-  cbSituacaoPesquisa.Visible := not EditPesquisa.Visible;
-  if cbPesquisarPor.EditValue <> coPesqPorSituacao then
+  EditPesquisa.Visible := cbPesquisarPor.EditValue <> coPesqPorStatus;
+  cbStatusPesquisa.Visible := not EditPesquisa.Visible;
+  if cbPesquisarPor.EditValue <> coPesqPorStatus then
     inherited
   else
-    TUtils.fpuFocar(cbSituacao);
+    TUtils.fpuFocar(cbStatusPesquisa);
 
 end;
 
@@ -307,8 +310,8 @@ end;
 procedure TfrmProjeto.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
-  if (cbPesquisarPor.EditValue = coPesqPorSituacao) then
-    dmAdministrativo.cdsProjeto.ppuAddParametro(TParametros.coSituacao, cbSituacaoPesquisa.EditValue);
+  if (cbPesquisarPor.EditValue = coPesqPorStatus) then
+    dmAdministrativo.cdsProjeto.ppuAddParametro(TParametros.coStatus, cbStatusPesquisa.EditValue);
 end;
 
 procedure TfrmProjeto.pprDefinirTabDetailCadastro;
@@ -351,8 +354,8 @@ end;
 procedure TfrmProjeto.pprValidarPesquisa;
 begin
   inherited;
-  if cbSituacaoPesquisa.Visible and VarIsNull(cbSituacaoPesquisa.EditValue) then
-    raise TControlException.Create('Informe a situação a ser pesquisada.', cbSituacaoPesquisa);
+  if cbStatusPesquisa.Visible and VarIsNull(cbStatusPesquisa.EditValue) then
+    raise TControlException.Create('Informe a situação a ser pesquisada.', cbStatusPesquisa);
 end;
 
 procedure TfrmProjeto.ppuBaixarArquivo(ipId: Integer);
@@ -377,9 +380,9 @@ end;
 procedure TfrmProjeto.ppuIncluirDetail;
 begin
   inherited;
-  if pcPrincipal.ActivePage = tabCadastroDetailDocumento then
+  if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Documento then
     EditCaminhoDocumento.Text := ''
-  else if pcDetails.ActivePage = tabCadastroDetailFinanciador then
+  else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     ppvLimparEditsPagamento;
 end;
 

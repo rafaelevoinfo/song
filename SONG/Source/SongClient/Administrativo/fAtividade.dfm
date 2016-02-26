@@ -1,16 +1,11 @@
 inherited frmAtividade: TfrmAtividade
   ActiveControl = nil
   Caption = 'Atividades'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
+  ExplicitTop = -93
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 453
@@ -41,11 +36,11 @@ inherited frmAtividade: TfrmAtividade
             TabOrder = 0
             ExplicitLeft = 265
             ExplicitWidth = 153
-            inherited EditDataInicial: TcxDateEdit
+            inherited EditDataInicialPesquisa: TcxDateEdit
               ExplicitWidth = 130
               Width = 130
             end
-            inherited EditDataFinal: TcxDateEdit
+            inherited EditDataFinalPesquisa: TcxDateEdit
               ExplicitWidth = 130
               Width = 130
             end
@@ -86,7 +81,7 @@ inherited frmAtividade: TfrmAtividade
             TabOrder = 1
             ExplicitLeft = 422
           end
-          object cbProjetos: TcxCheckComboBox
+          object cbProjetosPesquisa: TcxCheckComboBox
             Left = 2
             Top = 20
             Properties.EmptySelectionText = 'Todos'
@@ -103,6 +98,7 @@ inherited frmAtividade: TfrmAtividade
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
+            OnFocusedRecordChanged = viewRegistrosFocusedRecordChanged
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
@@ -113,80 +109,81 @@ inherited frmAtividade: TfrmAtividade
               Options.Editing = False
               Width = 383
             end
-            object viewRegistrosID_SOLICITANTE: TcxGridDBColumn [2]
+            object viewRegistrosID_PROJETO: TcxGridDBColumn [2]
+              DataBinding.FieldName = 'ID_PROJETO'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosNOME_PROJETO: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'NOME_PROJETO'
+              Options.Editing = False
+              Width = 160
+            end
+            object viewRegistrosID_SOLICITANTE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'ID_SOLICITANTE'
               RepositoryItem = dmLookup.repLcbPessoa
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 131
             end
-            object viewRegistrosID_RESPONSAVEL: TcxGridDBColumn [3]
+            object viewRegistrosID_RESPONSAVEL: TcxGridDBColumn [5]
               DataBinding.FieldName = 'ID_RESPONSAVEL'
               RepositoryItem = dmLookup.repLcbPessoa
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 157
             end
-            object viewRegistrosSTATUS: TcxGridDBColumn [4]
+            object viewRegistrosSTATUS: TcxGridDBColumn [6]
               DataBinding.FieldName = 'STATUS'
               PropertiesClassName = 'TcxImageComboBoxProperties'
               Properties.Items = <>
               Properties.OnEditValueChanged = viewRegistrosSTATUSPropertiesEditValueChanged
               RepositoryItem = dmLookup.repIcbStatusAtividade
+              Options.Editing = False
               Width = 129
             end
-            object viewRegistrosDATA_INICIAL: TcxGridDBColumn [5]
+            object viewRegistrosDATA_INICIAL: TcxGridDBColumn [7]
               DataBinding.FieldName = 'DATA_INICIAL'
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 63
             end
-            object viewRegistrosDATA_FINAL: TcxGridDBColumn [6]
+            object viewRegistrosDATA_FINAL: TcxGridDBColumn [8]
               DataBinding.FieldName = 'DATA_FINAL'
               Options.Editing = False
               Options.ShowEditButtons = isebNever
-              Width = 55
+              Width = 63
             end
-            object viewRegistrosNOTIFICAR_ENVOLVIDOS: TcxGridDBColumn [7]
+            object viewRegistrosNOTIFICAR_ENVOLVIDOS: TcxGridDBColumn [9]
               DataBinding.FieldName = 'NOTIFICAR_ENVOLVIDOS'
+              RepositoryItem = dmLookup.RepIcbNaoSim
               Visible = False
               Options.Editing = False
             end
           end
         end
-        inherited cxSplitter1: TcxSplitter
-          ExplicitWidth = 974
-        end
         inherited pnDetail: TPanel
-          ExplicitWidth = 974
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabDetailComentario
+            Properties.ActivePage = tabDetailProjeto
             OnChange = pcDetailsChange
-            ExplicitWidth = 972
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                ExplicitWidth = 965
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
+                    Options.Editing = False
                   end
                   object viewRegistrosDetailID_PESSOA: TcxGridDBColumn [1]
                     DataBinding.FieldName = 'ID_PESSOA'
                     RepositoryItem = dmLookup.repLcbPessoa
+                    Options.Editing = False
+                    Options.ShowEditButtons = isebNever
                     Width = 336
                   end
                   object viewRegistrosDetailFUNCAO: TcxGridDBColumn [2]
                     DataBinding.FieldName = 'FUNCAO'
+                    Options.Editing = False
                   end
                 end
               end
@@ -201,7 +198,6 @@ inherited frmAtividade: TfrmAtividade
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object Button2: TButton
                   Left = 0
                   Top = 1
@@ -239,14 +235,20 @@ inherited frmAtividade: TfrmAtividade
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
                   object viewProjetosID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
+                    Options.Editing = False
                   end
                   object viewProjetosID_PROJETO: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_PROJETO'
+                    Visible = False
+                    Options.Editing = False
                     Width = 296
+                  end
+                  object viewProjetosNOME_PROJETO: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_PROJETO'
+                    Options.Editing = False
                   end
                   object cxGridDBColumn6: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -302,7 +304,6 @@ inherited frmAtividade: TfrmAtividade
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirVinculo: TButton
                   Left = 0
                   Top = 1
@@ -340,23 +341,35 @@ inherited frmAtividade: TfrmAtividade
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
                   object viewDetailVinculoID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewDetailVinculoNOME_ATIVIDADE_ORIGEM: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_ATIVIDADE_ORIGEM'
+                    Options.Editing = False
+                    Width = 239
                   end
                   object viewDetailVinculoTIPO_VINCULO: TcxGridDBColumn
                     DataBinding.FieldName = 'TIPO_VINCULO'
                     RepositoryItem = dmLookup.repIcbTipoVinculo
-                    Width = 76
+                    Options.Editing = False
+                    Width = 109
+                  end
+                  object viewDetailVinculoID_ATIVIDADE_VINCULO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_ATIVIDADE_VINCULO'
+                    Visible = False
+                    Options.Editing = False
                   end
                   object viewDetailVinculoID_ATIVIDADE_ORIGEM: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_ATIVIDADE_ORIGEM'
-                    Width = 114
+                    Visible = False
+                    Options.Editing = False
                   end
-                  object viewDetailVinculoID_ATIVIDADE_ALVO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_ATIVIDADE_ALVO'
-                    Width = 110
+                  object viewDetailVinculoNOME_ATIVIDADE_VINCULO: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_ATIVIDADE_VINCULO'
+                    Options.Editing = False
                   end
                   object cxGridDBColumn4: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -412,7 +425,6 @@ inherited frmAtividade: TfrmAtividade
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object Button3: TButton
                   Left = 0
                   Top = 1
@@ -450,17 +462,20 @@ inherited frmAtividade: TfrmAtividade
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
                   object cxGridDBTableView1ID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
+                    Options.Editing = False
                   end
                   object cxGridDBTableView1NOME: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME'
+                    Options.Editing = False
                     Width = 462
                   end
                   object cxGridDBTableView1DATA_UPLOAD: TcxGridDBColumn
                     DataBinding.FieldName = 'DATA_UPLOAD'
+                    Options.Editing = False
+                    Options.ShowEditButtons = isebNever
                   end
                   object cxGridDBColumn3: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -516,7 +531,6 @@ inherited frmAtividade: TfrmAtividade
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object Button4: TButton
                   Left = 0
                   Top = 1
@@ -554,21 +568,25 @@ inherited frmAtividade: TfrmAtividade
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
                   object viewDetailComentarioID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
+                    Options.Editing = False
                   end
                   object viewDetailComentarioID_PESSOA: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_PESSOA'
+                    Options.Editing = False
+                    Options.ShowEditButtons = isebNever
                     Width = 252
                   end
                   object viewDetailComentarioCOMENTARIO: TcxGridDBColumn
                     DataBinding.FieldName = 'COMENTARIO'
+                    Options.Editing = False
                     Width = 358
                   end
                   object viewDetailComentarioDATA_HORA: TcxGridDBColumn
                     DataBinding.FieldName = 'DATA_HORA'
+                    Options.Editing = False
                     Width = 148
                   end
                   object cxGridDBColumn11: TcxGridDBColumn
@@ -620,7 +638,6 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitWidth = 976
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 5
@@ -636,7 +653,7 @@ inherited frmAtividade: TfrmAtividade
           Width = 66
           Height = 13
           Caption = 'Data de In'#237'cio'
-          FocusControl = EditDataInicio
+          FocusControl = EditDataInicioAtividade
         end
         object Label6: TLabel
           Left = 519
@@ -644,7 +661,7 @@ inherited frmAtividade: TfrmAtividade
           Width = 79
           Height = 13
           Caption = 'Data de T'#233'rmino'
-          FocusControl = EditDataTermino
+          FocusControl = EditDataTerminoAtividade
         end
         object Label7: TLabel
           Left = 6
@@ -693,7 +710,7 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 0
           Width = 421
         end
-        object EditDataInicio: TcxDBDateEdit
+        object EditDataInicioAtividade: TcxDBDateEdit
           Left = 428
           Top = 17
           DataBinding.DataField = 'DATA_INICIAL'
@@ -703,7 +720,7 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 1
           Width = 84
         end
-        object EditDataTermino: TcxDBDateEdit
+        object EditDataTerminoAtividade: TcxDBDateEdit
           Left = 517
           Top = 17
           DataBinding.DataField = 'DATA_FINAL'
@@ -788,19 +805,7 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
-      inherited pnBotoesCadastroDetail: TPanel
-        Width = 976
-        TabOrder = 0
-        ExplicitWidth = 976
-      end
       inherited pnEditsCadastroDetail: TPanel
-        Width = 976
-        TabOrder = 1
-        ExplicitWidth = 976
         object Label11: TLabel
           Left = 5
           Top = 43
@@ -840,31 +845,13 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailProjeto: TcxTabSheet
       Caption = 'tabCadastroDetailProjeto'
       ImageIndex = 3
-      ExplicitLeft = -100
-      ExplicitTop = -48
-      object Label13: TLabel
-        Left = 5
-        Top = 59
-        Width = 58
-        Height = 13
-        Caption = 'Projeto (F2)'
-        FocusControl = cbProjeto
-      end
-      object Label14: TLabel
-        Left = 4
-        Top = 99
-        Width = 58
-        Height = 13
-        Caption = 'Observa'#231#227'o'
-      end
       object pnCadastroDetailProjeto: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
-        ExplicitTop = 8
+        TabOrder = 1
         object btnSalvarProjeto: TButton
           AlignWithMargins = True
           Left = 4
@@ -899,60 +886,139 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 1
         end
       end
-      object cbProjeto: TcxDBLookupComboBox
-        Left = 3
-        Top = 75
-        RepositoryItem = dmLookup.repLcbProjeto
-        DataBinding.DataField = 'ID_PROJETO'
-        DataBinding.DataSource = dsAtividade_Projeto
-        Properties.ListColumns = <>
-        TabOrder = 1
-        Width = 209
-      end
-      object EditObsAtividadeProjeto: TcxDBMemo
-        Left = 3
-        Top = 115
-        DataBinding.DataField = 'OBSERVACAO'
-        DataBinding.DataSource = dsAtividade_Projeto
-        TabOrder = 2
-        Height = 89
-        Width = 596
-      end
-      object Button1: TButton
-        Left = 215
-        Top = 75
-        Width = 22
-        Height = 21
-        Action = Ac_Pesquisar_Projeto
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 3
+      object pnCadastroProjeto: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 400
+        ExplicitTop = 208
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label13: TLabel
+          Left = 6
+          Top = 3
+          Width = 58
+          Height = 13
+          Caption = 'Projeto (F2)'
+          FocusControl = cbProjeto
+        end
+        object Label14: TLabel
+          Left = 5
+          Top = 43
+          Width = 58
+          Height = 13
+          Caption = 'Observa'#231#227'o'
+        end
+        object cbProjeto: TcxDBLookupComboBox
+          Left = 4
+          Top = 19
+          RepositoryItem = dmLookup.repLcbProjeto
+          DataBinding.DataField = 'ID_PROJETO'
+          DataBinding.DataSource = dsAtividade_Projeto
+          Properties.ListColumns = <>
+          TabOrder = 0
+          Width = 209
+        end
+        object EditObsAtividadeProjeto: TcxDBMemo
+          Left = 4
+          Top = 59
+          DataBinding.DataField = 'OBSERVACAO'
+          DataBinding.DataSource = dsAtividade_Projeto
+          TabOrder = 1
+          Height = 89
+          Width = 596
+        end
+        object Button1: TButton
+          Left = 216
+          Top = 19
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Projeto
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 2
+        end
       end
     end
     object tabCadastroDetailVinculo: TcxTabSheet
       Caption = 'tabCadastroDetailVinculo'
       ImageIndex = 4
-      object Label15: TLabel
-        Left = 6
-        Top = 51
-        Width = 71
-        Height = 13
-        Caption = 'Tipo de V'#237'nculo'
-        FocusControl = cbTipoVinculo
-      end
-      object Label16: TLabel
-        Left = 5
-        Top = 91
-        Width = 58
-        Height = 13
-        Caption = 'Observa'#231#227'o'
-      end
-      object Label18: TLabel
-        Left = 214
-        Top = 52
-        Width = 68
-        Height = 13
-        Caption = 'Atividade (F2)'
-        FocusControl = cbAtividadeVinculo
+      object pnCadastroVinculo: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 400
+        ExplicitTop = 208
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label15: TLabel
+          Left = 6
+          Top = 3
+          Width = 71
+          Height = 13
+          Caption = 'Tipo de V'#237'nculo'
+          FocusControl = cbTipoVinculo
+        end
+        object Label18: TLabel
+          Left = 214
+          Top = 4
+          Width = 68
+          Height = 13
+          Caption = 'Atividade (F2)'
+          FocusControl = cbAtividadeVinculo
+        end
+        object Label16: TLabel
+          Left = 5
+          Top = 43
+          Width = 58
+          Height = 13
+          Caption = 'Observa'#231#227'o'
+        end
+        object cbTipoVinculo: TcxDBImageComboBox
+          Left = 5
+          Top = 20
+          RepositoryItem = dmLookup.repIcbTipoVinculo
+          DataBinding.DataField = 'TIPO_VINCULO'
+          DataBinding.DataSource = dsAtividade_Vinculo
+          Properties.Items = <>
+          TabOrder = 0
+          Width = 204
+        end
+        object cbAtividadeVinculo: TcxDBLookupComboBox
+          Left = 212
+          Top = 20
+          RepositoryItem = dmLookup.repLcbAtividade
+          DataBinding.DataField = 'ID_ATIVIDADE_VINCULO'
+          DataBinding.DataSource = dsAtividade_Vinculo
+          Properties.ListColumns = <>
+          TabOrder = 1
+          Width = 209
+        end
+        object btnPesquisarAtividade: TButton
+          Left = 422
+          Top = 20
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Projeto
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 2
+        end
+        object EditObservacaoVinculo: TcxDBMemo
+          Left = 4
+          Top = 59
+          DataBinding.DataField = 'OBSERVACAO'
+          DataBinding.DataSource = dsAtividade_Vinculo
+          TabOrder = 3
+          Height = 89
+          Width = 596
+        end
       end
       object pnCadastroDetailVinculo: TPanel
         Left = 0
@@ -960,8 +1026,7 @@ inherited frmAtividade: TfrmAtividade
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
-        ExplicitTop = 8
+        TabOrder = 1
         object btnSalvarAtividadeVinculo: TButton
           AlignWithMargins = True
           Left = 4
@@ -996,79 +1061,17 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 1
         end
       end
-      object EditObservacaoVinculo: TcxDBMemo
-        Left = 4
-        Top = 107
-        DataBinding.DataField = 'OBSERVACAO'
-        DataBinding.DataSource = dsAtividade_Vinculo
-        TabOrder = 2
-        Height = 89
-        Width = 596
-      end
-      object cbTipoVinculo: TcxDBImageComboBox
-        Left = 5
-        Top = 68
-        RepositoryItem = dmLookup.repIcbTipoVinculo
-        DataBinding.DataField = 'TIPO_VINCULO'
-        DataBinding.DataSource = dsAtividade_Vinculo
-        Properties.Items = <>
-        TabOrder = 1
-        Width = 204
-      end
-      object cbAtividadeVinculo: TcxDBLookupComboBox
-        Left = 212
-        Top = 68
-        RepositoryItem = dmLookup.repLcbAtividade
-        DataBinding.DataField = 'ID_ATIVIDADE_ALVO'
-        DataBinding.DataSource = dsAtividade_Vinculo
-        Properties.ListColumns = <>
-        TabOrder = 3
-        Width = 209
-      end
-      object btnPesquisarAtividade: TButton
-        Left = 422
-        Top = 68
-        Width = 22
-        Height = 21
-        Action = Ac_Pesquisar_Projeto
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 4
-      end
     end
     object tabCadastroDetailArquivo: TcxTabSheet
       Caption = 'tabCadastroDetailArquivo'
       ImageIndex = 5
-      object Label19: TLabel
-        Left = 5
-        Top = 54
-        Width = 82
-        Height = 13
-        Caption = 'Nome do Arquivo'
-        FocusControl = EditNomeArquivo
-      end
-      object Label20: TLabel
-        Left = 5
-        Top = 97
-        Width = 114
-        Height = 13
-        Caption = 'Caminho para o arquivo'
-        FocusControl = EditNomeArquivo
-      end
-      object Label21: TLabel
-        Left = 6
-        Top = 140
-        Width = 46
-        Height = 13
-        Caption = 'Descri'#231#227'o'
-      end
       object pnCadastroDetailArquivo: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
-        ExplicitTop = 8
+        TabOrder = 1
         object btnSalvarArquivo: TButton
           AlignWithMargins = True
           Left = 4
@@ -1103,56 +1106,83 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 1
         end
       end
-      object EditNomeArquivo: TcxDBTextEdit
-        Left = 4
-        Top = 70
-        DataBinding.DataField = 'NOME'
-        DataBinding.DataSource = dsAtividade_Arquivo
-        TabOrder = 1
-        Width = 317
-      end
-      object EditCaminhoArquivo: TcxButtonEdit
-        Left = 5
-        Top = 113
-        Properties.Buttons = <
-          item
-            Action = Ac_CarregarArquivo
-            Default = True
-            Kind = bkGlyph
-          end>
-        Properties.Images = dmPrincipal.imgIcons_16
-        TabOrder = 2
-        Width = 316
-      end
-      object EditDescricaoArquivo: TcxDBMemo
-        Left = 5
-        Top = 155
-        DataBinding.DataField = 'DESCRICAO'
-        DataBinding.DataSource = dsAtividade_Arquivo
-        TabOrder = 3
-        Height = 89
-        Width = 596
+      object pnCadastroArquivo: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 616
+        ExplicitTop = 83
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label19: TLabel
+          Left = 5
+          Top = 6
+          Width = 82
+          Height = 13
+          Caption = 'Nome do Arquivo'
+          FocusControl = EditNomeArquivo
+        end
+        object Label20: TLabel
+          Left = 5
+          Top = 49
+          Width = 114
+          Height = 13
+          Caption = 'Caminho para o arquivo'
+          FocusControl = EditNomeArquivo
+        end
+        object Label21: TLabel
+          Left = 6
+          Top = 92
+          Width = 46
+          Height = 13
+          Caption = 'Descri'#231#227'o'
+        end
+        object EditNomeArquivo: TcxDBTextEdit
+          Left = 4
+          Top = 22
+          DataBinding.DataField = 'NOME'
+          DataBinding.DataSource = dsAtividade_Arquivo
+          TabOrder = 0
+          Width = 317
+        end
+        object EditCaminhoArquivo: TcxButtonEdit
+          Left = 5
+          Top = 65
+          Properties.Buttons = <
+            item
+              Action = Ac_CarregarArquivo
+              Default = True
+              Kind = bkGlyph
+            end>
+          Properties.Images = dmPrincipal.imgIcons_16
+          TabOrder = 1
+          Width = 316
+        end
+        object EditDescricaoArquivo: TcxDBMemo
+          Left = 5
+          Top = 107
+          DataBinding.DataField = 'DESCRICAO'
+          DataBinding.DataSource = dsAtividade_Arquivo
+          TabOrder = 2
+          Height = 89
+          Width = 596
+        end
       end
     end
     object tabCadastroDetailComentario: TcxTabSheet
       Caption = 'tabCadastroDetailComentario'
       ImageIndex = 6
-      object Label22: TLabel
-        Left = 4
-        Top = 56
-        Width = 55
-        Height = 13
-        Caption = 'Coment'#225'rio'
-        FocusControl = EditComentario
-      end
       object pnCadastroDetailComentario: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
-        ExplicitTop = 8
+        TabOrder = 1
         object btnSalvarComentario: TButton
           AlignWithMargins = True
           Left = 4
@@ -1187,14 +1217,35 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 1
         end
       end
-      object EditComentario: TcxDBMemo
-        Left = 3
-        Top = 71
-        DataBinding.DataField = 'COMENTARIO'
-        DataBinding.DataSource = dsAtividade_Comentario
-        TabOrder = 1
-        Height = 89
-        Width = 596
+      object pnCadastroComentario: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 136
+        ExplicitTop = 112
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label22: TLabel
+          Left = 5
+          Top = 3
+          Width = 55
+          Height = 13
+          Caption = 'Coment'#225'rio'
+          FocusControl = EditComentario
+        end
+        object EditComentario: TcxDBMemo
+          Left = 4
+          Top = 19
+          DataBinding.DataField = 'COMENTARIO'
+          DataBinding.DataSource = dsAtividade_Comentario
+          TabOrder = 0
+          Height = 89
+          Width = 596
+        end
       end
     end
   end

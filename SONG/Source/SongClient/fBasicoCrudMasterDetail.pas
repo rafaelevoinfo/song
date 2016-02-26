@@ -124,7 +124,7 @@ procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailExecute(Sender: TObject);
 begin
   inherited;
   if fpuSalvarDetail then
-    pcPrincipal.ActivePage := tabPesquisa;
+   ppuRetornar;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailUpdate(Sender: TObject);

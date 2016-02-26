@@ -3,6 +3,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -74,15 +75,17 @@ inherited frmBasicoCrud: TfrmBasicoCrud
               Height = 13
               Caption = 'At'#233
             end
-            object EditDataInicial: TcxDateEdit
+            object EditDataInicialPesquisa: TcxDateEdit
               Left = 23
               Top = 0
+              Properties.ShowTime = False
               TabOrder = 0
               Width = 106
             end
-            object EditDataFinal: TcxDateEdit
+            object EditDataFinalPesquisa: TcxDateEdit
               Left = 23
               Top = 20
+              Properties.ShowTime = False
               TabOrder = 1
               Width = 106
             end
@@ -206,7 +209,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             OptionsData.Inserting = False
             OptionsSelection.MultiSelect = True
             OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-            OptionsView.ShowEditButtons = gsebAlways
             OptionsView.GroupByBox = False
             object ColumnAlterar: TcxGridDBColumn
               Caption = 'Alterar'
@@ -257,10 +259,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

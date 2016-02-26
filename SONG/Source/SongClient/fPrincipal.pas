@@ -109,7 +109,9 @@ end;
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   inherited;
+  {$IFDEF DEBUG}
   ReportMemoryLeaksOnShutdown := True;
+  {$ENDIF}
 end;
 
 procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);

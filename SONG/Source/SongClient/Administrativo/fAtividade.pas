@@ -15,7 +15,8 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxCheckBox, cxCheckComboBox, uTypes, System.TypInfo, uControleAcesso, cxDBEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuPrincipal, cxMemo,
-  uClientDataSet, System.IOUtils, Vcl.ExtDlgs;
+  uClientDataSet, System.IOUtils, Vcl.ExtDlgs, uUtils,
+  System.RegularExpressions, System.DateUtils;
 
 type
   TfrmAtividade = class(TfrmBasicoCrudMasterDetail)
@@ -32,13 +33,13 @@ type
     viewRegistrosDATA_FINAL: TcxGridDBColumn;
     viewRegistrosNOTIFICAR_ENVOLVIDOS: TcxGridDBColumn;
     Label3: TLabel;
-    cbProjetos: TcxCheckComboBox;
+    cbProjetosPesquisa: TcxCheckComboBox;
     Label4: TLabel;
     EditNome: TcxDBTextEdit;
     Label5: TLabel;
-    EditDataInicio: TcxDBDateEdit;
+    EditDataInicioAtividade: TcxDBDateEdit;
     Label6: TLabel;
-    EditDataTermino: TcxDBDateEdit;
+    EditDataTerminoAtividade: TcxDBDateEdit;
     Label7: TLabel;
     cbSolicitante: TcxDBLookupComboBox;
     Label8: TLabel;
@@ -72,37 +73,17 @@ type
     btnSalvarProjeto: TButton;
     btnCancelarProjeto: TButton;
     btnSalvarIncluirProjeto: TButton;
-    Label13: TLabel;
-    cbProjeto: TcxDBLookupComboBox;
-    Label14: TLabel;
     dsAtividade_Projeto: TDataSource;
     dsAtividade_Vinculo: TDataSource;
     dsAtividade_Arquivo: TDataSource;
     dsAtividade_Comentario: TDataSource;
-    EditObsAtividadeProjeto: TcxDBMemo;
-    Label15: TLabel;
-    Label16: TLabel;
-    EditObservacaoVinculo: TcxDBMemo;
-    cbTipoVinculo: TcxDBImageComboBox;
     Label17: TLabel;
     cbProjetoPrincipal: TcxDBLookupComboBox;
     btnPesquisarProjeto: TButton;
     Ac_Pesquisar_Projeto: TAction;
-    Button1: TButton;
-    Label18: TLabel;
-    cbAtividadeVinculo: TcxDBLookupComboBox;
-    btnPesquisarAtividade: TButton;
-    Label19: TLabel;
-    EditNomeArquivo: TcxDBTextEdit;
-    Label20: TLabel;
-    EditCaminhoArquivo: TcxButtonEdit;
     Ac_CarregarArquivo: TAction;
     SaveDialogDocumento: TSaveDialog;
     FileDialog: TOpenTextFileDialog;
-    Label21: TLabel;
-    EditDescricaoArquivo: TcxDBMemo;
-    Label22: TLabel;
-    EditComentario: TcxDBMemo;
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailID_PESSOA: TcxGridDBColumn;
     viewRegistrosDetailFUNCAO: TcxGridDBColumn;
@@ -112,8 +93,6 @@ type
     viewDetailVinculo: TcxGridDBTableView;
     viewDetailVinculoID: TcxGridDBColumn;
     viewDetailVinculoTIPO_VINCULO: TcxGridDBColumn;
-    viewDetailVinculoID_ATIVIDADE_ORIGEM: TcxGridDBColumn;
-    viewDetailVinculoID_ATIVIDADE_ALVO: TcxGridDBColumn;
     cxGridDBColumn4: TcxGridDBColumn;
     cxGridDBColumn5: TcxGridDBColumn;
     cxGridLevel2: TcxGridLevel;
@@ -147,20 +126,60 @@ type
     viewDetailComentarioID_PESSOA: TcxGridDBColumn;
     viewDetailComentarioCOMENTARIO: TcxGridDBColumn;
     viewDetailComentarioDATA_HORA: TcxGridDBColumn;
+    pnCadastroVinculo: TPanel;
+    Label15: TLabel;
+    cbTipoVinculo: TcxDBImageComboBox;
+    Label18: TLabel;
+    cbAtividadeVinculo: TcxDBLookupComboBox;
+    btnPesquisarAtividade: TButton;
+    Label16: TLabel;
+    EditObservacaoVinculo: TcxDBMemo;
+    pnCadastroProjeto: TPanel;
+    Label13: TLabel;
+    cbProjeto: TcxDBLookupComboBox;
+    Label14: TLabel;
+    EditObsAtividadeProjeto: TcxDBMemo;
+    Button1: TButton;
+    pnCadastroArquivo: TPanel;
+    Label19: TLabel;
+    EditNomeArquivo: TcxDBTextEdit;
+    Label20: TLabel;
+    EditCaminhoArquivo: TcxButtonEdit;
+    Label21: TLabel;
+    EditDescricaoArquivo: TcxDBMemo;
+    pnCadastroComentario: TPanel;
+    EditComentario: TcxDBMemo;
+    Label22: TLabel;
+    viewProjetosNOME_PROJETO: TcxGridDBColumn;
+    viewDetailVinculoID_ATIVIDADE_VINCULO: TcxGridDBColumn;
+    viewDetailVinculoNOME_ATIVIDADE_VINCULO: TcxGridDBColumn;
+    viewRegistrosID_PROJETO: TcxGridDBColumn;
+    viewRegistrosNOME_PROJETO: TcxGridDBColumn;
+    viewDetailVinculoID_ATIVIDADE_ORIGEM: TcxGridDBColumn;
+    viewDetailVinculoNOME_ATIVIDADE_ORIGEM: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
+    procedure viewRegistrosFocusedRecordChanged(Sender: TcxCustomGridTableView;
+      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
   private
+    procedure ppvCarregarAtividadesVinculadas;
+
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprDefinirTabDetailCadastro; override;
+    procedure pprEfetuarPesquisa; override;
+
+    procedure pprCarregarProjetos;
   public
     procedure ppuIncluir; override;
     procedure ppuIncluirDetail; override;
+    procedure ppuRetornar; override;
 
   end;
 
@@ -201,13 +220,31 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PesquisaPadrao := tppTodos;
+
+  PesquisaPadrao := tppData;
+  EditDataInicialPesquisa.Date := IncDay(Now, -7);;
+  EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
   dmLookup.cdslkPessoa.Open;
 
-  dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coSituacaoDiferente],
+  pprCarregarProjetos;
+end;
+
+procedure TfrmAtividade.pprCarregarProjetos;
+begin
+  dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]); // recusado, cancelado, executado
 
+  cbProjetosPesquisa.Properties.Items.Clear;
+  TUtils.ppuPercorrerCds(dmLookup.cdslkProjeto,
+    procedure
+    var
+      vaProjeto: TcxCheckComboBoxItem;
+    begin
+      vaProjeto := cbProjetosPesquisa.Properties.Items.Add;
+      vaProjeto.Tag := dmLookup.cdslkProjetoID.AsInteger;
+      vaProjeto.Description := dmLookup.cdslkProjetoNOME.AsString;
+    end);
 end;
 
 function TfrmAtividade.fprGetPermissao: string;
@@ -229,8 +266,11 @@ begin
       then
         begin
           dmLookup.cdslkAtividade.ppuLimparParametros;
-          dmLookup.cdslkAtividade.ppuDataRequest(['PROJETO'], [dmAdministrativo.cdsAtividadeID_PROJETO.AsInteger]);
+          dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coProjeto, TParametros.coStatusDiferente],
+            [dmAdministrativo.cdsAtividadeID_PROJETO.AsInteger, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString]);
         end;
+
+      ppvCarregarAtividadesVinculadas;
     end
   else if pcDetails.ActivePage = tabDetailArquivo then
     dsDetail.DataSet := dmAdministrativo.cdsAtividade_Arquivo
@@ -244,18 +284,52 @@ end;
 procedure TfrmAtividade.ppuIncluirDetail;
 begin
   inherited;
-  if pcPrincipal.ActivePage = tabCadastroDetailArquivo then
+  if dsDetail.DataSet = dmAdministrativo.cdsAtividade_Arquivo then
     EditCaminhoArquivo.Text := ''
-  else if pcDetails.ActivePage = tabCadastroDetailVinculo then
-    dmAdministrativo.cdsAtividade_VinculoTIPO_VINCULO.AsInteger := Ord(tvRelacionado);
+  else if dsDetail.DataSet = dmAdministrativo.cdsAtividade_Vinculo then
+    begin
+      dmAdministrativo.cdsAtividade_VinculoTIPO_VINCULO.AsInteger := Ord(tvRelacionado);
+      dmLookup.cdslkAtividade.Filter := TBancoDados.coId + ' <> ' + dmAdministrativo.cdsAtividadeID.AsString;
+      dmLookup.cdslkAtividade.Filtered := True;
+    end
+  else if dsDetail.DataSet = dmAdministrativo.cdsAtividade_Comentario then
+    dmAdministrativo.cdsAtividade_ComentarioID_PESSOA.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
+end;
+
+procedure TfrmAtividade.ppuRetornar;
+begin
+  inherited;
+  dmLookup.cdslkAtividade.Filtered := False;
 end;
 
 procedure TfrmAtividade.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+var
+  vaIndices: TArray<String>;
+  I: Integer;
+  vaCodigosProjetos: TStringList;
 begin
   inherited;
-  { TODO -orafae -c : Percorrer os itens e pegar os codigos dos projetos marcados 24/02/2016 23:28:30 }
-  // if (not VarIsNull(cbProjetos.EditValue)) and (cbProjetos.EditValue <> '') then
-  // dmAdministrativo.cdsProjeto.ppuAddParametro(TParametros.coProjetos, cbProjetos.EditValue);
+  if (not VarIsNull(cbProjetosPesquisa.EditValue)) and (cbProjetosPesquisa.EditValue <> '') then
+    begin
+      vaCodigosProjetos := TStringList.Create;
+      try
+        vaCodigosProjetos.Delimiter := coDelimitadorPadrao;
+        vaCodigosProjetos.StrictDelimiter := True;
+
+        vaIndices := TRegex.Split(Copy(cbProjetosPesquisa.EditValue, Pos(';', cbProjetosPesquisa.EditValue) + 1, Length(cbProjetosPesquisa.EditValue)
+          ), ',', [roIgnoreCase]);
+        for I := 0 to High(vaIndices) do
+          begin
+            vaCodigosProjetos.Add(cbProjetosPesquisa.Properties.Items[vaIndices[I].ToInteger].Tag.ToString());
+          end;
+
+        if vaCodigosProjetos.Count > 0 then
+          ipCds.ppuAddParametro(TParametros.coProjeto, vaCodigosProjetos.DelimitedText);
+      finally
+        vaCodigosProjetos.Clear;
+        vaCodigosProjetos.Free;
+      end;
+    end;
 end;
 
 procedure TfrmAtividade.pprDefinirTabDetailCadastro;
@@ -273,11 +347,20 @@ begin
     pcPrincipal.ActivePage := tabCadastroDetailComentario;
 end;
 
+procedure TfrmAtividade.pprEfetuarPesquisa;
+begin
+  inherited;
+  ppvCarregarAtividadesVinculadas;
+end;
+
 procedure TfrmAtividade.pprPreencherCamposPadroes(ipDataSet: TDataSet);
 begin
   inherited;
   if ipDataSet = dmAdministrativo.cdsAtividade_Comentario then
-    dmAdministrativo.cdsAtividade_ComentarioDATA_HORA.AsDateTime := StrToDateTime(dmPrincipal.FuncoesGeral.fpuDataHoraAtual);
+    dmAdministrativo.cdsAtividade_ComentarioDATA_HORA.AsDateTime := StrToDateTime(dmPrincipal.FuncoesGeral.fpuDataHoraAtual)
+  else if ipDataSet = dmAdministrativo.cdsAtividade_Vinculo then
+    dmAdministrativo.cdsAtividade_VinculoID_ATIVIDADE_ORIGEM.AsInteger := dmAdministrativo.cdsAtividadeID.AsInteger;
+
 end;
 
 procedure TfrmAtividade.ppuIncluir;
@@ -285,6 +368,31 @@ begin
   inherited;
   dmAdministrativo.cdsAtividadeSTATUS.AsInteger := 0; // programada
   dmAdministrativo.cdsAtividadeID_SOLICITANTE.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
+end;
+
+procedure TfrmAtividade.viewRegistrosFocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+  inherited;
+  ppvCarregarAtividadesVinculadas;
+end;
+
+procedure TfrmAtividade.ppvCarregarAtividadesVinculadas;
+begin
+  if pcDetails.ActivePage = tabDetailVinculo then
+    begin
+      if (not dmAdministrativo.cdsAtividade.Active) or (dmAdministrativo.cdsAtividade.RecordCount = 0) then
+        dmAdministrativo.cdsAtividade_Vinculo.Close
+      else if (not dmAdministrativo.cdsAtividade.Active) or
+        (dmAdministrativo.cdsAtividade_Vinculo.Params.ParamByName('ID_ATIVIDADE_ORIGEM').AsInteger <> dmAdministrativo.cdsAtividadeID.AsInteger) then
+        begin
+          dmAdministrativo.cdsAtividade_Vinculo.Close;
+          dmAdministrativo.cdsAtividade_Vinculo.Params.ParamByName('ID_ATIVIDADE_ORIGEM').AsInteger := dmAdministrativo.cdsAtividadeID.AsInteger;
+          dmAdministrativo.cdsAtividade_Vinculo.Open;
+        end;
+    end;
+
 end;
 
 procedure TfrmAtividade.viewRegistrosSTATUSPropertiesEditValueChanged(

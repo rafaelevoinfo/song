@@ -69,18 +69,22 @@ begin
       vaParam := ipParams[i];
       if ipTabela = 'ATIVIDADE' then
         begin
-          if vaParam.Name = 'PROJETO' then
+          if vaParam.Name = TParametros.coProjeto then
             begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text),false);
               Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO', 'ID_PROJETO',
                 TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+            end
+          else if vaParam.Name = TParametros.coStatusDiferente then
+            begin
+              Result := Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaParam.Text, ';', ', ', [rfReplaceAll]) + ') and ';
             end;
         end
       else if ipTabela = 'PROJETO' then
         begin
-          if vaParam.Name = TParametros.coSituacaoDiferente then
+          if vaParam.Name = TParametros.coStatusDiferente then
             begin
-              Result := Result + 'PROJETO.SITUACAO NOT IN (' + StringReplace(vaParam.Text, ';', ',',[rfReplaceAll]) + ') and ';
+              Result := Result + 'PROJETO.STATUS NOT IN (' + StringReplace(vaParam.Text, ';', ', ', [rfReplaceAll]) + ') and ';
             end;
         end;
     end;

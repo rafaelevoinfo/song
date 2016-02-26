@@ -26,7 +26,8 @@ type
 
   TTipoPerfil = (tpNormal,tpAdministrador);
 
-  TSituacaoProjeto = (spElaboracao, spAguardandoAnalise, spRecusado, spEmExecucao, spExecutado, spCancelado);
+  TStatusProjeto = (spElaboracao, spAguardandoAnalise, spRecusado, spEmExecucao, spExecutado, spCancelado);
+  TStatusAtividade = (saProgramada, saInicioAtrasado, saExecutando, saAtrasada, saFinalizada, saCancelada);
 
   TTipoVinculo = (tvRelacionado, tvDependente);
 
@@ -41,6 +42,7 @@ const
   coNomePadraoSongClient = 'SongClientV';
   coPastaAtualizacoes = 'Atualizacoes/';
   coExtensaoCompactacao = '.zip';
+  coDelimitadorPadrao = ';';
 
   AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir','Ativar', 'Inativar');
 

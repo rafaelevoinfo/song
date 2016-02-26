@@ -86,7 +86,6 @@ type
     cdsProjetoDATA_TERMINO: TDateField;
     cdsProjetoDESCRICAO: TStringField;
     cdsProjetoORCAMENTO: TBCDField;
-    cdsProjetoSITUACAO: TSmallintField;
     dsProjeto: TDataSource;
     cdsProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
     cdsProjeto_Financiador_Pagto: TRFClientDataSet;
@@ -137,8 +136,13 @@ type
     cdsAtividadeDESCRICAO: TStringField;
     cdsAtividadeID_PROJETO: TIntegerField;
     cdsAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
-    cdsAtividade_VinculoID_ATIVIDADE_ALVO: TIntegerField;
     cdsAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField;
+    cdsAtividade_ProjetoNOME_PROJETO: TStringField;
+    cdsAtividade_VinculoID_ATIVIDADE_VINCULO: TIntegerField;
+    cdsAtividade_VinculoNOME_ATIVIDADE_ORIGEM: TStringField;
+    cdsAtividade_VinculoNOME_ATIVIDADE_VINCULO: TStringField;
+    cdsProjetoSTATUS: TSmallintField;
+    cdsAtividadeNOME_PROJETO: TStringField;
   private
     { Private declarations }
   public
