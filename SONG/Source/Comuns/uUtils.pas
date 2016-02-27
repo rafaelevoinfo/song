@@ -33,6 +33,9 @@ type
     class function fpuExtrairData(ipDateString: string; ipPosicao: Integer): TDateTime;
 
     class function fpuConverterStringToArrayInteger(ipValor: string; ipDelimitador: string = ';'): TArray<Integer>;
+
+    class procedure ppuExtrairValorOperadorParametro(ipInput: string; var opValor: string; var opOperador: string; ipDelimitador: String);
+    class procedure ppuExtrairValorParametro(ipInput: string; var opValor: string; ipDelimitador: String);
   end;
 
 implementation
@@ -61,6 +64,28 @@ begin
   ipDestino.Seek(0, TSeekOrigin.soBeginning);
 end;
 
+class procedure TUtils.ppuExtrairValorOperadorParametro(ipInput: string; var opValor,
+  opOperador: string; ipDelimitador: String);
+var
+  vaArray: TArray<string>;
+begin
+  opOperador := TOperadores.coAnd;
+
+  vaArray := TRegEx.Split(ipInput, ipDelimitador);
+  opValor := vaArray[0];
+  if Length(vaArray) > 1 then
+    opOperador := vaArray[1];
+end;
+
+class procedure TUtils.ppuExtrairValorParametro(ipInput: string;
+  var opValor: string; ipDelimitador: String);
+var
+  vaArray: TArray<string>;
+begin
+  vaArray := TRegEx.Split(ipInput, ipDelimitador);
+  opValor := vaArray[0];
+end;
+
 class function TUtils.fpuConverterStringToArrayInteger(ipValor: string; ipDelimitador: string): TArray<Integer>;
 var
   vaArray: TArray<string>;
@@ -70,7 +95,7 @@ begin
   SetLength(Result, Length(vaArray));
   for I := 0 to High(vaArray) do
     begin
-       Result[i] := StrToIntDef(vaArray[i],0);
+      Result[I] := StrToIntDef(vaArray[I], 0);
     end;
 
 end;

@@ -162,37 +162,40 @@ function TsmAdministrativo.fprMontarWhere(ipTabela: string; ipParams: TParams): 
 var
   vaParam: TParam;
   i: Integer;
-
+  vaValor, vaOperador: string;
 begin
   Result := inherited;
   for i := 0 to ipParams.Count - 1 do
     begin
       vaParam := ipParams[i];
+      TUtils.ppuExtrairValorOperador(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
       if ipTabela = 'PESSOA' then
         begin
-          if vaParam.Name = TParametros.coLogin then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'login', vaParam.Text)
+          if vaParam.Name = TPArametros.coLogin then
+            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'login', vaValor, vaOperador)
         end
       else if ipTabela = 'PROJETO' then
         begin
-          if vaParam.Name = TParametros.coStatus then
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'SITUACAO', vaParam.Text.ToInteger())
+          if vaParam.Name = TPArametros.coStatus then
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'SITUACAO', vaValor.ToInteger(),vaOperador)
         end
       else if ipTabela = 'ATIVIDADE' then
         begin
-          if vaParam.Name = TParametros.coData then
+          if vaParam.Name = TPArametros.coData then
             begin
-              Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_INICIAL', TUtils.fpuExtrairData(vaParam.Text, 0),
-                TUtils.fpuExtrairData(vaParam.Text, 1), false);
-              Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_FINAL', TUtils.fpuExtrairData(vaParam.Text, 0),
-                TUtils.fpuExtrairData(vaParam.Text, 1), true);
+              Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_INICIAL', TUtils.fpuExtrairData(vaValor, 0),
+                TUtils.fpuExtrairData(vaValor, 1), TOperadores.coOR);
+              Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_FINAL', TUtils.fpuExtrairData(vaValor, 0),
+                TUtils.fpuExtrairData(vaValor, 1), TOperadores.coAnd);
             end
-          else if vaParam.Name = TParametros.coProjeto then
+          else if vaParam.Name = TPArametros.coProjeto then
             begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text),False);
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO','ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaValor),
+                TOperadores.coOR);
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO', 'ID_PROJETO',
+                TUtils.fpuConverterStringToArrayInteger(vaValor),vaOperador);
             end;
-         //   Result := Result + '(ATIVIDADE.ID_PROJETO IN ('+vaParam.Text+')) OR (ATIVIDADE_PROJETO.ID_PROJETO IN (' + vaParam.Text + ')) AND ';
+          // Result := Result + '(ATIVIDADE.ID_PROJETO IN ('+vaValor+')) OR (ATIVIDADE_PROJETO.ID_PROJETO IN (' + vaValor + ')) AND ';
         end;
     end;
 

@@ -370,6 +370,7 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
     end
     object cdsProjetoSTATUS: TSmallintField
+      Alignment = taLeftJustify
       DisplayLabel = 'Status'
       FieldName = 'STATUS'
       ProviderFlags = [pfInUpdate]

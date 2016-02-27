@@ -55,6 +55,8 @@ type
     rgStatus: TcxRadioGroup;
     btnSalvarIncluir: TButton;
     Ac_Salvar_Incluir: TAction;
+    btnUtilizar: TButton;
+    Ac_UtilizarSelecionado: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -70,8 +72,11 @@ type
     procedure ColumnExcluirGetProperties(Sender: TcxCustomGridTableItem;
       ARecord: TcxCustomGridRecord; var AProperties: TcxCustomEditProperties);
     procedure Ac_Salvar_IncluirExecute(Sender: TObject);
+    procedure Ac_UtilizarSelecionadoExecute(Sender: TObject);
   private
     FPesquisaPadrao: TTipoPesquisaPadrao;
+    FModoExecucao: TModoExecucao;
+    FIdEscolhido: Integer;
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
   protected
     // CRUD
@@ -101,16 +106,20 @@ type
   public
     property PesquisaPadrao: TTipoPesquisaPadrao read FPesquisaPadrao write SetPesquisaPadrao;
     property Permissao: string read fprGetPermissao;
+    property ModoExecucao: TModoExecucao read FModoExecucao;
+    property IdEscolhido: Integer read FIdEscolhido;
 
     constructor Create(AOwner: TComponent); override;
     // CRUD
     procedure ppuIncluir; virtual;
     procedure ppuAlterar(ipId: Integer); virtual;
     function fpuExcluir(ipIds: TArray<Integer>): Boolean; virtual;
-    function fpuSalvar: Boolean; virtual;
+    procedure ppuSalvar; virtual;
     procedure ppuCancelar; virtual;
     // PESQUISA
     procedure ppuPesquisar; virtual;
+    // MODO DE EXECUCAO DA TELA
+    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao); virtual;
   end;
 
 var
@@ -159,8 +168,8 @@ end;
 procedure TfrmBasicoCrud.Ac_SalvarExecute(Sender: TObject);
 begin
   inherited;
-  if fpuSalvar then
-    ppuRetornar;
+  ppuSalvar;
+  ppuRetornar;
 end;
 
 procedure TfrmBasicoCrud.Ac_SalvarUpdate(Sender: TObject);
@@ -173,8 +182,20 @@ end;
 procedure TfrmBasicoCrud.Ac_Salvar_IncluirExecute(Sender: TObject);
 begin
   inherited;
-  if fpuSalvar then
-    ppuIncluir;
+  ppuSalvar;
+  ppuIncluir;
+end;
+
+procedure TfrmBasicoCrud.Ac_UtilizarSelecionadoExecute(Sender: TObject);
+begin
+  inherited;
+  if dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) then
+    begin
+      FIdEscolhido := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
+      Close;
+    end
+  else
+    TMensagem.ppuShowMessage('Nenhum registro foi escolhido.');
 end;
 
 procedure TfrmBasicoCrud.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
@@ -265,13 +286,29 @@ begin
     begin
       if TMensagem.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
         begin
-          fpuSalvar;
+          ppuSalvar;
           Exit;
         end;
     end;
 
   TClientDataSet(dsMaster.DataSet).CancelUpdates;
   ppuRetornar;
+end;
+
+procedure TfrmBasicoCrud.ppuConfigurarModoExecucao(ipModo: TModoExecucao);
+begin
+  FModoExecucao := ipModo;
+  { TODO -orafae -c :   Implementar comportamentos diferentes para cada tipo de modo de execucao 26/02/2016 23:14:38 }
+  case ipModo of
+    meNormal:
+      ;
+    mePesquisa:
+      btnUtilizar.Visible := True;
+    meSomentePesquisa:
+      btnUtilizar.Visible := True;
+    meSomenteCadastro:
+      ;
+  end;
 end;
 
 procedure TfrmBasicoCrud.pprBeforeSalvar;
@@ -323,8 +360,15 @@ end;
 
 procedure TfrmBasicoCrud.pprExecutarSalvar;
 begin
-  if (dsMaster.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
-    dsMaster.DataSet.Post;
+  try
+    if (dsMaster.DataSet.State in [dsEdit, dsInsert]) then
+      dsMaster.DataSet.Post;
+  except
+    if dsMaster.DataSet.State = dsBrowse then
+      dsMaster.DataSet.Edit;
+
+    raise;
+  end;
 end;
 
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
@@ -484,14 +528,11 @@ begin
     ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger);
 end;
 
-function TfrmBasicoCrud.fpuSalvar: Boolean;
+procedure TfrmBasicoCrud.ppuSalvar;
 begin
-  Result := false;
   pprBeforeSalvar;
   pprExecutarSalvar;
   pprAfterSalvar;
-
-  Result := True;
 end;
 
 procedure TfrmBasicoCrud.pprConfigurarLabelsCamposObrigatorios();

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 24/02/2016 21:03:56
+// 26/02/2016 22:04:42
 //
 
 unit uFuncoes;
@@ -55,6 +55,7 @@ type
     FfpuValidarLoginCommand: TDBXCommand;
     FfpuValidarNomeProjetoCommand: TDBXCommand;
     FfpuInfoPessoaCommand: TDBXCommand;
+    FppuValidarFinalizarAtividadeCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -65,6 +66,7 @@ type
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
+    procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -356,6 +358,19 @@ begin
     Result := nil;
 end;
 
+procedure TsmFuncoesAdministrativoClient.ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
+begin
+  if FppuValidarFinalizarAtividadeCommand = nil then
+  begin
+    FppuValidarFinalizarAtividadeCommand := FDBXConnection.CreateCommand;
+    FppuValidarFinalizarAtividadeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuValidarFinalizarAtividadeCommand.Text := 'TsmFuncoesAdministrativo.ppuValidarFinalizarAtividade';
+    FppuValidarFinalizarAtividadeCommand.Prepare;
+  end;
+  FppuValidarFinalizarAtividadeCommand.Parameters[0].Value.SetInt32(ipIdAtividade);
+  FppuValidarFinalizarAtividadeCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesAdministrativoClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -401,6 +416,7 @@ begin
   FfpuValidarLoginCommand.DisposeOf;
   FfpuValidarNomeProjetoCommand.DisposeOf;
   FfpuInfoPessoaCommand.DisposeOf;
+  FppuValidarFinalizarAtividadeCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

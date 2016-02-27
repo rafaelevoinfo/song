@@ -12,14 +12,15 @@ type
     coTodos: string = 'TODOS';
     coID: string = 'ID';
     coNome: string = 'NOME';
-    coData:string = 'DATA';
+    coData: string = 'DATA';
     coActive: string = 'ACTIVE';
-    coLogin:string = 'LOGIN';
-    coAtivo:string = 'ATIVO';
-    coStatus:string = 'STATUS';
+    coLogin: string = 'LOGIN';
+    coAtivo: string = 'ATIVO';
+    coStatus: string = 'STATUS';
     coStatusDiferente = 'STATUS_DIFERENTE';
-    coProjeto:string = 'PROJETO';
+    coProjeto: string = 'PROJETO';
 
+    coDelimitador = '§';
   end;
 
   TRFClientDataSet = class(TClientDataSet)
@@ -32,8 +33,8 @@ type
   protected
     procedure InternalDelete; override;
   public
-    property Parametros:TList<string> read FParametros;
-    property ValoresParametros:TList<Variant> read FValores;
+    property Parametros: TList<string> read FParametros;
+    property ValoresParametros: TList<Variant> read FValores;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -43,8 +44,8 @@ type
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant); overload;
     procedure ppuDataRequest(); overload;
 
-    procedure ppuAddParametro(ipParametro: string; ipValor: Variant);
-    procedure ppuAddParametros(const ipParametros: Array of string; ipValores: Array of Variant);
+    procedure ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String = ' AND ');
+    procedure ppuAddParametros(const ipParametros: Array of string; ipValores: Array of Variant; ipOperadorAnd: Boolean = true);
     procedure ppuLimparParametros;
 
   published
@@ -91,18 +92,18 @@ begin
     ApplyUpdates(0);
 end;
 
-procedure TRFClientDataSet.ppuAddParametro(ipParametro: string; ipValor: Variant);
+procedure TRFClientDataSet.ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String = ' AND ');
 begin
   if (Trim(ipParametro) <> '') AND (NOT VarIsNull(ipValor)) then
     begin
       FParametros.Add(ipParametro);
-      FValores.Add(ipValor);
+      FValores.Add(VarToStr(ipValor) + TParametros.coDelimitador + ipOperador);
     end
   else
     raise Exception.Create('Valores inválidos para o parametro ou para o valor.');
 end;
 
-procedure TRFClientDataSet.ppuAddParametros(const ipParametros: array of string; ipValores: array of Variant);
+procedure TRFClientDataSet.ppuAddParametros(const ipParametros: array of string; ipValores: array of Variant; ipOperadorAnd: Boolean);
 var
   i: Integer;
 begin
@@ -134,11 +135,11 @@ begin
     // percorre todo o TList criando os parametros
     for i := 0 to FParametros.Count - 1 do
       begin
-        //parametros sem valores nao serao considerados
-        if VarToStrDef(FValores.Items[i],'').Trim <> '' then
+        // parametros sem valores nao serao considerados
+        if VarToStrDef(FValores.Items[i], '').Trim <> '' then
           vaParams.CreateParam(ftString, FParametros.Items[i], ptInput).AsString := FValores.Items[i];
       end;
-    //se nenhum parametro foi passado entao passo o parametro active para evitar de carregar toda a tabela
+    // se nenhum parametro foi passado entao passo o parametro active para evitar de carregar toda a tabela
     if vaParams.Count = 0 then
       vaParams.CreateParam(ftString, TParametros.coActive, ptInput).AsString := 'NAO_IMPORTA';
     // fecho o cds
@@ -150,8 +151,8 @@ begin
       Open;
     finally
       // limpo os TList
-//      FParametros.Clear;
-//      FValores.Clear;
+      // FParametros.Clear;
+      // FValores.Clear;
     end;
   finally
     vaParams.Free;

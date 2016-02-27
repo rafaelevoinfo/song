@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, Datasnap.Provider, Datasnap.DBClient,
   System.Generics.Collections, uTypes, System.RegularExpressions,
-  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery, System.Variants;
+  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery, System.Variants, uUtils;
 
 type
   TsmBasico = class(TDSServerModule)
@@ -108,7 +108,7 @@ end;
 
 function TsmBasico.fprGetNomeTabela(ipProvider: TDataSetProvider): string;
 begin
-  if TRegEx.IsMatch(ipProvider.Name,'^dspqlk',[]) then//lookups
+  if TRegEx.IsMatch(ipProvider.Name, '^dspqlk', []) then // lookups
     Result := Copy(ipProvider.Name, 7, Length(ipProvider.Name))
   else
     Result := Copy(ipProvider.Name, 5, Length(ipProvider.Name));
@@ -163,10 +163,10 @@ begin
   if ipWhere.Trim <> '' then
     begin
       // vamos adicionar o where e remover o ultimo and
-      if not TRegex.IsMatch(ipWhere, 'where ', [roIgnoreCase]) then
+      if not TRegEx.IsMatch(ipWhere, 'where ', [roIgnoreCase]) then
         Result := ' where ' + ipWhere;
       // remove o ultimo and
-      Result := TRegex.Replace(Result, 'and\s*$', '', [roIgnoreCase, roMultiLine]);
+      Result := TRegEx.Replace(Result, 'and\s*$', '', [roIgnoreCase, roMultiLine]);
     end;
 end;
 
@@ -174,26 +174,29 @@ function TsmBasico.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
 var
   vaParam: TParam;
   I: Integer;
+  vaValor, vaOperador: string;
 begin
   Result := '';
   // vamos verificar se tem os parametros default
   for I := 0 to ipParams.Count - 1 do
     begin
       vaParam := ipParams[I];
+      TUtils.ppuExtrairValorOperador(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+
       if vaParam.Name = TParametros.coID then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaParam.Text.ToInteger())
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
       else if vaParam.Name = TParametros.coNome then
-        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaParam.Text)
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaValor, vaOperador)
       else if vaParam.Name = TParametros.coActive then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1)
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1,vaOperador)
       else if vaParam.Name = TParametros.coAtivo then
         begin
-          if vaParam.Text.ToInteger <> coRegistroAtivo then
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaParam.Text.ToInteger())
+          if vaValor.ToInteger <> coRegistroAtivo then
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaValor.ToInteger(), vaOperador)
           else
             begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, coRegistroAtivo, false);
-              Result := Result + ipTabela+'.'+TBancoDados.coAtivo +' is null AND';
+              Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, coRegistroAtivo, TOperadores.coOR);
+              Result := Result + ipTabela + '.' + TBancoDados.coAtivo + ' is null AND';
             end;
 
         end;

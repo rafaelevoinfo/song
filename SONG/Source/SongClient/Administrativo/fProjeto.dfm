@@ -1,11 +1,16 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -37,6 +42,19 @@ inherited frmProjeto: TfrmProjeto
             TabOrder = 5
             Visible = False
             Width = 178
+          end
+        end
+        inherited pnBotoes: TPanel
+          ExplicitWidth = 419
+          inherited btnIncluir: TButton
+            ExplicitLeft = 0
+            ExplicitTop = 1
+            ExplicitHeight = 40
+          end
+          inherited btnUtilizar: TButton
+            ExplicitLeft = 86
+            ExplicitTop = 1
+            ExplicitHeight = 40
           end
         end
       end
@@ -106,6 +124,9 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -564,7 +585,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitWidth = 976
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -654,7 +674,7 @@ inherited frmProjeto: TfrmProjeto
           Left = 4
           Top = 60
           RepositoryItem = dmLookup.repIcbStatusProjeto
-          DataBinding.DataField = 'SITUACAO'
+          DataBinding.DataField = 'STATUS'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
           TabOrder = 4
@@ -698,13 +718,7 @@ inherited frmProjeto: TfrmProjeto
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
-      inherited pnBotoesCadastroDetail: TPanel
-        Width = 976
-        ExplicitWidth = 976
-      end
       inherited pnEditsCadastroDetail: TPanel
-        Width = 976
-        ExplicitWidth = 976
         object Label9: TLabel
           Left = 5
           Top = 6
@@ -793,7 +807,6 @@ inherited frmProjeto: TfrmProjeto
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 52
         object Label11: TLabel
           Left = 5
           Top = 6
@@ -867,10 +880,6 @@ inherited frmProjeto: TfrmProjeto
         BevelOuter = bvNone
         Caption = 'pnCadastroFinanciador'
         TabOrder = 1
-        ExplicitLeft = 400
-        ExplicitTop = 208
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label12: TLabel
           Left = 4
           Top = 6
@@ -921,9 +930,6 @@ inherited frmProjeto: TfrmProjeto
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitLeft = 2
-            ExplicitTop = -2
-            ExplicitWidth = 833
             object Label14: TLabel
               Left = 2
               Top = 4
@@ -973,10 +979,6 @@ inherited frmProjeto: TfrmProjeto
             LockedStateImageOptions.Effect = lsieDark
             LockedStateImageOptions.ShowText = True
             LockedStateImageOptions.Text = 'Pesquisando...'
-            ExplicitLeft = 2
-            ExplicitTop = 44
-            ExplicitWidth = 833
-            ExplicitHeight = 228
             object viewPagamentosCadastro: TcxGridDBTableView
               OnDblClick = viewRegistrosDetailDblClick
               Navigator.Buttons.CustomButtons = <>
@@ -1088,10 +1090,6 @@ inherited frmProjeto: TfrmProjeto
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitLeft = 400
-        ExplicitTop = 208
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label15: TLabel
           Left = 5
           Top = 6

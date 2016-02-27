@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, uUtils, uSQLGenerator, uClientDataSet,
-  System.RegularExpressions;
+  System.RegularExpressions, uTypes;
 
 type
   TsmLookup = class(TsmBasico)
@@ -62,29 +62,33 @@ function TsmLookup.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
 var
   i: Integer;
   vaParam: TParam;
+  vaValor, vaOperador:string;
 begin
   Result := inherited;
   for i := 0 to ipParams.Count - 1 do
     begin
       vaParam := ipParams[i];
+      TUtils.ppuExtrairValorOperador(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+
       if ipTabela = 'ATIVIDADE' then
         begin
           if vaParam.Name = TParametros.coProjeto then
             begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaParam.Text),false);
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaValor),
+                TOperadores.coOr);
               Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO', 'ID_PROJETO',
-                TUtils.fpuConverterStringToArrayInteger(vaParam.Text));
+                TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador);
             end
           else if vaParam.Name = TParametros.coStatusDiferente then
             begin
-              Result := Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaParam.Text, ';', ', ', [rfReplaceAll]) + ') and ';
+              Result := Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ') '+vaOperador;
             end;
         end
       else if ipTabela = 'PROJETO' then
         begin
           if vaParam.Name = TParametros.coStatusDiferente then
             begin
-              Result := Result + 'PROJETO.STATUS NOT IN (' + StringReplace(vaParam.Text, ';', ', ', [rfReplaceAll]) + ') and ';
+              Result := Result + 'PROJETO.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ') '+ vaOperador;
             end;
         end;
     end;

@@ -158,19 +158,49 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         object pnBotoes: TPanel
           Left = 1
           Top = 1
-          Width = 185
+          Width = 419
           Height = 42
-          Align = alLeft
+          Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 185
           object btnIncluir: TButton
-            Left = -1
-            Top = 4
+            AlignWithMargins = True
+            Left = 0
+            Top = 1
             Width = 85
-            Height = 36
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 1
+            Margins.Bottom = 1
             Action = Ac_Incluir
+            Align = alLeft
             Images = dmPrincipal.imgIcons_32
             TabOrder = 0
+            ExplicitLeft = -1
+            ExplicitTop = 4
+            ExplicitHeight = 36
+          end
+          object btnUtilizar: TButton
+            AlignWithMargins = True
+            Left = 86
+            Top = 1
+            Width = 100
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_UtilizarSelecionado
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 1
+            Visible = False
+            WordWrap = True
+            ExplicitLeft = 85
+            ExplicitTop = 4
+            ExplicitHeight = 36
           end
         end
       end
@@ -357,6 +387,11 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       ImageIndex = 4
       OnExecute = Ac_Salvar_IncluirExecute
       OnUpdate = Ac_SalvarUpdate
+    end
+    object Ac_UtilizarSelecionado: TAction
+      Caption = 'Utilizar Selecionado'
+      ImageIndex = 6
+      OnExecute = Ac_UtilizarSelecionadoExecute
     end
   end
   object dsMaster: TDataSource

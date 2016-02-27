@@ -58,7 +58,7 @@ type
     procedure pprExecutarSalvarDetail; virtual;
     procedure pprAfterSalvarDetail; virtual;
     function fprHabilitarSalvarDetail(): Boolean; virtual;
-    function fprHabilitarIncluirDetail:Boolean;virtual;
+    function fprHabilitarIncluirDetail: Boolean; virtual;
     procedure pprBeforeIncluirDetail; virtual;
     procedure pprBeforeAlterarDetail; virtual;
     procedure pprDefinirTabDetailCadastro; virtual;
@@ -75,7 +75,7 @@ type
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; virtual;
     procedure ppuCancelarDetail; virtual;
 
-    function fpuSalvarDetail: Boolean;
+    procedure ppuSalvarDetail;
   end;
 
 var
@@ -123,8 +123,8 @@ end;
 procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailExecute(Sender: TObject);
 begin
   inherited;
-  if fpuSalvarDetail then
-   ppuRetornar;
+  ppuSalvarDetail;
+  ppuRetornar;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_DetailUpdate(Sender: TObject);
@@ -138,8 +138,8 @@ procedure TfrmBasicoCrudMasterDetail.Ac_Salvar_Incluir_DetailExecute(
   Sender: TObject);
 begin
   inherited;
-  if fpuSalvarDetail then
-    ppuIncluirDetail;
+  ppuSalvarDetail;
+  ppuIncluirDetail;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.FormCreate(Sender: TObject);
@@ -155,7 +155,7 @@ end;
 
 function TfrmBasicoCrudMasterDetail.fprHabilitarSalvarDetail(): Boolean;
 begin
-  Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit,dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
+  Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
@@ -184,11 +184,16 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.pprExecutarSalvarDetail;
 begin
-  if (dsDetail.DataSet.State in [dsEdit, dsInsert]) then
-    dsDetail.DataSet.Post;
 
-  // if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
-  // TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
+  try
+    if (dsDetail.DataSet.State in [dsEdit, dsInsert]) then
+      dsDetail.DataSet.Post;
+  except
+    if dsDetail.DataSet.State = dsBrowse then
+      dsDetail.DataSet.Edit;
+    raise;
+  end;
+
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprValidarDadosDetail;
@@ -208,7 +213,7 @@ begin
     begin
       if TMensagem.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
-          fpuSalvarDetail;
+          ppuSalvarDetail;
           Exit;
         end;
     end;
@@ -274,13 +279,11 @@ begin
     ppuAlterarDetail(dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger);
 end;
 
-function TfrmBasicoCrudMasterDetail.fpuSalvarDetail: Boolean;
+procedure TfrmBasicoCrudMasterDetail.ppuSalvarDetail;
 begin
-  Result := False;
   pprBeforeSalvarDetail;
   pprExecutarSalvarDetail;
   pprAfterSalvarDetail;
-  Result := True;
 end;
 
 end.

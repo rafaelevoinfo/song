@@ -17,6 +17,7 @@ type
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: integer; ipNome: String): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
+    procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
 
   end;
 
@@ -37,7 +38,7 @@ begin
 
     begin
       ipDataSet.SQL.Text := 'select PESSOA.ID, ' +
-        '                           PESSOA.NOME '+
+        '                           PESSOA.NOME ' +
         ' from PESSOA' +
         ' where PESSOA.LOGIN = :LOGIN';
 
@@ -120,6 +121,24 @@ begin
 
   Result := vaResult;
 
+end;
+
+procedure TsmFuncoesAdministrativo.ppuValidarFinalizarAtividade(ipIdAtividade: integer);
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select count(*) as qtde ' +
+        ' from ATIVIDADE_VINCULO ' +
+        ' inner join ATIVIDADE on (ATIVIDADE.ID = ATIVIDADE_VINCULO.ID_ATIVIDADE_VINCULO)' +
+        ' where ATIVIDADE_VINCULO.ID_ATIVIDADE_ORIGEM = :ID_ATIVIDADE and' +
+        '       ATIVIDADE_VINCULO.TIPO_VINCULO = 1 and' +
+        '       ATIVIDADE.STATUS not in (4, 5) ';
+      ipDataSet.ParamByName('ID_ATIVIDADE').AsInteger := ipIdAtividade;
+      ipDataSet.Open();
+      if ipDataSet.FieldByName('QTDE').AsInteger > 0 then
+        raise Exception.Create('Não é possível finalizar um atividade com dependências não finalizadas.');
+    end);
 end;
 
 end.

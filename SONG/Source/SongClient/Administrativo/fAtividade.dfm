@@ -1,10 +1,10 @@
 inherited frmAtividade: TfrmAtividade
   ActiveControl = nil
   Caption = 'Atividades'
-  ExplicitTop = -93
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetailVinculo
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -94,6 +94,20 @@ inherited frmAtividade: TfrmAtividade
             Width = 126
           end
         end
+        inherited pnBotoes: TPanel
+          Width = 452
+          ExplicitWidth = 452
+          inherited btnIncluir: TButton
+            ExplicitLeft = 0
+            ExplicitTop = 1
+            ExplicitHeight = 40
+          end
+          inherited btnUtilizar: TButton
+            ExplicitLeft = 86
+            ExplicitTop = 1
+            ExplicitHeight = 40
+          end
+        end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
@@ -139,7 +153,7 @@ inherited frmAtividade: TfrmAtividade
               Properties.Items = <>
               Properties.OnEditValueChanged = viewRegistrosSTATUSPropertiesEditValueChanged
               RepositoryItem = dmLookup.repIcbStatusAtividade
-              Options.Editing = False
+              Options.ShowEditButtons = isebAlways
               Width = 129
             end
             object viewRegistrosDATA_INICIAL: TcxGridDBColumn [7]
@@ -191,6 +205,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
+              ExplicitLeft = 4
+              ExplicitTop = 24
+              ExplicitWidth = 964
+              ExplicitHeight = 158
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -198,6 +216,7 @@ inherited frmAtividade: TfrmAtividade
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 964
                 object Button2: TButton
                   Left = 0
                   Top = 1
@@ -219,6 +238,8 @@ inherited frmAtividade: TfrmAtividade
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 964
+                ExplicitHeight = 133
                 object viewProjetos: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -791,6 +812,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 3
+          OnKeyDown = cbProjetoPrincipalKeyDown
           Width = 420
         end
         object btnPesquisarProjeto: TButton
@@ -894,10 +916,6 @@ inherited frmAtividade: TfrmAtividade
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 400
-        ExplicitTop = 208
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label13: TLabel
           Left = 6
           Top = 3
@@ -921,6 +939,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataSource = dsAtividade_Projeto
           Properties.ListColumns = <>
           TabOrder = 0
+          OnKeyDown = cbProjetoKeyDown
           Width = 209
         end
         object EditObsAtividadeProjeto: TcxDBMemo
@@ -937,7 +956,7 @@ inherited frmAtividade: TfrmAtividade
           Top = 19
           Width = 22
           Height = 21
-          Action = Ac_Pesquisar_Projeto
+          Action = Ac_Pesquisar_Detail_Projeto
           Images = dmPrincipal.imgIcons_16
           TabOrder = 2
         end
@@ -954,10 +973,6 @@ inherited frmAtividade: TfrmAtividade
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 400
-        ExplicitTop = 208
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label15: TLabel
           Left = 6
           Top = 3
@@ -999,6 +1014,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataSource = dsAtividade_Vinculo
           Properties.ListColumns = <>
           TabOrder = 1
+          OnKeyDown = cbAtividadeVinculoKeyDown
           Width = 209
         end
         object btnPesquisarAtividade: TButton
@@ -1006,7 +1022,7 @@ inherited frmAtividade: TfrmAtividade
           Top = 20
           Width = 22
           Height = 21
-          Action = Ac_Pesquisar_Projeto
+          Action = Ac_Pesquisar_Atividade
           Images = dmPrincipal.imgIcons_16
           TabOrder = 2
         end
@@ -1114,10 +1130,6 @@ inherited frmAtividade: TfrmAtividade
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 616
-        ExplicitTop = 83
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label19: TLabel
           Left = 5
           Top = 6
@@ -1225,10 +1237,6 @@ inherited frmAtividade: TfrmAtividade
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 136
-        ExplicitTop = 112
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label22: TLabel
           Left = 5
           Top = 3
@@ -1250,14 +1258,25 @@ inherited frmAtividade: TfrmAtividade
     end
   end
   inherited ActionList1: TActionList
-    object Ac_Pesquisar_Projeto: TAction
+    object Ac_Pesquisar_Projeto: TAction [13]
       Category = 'Master'
       ImageIndex = 0
+      OnExecute = Ac_Pesquisar_ProjetoExecute
     end
-    object Ac_CarregarArquivo: TAction
+    object Ac_CarregarArquivo: TAction [14]
       Category = 'Detail'
       ImageIndex = 0
       OnExecute = Ac_CarregarArquivoExecute
+    end
+    object Ac_Pesquisar_Detail_Projeto: TAction
+      Category = 'Detail'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_Detail_ProjetoExecute
+    end
+    object Ac_Pesquisar_Atividade: TAction
+      Category = 'Detail'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_AtividadeExecute
     end
   end
   inherited dsMaster: TDataSource

@@ -13,9 +13,12 @@ type
     coId = 'ID';
     coNome = 'NOME';
     coAtivo = 'ATIVO';
+  end;
 
-    // operadores
-    coAnd = ' and ';
+  TOperadores = class
+  public const
+    coOR = ' OR ';
+    coAnd = ' AND ';
   end;
 
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
@@ -24,13 +27,14 @@ type
 
   TVersaoInfo = (viMaJorVersion, viMinorVersion, viRelease, viBuild);
 
-  TTipoPerfil = (tpNormal,tpAdministrador);
+  TTipoPerfil = (tpNormal, tpAdministrador);
 
   TStatusProjeto = (spElaboracao, spAguardandoAnalise, spRecusado, spEmExecucao, spExecutado, spCancelado);
   TStatusAtividade = (saProgramada, saInicioAtrasado, saExecutando, saAtrasada, saFinalizada, saCancelada);
 
   TTipoVinculo = (tvRelacionado, tvDependente);
 
+  TModoExecucao = (meNormal, mePesquisa, meSomentePesquisa, meSomenteCadastro);
 
 const
   // mensagens customizadas do windows
@@ -44,7 +48,9 @@ const
   coExtensaoCompactacao = '.zip';
   coDelimitadorPadrao = ';';
 
-  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir','Ativar', 'Inativar');
+  coRegexUniqueKey = '"UNQ\d+_.+?"'; // pega o nome da unique key
+
+  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar', 'Inativar');
 
 implementation
 
