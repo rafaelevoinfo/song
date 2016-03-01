@@ -34,7 +34,7 @@ type
 
   TTipoVinculo = (tvRelacionado, tvDependente);
 
-  TModoExecucao = (meNormal, mePesquisa, meSomentePesquisa, meSomenteCadastro);
+  TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, meSomentePesquisa, meSomenteCadastro);
 
 const
   // mensagens customizadas do windows

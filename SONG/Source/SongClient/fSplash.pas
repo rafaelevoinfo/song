@@ -69,7 +69,6 @@ procedure TfrmSplash.pprAfterShow(var ipMsg: TMessage);
 var
   vaVersao,vaNovaVersao, vaNovoExecutavel: string;
   vaExecutavel: TBytesStream;
-  vaBuffer: TBytes;
   vaStream: TStream;
 
 begin

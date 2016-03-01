@@ -23,7 +23,7 @@ type
   strict private
     FItems: TDictionary<string, TList<TPermissao>>;
     constructor Create;
-    destructor Destroy; override;
+
   strict private
     class var FInstance: TModulos;
   public
@@ -31,6 +31,7 @@ type
     class function fpuGetInstance: TModulos;
 
     function fpuGetDescricao(ipPermissao: String): string;
+    destructor Destroy; override;
   end;
 
   TPessoa = class
@@ -69,12 +70,13 @@ type
   strict private
     class var FInstance: TInfoLogin;
     constructor Create;
-    destructor Destroy;override;
+
   private
     FUsuario: TUsuario;
     procedure SetUsuario(const Value: TUsuario);
   public
-    property Usuario:TUsuario read FUsuario write SetUsuario;
+    property Usuario: TUsuario read FUsuario write SetUsuario;
+    destructor Destroy; override;
     class function fpuGetInstance: TInfoLogin;
   end;
 
@@ -114,6 +116,7 @@ begin
   plAddAdministrativo(admPerfil, 'Gerenciamento de Perfis');
   plAddAdministrativo(admOrganizacao, 'Organizações');
   plAddAdministrativo(admProjeto, 'Projetos');
+  plAddAdministrativo(admAtividade, 'Atividades');
   FItems.Add('Administrativo', vaPermissoes);
   // Financeiro
   vaPermissoes := TList<TPermissao>.Create;
@@ -165,7 +168,7 @@ end;
 
 constructor TInfoLogin.Create;
 begin
-   FUsuario := TUsuario.Create;
+  FUsuario := TUsuario.Create;
 end;
 
 destructor TInfoLogin.Destroy;
@@ -239,7 +242,6 @@ begin
   if FAdministrador then
     Exit(True);
 
-  Result := False;
   case ipAcao of
     atVisualizar:
       vaField := 'VISUALIZAR';

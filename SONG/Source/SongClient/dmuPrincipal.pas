@@ -81,8 +81,6 @@ begin
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
-var
-  vaMsg: TMsg;
 begin
   // volta o Beep do windows
   SystemParametersInfo(SPI_SETBEEP, 1, nil, SPIF_SENDWININICHANGE);

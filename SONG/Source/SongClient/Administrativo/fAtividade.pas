@@ -176,6 +176,8 @@ type
       Shift: TShiftState);
     procedure Ac_Pesquisar_AtividadeExecute(Sender: TObject);
   private
+    dmLookup: TdmLookup;
+    dmAdministrativo: TdmAdministrativo;
     procedure ppvCarregarAtividadesVinculadas;
     procedure ppvFiltrarAtividade;
     procedure ppvPesquisarProjeto(ipCombo: TcxDBLookupComboBox);
@@ -315,6 +317,7 @@ begin
   vaFrmAtividade := TfrmAtividade.Create(nil);
   try
     vaFrmAtividade.ppuConfigurarModoExecucao(mePesquisa);
+    vaFrmAtividade.Name := '';
     vaFrmAtividade.ShowModal;
     if vaFrmAtividade.IdEscolhido <> 0 then
       begin
@@ -335,7 +338,7 @@ begin
 
       end;
   finally
-    cbAtividadeVinculo.Free;
+    vaFrmAtividade.Free;
   end;
 
 end;
@@ -354,8 +357,9 @@ begin
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
   dmLookup.cdslkPessoa.Open;
-
   pprCarregarProjetos;
+
+  pcDetails.ActivePage := tabDetailComentario;
 end;
 
 procedure TfrmAtividade.pprCarregarProjetos(ipIdEspecifico: Integer);
@@ -550,9 +554,9 @@ begin
     begin
       dmLookup.cdslkAtividade.ppuLimparParametros;
       if ipIdEspecifico <> 0 then
-        dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coID,ipIdEspecifico,TOperadores.coOr);
+        dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
 
-      dmLookup.cdslkAtividade.ppuAddParametros([TParametros.coProjeto, TParametros.coStatusDiferente],
+      dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coProjeto, TParametros.coStatusDiferente],
         [dmAdministrativo.cdsAtividadeID_PROJETO.AsInteger, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString]);
     end;
 end;

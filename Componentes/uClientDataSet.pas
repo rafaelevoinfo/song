@@ -41,11 +41,15 @@ type
 
     procedure Post; override;
 
+    procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string;
+      ipLimparParametros: Boolean); overload;
+    procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string); overload;
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant); overload;
     procedure ppuDataRequest(); overload;
 
-    procedure ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String = ' AND ');
-    procedure ppuAddParametros(const ipParametros: Array of string; ipValores: Array of Variant; ipOperadorAnd: Boolean = true);
+    procedure ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String = ' AND '; ipLimparParametros: Boolean = false);
+    procedure ppuAddParametros(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: String = ' AND ';
+      ipLimparParametros: Boolean = false);
     procedure ppuLimparParametros;
 
   published
@@ -92,8 +96,11 @@ begin
     ApplyUpdates(0);
 end;
 
-procedure TRFClientDataSet.ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String = ' AND ');
+procedure TRFClientDataSet.ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String; ipLimparParametros: Boolean);
 begin
+  if ipLimparParametros then
+    ppuLimparParametros;
+
   if (Trim(ipParametro) <> '') AND (NOT VarIsNull(ipValor)) then
     begin
       FParametros.Add(ipParametro);
@@ -103,16 +110,20 @@ begin
     raise Exception.Create('Valores inválidos para o parametro ou para o valor.');
 end;
 
-procedure TRFClientDataSet.ppuAddParametros(const ipParametros: array of string; ipValores: array of Variant; ipOperadorAnd: Boolean);
+procedure TRFClientDataSet.ppuAddParametros(const ipParametros: array of string; ipValores: array of Variant; ipOperador: String;
+  ipLimparParametros: Boolean);
 var
   i: Integer;
 begin
+  if ipLimparParametros then
+    ppuLimparParametros;
+
   if High(ipParametros) = High(ipValores) then
     begin
       // percorre todo o array add cada elemento no list
       for i := Low(ipParametros) to High(ipParametros) do
         begin
-          ppuAddParametro(ipParametros[i], ipValores[i]);
+          ppuAddParametro(ipParametros[i], ipValores[i], ipOperador);
         end;
     end
   else
@@ -121,8 +132,7 @@ end;
 
 procedure TRFClientDataSet.ppuDataRequest(const ipParametros: array of string; ipValores: array of Variant);
 begin
-  ppuAddParametros(ipParametros, ipValores);
-  ppuDataRequest();
+  ppuDataRequest(ipParametros, ipValores, ' AND ');
 end;
 
 procedure TRFClientDataSet.ppuDataRequest;
@@ -157,6 +167,19 @@ begin
   finally
     vaParams.Free;
   end;
+end;
+
+procedure TRFClientDataSet.ppuDataRequest(const ipParametros: array of string;
+  ipValores: array of Variant; ipOperador: string; ipLimparParametros: Boolean);
+begin
+  ppuAddParametros(ipParametros, ipValores, ipOperador, ipLimparParametros);
+  ppuDataRequest();
+end;
+
+procedure TRFClientDataSet.ppuDataRequest(const ipParametros: array of string;
+  ipValores: array of Variant; ipOperador: string);
+begin
+  ppuDataRequest(ipParametros, ipValores, ipOperador, false);
 end;
 
 procedure TRFClientDataSet.ppuLimparParametros;

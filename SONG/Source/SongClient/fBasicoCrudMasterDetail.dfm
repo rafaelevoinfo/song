@@ -1,10 +1,10 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
-  ActiveControl = btnSalvarDetail
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrudMasterDetail'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -67,13 +67,32 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                 Align = alTop
                 TabOrder = 0
                 object btnIncluirDetail: TButton
-                  Left = 0
+                  Left = 1
                   Top = 1
                   Width = 81
                   Height = 23
                   Action = Ac_Incluir_Detail
+                  Align = alLeft
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
+                  ExplicitLeft = 0
+                end
+                object btnUtilizarDetailSelecionado: TButton
+                  AlignWithMargins = True
+                  Left = 82
+                  Top = 2
+                  Width = 127
+                  Height = 21
+                  Margins.Left = 0
+                  Margins.Top = 1
+                  Margins.Right = 2
+                  Margins.Bottom = 1
+                  Action = Ac_Utilizar_Detail_Selecionado
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 1
+                  Visible = False
+                  WordWrap = True
                 end
               end
               object cxGridRegistrosDetail: TcxGrid
@@ -151,12 +170,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           end
         end
       end
-    end
-    inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
     end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
@@ -252,6 +265,11 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       ImageIndex = 4
       OnExecute = Ac_Salvar_Incluir_DetailExecute
       OnUpdate = Ac_Salvar_DetailUpdate
+    end
+    object Ac_Utilizar_Detail_Selecionado: TAction
+      Caption = 'Utilizar Selecionado'
+      ImageIndex = 6
+      OnExecute = Ac_Utilizar_Detail_SelecionadoExecute
     end
   end
   object dsDetail: TDataSource

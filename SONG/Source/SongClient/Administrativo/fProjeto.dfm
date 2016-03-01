@@ -1,16 +1,11 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -42,19 +37,6 @@ inherited frmProjeto: TfrmProjeto
             TabOrder = 5
             Visible = False
             Width = 178
-          end
-        end
-        inherited pnBotoes: TPanel
-          ExplicitWidth = 419
-          inherited btnIncluir: TButton
-            ExplicitLeft = 0
-            ExplicitTop = 1
-            ExplicitHeight = 40
-          end
-          inherited btnUtilizar: TButton
-            ExplicitLeft = 86
-            ExplicitTop = 1
-            ExplicitHeight = 40
           end
         end
       end
@@ -121,15 +103,12 @@ inherited frmProjeto: TfrmProjeto
             Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
             ExplicitHeight = 248
-            ClientRectBottom = 243
+            ClientRectBottom = 244
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
-                Height = 193
+                Height = 195
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -157,13 +136,18 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 218
               object Panel1: TPanel
                 Left = 0
                 Top = 0
-                Width = 965
+                Width = 964
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 965
                 object btnIncluirOrganizacao: TButton
                   Left = 0
                   Top = 1
@@ -177,14 +161,16 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid1: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 965
-                Height = 193
+                Width = 964
+                Height = 195
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 965
+                ExplicitHeight = 193
                 object viewProjetoOrganizacao: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -261,13 +247,18 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailFinanciador: TcxTabSheet
               Caption = 'Financiadores'
               ImageIndex = 2
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 218
               object Panel2: TPanel
                 Left = 0
                 Top = 0
-                Width = 965
+                Width = 964
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 965
                 object Label19: TLabel
                   Left = 425
                   Top = 9
@@ -295,22 +286,24 @@ inherited frmProjeto: TfrmProjeto
                 Left = 0
                 Top = 25
                 Width = 424
-                Height = 193
+                Height = 195
                 Align = alLeft
                 BevelOuter = bvNone
                 Caption = 'pnProjetoFinanciador'
                 TabOrder = 1
+                ExplicitHeight = 193
                 object cxGrid2: TcxGrid
                   Left = 0
                   Top = 0
                   Width = 424
-                  Height = 193
+                  Height = 195
                   Align = alClient
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
                   LockedStateImageOptions.Effect = lsieDark
                   LockedStateImageOptions.ShowText = True
                   LockedStateImageOptions.Text = 'Pesquisando...'
+                  ExplicitHeight = 193
                   object viewProjetoFinanciador: TcxGridDBTableView
                     OnDblClick = viewRegistrosDetailDblClick
                     Navigator.Buttons.CustomButtons = <>
@@ -389,14 +382,16 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid4: TcxGrid
                 Left = 424
                 Top = 25
-                Width = 541
-                Height = 193
+                Width = 540
+                Height = 195
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 2
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 541
+                ExplicitHeight = 193
                 object viewPagamentos: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -457,13 +452,18 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 218
               object Panel3: TPanel
                 Left = 0
                 Top = 0
-                Width = 965
+                Width = 964
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 965
                 object btnIncluirDocumento: TButton
                   Left = 0
                   Top = 1
@@ -477,14 +477,16 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 965
-                Height = 193
+                Width = 964
+                Height = 195
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 965
+                ExplicitHeight = 193
                 object viewProjetoDocumento: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -637,9 +639,9 @@ inherited frmProjeto: TfrmProjeto
         object Label17: TLabel
           Left = 206
           Top = 44
-          Width = 75
+          Width = 98
           Height = 13
-          Caption = 'Conta Corrente'
+          Caption = 'Conta Corrente (F2)'
           FocusControl = cbContaCorrente
         end
         object EditNome: TcxDBTextEdit
@@ -709,15 +711,21 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 5
+          OnKeyDown = cbContaCorrenteKeyDown
           Width = 220
+        end
+        object btnAddContaCorrente: TButton
+          Left = 428
+          Top = 60
+          Width = 22
+          Height = 21
+          Action = Ac_Adicionar_Conta_Corrente
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 7
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -883,9 +891,9 @@ inherited frmProjeto: TfrmProjeto
         object Label12: TLabel
           Left = 4
           Top = 6
-          Width = 55
+          Width = 78
           Height = 13
-          Caption = 'Financiador'
+          Caption = 'Financiador (F2)'
           FocusControl = cbFinanciador
         end
         object Label18: TLabel
@@ -904,6 +912,7 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataSource = dsFinanciador
           Properties.ListColumns = <>
           TabOrder = 0
+          OnKeyDown = cbFinanciadorKeyDown
           Width = 237
         end
         object EditObservacao: TcxDBMemo
@@ -923,13 +932,16 @@ inherited frmProjeto: TfrmProjeto
           Height = 274
           Width = 837
           object pnEditsPagamento: TPanel
-            Left = 3
-            Top = 15
-            Width = 831
+            Left = 2
+            Top = 18
+            Width = 833
             Height = 46
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitLeft = 3
+            ExplicitTop = 15
+            ExplicitWidth = 831
             object Label14: TLabel
               Left = 2
               Top = 4
@@ -968,10 +980,10 @@ inherited frmProjeto: TfrmProjeto
             end
           end
           object cxGrid5: TcxGrid
-            Left = 3
-            Top = 61
-            Width = 831
-            Height = 203
+            Left = 2
+            Top = 64
+            Width = 833
+            Height = 208
             Align = alClient
             Images = dmPrincipal.imgIcons_16
             TabOrder = 1
@@ -979,6 +991,10 @@ inherited frmProjeto: TfrmProjeto
             LockedStateImageOptions.Effect = lsieDark
             LockedStateImageOptions.ShowText = True
             LockedStateImageOptions.Text = 'Pesquisando...'
+            ExplicitLeft = 3
+            ExplicitTop = 61
+            ExplicitWidth = 831
+            ExplicitHeight = 203
             object viewPagamentosCadastro: TcxGridDBTableView
               OnDblClick = viewRegistrosDetailDblClick
               Navigator.Buttons.CustomButtons = <>
@@ -1035,6 +1051,15 @@ inherited frmProjeto: TfrmProjeto
               GridView = viewPagamentosCadastro
             end
           end
+        end
+        object btnAdicionar_Financiador: TButton
+          Left = 241
+          Top = 22
+          Width = 22
+          Height = 21
+          Action = Ac_Adicionar_Financiador
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 3
         end
       end
     end
@@ -1133,29 +1158,39 @@ inherited frmProjeto: TfrmProjeto
   inherited ActionList1: TActionList
     Left = 88
     Top = 152
-    object Ac_CarregarArquivo: TAction
+    object Ac_CarregarArquivo: TAction [14]
       Category = 'Detail'
       Caption = 'Ac_CarregarArquivo'
       ImageIndex = 0
       OnExecute = Ac_CarregarArquivoExecute
     end
-    object Ac_Excluir_Pagamento: TAction
+    object Ac_Excluir_Pagamento: TAction [15]
       Category = 'Detail'
       Caption = 'Excluir'
       ImageIndex = 2
       OnExecute = Ac_Excluir_PagamentoExecute
     end
-    object Ac_Salvar_Pagamento: TAction
+    object Ac_Salvar_Pagamento: TAction [16]
       Category = 'Detail'
       Caption = 'Salvar'
       ImageIndex = 4
       OnExecute = Ac_Salvar_PagamentoExecute
     end
-    object Ac_Download: TAction
+    object Ac_Download: TAction [17]
       Category = 'Detail'
       Caption = 'Baixar'
       ImageIndex = 8
       OnExecute = Ac_DownloadExecute
+    end
+    object Ac_Adicionar_Conta_Corrente: TAction [18]
+      Category = 'Master'
+      ImageIndex = 0
+      OnExecute = Ac_Adicionar_Conta_CorrenteExecute
+    end
+    object Ac_Adicionar_Financiador: TAction
+      Category = 'Detail'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_FinanciadorExecute
     end
   end
   inherited dsMaster: TDataSource
@@ -1169,7 +1204,7 @@ inherited frmProjeto: TfrmProjeto
   object dsOrganizacao: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Organizacao
     Left = 448
-    Top = 144
+    Top = 176
   end
   object dsFinanciador: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Financiador

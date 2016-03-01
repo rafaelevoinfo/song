@@ -1588,21 +1588,18 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
   object ProviderLookup: TDSProviderConnection
     ServerClassName = 'TsmLookup'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304
   end
   object ProviderFinanceiro: TDSProviderConnection
     ServerClassName = 'TsmFinanceiro'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 368

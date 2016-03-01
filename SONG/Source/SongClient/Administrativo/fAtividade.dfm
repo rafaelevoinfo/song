@@ -4,7 +4,7 @@ inherited frmAtividade: TfrmAtividade
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailVinculo
+    Properties.ActivePage = tabCadastroDetailComentario
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -97,16 +97,6 @@ inherited frmAtividade: TfrmAtividade
         inherited pnBotoes: TPanel
           Width = 452
           ExplicitWidth = 452
-          inherited btnIncluir: TButton
-            ExplicitLeft = 0
-            ExplicitTop = 1
-            ExplicitHeight = 40
-          end
-          inherited btnUtilizar: TButton
-            ExplicitLeft = 86
-            ExplicitTop = 1
-            ExplicitHeight = 40
-          end
         end
       end
       inherited pnGrid: TPanel
@@ -178,10 +168,130 @@ inherited frmAtividade: TfrmAtividade
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabDetailProjeto
+            Properties.ActivePage = tabDetailComentario
             OnChange = pcDetailsChange
+            object tabDetailComentario: TcxTabSheet [0]
+              Caption = 'Coment'#225'rios'
+              ImageIndex = 4
+              object Panel3: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                object Button4: TButton
+                  Left = 0
+                  Top = 1
+                  Width = 81
+                  Height = 23
+                  Action = Ac_Incluir_Detail
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGrid4: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 131
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object viewDetailComentario: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  DataController.DataSource = dsAtividade_Comentario
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.CellAutoHeight = True
+                  OptionsView.GroupByBox = False
+                  object viewDetailComentarioID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewDetailComentarioID_PESSOA: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_PESSOA'
+                    RepositoryItem = dmLookup.repLcbPessoa
+                    Options.Editing = False
+                    Options.ShowEditButtons = isebNever
+                    Width = 252
+                  end
+                  object viewDetailComentarioCOMENTARIO: TcxGridDBColumn
+                    DataBinding.FieldName = 'COMENTARIO'
+                    PropertiesClassName = 'TcxMemoProperties'
+                    Options.Editing = False
+                    Width = 358
+                  end
+                  object viewDetailComentarioDATA_HORA: TcxGridDBColumn
+                    DataBinding.FieldName = 'DATA_HORA'
+                    Options.Editing = False
+                    Width = 148
+                  end
+                  object cxGridDBColumn11: TcxGridDBColumn
+                    Caption = 'Alterar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Alterar_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                  object cxGridDBColumn12: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                end
+                object cxGridLevel5: TcxGridLevel
+                  GridView = viewDetailComentario
+                end
+              end
+            end
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas envolvidas'
+              inherited pnBotoesDetail: TPanel
+                inherited btnIncluirDetail: TButton
+                  ExplicitLeft = 1
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -205,10 +315,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
-              ExplicitLeft = 4
-              ExplicitTop = 24
-              ExplicitWidth = 964
-              ExplicitHeight = 158
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -216,7 +322,6 @@ inherited frmAtividade: TfrmAtividade
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 964
                 object Button2: TButton
                   Left = 0
                   Top = 1
@@ -238,8 +343,6 @@ inherited frmAtividade: TfrmAtividade
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitWidth = 964
-                ExplicitHeight = 133
                 object viewProjetos: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -539,118 +642,6 @@ inherited frmAtividade: TfrmAtividade
                 end
                 object cxGridLevel4: TcxGridLevel
                   GridView = cxGridDBTableView1
-                end
-              end
-            end
-            object tabDetailComentario: TcxTabSheet
-              Caption = 'Coment'#225'rios'
-              ImageIndex = 4
-              object Panel3: TPanel
-                Left = 0
-                Top = 0
-                Width = 965
-                Height = 25
-                Align = alTop
-                TabOrder = 0
-                object Button4: TButton
-                  Left = 0
-                  Top = 1
-                  Width = 81
-                  Height = 23
-                  Action = Ac_Incluir_Detail
-                  Images = dmPrincipal.imgIcons_16
-                  TabOrder = 0
-                end
-              end
-              object cxGrid4: TcxGrid
-                Left = 0
-                Top = 25
-                Width = 965
-                Height = 131
-                Align = alClient
-                Images = dmPrincipal.imgIcons_16
-                TabOrder = 1
-                LockedStateImageOptions.Effect = lsieDark
-                LockedStateImageOptions.ShowText = True
-                LockedStateImageOptions.Text = 'Pesquisando...'
-                object viewDetailComentario: TcxGridDBTableView
-                  OnDblClick = viewRegistrosDetailDblClick
-                  Navigator.Buttons.CustomButtons = <>
-                  DataController.DataSource = dsAtividade_Comentario
-                  DataController.Summary.DefaultGroupSummaryItems = <>
-                  DataController.Summary.FooterSummaryItems = <>
-                  DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
-                  FilterRow.Visible = True
-                  OptionsCustomize.ColumnsQuickCustomization = True
-                  OptionsData.CancelOnExit = False
-                  OptionsData.Deleting = False
-                  OptionsData.DeletingConfirmation = False
-                  OptionsData.Inserting = False
-                  OptionsSelection.MultiSelect = True
-                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.GroupByBox = False
-                  object viewDetailComentarioID: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID'
-                    Options.Editing = False
-                  end
-                  object viewDetailComentarioID_PESSOA: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_PESSOA'
-                    Options.Editing = False
-                    Options.ShowEditButtons = isebNever
-                    Width = 252
-                  end
-                  object viewDetailComentarioCOMENTARIO: TcxGridDBColumn
-                    DataBinding.FieldName = 'COMENTARIO'
-                    Options.Editing = False
-                    Width = 358
-                  end
-                  object viewDetailComentarioDATA_HORA: TcxGridDBColumn
-                    DataBinding.FieldName = 'DATA_HORA'
-                    Options.Editing = False
-                    Width = 148
-                  end
-                  object cxGridDBColumn11: TcxGridDBColumn
-                    Caption = 'Alterar'
-                    PropertiesClassName = 'TcxButtonEditProperties'
-                    Properties.Buttons = <
-                      item
-                        Action = Ac_Alterar_Detail
-                        Default = True
-                        Kind = bkGlyph
-                      end>
-                    Properties.Images = dmPrincipal.imgIcons_16
-                    Properties.ViewStyle = vsButtonsOnly
-                    MinWidth = 64
-                    Options.Filtering = False
-                    Options.ShowEditButtons = isebAlways
-                    Options.GroupFooters = False
-                    Options.Grouping = False
-                    Options.HorzSizing = False
-                    Options.Moving = False
-                  end
-                  object cxGridDBColumn12: TcxGridDBColumn
-                    Caption = 'Excluir'
-                    PropertiesClassName = 'TcxButtonEditProperties'
-                    Properties.Buttons = <
-                      item
-                        Action = Ac_Excluir_Detail
-                        Default = True
-                        Kind = bkGlyph
-                      end>
-                    Properties.Images = dmPrincipal.imgIcons_16
-                    Properties.ViewStyle = vsButtonsOnly
-                    MinWidth = 64
-                    Options.Filtering = False
-                    Options.ShowEditButtons = isebAlways
-                    Options.GroupFooters = False
-                    Options.Grouping = False
-                    Options.HorzSizing = False
-                    Options.Moving = False
-                  end
-                end
-                object cxGridLevel5: TcxGridLevel
-                  GridView = viewDetailComentario
                 end
               end
             end

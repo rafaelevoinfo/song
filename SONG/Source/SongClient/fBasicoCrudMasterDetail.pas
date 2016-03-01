@@ -41,6 +41,8 @@ type
     pnEditsCadastroDetail: TPanel;
     btnSalvarIncluirDetail: TButton;
     Ac_Salvar_Incluir_Detail: TAction;
+    btnUtilizarDetailSelecionado: TButton;
+    Ac_Utilizar_Detail_Selecionado: TAction;
     procedure Ac_Incluir_DetailExecute(Sender: TObject);
     procedure Ac_Alterar_DetailExecute(Sender: TObject);
     procedure Ac_Excluir_DetailExecute(Sender: TObject);
@@ -51,7 +53,10 @@ type
     procedure Ac_Salvar_Incluir_DetailExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_DetailUpdate(Sender: TObject);
+    procedure Ac_Utilizar_Detail_SelecionadoExecute(Sender: TObject);
   private
+    FIdDetailEscolhido: Integer;
+    procedure SetIdDetailEscolhido(const Value: Integer);
 
   protected
     procedure pprBeforeSalvarDetail; virtual;
@@ -69,6 +74,7 @@ type
     procedure pprEfetuarPesquisa; override;
 
   public
+    property IdDetailEscolhido: Integer read FIdDetailEscolhido write SetIdDetailEscolhido;
 
     procedure ppuIncluirDetail; virtual;
     procedure ppuAlterarDetail(ipId: Integer); virtual;
@@ -76,6 +82,7 @@ type
     procedure ppuCancelarDetail; virtual;
 
     procedure ppuSalvarDetail;
+    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao); override;
   end;
 
 var
@@ -140,6 +147,19 @@ begin
   inherited;
   ppuSalvarDetail;
   ppuIncluirDetail;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.Ac_Utilizar_Detail_SelecionadoExecute(
+  Sender: TObject);
+begin
+  inherited;
+  if dsDetail.DataSet.Active and (dsDetail.DataSet.RecordCount > 0) then
+    begin
+      FIdDetailEscolhido := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger;
+      Close;
+    end
+  else
+    TMensagem.ppuShowMessage('Nenhum registro foi escolhido.');
 end;
 
 procedure TfrmBasicoCrudMasterDetail.FormCreate(Sender: TObject);
@@ -223,6 +243,21 @@ begin
   ppuRetornar;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.ppuConfigurarModoExecucao(
+  ipModo: TModoExecucao);
+begin
+  inherited;
+  case ipModo of
+    mePesquisaDetail:
+      begin
+        btnUtilizar.Visible := false;
+        btnUtilizarDetailSelecionado.Visible := True;
+      end;
+    meSomentePesquisa:
+      btnIncluirDetail.Visible := false;
+  end;
+end;
+
 procedure TfrmBasicoCrudMasterDetail.pprEfetuarCancelarDetail;
 begin
   TClientDataSet(dsDetail.DataSet).CancelUpdates;
@@ -233,18 +268,24 @@ var
   vaId: Integer;
 begin
   pprValidarPermissao(atExcluir, Permissao);
-  Result := False;
+  Result := false;
   if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
     begin
-      for vaId in ipIds do
-        begin
-          if dsDetail.DataSet.Locate(TBancoDados.coId, vaId, []) then
-            dsDetail.DataSet.Delete;
-        end;
+      try
+        for vaId in ipIds do
+          begin
+            if dsDetail.DataSet.Locate(TBancoDados.coId, vaId, []) then
+              dsDetail.DataSet.Delete;
+          end;
 
-      if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
-        TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
-      Result := True;
+        if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+          TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
+        Result := True;
+      except
+        if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+          TClientDataSet(dsDetail.DataSet).CancelUpdates;
+        raise;
+      end;
     end;
 end;
 
@@ -284,6 +325,11 @@ begin
   pprBeforeSalvarDetail;
   pprExecutarSalvarDetail;
   pprAfterSalvarDetail;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.SetIdDetailEscolhido(const Value: Integer);
+begin
+  FIdDetailEscolhido := Value;
 end;
 
 end.

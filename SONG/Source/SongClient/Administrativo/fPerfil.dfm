@@ -1,8 +1,10 @@
 inherited frmPerfil: TfrmPerfil
+  ActiveControl = tlPermissoes
   Caption = 'Perfis de Usu'#225'rio'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -48,6 +50,11 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
+              inherited pnBotoesDetail: TPanel
+                inherited btnIncluirDetail: TButton
+                  ExplicitLeft = 1
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -156,15 +163,11 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object tlPermissoes: TcxDBTreeList
           Left = 0
           Top = 21
-          Width = 854
+          Width = 976
           Height = 377
           Align = alClient
           Bands = <
@@ -268,7 +271,7 @@ inherited frmPerfil: TfrmPerfil
           AlignWithMargins = True
           Left = 0
           Top = 0
-          Width = 854
+          Width = 976
           Height = 18
           Margins.Left = 0
           Margins.Top = 0

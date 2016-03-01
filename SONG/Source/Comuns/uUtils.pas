@@ -114,8 +114,6 @@ end;
 
 class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
   ipOtimizarLoop: Boolean = true);
-var
-  vaRecNo: Integer;
 begin
   TUtils.ppuPercorrerCds(ipCDS,
     function: Boolean
@@ -181,7 +179,6 @@ end;
 class function TUtils.fpuMontarStringCodigo(ipDataSet: TDataSet; ipNomeField,
   ipDelimitador: String; ipQtde: Integer; ipIgnorarDuplicados: Boolean): String;
 var
-  vaCod: Variant;
   vaList: TList<String>;
   vaRecNo: Integer;
 begin

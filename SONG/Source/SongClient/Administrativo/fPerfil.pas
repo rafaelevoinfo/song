@@ -61,7 +61,6 @@ type
     procedure viewRegistrosDetailPERMISSAOGetDisplayText(Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
       var AText: string);
   private
-    FIdPerfilAtual: Integer;
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
     procedure ppvCarregarModulos;
@@ -70,6 +69,7 @@ type
     { Private declarations }
   protected
     procedure pprBeforeSalvarDetail; override;
+    procedure pprExecutarSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     function fprGetPermissao: String; override;
   public
@@ -123,7 +123,7 @@ var
   vaPermissao: TPermissao;
 
 begin
-  vaIdModulo := 0;
+
   vaId := 0;
 
   if cdsLocalPermissoes.Active then
@@ -202,6 +202,13 @@ begin
         end;
     end);
   inherited;
+end;
+
+procedure TfrmPerfil.pprExecutarSalvarDetail;
+begin
+  inherited;
+  if dmAdministrativo.cdsPerfil_Permissao.ChangeCount > 0 then
+    dmAdministrativo.cdsPerfil_Permissao.ApplyUpdates(0);
 end;
 
 function TfrmPerfil.fprGetPermissao: String;

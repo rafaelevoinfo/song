@@ -1,9 +1,8 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnIncluir
+  ActiveControl = btnSalvar
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -14,7 +13,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -163,7 +162,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 185
           object btnIncluir: TButton
             AlignWithMargins = True
             Left = 0
@@ -178,9 +176,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
             TabOrder = 0
-            ExplicitLeft = -1
-            ExplicitTop = 4
-            ExplicitHeight = 36
           end
           object btnUtilizar: TButton
             AlignWithMargins = True
@@ -192,15 +187,12 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Margins.Top = 1
             Margins.Right = 2
             Margins.Bottom = 1
-            Action = Ac_UtilizarSelecionado
+            Action = Ac_Utilizar_Selecionado
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
             TabOrder = 1
             Visible = False
             WordWrap = True
-            ExplicitLeft = 85
-            ExplicitTop = 4
-            ExplicitHeight = 36
           end
         end
       end
@@ -388,10 +380,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       OnExecute = Ac_Salvar_IncluirExecute
       OnUpdate = Ac_SalvarUpdate
     end
-    object Ac_UtilizarSelecionado: TAction
+    object Ac_Utilizar_Selecionado: TAction
       Caption = 'Utilizar Selecionado'
       ImageIndex = 6
-      OnExecute = Ac_UtilizarSelecionadoExecute
+      OnExecute = Ac_Utilizar_SelecionadoExecute
     end
   end
   object dsMaster: TDataSource

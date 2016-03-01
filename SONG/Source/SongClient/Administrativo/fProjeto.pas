@@ -141,6 +141,10 @@ type
     Label16: TLabel;
     EditCaminhoDocumento: TcxButtonEdit;
     viewRegistrosSTATUS: TcxGridDBColumn;
+    btnAddContaCorrente: TButton;
+    Ac_Adicionar_Conta_Corrente: TAction;
+    btnAdicionar_Financiador: TButton;
+    Ac_Adicionar_Financiador: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
@@ -149,10 +153,20 @@ type
     procedure Ac_Salvar_PagamentoExecute(Sender: TObject);
     procedure Ac_DownloadExecute(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Adicionar_Conta_CorrenteExecute(Sender: TObject);
+    procedure Ac_Adicionar_FinanciadorExecute(Sender: TObject);
+    procedure cbFinanciadorKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cbContaCorrenteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
     procedure ppvLimparEditsPagamento;
+    procedure ppvAdicionarContaCorrente;
+    procedure ppvCarregarContasCorrentes();
+    procedure ppvAdicionarFinanciador;
+    procedure ppvCarregarFinanciadores;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -161,13 +175,14 @@ type
     procedure pprValidarPesquisa; override;
     procedure pprDefinirTabDetailCadastro; override;
     procedure pprEfetuarPesquisa; override;
-    procedure ppuIncluirDetail; override;
+
 
     procedure pprExecutarSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     procedure pprEfetuarCancelarDetail; override;
   public
     procedure ppuBaixarArquivo(ipId: Integer);
+    procedure ppuIncluirDetail; override;
   public const
     coPesqPorStatus = 4;
 
@@ -178,8 +193,77 @@ var
 
 implementation
 
+uses
+  fBanco, fFinanciador;
+
 {$R *.dfm}
 
+
+procedure TfrmProjeto.Ac_Adicionar_Conta_CorrenteExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarContaCorrente;
+end;
+
+procedure TfrmProjeto.ppvAdicionarContaCorrente;
+var
+  vaFrmBanco: TfrmBanco;
+begin
+  vaFrmBanco := TfrmBanco.Create(nil);
+  try
+    vaFrmBanco.ppuConfigurarModoExecucao(mePesquisaDetail);
+    vaFrmBanco.ShowModal;
+    if vaFrmBanco.IdDetailEscolhido <> 0 then
+      begin
+        if dmLookup.cdslkConta_Corrente.Locate(TBancoDados.coId, vaFrmBanco.IdDetailEscolhido, []) then
+          begin
+            cbContaCorrente.EditValue := vaFrmBanco.IdDetailEscolhido;
+            cbContaCorrente.PostEditValue;
+          end
+        else
+          begin
+            ppvCarregarContasCorrentes();
+            if dmLookup.cdslkConta_Corrente.Locate(TBancoDados.coId, vaFrmBanco.IdDetailEscolhido, []) then
+              begin
+                cbContaCorrente.EditValue := vaFrmBanco.IdDetailEscolhido;
+                cbContaCorrente.PostEditValue;
+              end;
+          end;
+      end;
+
+  finally
+    vaFrmBanco.Free;
+  end;
+end;
+
+procedure TfrmProjeto.Ac_Adicionar_FinanciadorExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarFinanciador;
+end;
+
+procedure TfrmProjeto.ppvAdicionarFinanciador;
+var
+  vaFrmFinanciador: TfrmFinanciador;
+begin
+  vaFrmFinanciador := TfrmFinanciador.Create(nil);
+  try
+    vaFrmFinanciador.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmFinanciador.ShowModal;
+    if vaFrmFinanciador.IdEscolhido <> 0 then
+      begin
+        ppvCarregarFinanciadores;
+        if dmLookup.cdslkFinanciador.Locate(TBancoDados.coId, vaFrmFinanciador.IdEscolhido, []) then
+          begin
+            cbFinanciador.EditValue := vaFrmFinanciador.IdEscolhido;
+            cbFinanciador.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmFinanciador.Free;
+  end;
+
+end;
 
 procedure TfrmProjeto.Ac_CarregarArquivoExecute(Sender: TObject);
 begin
@@ -243,6 +327,22 @@ begin
   TUtils.fpuFocar(EditValorPagamento);
 end;
 
+procedure TfrmProjeto.cbContaCorrenteKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarContaCorrente;
+end;
+
+procedure TfrmProjeto.cbFinanciadorKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarFinanciador;
+end;
+
 procedure TfrmProjeto.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
 begin
   EditPesquisa.Visible := cbPesquisarPor.EditValue <> coPesqPorStatus;
@@ -266,9 +366,20 @@ begin
   PesquisaPadrao := tppNome;
 
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coAtivo], [coRegistroAtivo]);
-  dmLookup.cdslkOrganizacao.Open;
-  dmLookup.cdslkFinanciador.Open;
-  dmLookup.cdslkConta_Corrente.Open;
+  dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  ppvCarregarFinanciadores;
+  ppvCarregarContasCorrentes;
+
+end;
+
+procedure TfrmProjeto.ppvCarregarContasCorrentes();
+begin
+  dmLookup.cdslkConta_Corrente.ppuDataRequest();
+end;
+
+procedure TfrmProjeto.ppvCarregarFinanciadores();
+begin
+  dmLookup.cdslkFinanciador.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
 end;
 
 function TfrmProjeto.fprGetPermissao: string;
@@ -396,7 +507,7 @@ procedure TfrmProjeto.viewRegistrosSTATUSPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  if dmAdministrativo.cdsProjeto.State in [dsEdit,dsInsert] then
+  if dmAdministrativo.cdsProjeto.State in [dsEdit, dsInsert] then
     dmAdministrativo.cdsProjeto.Post;
 end;
 

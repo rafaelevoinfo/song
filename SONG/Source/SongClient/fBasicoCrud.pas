@@ -56,7 +56,7 @@ type
     btnSalvarIncluir: TButton;
     Ac_Salvar_Incluir: TAction;
     btnUtilizar: TButton;
-    Ac_UtilizarSelecionado: TAction;
+    Ac_Utilizar_Selecionado: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -72,7 +72,7 @@ type
     procedure ColumnExcluirGetProperties(Sender: TcxCustomGridTableItem;
       ARecord: TcxCustomGridRecord; var AProperties: TcxCustomEditProperties);
     procedure Ac_Salvar_IncluirExecute(Sender: TObject);
-    procedure Ac_UtilizarSelecionadoExecute(Sender: TObject);
+    procedure Ac_Utilizar_SelecionadoExecute(Sender: TObject);
   private
     FPesquisaPadrao: TTipoPesquisaPadrao;
     FModoExecucao: TModoExecucao;
@@ -186,7 +186,7 @@ begin
   ppuIncluir;
 end;
 
-procedure TfrmBasicoCrud.Ac_UtilizarSelecionadoExecute(Sender: TObject);
+procedure TfrmBasicoCrud.Ac_Utilizar_SelecionadoExecute(Sender: TObject);
 begin
   inherited;
   if dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) then
@@ -267,11 +267,14 @@ procedure TfrmBasicoCrud.FormShow(Sender: TObject);
 begin
   inherited;
   pprRealizarPesquisaInicial;
+  if FModoExecucao = meSomenteCadastro then
+    ppuIncluir;
 end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar;
 begin
-
+  if FModoExecucao = meSomenteCadastro then
+    FIdEscolhido := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
 end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
@@ -305,7 +308,10 @@ begin
     mePesquisa:
       btnUtilizar.Visible := True;
     meSomentePesquisa:
-      btnUtilizar.Visible := True;
+      begin
+        btnIncluir.Visible := False;
+        btnUtilizar.Visible := True;
+      end;
     meSomenteCadastro:
       ;
   end;
@@ -349,7 +355,7 @@ begin
         if (vaRecNo > 0) and (vaRecNo <= dsMaster.DataSet.RecordCount) then
           dsMaster.DataSet.RecNo := vaRecNo
         else if (vaRecNo > 0) then
-          dsMaster.DataSet.RecNo := dsMaster.DataSet.RecordCount - 1;
+          dsMaster.DataSet.RecNo := dsMaster.DataSet.RecordCount;
       end;
 
   finally
@@ -406,7 +412,7 @@ begin
 
         cbPesquisarPorPropertiesEditValueChanged(cbPesquisarPor);
       finally
-        cbPesquisarPor.LockChangeEvents(false, false);
+        cbPesquisarPor.LockChangeEvents(False, False);
       end;
     end;
 
@@ -423,7 +429,7 @@ var
   vaAcao: TAcaoTela;
   vaField: TField;
 begin
-  Result := false;
+  Result := False;
 
   vaAcao := atExcluir;
   if rgStatus.Visible then
@@ -446,39 +452,50 @@ begin
     begin
       viewRegistros.BeginUpdate(lsimImmediate);
       try
-        for vaId in ipIds do
-          begin
-            case vaAcao of
-              atExcluir:
-                begin
-                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                    dsMaster.DataSet.Delete;
-                end;
-              atAtivar:
-                begin
-                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                    begin
-                      dsMaster.DataSet.Edit;
-                      dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
-                      dsMaster.DataSet.Post;
-                    end;
-                end;
-              atInativar:
-                begin
-                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                    begin
-                      dsMaster.DataSet.Edit;
-                      dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
-                      dsMaster.DataSet.Post;
-                    end;
-                end;
+        try
+          for vaId in ipIds do
+            begin
+              case vaAcao of
+                atExcluir:
+                  begin
+                    if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                      dsMaster.DataSet.Delete;
+                  end;
+                atAtivar:
+                  begin
+                    if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                      begin
+                        dsMaster.DataSet.Edit;
+                        dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
+                        dsMaster.DataSet.Post;
+                      end;
+                  end;
+                atInativar:
+                  begin
+                    if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                      begin
+                        dsMaster.DataSet.Edit;
+                        dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
+                        dsMaster.DataSet.Post;
+                      end;
+                  end;
+              end;
+
             end;
 
-          end;
+          if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
+            TClientDataSet(dsMaster.DataSet).ApplyUpdates(0);
 
-        Result := True;
+          Result := True;
 
-        pprEfetuarPesquisa;
+          if vaAcao in [atAtivar, atInativar] then
+            pprEfetuarPesquisa;
+
+        except
+          if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
+            TClientDataSet(dsMaster.DataSet).CancelUpdates;
+          raise;
+        end;
       finally
         viewRegistros.EndUpdate;
       end;
@@ -512,8 +529,13 @@ end;
 
 procedure TfrmBasicoCrud.ppuRetornar;
 begin
-  pcPrincipal.ActivePage := tabPesquisa;
-  pprEfetuarPesquisa;
+  if FModoExecucao = meSomenteCadastro then
+    Close
+  else
+    begin
+      pcPrincipal.ActivePage := tabPesquisa;
+      pprEfetuarPesquisa;
+    end;
 end;
 
 procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);

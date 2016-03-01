@@ -135,8 +135,6 @@ begin
             vaDataSet.SQL.Text := vaScript;
             vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
             vaWhere := fprMontarWhere(vaTabela, vaParams);
-            if (vaWhere = '') and (not Assigned(vaParams.FindParam(TParametros.coTodos))) then
-              vaWhere := TSQLGenerator.fpuFilterInteger(vaWhere, vaTabela, TBancoDados.coID, -1); // vamos usar o active
 
             vaWhere := fprAjustarWhere(vaWhere);
 
@@ -181,7 +179,7 @@ begin
   for I := 0 to ipParams.Count - 1 do
     begin
       vaParam := ipParams[I];
-      TUtils.ppuExtrairValorOperador(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+      TUtils.ppuExtrairValorOperadorParametro(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
 
       if vaParam.Name = TParametros.coID then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
