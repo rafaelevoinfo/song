@@ -9,7 +9,7 @@ uses
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
-  fBanco, fAtividade;
+  fBanco, fAtividade, fEspecie;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -35,6 +35,9 @@ type
     Bancos1: TMenuItem;
     Ac_Atividade: TAction;
     Atividades1: TMenuItem;
+    miViveiro: TMenuItem;
+    Ac_Especie: TAction;
+    Espcie1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -44,6 +47,7 @@ type
     procedure Ac_FinanciadorExecute(Sender: TObject);
     procedure Ac_BancoExecute(Sender: TObject);
     procedure Ac_AtividadeExecute(Sender: TObject);
+    procedure Ac_EspecieExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -68,6 +72,12 @@ procedure TfrmPrincipal.Ac_BancoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmBanco>(pcPrincipal, TfrmBanco, frmBanco);
+end;
+
+procedure TfrmPrincipal.Ac_EspecieExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmEspecie>(pcPrincipal, TfrmEspecie, frmEspecie);
 end;
 
 procedure TfrmPrincipal.Ac_FinanciadorExecute(Sender: TObject);

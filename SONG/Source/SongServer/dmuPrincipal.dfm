@@ -35,6 +35,7 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64
@@ -133,5 +134,11 @@ object dmPrincipal: TdmPrincipal
     Server = Server
     Left = 528
     Top = 88
+  end
+  object SCViveiro: TDSServerClass
+    OnGetClass = SCViveiroGetClass
+    Server = Server
+    Left = 576
+    Top = 232
   end
 end

@@ -65,6 +65,12 @@ inherited frmPrincipal: TfrmPrincipal
         Action = Ac_Perfis
       end
     end
+    object miViveiro: TMenuItem
+      Caption = 'Viveiro'
+      object Espcie1: TMenuItem
+        Action = Ac_Especie
+      end
+    end
   end
   object ActionList1: TActionList
     Left = 488
@@ -103,6 +109,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Administrativo'
       Caption = 'Atividades'
       OnExecute = Ac_AtividadeExecute
+    end
+    object Ac_Especie: TAction
+      Category = 'Viveiro'
+      Caption = 'Esp'#233'cies'
+      OnExecute = Ac_EspecieExecute
     end
   end
   object dxSkinController1: TdxSkinController

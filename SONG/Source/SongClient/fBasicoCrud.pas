@@ -87,7 +87,8 @@ type
     procedure pprExecutarSalvar; virtual;
     procedure pprAfterSalvar; virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
-    procedure ppuRetornar; virtual;
+    procedure ppuRetornar(); overload; virtual;
+    procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
     procedure pprBeforeAlterar; virtual;
     // PESQUISA
@@ -295,7 +296,7 @@ begin
     end;
 
   TClientDataSet(dsMaster.DataSet).CancelUpdates;
-  ppuRetornar;
+  ppuRetornar(False);
 end;
 
 procedure TfrmBasicoCrud.ppuConfigurarModoExecucao(ipModo: TModoExecucao);
@@ -527,15 +528,21 @@ begin
   pprEfetuarPesquisa;
 end;
 
-procedure TfrmBasicoCrud.ppuRetornar;
+procedure TfrmBasicoCrud.ppuRetornar(ipAtualizar: Boolean);
 begin
   if FModoExecucao = meSomenteCadastro then
     Close
   else
     begin
       pcPrincipal.ActivePage := tabPesquisa;
-      pprEfetuarPesquisa;
+      if ipAtualizar then
+        pprEfetuarPesquisa;
     end;
+end;
+
+procedure TfrmBasicoCrud.ppuRetornar;
+begin
+  ppuRetornar(True);
 end;
 
 procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);

@@ -1604,4 +1604,10 @@ object dmPrincipal: TdmPrincipal
     Left = 56
     Top = 368
   end
+  object ProviderViveiro: TDSProviderConnection
+    ServerClassName = 'TsmViveiro'
+    SQLConnection = DataSnapConn
+    Left = 192
+    Top = 256
+  end
 end

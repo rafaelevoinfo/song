@@ -23,6 +23,7 @@ type
     ProviderAdministrativo: TDSProviderConnection;
     ProviderLookup: TDSProviderConnection;
     ProviderFinanceiro: TDSProviderConnection;
+    ProviderViveiro: TDSProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);

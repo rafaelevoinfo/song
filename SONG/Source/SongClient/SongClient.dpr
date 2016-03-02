@@ -27,7 +27,9 @@ uses
   fFinanciador in 'Administrativo\fFinanciador.pas' {frmFinanciador},
   dmuFinanceiro in 'Financeiro\dmuFinanceiro.pas' {dmFinanceiro: TDataModule},
   fBanco in 'Financeiro\fBanco.pas' {frmBanco},
-  fAtividade in 'Administrativo\fAtividade.pas' {frmAtividade};
+  fAtividade in 'Administrativo\fAtividade.pas' {frmAtividade},
+  fEspecie in 'Viveiro\fEspecie.pas' {frmEspecie},
+  dmuViveiro in 'Viveiro\dmuViveiro.pas' {dmViveiro: TDataModule};
 
 {$R *.res}
 

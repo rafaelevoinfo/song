@@ -188,6 +188,15 @@
             <Form>frmAtividade</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Viveiro\fEspecie.pas">
+            <Form>frmEspecie</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Viveiro\dmuViveiro.pas">
+            <Form>dmViveiro</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

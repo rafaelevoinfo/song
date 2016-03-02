@@ -16,7 +16,8 @@ uses
   smuFuncoesAdministrativo in 'ServerModules\smuFuncoesAdministrativo.pas' {smFuncoesAdministrativo: TDSServerModule},
   uUtils in '..\Comuns\uUtils.pas',
   smuFinanceiro in 'ServerModules\smuFinanceiro.pas' {smFinanceiro: TDSServerModule},
-  uControleAcesso in '..\Comuns\uControleAcesso.pas';
+  uControleAcesso in '..\Comuns\uControleAcesso.pas',
+  smuViveiro in 'ServerModules\smuViveiro.pas' {smViveiro: TDSServerModule};
 
 {$R *.res}
 

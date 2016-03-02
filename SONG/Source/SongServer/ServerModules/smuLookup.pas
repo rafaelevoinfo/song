@@ -68,7 +68,7 @@ begin
   for i := 0 to ipParams.Count - 1 do
     begin
       vaParam := ipParams[i];
-      TUtils.ppuExtrairValorOperador(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+      TUtils.ppuExtrairValorOperadorParametro(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
 
       if ipTabela = 'ATIVIDADE' then
         begin

@@ -82,6 +82,7 @@ type
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador);
+  TPermissaoViveiro = (vivEspecie);
 
 implementation
 
@@ -107,6 +108,14 @@ var
     vaPermissoes.Add(vaPermissao);
   end;
 
+  procedure plAddViveiro(ipPermissao: TPermissaoViveiro; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoViveiro), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
 begin
   FItems := TDictionary < String, TList < TPermissao >>.Create();
 
@@ -123,6 +132,10 @@ begin
   plAddFinanceiro(finBanco, 'Bancos');
   plAddFinanceiro(finFinanciador, 'Financiadores');
   FItems.Add('Financeiro', vaPermissoes);
+  // Viveiro
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddViveiro(vivEspecie, 'Espécies');
+  FItems.Add('Viveiro', vaPermissoes);
 
 end;
 
