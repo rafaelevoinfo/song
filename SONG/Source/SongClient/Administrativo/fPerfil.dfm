@@ -1,11 +1,17 @@
 inherited frmPerfil: TfrmPerfil
-  ActiveControl = tlPermissoes
+  ActiveControl = EditNome
   Caption = 'Perfis de Usu'#225'rio'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -50,6 +56,10 @@ inherited frmPerfil: TfrmPerfil
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Permiss'#245'es'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   ExplicitLeft = 1
@@ -109,6 +119,10 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6
@@ -163,6 +177,10 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object tlPermissoes: TcxDBTreeList
           Left = 0

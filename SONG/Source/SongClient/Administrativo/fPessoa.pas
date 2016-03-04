@@ -13,8 +13,9 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, cxGroupBox, uExceptions,
-  uUtils, Datasnap.DBClient, fmGrids, dmuLookup, uTypes, uClientDataSet,
-  System.TypInfo, uControleAcesso, cxRadioGroup, dmuPrincipal;
+  uUtils, Datasnap.DBClient, fmGrids, uTypes, uClientDataSet,
+  System.TypInfo, uControleAcesso, cxRadioGroup, dmuPrincipal, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, dmuLookup;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)
@@ -45,7 +46,6 @@ type
     Label9: TLabel;
     EditEndereco: TcxDBTextEdit;
     Label10: TLabel;
-    EditCidade: TcxDBTextEdit;
     Label11: TLabel;
     EditComplemento: TcxDBTextEdit;
     lbl1: TLabel;
@@ -65,6 +65,8 @@ type
     cbTipo: TcxDBImageComboBox;
     viewRegistrosCIDADE: TcxGridDBColumn;
     viewRegistrosTIPO: TcxGridDBColumn;
+    cbCidade: TcxDBLookupComboBox;
+    dslkCidade: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
@@ -79,6 +81,7 @@ type
     procedure pprBeforeSalvar; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprRealizarPesquisaInicial; override;
+    procedure pprExecutarSalvarDetail; override;
 
     function fprGetPermissao: String; override;
   public
@@ -174,6 +177,13 @@ begin
   inherited;
   if (cbPesquisarPor.EditValue = coLogin) then
     ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);
+end;
+
+procedure TfrmPessoa.pprExecutarSalvarDetail;
+begin
+  inherited;
+  if dmAdministrativo.cdsPessoa_Perfil.ChangeCount > 0 then
+    dmAdministrativo.cdsPessoa_Perfil.ApplyUpdates(0);
 end;
 
 procedure TfrmPessoa.pprRealizarPesquisaInicial;

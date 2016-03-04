@@ -1,11 +1,16 @@
 inherited frmAtividade: TfrmAtividade
   ActiveControl = nil
   Caption = 'Atividades'
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailComentario
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 453
@@ -287,6 +292,10 @@ inherited frmAtividade: TfrmAtividade
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   ExplicitLeft = 1
@@ -818,6 +827,10 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 5

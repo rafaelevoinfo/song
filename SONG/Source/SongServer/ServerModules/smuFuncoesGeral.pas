@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, dmuPrincipal, uUtils, uTypes, System.IOUtils,
-  System.RegularExpressions;
+  System.RegularExpressions,  MidasLib, Midas;
 
 type
   TsmFuncoesGeral = class(TsmBasico)
@@ -70,7 +70,9 @@ begin
   if vaVersaoServer <> ipVersaoAtual then
     begin
       if TFile.Exists(coPastaAtualizacoes + coNomePadraoSongClient + vaVersaoServer+coExtensaoCompactacao) then
-        Result := vaVersaoServer;
+        Result := vaVersaoServer
+      else
+        raise Exception.Create('Versão incompatível com a versão do servidor.');
     end;
 end;
 

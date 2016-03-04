@@ -14,7 +14,8 @@ uses
   cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit,
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes;
+  uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
+  dmuPrincipal;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)
@@ -44,7 +45,6 @@ type
     Label8: TLabel;
     EditComplemento: TcxDBTextEdit;
     Label9: TLabel;
-    EditCidade: TcxDBTextEdit;
     Label11: TLabel;
     EditFuncao: TcxDBTextEdit;
     Label12: TLabel;
@@ -53,6 +53,8 @@ type
     EditObs: TcxDBMemo;
     Label10: TLabel;
     EditTelefone: TcxDBMaskEdit;
+    cbCidade: TcxDBLookupComboBox;
+    dslkCidade: TDataSource;
     procedure FormCreate(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;

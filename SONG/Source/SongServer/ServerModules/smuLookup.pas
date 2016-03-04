@@ -42,6 +42,10 @@ type
     qlkAtividadeNOME: TStringField;
     qlkAtividadeSTATUS: TSmallintField;
     qlkProjeto: TRFQuery;
+    qlkCidade: TRFQuery;
+    qlkCidadeID: TIntegerField;
+    qlkCidadeUF: TStringField;
+    qlkCidadeNOME: TStringField;
   private
     { Private declarations }
   protected

@@ -617,7 +617,7 @@ begin
   try
     for vaField in ipDataSet.Fields do
       begin
-        if vaField.Required and vaField.IsNull then
+        if vaField.Required and (vaField.IsNull or (vaField.AsString.Trim = ''))then
           begin
             vaMsg.Add(vaField.DisplayLabel);
           end;

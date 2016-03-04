@@ -171,16 +171,21 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'ATIVO'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsPessoaCIDADE: TStringField
-      DisplayLabel = 'Cidade'
-      FieldName = 'CIDADE'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsPessoaTIPO: TSmallintField
       Alignment = taLeftJustify
       DisplayLabel = 'Tipo de V'#237'nculo'
       FieldName = 'TIPO'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsPessoaID_CIDADE: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Cidade'
+      FieldName = 'ID_CIDADE'
+    end
+    object cdsPessoaCIDADE: TStringField
+      DisplayLabel = 'Cidade'
+      FieldName = 'CIDADE'
+      Size = 120
     end
   end
   object cdsPessoa_Perfil: TRFClientDataSet
@@ -263,15 +268,21 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Size = 100
     end
-    object cdsOrganizacaoCIDADE: TStringField
-      DisplayLabel = 'Cidade'
-      FieldName = 'CIDADE'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsOrganizacaoTELEFONE: TStringField
       DisplayLabel = 'Telefone'
       FieldName = 'TELEFONE'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsOrganizacaoID_CIDADE: TIntegerField
+      DisplayLabel = 'Cidade'
+      FieldName = 'ID_CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsOrganizacaoCIDADE: TStringField
+      DisplayLabel = 'Cidade'
+      FieldName = 'CIDADE'
+      ProviderFlags = []
+      Size = 120
     end
   end
   object cdsOrganizacao_Pessoa: TRFClientDataSet

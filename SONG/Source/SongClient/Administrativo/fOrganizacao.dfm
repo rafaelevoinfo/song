@@ -1,9 +1,17 @@
 inherited frmOrganizacao: TfrmOrganizacao
+  ActiveControl = EditNome
   Caption = 'Organiza'#231#245'es'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -77,6 +85,15 @@ inherited frmOrganizacao: TfrmOrganizacao
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Contatos da Organiza'#231#227'o'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
+              inherited pnBotoesDetail: TPanel
+                inherited btnIncluirDetail: TButton
+                  ExplicitLeft = 1
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -102,6 +119,10 @@ inherited frmOrganizacao: TfrmOrganizacao
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 8
@@ -196,7 +217,7 @@ inherited frmOrganizacao: TfrmOrganizacao
             Width = 33
             Height = 13
             Caption = 'Cidade'
-            FocusControl = EditCidade
+            FocusControl = cbCidade
           end
           object EditEndereco: TcxDBTextEdit
             Left = 3
@@ -219,16 +240,26 @@ inherited frmOrganizacao: TfrmOrganizacao
             Top = 66
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 3
+            TabOrder = 2
             Width = 490
           end
-          object EditCidade: TcxDBTextEdit
+          object cbCidade: TcxDBLookupComboBox
             Left = 3
             Top = 66
-            DataBinding.DataField = 'CIDADE'
+            DataBinding.DataField = 'ID_CIDADE'
             DataBinding.DataSource = dsMaster
-            TabOrder = 2
-            Width = 142
+            Properties.ClearKey = 46
+            Properties.DropDownListStyle = lsFixedList
+            Properties.DropDownSizeable = True
+            Properties.DropDownWidth = 250
+            Properties.KeyFieldNames = 'ID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'NOME'
+              end>
+            Properties.ListSource = dslkCidade
+            TabOrder = 3
+            Width = 140
           end
         end
         object EditTelefone: TcxDBMaskEdit
@@ -246,7 +277,7 @@ inherited frmOrganizacao: TfrmOrganizacao
     inherited tabCadastroDetail: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 854
+      ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
@@ -310,5 +341,10 @@ inherited frmOrganizacao: TfrmOrganizacao
     DataSet = dmAdministrativo.cdsOrganizacao_Pessoa
     Left = 464
     Top = 200
+  end
+  object dslkCidade: TDataSource
+    DataSet = dmPrincipal.cdslkCidade
+    Left = 400
+    Top = 184
   end
 end

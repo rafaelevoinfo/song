@@ -1,8 +1,9 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -13,7 +14,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472

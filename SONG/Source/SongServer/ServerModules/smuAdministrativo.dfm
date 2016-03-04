@@ -15,13 +15,14 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.ENDERECO,'
       '       PESSOA.BAIRRO,'
       '       PESSOA.COMPLEMENTO,'
-      '       PESSOA.CIDADE,'
+      '       PESSOA.ID_CIDADE,'
       '       PESSOA.LOGIN,'
       '       PESSOA.SENHA,'
       '       PESSOA.ATIVO,'
-      '       PESSOA.TIPO'
-      ' '
+      '       PESSOA.TIPO,'
+      '       CIDADE.NOME AS CIDADE'
       'from PESSOA'
+      'left join cidade on (cidade.id = pessoa.id_cidade)'
       '&WHERE')
     Left = 32
     Top = 16
@@ -104,15 +105,22 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'ATIVO'
       ProviderFlags = [pfInUpdate]
     end
-    object qPessoaCIDADE: TStringField
-      FieldName = 'CIDADE'
-      Origin = 'CIDADE'
-      ProviderFlags = [pfInUpdate]
-    end
     object qPessoaTIPO: TSmallintField
       FieldName = 'TIPO'
       Origin = 'TIPO'
       ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaID_CIDADE: TIntegerField
+      FieldName = 'ID_CIDADE'
+      Origin = 'ID_CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaCIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CIDADE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 120
     end
   end
   object qPerfil: TRFQuery
@@ -260,9 +268,11 @@ inherited smAdministrativo: TsmAdministrativo
       '       ORGANIZACAO.ENDERECO,'
       '       ORGANIZACAO.BAIRRO,'
       '       ORGANIZACAO.COMPLEMENTO,'
-      '       ORGANIZACAO.CIDADE,'
-      '       ORGANIZACAO.TELEFONE'
+      '       cidade.nome as CIDADE,'
+      '       ORGANIZACAO.TELEFONE,'
+      '       ORGANIZACAO.ID_CIDADE'
       'from ORGANIZACAO  '
+      'left join cidade on (cidade.id = organizacao.id_cidade)'
       '&WHERE')
     Left = 120
     Top = 16
@@ -312,15 +322,22 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Size = 100
     end
-    object qOrganizacaoCIDADE: TStringField
-      FieldName = 'CIDADE'
-      Origin = 'CIDADE'
-      ProviderFlags = [pfInUpdate]
-    end
     object qOrganizacaoTELEFONE: TStringField
       FieldName = 'TELEFONE'
       Origin = 'TELEFONE'
       ProviderFlags = [pfInUpdate]
+    end
+    object qOrganizacaoID_CIDADE: TIntegerField
+      FieldName = 'ID_CIDADE'
+      Origin = 'ID_CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qOrganizacaoCIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CIDADE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 120
     end
   end
   object qOrganizacao_Pessoa: TRFQuery

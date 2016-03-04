@@ -49,7 +49,6 @@ type
     cdsOrganizacaoENDERECO: TStringField;
     cdsOrganizacaoBAIRRO: TStringField;
     cdsOrganizacaoCOMPLEMENTO: TStringField;
-    cdsOrganizacaoCIDADE: TStringField;
     cdsOrganizacaoTELEFONE: TStringField;
     cdsOrganizacao_PessoaID: TIntegerField;
     cdsOrganizacao_PessoaID_PESSOA: TIntegerField;
@@ -57,7 +56,6 @@ type
     cdsOrganizacao_PessoaFUNCAO: TStringField;
     cdsOrganizacao_PessoaOBSERVACAO: TStringField;
     dsOrganizacao: TDataSource;
-    cdsPessoaCIDADE: TStringField;
     cdsPerfilTIPO: TSmallintField;
     cdsProjeto: TRFClientDataSet;
     cdsProjeto_Pessoa: TRFClientDataSet;
@@ -143,6 +141,10 @@ type
     cdsAtividade_VinculoNOME_ATIVIDADE_VINCULO: TStringField;
     cdsProjetoSTATUS: TSmallintField;
     cdsAtividadeNOME_PROJETO: TStringField;
+    cdsPessoaID_CIDADE: TIntegerField;
+    cdsPessoaCIDADE: TStringField;
+    cdsOrganizacaoID_CIDADE: TIntegerField;
+    cdsOrganizacaoCIDADE: TStringField;
   private
     { Private declarations }
   public

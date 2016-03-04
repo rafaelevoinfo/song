@@ -4,8 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, dmuBasico, cxEdit, cxEditRepositoryItems,
-  cxClasses, Data.DB, Datasnap.DBClient, dmuPrincipal, cxDBEditRepository,
-  uClientDataSet;
+  cxClasses, Data.DB, Datasnap.DBClient, cxDBEditRepository,
+  uClientDataSet, dmuPrincipal;
 
 type
   TdmLookup = class(TdmBasico)
@@ -73,8 +73,9 @@ type
     { Public declarations }
   end;
 
-var
-  dmLookup: TdmLookup;
+//var
+ // dmLookup: TdmLookup;
+
 
 implementation
 

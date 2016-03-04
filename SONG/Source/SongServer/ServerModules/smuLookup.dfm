@@ -254,4 +254,36 @@ inherited smLookup: TsmLookup
         Name = 'WHERE'
       end>
   end
+  object qlkCidade: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select CIDADE.ID,'
+      '       CIDADE.NOME||'#39' - '#39'||ESTADO.UF as NOME,'
+      '       ESTADO.UF'
+      'from CIDADE'
+      'inner join ESTADO on (CIDADE.ID_ESTADO = ESTADO.ID)  ')
+    Left = 368
+    Top = 176
+    object qlkCidadeID: TIntegerField
+      Alignment = taLeftJustify
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkCidadeUF: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UF'
+      Origin = 'UF'
+      ProviderFlags = []
+      Size = 5
+    end
+    object qlkCidadeNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 128
+    end
+  end
 end

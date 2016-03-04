@@ -127,21 +127,38 @@ inherited dmLookup: TdmLookup
       Properties.ImmediatePost = True
       Properties.Items = <
         item
-          Description = 'Funcion'#225'rio/Membro da diretoria'
+          Description = 'Funcion'#225'rio'
           ImageIndex = 0
           Value = 0
         end
         item
-          Description = 'Estagi'#225'rio'
+          Description = 'Membro da Diretoria'
+          ImageIndex = 0
           Value = 1
         end
         item
-          Description = 'Volunt'#225'rio'
+          Description = 'Cliente'
           Value = 2
         end
         item
-          Description = 'Outro'
+          Description = 'Fornecedor'
           Value = 3
+        end
+        item
+          Description = 'Parceiro'
+          Value = 4
+        end
+        item
+          Description = 'Estagi'#225'rio'
+          Value = 5
+        end
+        item
+          Description = 'Volunt'#225'rio'
+          Value = 6
+        end
+        item
+          Description = 'Outro'
+          Value = 7
         end>
     end
     object repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem

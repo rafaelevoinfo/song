@@ -1588,26 +1588,53 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
   object ProviderLookup: TDSProviderConnection
     ServerClassName = 'TsmLookup'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304
   end
   object ProviderFinanceiro: TDSProviderConnection
     ServerClassName = 'TsmFinanceiro'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 368
   end
   object ProviderViveiro: TDSProviderConnection
     ServerClassName = 'TsmViveiro'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 192
     Top = 256
+  end
+  object cdslkCidade: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkCidade'
+    RemoteServer = ProviderLookup
+    Left = 192
+    Top = 344
+    object cdslkCidadeID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkCidadeUF: TStringField
+      FieldName = 'UF'
+      ProviderFlags = []
+      Size = 5
+    end
+    object cdslkCidadeNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Size = 128
+    end
   end
 end

@@ -122,6 +122,7 @@ begin
   {$IFDEF DEBUG}
   ReportMemoryLeaksOnShutdown := True;
   {$ENDIF}
+  Self.Caption := Self.Caption+ ' - Versão: '+TUtils.fpuVersaoExecutavel(Application.ExeName,viBuild);
 end;
 
 procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);

@@ -10,7 +10,8 @@ uses
   Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
-  uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions;
+  uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
+  Vcl.Forms, uClientDataSet;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -24,6 +25,10 @@ type
     ProviderLookup: TDSProviderConnection;
     ProviderFinanceiro: TDSProviderConnection;
     ProviderViveiro: TDSProviderConnection;
+    cdslkCidade: TRFClientDataSet;
+    cdslkCidadeID: TIntegerField;
+    cdslkCidadeUF: TStringField;
+    cdslkCidadeNOME: TStringField;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -93,6 +98,8 @@ procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
 begin
   FFuncoesGeral := TsmFuncoesGeralClient.Create(DataSnapConn.DBXConnection);
   FFuncoesAdministrativo := TsmFuncoesAdministrativoClient.Create(DataSnapConn.DBXConnection);
+
+  cdslkCidade.Open;
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
@@ -109,16 +116,18 @@ var
   vaHost: string;
   vaPorta: Integer;
   vaFile: TStringList;
+  vaFilePath: string;
 begin
   vaHost := 'localhost';
   vaPorta := 3004;
 
+  vaFilePath := IncludeTrailingBackslash(TDirectory.GetCurrentDirectory) + coArquivoConfiguracao;
   // primeiro vamos ver se achamos um arquivo de configuracao
-  if TFile.Exists(coArquivoConfiguracao) then
+  if TFile.Exists(vaFilePath) then
     begin
       vaFile := TStringList.Create;
       try
-        vaFile.LoadFromFile(coArquivoConfiguracao);
+        vaFile.LoadFromFile(vaFilePath);
         if vaFile.Count > 0 then
           vaHost := vaFile.Strings[0];
 

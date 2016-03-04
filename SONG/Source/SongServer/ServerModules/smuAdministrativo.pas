@@ -52,14 +52,12 @@ type
     qOrganizacaoENDERECO: TStringField;
     qOrganizacaoBAIRRO: TStringField;
     qOrganizacaoCOMPLEMENTO: TStringField;
-    qOrganizacaoCIDADE: TStringField;
     qOrganizacaoTELEFONE: TStringField;
     qOrganizacao_PessoaID: TIntegerField;
     qOrganizacao_PessoaID_PESSOA: TIntegerField;
     qOrganizacao_PessoaID_ORGANIZACAO: TIntegerField;
     qOrganizacao_PessoaFUNCAO: TStringField;
     qOrganizacao_PessoaOBSERVACAO: TStringField;
-    qPessoaCIDADE: TStringField;
     qProjeto: TRfQuery;
     qProjetoID: TIntegerField;
     qProjetoNOME: TStringField;
@@ -142,6 +140,10 @@ type
     qAtividade_VinculoNOME_ATIVIDADE_VINCULO: TStringField;
     qProjetoSTATUS: TSmallintField;
     qAtividadeNOME_PROJETO: TStringField;
+    qPessoaID_CIDADE: TIntegerField;
+    qPessoaCIDADE: TStringField;
+    qOrganizacaoID_CIDADE: TIntegerField;
+    qOrganizacaoCIDADE: TStringField;
   private
     { Private declarations }
   protected
