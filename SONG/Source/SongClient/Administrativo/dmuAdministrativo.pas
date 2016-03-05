@@ -145,6 +145,8 @@ type
     cdsPessoaCIDADE: TStringField;
     cdsOrganizacaoID_CIDADE: TIntegerField;
     cdsOrganizacaoCIDADE: TStringField;
+    cdsPessoaDATA_NASCIMENTO: TDateField;
+    cdsPessoaOBSERVACAO: TStringField;
   private
     { Private declarations }
   public

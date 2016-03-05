@@ -447,32 +447,12 @@ end;
 
 procedure TfrmAtividade.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 var
-  vaIndices: TArray<String>;
-  I: Integer;
-  vaCodigosProjetos: TStringList;
+  vaCodigos:string;
 begin
   inherited;
-  if (not VarIsNull(cbProjetosPesquisa.EditValue)) and (cbProjetosPesquisa.EditValue <> '') then
-    begin
-      vaCodigosProjetos := TStringList.Create;
-      try
-        vaCodigosProjetos.Delimiter := coDelimitadorPadrao;
-        vaCodigosProjetos.StrictDelimiter := True;
-
-        vaIndices := TRegex.Split(Copy(cbProjetosPesquisa.EditValue, Pos(';', cbProjetosPesquisa.EditValue) + 1, Length(cbProjetosPesquisa.EditValue)
-          ), ',', [roIgnoreCase]);
-        for I := 0 to High(vaIndices) do
-          begin
-            vaCodigosProjetos.Add(cbProjetosPesquisa.Properties.Items[vaIndices[I].ToInteger].Tag.ToString());
-          end;
-
-        if vaCodigosProjetos.Count > 0 then
-          ipCds.ppuAddParametro(TParametros.coProjeto, vaCodigosProjetos.DelimitedText);
-      finally
-        vaCodigosProjetos.Clear;
-        vaCodigosProjetos.Free;
-      end;
-    end;
+  vaCodigos := TUtils.fpuExtrairValoresCheckComboBox(cbProjetosPesquisa);
+  if vaCodigos <> '' then
+    ipCds.ppuAddParametro(TParametros.coProjeto, vaCodigos);;
 end;
 
 procedure TfrmAtividade.pprDefinirTabDetailCadastro;

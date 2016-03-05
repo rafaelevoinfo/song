@@ -194,7 +194,7 @@ begin
           else
             begin
               Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, coRegistroAtivo, TOperadores.coOR);
-              Result := Result + ipTabela + '.' + TBancoDados.coAtivo + ' is null AND';
+              Result := '('+Result + ipTabela + '.' + TBancoDados.coAtivo + ' is null) AND';
             end;
 
         end;

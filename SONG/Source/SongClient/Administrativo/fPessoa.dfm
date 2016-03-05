@@ -14,7 +14,33 @@ inherited frmPessoa: TfrmPessoa
       ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
+          Left = 321
+          Width = 654
+          ExplicitLeft = 313
+          ExplicitWidth = 654
+          inherited Label1: TLabel
+            Left = 263
+            ExplicitLeft = 263
+          end
+          object Label16: TLabel [1]
+            Left = 137
+            Top = 4
+            Width = 85
+            Height = 13
+            Caption = 'Tipos de V'#237'nculos:'
+          end
+          inherited pnData: TPanel
+            Left = 418
+            ExplicitLeft = 418
+          end
+          inherited EditPesquisa: TcxButtonEdit
+            Left = 392
+            ExplicitLeft = 392
+            ExplicitWidth = 155
+            Width = 155
+          end
           inherited cbPesquisarPor: TcxImageComboBox
+            Left = 261
             Properties.Items = <
               item
                 Description = 'Todos'
@@ -34,7 +60,27 @@ inherited frmPessoa: TfrmPessoa
                 Description = 'Login'
                 Value = 4
               end>
+            ExplicitLeft = 261
           end
+          inherited btnPesquisar: TButton
+            Left = 554
+            ExplicitLeft = 554
+          end
+          object cbTipoVinculoPesquisa: TcxCheckComboBox
+            Left = 135
+            Top = 20
+            Properties.EmptySelectionText = 'Todos'
+            Properties.DropDownSizeable = True
+            Properties.EditValueFormat = cvfIndices
+            Properties.Items = <
+              item
+              end>
+            TabOrder = 5
+            Width = 126
+          end
+        end
+        inherited pnBotoes: TPanel
+          Width = 320
         end
       end
       inherited pnGrid: TPanel
@@ -159,8 +205,8 @@ inherited frmPessoa: TfrmPessoa
           Top = 4
           Caption = 'Informa'#231#245'es Gerais'
           TabOrder = 0
-          Height = 143
-          Width = 309
+          Height = 149
+          Width = 657
           object Label3: TLabel
             Left = 4
             Top = 16
@@ -186,12 +232,28 @@ inherited frmPessoa: TfrmPessoa
             FocusControl = EditCpf
           end
           object Label13: TLabel
-            Left = 3
-            Top = 95
+            Left = 105
+            Top = 97
             Width = 71
             Height = 13
             Caption = 'Tipo de V'#237'nculo'
             FocusControl = cbTipo
+          end
+          object Label14: TLabel
+            Left = 3
+            Top = 97
+            Width = 96
+            Height = 13
+            Caption = 'Data de Nascimento'
+            FocusControl = EditRg
+          end
+          object Label15: TLabel
+            Left = 312
+            Top = 16
+            Width = 58
+            Height = 13
+            Caption = 'Observa'#231#227'o'
+            FocusControl = EditObservacao
           end
           object EditNome: TcxDBTextEdit
             Left = 3
@@ -220,23 +282,40 @@ inherited frmPessoa: TfrmPessoa
             Width = 149
           end
           object cbTipo: TcxDBImageComboBox
-            Left = 3
-            Top = 111
+            Left = 105
+            Top = 113
             RepositoryItem = dmLookup.repIcbTipoPessoa
-            DataBinding.DataField = 'TIPO'
+            DataBinding.DataField = 'DATA_NASCIMENTO'
             DataBinding.DataSource = dsMaster
             Properties.Items = <>
+            TabOrder = 4
+            Width = 200
+          end
+          object EditDataNascimento: TcxDBDateEdit
+            Left = 3
+            Top = 113
+            DataBinding.DataField = 'DATA_NASCIMENTO'
+            DataBinding.DataSource = dsMaster
             TabOrder = 3
-            Width = 302
+            Width = 101
+          end
+          object EditObservacao: TcxDBMemo
+            Left = 310
+            Top = 32
+            DataBinding.DataField = 'OBSERVACAO'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 5
+            Height = 102
+            Width = 344
           end
         end
         object rgInfoContato: TcxGroupBox
           Left = 4
-          Top = 149
+          Top = 159
           Caption = 'Informa'#231#245'es para Contato'
           TabOrder = 1
-          Height = 147
-          Width = 757
+          Height = 149
+          Width = 657
           object Label6: TLabel
             Left = 8
             Top = 16
@@ -246,14 +325,14 @@ inherited frmPessoa: TfrmPessoa
             FocusControl = EditEmail
           end
           object Label7: TLabel
-            Left = 513
+            Left = 413
             Top = 15
             Width = 33
             Height = 13
             Caption = 'Celular'
           end
           object Label8: TLabel
-            Left = 637
+            Left = 537
             Top = 14
             Width = 42
             Height = 13
@@ -284,7 +363,7 @@ inherited frmPessoa: TfrmPessoa
             FocusControl = EditComplemento
           end
           object Label12: TLabel
-            Left = 512
+            Left = 410
             Top = 55
             Width = 28
             Height = 13
@@ -297,7 +376,7 @@ inherited frmPessoa: TfrmPessoa
             DataBinding.DataField = 'EMAIL'
             DataBinding.DataSource = dsMaster
             TabOrder = 0
-            Width = 500
+            Width = 400
           end
           object EditEndereco: TcxDBTextEdit
             Left = 8
@@ -305,18 +384,18 @@ inherited frmPessoa: TfrmPessoa
             DataBinding.DataField = 'ENDERECO'
             DataBinding.DataSource = dsMaster
             TabOrder = 3
-            Width = 499
+            Width = 399
           end
           object EditComplemento: TcxDBTextEdit
             Left = 183
             Top = 111
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 5
-            Width = 571
+            TabOrder = 6
+            Width = 471
           end
           object EditCelular: TcxDBMaskEdit
-            Left = 510
+            Left = 410
             Top = 31
             DataBinding.DataField = 'CELULAR'
             DataBinding.DataSource = dsMaster
@@ -326,7 +405,7 @@ inherited frmPessoa: TfrmPessoa
             Width = 121
           end
           object EditTelefone: TcxDBMaskEdit
-            Left = 636
+            Left = 536
             Top = 31
             DataBinding.DataField = 'TELEFONE'
             DataBinding.DataSource = dsMaster
@@ -336,16 +415,16 @@ inherited frmPessoa: TfrmPessoa
             Width = 118
           end
           object EditBairro: TcxDBTextEdit
-            Left = 510
+            Left = 408
             Top = 70
             DataBinding.DataField = 'BAIRRO'
             DataBinding.DataSource = dsMaster
             TabOrder = 4
-            Width = 244
+            Width = 246
           end
           object cbCidade: TcxDBLookupComboBox
             Left = 8
-            Top = 112
+            Top = 111
             DataBinding.DataField = 'ID_CIDADE'
             DataBinding.DataSource = dsMaster
             Properties.ClearKey = 46
@@ -358,19 +437,17 @@ inherited frmPessoa: TfrmPessoa
                 FieldName = 'NOME'
               end>
             Properties.ListSource = dslkCidade
-            TabOrder = 6
+            TabOrder = 5
             Width = 170
           end
         end
         object rgInfoLogin: TcxGroupBox
-          Left = 319
+          Left = 666
           Top = 4
-          Caption = 
-            'Informa'#231#245'es de Login (Somente caso deseje que esta pessoa tenha ' +
-            'acesso ao sistema)'
+          Caption = 'Informa'#231#245'es de Login (Somente para usu'#225'rios do sistema)'
           TabOrder = 2
-          Height = 143
-          Width = 442
+          Height = 109
+          Width = 303
           object lbl1: TLabel
             Left = 6
             Top = 16
@@ -388,12 +465,12 @@ inherited frmPessoa: TfrmPessoa
             FocusControl = EditSenha
           end
           object EditLogin: TcxDBTextEdit
-            Left = 4
+            Left = 3
             Top = 32
             DataBinding.DataField = 'LOGIN'
             DataBinding.DataSource = dsMaster
             TabOrder = 0
-            Width = 435
+            Width = 295
           end
           object EditSenha: TcxTextEdit
             Left = 3
@@ -401,7 +478,7 @@ inherited frmPessoa: TfrmPessoa
             Properties.EchoMode = eemPassword
             Properties.PasswordChar = '*'
             TabOrder = 1
-            Width = 436
+            Width = 295
           end
         end
       end
@@ -553,5 +630,10 @@ inherited frmPessoa: TfrmPessoa
     DataSet = dmPrincipal.cdslkCidade
     Left = 400
     Top = 184
+  end
+  object CustomizeDlg1: TCustomizeDlg
+    StayOnTop = False
+    Left = 464
+    Top = 32
   end
 end

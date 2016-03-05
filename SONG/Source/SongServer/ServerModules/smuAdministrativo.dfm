@@ -20,7 +20,9 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.SENHA,'
       '       PESSOA.ATIVO,'
       '       PESSOA.TIPO,'
-      '       CIDADE.NOME AS CIDADE'
+      '       CIDADE.NOME AS CIDADE,'
+      '       PESSOA.DATA_NASCIMENTO,'
+      '       PESSOA.OBSERVACAO'
       'from PESSOA'
       'left join cidade on (cidade.id = pessoa.id_cidade)'
       '&WHERE')
@@ -121,6 +123,17 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOME'
       ProviderFlags = []
       Size = 120
+    end
+    object qPessoaDATA_NASCIMENTO: TDateField
+      FieldName = 'DATA_NASCIMENTO'
+      Origin = 'DATA_NASCIMENTO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPessoaOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
     end
   end
   object qPerfil: TRFQuery

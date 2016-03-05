@@ -15,7 +15,8 @@ uses
   Vcl.ExtCtrls, cxPC, dmuAdministrativo, cxDBEdit, cxGroupBox, uExceptions,
   uUtils, Datasnap.DBClient, fmGrids, uTypes, uClientDataSet,
   System.TypInfo, uControleAcesso, cxRadioGroup, dmuPrincipal, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, dmuLookup;
+  cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, cxMemo, cxCheckBox,
+  cxCheckComboBox, Vcl.CustomizeDlg;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)
@@ -67,6 +68,13 @@ type
     viewRegistrosTIPO: TcxGridDBColumn;
     cbCidade: TcxDBLookupComboBox;
     dslkCidade: TDataSource;
+    EditDataNascimento: TcxDBDateEdit;
+    Label14: TLabel;
+    Label15: TLabel;
+    EditObservacao: TcxDBMemo;
+    Label16: TLabel;
+    cbTipoVinculoPesquisa: TcxCheckComboBox;
+    CustomizeDlg1: TCustomizeDlg;
     procedure FormCreate(Sender: TObject);
     procedure ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
@@ -76,6 +84,7 @@ type
     dmLookup: TdmLookup;
     procedure ppvCarregarPerfis;
     procedure ppvConfigurarGrids;
+    procedure ppvCarregarTipos;
   protected
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
@@ -104,6 +113,23 @@ implementation
 {$R *.dfm}
 
 
+procedure TfrmPessoa.ppvCarregarTipos;
+var
+  vaTipo: TcxCheckComboBoxItem;
+  vaTipoImg: TcxImageComboBoxItem;
+  i: Integer;
+begin
+  cbTipoVinculoPesquisa.Properties.Items.Clear;
+  for i := 0 to dmLookup.repIcbTipoPessoa.Properties.Items.Count - 1 do
+    begin
+      vaTipoImg := dmLookup.repIcbTipoPessoa.Properties.Items[i];
+
+      vaTipo := cbTipoVinculoPesquisa.Properties.Items.Add;
+      vaTipo.Tag := vaTipoImg.Value;
+      vaTipo.Description := vaTipoImg.Description;
+    end;
+end;
+
 procedure TfrmPessoa.ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
   ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
   var ADone: Boolean);
@@ -131,6 +157,7 @@ begin
   PesquisaPadrao := tppNome;
 
   dmLookup.cdslkPerfil.Open;
+  ppvCarregarTipos;
 
   ppvConfigurarGrids;
 end;
@@ -173,10 +200,16 @@ begin
 end;
 
 procedure TfrmPessoa.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+var
+  vaTipos: string;
 begin
   inherited;
   if (cbPesquisarPor.EditValue = coLogin) then
     ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);
+
+  vaTipos := TUtils.fpuExtrairValoresCheckComboBox(cbTipoVinculoPesquisa);
+  if vaTipos <> '' then
+    ipCds.ppuAddParametro(TParametros.coTipo, vaTipos);
 end;
 
 procedure TfrmPessoa.pprExecutarSalvarDetail;

@@ -22,6 +22,8 @@ type
     coNomeCientifico = 'NOME_CIENTIFICO';
     coFamiliaBotanica = 'FAMILIA_BOTANICA';
 
+    coTipo = 'TIPO';
+
     coDelimitador = '§';
   end;
 

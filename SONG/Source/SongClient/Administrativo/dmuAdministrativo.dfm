@@ -187,6 +187,17 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'CIDADE'
       Size = 120
     end
+    object cdsPessoaDATA_NASCIMENTO: TDateField
+      DisplayLabel = 'Data de Nascimento'
+      FieldName = 'DATA_NASCIMENTO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPessoaOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
   end
   object cdsPessoa_Perfil: TRFClientDataSet
     Aggregates = <>

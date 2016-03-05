@@ -36,12 +36,15 @@ end;
 class function TSQLGenerator.fpuFilterData(ipWhere, ipTabela, ipCampo: string;
   ipDataInicial, ipDataFinal: TDateTime; ipOperador: String): string;
 var
-  vaWhere: string;
+  vaDataInicial, vaDataFinal: string;
 begin
-  vaWhere := Format(' (%s.%s between %s and %s)',
-    [ipTabela, ipCampo, QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataInicial)), QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataFinal))]);
+  vaDataInicial := QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataInicial));
+  vaDataFinal := QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataFinal));
 
-  Result := ipWhere + vaWhere + ' ' + ipOperador + ' ';
+  if ipWhere <> '' then
+    Result := Format('(%s (%s.%s between %s and %s)) %s', [ipWhere, ipTabela, ipCampo, vaDataInicial, vaDataFinal, ipOperador])
+  else
+    Result := Format('(%s.%s between %s and %s) %s', [ipTabela, ipCampo, vaDataInicial, vaDataFinal, ipOperador]);
 
 end;
 
@@ -53,9 +56,10 @@ var
 begin
   vaCodigos := TUtils.fpuMontarStringCodigo(ipValores, ',');
 
-  Result := ipWhere + Format(' (%s.%s in (%s))', [ipTabela, ipCampo, vaCodigos]);
-
-  Result := Result + ' ' + ipOperador + ' ';
+  if ipWhere <> '' then
+    Result := Format('(%s (%s.%s in (%s) )) %s', [ipWhere, ipTabela, ipCampo, vaCodigos, ipOperador])
+  else
+    Result := Format('(%s.%s in (%s)) %s', [ipTabela, ipCampo, vaCodigos, ipOperador]);
 
 end;
 
@@ -63,12 +67,15 @@ class
   function TSQLGenerator.fpuFilterInteger(ipWhere, ipTabela,
   ipCampo: string; ipValor: Integer; ipOperador: String): string;
 begin
-  Result := ipWhere + Format(' (%s.%s = %d) %s', [ipTabela, ipCampo, ipValor, ipOperador]);
+  if ipWhere <> '' then
+    Result := Format('(%s (%s.%s = %d)) %s', [ipWhere, ipTabela, ipCampo, ipValor, ipOperador])
+  else
+    Result := Format('(%s.%s = %d) %s', [ipTabela, ipCampo, ipValor, ipOperador])
 end;
 
 class
   function TSQLGenerator.fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string;
-  ipStartWith, ipEndWith: bOOLEAN; ipOperador: String): string;
+  ipStartWith, ipEndWith: Boolean; ipOperador: String): string;
 var
   vaFilter: string;
 begin
@@ -78,7 +85,10 @@ begin
   if ipEndWith then
     vaFilter := '%' + vaFilter;
 
-  Result := ipWhere + Format(' (%s.%s like %s) %s', [ipTabela, ipCampo, QuotedStr(vaFilter), ipOperador]);
+  if ipWhere <> '' then
+    Result := Format('(%s (%s.%s like %s)) %s', [ipWhere, ipTabela, ipCampo, QuotedStr(vaFilter), ipOperador])
+  else
+    Result := Format('(%s.%s like %s) %s', [ipTabela, ipCampo, QuotedStr(vaFilter), ipOperador])
 
 end;
 

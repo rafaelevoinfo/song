@@ -6,7 +6,7 @@ uses
   System.SysUtils, Vcl.Dialogs, cxPC, Vcl.Forms, Vcl.Controls,
   Datasnap.DBClient, IdHashSHA, System.RegularExpressions,
   System.Types, Winapi.Windows, uTypes, System.Classes, Data.DB,
-  System.Generics.Collections;
+  System.Generics.Collections, cxCheckComboBox, System.Variants;
 
 type
   TUtils = class
@@ -36,6 +36,7 @@ type
 
     class procedure ppuExtrairValorOperadorParametro(ipInput: string; var opValor: string; var opOperador: string; ipDelimitador: String);
     class procedure ppuExtrairValorParametro(ipInput: string; var opValor: string; ipDelimitador: String);
+    class function fpuExtrairValoresCheckComboBox(ipCheckBox: TcxCheckComboBox): string;
   end;
 
 implementation
@@ -91,7 +92,7 @@ var
   vaArray: TArray<string>;
   I: Integer;
 begin
-  vaArray := TRegEx.Split(ipValor, ';');
+  vaArray := TRegEx.Split(ipValor, coDelimitadorPadrao);
   SetLength(Result, Length(vaArray));
   for I := 0 to High(vaArray) do
     begin
@@ -298,6 +299,35 @@ begin
     end
   else
     raise Exception.Create('Posição inválida.');
+end;
+
+class function TUtils.fpuExtrairValoresCheckComboBox(ipCheckBox: TcxCheckComboBox): string;
+var
+  vaCodigosProjetos: TStringList;
+  vaIndices: TArray<String>;
+  I: Integer;
+begin
+  Result := '';
+  if not VarIsNull(ipCheckBox.EditValue) and (ipCheckBox.EditValue <> '') then
+    begin
+      vaCodigosProjetos := TStringList.Create;
+      try
+        vaCodigosProjetos.Delimiter := coDelimitadorPadrao;
+        vaCodigosProjetos.StrictDelimiter := true;
+
+        vaIndices := TRegEx.Split(Copy(ipCheckBox.EditValue, Pos(';', ipCheckBox.EditValue) + 1, Length(ipCheckBox.EditValue)), ',', [roIgnoreCase]);
+        for I := 0 to High(vaIndices) do
+          begin
+            vaCodigosProjetos.Add(ipCheckBox.Properties.Items[vaIndices[I].ToInteger].Tag.ToString());
+          end;
+
+        if vaCodigosProjetos.Count > 0 then
+          Result := vaCodigosProjetos.DelimitedText;
+      finally
+        vaCodigosProjetos.Clear;
+        vaCodigosProjetos.free;
+      end;
+    end;
 end;
 
 class function TUtils.fpuFocar(ipEdit: TWinControl): Boolean;
