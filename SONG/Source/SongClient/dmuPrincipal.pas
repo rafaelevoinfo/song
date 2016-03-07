@@ -63,21 +63,19 @@ begin
   if E is TControlException then
     begin
       TUtils.fpuFocar(TControlException(E).Control);
+      TMensagem.ppuShowMessage(E.Message);
     end
   else
     begin
       if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
-        vaException := Exception.Create('O registro atual não pode ser excluido pois está sendo utilizado em outra tabela.');
-
+        begin
+          vaException := Exception.Create('O registro atual não pode ser excluido pois está sendo utilizado em outra tabela.');
+          TMensagem.ppuShowException(vaException);
+          vaException.Free;
+        end
+      else
+        TMensagem.ppuShowException(E);
     end;
-  if Assigned(vaException) then
-    begin
-      TMensagem.ppuShowException(vaException);
-      vaException.Free;
-    end
-  else
-    TMensagem.ppuShowException(E);
-
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);

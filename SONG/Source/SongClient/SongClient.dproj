@@ -138,7 +138,6 @@
             <Form>frmBasicoCrudMasterDetail</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\Comuns\uMensagem.pas"/>
         <DCCReference Include="Administrativo\fPerfil.pas">
             <Form>frmPerfil</Form>
             <FormType>dfm</FormType>
@@ -196,6 +195,10 @@
             <Form>dmViveiro</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Comuns\uMensagem.pas">
+            <Form>Mensagem</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

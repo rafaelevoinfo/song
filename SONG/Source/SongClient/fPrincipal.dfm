@@ -33,8 +33,8 @@ inherited frmPrincipal: TfrmPrincipal
     end
   end
   object mmMenuPrincipal: TMainMenu
-    Left = 232
-    Top = 104
+    Left = 32
+    Top = 272
     object miFinanceiro: TMenuItem
       Caption = 'Financeiro'
       object Bancos1: TMenuItem
@@ -73,8 +73,8 @@ inherited frmPrincipal: TfrmPrincipal
     end
   end
   object ActionList1: TActionList
-    Left = 488
-    Top = 104
+    Left = 264
+    Top = 272
     object Ac_Pessoas: TAction
       Category = 'Administrativo'
       Caption = 'Pessoas'
@@ -120,7 +120,7 @@ inherited frmPrincipal: TfrmPrincipal
     NativeStyle = False
     SkinName = 'Black'
     OnSkinControl = dxSkinController1SkinControl
-    Left = 384
-    Top = 208
+    Left = 136
+    Top = 280
   end
 end

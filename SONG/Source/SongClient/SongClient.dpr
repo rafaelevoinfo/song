@@ -15,7 +15,6 @@ uses
   uExceptions in '..\Comuns\uExceptions.pas',
   fBasicoCrud in 'fBasicoCrud.pas' {frmBasicoCrud},
   fBasicoCrudMasterDetail in 'fBasicoCrudMasterDetail.pas' {frmBasicoCrudMasterDetail},
-  uMensagem in '..\Comuns\uMensagem.pas',
   fPerfil in 'Administrativo\fPerfil.pas' {frmPerfil},
   dmuAdministrativo in 'Administrativo\dmuAdministrativo.pas' {dmAdministrativo: TDataModule},
   uControleAcesso in '..\Comuns\uControleAcesso.pas',
@@ -29,7 +28,8 @@ uses
   fBanco in 'Financeiro\fBanco.pas' {frmBanco},
   fAtividade in 'Administrativo\fAtividade.pas' {frmAtividade},
   fEspecie in 'Viveiro\fEspecie.pas' {frmEspecie},
-  dmuViveiro in 'Viveiro\dmuViveiro.pas' {dmViveiro: TDataModule};
+  dmuViveiro in 'Viveiro\dmuViveiro.pas' {dmViveiro: TDataModule},
+  uMensagem in '..\Comuns\uMensagem.pas' {Mensagem};
 
 {$R *.res}
 

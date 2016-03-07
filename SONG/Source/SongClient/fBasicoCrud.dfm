@@ -24,6 +24,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabPesquisa: TcxTabSheet
       Caption = 'tabPesquisa'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnPesquisa: TPanel
         Left = 0
         Top = 0
@@ -282,6 +286,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

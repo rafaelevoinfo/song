@@ -78,6 +78,7 @@ type
     FModoExecucao: TModoExecucao;
     FIdEscolhido: Integer;
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
+
   protected
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
@@ -103,6 +104,8 @@ type
     procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
     function fprGetPermissao: String; virtual; abstract;
+
+    function fprProcurarControlePorFieldName(ipFieldName: string): TWinControl;
 
   public
     property PesquisaPadrao: TTipoPesquisaPadrao read FPesquisaPadrao write SetPesquisaPadrao;
@@ -608,23 +611,58 @@ begin
     end;
 end;
 
+function TfrmBasicoCrud.fprProcurarControlePorFieldName(ipFieldName: string): TWinControl;
+var
+  I: Integer;
+  vaContext: TRTTIContext;
+  vaProp: TRttiProperty;
+  vaDataBind: TObject;
+  vaFieldName: string;
+begin
+  for I := 0 to ComponentCount - 1 do
+    begin
+      if Components[I] is TcxCustomEdit then
+        begin
+          vaContext := TRTTIContext.Create;
+          vaProp := vaContext.GetType(Components[I].ClassType).GetProperty('DataBinding');
+          if Assigned(vaProp) then
+            begin
+              vaDataBind := vaProp.GetValue(Components[I]).AsObject;
+              vaFieldName := vaContext.GetType(vaDataBind.ClassType).GetProperty('DataField')
+                .GetValue(vaDataBind).AsString;
+              if vaFieldName = ipFieldName then
+                Exit(Components[I] as TWinControl);
+            end;
+        end;
+    end;
+end;
+
 procedure TfrmBasicoCrud.pprValidarCamposObrigatorios(ipDataSet: TDataSet);
 var
   vaField: TField;
   vaMsg: TStringList;
+  vaControl: TWinControl;
 begin
+  vaControl := nil;
   vaMsg := TStringList.Create;
   try
     for vaField in ipDataSet.Fields do
       begin
-        if vaField.Required and (vaField.IsNull or (vaField.AsString.Trim = ''))then
+        if vaField.Required and (vaField.IsNull or (vaField.AsString.Trim = '')) then
           begin
             vaMsg.Add(vaField.DisplayLabel);
+            if not Assigned(vaControl) then
+              vaControl := fprProcurarControlePorFieldName(vaField.FieldName);
           end;
       end;
 
     if vaMsg.Count > 0 then
-      raise Exception.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text);
+      begin
+        if Assigned(vaControl) then
+          raise TControlException.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text, vaControl)
+        else
+          raise Exception.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text);
+      end;
 
   finally
     vaMsg.Free;
