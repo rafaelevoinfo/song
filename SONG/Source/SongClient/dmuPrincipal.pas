@@ -11,7 +11,7 @@ uses
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
-  Vcl.Forms, uClientDataSet;
+  Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -29,6 +29,9 @@ type
     cdslkCidadeID: TIntegerField;
     cdslkCidadeUF: TStringField;
     cdslkCidadeNOME: TStringField;
+    Repositorio: TcxEditRepository;
+    repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
+    dslkCidade: TDataSource;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -69,7 +72,8 @@ begin
     begin
       if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
         begin
-          vaException := Exception.Create('O registro atual não pode ser excluido pois está sendo utilizado em outra tabela.');
+          vaException := Exception.Create('Houve uma violação de chave estrangeira.' +
+            'Caso esteja excluindo isso significa que o registro a ser excluído possui dependências, e por isso não pode ser excluído.');
           TMensagem.ppuShowException(vaException);
           vaException.Free;
         end
@@ -96,8 +100,6 @@ procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
 begin
   FFuncoesGeral := TsmFuncoesGeralClient.Create(DataSnapConn.DBXConnection);
   FFuncoesAdministrativo := TsmFuncoesAdministrativoClient.Create(DataSnapConn.DBXConnection);
-
-  cdslkCidade.Open;
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);

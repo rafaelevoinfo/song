@@ -23,13 +23,14 @@ uses
   fmGrids in 'Frames\fmGrids.pas' {frameGrids: TFrame},
   fOrganizacao in 'Administrativo\fOrganizacao.pas' {frmOrganizacao},
   fProjeto in 'Administrativo\fProjeto.pas' {frmProjeto},
-  fFinanciador in 'Administrativo\fFinanciador.pas' {frmFinanciador},
   dmuFinanceiro in 'Financeiro\dmuFinanceiro.pas' {dmFinanceiro: TDataModule},
   fBanco in 'Financeiro\fBanco.pas' {frmBanco},
   fAtividade in 'Administrativo\fAtividade.pas' {frmAtividade},
   fEspecie in 'Viveiro\fEspecie.pas' {frmEspecie},
   dmuViveiro in 'Viveiro\dmuViveiro.pas' {dmViveiro: TDataModule},
-  uMensagem in '..\Comuns\uMensagem.pas' {Mensagem};
+  uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
+  fFinanciador in 'Financeiro\fFinanciador.pas' {frmFinanciador},
+  fFornecedor in 'Financeiro\fFornecedor.pas' {frmFornecedor};
 
 {$R *.res}
 

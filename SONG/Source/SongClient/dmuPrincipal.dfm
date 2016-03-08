@@ -1588,28 +1588,24 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
   object ProviderLookup: TDSProviderConnection
     ServerClassName = 'TsmLookup'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304
   end
   object ProviderFinanceiro: TDSProviderConnection
     ServerClassName = 'TsmFinanceiro'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 368
   end
   object ProviderViveiro: TDSProviderConnection
     ServerClassName = 'TsmViveiro'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 192
     Top = 256
@@ -1636,5 +1632,27 @@ object dmPrincipal: TdmPrincipal
       FieldName = 'NOME'
       Size = 128
     end
+  end
+  object Repositorio: TcxEditRepository
+    Left = 472
+    Top = 80
+    object repLcbCidade: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkCidade
+    end
+  end
+  object dslkCidade: TDataSource
+    DataSet = cdslkCidade
+    Left = 376
+    Top = 200
   end
 end

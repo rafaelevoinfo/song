@@ -43,6 +43,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Financiadores2: TMenuItem
         Action = Ac_Financiador
       end
+      object Fornecedores1: TMenuItem
+        Action = Ac_Fornecedor
+      end
     end
     object miGestao: TMenuItem
       Caption = 'Gest'#227'o'
@@ -96,7 +99,7 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_ProjetoExecute
     end
     object Ac_Financiador: TAction
-      Category = 'Administrativo'
+      Category = 'Financeiro'
       Caption = 'Financiadores'
       OnExecute = Ac_FinanciadorExecute
     end
@@ -114,6 +117,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Viveiro'
       Caption = 'Esp'#233'cies'
       OnExecute = Ac_EspecieExecute
+    end
+    object Ac_Fornecedor: TAction
+      Category = 'Financeiro'
+      Caption = 'Fornecedores'
+      OnExecute = Ac_FornecedorExecute
     end
   end
   object dxSkinController1: TdxSkinController

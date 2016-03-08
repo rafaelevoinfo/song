@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 26/02/2016 22:04:42
+// 07/03/2016 23:59:38
 //
 
 unit uFuncoes;
@@ -51,7 +51,7 @@ type
   TsmFuncoesAdministrativoClient = class(TDSAdminClient)
   private
     FfpuPermissoesUsuarioCommand: TDBXCommand;
-    FfpuValidarNomeFinanciadorCommand: TDBXCommand;
+    FfpuValidarFinanciadorFornecedorClienteCommand: TDBXCommand;
     FfpuValidarLoginCommand: TDBXCommand;
     FfpuValidarNomeProjetoCommand: TDBXCommand;
     FfpuInfoPessoaCommand: TDBXCommand;
@@ -62,7 +62,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuPermissoesUsuario(ipLogin: string): OleVariant;
-    function fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
+    function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipNomeFantasia: string; ipCpfCnpj: string): string;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
@@ -71,6 +71,16 @@ type
   end;
 
   TsmFinanceiroClient = class(TDSAdminClient)
+  private
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmViveiroClient = class(TDSAdminClient)
   private
     FDSServerModuleCreateCommand: TDBXCommand;
   public
@@ -287,19 +297,22 @@ begin
   Result := FfpuPermissoesUsuarioCommand.Parameters[1].Value.AsVariant;
 end;
 
-function TsmFuncoesAdministrativoClient.fpuValidarNomeFinanciador(ipIdFinanciador: Integer; ipNome: string): Boolean;
+function TsmFuncoesAdministrativoClient.fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipNomeFantasia: string; ipCpfCnpj: string): string;
 begin
-  if FfpuValidarNomeFinanciadorCommand = nil then
+  if FfpuValidarFinanciadorFornecedorClienteCommand = nil then
   begin
-    FfpuValidarNomeFinanciadorCommand := FDBXConnection.CreateCommand;
-    FfpuValidarNomeFinanciadorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuValidarNomeFinanciadorCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeFinanciador';
-    FfpuValidarNomeFinanciadorCommand.Prepare;
+    FfpuValidarFinanciadorFornecedorClienteCommand := FDBXConnection.CreateCommand;
+    FfpuValidarFinanciadorFornecedorClienteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarFinanciadorFornecedorClienteCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarFinanciadorFornecedorCliente';
+    FfpuValidarFinanciadorFornecedorClienteCommand.Prepare;
   end;
-  FfpuValidarNomeFinanciadorCommand.Parameters[0].Value.SetInt32(ipIdFinanciador);
-  FfpuValidarNomeFinanciadorCommand.Parameters[1].Value.SetWideString(ipNome);
-  FfpuValidarNomeFinanciadorCommand.ExecuteUpdate;
-  Result := FfpuValidarNomeFinanciadorCommand.Parameters[2].Value.GetBoolean;
+  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[1].Value.SetInt32(ipTipo);
+  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[2].Value.SetWideString(ipRazaoSocial);
+  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[3].Value.SetWideString(ipNomeFantasia);
+  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[4].Value.SetWideString(ipCpfCnpj);
+  FfpuValidarFinanciadorFornecedorClienteCommand.ExecuteUpdate;
+  Result := FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[5].Value.GetWideString;
 end;
 
 function TsmFuncoesAdministrativoClient.fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
@@ -412,7 +425,7 @@ end;
 destructor TsmFuncoesAdministrativoClient.Destroy;
 begin
   FfpuPermissoesUsuarioCommand.DisposeOf;
-  FfpuValidarNomeFinanciadorCommand.DisposeOf;
+  FfpuValidarFinanciadorFornecedorClienteCommand.DisposeOf;
   FfpuValidarLoginCommand.DisposeOf;
   FfpuValidarNomeProjetoCommand.DisposeOf;
   FfpuInfoPessoaCommand.DisposeOf;
@@ -460,6 +473,50 @@ end;
 
 
 destructor TsmFinanceiroClient.Destroy;
+begin
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+procedure TsmViveiroClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmViveiro.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmViveiroClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmViveiroClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmViveiroClient.Destroy;
 begin
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;

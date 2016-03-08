@@ -36,6 +36,8 @@ type
 
   TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, meSomentePesquisa, meSomenteCadastro);
 
+  TTipoFinForCli = (tfFinanciador, tfFornecedor, tfCliente);
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;

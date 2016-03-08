@@ -83,6 +83,8 @@ begin
         vaInfoLogin.Usuario.Senha := ipSenha;
         vaInfoLogin.Usuario.Permissoes.Data := dmPrincipal.FuncoesAdm.fpuPermissoesUsuario(ipLogin);
         vaInfoLogin.Usuario.ppuChecarAdministrador;
+
+        dmPrincipal.cdslkCidade.Open;
       end
     else
       raise Exception.Create('Login inválido.');

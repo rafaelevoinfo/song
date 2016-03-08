@@ -17,10 +17,26 @@ type
     cdsBanco_Conta_CorrenteAGENCIA: TStringField;
     cdsBanco_Conta_CorrenteCONTA: TStringField;
     dsBanco: TDataSource;
-    cdsFinanciador: TRFClientDataSet;
-    cdsFinanciadorID: TIntegerField;
-    cdsFinanciadorNOME: TStringField;
-    cdsFinanciadorID_PESSOA: TIntegerField;
+    cdsFin_For_Cli: TRFClientDataSet;
+    cdsFin_For_CliID: TIntegerField;
+    cdsFin_For_CliID_CONTATO: TIntegerField;
+    cdsFin_For_CliID_CIDADE: TIntegerField;
+    cdsFin_For_CliNOME_FANTASIA: TStringField;
+    cdsFin_For_CliRAZAO_SOCIAL: TStringField;
+    cdsFin_For_CliENDERECO: TStringField;
+    cdsFin_For_CliBAIRRO: TStringField;
+    cdsFin_For_CliCOMPLEMENTO: TStringField;
+    cdsFin_For_CliTIPO: TIntegerField;
+    cdsFin_For_CliTELEFONE: TStringField;
+    cdsFin_For_CliCELULAR: TStringField;
+    cdsFin_For_CliEMAIL: TStringField;
+    cdsFin_For_CliSITE: TStringField;
+    cdsFin_For_CliCPF_CNPJ: TStringField;
+    cdsFin_For_CliINSCRICAO_ESTADUAL: TStringField;
+    cdsFin_For_CliINSCRICAO_MUNICIPAL: TStringField;
+    cdsFin_For_CliRAMO_ATIVIDADE: TStringField;
+    cdsFin_For_CliPESQUISA: TStringField;
+    cdsFin_For_CliOBSERVACAO: TStringField;
   private
     { Private declarations }
   public

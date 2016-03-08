@@ -21,6 +21,9 @@ type
     coProjeto: string = 'PROJETO';
     coNomeCientifico = 'NOME_CIENTIFICO';
     coFamiliaBotanica = 'FAMILIA_BOTANICA';
+    coNomeFantasia = 'NOME_FANTASIA';
+    coRazaoSocial = 'RAZAO_SOCIAL';
+    coCpfCnpj = 'CPF_CNPJ';
 
     coTipo = 'TIPO';
 

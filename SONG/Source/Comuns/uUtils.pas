@@ -263,7 +263,7 @@ begin
   for I := 0 to ipPageControl.PageCount - 1 do
     begin
       vaTab := ipPageControl.Pages[I];
-      if (vaTab.ControlCount > 0) and (vaTab.Controls[0] is T) then
+      if (vaTab.ControlCount > 0) and (vaTab.Controls[0].ClassName = ipClassForm.ClassName) then
         begin
           ipPageControl.ActivePage := vaTab;
           Exit;

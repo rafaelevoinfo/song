@@ -78,13 +78,29 @@ inherited smFinanceiro: TsmFinanceiro
       Required = True
     end
   end
-  object qFinanciador: TRFQuery
+  object qFin_For_Cli: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select FINANCIADOR.ID,'
-      '       FINANCIADOR.NOME,'
-      '       FINANCIADOR.ID_PESSOA'
-      'from FINANCIADOR'
+      'select FIN_FOR_CLI.ID,'
+      '       FIN_FOR_CLI.ID_CONTATO,'
+      '       FIN_FOR_CLI.ID_CIDADE,'
+      '       FIN_FOR_CLI.NOME_FANTASIA,'
+      '       FIN_FOR_CLI.RAZAO_SOCIAL,'
+      '       FIN_FOR_CLI.ENDERECO,'
+      '       FIN_FOR_CLI.BAIRRO,'
+      '       FIN_FOR_CLI.COMPLEMENTO,'
+      '       FIN_FOR_CLI.TIPO,'
+      '       FIN_FOR_CLI.TELEFONE,'
+      '       FIN_FOR_CLI.CELULAR,'
+      '       FIN_FOR_CLI.EMAIL,'
+      '       FIN_FOR_CLI.SITE,'
+      '       FIN_FOR_CLI.CPF_CNPJ,'
+      '       FIN_FOR_CLI.INSCRICAO_ESTADUAL,'
+      '       FIN_FOR_CLI.INSCRICAO_MUNICIPAL,'
+      '       FIN_FOR_CLI.RAMO_ATIVIDADE,'
+      '       FIN_FOR_CLI.PESQUISA,'
+      '       FIN_FOR_CLI.OBSERVACAO'
+      'from FIN_FOR_CLI  '
       '&WHERE')
     Left = 32
     Top = 88
@@ -93,24 +109,114 @@ inherited smFinanceiro: TsmFinanceiro
         Value = Null
         Name = 'WHERE'
       end>
-    object qFinanciadorID: TIntegerField
+    object qFin_For_CliID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qFinanciadorNOME: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
+    object qFin_For_CliID_CONTATO: TIntegerField
+      FieldName = 'ID_CONTATO'
+      Origin = 'ID_CONTATO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qFin_For_CliID_CIDADE: TIntegerField
+      FieldName = 'ID_CIDADE'
+      Origin = 'ID_CIDADE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qFin_For_CliNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
+      Origin = 'NOME_FANTASIA'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
-    object qFinanciadorID_PESSOA: TIntegerField
-      FieldName = 'ID_PESSOA'
-      Origin = 'ID_PESSOA'
+    object qFin_For_CliRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
       ProviderFlags = [pfInUpdate]
-      Required = True
+      Size = 100
+    end
+    object qFin_For_CliENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qFin_For_CliBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
+    end
+    object qFin_For_CliCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qFin_For_CliTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qFin_For_CliTELEFONE: TStringField
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qFin_For_CliCELULAR: TStringField
+      FieldName = 'CELULAR'
+      Origin = 'CELULAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qFin_For_CliEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qFin_For_CliSITE: TStringField
+      FieldName = 'SITE'
+      Origin = 'SITE'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qFin_For_CliCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      ProviderFlags = [pfInUpdate]
+      Size = 14
+    end
+    object qFin_For_CliINSCRICAO_ESTADUAL: TStringField
+      FieldName = 'INSCRICAO_ESTADUAL'
+      Origin = 'INSCRICAO_ESTADUAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qFin_For_CliINSCRICAO_MUNICIPAL: TStringField
+      FieldName = 'INSCRICAO_MUNICIPAL'
+      Origin = 'INSCRICAO_MUNICIPAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qFin_For_CliRAMO_ATIVIDADE: TStringField
+      FieldName = 'RAMO_ATIVIDADE'
+      Origin = 'RAMO_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object qFin_For_CliPESQUISA: TStringField
+      FieldName = 'PESQUISA'
+      Origin = 'PESQUISA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qFin_For_CliOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
     end
   end
 end

@@ -38,10 +38,12 @@ object Mensagem: TMensagem
         Width = 456
         Height = 142
         Align = alClient
+        Color = clGray
         Padding.Left = 2
         Padding.Top = 2
         Padding.Right = 2
         Padding.Bottom = 2
+        ParentBackground = False
         TabOrder = 0
         object Label2: TLabel
           Left = 3
@@ -51,13 +53,11 @@ object Mensagem: TMensagem
           Align = alTop
           Caption = 'SONG Pergunta'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
           ExplicitWidth = 111
         end
         object Shape1: TShape
@@ -82,14 +82,12 @@ object Mensagem: TMensagem
           Align = alClient
           Caption = 'Registro excluido com sucesso'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -13
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitLeft = 42
-          ExplicitTop = 27
           ExplicitWidth = 174
           ExplicitHeight = 16
         end
@@ -101,9 +99,6 @@ object Mensagem: TMensagem
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 0
-          ExplicitTop = 102
-          ExplicitWidth = 456
           object btnSim: TButton
             Left = 340
             Top = 0
@@ -115,7 +110,6 @@ object Mensagem: TMensagem
             Images = cxImageList1
             ModalResult = 6
             TabOrder = 0
-            ExplicitLeft = 346
           end
           object btnNao: TButton
             Left = 230
@@ -128,7 +122,6 @@ object Mensagem: TMensagem
             Images = cxImageList1
             ModalResult = 7
             TabOrder = 1
-            ExplicitLeft = 236
           end
           object btnCancelar: TButton
             Left = 0
@@ -151,9 +144,6 @@ object Mensagem: TMensagem
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 0
-          ExplicitTop = 21
-          ExplicitHeight = 81
           object imgIcon: TcxImage
             Left = 0
             Top = 0
@@ -256,15 +246,13 @@ object Mensagem: TMensagem
         Width = 456
         Height = 142
         Align = alClient
+        Color = clGray
         Padding.Left = 2
         Padding.Top = 2
         Padding.Right = 2
         Padding.Bottom = 2
+        ParentBackground = False
         TabOrder = 0
-        ExplicitLeft = 136
-        ExplicitTop = 48
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label3: TLabel
           Left = 3
           Top = 3
@@ -278,8 +266,6 @@ object Mensagem: TMensagem
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
-          ExplicitLeft = 1
-          ExplicitTop = 1
           ExplicitWidth = 105
         end
         object lbMsg: TLabel
@@ -299,8 +285,6 @@ object Mensagem: TMensagem
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitLeft = 43
-          ExplicitTop = 28
           ExplicitWidth = 174
           ExplicitHeight = 16
         end
@@ -323,9 +307,6 @@ object Mensagem: TMensagem
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 102
-          ExplicitWidth = 454
           object btnOk: TButton
             Left = 354
             Top = 0
@@ -337,7 +318,6 @@ object Mensagem: TMensagem
             Images = cxImageList1
             ModalResult = 1
             TabOrder = 0
-            ExplicitLeft = 358
           end
         end
         object pnInfo: TPanel
@@ -348,9 +328,6 @@ object Mensagem: TMensagem
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 9
-          ExplicitTop = 28
-          ExplicitHeight = 81
           object cxImage1: TcxImage
             AlignWithMargins = True
             Left = 0
@@ -416,11 +393,9 @@ object Mensagem: TMensagem
         Width = 454
         Height = 140
         Align = alClient
+        Color = clGray
+        ParentBackground = False
         TabOrder = 0
-        ExplicitLeft = 136
-        ExplicitTop = 48
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label4: TLabel
           Left = 1
           Top = 1
@@ -476,9 +451,6 @@ object Mensagem: TMensagem
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 0
-          ExplicitTop = 102
-          ExplicitWidth = 456
           object btnOkErro: TButton
             Left = 356
             Top = 0
@@ -500,9 +472,6 @@ object Mensagem: TMensagem
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 0
-          ExplicitTop = 21
-          ExplicitHeight = 81
           object cxImage2: TcxImage
             AlignWithMargins = True
             Left = 0

@@ -170,10 +170,6 @@
             <Form>frmProjeto</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Administrativo\fFinanciador.pas">
-            <Form>frmFinanciador</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="Financeiro\dmuFinanceiro.pas">
             <Form>dmFinanceiro</Form>
             <FormType>dfm</FormType>
@@ -198,6 +194,14 @@
         </DCCReference>
         <DCCReference Include="..\Comuns\uMensagem.pas">
             <Form>Mensagem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Financeiro\fFinanciador.pas">
+            <Form>frmFinanciador</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Financeiro\fFornecedor.pas">
+            <Form>frmFornecedor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
