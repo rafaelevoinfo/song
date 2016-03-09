@@ -36,10 +36,11 @@ function TsmFuncoesGeral.fpuBaixarAtualizacao(ipVersao: string): TStream;
 var
   vaFile:string;
 begin
-  vaFile := coPastaAtualizacoes+coNomePadraoSongClient+ipVersao+coExtensaoCompactacao;
+  Result := nil;  //tem q retornar algo pq senao da erro
+  vaFile := dmPrincipal.fpuPegarArquivoAtualizacao(ipVersao);
   if TFile.Exists(vaFile) then
     begin
-      Result := TBytesStream.Create();
+    Result := TBytesStream.Create;
       TBytesStream(Result).LoadFromFile(vaFile);
       Result.Position := 0;
     end;
@@ -62,18 +63,8 @@ begin
 end;
 
 function TsmFuncoesGeral.fpuVerificarNovaVersao(ipVersaoAtual: string): String;
-var
-  vaVersaoServer: string;
 begin
-  Result := '';
-  vaVersaoServer := TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
-  if vaVersaoServer <> ipVersaoAtual then
-    begin
-      if TFile.Exists(coPastaAtualizacoes + coNomePadraoSongClient + vaVersaoServer+coExtensaoCompactacao) then
-        Result := vaVersaoServer
-      else
-        raise Exception.Create('Versão incompatível com a versão do servidor.');
-    end;
+   dmPrincipal.fpuBuscarAtualizacao(ipVersaoAtual,Result);
 end;
 
 end.

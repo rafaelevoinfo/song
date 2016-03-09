@@ -46,7 +46,7 @@ const
 
   coArquivoConfiguracao = 'song.sys';
   coNomePadraoSongClient = 'SongClientV';
-  coPastaAtualizacoes = 'Atualizacoes/';
+  coPastaAtualizacoes = 'Atualizacoes';
   coExtensaoCompactacao = '.zip';
   coDelimitadorPadrao = ';';
 

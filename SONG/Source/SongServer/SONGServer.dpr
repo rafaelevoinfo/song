@@ -17,7 +17,9 @@ uses
   uUtils in '..\Comuns\uUtils.pas',
   smuFinanceiro in 'ServerModules\smuFinanceiro.pas' {smFinanceiro: TDSServerModule},
   uControleAcesso in '..\Comuns\uControleAcesso.pas',
-  smuViveiro in 'ServerModules\smuViveiro.pas' {smViveiro: TDSServerModule};
+  smuViveiro in 'ServerModules\smuViveiro.pas' {smViveiro: TDSServerModule},
+  uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
+  fAtualizacao in 'fAtualizacao.pas' {frmAtualizacao};
 
 {$R *.res}
 
@@ -26,6 +28,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TMensagem, Mensagem);
   Application.Run;
 end.
 

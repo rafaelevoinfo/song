@@ -1043,7 +1043,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 258
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabConfiguracoes
+    Properties.ActivePage = tabAtualizacoes
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 253
@@ -1168,8 +1168,14 @@ object frmPrincipal: TfrmPrincipal
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
           object viewLogDATA: TcxGridDBColumn
             DataBinding.FieldName = 'DATA'
+            Options.Editing = False
           end
           object viewLogERRO: TcxGridDBColumn
             DataBinding.FieldName = 'ERRO'
@@ -1178,6 +1184,99 @@ object frmPrincipal: TfrmPrincipal
         end
         object cxGrid1Level1: TcxGridLevel
           GridView = viewLog
+        end
+      end
+    end
+    object tabAtualizacoes: TcxTabSheet
+      Caption = 'Atualiza'#231#245'es'
+      ImageIndex = 2
+      object cxGrid2: TcxGrid
+        Left = 0
+        Top = 25
+        Width = 833
+        Height = 203
+        Align = alClient
+        TabOrder = 0
+        ExplicitLeft = 288
+        ExplicitTop = 16
+        ExplicitWidth = 250
+        ExplicitHeight = 200
+        object viewAtualizacoes: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          Navigator.Buttons.First.Visible = False
+          Navigator.Buttons.Insert.Visible = False
+          Navigator.Buttons.GotoBookmark.Visible = False
+          Navigator.Buttons.Filter.Visible = False
+          DataController.DataSource = dsAtualizacoes
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object viewAtualizacoesMAJOR: TcxGridDBColumn
+            DataBinding.FieldName = 'MAJOR'
+            Visible = False
+          end
+          object viewAtualizacoesMINOR: TcxGridDBColumn
+            DataBinding.FieldName = 'MINOR'
+            Visible = False
+          end
+          object viewAtualizacoesRELEASE: TcxGridDBColumn
+            DataBinding.FieldName = 'RELEASE'
+            Visible = False
+          end
+          object viewAtualizacoesBUILD: TcxGridDBColumn
+            DataBinding.FieldName = 'BUILD'
+            Visible = False
+          end
+          object viewAtualizacoesCALC_VERSAO: TcxGridDBColumn
+            DataBinding.FieldName = 'VERSAO'
+            Width = 113
+          end
+          object viewAtualizacoesENDERECO: TcxGridDBColumn
+            DataBinding.FieldName = 'ENDERECO'
+            Width = 701
+          end
+        end
+        object levelGrid2Level1: TcxGridLevel
+          GridView = viewAtualizacoes
+        end
+      end
+      object pnAtualizacoes: TPanel
+        Left = 0
+        Top = 0
+        Width = 833
+        Height = 25
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        object btnAddAtualizacao: TButton
+          Left = 75
+          Top = 0
+          Width = 75
+          Height = 25
+          Align = alLeft
+          Caption = 'Excluir'
+          TabOrder = 0
+          OnClick = btnAddAtualizacaoClick
+          ExplicitLeft = 376
+          ExplicitTop = 10
+        end
+        object btnDelAtualizacao: TButton
+          Left = 0
+          Top = 0
+          Width = 75
+          Height = 25
+          Align = alLeft
+          Caption = 'Adicionar'
+          TabOrder = 1
+          OnClick = btnDelAtualizacaoClick
+          ExplicitLeft = -6
+          ExplicitTop = -6
         end
       end
     end
@@ -1239,5 +1338,39 @@ object frmPrincipal: TfrmPrincipal
     DataSet = cdsLog
     Left = 520
     Top = 224
+  end
+  object dsAtualizacoes: TDataSource
+    DataSet = cdsAtualizacoes
+    Left = 192
+    Top = 256
+  end
+  object cdsAtualizacoes: TClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'MAJOR;MINOR;RELEASE;BUILD'
+    Params = <>
+    Left = 280
+    Top = 224
+    object cdsAtualizacoesMAJOR: TIntegerField
+      FieldName = 'MAJOR'
+    end
+    object cdsAtualizacoesMINOR: TIntegerField
+      FieldName = 'MINOR'
+    end
+    object cdsAtualizacoesRELEASE: TIntegerField
+      FieldName = 'RELEASE'
+    end
+    object cdsAtualizacoesBUILD: TIntegerField
+      FieldName = 'BUILD'
+    end
+    object cdsAtualizacoesENDERECO: TStringField
+      DisplayLabel = 'Localiza'#231#227'o do Arquivo'
+      FieldName = 'ENDERECO'
+      Size = 300
+    end
+    object cdsAtualizacoesVERSAO: TStringField
+      DisplayLabel = 'Vers'#227'o'
+      FieldName = 'VERSAO'
+      Size = 60
+    end
   end
 end

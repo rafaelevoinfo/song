@@ -35,7 +35,6 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     Left = 208
     Top = 64
@@ -140,5 +139,35 @@ object dmPrincipal: TdmPrincipal
     Server = Server
     Left = 576
     Top = 232
+  end
+  object cdsAtualizacoes: TClientDataSet
+    Aggregates = <>
+    FileName = 'Atualizacoes.xml'
+    IndexFieldNames = 'MAJOR;MINOR;RELEASE;BUILD'
+    Params = <>
+    Left = 264
+    Top = 304
+    object cdsAtualizacoesMAJOR: TIntegerField
+      FieldName = 'MAJOR'
+    end
+    object cdsAtualizacoesMINOR: TIntegerField
+      FieldName = 'MINOR'
+    end
+    object cdsAtualizacoesRELEASE: TIntegerField
+      FieldName = 'RELEASE'
+    end
+    object cdsAtualizacoesBUILD: TIntegerField
+      FieldName = 'BUILD'
+    end
+    object cdsAtualizacoesENDERECO: TStringField
+      DisplayLabel = 'Localiza'#231#227'o do Arquivo'
+      FieldName = 'ENDERECO'
+      Size = 300
+    end
+    object cdsAtualizacoesVERSAO: TStringField
+      DisplayLabel = 'Vers'#227'o'
+      FieldName = 'VERSAO'
+      Size = 60
+    end
   end
 end

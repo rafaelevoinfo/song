@@ -16,7 +16,9 @@ type
     Label7: TLabel;
     Label1: TLabel;
     pbProgresso: TcxProgressBar;
+    procedure FormCreate(Sender: TObject);
   private
+    FDirAtualizacoes:string;
     procedure ppvAtualizar(ipArquivo: string);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
@@ -37,10 +39,25 @@ procedure TfrmSplash.ppvAtualizar(ipArquivo: string);
 var
   vaExecutavelAtual, vaBatchName, vaNovoExecutavel: string;
   vaBatch: TStringList;
+  vaFile: string;
 begin
-  //vamos descompcatar
-  TZipFile.ExtractZipFile(ipArquivo, TDirectory.GetCurrentDirectory);
-  vaNovoExecutavel := StringReplace(ipArquivo, '.zip', '.exe', []);
+  // vamos descompcatar
+  vaNovoExecutavel := '';
+
+  TZipFile.ExtractZipFile(ipArquivo, FDirAtualizacoes);
+  for vaFile in TDirectory.GetFiles(FDirAtualizacoes) do
+    begin
+      if Pos('.exe', vaFile) > 0 then
+        begin
+          vaNovoExecutavel := vaFile;
+          Break;
+        end;
+    end;
+  if vaNovoExecutavel = '' then // algo deu errado
+    begin
+      TMensagem.ppuShowException('Não foi possível realizar a atualização.', nil);
+      Exit;
+    end;
 
   vaBatch := TStringList.Create;
   try
@@ -51,10 +68,10 @@ begin
     vaBatch.Add('@echo off');
     vaBatch.Add('del ' + vaExecutavelAtual);
     vaBatch.Add('if Exist ' + vaExecutavelAtual + ' goto Label1');
-    vaBatch.Add('Move ' + vaNovoExecutavel + ' ' + vaExecutavelAtual);
-    vaBatch.Add('Call ' + vaExecutavelAtual);
-    vaBatch.Add('del ' + ipArquivo);
-    vaBatch.Add('del ' + vaBatchName);
+    vaBatch.Add('Move '+vaNovoExecutavel+' SongClient.exe');
+    vaBatch.Add('Call '+vaExecutavelAtual);
+    vaBatch.Add('del '+ipArquivo);
+    vaBatch.Add('del '+vaBatchName);
 
     vaBatch.SaveToFile(vaBatchName);
     ShellExecute(Application.Handle, PWideChar('open'), PWideChar(vaBatchName), nil,
@@ -65,14 +82,23 @@ begin
   end;
 end;
 
+procedure TfrmSplash.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FDirAtualizacoes := IncludeTrailingBackslash(TDirectory.GetCurrentDirectory) + coPastaAtualizacoes;
+  if not TDirectory.Exists(FDirAtualizacoes) then
+    TDirectory.CreateDirectory(FDirAtualizacoes);
+end;
+
 procedure TfrmSplash.pprAfterShow(var ipMsg: TMessage);
 var
-  vaVersao,vaNovaVersao, vaNovoExecutavel: string;
+  vaVersao, vaNovaVersao, vaNovoExecutavel: string;
   vaExecutavel: TBytesStream;
   vaStream: TStream;
 
 begin
   inherited;
+  vaNovoExecutavel := '';
   pbProgresso.Properties.Max := 2;
   pbProgresso.Position := 0;
   try
@@ -98,16 +124,21 @@ begin
         vaExecutavel := TBytesStream.Create();
         try
           vaStream := dmPrincipal.FuncoesGeral.fpuBaixarAtualizacao(vaNovaVersao);
-          vaStream.Position := 0;
-          TUtils.ppuCopyStreamToByteStream(vaStream, vaExecutavel);
+          if Assigned(vaStream) then
+            begin
+              vaStream.Position := 0;
+              TUtils.ppuCopyStreamToByteStream(vaStream, vaExecutavel);
 
-          vaNovoExecutavel := coNomePadraoSongClient + vaNovaVersao + coExtensaoCompactacao;
-          vaExecutavel.SaveToFile(vaNovoExecutavel);
+              vaNovoExecutavel := IncludeTrailingBackslash(coPastaAtualizacoes)+ coNomePadraoSongClient + vaNovaVersao + coExtensaoCompactacao;
+              vaExecutavel.SaveToFile(vaNovoExecutavel);
+
+            end;
         finally
           vaExecutavel.Free;
         end;
 
-        ppvAtualizar(vaNovoExecutavel);
+        if vaNovoExecutavel <> '' then
+          ppvAtualizar(vaNovoExecutavel);
       end;
 
     pbProgresso.Position := pbProgresso.Position + 1;

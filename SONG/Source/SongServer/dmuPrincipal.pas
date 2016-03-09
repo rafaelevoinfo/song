@@ -12,7 +12,8 @@ uses System.SysUtils, System.Classes,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase,
   System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
   uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging;
+  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging, Datasnap.DBClient,
+  System.IOUtils, System.RegularExpressions;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -34,6 +35,13 @@ type
     SCFuncoesAdministrativo: TDSServerClass;
     SCFinanceiro: TDSServerClass;
     SCViveiro: TDSServerClass;
+    cdsAtualizacoes: TClientDataSet;
+    cdsAtualizacoesMAJOR: TIntegerField;
+    cdsAtualizacoesMINOR: TIntegerField;
+    cdsAtualizacoesRELEASE: TIntegerField;
+    cdsAtualizacoesBUILD: TIntegerField;
+    cdsAtualizacoesENDERECO: TStringField;
+    cdsAtualizacoesVERSAO: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -52,11 +60,18 @@ type
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
+    FSyncroAtualizacoes: TMultiReadExclusiveWriteSynchronizer;
     FConnections: TDictionary<Integer, TFDConnection>;
     function GetConnection: TFDConnection;
     { Private declarations }
   public
     procedure ppuIniciarServidor(ipServidor, ipEnderecoBanco, ipUsuario, ipSenha: String; ipPorta: Integer);
+
+    procedure ppuAdicionarAtualizacao(ipVersao, ipEndereco: String);
+    procedure ppuExcluirAtualizacao(ipVersao: String);
+    function fpuBuscarAtualizacao(ipVersao: String; out opNovaVersao: String): string;
+    function fpuPegarArquivoAtualizacao(ipVersao: string): string;
+    function fpuCarregarAtualizacoes(): OleVariant;
 
     property Connection: TFDConnection read GetConnection;
   end;
@@ -67,6 +82,7 @@ var
 implementation
 
 {$R *.dfm}
+
 
 uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
   smuFinanceiro, smuViveiro;
@@ -79,14 +95,14 @@ begin
   valid := True;
   if (User <> '') or (Password <> '') then
     begin
-//      if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
-//        begin
-          qLogin.Close;
-          qLogin.ParamByName('LOGIN').AsString := User;
-          qLogin.ParamByName('SENHA').AsString := Password;
-          qLogin.Open();
-          valid := not qLogin.Eof;
-//        end;
+      // if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
+      // begin
+      qLogin.Close;
+      qLogin.ParamByName('LOGIN').AsString := User;
+      qLogin.ParamByName('SENHA').AsString := Password;
+      qLogin.Open();
+      valid := not qLogin.Eof;
+      // end;
     end;
 
 end;
@@ -95,7 +111,7 @@ procedure TdmPrincipal.AuthenticationUserAuthorize(Sender: TObject; AuthorizeEve
   var valid: Boolean);
 begin
   valid := True;
-  //se nao tiver logado com um usuario e senha valido a unica coisa permitida vai ser baixar uma nova versao
+  // se nao tiver logado com um usuario e senha valido a unica coisa permitida vai ser baixar uma nova versao
   if (AuthorizeEventObject.UserName = '') and
     (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuVerificarNovaVersao') and
     (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuBaixarAtualizacao') then
@@ -108,6 +124,12 @@ procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
   FConnections := TDictionary<Integer, TFDConnection>.Create();
   FSyncro := TMultiReadExclusiveWriteSynchronizer.Create;
+  FSyncroAtualizacoes := TMultiReadExclusiveWriteSynchronizer.Create;
+
+  if TFile.Exists(cdsAtualizacoes.FileName) then
+    cdsAtualizacoes.LoadFromFile(cdsAtualizacoes.FileName)
+  else
+    cdsAtualizacoes.CreateDataSet;
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
@@ -116,6 +138,110 @@ begin
   FConnections.Free;
 
   FSyncro.Free;
+  FSyncroAtualizacoes.Free;
+end;
+
+function TdmPrincipal.fpuBuscarAtualizacao(ipVersao: String; out opNovaVersao: String): string;
+var
+  vaVersao: TArray<string>;
+begin
+  Result := '';
+  opNovaVersao := '';
+  vaVersao := Tregex.Split(ipVersao, '\.', []);
+  if Length(vaVersao) < 4 then
+    raise Exception.Create('Versão inválida.');
+
+  FSyncroAtualizacoes.BeginRead;
+  try
+    // procurando uma build maior
+    cdsAtualizacoes.Filter := 'MAJOR=' + vaVersao[0] + ' and MINOR=' + vaVersao[1] + ' and RELEASE=' + vaVersao[2];
+    cdsAtualizacoes.Filtered := True;
+
+    cdsAtualizacoes.First;
+    while not cdsAtualizacoes.Eof do
+      begin
+        if cdsAtualizacoesBUILD.AsInteger > vaVersao[3].ToInteger then
+          begin
+            opNovaVersao := cdsAtualizacoesVERSAO.AsString;
+            Exit(cdsAtualizacoesENDERECO.AsString);
+          end;
+
+        cdsAtualizacoes.Next;
+      end;
+    // procurando uma realease maior
+    cdsAtualizacoes.Filter := 'MAJOR=' + vaVersao[0] + ' and MINOR=' + vaVersao[1];
+    cdsAtualizacoes.Filtered := True;
+
+    cdsAtualizacoes.First;
+    while not cdsAtualizacoes.Eof do
+      begin
+        if cdsAtualizacoesRELEASE.AsInteger > vaVersao[2].ToInteger then
+          begin
+            opNovaVersao := cdsAtualizacoesVERSAO.AsString;
+            Exit(cdsAtualizacoesENDERECO.AsString);
+          end;
+
+        cdsAtualizacoes.Next;
+      end;
+
+    // procurando uma minor maior
+    cdsAtualizacoes.Filter := 'MAJOR=' + vaVersao[0];
+    cdsAtualizacoes.Filtered := True;
+
+    cdsAtualizacoes.First;
+    while not cdsAtualizacoes.Eof do
+      begin
+        if cdsAtualizacoesMINOR.AsInteger > vaVersao[1].ToInteger then
+          begin
+            opNovaVersao := cdsAtualizacoesVERSAO.AsString;
+            Exit(cdsAtualizacoesENDERECO.AsString);
+          end;
+
+        cdsAtualizacoes.Next;
+      end;
+
+    // procurando uma minor maior
+    cdsAtualizacoes.Filtered := false;
+    cdsAtualizacoes.First;
+    while not cdsAtualizacoes.Eof do
+      begin
+        if cdsAtualizacoesMAJOR.AsInteger > vaVersao[0].ToInteger then
+          begin
+            opNovaVersao := cdsAtualizacoesVERSAO.AsString;
+            Exit(cdsAtualizacoesENDERECO.AsString);
+          end;
+
+        cdsAtualizacoes.Next;
+      end;
+
+  finally
+    cdsAtualizacoes.Filtered := false;
+    FSyncroAtualizacoes.EndRead;
+  end;
+end;
+
+function TdmPrincipal.fpuCarregarAtualizacoes: OleVariant;
+begin
+  FSyncroAtualizacoes.BeginRead;
+  try
+    Result := cdsAtualizacoes.Data;
+  finally
+    FSyncroAtualizacoes.EndRead;
+  end;
+
+end;
+
+function TdmPrincipal.fpuPegarArquivoAtualizacao(ipVersao: string): string;
+begin
+  FSyncroAtualizacoes.BeginWrite;
+  try
+    if cdsAtualizacoes.Locate(cdsAtualizacoesVERSAO.FieldName, ipVersao, []) then
+      begin
+        Result := cdsAtualizacoesENDERECO.AsString;
+      end;
+  finally
+    FSyncroAtualizacoes.EndWrite;
+  end;
 end;
 
 function TdmPrincipal.GetConnection: TFDConnection;
@@ -128,13 +254,56 @@ begin
         Result.Params.Assign(conSong.Params);
         FSyncro.BeginWrite;
         try
-          FConnections.add(TDSSessionManager.GetThreadSession.Id, Result);
+          FConnections.Add(TDSSessionManager.GetThreadSession.Id, Result);
         finally
           FSyncro.EndWrite;
         end;
       end;
   finally
     FSyncro.EndRead;
+  end;
+
+end;
+
+procedure TdmPrincipal.ppuAdicionarAtualizacao(ipVersao, ipEndereco: String);
+var
+  vaVersao: TArray<String>;
+begin
+  vaVersao := Tregex.Split(ipVersao, '\.', []);
+  if Length(vaVersao) < 4 then
+    raise Exception.Create('Versão inválida.');
+
+  FSyncroAtualizacoes.BeginWrite;
+  try
+    if not cdsAtualizacoes.Locate(cdsAtualizacoesVERSAO.FieldName, ipVersao, []) then
+      begin
+        cdsAtualizacoes.Append;
+        cdsAtualizacoesMAJOR.AsInteger := vaVersao[0].ToInteger();
+        cdsAtualizacoesMINOR.AsInteger := vaVersao[1].ToInteger();
+        cdsAtualizacoesRELEASE.AsInteger := vaVersao[2].ToInteger();
+        cdsAtualizacoesBUILD.AsInteger := vaVersao[3].ToInteger();
+        cdsAtualizacoesVERSAO.AsString := ipVersao;
+        cdsAtualizacoesENDERECO.AsString := ipEndereco;
+        cdsAtualizacoes.Post;
+
+        cdsAtualizacoes.SaveToFile();
+      end;
+  finally
+    FSyncroAtualizacoes.EndWrite;
+  end;
+end;
+
+procedure TdmPrincipal.ppuExcluirAtualizacao(ipVersao: String);
+begin
+  FSyncroAtualizacoes.BeginWrite;
+  try
+    if cdsAtualizacoes.Locate(cdsAtualizacoesVERSAO.FieldName, ipVersao, []) then
+      begin
+        cdsAtualizacoes.Delete;
+        cdsAtualizacoes.SaveToFile();
+      end;
+  finally
+    FSyncroAtualizacoes.EndWrite;
   end;
 
 end;
