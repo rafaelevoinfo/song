@@ -10,12 +10,16 @@ type
   public
     class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValor: Integer; ipOperador: String = ' And '): string; overload;
     class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValores: Array of Integer): string; overload;
-    class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValores: Array of Integer; ipOperador: String)
-      : string; overload;
+    class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValores: Array of Integer; ipOperador: String): string; overload;
+    class function fpuFilterInteger(ipWhere: string; ipTabelas, ipCampos: Array of string; ipValores: array of TArray<Integer>;
+      ipOperadorEntre, ipOperadorApos: String): string; overload;
+
     class function fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor, ipOperador: string): string; overload;
-    class function fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string; ipStartWith, ipEndWith: Boolean; ipOperador: String)
-      : string; overload;
+    class function fpuFilterString(ipWhere, ipTabela, ipCampo, ipValor: string; ipStartWith, ipEndWith: Boolean; ipOperador: String): string;
+      overload;
+
     class function fpuFilterData(ipWhere, ipTabela, ipCampo: string; ipDataInicial, ipDataFinal: TDateTime; ipOperador: String): string;
+
   end;
 
 implementation
@@ -90,6 +94,27 @@ begin
   else
     Result := Format('(%s.%s like %s) %s', [ipTabela, ipCampo, QuotedStr(vaFilter), ipOperador])
 
+end;
+
+class function TSQLGenerator.fpuFilterInteger(ipWhere: string; ipTabelas, ipCampos: array of string;
+  ipValores: array of TArray<Integer>;
+  ipOperadorEntre, ipOperadorApos: String): string;
+var
+  vaCodigos: string;
+  i: Integer;
+begin
+  Result := ipWhere;
+  
+  for i := Low(ipCampos) to High(ipCampos) do
+    begin
+      vaCodigos := TUtils.fpuMontarStringCodigo(ipValores[i], ',');
+      if i > 0 then
+        Result := Format('%s %s (%s.%s in (%s))', [Result, ipOperadorEntre, ipTabelas[i], ipCampos[i], vaCodigos])
+      else
+        Result := Format('(%s.%s in (%s))', [ipTabelas[i], ipCampos[i], vaCodigos])
+    end;
+
+  Result := ipWhere + '(' + Result + ') ' + ipOperadorApos;
 end;
 
 end.

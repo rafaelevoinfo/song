@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, dmuBasico, cxEdit, cxEditRepositoryItems,
   cxClasses, Data.DB, Datasnap.DBClient, cxDBEditRepository,
-  uClientDataSet, dmuPrincipal;
+  uClientDataSet, dmuPrincipal, uTypes, cxImageComboBox;
 
 type
   TdmLookup = class(TdmBasico)
@@ -67,15 +67,15 @@ type
     dslkAtividade: TDataSource;
     dslkProjeto: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
 
-//var
- // dmLookup: TdmLookup;
-
+  // var
+  // dmLookup: TdmLookup;
 
 implementation
 
@@ -90,6 +90,22 @@ begin
   inherited;
   cdslkConta_CorrenteCALC_BANCO_CONTA.AsString := cdslkConta_CorrenteNOME.AsString + ' - ' + cdslkConta_CorrenteAGENCIA.AsString + '/' +
     cdslkConta_CorrenteCONTA.AsString;
+end;
+
+procedure TdmLookup.DataModuleCreate(Sender: TObject);
+var
+  vaTipo: TTipoRelacionamentoPessoa;
+  vaItem:TcxImageComboBoxItem;
+begin
+  inherited;
+  repIcbTipoPessoa.Properties.Items.Clear;
+  for vaTipo := Low(TTipoRelacionamentoPessoa) to High(TTipoRelacionamentoPessoa) do
+    begin
+      vaItem := repIcbTipoPessoa.Properties.Items.Add;
+      vaItem.Value := Ord(vaTipo);
+      vaItem.Description := TipoRelacionamentoPessoa[vaTipo];
+    end;
+
 end;
 
 end.

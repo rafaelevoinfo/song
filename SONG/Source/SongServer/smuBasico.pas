@@ -22,10 +22,11 @@ type
     function fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): OleVariant;
     procedure SetConnection(const Value: TFDConnection);
     function GetConnection: TFDConnection;
+    function fpvMontarWhere(ipTabela: string; ipParams: TParams): string; virtual;
 
   protected
     procedure pprCriarProvider(ipDataSet: TFDQuery); virtual;
-    function fprMontarWhere(ipTabela: string; ipParams: TParams): string; virtual;
+    function fprMontarWhere(ipTabela,ipWhere: string; ipParam: TParam): string; virtual;
     function fprAjustarWhere(ipWhere: string): string; virtual;
     function fprGetNomeTabela(ipProvider: TDataSetProvider): string;
 
@@ -134,7 +135,7 @@ begin
           begin
             vaDataSet.SQL.Text := vaScript;
             vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
-            vaWhere := fprMontarWhere(vaTabela, vaParams);
+            vaWhere := fpvMontarWhere(vaTabela, vaParams);
 
             vaWhere := fprAjustarWhere(vaWhere);
 
@@ -168,7 +169,32 @@ begin
     end;
 end;
 
-function TsmBasico.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
+function TsmBasico.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
+var
+  vaValor, vaOperador: string;
+begin
+  Result := ipWhere;
+  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+
+  if ipParam.Name = TParametros.coID then
+    Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
+  else if ipParam.Name = TParametros.coNome then
+    Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaValor, vaOperador)
+  else if ipParam.Name = TParametros.coActive then
+    Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1, vaOperador)
+  else if ipParam.Name = TParametros.coAtivo then
+    begin
+      if vaValor.ToInteger <> coRegistroAtivo then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaValor.ToInteger(), vaOperador)
+      else
+        begin
+          Result := Result + '(('+ ipTabela + '.' + TBancoDados.coAtivo + ' = '+ IntToStr(coRegistroAtivo)+') OR '
+            +'(' + ipTabela + '.' + TBancoDados.coAtivo + ' is null)) ' + vaOperador;
+        end;
+    end;
+end;
+
+function TsmBasico.fpvMontarWhere(ipTabela: string; ipParams: TParams): string;
 var
   vaParam: TParam;
   I: Integer;
@@ -178,26 +204,7 @@ begin
   // vamos verificar se tem os parametros default
   for I := 0 to ipParams.Count - 1 do
     begin
-      vaParam := ipParams[I];
-      TUtils.ppuExtrairValorOperadorParametro(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
-
-      if vaParam.Name = TParametros.coID then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
-      else if vaParam.Name = TParametros.coNome then
-        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaValor, vaOperador)
-      else if vaParam.Name = TParametros.coActive then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1,vaOperador)
-      else if vaParam.Name = TParametros.coAtivo then
-        begin
-          if vaValor.ToInteger <> coRegistroAtivo then
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaValor.ToInteger(), vaOperador)
-          else
-            begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, coRegistroAtivo, TOperadores.coOR);
-              Result := '('+Result + ipTabela + '.' + TBancoDados.coAtivo + ' is null) AND';
-            end;
-
-        end;
+      Result := fprMontarWhere(ipTabela,Result, ipParams[i]);
     end;
 
 end;

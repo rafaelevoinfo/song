@@ -66,7 +66,10 @@ type
     EditPesquisaCadastro: TcxDBTextEdit;
     Label19: TLabel;
     EditObs: TcxDBMemo;
+    btnPesquisarPessoa: TButton;
+    Ac_Pesquisar_Pessoa: TAction;
     procedure FormCreate(Sender: TObject);
+    procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -75,6 +78,9 @@ type
     procedure pprValidarDados; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
+    procedure pprPesquisarPessoa(); virtual;
+    procedure pprCarregarPessoas(ipIdEspecifico: Integer = 0); virtual;
+    function fprGetTipoPessoa: TTipoRelacionamentoPessoa; virtual;
 
     function fprGetTipo: TTipoFinForCli; virtual;
   public
@@ -89,8 +95,48 @@ var
 
 implementation
 
+uses
+  fPessoa;
+
 {$R *.dfm}
 
+
+procedure TfrmFinanciador.Ac_Pesquisar_PessoaExecute(Sender: TObject);
+begin
+  inherited;
+  pprPesquisarPessoa();
+end;
+
+procedure TfrmFinanciador.pprPesquisarPessoa();
+var
+  vaFrmPessoa: TfrmPessoa;
+begin
+  inherited;
+  vaFrmPessoa := TfrmPessoa.Create(nil);
+  try
+    vaFrmPessoa.ppuConfigurarModoExecucao(mePesquisa);
+    vaFrmPessoa.ShowModal;
+    if vaFrmPessoa.IdEscolhido <> 0 then
+      begin
+        if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
+          begin
+            cbContato.EditValue := vaFrmPessoa.IdEscolhido;
+            cbContato.PostEditValue;
+          end
+        else
+          begin
+            pprCarregarPessoas(vaFrmPessoa.IdEscolhido);
+            if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
+              begin
+                cbContato.EditValue := vaFrmPessoa.IdEscolhido;
+                cbContato.PostEditValue;
+              end;
+          end;
+      end;
+  finally
+    vaFrmPessoa.Free;
+  end;
+end;
 
 procedure TfrmFinanciador.FormCreate(Sender: TObject);
 begin
@@ -102,7 +148,24 @@ begin
   inherited;
   PesquisaPadrao := tppTodos;
 
-  dmLookup.cdslkPessoa.Open;
+  pprCarregarPessoas();
+end;
+
+procedure TfrmFinanciador.pprCarregarPessoas(ipIdEspecifico: Integer);
+begin
+  dmLookup.cdslkPessoa.close;
+  dmLookup.cdslkPessoa.ppuLimparParametros;
+
+  dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coAtivo, 0, TOperadores.coAnd);
+  if ipIdEspecifico <> 0 then
+    begin
+      dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coTipo, Ord(fprGetTipoPessoa), TOperadores.coOr);
+      dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coAnd);
+    end
+  else
+    dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coTipo, Ord(fprGetTipoPessoa), TOperadores.coAnd);
+
+  dmLookup.cdslkPessoa.ppuDataRequest();
 end;
 
 function TfrmFinanciador.fprGetPermissao: String;
@@ -113,6 +176,11 @@ end;
 function TfrmFinanciador.fprGetTipo: TTipoFinForCli;
 begin
   Result := tfFinanciador;
+end;
+
+function TfrmFinanciador.fprGetTipoPessoa: TTipoRelacionamentoPessoa;
+begin
+  Result := trpFinanciador;
 end;
 
 procedure TfrmFinanciador.pprCarregarParametrosPesquisa(

@@ -267,9 +267,9 @@ inherited frmFinanciador: TfrmFinanciador
           object Label4: TLabel
             Left = 7
             Top = 16
-            Width = 39
+            Width = 62
             Height = 13
-            Caption = 'Contato'
+            Caption = 'Contato (F2)'
             FocusControl = cbContato
           end
           object EditEmail: TcxDBTextEdit
@@ -360,6 +360,15 @@ inherited frmFinanciador: TfrmFinanciador
             TabOrder = 0
             Width = 397
           end
+          object btnPesquisarPessoa: TButton
+            Left = 405
+            Top = 32
+            Width = 22
+            Height = 21
+            Action = Ac_Pesquisar_Pessoa
+            Images = dmPrincipal.imgIcons_16
+            TabOrder = 9
+          end
         end
         object EditCpfCnpj: TcxDBTextEdit
           Left = 514
@@ -411,6 +420,13 @@ inherited frmFinanciador: TfrmFinanciador
           Width = 658
         end
       end
+    end
+  end
+  inherited ActionList1: TActionList
+    object Ac_Pesquisar_Pessoa: TAction
+      Category = 'Master'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_PessoaExecute
     end
   end
   inherited dsMaster: TDataSource

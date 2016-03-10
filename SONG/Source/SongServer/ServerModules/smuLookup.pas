@@ -49,7 +49,7 @@ type
   private
     { Private declarations }
   protected
-    function fprMontarWhere(ipTabela: string; ipParams: TParams): string; override;
+    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
   end;
 
 var
@@ -62,39 +62,40 @@ implementation
 
 { TsmLookup }
 
-function TsmLookup.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
+function TsmLookup.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
-  i: Integer;
-  vaParam: TParam;
-  vaValor, vaOperador:string;
+  vaValor, vaOperador: string;
+  vaCodigos:TArray<Integer>;
 begin
   Result := inherited;
-  for i := 0 to ipParams.Count - 1 do
-    begin
-      vaParam := ipParams[i];
-      TUtils.ppuExtrairValorOperadorParametro(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
 
-      if ipTabela = 'ATIVIDADE' then
+  if ipTabela = 'ATIVIDADE' then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
         begin
-          if vaParam.Name = TParametros.coProjeto then
-            begin
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', TUtils.fpuConverterStringToArrayInteger(vaValor),
-                TOperadores.coOr);
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE_PROJETO', 'ID_PROJETO',
-                TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador);
-            end
-          else if vaParam.Name = TParametros.coStatusDiferente then
-            begin
-              Result := Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ') '+vaOperador;
-            end;
+          vaCodigos := TUtils.fpuConverterStringToArrayInteger(vaValor);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ['ATIVIDADE','ATIVIDADE_PROJETO'],
+          ['ID_PROJETO','ID_PROJETO'],[vaCodigos,vaCodigos],TOperadores.coOr, vaOperador);
         end
-      else if ipTabela = 'PROJETO' then
+      else if ipParam.Name = TParametros.coStatusDiferente then
         begin
-          if vaParam.Name = TParametros.coStatusDiferente then
-            begin
-              Result := Result + 'PROJETO.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ') '+ vaOperador;
-            end;
+          Result := '('+Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ')) ' + vaOperador;
         end;
+    end
+  else if ipTabela = 'PROJETO' then
+    begin
+      if ipParam.Name = TParametros.coStatusDiferente then
+        begin
+          Result := Result + 'PROJETO.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ') ' + vaOperador;
+        end;
+    end
+  else if ipTabela = 'PESSOA' then
+    begin
+      if ipParam.Name = TParametros.coLogin then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'login', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coTipo then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
     end;
 
 end;

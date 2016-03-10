@@ -22,7 +22,7 @@ type
   private
     { Private declarations }
   protected
-     function fprMontarWhere(ipTabela: string; ipParams: TParams): string; override;
+    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
   public
     { Public declarations }
   end;
@@ -36,26 +36,21 @@ implementation
 
 { TsmViveiro }
 
-function TsmViveiro.fprMontarWhere(ipTabela: string; ipParams: TParams): string;
+function TsmViveiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
-  i:Integer;
-  vaParam:TParam;
-  vaValor, vaOperador:string;
+  vaValor, vaOperador: string;
 begin
   Result := inherited;
-  for i := 0 to ipParams.Count - 1 do
+
+  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+  if ipTabela = 'ESPECIE' then
     begin
-      vaParam := ipParams[i];
-      TUtils.ppuExtrairValorOperadorParametro(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
-      if ipTabela = 'ESPECIE' then
-        begin
-          if vaParam.Name = TParametros.coNome then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME', vaValor, vaOperador)
-          else if vaParam.Name = TParametros.coNomeCientifico then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_CIENTIFICO', vaValor, vaOperador)
-          else if vaParam.Name = TParametros.coFamiliaBotanica then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'FAMILIA_BOTANICA', vaValor, vaOperador)
-        end;
+      if ipParam.Name = TParametros.coNome then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coNomeCientifico then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_CIENTIFICO', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coFamiliaBotanica then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'FAMILIA_BOTANICA', vaValor, vaOperador)
     end;
 end;
 

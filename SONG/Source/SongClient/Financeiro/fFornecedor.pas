@@ -21,6 +21,7 @@ type
     { Private declarations }
   protected
     function fprGetTipo: TTipoFinForCli;override;
+    function fprGetTipoPessoa:TTipoRelacionamentoPessoa;override;
     function fprGetPermissao: String; override;
     { Public declarations }
   end;
@@ -42,6 +43,11 @@ end;
 function TfrmFornecedor.fprGetTipo: TTipoFinForCli;
 begin
    Result := tfFornecedor;
+end;
+
+function TfrmFornecedor.fprGetTipoPessoa: TTipoRelacionamentoPessoa;
+begin
+  Result := trpFornecedor;
 end;
 
 end.

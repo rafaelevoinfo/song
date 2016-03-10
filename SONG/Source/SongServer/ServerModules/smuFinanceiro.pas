@@ -43,7 +43,7 @@ type
   private
     { Private declarations }
   protected
-    function fprMontarWhere(ipTabela: string; ipParams: TParams): string; override;
+    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
   public
     { Public declarations }
   end;
@@ -57,30 +57,23 @@ implementation
 
 { TsmFinanceiro }
 
-function TsmFinanceiro.fprMontarWhere(ipTabela: string;
-  ipParams: TParams): string;
+function TsmFinanceiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
-  i: Integer;
-  vaParam: TParam;
   vaValor, vaOperador: string;
 begin
   Result := inherited;
-  for i := 0 to ipParams.Count - 1 do
+  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+  if ipTabela = 'FIN_FOR_CLI' then
     begin
-      vaParam := ipParams[i];
-      TUtils.ppuExtrairValorOperadorParametro(vaParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
-      if ipTabela = 'FIN_FOR_CLI' then
-        begin
-          if vaParam.Name = TParametros.coTipo then
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
-          else if vaParam.Name = TParametros.coNomeFantasia then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_FANTASIA', vaValor, vaOperador)
-          else if vaParam.Name = TParametros.coRazaoSocial then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'RAZAO_SOCIAL', vaValor, vaOperador)
-          else if vaParam.Name = TParametros.coCpfCnpj then
-            Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'CPF_CNPJ', vaValor, vaOperador)
-        end
-    end;
+      if ipParam.Name = TParametros.coTipo then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coNomeFantasia then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_FANTASIA', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coRazaoSocial then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'RAZAO_SOCIAL', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coCpfCnpj then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'CPF_CNPJ', vaValor, vaOperador)
+    end
 end;
 
 end.

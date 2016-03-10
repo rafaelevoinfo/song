@@ -23,7 +23,7 @@ object Mensagem: TMensagem
     Height = 172
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabErro
+    Properties.ActivePage = tabPergunta
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 167
     ClientRectLeft = 2
@@ -53,7 +53,7 @@ object Mensagem: TMensagem
           Align = alTop
           Caption = 'SONG Pergunta'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
@@ -82,7 +82,7 @@ object Mensagem: TMensagem
           Align = alClient
           Caption = 'Registro excluido com sucesso'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Tahoma'
           Font.Style = []
@@ -261,7 +261,7 @@ object Mensagem: TMensagem
           Align = alTop
           Caption = 'SONG Informa'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
@@ -279,7 +279,7 @@ object Mensagem: TMensagem
           Align = alClient
           Caption = 'Registro excluido com sucesso'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Tahoma'
           Font.Style = []
@@ -404,7 +404,7 @@ object Mensagem: TMensagem
           Align = alTop
           Caption = 'Oops... Houve um erro!'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
@@ -422,7 +422,7 @@ object Mensagem: TMensagem
           Align = alClient
           Caption = 'Registro excluido com sucesso'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Tahoma'
           Font.Style = []

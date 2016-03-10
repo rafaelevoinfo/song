@@ -9,7 +9,6 @@
 SONG/Source/SongServer/SONGServer.identcache
 SONG/Source/SongServer/Win32/
 SONG/Documentacao/
-SONG/BancoDados/
 SONG/Source/SongServer/SONGServer.res
 __history/
 SONG/Source/SongClient/Win32/
@@ -23,3 +22,7 @@ SONG/Source/SongServer/Atualizacoes/
 ComponentesTerceiros/
 SONG/Source/SongServer/Atualizacoes.xml
 SONG/Source/SongClient/Atualizacoes/
+SONG/BancoDados/SONG.FDB
+SONG/BancoDados/SONG.fbk
+SONG/BancoDados/VersoesAnteriores/Versao 1.0.0.0/song.fbk
+SONG/BancoDados/modelagem.grc

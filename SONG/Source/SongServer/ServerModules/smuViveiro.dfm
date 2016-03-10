@@ -1,4 +1,5 @@
 inherited smViveiro: TsmViveiro
+  OldCreateOrder = True
   Height = 289
   Width = 787
   object qEspecie: TRFQuery

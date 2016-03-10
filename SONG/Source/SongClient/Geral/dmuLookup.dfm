@@ -1,5 +1,6 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
+  OnCreate = DataModuleCreate
   Height = 325
   Width = 523
   object Repositorio: TcxEditRepository
@@ -145,20 +146,24 @@ inherited dmLookup: TdmLookup
           Value = 3
         end
         item
-          Description = 'Parceiro'
+          Description = 'Financiador'
           Value = 4
         end
         item
-          Description = 'Estagi'#225'rio'
+          Description = 'Parceiro'
           Value = 5
         end
         item
-          Description = 'Volunt'#225'rio'
+          Description = 'Estagi'#225'rio'
           Value = 6
         end
         item
-          Description = 'Outro'
+          Description = 'Volunt'#225'rio'
           Value = 7
+        end
+        item
+          Description = 'Outro'
+          Value = 8
         end>
     end
     object repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem

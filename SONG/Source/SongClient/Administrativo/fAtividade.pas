@@ -317,7 +317,7 @@ begin
   vaFrmAtividade := TfrmAtividade.Create(nil);
   try
     vaFrmAtividade.ppuConfigurarModoExecucao(mePesquisa);
-    vaFrmAtividade.Name := '';
+
     vaFrmAtividade.ShowModal;
     if vaFrmAtividade.IdEscolhido <> 0 then
       begin
@@ -447,7 +447,7 @@ end;
 
 procedure TfrmAtividade.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 var
-  vaCodigos:string;
+  vaCodigos: string;
 begin
   inherited;
   vaCodigos := TUtils.fpuExtrairValoresCheckComboBox(cbProjetosPesquisa);
@@ -533,11 +533,16 @@ begin
   if (ipIdEspecifico <> 0) or (not dmLookup.cdslkAtividade.Active) or (vaValor <> dmAdministrativo.cdsAtividadeID_PROJETO.AsString) then
     begin
       dmLookup.cdslkAtividade.ppuLimparParametros;
-      if ipIdEspecifico <> 0 then
-        dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
+      dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coProjeto, dmAdministrativo.cdsAtividadeID_PROJETO.AsInteger);
 
-      dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coProjeto, TParametros.coStatusDiferente],
-        [dmAdministrativo.cdsAtividadeID_PROJETO.AsInteger, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString]);
+      if ipIdEspecifico <> 0 then
+        begin
+          dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coStatusDiferente, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString,
+            TOperadores.coOR);
+          dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coID], [ipIdEspecifico], TOperadores.coAnd);
+        end
+      else
+        dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coStatusDiferente], [Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString]);
     end;
 end;
 

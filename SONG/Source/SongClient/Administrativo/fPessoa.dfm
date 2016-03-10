@@ -1,6 +1,7 @@
 inherited frmPessoa: TfrmPessoa
   ActiveControl = EditNome
   Caption = 'Pessoas'
+  ExplicitTop = -111
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
@@ -16,7 +17,7 @@ inherited frmPessoa: TfrmPessoa
         inherited pnEditsPesquisa: TPanel
           Left = 321
           Width = 654
-          ExplicitLeft = 313
+          ExplicitLeft = 321
           ExplicitWidth = 654
           inherited Label1: TLabel
             Left = 263
@@ -81,6 +82,7 @@ inherited frmPessoa: TfrmPessoa
         end
         inherited pnBotoes: TPanel
           Width = 320
+          ExplicitWidth = 320
         end
       end
       inherited pnGrid: TPanel
@@ -285,7 +287,7 @@ inherited frmPessoa: TfrmPessoa
             Left = 105
             Top = 113
             RepositoryItem = dmLookup.repIcbTipoPessoa
-            DataBinding.DataField = 'DATA_NASCIMENTO'
+            DataBinding.DataField = 'TIPO'
             DataBinding.DataSource = dsMaster
             Properties.Items = <>
             TabOrder = 4
@@ -634,6 +636,6 @@ inherited frmPessoa: TfrmPessoa
   object CustomizeDlg1: TCustomizeDlg
     StayOnTop = False
     Left = 464
-    Top = 32
+    Top = 72
   end
 end

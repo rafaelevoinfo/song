@@ -1043,7 +1043,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 258
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabAtualizacoes
+    Properties.ActivePage = tabConfiguracoes
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 253
@@ -1155,6 +1155,10 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -1197,10 +1201,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 203
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 288
-        ExplicitTop = 16
-        ExplicitWidth = 250
-        ExplicitHeight = 200
         object viewAtualizacoes: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           Navigator.Buttons.First.Visible = False
@@ -1263,8 +1263,6 @@ object frmPrincipal: TfrmPrincipal
           Caption = 'Excluir'
           TabOrder = 0
           OnClick = btnAddAtualizacaoClick
-          ExplicitLeft = 376
-          ExplicitTop = 10
         end
         object btnDelAtualizacao: TButton
           Left = 0
@@ -1275,8 +1273,6 @@ object frmPrincipal: TfrmPrincipal
           Caption = 'Adicionar'
           TabOrder = 1
           OnClick = btnDelAtualizacaoClick
-          ExplicitLeft = -6
-          ExplicitTop = -6
         end
       end
     end
