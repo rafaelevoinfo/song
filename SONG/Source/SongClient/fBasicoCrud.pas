@@ -14,7 +14,7 @@ uses
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
-  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup;
+  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -57,6 +57,7 @@ type
     Ac_Salvar_Incluir: TAction;
     btnUtilizar: TButton;
     Ac_Utilizar_Selecionado: TAction;
+    cxLocalizer1: TcxLocalizer;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);

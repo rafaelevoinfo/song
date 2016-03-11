@@ -11,7 +11,7 @@ uses
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
-  Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository;
+  Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList;
 
 type
   TdmPrincipal = class(TDataModule)

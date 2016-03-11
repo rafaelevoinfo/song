@@ -70,6 +70,8 @@ type
     Ac_Pesquisar_Pessoa: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
+    procedure cbContatoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -136,6 +138,14 @@ begin
   finally
     vaFrmPessoa.Free;
   end;
+end;
+
+procedure TfrmFinanciador.cbContatoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    pprPesquisarPessoa;
 end;
 
 procedure TfrmFinanciador.FormCreate(Sender: TObject);

@@ -26,3 +26,5 @@ SONG/BancoDados/SONG.FDB
 SONG/BancoDados/SONG.fbk
 SONG/BancoDados/VersoesAnteriores/Versao 1.0.0.0/song.fbk
 SONG/BancoDados/modelagem.grc
+SONG/Source/SongServer/SONGServer.stat
+SONG/Source/SongClient/SongClient.stat

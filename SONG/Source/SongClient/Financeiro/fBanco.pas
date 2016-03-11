@@ -13,7 +13,7 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxGroupBox,
   cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit,
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuFinanceiro, cxDBEdit,
-  uControleAcesso, System.TypInfo, uTypes;
+  uControleAcesso, System.TypInfo, uTypes, cxLocalization;
 
 type
   TfrmBanco = class(TfrmBasicoCrudMasterDetail)

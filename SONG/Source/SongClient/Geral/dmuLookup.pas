@@ -66,6 +66,11 @@ type
     repLcbAtividade: TcxEditRepositoryLookupComboBoxItem;
     dslkAtividade: TDataSource;
     dslkProjeto: TDataSource;
+    repLcbEspecie: TcxEditRepositoryLookupComboBoxItem;
+    cdslkEspecie: TRFClientDataSet;
+    cdslkEspecieID: TIntegerField;
+    cdslkEspecieNOME: TStringField;
+    dslkEspecie: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

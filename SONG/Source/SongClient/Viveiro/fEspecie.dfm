@@ -1,10 +1,10 @@
 inherited frmEspecie: TfrmEspecie
-  ActiveControl = btnIncluir
+  ActiveControl = EditNome
   Caption = 'Esp'#233'cies Produzidas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -63,6 +63,10 @@ inherited frmEspecie: TfrmEspecie
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5

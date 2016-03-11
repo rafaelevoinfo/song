@@ -19,6 +19,15 @@ type
     qEspecieNOME_CIENTIFICO: TStringField;
     qEspecieFAMILIA_BOTANICA: TStringField;
     qEspecieOBSERVACAO: TStringField;
+    qMatriz: TRFQuery;
+    qMatrizID: TIntegerField;
+    qMatrizID_ESPECIE: TIntegerField;
+    qMatrizENDERECO: TStringField;
+    qMatrizLATITUDE: TFMTBCDField;
+    qMatrizLONGITUDE: TFMTBCDField;
+    qMatrizDESCRICAO: TStringField;
+    qMatrizESPECIE: TStringField;
+    qMatrizNOME: TStringField;
   private
     { Private declarations }
   protected

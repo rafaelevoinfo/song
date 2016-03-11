@@ -358,6 +358,7 @@ inherited frmFinanciador: TfrmFinanciador
             DataBinding.DataSource = dsMaster
             Properties.ListColumns = <>
             TabOrder = 0
+            OnKeyDown = cbContatoKeyDown
             Width = 397
           end
           object btnPesquisarPessoa: TButton

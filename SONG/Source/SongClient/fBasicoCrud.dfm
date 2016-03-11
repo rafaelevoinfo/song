@@ -219,12 +219,13 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
+            FindPanel.DisplayMode = fpdmAlways
+            FindPanel.InfoText = 'Informe aqui o filtro desejado...'
             DataController.DataSource = dsMaster
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
             FilterRow.InfoText = 'Clique aqui para definir um filtro'
-            FilterRow.Visible = True
             OptionsCustomize.ColumnsQuickCustomization = True
             OptionsData.CancelOnExit = False
             OptionsData.Deleting = False
@@ -282,10 +283,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
@@ -394,5 +391,14 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   object dsMaster: TDataSource
     Left = 256
     Top = 152
+  end
+  object cxLocalizer1: TcxLocalizer
+    Active = True
+    FileName = 
+      'C:\Users\rafae\Repositorios\SONG\Source\Comuns\CXLOCALIZATION.in' +
+      'i'
+    Locale = 2070
+    Left = 288
+    Top = 184
   end
 end

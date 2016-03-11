@@ -232,6 +232,17 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkAtividade
     end
+    object repLcbEspecie: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkEspecie
+    end
   end
   object cdslkPerfil: TClientDataSet
     Aggregates = <>
@@ -494,5 +505,30 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkProjeto
     Left = 432
     Top = 264
+  end
+  object cdslkEspecie: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkEspecie'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 216
+    Top = 96
+    object cdslkEspecieID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkEspecieNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkEspecie: TDataSource
+    DataSet = cdslkEspecie
+    Left = 40
+    Top = 120
   end
 end

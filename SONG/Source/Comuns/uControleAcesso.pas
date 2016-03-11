@@ -82,7 +82,7 @@ type
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador,finFornecedor);
-  TPermissaoViveiro = (vivEspecie);
+  TPermissaoViveiro = (vivEspecie, vivMatriz);
 
 implementation
 
@@ -136,6 +136,7 @@ begin
   // Viveiro
   vaPermissoes := TList<TPermissao>.Create;
   plAddViveiro(vivEspecie, 'Espécies');
+  plAddViveiro(vivMatriz, 'Matrizes');
   FItems.Add('Viveiro', vaPermissoes);
 
 end;

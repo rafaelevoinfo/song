@@ -1,4 +1,5 @@
 inherited dmViveiro: TdmViveiro
+  OldCreateOrder = True
   Height = 355
   Width = 539
   object cdsEspecie: TRFClientDataSet
@@ -37,6 +38,64 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+  end
+  object cdsMatriz: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqMatriz'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 104
+    Top = 16
+    object cdsMatrizID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsMatrizID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMatrizNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsMatrizENDERECO: TStringField
+      DisplayLabel = 'Localiza'#231#227'o da Matriz'
+      FieldName = 'ENDERECO'
+      ProviderFlags = [pfInUpdate]
+      Size = 150
+    end
+    object cdsMatrizLATITUDE: TFMTBCDField
+      DisplayLabel = 'Latitude'
+      FieldName = 'LATITUDE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 6
+    end
+    object cdsMatrizLONGITUDE: TFMTBCDField
+      DisplayLabel = 'Longitude'
+      FieldName = 'LONGITUDE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 6
+    end
+    object cdsMatrizDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object cdsMatrizESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

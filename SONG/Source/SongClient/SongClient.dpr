@@ -30,7 +30,8 @@ uses
   dmuViveiro in 'Viveiro\dmuViveiro.pas' {dmViveiro: TDataModule},
   uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
   fFinanciador in 'Financeiro\fFinanciador.pas' {frmFinanciador},
-  fFornecedor in 'Financeiro\fFornecedor.pas' {frmFornecedor};
+  fFornecedor in 'Financeiro\fFornecedor.pas' {frmFornecedor},
+  fMatriz in 'Viveiro\fMatriz.pas' {frmMatriz};
 
 {$R *.res}
 

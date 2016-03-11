@@ -46,6 +46,9 @@ type
     qlkCidadeID: TIntegerField;
     qlkCidadeUF: TStringField;
     qlkCidadeNOME: TStringField;
+    qlkEspecie: TRFQuery;
+    qlkEspecieID: TIntegerField;
+    qlkEspecieNOME: TStringField;
   private
     { Private declarations }
   protected

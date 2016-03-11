@@ -286,4 +286,32 @@ inherited smLookup: TsmLookup
       Size = 128
     end
   end
+  object qlkEspecie: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Especie.id,'
+      '       Especie.nome'
+      'from especie'
+      '&where')
+    Left = 32
+    Top = 192
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkEspecieID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkEspecieNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

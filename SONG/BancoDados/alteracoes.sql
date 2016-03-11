@@ -11419,3 +11419,276 @@ ALTER TABLE FIN_FOR_CLI
 ADD CONSTRAINT UNQ3_FIN_FOR_CLI
 UNIQUE (NOME_FANTASIA,TIPO);
 
+
+
+COMMENT ON COLUMN PESSOA.TIPO IS
+'0|NULL - Funcionario
+1 - Membro da diretoria
+2 - Cliente
+3 - Fornecedor
+4 - Financiador
+5 - Parceiro
+6 - Estagiario
+7 - Voluntario
+8 - Outros';
+
+
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (1, 'Aroeira', 'Myracrodruon urundeuva', ' Anacardiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (2, ' Angico-do-cerrado', 'Anadenanthera peregrina var. falcata', 'Leguminosae-Mimosoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (3, ' Baru', 'Dipteryx alata', 'Leguminosae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (4, ' Boca-boa', 'Buchenavia tomentosa', 'Combretaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (5, ' Cafezinho', 'Psychotria carthagenesis', 'Rubiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (6, ' Capitão', 'Terminalia argentea', 'Combretaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (7, ' Caqui-do-cerrado', 'Diospyros hispida', 'Ebenaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (8, ' Carvoeiro ', 'Tachigali vulgaris', ' Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (9, ' Goiaba', 'Psidium guajava', 'Myrtaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (10, ' Ipê-caraiba', 'Handroanthus albus', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (11, ' Jenipapo-de-cavalo', 'Tocoyena formosa', 'Rubiacea', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (12, ' Lixeira', 'Curatella americana', 'Dilleniaceae.', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (13, ' Monjoleiro', 'Senegalia polyphylla', ' Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (14, ' Murici-da-mata', 'Byrsonima laxiflora', 'Malpighiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (15, ' Murici-miudo', 'Byrsonima spicata', ' Malpighiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (16, ' Olho de Cabra', 'Ormosia arborea', 'Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (17, ' Pau-formiga', 'Triplaris sp.', ' Polygonaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (18, ' Pau-pombo', 'Tapirira guianensis', 'Anacardiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (19, ' Pequi ', 'Caryocar brasiliense', 'Caryocaraceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (20, ' Pimenta-de-macaco', 'Xylopia aromatica', ' Annonaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (21, ' Pixirica', 'Miconia cubatanensis', 'Melastomatacea', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (22, ' Pororoca', 'Rapanea gardneriana', ' Myrsinaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (23, ' Quaresmeira', 'Tibouchina granulosa', ' Melastomataceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (24, ' Tingui', 'Magonia pubescens', ' Sapindaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (25, ' Unha-de-vaca', 'Bauhinia longifolia', ' Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (26, ' Veludo-branco', 'Gettarda viburnoides', 'Rubiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (27, ' Vinhático', 'Plathymenia Reticulata', ' Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (28, 'Amendoim bravo', '       Pterogyne nitens', ' Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (29, 'Angico', 'Anadenanthera macrocarpa', 'Leguminosae-Mimosoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (30, 'Araça', 'Psidium catteleianum', 'Myrtaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (31, 'Aroeirinha brava', 'Lithraea molleoides', ' Anacardiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (32, 'Arranha- gato', 'Acacia Plumosa', 'Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (33, 'Balsamim', 'Diptychandra aurantiaca', 'Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (34, 'Bambuzinho', 'Phyllostachys sp.', 'Bambusoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (35, 'Camboatá', 'Matayba guianensis', ' Sapindaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (36, 'Cana-de-macaco', 'Costus spicatus', 'Costaceae.', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (37, 'Canafistola', 'Peltophorum dubium', 'Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (38, 'Catinga-de-bode', 'hyptidendron asperrimum', 'Lamiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (39, 'Cedro', 'Cedrela fissilis', 'Meliaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (40, 'Coração -de-negro', 'Peltogyne confertiflora', 'Fabaceae-Caesalpinioideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (41, 'Embaúba', 'Cecropia pachystachya', 'Cecropiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (42, 'Embiruçu', ' Pseudobombax longiflorum', 'Bombacaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (43, 'Farinha Seca', 'Albizia  niopoides', 'Leguminosae-Mimosoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (44, 'Faveira', 'Dimorphandra mollis', 'Leguminosae-Caesalpinioideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (45, 'Gapuruvu', 'Schizolobium parahyba', 'Leguminosae-Caesalpinioideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (46, 'Genipapo', 'Genipa americana', 'Rubiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (47, 'Grumixana', 'Eugenia brasiliensis', 'Myrtaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (48, 'Guaritá', 'Astronium graveleons', 'Anacardiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (49, 'Ingá', 'Ingá laurina', 'Leguminosae-Mimosoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (50, 'Ipê branco', 'Tabebuia insignis', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (51, 'Ipê Rosa', 'Tabebuia impetiginosa', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (52, 'Ipê Roxo', 'Tabebuia avelanedae', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (53, 'IpêAmarelo', 'Tabebuia ochracea', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (54, 'IpêAmarelo Peludo', 'Tabebuia chrysotricha', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (55, 'Jacaranda boca de sapo', 'Jacaranda brasiliana', 'Bignoniaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (56, 'Jamelão', 'Syzygium cumini', 'Myrtaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (57, 'jatoba do mato ', 'Hymenaea Courbaril', 'Leguminosae-Caesalpinioideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (58, 'Jatobá-do-cerrado', 'Hymenaea stigonocarpa', 'Leguminosae-Caesalpinioideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (59, 'Jurubeba', 'Solanum paniculatum', 'Solanaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (60, 'limão-do-mato', 'Randia sp', 'Rubiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (61, 'Maminha-de-porca', 'Zanthoxylum rhoifolium', ' Rutaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (62, 'Maria pobre', ' Dilodendron Bipinnatum', 'Sapindaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (63, 'Marmelada', 'Alibertia edullis', 'Rubiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (64, 'Mata cachorro', 'Simarouba versicolor', 'Simaroubaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (65, 'Monjoleiro', 'Acacia polyphylla', 'Leguminosae-Mimosoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (66, 'Moreira', 'Macluria tinctoria', 'Moraceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (67, 'Mutamba', 'Guazuma ulmifolia', 'Sterculiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (68, 'Pau Oléo', ' Copaifera langsdorfii', 'Leguminosae-Caesalpinioideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (69, 'Pau Santo', 'Kielmeyera variabilis', 'Guttiferae(Clusiaceae)', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (70, 'Pau-jangada', 'Apeiba tibourbou', 'Tiliaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (71, 'Pindaiba', 'Cardiopetalum calophyllum', 'Annonaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (72, 'Quebra-foice', 'Mimosa laticifera', 'Leguminosae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (73, 'Sucupira-branca', 'Pterodon emarginatus', 'Fabaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (74, 'Tamboril', 'Enterolobium contortisiliquum', 'Leguminosae-Mimosoideae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (75, 'Urucum', 'Bixa orellana', 'Bixaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (76, 'Genipapo', 'Genipa americana', 'Rubiaceae', NULL);
+INSERT INTO ESPECIE (ID, NOME, NOME_CIENTIFICO, FAMILIA_BOTANICA, OBSERVACAO)
+             VALUES (77, 'veludinho', 'Guettarda pohliana', ' Rubiaceae', NULL);
+
+COMMIT WORK;
+
+
+
+
+ALTER SEQUENCE GEN_ESPECIE RESTART WITH 77;
+
+
+
+CREATE TABLE MATRIZ (
+    ID INTEGER NOT NULL,
+    NOME INTEGER NOT NULL,
+    ID_ESPECIE INTEGER NOT NULL,
+    ENDERECO VARCHAR(150),
+    LATITUDE NUMERIC(15,6),
+    LONGITUDE NUMERIC(15,6),
+    DESCRICAO D_DESCRICAO);
+
+ALTER TABLE MATRIZ
+ADD CONSTRAINT PK_MATRIZ
+PRIMARY KEY (ID);
+
+COMMENT ON COLUMN MATRIZ.ENDERECO IS
+'Endereco da matriz (nome da fazenda, sitio, regiao ou qualquer informacao que facilite o retorno a esta matriz)';
+
+CREATE SEQUENCE GEN_MATRIZ;
+
+
+
+ALTER TABLE MATRIZ
+ADD CONSTRAINT FK_MATRIZ_1
+FOREIGN KEY (ID_ESPECIE)
+REFERENCES ESPECIE(ID)
+ON UPDATE CASCADE;
+
+
+
+ALTER TABLE MATRIZ
+ADD CONSTRAINT UNQ1_MATRIZ
+UNIQUE (NOME);
+
+
+
+alter table MATRIZ
+alter ID position 1;
+
+alter table MATRIZ
+alter ID_ESPECIE position 2;
+
+alter table MATRIZ
+alter NOME position 3;
+
+alter table MATRIZ
+alter ENDERECO position 4;
+
+alter table MATRIZ
+alter LATITUDE position 5;
+
+alter table MATRIZ
+alter LONGITUDE position 6;
+
+alter table MATRIZ
+alter DESCRICAO position 7;
+
+
+
+ALTER TABLE MATRIZ DROP CONSTRAINT UNQ1_MATRIZ;
+
+
+
+ALTER TABLE MATRIZ DROP NOME;
+
+
+
+ALTER TABLE MATRIZ
+    ADD NOME D_NOME NOT NULL;
+
+alter table MATRIZ
+alter ID position 1;
+
+alter table MATRIZ
+alter ID_ESPECIE position 2;
+
+alter table MATRIZ
+alter NOME position 3;
+
+alter table MATRIZ
+alter ENDERECO position 4;
+
+alter table MATRIZ
+alter LATITUDE position 5;
+
+alter table MATRIZ
+alter LONGITUDE position 6;
+
+alter table MATRIZ
+alter DESCRICAO position 7;
+
+
+
+ALTER TABLE MATRIZ
+ADD CONSTRAINT UNQ1_MATRIZ
+UNIQUE (NOME);
+

@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, cxDropDownEdit,
   cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC,
   cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem, MidasLib,
-  cxGroupBox, cxRadioGroup;
+  cxGroupBox, cxRadioGroup, cxLocalization;
 
 type
   TfrmBasicoCrudMasterDetail = class(TfrmBasicoCrud)

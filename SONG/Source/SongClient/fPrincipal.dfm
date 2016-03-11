@@ -73,6 +73,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Espcie1: TMenuItem
         Action = Ac_Especie
       end
+      object Matrizes1: TMenuItem
+        Action = Ac_Matriz
+      end
     end
   end
   object ActionList1: TActionList
@@ -122,6 +125,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Fornecedores'
       OnExecute = Ac_FornecedorExecute
+    end
+    object Ac_Matriz: TAction
+      Category = 'Viveiro'
+      Caption = 'Matrizes'
+      OnExecute = Ac_MatrizExecute
     end
   end
   object dxSkinController1: TdxSkinController

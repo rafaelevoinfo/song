@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
-  cxMemo, cxDBEdit, uClientDataSet;
+  cxMemo, cxDBEdit, uClientDataSet, cxLocalization;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)

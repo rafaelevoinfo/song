@@ -14,6 +14,15 @@ type
     cdsEspecieNOME_CIENTIFICO: TStringField;
     cdsEspecieFAMILIA_BOTANICA: TStringField;
     cdsEspecieOBSERVACAO: TStringField;
+    cdsMatriz: TRFClientDataSet;
+    cdsMatrizID: TIntegerField;
+    cdsMatrizID_ESPECIE: TIntegerField;
+    cdsMatrizENDERECO: TStringField;
+    cdsMatrizLATITUDE: TFMTBCDField;
+    cdsMatrizLONGITUDE: TFMTBCDField;
+    cdsMatrizDESCRICAO: TStringField;
+    cdsMatrizESPECIE: TStringField;
+    cdsMatrizNOME: TStringField;
   private
     { Private declarations }
   public
