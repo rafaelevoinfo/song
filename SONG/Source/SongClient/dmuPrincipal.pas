@@ -40,12 +40,14 @@ type
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
     FFuncoesAdministrativo: TsmFuncoesAdministrativoClient;
+    FFuncoesViveiro:TSMFuncoesViveiroClient;
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
+    property FuncoesViveiro: TsmFuncoesViveiroClient read FFuncoesViveiro;
   end;
 
 var
@@ -100,6 +102,7 @@ procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
 begin
   FFuncoesGeral := TsmFuncoesGeralClient.Create(DataSnapConn.DBXConnection);
   FFuncoesAdministrativo := TsmFuncoesAdministrativoClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesViveiro := TSmFuncoesViveiroClient.Create(DataSnapConn.DBXConnection);
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
@@ -109,6 +112,9 @@ begin
 
   if Assigned(FFuncoesAdministrativo) then
     FreeAndNil(FFuncoesAdministrativo);
+
+  if Assigned(FFuncoesViveiro) then
+    FreeAndNil(FFuncoesViveiro);
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

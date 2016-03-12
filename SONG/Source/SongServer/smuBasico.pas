@@ -33,6 +33,8 @@ type
     procedure pprCriarDataSet(var opDataSet: TRFQuery);
 
     procedure pprEncapsularConsulta(ipProc: TProc<TRFQuery>);
+
+    function fprValidarCampoUnico(ipTabela, ipCampo: string; ipIdIgnorar: integer; ipValor: String): Boolean;
   public
     property Connection: TFDConnection read GetConnection write SetConnection;
   end;
@@ -192,6 +194,30 @@ begin
             +'(' + ipTabela + '.' + TBancoDados.coAtivo + ' is null)) ' + vaOperador;
         end;
     end;
+end;
+
+function TsmBasico.fprValidarCampoUnico(ipTabela, ipCampo: string;
+  ipIdIgnorar: integer; ipValor: String): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := Format('select ID ' +
+        ' from %s ' +
+        ' where ID <> :ID and ' +
+        '       %s = :NOME', [ipTabela, ipCampo]);
+
+      ipDataSet.ParamByName('ID').AsInteger := ipIdIgnorar;
+      ipDataSet.ParamByName('NOME').AsString := ipValor;
+      ipDataSet.Open();
+
+      vaResult := ipDataSet.Eof;
+    end);
+
+  Result := vaResult;
+
 end;
 
 function TsmBasico.fpvMontarWhere(ipTabela: string; ipParams: TParams): string;

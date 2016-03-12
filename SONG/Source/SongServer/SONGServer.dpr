@@ -19,7 +19,8 @@ uses
   uControleAcesso in '..\Comuns\uControleAcesso.pas',
   smuViveiro in 'ServerModules\smuViveiro.pas' {smViveiro: TDSServerModule},
   uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
-  fAtualizacao in 'fAtualizacao.pas' {frmAtualizacao};
+  fAtualizacao in 'fAtualizacao.pas' {frmAtualizacao},
+  smuFuncoesViveiro in 'ServerModules\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule};
 
 {$R *.res}
 
@@ -29,6 +30,7 @@ begin
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TMensagem, Mensagem);
+  Application.CreateForm(TsmFuncoesViveiro, smFuncoesViveiro);
   Application.Run;
 end.
 

@@ -9,6 +9,7 @@ inherited smViveiro: TsmViveiro
       '       ESPECIE.NOME,'
       '       ESPECIE.NOME_CIENTIFICO,'
       '       ESPECIE.FAMILIA_BOTANICA,'
+      '       ESPECIE.QTDE_SEMENTE_KILO,'
       '       ESPECIE.OBSERVACAO'
       'from ESPECIE  '
       '&WHERE')
@@ -46,6 +47,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'OBSERVACAO'
       Size = 500
     end
+    object qEspecieQTDE_SEMENTE_KILO: TIntegerField
+      FieldName = 'QTDE_SEMENTE_KILO'
+      Origin = 'QTDE_SEMENTE_KILO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object qMatriz: TRFQuery
     Connection = dmPrincipal.conSong
@@ -57,6 +64,7 @@ inherited smViveiro: TsmViveiro
       '       MATRIZ.LATITUDE,'
       '       MATRIZ.LONGITUDE,'
       '       MATRIZ.DESCRICAO,'
+      '       MATRIZ.FOTO,'
       '       ESPECIE.NOME as ESPECIE'
       'from MATRIZ'
       'INNER JOIN ESPECIE ON (ESPECIE.ID = MATRIZ.ID_ESPECIE)'
@@ -119,6 +127,11 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+    object qMatrizFOTO: TBlobField
+      FieldName = 'FOTO'
+      Origin = 'FOTO'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

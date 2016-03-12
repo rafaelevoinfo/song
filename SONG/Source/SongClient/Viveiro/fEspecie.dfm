@@ -1,10 +1,8 @@
 inherited frmEspecie: TfrmEspecie
-  ActiveControl = EditNome
   Caption = 'Esp'#233'cies Produzidas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -38,6 +36,7 @@ inherited frmEspecie: TfrmEspecie
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
+            Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
@@ -51,22 +50,25 @@ inherited frmEspecie: TfrmEspecie
             object viewRegistrosNOME_CIENTIFICO: TcxGridDBColumn [2]
               DataBinding.FieldName = 'NOME_CIENTIFICO'
               Options.Editing = False
-              Width = 209
+              Width = 174
             end
             object viewRegistrosFAMILIA_BOTANICA: TcxGridDBColumn [3]
               DataBinding.FieldName = 'FAMILIA_BOTANICA'
               Options.Editing = False
-              Width = 234
+              Width = 178
+            end
+            object viewRegistrosQTDE_POR_KILO: TcxGridDBColumn [4]
+              DataBinding.FieldName = 'QTDE_SEMENTE_KILO'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.AssignedValues.DisplayFormat = True
+              Options.Editing = False
+              Width = 121
             end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -85,7 +87,7 @@ inherited frmEspecie: TfrmEspecie
           FocusControl = EditNomeCientifico
         end
         object Label5: TLabel
-          Left = 609
+          Left = 553
           Top = 3
           Width = 76
           Height = 13
@@ -99,6 +101,14 @@ inherited frmEspecie: TfrmEspecie
           Height = 13
           Caption = 'Oberva'#231#227'o'
           FocusControl = EditObsevacao
+        end
+        object Label7: TLabel
+          Left = 797
+          Top = 3
+          Width = 131
+          Height = 13
+          Caption = 'Qtde. de Sementes por Kilo'
+          FocusControl = EditQtdeSementeKilo
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -114,24 +124,34 @@ inherited frmEspecie: TfrmEspecie
           DataBinding.DataField = 'NOME_CIENTIFICO'
           DataBinding.DataSource = dsMaster
           TabOrder = 1
-          Width = 296
+          Width = 240
         end
         object EditFamiliaBotanica: TcxDBTextEdit
-          Left = 607
+          Left = 551
           Top = 19
           DataBinding.DataField = 'FAMILIA_BOTANICA'
           DataBinding.DataSource = dsMaster
           TabOrder = 2
-          Width = 296
+          Width = 240
         end
         object EditObsevacao: TcxDBMemo
           Left = 4
           Top = 62
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 3
+          TabOrder = 4
           Height = 89
-          Width = 898
+          Width = 924
+        end
+        object EditQtdeSementeKilo: TcxDBCalcEdit
+          Left = 797
+          Top = 19
+          DataBinding.DataField = 'QTDE_SEMENTE_KILO'
+          DataBinding.DataSource = dsMaster
+          Properties.DisplayFormat = ',0'
+          Properties.ImmediatePost = True
+          TabOrder = 3
+          Width = 131
         end
       end
     end

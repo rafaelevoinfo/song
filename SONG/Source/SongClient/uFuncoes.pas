@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 07/03/2016 23:59:38
+// 11/03/2016 22:17:09
 //
 
 unit uFuncoes;
@@ -87,6 +87,18 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFuncoesViveiroClient = class(TDSAdminClient)
+  private
+    FfpuValidarNomeMatrizCommand: TDBXCommand;
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -518,6 +530,66 @@ end;
 
 destructor TsmViveiroClient.Destroy;
 begin
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+function TsmFuncoesViveiroClient.fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
+begin
+  if FfpuValidarNomeMatrizCommand = nil then
+  begin
+    FfpuValidarNomeMatrizCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeMatrizCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeMatrizCommand.Text := 'TsmFuncoesViveiro.fpuValidarNomeMatriz';
+    FfpuValidarNomeMatrizCommand.Prepare;
+  end;
+  FfpuValidarNomeMatrizCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuValidarNomeMatrizCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeMatrizCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeMatrizCommand.Parameters[2].Value.GetBoolean;
+end;
+
+procedure TsmFuncoesViveiroClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFuncoesViveiro.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFuncoesViveiroClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFuncoesViveiroClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFuncoesViveiroClient.Destroy;
+begin
+  FfpuValidarNomeMatrizCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

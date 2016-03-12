@@ -1,13 +1,10 @@
 inherited frmPessoa: TfrmPessoa
-  ActiveControl = EditNome
   Caption = 'Pessoas'
-  ExplicitTop = -111
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24

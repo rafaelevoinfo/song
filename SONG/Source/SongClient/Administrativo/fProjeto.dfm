@@ -4,11 +4,31 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
-          inherited cbPesquisarPor: TcxImageComboBox
+          Left = 556
+          Width = 419
+          ExplicitLeft = 548
+          ExplicitWidth = 419
+          inherited Label1: TLabel
+            Left = 4
+            ExplicitLeft = 4
+          end
+          inherited rgStatus: TcxRadioGroup [1]
+            Top = 25
+            ExplicitTop = 25
+          end
+          inherited pnData: TPanel [2]
+            Left = 183
+            ExplicitLeft = 183
+          end
+          inherited EditPesquisa: TcxButtonEdit [3]
+            Left = 135
+            ExplicitLeft = 135
+          end
+          inherited cbPesquisarPor: TcxImageComboBox [4]
+            Left = 2
             Properties.Items = <
               item
                 Description = 'Todos'
@@ -28,9 +48,14 @@ inherited frmProjeto: TfrmProjeto
                 Description = 'Status'
                 Value = 4
               end>
+            ExplicitLeft = 2
+          end
+          inherited btnPesquisar: TButton [5]
+            Left = 319
+            ExplicitLeft = 319
           end
           object cbStatusPesquisa: TcxImageComboBox
-            Left = 272
+            Left = 136
             Top = 20
             RepositoryItem = dmLookup.repIcbStatusProjeto
             Properties.Items = <>
@@ -38,6 +63,9 @@ inherited frmProjeto: TfrmProjeto
             Visible = False
             Width = 178
           end
+        end
+        inherited pnBotoes: TPanel
+          Width = 555
         end
       end
       inherited pnGrid: TPanel
@@ -103,12 +131,20 @@ inherited frmProjeto: TfrmProjeto
             Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
             ExplicitHeight = 248
-            ClientRectBottom = 244
+            ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
+              inherited pnBotoesDetail: TPanel
+                inherited btnIncluirDetail: TButton
+                  ExplicitLeft = 1
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Height = 195
+                Height = 193
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -136,18 +172,13 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 218
               object Panel1: TPanel
                 Left = 0
                 Top = 0
-                Width = 964
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 965
                 object btnIncluirOrganizacao: TButton
                   Left = 0
                   Top = 1
@@ -161,24 +192,22 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid1: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 964
-                Height = 195
+                Width = 965
+                Height = 193
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitWidth = 965
-                ExplicitHeight = 193
                 object viewProjetoOrganizacao: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsOrganizacao
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -247,18 +276,13 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailFinanciador: TcxTabSheet
               Caption = 'Financiadores'
               ImageIndex = 2
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 218
               object Panel2: TPanel
                 Left = 0
                 Top = 0
-                Width = 964
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 965
                 object Label19: TLabel
                   Left = 425
                   Top = 9
@@ -286,32 +310,30 @@ inherited frmProjeto: TfrmProjeto
                 Left = 0
                 Top = 25
                 Width = 424
-                Height = 195
+                Height = 193
                 Align = alLeft
                 BevelOuter = bvNone
                 Caption = 'pnProjetoFinanciador'
                 TabOrder = 1
-                ExplicitHeight = 193
                 object cxGrid2: TcxGrid
                   Left = 0
                   Top = 0
                   Width = 424
-                  Height = 195
+                  Height = 193
                   Align = alClient
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
                   LockedStateImageOptions.Effect = lsieDark
                   LockedStateImageOptions.ShowText = True
                   LockedStateImageOptions.Text = 'Pesquisando...'
-                  ExplicitHeight = 193
                   object viewProjetoFinanciador: TcxGridDBTableView
                     OnDblClick = viewRegistrosDetailDblClick
                     Navigator.Buttons.CustomButtons = <>
+                    Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                     DataController.DataSource = dsFinanciador
                     DataController.Summary.DefaultGroupSummaryItems = <>
                     DataController.Summary.FooterSummaryItems = <>
                     DataController.Summary.SummaryGroups = <>
-                    FilterRow.InfoText = 'Clique aqui para definir um filtro'
                     FilterRow.Visible = True
                     OptionsCustomize.ColumnsQuickCustomization = True
                     OptionsData.CancelOnExit = False
@@ -382,24 +404,22 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid4: TcxGrid
                 Left = 424
                 Top = 25
-                Width = 540
-                Height = 195
+                Width = 541
+                Height = 193
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 2
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitWidth = 541
-                ExplicitHeight = 193
                 object viewPagamentos: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsFinanciador_Pagto
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -452,18 +472,13 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 218
               object Panel3: TPanel
                 Left = 0
                 Top = 0
-                Width = 964
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 965
                 object btnIncluirDocumento: TButton
                   Left = 0
                   Top = 1
@@ -477,24 +492,22 @@ inherited frmProjeto: TfrmProjeto
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 964
-                Height = 195
+                Width = 965
+                Height = 193
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitWidth = 965
-                ExplicitHeight = 193
                 object viewProjetoDocumento: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsDocumento
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -726,6 +739,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -932,16 +949,13 @@ inherited frmProjeto: TfrmProjeto
           Height = 274
           Width = 837
           object pnEditsPagamento: TPanel
-            Left = 2
-            Top = 18
-            Width = 833
+            Left = 3
+            Top = 15
+            Width = 831
             Height = 46
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitLeft = 3
-            ExplicitTop = 15
-            ExplicitWidth = 831
             object Label14: TLabel
               Left = 2
               Top = 4
@@ -980,10 +994,10 @@ inherited frmProjeto: TfrmProjeto
             end
           end
           object cxGrid5: TcxGrid
-            Left = 2
-            Top = 64
-            Width = 833
-            Height = 208
+            Left = 3
+            Top = 61
+            Width = 831
+            Height = 203
             Align = alClient
             Images = dmPrincipal.imgIcons_16
             TabOrder = 1
@@ -991,18 +1005,14 @@ inherited frmProjeto: TfrmProjeto
             LockedStateImageOptions.Effect = lsieDark
             LockedStateImageOptions.ShowText = True
             LockedStateImageOptions.Text = 'Pesquisando...'
-            ExplicitLeft = 3
-            ExplicitTop = 61
-            ExplicitWidth = 831
-            ExplicitHeight = 203
             object viewPagamentosCadastro: TcxGridDBTableView
               OnDblClick = viewRegistrosDetailDblClick
               Navigator.Buttons.CustomButtons = <>
+              Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
               DataController.DataSource = dsFinanciador_Pagto
               DataController.Summary.DefaultGroupSummaryItems = <>
               DataController.Summary.FooterSummaryItems = <>
               DataController.Summary.SummaryGroups = <>
-              FilterRow.InfoText = 'Clique aqui para definir um filtro'
               FilterRow.Visible = True
               OptionsCustomize.ColumnsQuickCustomization = True
               OptionsData.CancelOnExit = False

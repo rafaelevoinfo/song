@@ -24,6 +24,7 @@ type
     coNomeFantasia = 'NOME_FANTASIA';
     coRazaoSocial = 'RAZAO_SOCIAL';
     coCpfCnpj = 'CPF_CNPJ';
+    coEspecie = 'ESPECIE';
 
     coTipo = 'TIPO';
 

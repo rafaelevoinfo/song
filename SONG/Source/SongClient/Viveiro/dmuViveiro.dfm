@@ -39,6 +39,12 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 500
     end
+    object cdsEspecieQTDE_SEMENTE_KILO: TIntegerField
+      DisplayLabel = 'Qtde. Sementes por Kilo'
+      FieldName = 'QTDE_SEMENTE_KILO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
@@ -96,6 +102,11 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'ESPECIE'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsMatrizFOTO: TBlobField
+      DisplayLabel = 'Foto'
+      FieldName = 'FOTO'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

@@ -170,4 +170,15 @@ object dmPrincipal: TdmPrincipal
       Size = 60
     end
   end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 312
+    Top = 152
+  end
+  object SCFuncoesViveiro: TDSServerClass
+    OnGetClass = SCFuncoesViveiroGetClass
+    Server = Server
+    Left = 680
+    Top = 232
+  end
 end

@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, uTypes, dmuAdministrativo, cxCalc,
   cxDBEdit, cxMemo, dmuLookup, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
-  uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit;
+  uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit, cxLocalization;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -146,7 +146,6 @@ type
     btnAdicionar_Financiador: TButton;
     Ac_Adicionar_Financiador: TAction;
     procedure FormCreate(Sender: TObject);
-    procedure cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
     procedure Ac_Excluir_PagamentoExecute(Sender: TObject);
@@ -170,16 +169,16 @@ type
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
-    procedure pprBeforeSalvar; override;
+    procedure pprValidarDados; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprValidarPesquisa; override;
     procedure pprDefinirTabDetailCadastro; override;
     procedure pprEfetuarPesquisa; override;
 
-
     procedure pprExecutarSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     procedure pprEfetuarCancelarDetail; override;
+    function fprConfigurarControlesPesquisa: TWinControl; override;
   public
     procedure ppuBaixarArquivo(ipId: Integer);
     procedure ppuIncluirDetail; override;
@@ -343,17 +342,6 @@ begin
     ppvAdicionarFinanciador;
 end;
 
-procedure TfrmProjeto.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
-begin
-  EditPesquisa.Visible := cbPesquisarPor.EditValue <> coPesqPorStatus;
-  cbStatusPesquisa.Visible := not EditPesquisa.Visible;
-  if cbPesquisarPor.EditValue <> coPesqPorStatus then
-    inherited
-  else
-    TUtils.fpuFocar(cbStatusPesquisa);
-
-end;
-
 procedure TfrmProjeto.FormCreate(Sender: TObject);
 begin
   dmAdministrativo := TdmAdministrativo.Create(Self);
@@ -380,6 +368,19 @@ end;
 procedure TfrmProjeto.ppvCarregarFinanciadores();
 begin
   dmLookup.cdslkFinanciador.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+end;
+
+function TfrmProjeto.fprConfigurarControlesPesquisa: TWinControl;
+begin
+  cbStatusPesquisa.Visible := cbPesquisarPor.EditValue = coPesqPorStatus;
+  if cbStatusPesquisa.Visible then
+    begin
+      EditPesquisa.Visible := False;
+      pnData.Visible := False;
+      Result := cbStatusPesquisa;
+    end
+  else
+    Result := inherited;
 end;
 
 function TfrmProjeto.fprGetPermissao: string;
@@ -409,7 +410,7 @@ begin
     dsDetail.DataSet.Open;
 end;
 
-procedure TfrmProjeto.pprBeforeSalvar;
+procedure TfrmProjeto.pprValidarDados;
 begin
   inherited;
   if not dmPrincipal.FuncoesAdm.fpuValidarNomeProjeto(dmAdministrativo.cdsProjetoID.AsInteger,

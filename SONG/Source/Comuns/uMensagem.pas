@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinscxPCPainter,
   dxBarBuiltInMenu, cxContainer, cxEdit, dxGDIPlusClasses, cxImage,
-  Vcl.ExtCtrls, Vcl.StdCtrls, cxPC, Vcl.ImgList, dxDockControl, dxDockPanel;
+  Vcl.ExtCtrls, Vcl.StdCtrls, cxPC, Vcl.ImgList, dxDockControl, dxDockPanel,
+  System.ImageList;
 
 type
   TPerguntaPadrao = (ppSimNao, ppSimNaoCancelar);

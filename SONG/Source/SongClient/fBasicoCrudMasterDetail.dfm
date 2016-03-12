@@ -31,6 +31,9 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         inherited cxGridRegistros: TcxGrid
           Height = 208
           ExplicitHeight = 208
+          inherited viewRegistros: TcxGridDBTableView
+            Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+          end
         end
         object cxSplitter1: TcxSplitter
           Left = 1
@@ -178,6 +181,12 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           end
         end
       end
+    end
+    inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'

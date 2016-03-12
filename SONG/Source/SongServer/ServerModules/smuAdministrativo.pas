@@ -180,7 +180,7 @@ begin
   else if ipTabela = 'PROJETO' then
     begin
       if ipParam.Name = TParametros.coStatus then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'SITUACAO', vaValor.ToInteger(), vaOperador)
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger(), vaOperador)
     end
   else if ipTabela = 'ATIVIDADE' then
     begin

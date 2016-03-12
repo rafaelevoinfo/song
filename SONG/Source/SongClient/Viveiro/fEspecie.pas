@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
-  cxMemo, cxDBEdit, uClientDataSet, cxLocalization;
+  cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)
@@ -29,6 +29,9 @@ type
     viewRegistrosNOME: TcxGridDBColumn;
     viewRegistrosNOME_CIENTIFICO: TcxGridDBColumn;
     viewRegistrosFAMILIA_BOTANICA: TcxGridDBColumn;
+    EditQtdeSementeKilo: TcxDBCalcEdit;
+    Label7: TLabel;
+    viewRegistrosQTDE_POR_KILO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
   private
     dmViveiro: TdmViveiro;

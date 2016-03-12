@@ -3,7 +3,8 @@ unit smuViveiro;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
@@ -28,10 +29,13 @@ type
     qMatrizDESCRICAO: TStringField;
     qMatrizESPECIE: TStringField;
     qMatrizNOME: TStringField;
+    qMatrizFOTO: TBlobField;
+    qEspecieQTDE_SEMENTE_KILO: TIntegerField;
   private
     { Private declarations }
   protected
-    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
+    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam)
+      : string; override;
   public
     { Public declarations }
   end;
@@ -42,16 +46,17 @@ var
 implementation
 
 {$R *.dfm}
-
 { TsmViveiro }
 
-function TsmViveiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
+function TsmViveiro.fprMontarWhere(ipTabela, ipWhere: string;
+  ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
 begin
   Result := inherited;
 
-  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador,
+    TParametros.coDelimitador);
   if ipTabela = 'ESPECIE' then
     begin
       if ipParam.Name = TParametros.coNome then
@@ -60,6 +65,11 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_CIENTIFICO', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coFamiliaBotanica then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'FAMILIA_BOTANICA', vaValor, vaOperador)
+    end
+  else if ipTabela = 'MATRIZ' then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_ESPECIE', vaValor, vaOperador)
     end;
 end;
 

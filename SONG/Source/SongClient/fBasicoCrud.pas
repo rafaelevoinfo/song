@@ -98,6 +98,7 @@ type
     procedure pprValidarPesquisa; virtual;
     procedure pprEfetuarPesquisa; virtual;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); virtual;
+    function fprConfigurarControlesPesquisa:TWinControl;virtual;
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios; virtual;
     procedure pprVerificarExisteStatus; virtual;
@@ -204,6 +205,8 @@ begin
 end;
 
 procedure TfrmBasicoCrud.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
+var
+  vaControleFoco:TWinControl;
 begin
   inherited;
   EditPesquisa.Clear;
@@ -212,14 +215,21 @@ begin
   if cbPesquisarPor.EditValue = Ord(tppId) then
     EditPesquisa.Properties.EditMask := '\d+';
 
+  vaControleFoco := fprConfigurarControlesPesquisa();
+
+  TUtils.fpuFocar(vaControleFoco);
+end;
+
+function TfrmBasicoCrud.fprConfigurarControlesPesquisa():TWinControl;
+begin
   pnData.Visible := cbPesquisarPor.EditValue = Ord(tppData);
   EditPesquisa.Visible := not pnData.Visible;
   EditPesquisa.Enabled := cbPesquisarPor.EditValue <> Ord(tppTodos);
 
   if EditPesquisa.Visible then
-    TUtils.fpuFocar(EditPesquisa)
-  else if pnData.Visible then
-    TUtils.fpuFocar(EditDataInicialPesquisa);
+    Result := EditPesquisa
+  else
+    Result := EditDataInicialPesquisa
 end;
 
 procedure TfrmBasicoCrud.ColumnExcluirGetProperties(

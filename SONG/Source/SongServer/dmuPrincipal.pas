@@ -13,7 +13,8 @@ uses System.SysUtils, System.Classes,
   System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
   uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
   FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging, Datasnap.DBClient,
-  System.IOUtils, System.RegularExpressions;
+  System.IOUtils, System.RegularExpressions, FireDAC.Phys.FBDef,
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -42,6 +43,8 @@ type
     cdsAtualizacoesBUILD: TIntegerField;
     cdsAtualizacoesENDERECO: TStringField;
     cdsAtualizacoesVERSAO: TStringField;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    SCFuncoesViveiro: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -57,6 +60,8 @@ type
     procedure SCFinanceiroGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure SCViveiroGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCFuncoesViveiroGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
@@ -85,7 +90,7 @@ implementation
 
 
 uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
-  smuFinanceiro, smuViveiro;
+  smuFinanceiro, smuViveiro, smuFuncoesViveiro;
 
 { TdmPrincipal }
 
@@ -343,6 +348,12 @@ end;
 procedure TdmPrincipal.SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuFuncoesGeral.TSMFuncoesGeral;
+end;
+
+procedure TdmPrincipal.SCFuncoesViveiroGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+   PersistentClass := smuFuncoesViveiro.TsmFuncoesViveiro;
 end;
 
 procedure TdmPrincipal.SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);

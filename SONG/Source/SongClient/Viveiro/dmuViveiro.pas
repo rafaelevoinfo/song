@@ -23,6 +23,8 @@ type
     cdsMatrizDESCRICAO: TStringField;
     cdsMatrizESPECIE: TStringField;
     cdsMatrizNOME: TStringField;
+    cdsMatrizFOTO: TBlobField;
+    cdsEspecieQTDE_SEMENTE_KILO: TIntegerField;
   private
     { Private declarations }
   public
