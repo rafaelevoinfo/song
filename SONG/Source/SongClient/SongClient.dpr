@@ -31,7 +31,8 @@ uses
   uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
   fFinanciador in 'Financeiro\fFinanciador.pas' {frmFinanciador},
   fFornecedor in 'Financeiro\fFornecedor.pas' {frmFornecedor},
-  fMatriz in 'Viveiro\fMatriz.pas' {frmMatriz};
+  fMatriz in 'Viveiro\fMatriz.pas' {frmMatriz},
+  fLote in 'Viveiro\fLote.pas' {frmLote};
 
 {$R *.res}
 

@@ -25,6 +25,20 @@ type
     cdsMatrizNOME: TStringField;
     cdsMatrizFOTO: TBlobField;
     cdsEspecieQTDE_SEMENTE_KILO: TIntegerField;
+    cdsLote: TRFClientDataSet;
+    cdsLoteID: TIntegerField;
+    cdsLoteID_ESPECIE: TIntegerField;
+    cdsLoteID_PESSOA_COLETOU: TIntegerField;
+    cdsLoteNOME: TStringField;
+    cdsLoteDATA: TDateField;
+    cdsLoteQTDE_GRAMAS: TBCDField;
+    cdsLoteTIPO: TSmallintField;
+    cdsLoteNOME_ESPECIE: TStringField;
+    cdsLote_Matriz: TRFClientDataSet;
+    cdsLote_MatrizID: TIntegerField;
+    cdsLote_MatrizID_LOTE: TIntegerField;
+    cdsLote_MatrizID_MATRIZ: TIntegerField;
+    dsLote: TDataSource;
   private
     { Private declarations }
   public

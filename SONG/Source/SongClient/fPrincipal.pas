@@ -9,7 +9,7 @@ uses
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
-  fBanco, fAtividade, fEspecie, fFornecedor, fMatriz;
+  fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fLote;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -42,6 +42,8 @@ type
     Fornecedores1: TMenuItem;
     Ac_Matriz: TAction;
     Matrizes1: TMenuItem;
+    Ac_Lote: TAction;
+    Lotes1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -54,6 +56,7 @@ type
     procedure Ac_EspecieExecute(Sender: TObject);
     procedure Ac_FornecedorExecute(Sender: TObject);
     procedure Ac_MatrizExecute(Sender: TObject);
+    procedure Ac_LoteExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -96,6 +99,12 @@ procedure TfrmPrincipal.Ac_FornecedorExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmFornecedor>(pcPrincipal, TfrmFornecedor, frmFornecedor);
+end;
+
+procedure TfrmPrincipal.Ac_LoteExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmLote>(pcPrincipal, TfrmLote, frmLote);
 end;
 
 procedure TfrmPrincipal.Ac_MatrizExecute(Sender: TObject);

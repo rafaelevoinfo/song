@@ -5,6 +5,7 @@ inherited frmPessoa: TfrmPessoa
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -519,10 +520,15 @@ inherited frmPessoa: TfrmPessoa
             ExplicitWidth = 976
             ExplicitHeight = 379
             inherited cxGrid1: TcxGrid
+              Width = 457
+              Height = 377
               ExplicitWidth = 457
               ExplicitHeight = 377
             end
             inherited pnBotoes: TPanel
+              Left = 458
+              Width = 48
+              Height = 377
               ExplicitLeft = 458
               ExplicitWidth = 48
               ExplicitHeight = 377
@@ -532,10 +538,12 @@ inherited frmPessoa: TfrmPessoa
               end
               inherited btnAddTodos: TButton
                 Width = 48
+                OnClick = frameGridsbtnAddTodosClick
                 ExplicitWidth = 48
               end
               inherited btnRemover: TButton
                 Width = 48
+                OnClick = frameGridsbtnRemoverClick
                 ExplicitWidth = 48
               end
               inherited btnRemoverTodos: TButton
@@ -544,6 +552,9 @@ inherited frmPessoa: TfrmPessoa
               end
             end
             inherited cxGrid2: TcxGrid
+              Left = 506
+              Width = 469
+              Height = 377
               ExplicitLeft = 506
               ExplicitWidth = 469
               ExplicitHeight = 377
@@ -575,6 +586,7 @@ inherited frmPessoa: TfrmPessoa
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
+                Left = 505
                 Width = 91
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505

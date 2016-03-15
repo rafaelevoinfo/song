@@ -79,6 +79,8 @@ type
     procedure ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
       var ADone: Boolean);
+    procedure frameGridsbtnAddTodosClick(Sender: TObject);
+    procedure frameGridsbtnRemoverClick(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -189,6 +191,19 @@ end;
 function TfrmPessoa.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
+end;
+
+procedure TfrmPessoa.frameGridsbtnAddTodosClick(Sender: TObject);
+begin
+  inherited;
+  frameGrids.Ac_AddTodosExecute(Sender);
+end;
+
+procedure TfrmPessoa.frameGridsbtnRemoverClick(Sender: TObject);
+begin
+  inherited;
+  frameGrids.Ac_RemoverExecute(Sender);
+
 end;
 
 procedure TfrmPessoa.pprBeforeSalvar;

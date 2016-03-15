@@ -71,6 +71,12 @@ type
     cdslkEspecieID: TIntegerField;
     cdslkEspecieNOME: TStringField;
     dslkEspecie: TDataSource;
+    cdslkMatriz: TRFClientDataSet;
+    cdslkMatrizID: TIntegerField;
+    cdslkMatrizNOME: TStringField;
+    cdslkMatrizID_ESPECIE: TIntegerField;
+    repLcbMatriz: TcxEditRepositoryLookupComboBoxItem;
+    dslkMatriz: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

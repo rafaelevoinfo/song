@@ -49,6 +49,7 @@ type
     qlkEspecie: TRFQuery;
     qlkEspecieID: TIntegerField;
     qlkEspecieNOME: TStringField;
+    qlkMatriz: TRFQuery;
   private
     { Private declarations }
   protected
@@ -68,7 +69,7 @@ implementation
 function TsmLookup.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
-  vaCodigos:TArray<Integer>;
+  vaCodigos: TArray<Integer>;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -78,12 +79,12 @@ begin
       if ipParam.Name = TParametros.coProjeto then
         begin
           vaCodigos := TUtils.fpuConverterStringToArrayInteger(vaValor);
-          Result := TSQLGenerator.fpuFilterInteger(Result, ['ATIVIDADE','ATIVIDADE_PROJETO'],
-          ['ID_PROJETO','ID_PROJETO'],[vaCodigos,vaCodigos],TOperadores.coOr, vaOperador);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ['ATIVIDADE', 'ATIVIDADE_PROJETO'],
+            ['ID_PROJETO', 'ID_PROJETO'], [vaCodigos, vaCodigos], TOperadores.coOr, vaOperador);
         end
       else if ipParam.Name = TParametros.coStatusDiferente then
         begin
-          Result := '('+Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ')) ' + vaOperador;
+          Result := '(' + Result + 'ATIVIDADE.STATUS NOT IN (' + StringReplace(vaValor, ';', ', ', [rfReplaceAll]) + ')) ' + vaOperador;
         end;
     end
   else if ipTabela = 'PROJETO' then
@@ -99,6 +100,11 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'login', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coTipo then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
+    end
+  else if ipTabela = 'MATRIZ' then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_ESPECIE', vaValor, vaOperador);
     end;
 
 end;

@@ -4,14 +4,13 @@ inherited frmMatriz: TfrmMatriz
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 553
           Width = 422
           AutoSize = False
-          ExplicitLeft = 465
+          ExplicitLeft = 553
           ExplicitWidth = 422
           inherited Label1: TLabel
             Left = 7
@@ -68,6 +67,7 @@ inherited frmMatriz: TfrmMatriz
         end
         inherited pnBotoes: TPanel
           Width = 552
+          ExplicitWidth = 552
         end
       end
       inherited pnGrid: TPanel
@@ -114,8 +114,11 @@ inherited frmMatriz: TfrmMatriz
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 3

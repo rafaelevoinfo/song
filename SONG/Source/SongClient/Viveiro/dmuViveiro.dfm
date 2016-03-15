@@ -109,4 +109,102 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
     end
   end
+  object cdsLote: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLote'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 32
+    Top = 88
+    object cdsLoteID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsLoteID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLoteID_PESSOA_COLETOU: TIntegerField
+      DisplayLabel = 'Pessoa que coletou'
+      FieldName = 'ID_PESSOA_COLETOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLoteNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 30
+    end
+    object cdsLoteDATA: TDateField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLoteQTDE_GRAMAS: TBCDField
+      DisplayLabel = 'Quantidade (g)'
+      FieldName = 'QTDE_GRAMAS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLoteTIPO: TSmallintField
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLoteNOME_ESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'NOME_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+  end
+  object cdsLote_Matriz: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_LOTE'
+    MasterFields = 'ID'
+    MasterSource = dsLote
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_LOTE'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqLote_Matriz'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    RFApplyAutomatico = False
+    Left = 104
+    Top = 88
+    object cdsLote_MatrizID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsLote_MatrizID_LOTE: TIntegerField
+      DisplayLabel = 'Id do Lote'
+      FieldName = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLote_MatrizID_MATRIZ: TIntegerField
+      DisplayLabel = 'Matriz'
+      FieldName = 'ID_MATRIZ'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object dsLote: TDataSource
+    DataSet = cdsLote
+    Left = 256
+    Top = 160
+  end
 end

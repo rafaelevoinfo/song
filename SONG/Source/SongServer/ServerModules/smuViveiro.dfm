@@ -134,4 +134,112 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
     end
   end
+  object qLote: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select LOTE.ID,'
+      '       LOTE.ID_ESPECIE,'
+      '       LOTE.ID_PESSOA_COLETOU,'
+      '       LOTE.NOME,'
+      '       LOTE.DATA,'
+      '       LOTE.QTDE_GRAMAS,'
+      '       LOTE.TIPO,'
+      '       ESPECIE.NOME AS NOME_ESPECIE'
+      'from LOTE'
+      'inner join especie on (especie.id = lote.id_especie)'
+      '&WHERE')
+    Left = 168
+    Top = 16
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qLoteID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLoteID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLoteID_PESSOA_COLETOU: TIntegerField
+      FieldName = 'ID_PESSOA_COLETOU'
+      Origin = 'ID_PESSOA_COLETOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLoteNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 30
+    end
+    object qLoteDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLoteQTDE_GRAMAS: TBCDField
+      FieldName = 'QTDE_GRAMAS'
+      Origin = 'QTDE_GRAMAS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qLoteTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLoteNOME_ESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object qLote_Matriz: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select LOTE_MATRIZ.ID,'
+      '       LOTE_MATRIZ.ID_LOTE,'
+      '       LOTE_MATRIZ.ID_MATRIZ'
+      'from LOTE_MATRIZ  '
+      'where LOTE_MATRIZ.ID_LOTE = :ID_LOTE')
+    Left = 224
+    Top = 16
+    ParamData = <
+      item
+        Name = 'ID_LOTE'
+        ParamType = ptInput
+      end>
+    object qLote_MatrizID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLote_MatrizID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLote_MatrizID_MATRIZ: TIntegerField
+      FieldName = 'ID_MATRIZ'
+      Origin = 'ID_MATRIZ'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
 end

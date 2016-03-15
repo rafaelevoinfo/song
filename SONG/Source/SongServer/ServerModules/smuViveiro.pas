@@ -31,6 +31,19 @@ type
     qMatrizNOME: TStringField;
     qMatrizFOTO: TBlobField;
     qEspecieQTDE_SEMENTE_KILO: TIntegerField;
+    qLote: TRFQuery;
+    qLote_Matriz: TRFQuery;
+    qLoteID: TIntegerField;
+    qLoteID_ESPECIE: TIntegerField;
+    qLoteID_PESSOA_COLETOU: TIntegerField;
+    qLoteNOME: TStringField;
+    qLoteDATA: TDateField;
+    qLoteQTDE_GRAMAS: TBCDField;
+    qLoteTIPO: TSmallintField;
+    qLoteNOME_ESPECIE: TStringField;
+    qLote_MatrizID: TIntegerField;
+    qLote_MatrizID_LOTE: TIntegerField;
+    qLote_MatrizID_MATRIZ: TIntegerField;
   private
     { Private declarations }
   protected
@@ -70,6 +83,14 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_ESPECIE', vaValor, vaOperador)
+    end
+  else if ipTabela = 'LOTE' then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_ESPECIE', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := Result + ' (LOTE.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
+          QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
     end;
 end;
 

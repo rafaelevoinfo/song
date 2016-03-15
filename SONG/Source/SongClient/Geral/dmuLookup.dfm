@@ -1,8 +1,8 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
   OnCreate = DataModuleCreate
-  Height = 325
-  Width = 523
+  Height = 401
+  Width = 753
   object Repositorio: TcxEditRepository
     Left = 256
     Top = 32
@@ -242,6 +242,18 @@ inherited dmLookup: TdmLookup
           FieldName = 'NOME'
         end>
       Properties.ListSource = dslkEspecie
+    end
+    object repLcbMatriz: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkMatriz
     end
   end
   object cdslkPerfil: TClientDataSet
@@ -530,5 +542,35 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkEspecie
     Left = 40
     Top = 120
+  end
+  object cdslkMatriz: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkMatriz'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 592
+    Top = 200
+    object cdslkMatrizID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkMatrizNOME: TStringField
+      DisplayLabel = 'Nome da Matriz'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdslkMatrizID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+  end
+  object dslkMatriz: TDataSource
+    DataSet = cdslkMatriz
+    Left = 360
+    Top = 184
   end
 end

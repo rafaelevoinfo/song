@@ -314,4 +314,19 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkMatriz: TRFQuery
+    SQL.Strings = (
+      'select MATRIZ.ID,'
+      '       MATRIZ.ID_ESPECIE,'
+      '       MATRIZ.NOME'
+      'from MATRIZ '
+      '&WHERE')
+    Left = 232
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+  end
 end

@@ -82,7 +82,7 @@ type
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador,finFornecedor);
-  TPermissaoViveiro = (vivEspecie, vivMatriz);
+  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLote);
 
 implementation
 
