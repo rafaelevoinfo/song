@@ -16,7 +16,7 @@ uses
   cxCheckBox, cxCheckComboBox, uTypes, System.TypInfo, uControleAcesso, cxDBEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuPrincipal, cxMemo,
   uClientDataSet, System.IOUtils, Vcl.ExtDlgs, uUtils,
-  System.RegularExpressions, System.DateUtils;
+  System.RegularExpressions, System.DateUtils, cxLocalization;
 
 type
   TfrmAtividade = class(TfrmBasicoCrudMasterDetail)

@@ -146,25 +146,18 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsLoteQTDE_GRAMAS: TBCDField
-      DisplayLabel = 'Quantidade (g)'
-      FieldName = 'QTDE_GRAMAS'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
-    end
-    object cdsLoteTIPO: TSmallintField
-      DisplayLabel = 'Tipo'
-      FieldName = 'TIPO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object cdsLoteNOME_ESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'NOME_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Size = 100
+    end
+    object cdsLoteQTDE: TBCDField
+      DisplayLabel = 'Quantidade (kg)'
+      FieldName = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
     end
   end
   object cdsLote_Matriz: TRFClientDataSet
@@ -204,7 +197,7 @@ inherited dmViveiro: TdmViveiro
   end
   object dsLote: TDataSource
     DataSet = cdsLote
-    Left = 256
+    Left = 24
     Top = 160
   end
 end

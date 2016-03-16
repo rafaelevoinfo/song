@@ -31,14 +31,13 @@ type
     cdsLoteID_PESSOA_COLETOU: TIntegerField;
     cdsLoteNOME: TStringField;
     cdsLoteDATA: TDateField;
-    cdsLoteQTDE_GRAMAS: TBCDField;
-    cdsLoteTIPO: TSmallintField;
     cdsLoteNOME_ESPECIE: TStringField;
     cdsLote_Matriz: TRFClientDataSet;
     cdsLote_MatrizID: TIntegerField;
     cdsLote_MatrizID_LOTE: TIntegerField;
     cdsLote_MatrizID_MATRIZ: TIntegerField;
     dsLote: TDataSource;
+    cdsLoteQTDE: TBCDField;
   private
     { Private declarations }
   public

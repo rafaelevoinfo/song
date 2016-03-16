@@ -136,7 +136,7 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object Ac_Lote: TAction
       Category = 'Viveiro'
-      Caption = 'Lotes'
+      Caption = 'Lotes de Sementes'
       OnExecute = Ac_LoteExecute
     end
   end

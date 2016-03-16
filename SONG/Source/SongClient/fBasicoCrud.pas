@@ -98,7 +98,7 @@ type
     procedure pprValidarPesquisa; virtual;
     procedure pprEfetuarPesquisa; virtual;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); virtual;
-    function fprConfigurarControlesPesquisa:TWinControl;virtual;
+    function fprConfigurarControlesPesquisa: TWinControl; virtual;
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios; virtual;
     procedure pprVerificarExisteStatus; virtual;
@@ -107,7 +107,9 @@ type
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
     function fprGetPermissao: String; virtual; abstract;
 
-    function fprProcurarControlePorFieldName(ipFieldName: string): TWinControl;
+    function fprProcurarControlePorFieldName(ipFieldName: string): TWinControl; virtual;
+
+    procedure pprExecutarCancelar; virtual;
 
   public
     property PesquisaPadrao: TTipoPesquisaPadrao read FPesquisaPadrao write SetPesquisaPadrao;
@@ -121,7 +123,7 @@ type
     procedure ppuAlterar(ipId: Integer); virtual;
     function fpuExcluir(ipIds: TArray<Integer>): Boolean; virtual;
     procedure ppuSalvar; virtual;
-    procedure ppuCancelar; virtual;
+    function fpuCancelar: Boolean; virtual;
     // PESQUISA
     procedure ppuPesquisar; virtual;
     // MODO DE EXECUCAO DA TELA
@@ -146,7 +148,8 @@ end;
 procedure TfrmBasicoCrud.Ac_CancelarExecute(Sender: TObject);
 begin
   inherited;
-  ppuCancelar;
+  if fpuCancelar then
+    ppuRetornar(False);
 end;
 
 procedure TfrmBasicoCrud.Ac_ExcluirExecute(Sender: TObject);
@@ -206,7 +209,7 @@ end;
 
 procedure TfrmBasicoCrud.cbPesquisarPorPropertiesEditValueChanged(Sender: TObject);
 var
-  vaControleFoco:TWinControl;
+  vaControleFoco: TWinControl;
 begin
   inherited;
   EditPesquisa.Clear;
@@ -220,7 +223,7 @@ begin
   TUtils.fpuFocar(vaControleFoco);
 end;
 
-function TfrmBasicoCrud.fprConfigurarControlesPesquisa():TWinControl;
+function TfrmBasicoCrud.fprConfigurarControlesPesquisa(): TWinControl;
 begin
   pnData.Visible := cbPesquisarPor.EditValue = Ord(tppData);
   EditPesquisa.Visible := not pnData.Visible;
@@ -298,19 +301,19 @@ begin
   pcPrincipal.ActivePage := tabCadastro;
 end;
 
-procedure TfrmBasicoCrud.ppuCancelar;
+function TfrmBasicoCrud.fpuCancelar: Boolean;
 begin
+  Result := True;
   if fprHabilitarSalvar then
     begin
       if TMensagem.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
         begin
           ppuSalvar;
-          Exit;
+          Exit(False);
         end;
     end;
 
-  TClientDataSet(dsMaster.DataSet).CancelUpdates;
-  ppuRetornar(False);
+  pprExecutarCancelar;
 end;
 
 procedure TfrmBasicoCrud.ppuConfigurarModoExecucao(ipModo: TModoExecucao);
@@ -377,6 +380,11 @@ begin
     viewRegistros.EndUpdate;
   end;
 
+end;
+
+procedure TfrmBasicoCrud.pprExecutarCancelar;
+begin
+  TClientDataSet(dsMaster.DataSet).CancelUpdates;
 end;
 
 procedure TfrmBasicoCrud.pprExecutarSalvar;

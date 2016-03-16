@@ -6,7 +6,6 @@ inherited frmPerfil: TfrmPerfil
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -195,6 +194,7 @@ inherited frmPerfil: TfrmPerfil
           DataController.ParentField = 'ID_MODULO'
           DataController.KeyField = 'ID'
           Navigator.Buttons.CustomButtons = <>
+          Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
           OptionsBehavior.IncSearch = True
           OptionsData.Deleting = False
           RootValue = -1

@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuViveiro, cxDBEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, fmGrids,
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
-  uControleAcesso;
+  uControleAcesso, fPessoa, uUtils, System.DateUtils;
 
 type
   TfrmLote = class(TfrmBasicoCrud)
@@ -35,34 +35,44 @@ type
     cdsLocalMatrizes: TClientDataSet;
     dsLocalMatrizes: TDataSource;
     cdsLocalMatrizesID: TIntegerField;
-    cdsLocalMatrizesNOME: TStringField;
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_PESSOA_COLETOU: TcxGridDBColumn;
     viewRegistrosNOME: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
-    viewRegistrosQTDE_GRAMAS: TcxGridDBColumn;
-    viewRegistrosTIPO: TcxGridDBColumn;
     viewRegistrosNOME_ESPECIE: TcxGridDBColumn;
+    viewRegistrosQTDE: TcxGridDBColumn;
+    btnPesquisarAtividade: TButton;
+    Ac_Pesquisar_Pessoa: TAction;
+    Label7: TLabel;
+    cbEspeciePesquisa: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
+    procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
+
     procedure ppvConfigurarGrids;
     procedure ppvCarregarMatrizes;
-
+    procedure ppvPesquisarPessoa;
+    procedure ppvCarregarPessoas(ipIdEspecifico: Integer);
+    procedure ppvRemoverMatrizesOutrasEspecie;
   protected
-    procedure pprBeforeIncluir; override;
+
     procedure pprBeforeAlterar; override;
     procedure pprEfetuarPesquisa; override;
 
     function fprHabilitarSalvar(): Boolean; override;
     procedure pprExecutarSalvar; override;
     function fprGetPermissao: String; override;
-    procedure ppuCancelar; override;
-    { Private declarations }
+    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+
+    procedure pprExecutarCancelar; override;
   public
-    { Public declarations }
+
+    procedure ppuIncluir; override;
   end;
 
 var
@@ -73,11 +83,84 @@ implementation
 {$R *.dfm}
 
 
+procedure TfrmLote.Ac_Pesquisar_PessoaExecute(Sender: TObject);
+begin
+  inherited;
+  ppvPesquisarPessoa;
+end;
+
+procedure TfrmLote.ppvCarregarPessoas(ipIdEspecifico: Integer);
+var
+  vaValor: String;
+begin
+  dmLookup.cdslkPessoa.ppuLimparParametros;
+  if ipIdEspecifico <> 0 then
+    dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
+
+  // recusado, cancelado, executado
+  dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTipo], [Ord(trpFuncionario).ToString + ',' + Ord(trpEstagiario).ToString + ',' +
+    Ord(trpVoluntario).ToString + ',' + Ord(trpMembroDiretoria).ToString]);
+end;
+
+procedure TfrmLote.ppvPesquisarPessoa();
+var
+  vaFrmPessoa: TfrmPessoa;
+begin
+  inherited;
+  vaFrmPessoa := TfrmPessoa.Create(nil);
+  try
+    vaFrmPessoa.ppuConfigurarModoExecucao(mePesquisa);
+
+    vaFrmPessoa.ShowModal;
+    if vaFrmPessoa.IdEscolhido <> 0 then
+      begin
+        if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
+          begin
+            cbPessoaColetou.EditValue := vaFrmPessoa.IdEscolhido;
+            cbPessoaColetou.PostEditValue;
+          end
+        else
+          begin
+            ppvCarregarPessoas(vaFrmPessoa.IdEscolhido);
+            if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
+              begin
+                cbPessoaColetou.EditValue := vaFrmPessoa.IdEscolhido;
+                cbPessoaColetou.PostEditValue;
+              end;
+          end;
+
+      end;
+  finally
+    vaFrmPessoa.Free;
+  end;
+end;
+
 procedure TfrmLote.cbEspeciePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
-  if pcPrincipal.ActivePage = tabCadastro then
-    ppvCarregarMatrizes;
+  if (pcPrincipal.ActivePage = tabCadastro) and (dmViveiro.cdsLote.State in [dsEdit, dsInsert]) then
+    begin
+      cbEspecie.PostEditValue;
+      ppvCarregarMatrizes;
+      // caso tenha trocado de especie, todos os registros filho desse lote devem ser excluidos
+      ppvRemoverMatrizesOutrasEspecie;
+    end;
+end;
+
+procedure TfrmLote.ppvRemoverMatrizesOutrasEspecie;
+begin
+  cbEspecie.PostEditValue;
+  dmViveiro.cdsLote_Matriz.DisableControls;
+  try
+    dmViveiro.cdsLote_Matriz.First;
+    while not dmViveiro.cdsLote_Matriz.Eof do
+      begin
+        dmViveiro.cdsLote_Matriz.Delete;
+      end;
+  finally
+    dmViveiro.cdsLote_Matriz.EnableControls;
+  end;
+
 end;
 
 procedure TfrmLote.pprBeforeAlterar;
@@ -86,10 +169,11 @@ begin
   ppvCarregarMatrizes;
 end;
 
-procedure TfrmLote.pprBeforeIncluir;
+procedure TfrmLote.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
-  ppvCarregarMatrizes;
+  if not VarIsNull(cbEspeciePesquisa.EditValue) then
+    ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
 end;
 
 procedure TfrmLote.pprEfetuarPesquisa;
@@ -99,6 +183,13 @@ begin
   dmViveiro.cdsLote_Matriz.Open;
 end;
 
+procedure TfrmLote.pprExecutarCancelar;
+begin
+  if dmViveiro.cdsLote_Matriz.ChangeCount > 0 then
+    dmViveiro.cdsLote_Matriz.CancelUpdates;
+  inherited;
+end;
+
 procedure TfrmLote.pprExecutarSalvar;
 begin
   inherited;
@@ -106,24 +197,53 @@ begin
     dmViveiro.cdsLote_Matriz.ApplyUpdates(0);
 end;
 
-procedure TfrmLote.ppuCancelar;
+procedure TfrmLote.ppuIncluir;
 begin
   inherited;
-  dmViveiro.cdsLote_Matriz.CancelUpdates;
+  ppvCarregarMatrizes;
+  pprPreencherCamposPadroes(dmViveiro.cdsLote);
 end;
 
 procedure TfrmLote.ppvCarregarMatrizes;
 begin
   cbEspecie.PostEditValue;
+
+  if cdsLocalMatrizes.Active then
+    cdsLocalMatrizes.EmptyDataSet
+  else
+    cdsLocalMatrizes.CreateDataSet;
+
   if not VarIsNull(cbEspecie.EditValue) then
     begin
       if (not dmLookup.cdslkMatriz.Active) or (dmLookup.cdslkMatrizID_ESPECIE.AsInteger <> cbEspecie.EditValue) then
         begin
           dmLookup.cdslkMatriz.ppuDataRequest([TParametros.coEspecie], [cbEspecie.EditValue], TOperadores.coAnd, true);
-
-          cdsLocalMatrizes.Data := dmLookup.cdslkMatriz.Data;
         end;
+
+      dmViveiro.cdsLote_Matriz.DisableControls;
+      try
+        TUtils.ppuPercorrerCds(dmLookup.cdslkMatriz,
+          procedure
+          begin
+            if not dmViveiro.cdsLote_Matriz.Locate(dmViveiro.cdsLote_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, []) then
+              begin
+                cdsLocalMatrizes.Append;
+                cdsLocalMatrizesID.AsInteger := dmLookup.cdslkMatrizID.AsInteger;
+                cdsLocalMatrizes.Post;
+              end;
+          end);
+      finally
+        dmViveiro.cdsLote_Matriz.EnableControls;
+      end;
     end;
+end;
+
+procedure TfrmLote.cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
+Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvPesquisarPessoa;
 end;
 
 procedure TfrmLote.FormCreate(Sender: TObject);
@@ -136,13 +256,20 @@ begin
 
   inherited;
 
-  dmLookup.cdslkPessoa.Open;
-  dmLookup.cdslkEspecie.Open;
+  PesquisaPadrao := tppData;
+
+  ppvCarregarPessoas(0);
+  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+
+  ppvConfigurarGrids;
+
+  EditDataInicialPesquisa.Date := IncDay(Now, -7);
+  EditDataFinalPesquisa.Date := Now;
 end;
 
 function TfrmLote.fprGetPermissao: String;
 begin
-   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLote));
+  Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLote));
 end;
 
 function TfrmLote.fprHabilitarSalvar: Boolean;
@@ -156,8 +283,7 @@ end;
 procedure TfrmLote.ppvConfigurarGrids;
 begin
   // Esquerda
-  frameMatrizes.ppuAdicionarField(frameMatrizes.viewEsquerda, 'ID', false, nil);
-  frameMatrizes.ppuAdicionarField(frameMatrizes.viewEsquerda, 'NOME', true);
+  frameMatrizes.ppuAdicionarField(frameMatrizes.viewEsquerda, 'ID', dmLookup.replcbMatriz);
   // Direita
   frameMatrizes.ppuAdicionarField(frameMatrizes.viewDireita, 'ID_MATRIZ', dmLookup.replcbMatriz);
   // mapeando

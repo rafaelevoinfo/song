@@ -6,7 +6,7 @@ inherited frmAtividade: TfrmAtividade
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailVinculo
+    Properties.ActivePage = tabCadastroDetailComentario
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -210,11 +210,11 @@ inherited frmAtividade: TfrmAtividade
                 object viewDetailComentario: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsAtividade_Comentario
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -356,11 +356,11 @@ inherited frmAtividade: TfrmAtividade
                 object viewProjetos: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsAtividade_Projeto
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -462,11 +462,11 @@ inherited frmAtividade: TfrmAtividade
                 object viewDetailVinculo: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsAtividade_Vinculo
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -583,11 +583,11 @@ inherited frmAtividade: TfrmAtividade
                 object cxGridDBTableView1: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsAtividade_Arquivo
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
                   DataController.Summary.SummaryGroups = <>
-                  FilterRow.InfoText = 'Clique aqui para definir um filtro'
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -828,6 +828,7 @@ inherited frmAtividade: TfrmAtividade
           Action = Ac_Pesquisar_Projeto
           Images = dmPrincipal.imgIcons_16
           TabOrder = 9
+          TabStop = False
         end
       end
     end
@@ -968,6 +969,7 @@ inherited frmAtividade: TfrmAtividade
           Action = Ac_Pesquisar_Detail_Projeto
           Images = dmPrincipal.imgIcons_16
           TabOrder = 2
+          TabStop = False
         end
       end
     end
@@ -1034,6 +1036,7 @@ inherited frmAtividade: TfrmAtividade
           Action = Ac_Pesquisar_Atividade
           Images = dmPrincipal.imgIcons_16
           TabOrder = 2
+          TabStop = False
         end
         object EditObservacaoVinculo: TcxDBMemo
           Left = 4

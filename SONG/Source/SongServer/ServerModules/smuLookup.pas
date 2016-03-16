@@ -104,7 +104,7 @@ begin
   else if ipTabela = 'MATRIZ' then
     begin
       if ipParam.Name = TParametros.coEspecie then
-        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_ESPECIE', vaValor, vaOperador);
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger(), vaOperador);
     end;
 
 end;

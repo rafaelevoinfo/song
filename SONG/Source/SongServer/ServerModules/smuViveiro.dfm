@@ -142,8 +142,7 @@ inherited smViveiro: TsmViveiro
       '       LOTE.ID_PESSOA_COLETOU,'
       '       LOTE.NOME,'
       '       LOTE.DATA,'
-      '       LOTE.QTDE_GRAMAS,'
-      '       LOTE.TIPO,'
+      '       LOTE.QTDE,'
       '       ESPECIE.NOME AS NOME_ESPECIE'
       'from LOTE'
       'inner join especie on (especie.id = lote.id_especie)'
@@ -186,26 +185,20 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qLoteQTDE_GRAMAS: TBCDField
-      FieldName = 'QTDE_GRAMAS'
-      Origin = 'QTDE_GRAMAS'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
-    end
-    object qLoteTIPO: TSmallintField
-      FieldName = 'TIPO'
-      Origin = 'TIPO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object qLoteNOME_ESPECIE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'NOME_ESPECIE'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qLoteQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
     end
   end
   object qLote_Matriz: TRFQuery

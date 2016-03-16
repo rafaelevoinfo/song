@@ -40,14 +40,14 @@ type
   private
     FFuncoesGeral: TsmFuncoesGeralClient;
     FFuncoesAdministrativo: TsmFuncoesAdministrativoClient;
-    FFuncoesViveiro:TSMFuncoesViveiroClient;
+    FFuncoesViveiro: TSMFuncoesViveiroClient;
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
-    property FuncoesViveiro: TsmFuncoesViveiroClient read FFuncoesViveiro;
+    property FuncoesViveiro: TSMFuncoesViveiroClient read FFuncoesViveiro;
   end;
 
 var
@@ -74,10 +74,8 @@ begin
     begin
       if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
         begin
-          vaException := Exception.Create('Houve uma violação de chave estrangeira.' +
-            'Caso esteja excluindo isso significa que o registro a ser excluído possui dependências, e por isso não pode ser excluído.');
-          TMensagem.ppuShowException(vaException);
-          vaException.Free;
+          TMensagem.ppuShowException('Houve uma violação de chave estrangeira.' +
+            'Caso esteja excluindo isso significa que o registro a ser excluído possui dependências, e por isso não pode ser excluído.', E);
         end
       else
         TMensagem.ppuShowException(E);
@@ -102,7 +100,7 @@ procedure TdmPrincipal.DataSnapConnAfterConnect(Sender: TObject);
 begin
   FFuncoesGeral := TsmFuncoesGeralClient.Create(DataSnapConn.DBXConnection);
   FFuncoesAdministrativo := TsmFuncoesAdministrativoClient.Create(DataSnapConn.DBXConnection);
-  FFuncoesViveiro := TSmFuncoesViveiroClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesViveiro := TSMFuncoesViveiroClient.Create(DataSnapConn.DBXConnection);
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);

@@ -292,7 +292,8 @@ inherited smLookup: TsmLookup
       'Select Especie.id,'
       '       Especie.nome'
       'from especie'
-      '&where')
+      '&where'
+      'order by Especie.nome')
     Left = 32
     Top = 192
     MacroData = <

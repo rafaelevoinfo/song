@@ -79,7 +79,7 @@ type
     procedure ppuIncluirDetail; virtual;
     procedure ppuAlterarDetail(ipId: Integer); virtual;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; virtual;
-    procedure ppuCancelarDetail; virtual;
+    function fpuCancelarDetail:Boolean; virtual;
 
     procedure ppuSalvarDetail;
     procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao); override;
@@ -102,7 +102,7 @@ end;
 procedure TfrmBasicoCrudMasterDetail.Ac_Cancelar_DetailExecute(Sender: TObject);
 begin
   inherited;
-  ppuCancelarDetail;
+  fpuCancelarDetail;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Excluir_DetailExecute(Sender: TObject);
@@ -227,14 +227,15 @@ begin
   pprDefinirTabDetailCadastro;
 end;
 
-procedure TfrmBasicoCrudMasterDetail.ppuCancelarDetail;
+function TfrmBasicoCrudMasterDetail.fpuCancelarDetail:Boolean;
 begin
+  Result := True;
   if fprHabilitarSalvarDetail then
     begin
       if TMensagem.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
           ppuSalvarDetail;
-          Exit;
+          Exit(false);
         end;
     end;
 
