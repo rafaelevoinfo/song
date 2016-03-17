@@ -42,7 +42,7 @@ type
     Fornecedores1: TMenuItem;
     Ac_Matriz: TAction;
     Matrizes1: TMenuItem;
-    Ac_Lote: TAction;
+    Ac_Lote_Semente: TAction;
     Lotes1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
@@ -56,7 +56,7 @@ type
     procedure Ac_EspecieExecute(Sender: TObject);
     procedure Ac_FornecedorExecute(Sender: TObject);
     procedure Ac_MatrizExecute(Sender: TObject);
-    procedure Ac_LoteExecute(Sender: TObject);
+    procedure Ac_Lote_SementeExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -101,7 +101,7 @@ begin
   TUtils.ppuAbrirFormAba<TfrmFornecedor>(pcPrincipal, TfrmFornecedor, frmFornecedor);
 end;
 
-procedure TfrmPrincipal.Ac_LoteExecute(Sender: TObject);
+procedure TfrmPrincipal.Ac_Lote_SementeExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmLote>(pcPrincipal, TfrmLote, frmLote);

@@ -153,11 +153,44 @@ inherited dmViveiro: TdmViveiro
       Size = 100
     end
     object cdsLoteQTDE: TBCDField
-      DisplayLabel = 'Quantidade (kg)'
+      DisplayLabel = 'Qtde. Coletada/Comprada (kg)'
       FieldName = 'QTDE'
       Required = True
       Precision = 18
       Size = 2
+    end
+    object cdsLoteQTDE_ARMAZENADA: TBCDField
+      DisplayLabel = 'Qtde. Armazenada'
+      FieldName = 'QTDE_ARMAZENADA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsLoteQTDE_SEMEADA: TBCDField
+      DisplayLabel = 'Qtde. Semeada'
+      FieldName = 'QTDE_SEMEADA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsLoteTAXA_GERMINACAO: TBCDField
+      DisplayLabel = '% de Germina'#231#227'o'
+      FieldName = 'TAXA_GERMINACAO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsLoteTAXA_DESCARTE: TBCDField
+      DisplayLabel = '% de Descarte'
+      FieldName = 'TAXA_DESCARTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsLoteSTATUS: TSmallintField
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object cdsLote_Matriz: TRFClientDataSet
@@ -199,5 +232,109 @@ inherited dmViveiro: TdmViveiro
     DataSet = cdsLote
     Left = 24
     Top = 160
+  end
+  object cdsGerminacao: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_LOTE'
+    MasterFields = 'ID'
+    MasterSource = dsLote
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_LOTE'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqGerminacao'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 256
+    Top = 160
+    object cdsGerminacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsGerminacaoID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsGerminacaoID_PESSOA_VERIFICOU: TIntegerField
+      DisplayLabel = 'Pessoa que Verificou'
+      FieldName = 'ID_PESSOA_VERIFICOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsGerminacaoDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsGerminacaoQTDE_GERMINADA: TIntegerField
+      DisplayLabel = 'Qtde. Germinada'
+      FieldName = 'QTDE_GERMINADA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object cdsSemeadura: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_LOTE'
+    MasterFields = 'ID'
+    MasterSource = dsLote
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_LOTE'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqSemeadura'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 184
+    Top = 192
+    object cdsSemeaduraID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsSemeaduraID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSemeaduraID_PESSOA_SEMEOU: TIntegerField
+      DisplayLabel = 'Pessoa que Semeou'
+      FieldName = 'ID_PESSOA_SEMEOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSemeaduraQTDE_SEMEADA: TBCDField
+      DisplayLabel = 'Qtde. Semeada'
+      FieldName = 'QTDE_SEMEADA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSemeaduraDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSemeaduraOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object cdsSemeaduraID_CANTEIRO: TIntegerField
+      DisplayLabel = 'Canteiro'
+      FieldName = 'ID_CANTEIRO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
 end

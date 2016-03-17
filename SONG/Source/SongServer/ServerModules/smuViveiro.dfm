@@ -143,6 +143,11 @@ inherited smViveiro: TsmViveiro
       '       LOTE.NOME,'
       '       LOTE.DATA,'
       '       LOTE.QTDE,'
+      '       LOTE.QTDE_ARMAZENADA,'
+      '       LOTE.QTDE_SEMEADA,'
+      '       Lote.Taxa_Germinacao,'
+      '       Lote.Taxa_Descarte,'
+      '       Lote.Status, '
       '       ESPECIE.NOME AS NOME_ESPECIE'
       'from LOTE'
       'inner join especie on (especie.id = lote.id_especie)'
@@ -200,6 +205,39 @@ inherited smViveiro: TsmViveiro
       Precision = 18
       Size = 2
     end
+    object qLoteQTDE_ARMAZENADA: TBCDField
+      FieldName = 'QTDE_ARMAZENADA'
+      Origin = 'QTDE_ARMAZENADA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qLoteQTDE_SEMEADA: TBCDField
+      FieldName = 'QTDE_SEMEADA'
+      Origin = 'QTDE_SEMEADA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qLoteTAXA_GERMINACAO: TBCDField
+      FieldName = 'TAXA_GERMINACAO'
+      Origin = 'TAXA_GERMINACAO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qLoteTAXA_DESCARTE: TBCDField
+      FieldName = 'TAXA_DESCARTE'
+      Origin = 'TAXA_DESCARTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qLoteSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object qLote_Matriz: TRFQuery
     Connection = dmPrincipal.conSong
@@ -231,6 +269,122 @@ inherited smViveiro: TsmViveiro
     object qLote_MatrizID_MATRIZ: TIntegerField
       FieldName = 'ID_MATRIZ'
       Origin = 'ID_MATRIZ'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qGerminacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Germinacao.Id,'
+      '       Germinacao.Id_Lote,'
+      '       Germinacao.Id_Pessoa_Verificou,'
+      '       Germinacao.Data,'
+      '       Germinacao.Qtde_Germinada'
+      'from Germinacao'
+      'where Germinacao.Id_Lote = :Id_Lote  ')
+    Left = 112
+    Top = 96
+    ParamData = <
+      item
+        Name = 'ID_LOTE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qGerminacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qGerminacaoID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qGerminacaoID_PESSOA_VERIFICOU: TIntegerField
+      FieldName = 'ID_PESSOA_VERIFICOU'
+      Origin = 'ID_PESSOA_VERIFICOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qGerminacaoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qGerminacaoQTDE_GERMINADA: TIntegerField
+      FieldName = 'QTDE_GERMINADA'
+      Origin = 'QTDE_GERMINADA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qSemeadura: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Semeadura.Id,'
+      '       Semeadura.Id_Lote,'
+      '       Semeadura.Id_Pessoa_Semeou,'
+      '       Semeadura.id_canteiro,'
+      '       Semeadura.Qtde_Semeada,'
+      '       Semeadura.Data,'
+      '       Semeadura.Observacao'
+      'from Semeadura'
+      'where Semeadura.Id_Lote = :Id_Lote   ')
+    Left = 200
+    Top = 96
+    ParamData = <
+      item
+        Name = 'ID_LOTE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qSemeaduraID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qSemeaduraID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSemeaduraID_PESSOA_SEMEOU: TIntegerField
+      FieldName = 'ID_PESSOA_SEMEOU'
+      Origin = 'ID_PESSOA_SEMEOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSemeaduraQTDE_SEMEADA: TBCDField
+      FieldName = 'QTDE_SEMEADA'
+      Origin = 'QTDE_SEMEADA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qSemeaduraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSemeaduraOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object qSemeaduraID_CANTEIRO: TIntegerField
+      FieldName = 'ID_CANTEIRO'
+      Origin = 'ID_CANTEIRO'
       ProviderFlags = [pfInUpdate]
       Required = True
     end

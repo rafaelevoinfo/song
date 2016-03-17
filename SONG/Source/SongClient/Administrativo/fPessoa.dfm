@@ -5,7 +5,6 @@ inherited frmPessoa: TfrmPessoa
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -64,6 +63,9 @@ inherited frmPessoa: TfrmPessoa
           inherited btnPesquisar: TButton
             Left = 554
             ExplicitLeft = 554
+          end
+          inherited rgStatus: TcxRadioGroup
+            Visible = True
           end
           object cbTipoVinculoPesquisa: TcxCheckComboBox
             Left = 135
@@ -582,12 +584,14 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
+                Height = 15
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 91
+                Height = 15
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 91

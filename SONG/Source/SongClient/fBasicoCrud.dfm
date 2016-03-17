@@ -1,5 +1,5 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
@@ -14,7 +14,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -355,6 +355,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       Caption = 'Alterar'
       ImageIndex = 1
       OnExecute = Ac_AlterarExecute
+      OnUpdate = Ac_AlterarUpdate
     end
     object Ac_Excluir: TAction
       Category = 'Master'

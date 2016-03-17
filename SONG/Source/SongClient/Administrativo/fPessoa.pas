@@ -94,6 +94,8 @@ type
     procedure pprRealizarPesquisaInicial; override;
     procedure pprExecutarSalvarDetail; override;
 
+    function fprHabilitarAlterar:Boolean;override;
+
     function fprGetPermissao: String; override;
   public
     procedure ppuIncluirDetail; override;
@@ -193,6 +195,11 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
 end;
 
+function TfrmPessoa.fprHabilitarAlterar: Boolean;
+begin
+  Result := inherited and dmAdministrativo.cdsPessoa.Active and (dmAdministrativo.cdsPessoaATIVO.AsInteger = 0);
+end;
+
 procedure TfrmPessoa.frameGridsbtnAddTodosClick(Sender: TObject);
 begin
   inherited;
@@ -219,6 +226,8 @@ var
   vaTipos: string;
 begin
   inherited;
+   ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
+
   if (cbPesquisarPor.EditValue = coLogin) then
     ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);
 

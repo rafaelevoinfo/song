@@ -77,6 +77,7 @@ type
     cdslkMatrizID_ESPECIE: TIntegerField;
     repLcbMatriz: TcxEditRepositoryLookupComboBoxItem;
     dslkMatriz: TDataSource;
+    repCalcPadrao: TcxEditRepositoryCalcItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

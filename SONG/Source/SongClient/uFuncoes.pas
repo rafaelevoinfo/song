@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 11/03/2016 22:17:09
+// 17/03/2016 00:13:39
 //
 
 unit uFuncoes;
@@ -92,13 +92,23 @@ type
 
   TsmFuncoesViveiroClient = class(TDSAdminClient)
   private
+    FfpuCalcularQuantidadeSementeCommand: TDBXCommand;
+    FfpuCalcularTaxaGerminacaoLoteCommand: TDBXCommand;
+    FppuAtualizarTaxaGerminacaoLoteCommand: TDBXCommand;
     FfpuValidarNomeMatrizCommand: TDBXCommand;
+    FppuFecharLoteSementeCommand: TDBXCommand;
+    FppuReabrirLoteSementeCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    function fpuCalcularQuantidadeSemente(ipIdEspecie: Integer; ipQtdeKg: Double): Integer;
+    function fpuCalcularTaxaGerminacaoLote(ipIdLote: Integer): Double;
+    procedure ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
+    procedure ppuFecharLoteSemente(ipIdLote: Integer);
+    procedure ppuReabrirLoteSemente(ipId: Integer);
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -534,6 +544,48 @@ begin
   inherited;
 end;
 
+function TsmFuncoesViveiroClient.fpuCalcularQuantidadeSemente(ipIdEspecie: Integer; ipQtdeKg: Double): Integer;
+begin
+  if FfpuCalcularQuantidadeSementeCommand = nil then
+  begin
+    FfpuCalcularQuantidadeSementeCommand := FDBXConnection.CreateCommand;
+    FfpuCalcularQuantidadeSementeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuCalcularQuantidadeSementeCommand.Text := 'TsmFuncoesViveiro.fpuCalcularQuantidadeSemente';
+    FfpuCalcularQuantidadeSementeCommand.Prepare;
+  end;
+  FfpuCalcularQuantidadeSementeCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
+  FfpuCalcularQuantidadeSementeCommand.Parameters[1].Value.SetDouble(ipQtdeKg);
+  FfpuCalcularQuantidadeSementeCommand.ExecuteUpdate;
+  Result := FfpuCalcularQuantidadeSementeCommand.Parameters[2].Value.GetInt32;
+end;
+
+function TsmFuncoesViveiroClient.fpuCalcularTaxaGerminacaoLote(ipIdLote: Integer): Double;
+begin
+  if FfpuCalcularTaxaGerminacaoLoteCommand = nil then
+  begin
+    FfpuCalcularTaxaGerminacaoLoteCommand := FDBXConnection.CreateCommand;
+    FfpuCalcularTaxaGerminacaoLoteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuCalcularTaxaGerminacaoLoteCommand.Text := 'TsmFuncoesViveiro.fpuCalcularTaxaGerminacaoLote';
+    FfpuCalcularTaxaGerminacaoLoteCommand.Prepare;
+  end;
+  FfpuCalcularTaxaGerminacaoLoteCommand.Parameters[0].Value.SetInt32(ipIdLote);
+  FfpuCalcularTaxaGerminacaoLoteCommand.ExecuteUpdate;
+  Result := FfpuCalcularTaxaGerminacaoLoteCommand.Parameters[1].Value.GetDouble;
+end;
+
+procedure TsmFuncoesViveiroClient.ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
+begin
+  if FppuAtualizarTaxaGerminacaoLoteCommand = nil then
+  begin
+    FppuAtualizarTaxaGerminacaoLoteCommand := FDBXConnection.CreateCommand;
+    FppuAtualizarTaxaGerminacaoLoteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAtualizarTaxaGerminacaoLoteCommand.Text := 'TsmFuncoesViveiro.ppuAtualizarTaxaGerminacaoLote';
+    FppuAtualizarTaxaGerminacaoLoteCommand.Prepare;
+  end;
+  FppuAtualizarTaxaGerminacaoLoteCommand.Parameters[0].Value.SetInt32(ipIdLote);
+  FppuAtualizarTaxaGerminacaoLoteCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesViveiroClient.fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
 begin
   if FfpuValidarNomeMatrizCommand = nil then
@@ -547,6 +599,32 @@ begin
   FfpuValidarNomeMatrizCommand.Parameters[1].Value.SetWideString(ipNome);
   FfpuValidarNomeMatrizCommand.ExecuteUpdate;
   Result := FfpuValidarNomeMatrizCommand.Parameters[2].Value.GetBoolean;
+end;
+
+procedure TsmFuncoesViveiroClient.ppuFecharLoteSemente(ipIdLote: Integer);
+begin
+  if FppuFecharLoteSementeCommand = nil then
+  begin
+    FppuFecharLoteSementeCommand := FDBXConnection.CreateCommand;
+    FppuFecharLoteSementeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuFecharLoteSementeCommand.Text := 'TsmFuncoesViveiro.ppuFecharLoteSemente';
+    FppuFecharLoteSementeCommand.Prepare;
+  end;
+  FppuFecharLoteSementeCommand.Parameters[0].Value.SetInt32(ipIdLote);
+  FppuFecharLoteSementeCommand.ExecuteUpdate;
+end;
+
+procedure TsmFuncoesViveiroClient.ppuReabrirLoteSemente(ipId: Integer);
+begin
+  if FppuReabrirLoteSementeCommand = nil then
+  begin
+    FppuReabrirLoteSementeCommand := FDBXConnection.CreateCommand;
+    FppuReabrirLoteSementeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuReabrirLoteSementeCommand.Text := 'TsmFuncoesViveiro.ppuReabrirLoteSemente';
+    FppuReabrirLoteSementeCommand.Prepare;
+  end;
+  FppuReabrirLoteSementeCommand.Parameters[0].Value.SetInt32(ipId);
+  FppuReabrirLoteSementeCommand.ExecuteUpdate;
 end;
 
 procedure TsmFuncoesViveiroClient.DSServerModuleCreate(Sender: TObject);
@@ -589,7 +667,12 @@ end;
 
 destructor TsmFuncoesViveiroClient.Destroy;
 begin
+  FfpuCalcularQuantidadeSementeCommand.DisposeOf;
+  FfpuCalcularTaxaGerminacaoLoteCommand.DisposeOf;
+  FppuAtualizarTaxaGerminacaoLoteCommand.DisposeOf;
   FfpuValidarNomeMatrizCommand.DisposeOf;
+  FppuFecharLoteSementeCommand.DisposeOf;
+  FppuReabrirLoteSementeCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

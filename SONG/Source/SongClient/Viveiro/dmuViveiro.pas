@@ -38,6 +38,25 @@ type
     cdsLote_MatrizID_MATRIZ: TIntegerField;
     dsLote: TDataSource;
     cdsLoteQTDE: TBCDField;
+    cdsLoteQTDE_ARMAZENADA: TBCDField;
+    cdsLoteQTDE_SEMEADA: TBCDField;
+    cdsLoteTAXA_GERMINACAO: TBCDField;
+    cdsLoteTAXA_DESCARTE: TBCDField;
+    cdsLoteSTATUS: TSmallintField;
+    cdsGerminacao: TRFClientDataSet;
+    cdsGerminacaoID: TIntegerField;
+    cdsGerminacaoID_LOTE: TIntegerField;
+    cdsGerminacaoID_PESSOA_VERIFICOU: TIntegerField;
+    cdsGerminacaoDATA: TSQLTimeStampField;
+    cdsGerminacaoQTDE_GERMINADA: TIntegerField;
+    cdsSemeadura: TRFClientDataSet;
+    cdsSemeaduraID: TIntegerField;
+    cdsSemeaduraID_LOTE: TIntegerField;
+    cdsSemeaduraID_PESSOA_SEMEOU: TIntegerField;
+    cdsSemeaduraQTDE_SEMEADA: TBCDField;
+    cdsSemeaduraDATA: TSQLTimeStampField;
+    cdsSemeaduraOBSERVACAO: TStringField;
+    cdsSemeaduraID_CANTEIRO: TIntegerField;
   private
     { Private declarations }
   public

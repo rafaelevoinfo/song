@@ -74,6 +74,7 @@ type
       ARecord: TcxCustomGridRecord; var AProperties: TcxCustomEditProperties);
     procedure Ac_Salvar_IncluirExecute(Sender: TObject);
     procedure Ac_Utilizar_SelecionadoExecute(Sender: TObject);
+    procedure Ac_AlterarUpdate(Sender: TObject);
   private
     FPesquisaPadrao: TTipoPesquisaPadrao;
     FModoExecucao: TModoExecucao;
@@ -89,6 +90,7 @@ type
     procedure pprExecutarSalvar; virtual;
     procedure pprAfterSalvar; virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
+    function fprHabilitarAlterar: Boolean; virtual;
     procedure ppuRetornar(); overload; virtual;
     procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
@@ -101,7 +103,7 @@ type
     function fprConfigurarControlesPesquisa: TWinControl; virtual;
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios; virtual;
-    procedure pprVerificarExisteStatus; virtual;
+    // procedure pprVerificarExisteStatus; virtual;
     // PERMISSOES
     procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
     // TODA tela deve sobrescrever essa procedure e definir qual a permissao da tela
@@ -143,6 +145,12 @@ procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin
   inherited;
   ppuAlterar(dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger);
+end;
+
+procedure TfrmBasicoCrud.Ac_AlterarUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar;
 end;
 
 procedure TfrmBasicoCrud.Ac_CancelarExecute(Sender: TObject);
@@ -238,13 +246,16 @@ end;
 procedure TfrmBasicoCrud.ColumnExcluirGetProperties(
   Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
   var AProperties: TcxCustomEditProperties);
+var
+  vaField: TField;
 begin
   inherited;
   if Assigned(dsMaster.DataSet) and dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) then
     begin
-      if rgStatus.Visible then
+      vaField := dsMaster.DataSet.FindField(TBancoDados.coAtivo);
+      if Assigned(vaField) then
         begin
-          if dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger = coRegistroAtivo then
+          if vaField.AsInteger = coRegistroAtivo then
             AProperties.Buttons.Items[0].ImageIndex := 7
           else
             AProperties.Buttons.Items[0].ImageIndex := 6;
@@ -278,7 +289,7 @@ begin
   pcPrincipal.ActivePage := tabPesquisa;
 
   pprConfigurarLabelsCamposObrigatorios;
-  pprVerificarExisteStatus;
+  // pprVerificarExisteStatus;
 end;
 
 procedure TfrmBasicoCrud.FormShow(Sender: TObject);
@@ -297,8 +308,11 @@ end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
-  pprBeforeAlterar;
-  pcPrincipal.ActivePage := tabCadastro;
+  if fprHabilitarAlterar then
+    begin
+      pprBeforeAlterar;
+      pcPrincipal.ActivePage := tabCadastro;
+    end;
 end;
 
 function TfrmBasicoCrud.fpuCancelar: Boolean;
@@ -353,9 +367,6 @@ begin
   else if (cbPesquisarPor.EditValue = Ord(tppData)) then
     ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 
-  if rgStatus.Visible then
-    ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
-
 end;
 
 procedure TfrmBasicoCrud.pprEfetuarPesquisa;
@@ -398,6 +409,11 @@ begin
 
     raise;
   end;
+end;
+
+function TfrmBasicoCrud.fprHabilitarAlterar: Boolean;
+begin
+  Result := True;
 end;
 
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
@@ -455,16 +471,14 @@ begin
   Result := False;
 
   vaAcao := atExcluir;
-  if rgStatus.Visible then
+
+  vaField := dsMaster.DataSet.FindField(TBancoDados.coAtivo);
+  if Assigned(vaField) then
     begin
-      vaField := dsMaster.DataSet.FindField(TBancoDados.coAtivo);
-      if Assigned(vaField) then
-        begin
-          if vaField.AsInteger = coRegistroAtivo then
-            vaAcao := atInativar
-          else
-            vaAcao := atAtivar;
-        end;
+      if vaField.AsInteger = coRegistroAtivo then
+        vaAcao := atInativar
+      else
+        vaAcao := atAtivar;
     end;
 
   vaPergunta := 'Realmente deseja ' + AcaoTelaDescricao[vaAcao] + '?';
@@ -719,20 +733,20 @@ begin
 
 end;
 
-procedure TfrmBasicoCrud.pprVerificarExisteStatus;
-var
-  vaField: TField;
-  I: Integer;
-begin
-  for I := 0 to dsMaster.DataSet.FieldCount - 1 do
-    begin
-      vaField := dsMaster.DataSet.Fields[I];
-      if vaField.FieldName = TBancoDados.coAtivo then
-        begin
-          rgStatus.Visible := True;
-          Break;
-        end;
-    end;
-end;
+// procedure TfrmBasicoCrud.pprVerificarExisteStatus;
+// var
+// vaField: TField;
+// I: Integer;
+// begin
+// for I := 0 to dsMaster.DataSet.FieldCount - 1 do
+// begin
+// vaField := dsMaster.DataSet.Fields[I];
+// if vaField.FieldName = TBancoDados.coAtivo then
+// begin
+// rgStatus.Visible := True;
+// Break;
+// end;
+// end;
+// end;
 
 end.

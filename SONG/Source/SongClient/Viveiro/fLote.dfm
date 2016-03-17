@@ -1,43 +1,57 @@
 inherited frmLote: TfrmLote
-  ActiveControl = btnIncluir
   Caption = 'Lotes de Sementes'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
-          Left = 419
-          Width = 556
-          ExplicitWidth = 556
+          Left = 312
+          Width = 663
+          ExplicitLeft = 313
+          ExplicitWidth = 663
           inherited Label1: TLabel
-            Left = 141
-            ExplicitLeft = 141
+            Left = 277
+            ExplicitLeft = 277
           end
           object Label7: TLabel [1]
-            Left = 3
+            Left = 139
             Top = 4
             Width = 36
             Height = 13
             Caption = 'Esp'#233'cie'
           end
           inherited rgStatus: TcxRadioGroup [2]
-            Left = 419
-            Top = 27
-            ExplicitLeft = 419
-            ExplicitTop = 27
+            Properties.Items = <
+              item
+                Caption = 'Aberto'
+              end
+              item
+                Caption = 'Fechado'
+              end>
+            Properties.OnEditValueChanged = rgStatusPropertiesEditValueChanged
+            Visible = True
+            ExplicitWidth = 135
+            Width = 135
           end
           inherited pnData: TPanel [3]
-            Left = 320
-            ExplicitLeft = 320
+            Left = 427
+            ExplicitLeft = 427
           end
           inherited EditPesquisa: TcxButtonEdit [4]
-            Left = 272
-            ExplicitLeft = 272
+            Left = 407
+            ExplicitLeft = 407
+            ExplicitWidth = 149
+            Width = 149
           end
           inherited cbPesquisarPor: TcxImageComboBox [5]
-            Left = 139
+            Left = 275
             Properties.Items = <
               item
                 Description = 'Todos'
@@ -57,16 +71,16 @@ inherited frmLote: TfrmLote
                 Description = 'Data da Coleta'
                 Value = 4
               end>
-            ExplicitLeft = 139
+            ExplicitLeft = 275
             ExplicitWidth = 133
             Width = 133
           end
           inherited btnPesquisar: TButton [6]
-            Left = 456
-            ExplicitLeft = 456
+            Left = 563
+            ExplicitLeft = 563
           end
           object cbEspeciePesquisa: TcxLookupComboBox
-            Left = 2
+            Left = 138
             Top = 20
             RepositoryItem = dmLookup.repLcbEspecie
             Properties.ListColumns = <>
@@ -75,49 +89,119 @@ inherited frmLote: TfrmLote
           end
         end
         inherited pnBotoes: TPanel
-          Width = 418
+          Width = 311
+          ExplicitWidth = 315
+          object btnAbrirFecharLote: TButton
+            AlignWithMargins = True
+            Left = 188
+            Top = 1
+            Width = 100
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Fechar_Lote
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 2
+            WordWrap = True
+          end
         end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
-            Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
               Width = 37
             end
-            object viewRegistrosNOME: TcxGridDBColumn [1]
+            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [1]
+              DataBinding.FieldName = 'NOME_ESPECIE'
+              Options.Editing = False
+              Width = 121
+            end
+            object viewRegistrosNOME: TcxGridDBColumn [2]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
+              Width = 104
             end
-            object viewRegistrosDATA: TcxGridDBColumn [2]
+            object viewRegistrosDATA: TcxGridDBColumn [3]
               DataBinding.FieldName = 'DATA'
               Options.Editing = False
               Width = 84
             end
-            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [3]
-              DataBinding.FieldName = 'NOME_ESPECIE'
-              Options.Editing = False
-              Width = 227
-            end
             object viewRegistrosQTDE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'QTDE'
-              PropertiesClassName = 'TcxCalcEditProperties'
-              Properties.DisplayFormat = ',0.00'
+              RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
+              Width = 154
             end
-            object viewRegistrosID_PESSOA_COLETOU: TcxGridDBColumn [5]
+            object viewRegistrosQTDE_ARMAZENADA: TcxGridDBColumn [5]
+              DataBinding.FieldName = 'QTDE_ARMAZENADA'
+              RepositoryItem = dmLookup.repCalcPadrao
+              Options.Editing = False
+              Width = 96
+            end
+            object viewRegistrosQTDE_SEMEADA: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'QTDE_SEMEADA'
+              RepositoryItem = dmLookup.repCalcPadrao
+              Options.Editing = False
+              Width = 80
+            end
+            object viewRegistrosID_PESSOA_COLETOU: TcxGridDBColumn [7]
               DataBinding.FieldName = 'ID_PESSOA_COLETOU'
               RepositoryItem = dmLookup.repLcbPessoa
+              Visible = False
               Options.Editing = False
               Width = 98
+            end
+            object viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn [8]
+              DataBinding.FieldName = 'TAXA_GERMINACAO'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = ',0.00 %'
+              Options.Editing = False
+              Width = 90
+            end
+            object viewRegistrosTAXA_DESCARTE: TcxGridDBColumn [9]
+              DataBinding.FieldName = 'TAXA_DESCARTE'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = ',0.00 %'
+              Options.Editing = False
+              Width = 77
+            end
+          end
+        end
+        inherited pnDetail: TPanel
+          inherited pcDetails: TcxPageControl
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            inherited tabDetail: TcxTabSheet
+              Caption = 'Semeaduras'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
+              inherited pnBotoesDetail: TPanel
+                inherited btnIncluirDetail: TButton
+                  ExplicitLeft = 1
+                end
+              end
+            end
+            object tabDetailGerminacao: TcxTabSheet
+              Caption = 'Hist'#243'rico de Germina'#231#227'o'
+              ImageIndex = 1
             end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnMatrizes: TPanel
           Left = 1
@@ -159,36 +243,31 @@ inherited frmLote: TfrmLote
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
-                Width = 455
-                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
-                Left = 456
-                Width = 48
-                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
                 inherited btnAdd: TButton
-                  OnClick = nil
+                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnAddTodos: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnRemover: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnRemoverTodos: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
               end
               inherited cxGrid2: TcxGrid
-                Left = 504
-                Width = 467
-                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -217,7 +296,6 @@ inherited frmLote: TfrmLote
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
-                  Left = 503
                   Width = 92
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 503
@@ -347,6 +425,12 @@ inherited frmLote: TfrmLote
         end
       end
     end
+    inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
+    end
   end
   inherited ActionList1: TActionList
     object Ac_Pesquisar_Pessoa: TAction
@@ -354,15 +438,28 @@ inherited frmLote: TfrmLote
       ImageIndex = 0
       OnExecute = Ac_Pesquisar_PessoaExecute
     end
+    object Ac_Reabrir_Lote: TAction
+      Caption = 'Reabrir Lote'
+      OnExecute = Ac_Reabrir_LoteExecute
+      OnUpdate = Ac_Fechar_LoteUpdate
+    end
+    object Ac_Fechar_Lote: TAction
+      Caption = 'Fechar Lote'
+      OnExecute = Ac_Fechar_LoteExecute
+      OnUpdate = Ac_Fechar_LoteUpdate
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsLote
   end
+  inherited dsDetail: TDataSource
+    DataSet = dmViveiro.cdsSemeadura
+  end
   object cdsLocalMatrizes: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 144
-    Top = 256
+    Left = 368
+    Top = 224
     object cdsLocalMatrizesID: TIntegerField
       DisplayLabel = 'Matriz'
       FieldName = 'ID'
@@ -371,7 +468,7 @@ inherited frmLote: TfrmLote
   end
   object dsLocalMatrizes: TDataSource
     DataSet = cdsLocalMatrizes
-    Left = 144
-    Top = 312
+    Left = 272
+    Top = 320
   end
 end

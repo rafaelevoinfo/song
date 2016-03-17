@@ -77,7 +77,7 @@ inherited frmPrincipal: TfrmPrincipal
         Action = Ac_Matriz
       end
       object Lotes1: TMenuItem
-        Action = Ac_Lote
+        Action = Ac_Lote_Semente
       end
     end
   end
@@ -134,10 +134,10 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = 'Matrizes'
       OnExecute = Ac_MatrizExecute
     end
-    object Ac_Lote: TAction
+    object Ac_Lote_Semente: TAction
       Category = 'Viveiro'
       Caption = 'Lotes de Sementes'
-      OnExecute = Ac_LoteExecute
+      OnExecute = Ac_Lote_SementeExecute
     end
   end
   object dxSkinController1: TdxSkinController

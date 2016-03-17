@@ -255,6 +255,9 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkMatriz
     end
+    object repCalcPadrao: TcxEditRepositoryCalcItem
+      Properties.DisplayFormat = ',0.00'
+    end
   end
   object cdslkPerfil: TClientDataSet
     Aggregates = <>

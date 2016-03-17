@@ -43,6 +43,25 @@ type
     qLote_MatrizID_LOTE: TIntegerField;
     qLote_MatrizID_MATRIZ: TIntegerField;
     qLoteQTDE: TBCDField;
+    qLoteQTDE_ARMAZENADA: TBCDField;
+    qLoteQTDE_SEMEADA: TBCDField;
+    qLoteTAXA_GERMINACAO: TBCDField;
+    qLoteTAXA_DESCARTE: TBCDField;
+    qLoteSTATUS: TSmallintField;
+    qGerminacao: TRFQuery;
+    qSemeadura: TRFQuery;
+    qGerminacaoID: TIntegerField;
+    qGerminacaoID_LOTE: TIntegerField;
+    qGerminacaoID_PESSOA_VERIFICOU: TIntegerField;
+    qGerminacaoDATA: TSQLTimeStampField;
+    qGerminacaoQTDE_GERMINADA: TIntegerField;
+    qSemeaduraID: TIntegerField;
+    qSemeaduraID_LOTE: TIntegerField;
+    qSemeaduraID_PESSOA_SEMEOU: TIntegerField;
+    qSemeaduraQTDE_SEMEADA: TBCDField;
+    qSemeaduraDATA: TSQLTimeStampField;
+    qSemeaduraOBSERVACAO: TStringField;
+    qSemeaduraID_CANTEIRO: TIntegerField;
   private
     { Private declarations }
   protected
@@ -87,6 +106,13 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coStatus then
+        begin
+          if vaValor.ToInteger = 0 then
+            Result := Result + ' ((lote.status is null) or (lote.status=0))' + vaOperador
+          else
+            Result := Result + ' (lote.status=1)' + vaOperador
+        end
       else if ipParam.Name = TParametros.coData then
         Result := Result + ' (LOTE.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
           QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;

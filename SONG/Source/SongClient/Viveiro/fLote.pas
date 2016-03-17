@@ -15,10 +15,11 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuViveiro, cxDBEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, fmGrids,
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
-  uControleAcesso, fPessoa, uUtils, System.DateUtils;
+  uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
+  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal;
 
 type
-  TfrmLote = class(TfrmBasicoCrud)
+  TfrmLote = class(TfrmBasicoCrudMasterDetail)
     pnMatrizes: TPanel;
     pnTopEditsCadastro: TPanel;
     Label3: TLabel;
@@ -45,11 +46,23 @@ type
     Ac_Pesquisar_Pessoa: TAction;
     Label7: TLabel;
     cbEspeciePesquisa: TcxLookupComboBox;
+    viewRegistrosQTDE_ARMAZENADA: TcxGridDBColumn;
+    viewRegistrosQTDE_SEMEADA: TcxGridDBColumn;
+    btnAbrirFecharLote: TButton;
+    Ac_Reabrir_Lote: TAction;
+    Ac_Fechar_Lote: TAction;
+    viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn;
+    viewRegistrosTAXA_DESCARTE: TcxGridDBColumn;
+    tabDetailGerminacao: TcxTabSheet;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
+    procedure rgStatusPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Fechar_LoteExecute(Sender: TObject);
+    procedure Ac_Reabrir_LoteExecute(Sender: TObject);
+    procedure Ac_Fechar_LoteUpdate(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
@@ -65,14 +78,19 @@ type
     procedure pprEfetuarPesquisa; override;
 
     function fprHabilitarSalvar(): Boolean; override;
+    procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar; override;
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+    function fprHabilitarAlterar: Boolean; override;
 
     procedure pprExecutarCancelar; override;
   public
 
     procedure ppuIncluir; override;
+  public const
+    coLoteAberto = 0;
+    coLoteFechado = 1;
   end;
 
 var
@@ -83,10 +101,37 @@ implementation
 {$R *.dfm}
 
 
+procedure TfrmLote.Ac_Fechar_LoteExecute(Sender: TObject);
+begin
+  inherited;
+  if TMensagem.fpuPerguntar('Confirma o fechamento do lote. ' +
+    'Após essa ação nenhuma outra operação será permitida para este lote.', ppSimNao) = rpSim then
+    begin
+      dmPrincipal.FuncoesViveiro.ppuFecharLoteSemente(dmViveiro.cdsLoteID.AsInteger);
+      pprEfetuarPesquisa;
+    end;
+end;
+
+procedure TfrmLote.Ac_Fechar_LoteUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := dmViveiro.cdsLote.Active and (dmViveiro.cdsLote.RecordCount > 0);
+end;
+
 procedure TfrmLote.Ac_Pesquisar_PessoaExecute(Sender: TObject);
 begin
   inherited;
   ppvPesquisarPessoa;
+end;
+
+procedure TfrmLote.Ac_Reabrir_LoteExecute(Sender: TObject);
+begin
+  inherited;
+  if TMensagem.fpuPerguntar('Confirma a reabertura do lote.', ppSimNao) = rpSim then
+    begin
+      dmPrincipal.FuncoesViveiro.ppuReabrirLoteSemente(dmViveiro.cdsLoteID.AsInteger);
+      pprEfetuarPesquisa;
+    end;
 end;
 
 procedure TfrmLote.ppvCarregarPessoas(ipIdEspecifico: Integer);
@@ -163,15 +208,35 @@ begin
 
 end;
 
+procedure TfrmLote.rgStatusPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if rgStatus.ItemIndex = coLoteAberto then
+    btnAbrirFecharLote.Action := Ac_Fechar_Lote
+  else
+    btnAbrirFecharLote.Action := Ac_Reabrir_Lote;
+end;
+
 procedure TfrmLote.pprBeforeAlterar;
 begin
   inherited;
   ppvCarregarMatrizes;
 end;
 
+procedure TfrmLote.pprBeforeSalvar;
+begin
+  inherited;
+  if dmViveiro.cdsLote.State = dsInsert then
+    begin
+      dmViveiro.cdsLoteQTDE_ARMAZENADA.AsFloat := dmViveiro.cdsLoteQTDE.AsFloat;
+    end;
+end;
+
 procedure TfrmLote.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
+  ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.ItemIndex);
+
   if not VarIsNull(cbEspeciePesquisa.EditValue) then
     ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
 end;
@@ -270,6 +335,11 @@ end;
 function TfrmLote.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLote));
+end;
+
+function TfrmLote.fprHabilitarAlterar: Boolean;
+begin
+  Result := inherited and dmViveiro.cdsLote.Active and (dmViveiro.cdsLoteSTATUS.AsInteger = 0);
 end;
 
 function TfrmLote.fprHabilitarSalvar: Boolean;
