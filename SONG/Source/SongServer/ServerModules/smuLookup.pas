@@ -50,6 +50,9 @@ type
     qlkEspecieID: TIntegerField;
     qlkEspecieNOME: TStringField;
     qlkMatriz: TRFQuery;
+    qlkCanteiro: TRFQuery;
+    qlkCanteiroID: TIntegerField;
+    qlkCanteiroNOME: TStringField;
   private
     { Private declarations }
   protected

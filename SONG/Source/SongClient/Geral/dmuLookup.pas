@@ -78,6 +78,11 @@ type
     repLcbMatriz: TcxEditRepositoryLookupComboBoxItem;
     dslkMatriz: TDataSource;
     repCalcPadrao: TcxEditRepositoryCalcItem;
+    cdslkCanteiro: TRFClientDataSet;
+    cdslkCanteiroID: TIntegerField;
+    cdslkCanteiroNOME: TStringField;
+    repLcbCanteiro: TcxEditRepositoryLookupComboBoxItem;
+    dslkCanteiro: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

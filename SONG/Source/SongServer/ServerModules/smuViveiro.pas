@@ -44,7 +44,6 @@ type
     qLote_MatrizID_MATRIZ: TIntegerField;
     qLoteQTDE: TBCDField;
     qLoteQTDE_ARMAZENADA: TBCDField;
-    qLoteQTDE_SEMEADA: TBCDField;
     qLoteTAXA_GERMINACAO: TBCDField;
     qLoteTAXA_DESCARTE: TBCDField;
     qLoteSTATUS: TSmallintField;
@@ -62,6 +61,14 @@ type
     qSemeaduraDATA: TSQLTimeStampField;
     qSemeaduraOBSERVACAO: TStringField;
     qSemeaduraID_CANTEIRO: TIntegerField;
+    qCanteiro: TRFQuery;
+    qCanteiroID: TIntegerField;
+    qCanteiroNOME: TStringField;
+    qCanteiroDESCRICAO: TStringField;
+    qSemeaduraPESSOA_SEMEOU: TStringField;
+    qSemeaduraNOME_CANTEIRO: TStringField;
+    qGerminacaoPESSOA_VERIFICOU: TStringField;
+    qLoteQTDE_SEMEADA: TBCDField;
   private
     { Private declarations }
   protected

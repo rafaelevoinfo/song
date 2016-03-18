@@ -9,7 +9,7 @@ uses
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
-  fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fLote;
+  fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fLote, fCanteiro;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -44,6 +44,8 @@ type
     Matrizes1: TMenuItem;
     Ac_Lote_Semente: TAction;
     Lotes1: TMenuItem;
+    Ac_Canteiro: TAction;
+    Canteiros1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -57,6 +59,7 @@ type
     procedure Ac_FornecedorExecute(Sender: TObject);
     procedure Ac_MatrizExecute(Sender: TObject);
     procedure Ac_Lote_SementeExecute(Sender: TObject);
+    procedure Ac_CanteiroExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -81,6 +84,12 @@ procedure TfrmPrincipal.Ac_BancoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmBanco>(pcPrincipal, TfrmBanco, frmBanco);
+end;
+
+procedure TfrmPrincipal.Ac_CanteiroExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmCanteiro>(pcPrincipal, TfrmCanteiro, frmCanteiro);
 end;
 
 procedure TfrmPrincipal.Ac_EspecieExecute(Sender: TObject);

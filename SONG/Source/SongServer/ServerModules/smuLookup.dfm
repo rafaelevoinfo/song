@@ -330,4 +330,26 @@ inherited smLookup: TsmLookup
         Name = 'WHERE'
       end>
   end
+  object qlkCanteiro: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Canteiro.Id,'
+      '       Canteiro.Nome'
+      'from Canteiro')
+    Left = 368
+    Top = 232
+    object qlkCanteiroID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkCanteiroNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

@@ -1,17 +1,10 @@
 inherited frmAtividade: TfrmAtividade
   ActiveControl = nil
   Caption = 'Atividades'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailComentario
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 453
@@ -174,11 +167,14 @@ inherited frmAtividade: TfrmAtividade
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabDetailComentario
             OnChange = pcDetailsChange
             object tabDetailComentario: TcxTabSheet [0]
               Caption = 'Coment'#225'rios'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -293,15 +289,6 @@ inherited frmAtividade: TfrmAtividade
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
-              inherited pnBotoesDetail: TPanel
-                inherited btnIncluirDetail: TButton
-                  ExplicitLeft = 1
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -325,6 +312,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -431,6 +422,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailVinculo: TcxTabSheet
               Caption = 'Atividades v'#237'nculadas'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesDetailVinculo: TPanel
                 Left = 0
                 Top = 0
@@ -552,6 +547,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailArquivo: TcxTabSheet
               Caption = 'Arquivos'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0

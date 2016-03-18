@@ -1,20 +1,15 @@
 inherited frmLote: TfrmLote
   Caption = 'Lotes de Sementes'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
+  ExplicitTop = -9
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 312
           Width = 663
-          ExplicitLeft = 313
+          ExplicitLeft = 312
           ExplicitWidth = 663
           inherited Label1: TLabel
             Left = 277
@@ -90,7 +85,7 @@ inherited frmLote: TfrmLote
         end
         inherited pnBotoes: TPanel
           Width = 311
-          ExplicitWidth = 315
+          ExplicitWidth = 311
           object btnAbrirFecharLote: TButton
             AlignWithMargins = True
             Left = 188
@@ -136,19 +131,19 @@ inherited frmLote: TfrmLote
               DataBinding.FieldName = 'QTDE'
               RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
-              Width = 154
+              Width = 144
             end
             object viewRegistrosQTDE_ARMAZENADA: TcxGridDBColumn [5]
               DataBinding.FieldName = 'QTDE_ARMAZENADA'
               RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
-              Width = 96
+              Width = 118
             end
             object viewRegistrosQTDE_SEMEADA: TcxGridDBColumn [6]
               DataBinding.FieldName = 'QTDE_SEMEADA'
               RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
-              Width = 80
+              Width = 104
             end
             object viewRegistrosID_PESSOA_COLETOU: TcxGridDBColumn [7]
               DataBinding.FieldName = 'ID_PESSOA_COLETOU'
@@ -175,23 +170,151 @@ inherited frmLote: TfrmLote
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            ExplicitLeft = 0
-            ExplicitTop = 0
+            Properties.ActivePage = tabDetailGerminacao
+            OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
-              inherited pnBotoesDetail: TPanel
-                inherited btnIncluirDetail: TButton
-                  ExplicitLeft = 1
+              inherited cxGridRegistrosDetail: TcxGrid
+                inherited viewRegistrosDetail: TcxGridDBTableView
+                  object viewRegistrosDetailID: TcxGridDBColumn [0]
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailDATA: TcxGridDBColumn [1]
+                    DataBinding.FieldName = 'DATA'
+                    Options.Editing = False
+                    Width = 104
+                  end
+                  object viewRegistrosDetailPESSOA_SEMEOU: TcxGridDBColumn [2]
+                    DataBinding.FieldName = 'PESSOA_SEMEOU'
+                    Options.Editing = False
+                    Width = 202
+                  end
+                  object viewRegistrosDetailNOME_CANTEIRO: TcxGridDBColumn [3]
+                    DataBinding.FieldName = 'NOME_CANTEIRO'
+                    Options.Editing = False
+                    Width = 270
+                  end
+                  object viewRegistrosDetailQTDE_SEMEADA: TcxGridDBColumn [4]
+                    DataBinding.FieldName = 'QTDE_SEMEADA'
+                    RepositoryItem = dmLookup.repCalcPadrao
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailID_PESSOA_SEMEOU: TcxGridDBColumn [5]
+                    DataBinding.FieldName = 'ID_PESSOA_SEMEOU'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailID_CANTEIRO: TcxGridDBColumn [6]
+                    DataBinding.FieldName = 'ID_CANTEIRO'
+                    Visible = False
+                    Options.Editing = False
+                  end
                 end
               end
             end
             object tabDetailGerminacao: TcxTabSheet
               Caption = 'Hist'#243'rico de Germina'#231#227'o'
               ImageIndex = 1
+              object pn1: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = 8
+                object btnactCnPrefixWizard: TButton
+                  Left = 1
+                  Top = 1
+                  Width = 81
+                  Height = 23
+                  Action = Ac_Incluir_Detail
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGrid1: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 131
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object viewGerminacao: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsGerminacao
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewGerminacaoID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewGerminacaoDATA: TcxGridDBColumn
+                    DataBinding.FieldName = 'DATA'
+                    Options.Editing = False
+                    Width = 119
+                  end
+                  object viewGerminacaoQTDE_GERMINADA: TcxGridDBColumn
+                    DataBinding.FieldName = 'QTDE_GERMINADA'
+                    PropertiesClassName = 'TcxCalcEditProperties'
+                    Properties.DisplayFormat = ',0'
+                    Options.Editing = False
+                    Width = 87
+                  end
+                  object viewGerminacaoPESSOA_VERIFICOU: TcxGridDBColumn
+                    DataBinding.FieldName = 'PESSOA_VERIFICOU'
+                    Options.Editing = False
+                    Width = 439
+                  end
+                  object ColumnAlterarGerminacao: TcxGridDBColumn
+                    Caption = 'Alterar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Alterar_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    Options.ShowEditButtons = isebAlways
+                  end
+                  object ColumnExcluirGerminacao: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    Options.ShowEditButtons = isebAlways
+                  end
+                end
+                object level1: TcxGridLevel
+                  GridView = viewGerminacao
+                end
+              end
             end
           end
         end
@@ -339,9 +462,9 @@ inherited frmLote: TfrmLote
           object Label4: TLabel
             Left = 217
             Top = 0
-            Width = 116
+            Width = 118
             Height = 13
-            Caption = 'Pessoa que coletou (F2)'
+            Caption = 'Pessoa que Coletou (F2)'
             FocusControl = cbPessoaColetou
           end
           object Label5: TLabel
@@ -430,6 +553,225 @@ inherited frmLote: TfrmLote
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
+      inherited pnEditsCadastroDetail: TPanel
+        object Label8: TLabel
+          Left = 6
+          Top = 8
+          Width = 119
+          Height = 13
+          Caption = 'Pessoa que Semeou (F2)'
+          FocusControl = cbPessoaSemeou
+        end
+        object lbl2: TLabel
+          Left = 252
+          Top = 8
+          Width = 41
+          Height = 13
+          Caption = 'Canteiro'
+          FocusControl = cbCanteiro
+        end
+        object Label9: TLabel
+          Left = 474
+          Top = 8
+          Width = 98
+          Height = 13
+          Caption = 'Qtde. Semeada (Kg)'
+          FocusControl = EditQtdeSemeada
+        end
+        object Label10: TLabel
+          Left = 603
+          Top = 8
+          Width = 95
+          Height = 13
+          Caption = 'Data da Semeadura'
+          FocusControl = EditQtdeSemeada
+        end
+        object Label11: TLabel
+          Left = 6
+          Top = 50
+          Width = 58
+          Height = 13
+          Caption = 'Observa'#231#227'o'
+          FocusControl = EditObservacaoSemeadura
+        end
+        object cbPessoaSemeou: TcxDBLookupComboBox
+          Left = 4
+          Top = 23
+          RepositoryItem = dmLookup.repLcbPessoa
+          DataBinding.DataField = 'ID_PESSOA_SEMEOU'
+          DataBinding.DataSource = dsDetail
+          Properties.ListColumns = <>
+          TabOrder = 0
+          OnKeyDown = cbPessoaSemeouKeyDown
+          Width = 218
+        end
+        object btnPesquisar_Pessoa_Semeadura: TButton
+          Left = 224
+          Top = 23
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Pessoa_Semeou
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 1
+          TabStop = False
+        end
+        object cbCanteiro: TcxDBLookupComboBox
+          Left = 250
+          Top = 23
+          RepositoryItem = dmLookup.repLcbCanteiro
+          DataBinding.DataField = 'ID_CANTEIRO'
+          DataBinding.DataSource = dsDetail
+          Properties.ListColumns = <>
+          TabOrder = 2
+          OnKeyDown = cbPessoaSemeouKeyDown
+          Width = 218
+        end
+        object EditQtdeSemeada: TcxDBCalcEdit
+          Left = 474
+          Top = 23
+          DataBinding.DataField = 'QTDE_SEMEADA'
+          DataBinding.DataSource = dsDetail
+          TabOrder = 3
+          Width = 121
+        end
+        object EditDataSemeadura: TcxDBDateEdit
+          Left = 601
+          Top = 23
+          DataBinding.DataField = 'DATA'
+          DataBinding.DataSource = dsDetail
+          TabOrder = 4
+          Width = 121
+        end
+        object EditObservacaoSemeadura: TcxDBMemo
+          Left = 4
+          Top = 66
+          DataBinding.DataField = 'OBSERVACAO'
+          DataBinding.DataSource = dsDetail
+          TabOrder = 5
+          Height = 89
+          Width = 718
+        end
+      end
+    end
+    object tabCadastroGerminacao: TcxTabSheet
+      Caption = 'tabCadastroGerminacao'
+      ImageIndex = 3
+      object pnBotoesCadastroGerminacao: TPanel
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 50
+        Align = alTop
+        TabOrder = 1
+        ExplicitTop = 8
+        object btnSalvar_Germinacao: TButton
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Salvar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 0
+        end
+        object btnCancelar_Germinacao: TButton
+          AlignWithMargins = True
+          Left = 215
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Cancelar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 2
+        end
+        object btnSalvar_Incluir_Germinacao: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 114
+          Height = 42
+          Action = Ac_Salvar_Incluir_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 1
+        end
+      end
+      object pnEditsCadastroGerminacao: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 400
+        ExplicitTop = 208
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object Label12: TLabel
+          Left = 4
+          Top = 3
+          Width = 122
+          Height = 13
+          Caption = 'Pessoa que Verificou (F2)'
+          FocusControl = cbPessoaVerificou
+        end
+        object Label13: TLabel
+          Left = 250
+          Top = 3
+          Width = 112
+          Height = 13
+          Caption = 'Qtde. Germinada (Und)'
+          FocusControl = EditQtdeGerminada
+        end
+        object Label14: TLabel
+          Left = 379
+          Top = 3
+          Width = 93
+          Height = 13
+          Caption = 'Data da Verifica'#231#227'o'
+          FocusControl = EditQtdeGerminada
+        end
+        object cbPessoaVerificou: TcxDBLookupComboBox
+          Left = 2
+          Top = 18
+          RepositoryItem = dmLookup.repLcbPessoa
+          DataBinding.DataField = 'ID_PESSOA_VERIFICOU'
+          DataBinding.DataSource = dsGerminacao
+          Properties.ListColumns = <>
+          TabOrder = 0
+          OnKeyDown = cbPessoaVerificouKeyDown
+          Width = 218
+        end
+        object btnPesquisar_Pessoa_Verificou: TButton
+          Left = 222
+          Top = 18
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Pessoa_Verificou
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 1
+          TabStop = False
+        end
+        object EditQtdeGerminada: TcxDBCalcEdit
+          Left = 250
+          Top = 18
+          DataBinding.DataField = 'QTDE_GERMINADA'
+          DataBinding.DataSource = dsGerminacao
+          TabOrder = 2
+          Width = 121
+        end
+        object EditDataVerificacao: TcxDBDateEdit
+          Left = 377
+          Top = 18
+          DataBinding.DataField = 'DATA'
+          DataBinding.DataSource = dsGerminacao
+          TabOrder = 3
+          Width = 121
+        end
+      end
     end
   end
   inherited ActionList1: TActionList
@@ -440,13 +782,25 @@ inherited frmLote: TfrmLote
     end
     object Ac_Reabrir_Lote: TAction
       Caption = 'Reabrir Lote'
+      ImageIndex = 11
       OnExecute = Ac_Reabrir_LoteExecute
       OnUpdate = Ac_Fechar_LoteUpdate
     end
     object Ac_Fechar_Lote: TAction
       Caption = 'Fechar Lote'
+      ImageIndex = 10
       OnExecute = Ac_Fechar_LoteExecute
       OnUpdate = Ac_Fechar_LoteUpdate
+    end
+    object Ac_Pesquisar_Pessoa_Semeou: TAction
+      Category = 'Detail'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_Pessoa_SemeouExecute
+    end
+    object Ac_Pesquisar_Pessoa_Verificou: TAction
+      Category = 'Detail'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_Pessoa_VerificouExecute
     end
   end
   inherited dsMaster: TDataSource
@@ -468,7 +822,12 @@ inherited frmLote: TfrmLote
   end
   object dsLocalMatrizes: TDataSource
     DataSet = cdsLocalMatrizes
-    Left = 272
-    Top = 320
+    Left = 304
+    Top = 288
+  end
+  object dsGerminacao: TDataSource
+    DataSet = dmViveiro.cdsGerminacao
+    Left = 488
+    Top = 240
   end
 end

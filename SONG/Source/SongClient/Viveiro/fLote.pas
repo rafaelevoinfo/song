@@ -16,7 +16,7 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, fmGrids,
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
   uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
-  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal;
+  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo;
 
 type
   TfrmLote = class(TfrmBasicoCrudMasterDetail)
@@ -54,6 +54,51 @@ type
     viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn;
     viewRegistrosTAXA_DESCARTE: TcxGridDBColumn;
     tabDetailGerminacao: TcxTabSheet;
+    Label8: TLabel;
+    cbPessoaSemeou: TcxDBLookupComboBox;
+    btnPesquisar_Pessoa_Semeadura: TButton;
+    Ac_Pesquisar_Pessoa_Semeou: TAction;
+    cbCanteiro: TcxDBLookupComboBox;
+    lbl2: TLabel;
+    EditQtdeSemeada: TcxDBCalcEdit;
+    Label9: TLabel;
+    EditDataSemeadura: TcxDBDateEdit;
+    Label10: TLabel;
+    viewRegistrosDetailID: TcxGridDBColumn;
+    viewRegistrosDetailID_PESSOA_SEMEOU: TcxGridDBColumn;
+    viewRegistrosDetailQTDE_SEMEADA: TcxGridDBColumn;
+    viewRegistrosDetailDATA: TcxGridDBColumn;
+    viewRegistrosDetailID_CANTEIRO: TcxGridDBColumn;
+    EditObservacaoSemeadura: TcxDBMemo;
+    Label11: TLabel;
+    tabCadastroGerminacao: TcxTabSheet;
+    viewRegistrosDetailPESSOA_SEMEOU: TcxGridDBColumn;
+    viewRegistrosDetailNOME_CANTEIRO: TcxGridDBColumn;
+    pn1: TPanel;
+    btnactCnPrefixWizard: TButton;
+    cxGrid1: TcxGrid;
+    viewGerminacao: TcxGridDBTableView;
+    level1: TcxGridLevel;
+    dsGerminacao: TDataSource;
+    viewGerminacaoID: TcxGridDBColumn;
+    viewGerminacaoDATA: TcxGridDBColumn;
+    viewGerminacaoQTDE_GERMINADA: TcxGridDBColumn;
+    viewGerminacaoPESSOA_VERIFICOU: TcxGridDBColumn;
+    ColumnAlterarGerminacao: TcxGridDBColumn;
+    ColumnExcluirGerminacao: TcxGridDBColumn;
+    pnBotoesCadastroGerminacao: TPanel;
+    btnSalvar_Germinacao: TButton;
+    btnCancelar_Germinacao: TButton;
+    btnSalvar_Incluir_Germinacao: TButton;
+    pnEditsCadastroGerminacao: TPanel;
+    Label12: TLabel;
+    cbPessoaVerificou: TcxDBLookupComboBox;
+    btnPesquisar_Pessoa_Verificou: TButton;
+    Label13: TLabel;
+    EditQtdeGerminada: TcxDBCalcEdit;
+    Label14: TLabel;
+    EditDataVerificacao: TcxDBDateEdit;
+    Ac_Pesquisar_Pessoa_Verificou: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -63,31 +108,42 @@ type
     procedure Ac_Fechar_LoteExecute(Sender: TObject);
     procedure Ac_Reabrir_LoteExecute(Sender: TObject);
     procedure Ac_Fechar_LoteUpdate(Sender: TObject);
+    procedure Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
+    procedure cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure pcDetailsChange(Sender: TObject);
+    procedure Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
+    procedure cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
 
     procedure ppvConfigurarGrids;
     procedure ppvCarregarMatrizes;
-    procedure ppvPesquisarPessoa;
+    procedure ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
     procedure ppvCarregarPessoas(ipIdEspecifico: Integer);
     procedure ppvRemoverMatrizesOutrasEspecie;
   protected
-
+    procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterar; override;
     procedure pprEfetuarPesquisa; override;
 
     function fprHabilitarSalvar(): Boolean; override;
     procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar; override;
+    procedure pprAfterSalvarDetail; override;
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprHabilitarAlterar: Boolean; override;
 
     procedure pprExecutarCancelar; override;
+    procedure pprValidarDadosDetail; override;
+    procedure pprDefinirTabDetailCadastro; override;
   public
 
     procedure ppuIncluir; override;
+    function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
   public const
     coLoteAberto = 0;
     coLoteFechado = 1;
@@ -121,7 +177,19 @@ end;
 procedure TfrmLote.Ac_Pesquisar_PessoaExecute(Sender: TObject);
 begin
   inherited;
-  ppvPesquisarPessoa;
+  ppvPesquisarPessoa(cbPessoaColetou);
+end;
+
+procedure TfrmLote.Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
+begin
+  inherited;
+  ppvPesquisarPessoa(cbPessoaSemeou);
+end;
+
+procedure TfrmLote.Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
+begin
+  inherited;
+  ppvPesquisarPessoa(cbPessoaVerificou);
 end;
 
 procedure TfrmLote.Ac_Reabrir_LoteExecute(Sender: TObject);
@@ -147,7 +215,7 @@ begin
     Ord(trpVoluntario).ToString + ',' + Ord(trpMembroDiretoria).ToString]);
 end;
 
-procedure TfrmLote.ppvPesquisarPessoa();
+procedure TfrmLote.ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
 var
   vaFrmPessoa: TfrmPessoa;
 begin
@@ -161,16 +229,16 @@ begin
       begin
         if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
           begin
-            cbPessoaColetou.EditValue := vaFrmPessoa.IdEscolhido;
-            cbPessoaColetou.PostEditValue;
+            ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
+            ipEditResultado.PostEditValue;
           end
         else
           begin
             ppvCarregarPessoas(vaFrmPessoa.IdEscolhido);
             if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
               begin
-                cbPessoaColetou.EditValue := vaFrmPessoa.IdEscolhido;
-                cbPessoaColetou.PostEditValue;
+                ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
+                ipEditResultado.PostEditValue;
               end;
           end;
 
@@ -217,10 +285,41 @@ begin
     btnAbrirFecharLote.Action := Ac_Reabrir_Lote;
 end;
 
+procedure TfrmLote.pcDetailsChange(Sender: TObject);
+begin
+  inherited;
+  if pcDetails.ActivePage = tabDetail then
+    dsDetail.DataSet := dmViveiro.cdsSemeadura
+  else if pcDetails.ActivePage = tabDetailGerminacao then
+    dsDetail.DataSet := dmViveiro.cdsGerminacao;
+
+  if not dsDetail.DataSet.Active then
+    dsDetail.DataSet.Open;
+end;
+
+procedure TfrmLote.pprAfterSalvarDetail;
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueSementeLote(dmViveiro.cdsLoteID.AsInteger)
+  else if pcPrincipal.ActivePage = tabCadastroGerminacao then
+    dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLoteID.AsInteger);
+end;
+
 procedure TfrmLote.pprBeforeAlterar;
 begin
   inherited;
   ppvCarregarMatrizes;
+end;
+
+procedure TfrmLote.pprBeforeIncluirDetail;
+begin
+  inherited;
+  if pcDetails.ActivePage = tabDetail then
+    begin
+      if dmViveiro.cdsLoteQTDE_ARMAZENADA.AsFloat <= 0 then
+        raise Exception.Create('Este lote já foi totalmente semeado.');
+    end;
 end;
 
 procedure TfrmLote.pprBeforeSalvar;
@@ -241,6 +340,16 @@ begin
     ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
 end;
 
+procedure TfrmLote.pprDefinirTabDetailCadastro;
+begin
+  inherited;
+  if pcDetails.ActivePage = tabDetail then
+    pcPrincipal.ActivePage := tabCadastroDetail
+  else if pcDetails.ActivePage = tabDetailGerminacao then
+    pcPrincipal.ActivePage := tabCadastroGerminacao;
+
+end;
+
 procedure TfrmLote.pprEfetuarPesquisa;
 begin
   dmViveiro.cdsLote_Matriz.Close;
@@ -256,10 +365,24 @@ begin
 end;
 
 procedure TfrmLote.pprExecutarSalvar;
+var
+  vaEditando: Boolean;
 begin
+  vaEditando := dmViveiro.cdsLote.State = dsEdit;
   inherited;
+  if vaEditando then
+    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueSementeLote(dmViveiro.cdsLoteID.AsInteger);
+
   if (dmViveiro.cdsLote_Matriz.ChangeCount > 0) then
     dmViveiro.cdsLote_Matriz.ApplyUpdates(0);
+end;
+
+procedure TfrmLote.pprValidarDadosDetail;
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    dmPrincipal.FuncoesViveiro.ppuValidarSemeadura(dmViveiro.cdsLoteID.AsInteger, dmViveiro.cdsSemeaduraID.AsInteger,
+      dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsFloat);
 end;
 
 procedure TfrmLote.ppuIncluir;
@@ -308,7 +431,23 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    ppvPesquisarPessoa;
+    ppvPesquisarPessoa(cbPessoaColetou);
+end;
+
+procedure TfrmLote.cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
+Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvPesquisarPessoa(cbPessoaSemeou);
+end;
+
+procedure TfrmLote.cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
+Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvPesquisarPessoa(cbPessoaVerificou);
 end;
 
 procedure TfrmLote.FormCreate(Sender: TObject);
@@ -325,6 +464,7 @@ begin
 
   ppvCarregarPessoas(0);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 
   ppvConfigurarGrids;
 
@@ -348,6 +488,20 @@ begin
   if not Result then
     Result := dmViveiro.cdsLote_Matriz.Active and ((dmViveiro.cdsLote_Matriz.State in [dsEdit, dsInsert]) or
       (dmViveiro.cdsLote_Matriz.ChangeCount > 0));
+end;
+
+function TfrmLote.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+begin
+
+  if inherited then
+    begin
+      if pcDetails.ActivePage = tabDetail then
+        dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueSementeLote(dmViveiro.cdsLoteID.AsInteger)
+      else if pcDetails.ActivePage = tabDetailGerminacao then
+        dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLoteID.AsInteger);
+
+      pprEfetuarPesquisa;
+    end;
 end;
 
 procedure TfrmLote.ppvConfigurarGrids;

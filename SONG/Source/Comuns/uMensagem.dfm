@@ -23,7 +23,7 @@ object Mensagem: TMensagem
     Height = 172
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabPergunta
+    Properties.ActivePage = tabMensagem
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 167
     ClientRectLeft = 2
@@ -414,14 +414,14 @@ object Mensagem: TMensagem
           Width = 452
           Height = 19
           Align = alTop
-          Caption = 'Oops... Houve um erro!'
+          Caption = 'Aten'#231#227'o'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 168
+          ExplicitWidth = 57
         end
         object lbErro: TLabel
           AlignWithMargins = True

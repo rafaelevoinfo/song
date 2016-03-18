@@ -39,7 +39,6 @@ type
     dsLote: TDataSource;
     cdsLoteQTDE: TBCDField;
     cdsLoteQTDE_ARMAZENADA: TBCDField;
-    cdsLoteQTDE_SEMEADA: TBCDField;
     cdsLoteTAXA_GERMINACAO: TBCDField;
     cdsLoteTAXA_DESCARTE: TBCDField;
     cdsLoteSTATUS: TSmallintField;
@@ -57,6 +56,14 @@ type
     cdsSemeaduraDATA: TSQLTimeStampField;
     cdsSemeaduraOBSERVACAO: TStringField;
     cdsSemeaduraID_CANTEIRO: TIntegerField;
+    cdsCanteiro: TRFClientDataSet;
+    cdsCanteiroID: TIntegerField;
+    cdsCanteiroNOME: TStringField;
+    cdsCanteiroDESCRICAO: TStringField;
+    cdsSemeaduraPESSOA_SEMEOU: TStringField;
+    cdsSemeaduraNOME_CANTEIRO: TStringField;
+    cdsGerminacaoPESSOA_VERIFICOU: TStringField;
+    cdsLoteQTDE_SEMEADA: TBCDField;
   private
     { Private declarations }
   public

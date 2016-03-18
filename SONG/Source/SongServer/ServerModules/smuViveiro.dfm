@@ -144,7 +144,9 @@ inherited smViveiro: TsmViveiro
       '       LOTE.DATA,'
       '       LOTE.QTDE,'
       '       LOTE.QTDE_ARMAZENADA,'
-      '       LOTE.QTDE_SEMEADA,'
+      
+        '       (Select sum(semeadura.qtde_semeada) from semeadura where ' +
+        'semeadura.id_lote = lote.id) as QTDE_SEMEADA,'
       '       Lote.Taxa_Germinacao,'
       '       Lote.Taxa_Descarte,'
       '       Lote.Status, '
@@ -212,13 +214,6 @@ inherited smViveiro: TsmViveiro
       Precision = 18
       Size = 2
     end
-    object qLoteQTDE_SEMEADA: TBCDField
-      FieldName = 'QTDE_SEMEADA'
-      Origin = 'QTDE_SEMEADA'
-      ProviderFlags = [pfInUpdate]
-      Precision = 18
-      Size = 2
-    end
     object qLoteTAXA_GERMINACAO: TBCDField
       FieldName = 'TAXA_GERMINACAO'
       Origin = 'TAXA_GERMINACAO'
@@ -237,6 +232,14 @@ inherited smViveiro: TsmViveiro
       FieldName = 'STATUS'
       Origin = 'STATUS'
       ProviderFlags = [pfInUpdate]
+    end
+    object qLoteQTDE_SEMEADA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE_SEMEADA'
+      Origin = 'QTDE_SEMEADA'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
     end
   end
   object qLote_Matriz: TRFQuery
@@ -280,8 +283,12 @@ inherited smViveiro: TsmViveiro
       '       Germinacao.Id_Lote,'
       '       Germinacao.Id_Pessoa_Verificou,'
       '       Germinacao.Data,'
-      '       Germinacao.Qtde_Germinada'
+      '       Germinacao.Qtde_Germinada,'
+      '       Pessoa.nome as pessoa_verificou'
       'from Germinacao'
+      
+        'inner join pessoa on (pessoa.id = germinacao.id_pessoa_verificou' +
+        ')'
       'where Germinacao.Id_Lote = :Id_Lote  ')
     Left = 112
     Top = 96
@@ -322,6 +329,13 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qGerminacaoPESSOA_VERIFICOU: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PESSOA_VERIFICOU'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object qSemeadura: TRFQuery
     Connection = dmPrincipal.conSong
@@ -332,8 +346,12 @@ inherited smViveiro: TsmViveiro
       '       Semeadura.id_canteiro,'
       '       Semeadura.Qtde_Semeada,'
       '       Semeadura.Data,'
-      '       Semeadura.Observacao'
+      '       Semeadura.Observacao,'
+      '       Pessoa.nome as pessoa_semeou,'
+      '       Canteiro.nome as nome_canteiro'
       'from Semeadura'
+      'inner join pessoa on (pessoa.id = semeadura.id_pessoa_semeou)'
+      'inner join Canteiro on (canteiro.id = semeadura.id_canteiro)'
       'where Semeadura.Id_Lote = :Id_Lote   ')
     Left = 200
     Top = 96
@@ -387,6 +405,55 @@ inherited smViveiro: TsmViveiro
       Origin = 'ID_CANTEIRO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qSemeaduraPESSOA_SEMEOU: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PESSOA_SEMEOU'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSemeaduraNOME_CANTEIRO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_CANTEIRO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object qCanteiro: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Canteiro.Id,'
+      '       Canteiro.Nome,'
+      '       Canteiro.Descricao'
+      'from Canteiro  '
+      '&WHERE')
+    Left = 112
+    Top = 152
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qCanteiroID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qCanteiroNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qCanteiroDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
     end
   end
 end

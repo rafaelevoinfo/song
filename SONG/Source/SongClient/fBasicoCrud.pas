@@ -607,7 +607,7 @@ var
   vaContext: TRTTIContext;
   vaLabel: TLabel;
   vaProp: TRttiProperty;
-  vaDataBind: TObject;
+  vaDataBind, vaDataSource: TObject;
   vaDataSet: TDataSet;
   vaFieldName: string;
 begin
@@ -628,13 +628,17 @@ begin
                   vaProp := vaContext.GetType(vaDataBind.ClassType).GetProperty('DataSource');
                   if Assigned(vaProp) then
                     begin
-                      vaDataSet := (vaProp.GetValue(vaDataBind).AsObject as TDataSource).DataSet;
-                      if Assigned(vaDataSet) then
+                      vaDataSource := vaProp.GetValue(vaDataBind).AsObject;
+                      if Assigned(vaDataSource) then
                         begin
-                          vaField := vaDataSet.FindField(vaFieldName);
-                          if Assigned(vaField) and vaField.Required then
+                          vaDataSet := (vaDataSource as TDataSource).DataSet;
+                          if Assigned(vaDataSet) then
                             begin
-                              vaLabel.Font.Color := clRed;
+                              vaField := vaDataSet.FindField(vaFieldName);
+                              if Assigned(vaField) and vaField.Required then
+                                begin
+                                  vaLabel.Font.Color := clRed;
+                                end;
                             end;
                         end;
                     end;

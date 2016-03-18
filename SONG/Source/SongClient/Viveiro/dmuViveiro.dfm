@@ -160,15 +160,8 @@ inherited dmViveiro: TdmViveiro
       Size = 2
     end
     object cdsLoteQTDE_ARMAZENADA: TBCDField
-      DisplayLabel = 'Qtde. Armazenada'
+      DisplayLabel = 'Qtde. Armazenada (Kg)'
       FieldName = 'QTDE_ARMAZENADA'
-      ProviderFlags = [pfInUpdate]
-      Precision = 18
-      Size = 2
-    end
-    object cdsLoteQTDE_SEMEADA: TBCDField
-      DisplayLabel = 'Qtde. Semeada'
-      FieldName = 'QTDE_SEMEADA'
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
@@ -191,6 +184,12 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Status'
       FieldName = 'STATUS'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsLoteQTDE_SEMEADA: TBCDField
+      DisplayLabel = 'Qtde. Semeada (kg)'
+      FieldName = 'QTDE_SEMEADA'
+      Precision = 18
+      Size = 2
     end
   end
   object cdsLote_Matriz: TRFClientDataSet
@@ -277,6 +276,12 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsGerminacaoPESSOA_VERIFICOU: TStringField
+      DisplayLabel = 'Pessoa que Verificou'
+      FieldName = 'PESSOA_VERIFICOU'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsSemeadura: TRFClientDataSet
     Aggregates = <>
@@ -311,7 +316,7 @@ inherited dmViveiro: TdmViveiro
       Required = True
     end
     object cdsSemeaduraQTDE_SEMEADA: TBCDField
-      DisplayLabel = 'Qtde. Semeada'
+      DisplayLabel = 'Qtde. Semeada (kg)'
       FieldName = 'QTDE_SEMEADA'
       ProviderFlags = [pfInUpdate]
       Required = True
@@ -335,6 +340,44 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'ID_CANTEIRO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsSemeaduraPESSOA_SEMEOU: TStringField
+      DisplayLabel = 'Semeador'
+      FieldName = 'PESSOA_SEMEOU'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSemeaduraNOME_CANTEIRO: TStringField
+      DisplayLabel = 'Canteiro'
+      FieldName = 'NOME_CANTEIRO'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdsCanteiro: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqCanteiro'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 256
+    Top = 240
+    object cdsCanteiroID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsCanteiroNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsCanteiroDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
     end
   end
 end

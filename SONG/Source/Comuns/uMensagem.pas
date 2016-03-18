@@ -122,6 +122,8 @@ begin
         Result := rpNao;
       mrCancel:
         Result := rpCancelar;
+      else
+        Result := rpCancelar;
     end;
   finally
     vaMsg.Free;

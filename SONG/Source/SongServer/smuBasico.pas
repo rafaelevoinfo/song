@@ -222,9 +222,7 @@ end;
 
 function TsmBasico.fpvMontarWhere(ipTabela: string; ipParams: TParams): string;
 var
-  vaParam: TParam;
   I: Integer;
-  vaValor, vaOperador: string;
 begin
   Result := '';
   // vamos verificar se tem os parametros default

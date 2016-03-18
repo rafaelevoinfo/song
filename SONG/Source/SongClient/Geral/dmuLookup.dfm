@@ -258,6 +258,17 @@ inherited dmLookup: TdmLookup
     object repCalcPadrao: TcxEditRepositoryCalcItem
       Properties.DisplayFormat = ',0.00'
     end
+    object repLcbCanteiro: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkCanteiro
+    end
   end
   object cdslkPerfil: TClientDataSet
     Aggregates = <>
@@ -575,5 +586,30 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkMatriz
     Left = 360
     Top = 184
+  end
+  object cdslkCanteiro: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkCanteiro'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 552
+    Top = 264
+    object cdslkCanteiroID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkCanteiroNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkCanteiro: TDataSource
+    DataSet = cdslkCanteiro
+    Left = 512
+    Top = 336
   end
 end
