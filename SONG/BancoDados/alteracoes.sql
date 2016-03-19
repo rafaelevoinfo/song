@@ -12095,3 +12095,9 @@ alter DATA_PREVISTA_GERMINACAO position 7;
 alter table SEMEADURA
 alter OBSERVACAO position 8;
 
+
+
+COMMENT ON COLUMN LOTE.STATUS IS
+'0|NULL - Aberto (Processo de semeadura e germinacao em andamento)
+1 - Fechado (Semeadura e germinacao finalizados)';
+
