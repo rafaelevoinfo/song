@@ -64,6 +64,10 @@ type
     cdsSemeaduraNOME_CANTEIRO: TStringField;
     cdsGerminacaoPESSOA_VERIFICOU: TStringField;
     cdsLoteQTDE_SEMEADA: TBCDField;
+    cdsSemeaduraDATA_PREVISTA_GERMINACAO: TSQLTimeStampField;
+    cdsEspecieVALOR_MUDA: TBCDField;
+    cdsEspecieVALOR_KG_SEMENTE: TBCDField;
+    cdsEspecieTEMPO_GERMINACAO: TIntegerField;
   private
     { Private declarations }
   public

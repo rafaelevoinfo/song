@@ -45,6 +45,25 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsEspecieVALOR_MUDA: TBCDField
+      DisplayLabel = 'Valor Unit'#225'rio da Muda'
+      FieldName = 'VALOR_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsEspecieVALOR_KG_SEMENTE: TBCDField
+      DisplayLabel = 'Valor do Kg da Semente'
+      FieldName = 'VALOR_KG_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsEspecieTEMPO_GERMINACAO: TIntegerField
+      DisplayLabel = 'Tempo M'#233'dio para Germina'#231#227'o'
+      FieldName = 'TEMPO_GERMINACAO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
@@ -246,8 +265,8 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqGerminacao'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 256
-    Top = 160
+    Left = 192
+    Top = 24
     object cdsGerminacaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -297,8 +316,8 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqSemeadura'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 184
-    Top = 192
+    Left = 192
+    Top = 96
     object cdsSemeaduraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -353,14 +372,18 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = []
       Size = 100
     end
+    object cdsSemeaduraDATA_PREVISTA_GERMINACAO: TSQLTimeStampField
+      DisplayLabel = 'Data Prevista da Germina'#231#227'o'
+      FieldName = 'DATA_PREVISTA_GERMINACAO'
+    end
   end
   object cdsCanteiro: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqCanteiro'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 256
-    Top = 240
+    Left = 288
+    Top = 24
     object cdsCanteiroID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]

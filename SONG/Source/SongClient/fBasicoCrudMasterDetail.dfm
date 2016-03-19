@@ -1,15 +1,9 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
   Caption = 'frmBasicoCrudMasterDetail'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -66,10 +60,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
@@ -86,7 +76,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   Align = alLeft
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
-                  ExplicitLeft = 0
                 end
                 object btnUtilizarDetailSelecionado: TButton
                   AlignWithMargins = True
@@ -185,10 +174,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0
@@ -254,6 +239,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       Caption = 'Alterar'
       ImageIndex = 1
       OnExecute = Ac_Alterar_DetailExecute
+      OnUpdate = Ac_Alterar_DetailUpdate
     end
     object Ac_Excluir_Detail: TAction [8]
       Category = 'Detail'

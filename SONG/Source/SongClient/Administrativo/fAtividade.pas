@@ -159,6 +159,8 @@ type
     viewDetailVinculoNOME_ATIVIDADE_ORIGEM: TcxGridDBColumn;
     Ac_Pesquisar_Detail_Projeto: TAction;
     Ac_Pesquisar_Atividade: TAction;
+    Ac_Download: TAction;
+    ColumnDownload: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -175,6 +177,7 @@ type
     procedure cbAtividadeVinculoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_AtividadeExecute(Sender: TObject);
+    procedure Ac_DownloadExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     dmAdministrativo: TdmAdministrativo;
@@ -183,6 +186,7 @@ type
     procedure ppvPesquisarProjeto(ipCombo: TcxDBLookupComboBox);
     procedure ppvPesquisarAtividade;
     procedure ppvCarregarAtividades(ipIdEspecifico: Integer = 0);
+
 
     { Private declarations }
   protected
@@ -200,6 +204,7 @@ type
     procedure ppuAlterarDetail(ipId: Integer); override;
     procedure ppuIncluirDetail; override;
     procedure ppuRetornar; override;
+    procedure ppuBaixarArquivo(ipId: Integer);
 
   end;
 
@@ -233,6 +238,12 @@ begin
     end
   else
     EditCaminhoArquivo.Text := '';
+end;
+
+procedure TfrmAtividade.Ac_DownloadExecute(Sender: TObject);
+begin
+  inherited;
+  ppuBaixarArquivo(dmAdministrativo.cdsAtividade_ArquivoID.AsInteger);
 end;
 
 procedure TfrmAtividade.Ac_Pesquisar_AtividadeExecute(Sender: TObject);
@@ -453,6 +464,25 @@ begin
   vaCodigos := TUtils.fpuExtrairValoresCheckComboBox(cbProjetosPesquisa);
   if vaCodigos <> '' then
     ipCds.ppuAddParametro(TParametros.coProjeto, vaCodigos);;
+end;
+
+procedure TfrmAtividade.ppuBaixarArquivo(ipId: Integer);
+begin
+  if dmAdministrativo.cdsAtividade_Arquivo.Locate(TBancoDados.coId, ipId, []) then
+    begin
+      if not dmAdministrativo.cdsAtividade_ArquivoARQUIVO.IsNull then
+        begin
+          SaveDialogDocumento.FileName := dmAdministrativo.cdsAtividade_ArquivoNOME_ORIGINAL.AsString;
+          if SaveDialogDocumento.Execute then
+            begin
+              dmAdministrativo.cdsAtividade_ArquivoARQUIVO.SaveToFile(SaveDialogDocumento.FileName);
+            end;
+        end
+      else
+        raise Exception.Create('Nenhum arquivo foi carregado para poder ser baixado.');
+    end
+  else
+    raise Exception.Create('Registro não encontrado.');
 end;
 
 procedure TfrmAtividade.pprDefinirTabDetailCadastro;

@@ -54,6 +54,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_DetailUpdate(Sender: TObject);
     procedure Ac_Utilizar_Detail_SelecionadoExecute(Sender: TObject);
+    procedure Ac_Alterar_DetailUpdate(Sender: TObject);
   private
     FIdDetailEscolhido: Integer;
     procedure SetIdDetailEscolhido(const Value: Integer);
@@ -64,6 +65,7 @@ type
     procedure pprAfterSalvarDetail; virtual;
     function fprHabilitarSalvarDetail(): Boolean; virtual;
     function fprHabilitarIncluirDetail: Boolean; virtual;
+    function fprHabilitarAlterarDetail: Boolean; virtual;
     procedure pprBeforeIncluirDetail; virtual;
     procedure pprBeforeAlterarDetail; virtual;
     procedure pprDefinirTabDetailCadastro; virtual;
@@ -79,7 +81,7 @@ type
     procedure ppuIncluirDetail; virtual;
     procedure ppuAlterarDetail(ipId: Integer); virtual;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; virtual;
-    function fpuCancelarDetail:Boolean; virtual;
+    function fpuCancelarDetail: Boolean; virtual;
 
     procedure ppuSalvarDetail;
     procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao); override;
@@ -97,6 +99,12 @@ procedure TfrmBasicoCrudMasterDetail.Ac_Alterar_DetailExecute(Sender: TObject);
 begin
   inherited;
   ppuAlterarDetail(dsDetail.DataSet.FieldByName(TBancoDados.coId).AsLargeInt);
+end;
+
+procedure TfrmBasicoCrudMasterDetail.Ac_Alterar_DetailUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterarDetail;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Cancelar_DetailExecute(Sender: TObject);
@@ -168,6 +176,11 @@ begin
   pcDetails.ActivePage := tabDetail;
 end;
 
+function TfrmBasicoCrudMasterDetail.fprHabilitarAlterarDetail: Boolean;
+begin
+  Result := dsDetail.DataSet.Active and (dsDetail.DataSet.RecordCount > 0);
+end;
+
 function TfrmBasicoCrudMasterDetail.fprHabilitarIncluirDetail: Boolean;
 begin
   Result := dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0) and dsDetail.DataSet.Active;
@@ -223,11 +236,14 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuAlterarDetail(ipId: Integer);
 begin
-  pprBeforeAlterarDetail;
-  pprDefinirTabDetailCadastro;
+  if fprHabilitarAlterarDetail then
+    begin
+      pprBeforeAlterarDetail;
+      pprDefinirTabDetailCadastro;
+    end;
 end;
 
-function TfrmBasicoCrudMasterDetail.fpuCancelarDetail:Boolean;
+function TfrmBasicoCrudMasterDetail.fpuCancelarDetail: Boolean;
 begin
   Result := True;
   if fprHabilitarSalvarDetail then

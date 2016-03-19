@@ -10,6 +10,9 @@ inherited smViveiro: TsmViveiro
       '       ESPECIE.NOME_CIENTIFICO,'
       '       ESPECIE.FAMILIA_BOTANICA,'
       '       ESPECIE.QTDE_SEMENTE_KILO,'
+      '       Especie.Valor_Muda,'
+      '       Especie.Valor_Kg_Semente,'
+      '       Especie.Tempo_Germinacao,'
       '       ESPECIE.OBSERVACAO'
       'from ESPECIE  '
       '&WHERE')
@@ -52,6 +55,25 @@ inherited smViveiro: TsmViveiro
       Origin = 'QTDE_SEMENTE_KILO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qEspecieVALOR_MUDA: TBCDField
+      FieldName = 'VALOR_MUDA'
+      Origin = 'VALOR_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qEspecieVALOR_KG_SEMENTE: TBCDField
+      FieldName = 'VALOR_KG_SEMENTE'
+      Origin = 'VALOR_KG_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qEspecieTEMPO_GERMINACAO: TIntegerField
+      FieldName = 'TEMPO_GERMINACAO'
+      Origin = 'TEMPO_GERMINACAO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qMatriz: TRFQuery
@@ -346,6 +368,7 @@ inherited smViveiro: TsmViveiro
       '       Semeadura.id_canteiro,'
       '       Semeadura.Qtde_Semeada,'
       '       Semeadura.Data,'
+      '       Semeadura.DATA_PREVISTA_GERMINACAO,'
       '       Semeadura.Observacao,'
       '       Pessoa.nome as pessoa_semeou,'
       '       Canteiro.nome as nome_canteiro'
@@ -419,6 +442,11 @@ inherited smViveiro: TsmViveiro
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qSemeaduraDATA_PREVISTA_GERMINACAO: TSQLTimeStampField
+      FieldName = 'DATA_PREVISTA_GERMINACAO'
+      Origin = 'DATA_PREVISTA_GERMINACAO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qCanteiro: TRFQuery

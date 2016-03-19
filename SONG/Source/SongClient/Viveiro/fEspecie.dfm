@@ -1,8 +1,10 @@
 inherited frmEspecie: TfrmEspecie
+  ActiveControl = EditNome
   Caption = 'Esp'#233'cies Produzidas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -45,7 +47,7 @@ inherited frmEspecie: TfrmEspecie
             object viewRegistrosNOME: TcxGridDBColumn [1]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
-              Width = 307
+              Width = 249
             end
             object viewRegistrosNOME_CIENTIFICO: TcxGridDBColumn [2]
               DataBinding.FieldName = 'NOME_CIENTIFICO'
@@ -54,6 +56,7 @@ inherited frmEspecie: TfrmEspecie
             end
             object viewRegistrosFAMILIA_BOTANICA: TcxGridDBColumn [3]
               DataBinding.FieldName = 'FAMILIA_BOTANICA'
+              Visible = False
               Options.Editing = False
               Width = 178
             end
@@ -64,11 +67,31 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 121
             end
+            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [5]
+              DataBinding.FieldName = 'VALOR_MUDA'
+              RepositoryItem = dmLookup.repCurPadrao
+              Options.Editing = False
+            end
+            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'VALOR_KG_SEMENTE'
+              RepositoryItem = dmLookup.repCurPadrao
+              Options.Editing = False
+            end
+            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [7]
+              DataBinding.FieldName = 'TEMPO_GERMINACAO'
+              Visible = False
+              Options.Editing = False
+              Width = 152
+            end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -96,7 +119,7 @@ inherited frmEspecie: TfrmEspecie
         end
         object Label6: TLabel
           Left = 5
-          Top = 46
+          Top = 83
           Width = 53
           Height = 13
           Caption = 'Oberva'#231#227'o'
@@ -109,6 +132,29 @@ inherited frmEspecie: TfrmEspecie
           Height = 13
           Caption = 'Qtde. de Sementes por Kilo'
           FocusControl = EditQtdeSementeKilo
+        end
+        object Label8: TLabel
+          Left = 4
+          Top = 42
+          Width = 150
+          Height = 13
+          Caption = 'Qtde. de Dias para Germina'#231#227'o'
+        end
+        object Label9: TLabel
+          Left = 162
+          Top = 42
+          Width = 114
+          Height = 13
+          Caption = 'Valor do Kg da Semente'
+          FocusControl = EditValorKg
+        end
+        object Label10: TLabel
+          Left = 305
+          Top = 42
+          Width = 108
+          Height = 13
+          Caption = 'Valor Unit'#225'rio da Muda'
+          FocusControl = EditValorUnidadeMuda
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -136,10 +182,10 @@ inherited frmEspecie: TfrmEspecie
         end
         object EditObsevacao: TcxDBMemo
           Left = 4
-          Top = 62
+          Top = 99
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 4
+          TabOrder = 7
           Height = 89
           Width = 924
         end
@@ -152,6 +198,32 @@ inherited frmEspecie: TfrmEspecie
           Properties.ImmediatePost = True
           TabOrder = 3
           Width = 131
+        end
+        object EditValorKg: TcxDBCurrencyEdit
+          Left = 162
+          Top = 58
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'VALOR_KG_SEMENTE'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 5
+          Width = 138
+        end
+        object EditValorUnidadeMuda: TcxDBCurrencyEdit
+          Left = 305
+          Top = 58
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'VALOR_MUDA'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 6
+          Width = 125
+        end
+        object EditTempoGerminacao: TcxDBSpinEdit
+          Left = 4
+          Top = 58
+          DataBinding.DataField = 'TEMPO_GERMINACAO'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 4
+          Width = 152
         end
       end
     end

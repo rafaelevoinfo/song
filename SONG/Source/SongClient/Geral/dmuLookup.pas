@@ -83,6 +83,9 @@ type
     cdslkCanteiroNOME: TStringField;
     repLcbCanteiro: TcxEditRepositoryLookupComboBoxItem;
     dslkCanteiro: TDataSource;
+    cdslkEspecieVALOR_MUDA: TBCDField;
+    cdslkEspecieVALOR_KG_SEMENTE: TBCDField;
+    cdslkEspecieTEMPO_GERMINACAO: TIntegerField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

@@ -290,7 +290,10 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'Select Especie.id,'
-      '       Especie.nome'
+      '       Especie.nome,'
+      '       Especie.Valor_Muda,'
+      '       Especie.Valor_Kg_Semente,'
+      '       Especie.Tempo_Germinacao'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -313,6 +316,25 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
       Size = 100
+    end
+    object qlkEspecieVALOR_MUDA: TBCDField
+      FieldName = 'VALOR_MUDA'
+      Origin = 'VALOR_MUDA'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qlkEspecieVALOR_KG_SEMENTE: TBCDField
+      FieldName = 'VALOR_KG_SEMENTE'
+      Origin = 'VALOR_KG_SEMENTE'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qlkEspecieTEMPO_GERMINACAO: TIntegerField
+      FieldName = 'TEMPO_GERMINACAO'
+      Origin = 'TEMPO_GERMINACAO'
+      ProviderFlags = []
     end
   end
   object qlkMatriz: TRFQuery

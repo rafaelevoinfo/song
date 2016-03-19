@@ -13,7 +13,8 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
-  cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc;
+  cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc, cxCurrencyEdit,
+  dmuLookup, cxSpinEdit;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)
@@ -32,9 +33,19 @@ type
     EditQtdeSementeKilo: TcxDBCalcEdit;
     Label7: TLabel;
     viewRegistrosQTDE_POR_KILO: TcxGridDBColumn;
+    Label8: TLabel;
+    Label9: TLabel;
+    EditValorKg: TcxDBCurrencyEdit;
+    Label10: TLabel;
+    EditValorUnidadeMuda: TcxDBCurrencyEdit;
+    viewRegistrosVALOR_MUDA: TcxGridDBColumn;
+    viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn;
+    viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn;
+    EditTempoGerminacao: TcxDBSpinEdit;
     procedure FormCreate(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
+    dmLookup:TdmLookup;
   protected
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -59,6 +70,9 @@ procedure TfrmEspecie.FormCreate(Sender: TObject);
 begin
   dmViveiro := TdmViveiro.Create(Self);
   dmViveiro.Name := '';
+
+  dmLookup:=TdmLookup.Create(Self);
+  dmLookup.Name := '';
 
   inherited;
 

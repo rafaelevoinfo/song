@@ -167,14 +167,11 @@ inherited frmAtividade: TfrmAtividade
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabDetailArquivo
             OnChange = pcDetailsChange
             object tabDetailComentario: TcxTabSheet [0]
               Caption = 'Coment'#225'rios'
               ImageIndex = 4
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -312,10 +309,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -422,10 +415,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailVinculo: TcxTabSheet
               Caption = 'Atividades v'#237'nculadas'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetailVinculo: TPanel
                 Left = 0
                 Top = 0
@@ -547,10 +536,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailArquivo: TcxTabSheet
               Caption = 'Arquivos'
               ImageIndex = 3
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -609,6 +594,25 @@ inherited frmAtividade: TfrmAtividade
                     DataBinding.FieldName = 'DATA_UPLOAD'
                     Options.Editing = False
                     Options.ShowEditButtons = isebNever
+                  end
+                  object ColumnDownload: TcxGridDBColumn
+                    Caption = 'Baixar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Download
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
                   end
                   object cxGridDBColumn3: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -832,10 +836,6 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 5
@@ -1288,6 +1288,11 @@ inherited frmAtividade: TfrmAtividade
       Category = 'Detail'
       ImageIndex = 0
       OnExecute = Ac_Pesquisar_AtividadeExecute
+    end
+    object Ac_Download: TAction
+      Caption = 'Baixar'
+      ImageIndex = 8
+      OnExecute = Ac_DownloadExecute
     end
   end
   inherited dsMaster: TDataSource

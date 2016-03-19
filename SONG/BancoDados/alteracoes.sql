@@ -12053,3 +12053,45 @@ ALTER TABLE LOTE DROP QTDE_SEMEADA;
 COMMENT ON COLUMN LOTE.QTDE_ARMAZENADA IS
 'Qtde em kilos de sementes em estoque';
 
+
+
+ALTER TABLE ESPECIE
+    ADD VALOR_MUDA NUMERIC(15,2),
+    ADD VALOR_KG_SEMENTE NUMERIC(15,2),
+    ADD TEMPO_GERMINACAO INTEGER;
+
+COMMENT ON COLUMN ESPECIE.TEMPO_GERMINACAO IS
+'Tempo medio em dias que as sementes dessa especie levam para germinar.';
+
+
+
+ALTER TABLE SEMEADURA
+    ADD DATA_PREVISTA_GERMINACAO TIMESTAMP;
+
+COMMENT ON COLUMN SEMEADURA.DATA_PREVISTA_GERMINACAO IS
+'Baseando no tempo de germinacao da especie e na data da semeadura calcula-se a data prevista para germinacao';
+
+alter table SEMEADURA
+alter ID position 1;
+
+alter table SEMEADURA
+alter ID_LOTE position 2;
+
+alter table SEMEADURA
+alter ID_PESSOA_SEMEOU position 3;
+
+alter table SEMEADURA
+alter ID_CANTEIRO position 4;
+
+alter table SEMEADURA
+alter QTDE_SEMEADA position 5;
+
+alter table SEMEADURA
+alter DATA position 6;
+
+alter table SEMEADURA
+alter DATA_PREVISTA_GERMINACAO position 7;
+
+alter table SEMEADURA
+alter OBSERVACAO position 8;
+

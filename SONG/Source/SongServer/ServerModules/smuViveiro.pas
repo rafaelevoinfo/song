@@ -69,6 +69,10 @@ type
     qSemeaduraNOME_CANTEIRO: TStringField;
     qGerminacaoPESSOA_VERIFICOU: TStringField;
     qLoteQTDE_SEMEADA: TBCDField;
+    qSemeaduraDATA_PREVISTA_GERMINACAO: TSQLTimeStampField;
+    qEspecieVALOR_MUDA: TBCDField;
+    qEspecieVALOR_KG_SEMENTE: TBCDField;
+    qEspecieTEMPO_GERMINACAO: TIntegerField;
   private
     { Private declarations }
   protected

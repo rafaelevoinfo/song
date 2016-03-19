@@ -99,6 +99,9 @@ type
     Label14: TLabel;
     EditDataVerificacao: TcxDBDateEdit;
     Ac_Pesquisar_Pessoa_Verificou: TAction;
+    Label15: TLabel;
+    EditDataPrevistaGerminacao: TcxDBDateEdit;
+    viewRegistrosDetailDATA_PREVISTA_GERMINACAO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -115,6 +118,7 @@ type
     procedure Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
     procedure cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
@@ -124,6 +128,8 @@ type
     procedure ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
     procedure ppvCarregarPessoas(ipIdEspecifico: Integer);
     procedure ppvRemoverMatrizesOutrasEspecie;
+
+    function fpvLoteAberto:Boolean;
   protected
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterar; override;
@@ -136,6 +142,8 @@ type
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprHabilitarAlterar: Boolean; override;
+    function fprHabilitarIncluirDetail:Boolean;override;
+    function fprHabilitarAlterarDetail:Boolean;override;
 
     procedure pprExecutarCancelar; override;
     procedure pprValidarDadosDetail; override;
@@ -450,6 +458,25 @@ begin
     ppvPesquisarPessoa(cbPessoaVerificou);
 end;
 
+procedure TfrmLote.EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    begin
+      if not VarIsNull(EditDataSemeadura.EditValue) then
+        begin
+          if dmLookup.cdslkEspecie.Locate(TBancoDados.coID, dmViveiro.cdsLoteID_ESPECIE.AsInteger, []) then
+            begin
+              if not(dmViveiro.cdsSemeadura.State in [dsEdit, dsInsert]) then
+                dmViveiro.cdsSemeadura.Edit;
+
+              dmViveiro.cdsSemeaduraDATA_PREVISTA_GERMINACAO.AsDateTime :=
+                IncDay(EditDataSemeadura.Date, dmLookup.cdslkEspecieTEMPO_GERMINACAO.AsInteger);
+            end;
+        end;
+    end;
+end;
+
 procedure TfrmLote.FormCreate(Sender: TObject);
 begin
   dmViveiro := TdmViveiro.Create(Self);
@@ -479,7 +506,17 @@ end;
 
 function TfrmLote.fprHabilitarAlterar: Boolean;
 begin
-  Result := inherited and dmViveiro.cdsLote.Active and (dmViveiro.cdsLoteSTATUS.AsInteger = 0);
+  Result := inherited and fpvLoteAberto;
+end;
+
+function TfrmLote.fprHabilitarAlterarDetail: Boolean;
+begin
+  Result := inherited and fpvLoteAberto;
+end;
+
+function TfrmLote.fprHabilitarIncluirDetail: Boolean;
+begin
+  Result := inherited and fpvLoteAberto;
 end;
 
 function TfrmLote.fprHabilitarSalvar: Boolean;
@@ -502,6 +539,11 @@ begin
 
       pprEfetuarPesquisa;
     end;
+end;
+
+function TfrmLote.fpvLoteAberto: Boolean;
+begin
+  Result :=  dmViveiro.cdsLote.Active and (dmViveiro.cdsLoteSTATUS.AsInteger = 0);
 end;
 
 procedure TfrmLote.ppvConfigurarGrids;

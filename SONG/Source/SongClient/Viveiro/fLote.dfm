@@ -1,6 +1,5 @@
 inherited frmLote: TfrmLote
   Caption = 'Lotes de Sementes'
-  ExplicitTop = -9
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -193,19 +192,24 @@ inherited frmLote: TfrmLote
                   object viewRegistrosDetailNOME_CANTEIRO: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'NOME_CANTEIRO'
                     Options.Editing = False
-                    Width = 270
+                    Width = 184
                   end
                   object viewRegistrosDetailQTDE_SEMEADA: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'QTDE_SEMEADA'
                     RepositoryItem = dmLookup.repCalcPadrao
                     Options.Editing = False
                   end
-                  object viewRegistrosDetailID_PESSOA_SEMEOU: TcxGridDBColumn [5]
+                  object viewRegistrosDetailDATA_PREVISTA_GERMINACAO: TcxGridDBColumn [5]
+                    DataBinding.FieldName = 'DATA_PREVISTA_GERMINACAO'
+                    Options.Editing = False
+                    Width = 148
+                  end
+                  object viewRegistrosDetailID_PESSOA_SEMEOU: TcxGridDBColumn [6]
                     DataBinding.FieldName = 'ID_PESSOA_SEMEOU'
                     Visible = False
                     Options.Editing = False
                   end
-                  object viewRegistrosDetailID_CANTEIRO: TcxGridDBColumn [6]
+                  object viewRegistrosDetailID_CANTEIRO: TcxGridDBColumn [7]
                     DataBinding.FieldName = 'ID_CANTEIRO'
                     Visible = False
                     Options.Editing = False
@@ -223,7 +227,6 @@ inherited frmLote: TfrmLote
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnactCnPrefixWizard: TButton
                   Left = 1
                   Top = 1
@@ -549,10 +552,6 @@ inherited frmLote: TfrmLote
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 6
@@ -593,6 +592,14 @@ inherited frmLote: TfrmLote
           Height = 13
           Caption = 'Observa'#231#227'o'
           FocusControl = EditObservacaoSemeadura
+        end
+        object Label15: TLabel
+          Left = 730
+          Top = 8
+          Width = 139
+          Height = 13
+          Caption = 'Data Prevista de Germina'#231#227'o'
+          FocusControl = EditQtdeGerminada
         end
         object cbPessoaSemeou: TcxDBLookupComboBox
           Left = 4
@@ -639,6 +646,7 @@ inherited frmLote: TfrmLote
           Top = 23
           DataBinding.DataField = 'DATA'
           DataBinding.DataSource = dsDetail
+          Properties.OnEditValueChanged = EditDataSemeaduraPropertiesEditValueChanged
           TabOrder = 4
           Width = 121
         end
@@ -649,7 +657,16 @@ inherited frmLote: TfrmLote
           DataBinding.DataSource = dsDetail
           TabOrder = 5
           Height = 89
-          Width = 718
+          Width = 865
+        end
+        object EditDataPrevistaGerminacao: TcxDBDateEdit
+          Left = 728
+          Top = 23
+          DataBinding.DataField = 'DATA_PREVISTA_GERMINACAO'
+          DataBinding.DataSource = dsDetail
+          Enabled = False
+          TabOrder = 6
+          Width = 141
         end
       end
     end
@@ -663,7 +680,6 @@ inherited frmLote: TfrmLote
         Height = 50
         Align = alTop
         TabOrder = 1
-        ExplicitTop = 8
         object btnSalvar_Germinacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -706,10 +722,6 @@ inherited frmLote: TfrmLote
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 400
-        ExplicitTop = 208
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object Label12: TLabel
           Left = 4
           Top = 3

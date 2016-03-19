@@ -9,7 +9,7 @@ inherited frmProjeto: TfrmProjeto
         inherited pnEditsPesquisa: TPanel
           Left = 556
           Width = 419
-          ExplicitLeft = 548
+          ExplicitLeft = 556
           ExplicitWidth = 419
           inherited Label1: TLabel
             Left = 4
@@ -66,6 +66,7 @@ inherited frmProjeto: TfrmProjeto
         end
         inherited pnBotoes: TPanel
           Width = 555
+          ExplicitWidth = 555
         end
       end
       inherited pnGrid: TPanel
@@ -128,21 +129,13 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailFinanciador
+            Properties.ActivePage = tabDetailDocumento
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
               ExplicitHeight = 218
-              inherited pnBotoesDetail: TPanel
-                inherited btnIncluirDetail: TButton
-                  ExplicitLeft = 1
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
                 ExplicitHeight = 193
@@ -739,10 +732,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5

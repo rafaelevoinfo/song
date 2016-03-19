@@ -53,6 +53,9 @@ type
     qlkCanteiro: TRFQuery;
     qlkCanteiroID: TIntegerField;
     qlkCanteiroNOME: TStringField;
+    qlkEspecieVALOR_MUDA: TBCDField;
+    qlkEspecieVALOR_KG_SEMENTE: TBCDField;
+    qlkEspecieTEMPO_GERMINACAO: TIntegerField;
   private
     { Private declarations }
   protected

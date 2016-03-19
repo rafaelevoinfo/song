@@ -36,8 +36,8 @@ object dmPrincipal: TdmPrincipal
       'DriverID=FB')
     ConnectedStoredUsage = []
     LoginPrompt = False
-    Left = 208
-    Top = 64
+    Left = 192
+    Top = 40
   end
   object FDPhysFBDriverLink1: TFDPhysFBDriverLink
     Left = 288

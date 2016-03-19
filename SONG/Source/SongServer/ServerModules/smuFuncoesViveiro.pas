@@ -138,8 +138,7 @@ end;
 procedure TsmFuncoesViveiro.ppuFecharLoteSemente(ipIdLote: Integer);
 begin
   // a taxa de descarte é um campo calculado no banco, entao nao preciso calcula-la
-  Connection.ExecSQL('update lote set lote.status = 1 where lote.id = :id', [vaTaxaGerminacao, ipIdLote]);
-
+  Connection.ExecSQL('update lote set lote.status = 1 where lote.id = :id', [ipIdLote]);
 end;
 
 procedure TsmFuncoesViveiro.ppuReabrirLoteSemente(ipId: Integer);

@@ -551,6 +551,22 @@ inherited dmLookup: TdmLookup
       Required = True
       Size = 100
     end
+    object cdslkEspecieVALOR_MUDA: TBCDField
+      FieldName = 'VALOR_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdslkEspecieVALOR_KG_SEMENTE: TBCDField
+      FieldName = 'VALOR_KG_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdslkEspecieTEMPO_GERMINACAO: TIntegerField
+      FieldName = 'TEMPO_GERMINACAO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object dslkEspecie: TDataSource
     DataSet = cdslkEspecie
