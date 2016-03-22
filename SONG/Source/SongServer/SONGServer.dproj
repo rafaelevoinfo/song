@@ -191,7 +191,7 @@
             <Deployment Version="2">
                 <DeployFile LocalName="SongServer.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>SONGServer.exe</RemoteName>
+                        <RemoteName>SongServer.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

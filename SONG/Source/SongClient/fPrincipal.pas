@@ -9,7 +9,8 @@ uses
   dxAlertWindow, System.Actions, Vcl.ActnList, Vcl.Menus, uUtils, fPerfil,
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
-  fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fLote, fCanteiro;
+  fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
+  fLote_Semente;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -113,7 +114,7 @@ end;
 procedure TfrmPrincipal.Ac_Lote_SementeExecute(Sender: TObject);
 begin
   inherited;
-  TUtils.ppuAbrirFormAba<TfrmLote>(pcPrincipal, TfrmLote, frmLote);
+  TUtils.ppuAbrirFormAba<TfrmLoteSemente>(pcPrincipal, TfrmLoteSemente, frmLoteSemente);
 end;
 
 procedure TfrmPrincipal.Ac_MatrizExecute(Sender: TObject);

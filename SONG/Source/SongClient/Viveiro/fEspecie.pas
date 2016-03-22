@@ -42,6 +42,10 @@ type
     viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn;
     viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn;
     EditTempoGerminacao: TcxDBSpinEdit;
+    Label11: TLabel;
+    EditInicioPeriodoColeta: TcxDBDateEdit;
+    lbl1: TLabel;
+    EditFimPeriodoColeta: TcxDBDateEdit;
     procedure FormCreate(Sender: TObject);
   private
     dmViveiro: TdmViveiro;

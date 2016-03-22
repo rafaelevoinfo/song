@@ -64,6 +64,16 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'TEMPO_GERMINACAO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsEspecieINICIO_PERIODO_COLETA: TDateField
+      DisplayLabel = 'In'#237'cio do per'#237'odo de coleta'
+      FieldName = 'INICIO_PERIODO_COLETA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsEspecieFIM_PERIODO_COLETA: TDateField
+      DisplayLabel = 'Fim do per'#237'odo de coleta'
+      FieldName = 'FIM_PERIODO_COLETA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
@@ -128,94 +138,99 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cdsLote: TRFClientDataSet
+  object cdsLote_Semente: TRFClientDataSet
     Aggregates = <>
     Params = <>
-    ProviderName = 'dspqLote'
+    ProviderName = 'dspqLote_Semente'
     RemoteServer = dmPrincipal.ProviderViveiro
     Left = 32
-    Top = 88
-    object cdsLoteID: TIntegerField
+    Top = 96
+    object cdsLote_SementeID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsLoteID_ESPECIE: TIntegerField
+    object cdsLote_SementeID_ESPECIE: TIntegerField
       DisplayLabel = 'Id da Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsLoteID_PESSOA_COLETOU: TIntegerField
-      DisplayLabel = 'Pessoa que coletou'
+    object cdsLote_SementeID_PESSOA_COLETOU: TIntegerField
+      DisplayLabel = 'Id da Pessoa que coletou'
       FieldName = 'ID_PESSOA_COLETOU'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsLoteNOME: TStringField
+    object cdsLote_SementeNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 30
     end
-    object cdsLoteDATA: TDateField
+    object cdsLote_SementeDATA: TDateField
       DisplayLabel = 'Data'
       FieldName = 'DATA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsLoteNOME_ESPECIE: TStringField
+    object cdsLote_SementeNOME_ESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'NOME_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Size = 100
     end
-    object cdsLoteQTDE: TBCDField
+    object cdsLote_SementeQTDE: TBCDField
       DisplayLabel = 'Qtde. Coletada/Comprada (kg)'
       FieldName = 'QTDE'
       Required = True
       Precision = 18
       Size = 2
     end
-    object cdsLoteQTDE_ARMAZENADA: TBCDField
+    object cdsLote_SementeQTDE_ARMAZENADA: TBCDField
       DisplayLabel = 'Qtde. Armazenada (Kg)'
       FieldName = 'QTDE_ARMAZENADA'
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
     end
-    object cdsLoteTAXA_GERMINACAO: TBCDField
+    object cdsLote_SementeTAXA_GERMINACAO: TBCDField
       DisplayLabel = '% de Germina'#231#227'o'
       FieldName = 'TAXA_GERMINACAO'
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
     end
-    object cdsLoteTAXA_DESCARTE: TBCDField
+    object cdsLote_SementeTAXA_DESCARTE: TBCDField
       DisplayLabel = '% de Descarte'
       FieldName = 'TAXA_DESCARTE'
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
     end
-    object cdsLoteSTATUS: TSmallintField
+    object cdsLote_SementeSTATUS: TSmallintField
       DisplayLabel = 'Status'
       FieldName = 'STATUS'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsLoteQTDE_SEMEADA: TBCDField
+    object cdsLote_SementeQTDE_SEMEADA: TBCDField
       DisplayLabel = 'Qtde. Semeada (kg)'
       FieldName = 'QTDE_SEMEADA'
       Precision = 18
       Size = 2
     end
+    object cdsLote_SementePESSOA_COLETOU: TStringField
+      DisplayLabel = 'Pessoa que Coletou'
+      FieldName = 'PESSOA_COLETOU'
+      Size = 100
+    end
   end
-  object cdsLote_Matriz: TRFClientDataSet
+  object cdsLote_Semente_Matriz: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_LOTE'
+    IndexFieldNames = 'ID_LOTE_SEMENTE'
     MasterFields = 'ID'
-    MasterSource = dsLote
+    MasterSource = dsLote_Semente
     PacketRecords = 0
     Params = <
       item
@@ -223,39 +238,38 @@ inherited dmViveiro: TdmViveiro
         Name = 'ID_LOTE'
         ParamType = ptInput
       end>
-    ProviderName = 'dspqLote_Matriz'
+    ProviderName = 'dspqLote_Semente_Matriz'
     RemoteServer = dmPrincipal.ProviderViveiro
     RFApplyAutomatico = False
-    Left = 104
-    Top = 88
-    object cdsLote_MatrizID: TIntegerField
+    Left = 160
+    Top = 104
+    object cdsLote_Semente_MatrizID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsLote_MatrizID_LOTE: TIntegerField
+    object cdsLote_Semente_MatrizID_LOTE_SEMENTE: TIntegerField
       DisplayLabel = 'Id do Lote'
-      FieldName = 'ID_LOTE'
-      ProviderFlags = [pfInUpdate]
+      FieldName = 'ID_LOTE_SEMENTE'
       Required = True
     end
-    object cdsLote_MatrizID_MATRIZ: TIntegerField
+    object cdsLote_Semente_MatrizID_MATRIZ: TIntegerField
       DisplayLabel = 'Matriz'
       FieldName = 'ID_MATRIZ'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
   end
-  object dsLote: TDataSource
-    DataSet = cdsLote
+  object dsLote_Semente: TDataSource
+    DataSet = cdsLote_Semente
     Left = 24
     Top = 160
   end
   object cdsGerminacao: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_LOTE'
+    IndexFieldNames = 'ID_LOTE_SEMENTE'
     MasterFields = 'ID'
-    MasterSource = dsLote
+    MasterSource = dsLote_Semente
     PacketRecords = 0
     Params = <
       item
@@ -265,15 +279,16 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqGerminacao'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 192
-    Top = 24
+    Left = 376
+    Top = 104
     object cdsGerminacaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsGerminacaoID_LOTE: TIntegerField
-      FieldName = 'ID_LOTE'
+    object cdsGerminacaoID_LOTE_SEMENTE: TIntegerField
+      DisplayLabel = 'Id do Lote'
+      FieldName = 'ID_LOTE_SEMENTE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
@@ -304,9 +319,9 @@ inherited dmViveiro: TdmViveiro
   end
   object cdsSemeadura: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_LOTE'
+    IndexFieldNames = 'ID_LOTE_SEMENTE'
     MasterFields = 'ID'
-    MasterSource = dsLote
+    MasterSource = dsLote_Semente
     PacketRecords = 0
     Params = <
       item
@@ -316,16 +331,16 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqSemeadura'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 192
+    Left = 280
     Top = 96
     object cdsSemeaduraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsSemeaduraID_LOTE: TIntegerField
-      FieldName = 'ID_LOTE'
-      ProviderFlags = [pfInUpdate]
+    object cdsSemeaduraID_LOTE_SEMENTE: TIntegerField
+      DisplayLabel = 'Id do Lote'
+      FieldName = 'ID_LOTE_SEMENTE'
       Required = True
     end
     object cdsSemeaduraID_PESSOA_SEMEOU: TIntegerField
@@ -376,6 +391,11 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Data Prevista da Germina'#231#227'o'
       FieldName = 'DATA_PREVISTA_GERMINACAO'
     end
+    object cdsSemeaduraQTDE_TUBETE: TIntegerField
+      DisplayLabel = 'Qtde. de Tubetes Semeados'
+      FieldName = 'QTDE_TUBETE'
+      Required = True
+    end
   end
   object cdsCanteiro: TRFClientDataSet
     Aggregates = <>
@@ -401,6 +421,58 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 500
+    end
+  end
+  object cdsLote_Muda: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLote_Muda'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 280
+    Top = 160
+    object cdsLote_MudaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsLote_MudaID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+    object cdsLote_MudaID_PESSOA: TIntegerField
+      DisplayLabel = 'Id da Pessoa'
+      FieldName = 'ID_PESSOA'
+    end
+    object cdsLote_MudaNOME: TStringField
+      DisplayLabel = 'Nome do Lote'
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsLote_MudaQTDE: TIntegerField
+      DisplayLabel = 'Qtde. Atual'
+      FieldName = 'QTDE'
+      Required = True
+    end
+    object cdsLote_MudaQTDE_INICIAL: TIntegerField
+      DisplayLabel = 'Qtde. Inicial'
+      FieldName = 'QTDE_INICIAL'
+      Required = True
+    end
+    object cdsLote_MudaDATA: TSQLTimeStampField
+      DisplayLabel = 'Data da Inclus'#227'o'
+      FieldName = 'DATA'
+      Required = True
+    end
+    object cdsLote_MudaNOME_ESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'NOME_ESPECIE'
+      Size = 100
+    end
+    object cdsLote_MudaPESSOA_INCLUIU: TStringField
+      DisplayLabel = 'Pessoa que Incluiu'
+      FieldName = 'PESSOA_INCLUIU'
+      Size = 100
     end
   end
 end

@@ -397,13 +397,4 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Left = 256
     Top = 152
   end
-  object cxLocalizer1: TcxLocalizer
-    Active = True
-    FileName = 
-      'C:\Users\rafae\Repositorios\SONG\Source\Comuns\CXLOCALIZATION.in' +
-      'i'
-    Locale = 2070
-    Left = 288
-    Top = 184
-  end
 end

@@ -57,7 +57,6 @@ type
     Ac_Salvar_Incluir: TAction;
     btnUtilizar: TButton;
     Ac_Utilizar_Selecionado: TAction;
-    cxLocalizer1: TcxLocalizer;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);

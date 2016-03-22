@@ -31,31 +31,28 @@ type
     qMatrizNOME: TStringField;
     qMatrizFOTO: TBlobField;
     qEspecieQTDE_SEMENTE_KILO: TIntegerField;
-    qLote: TRFQuery;
-    qLote_Matriz: TRFQuery;
-    qLoteID: TIntegerField;
-    qLoteID_ESPECIE: TIntegerField;
-    qLoteID_PESSOA_COLETOU: TIntegerField;
-    qLoteNOME: TStringField;
-    qLoteDATA: TDateField;
-    qLoteNOME_ESPECIE: TStringField;
-    qLote_MatrizID: TIntegerField;
-    qLote_MatrizID_LOTE: TIntegerField;
-    qLote_MatrizID_MATRIZ: TIntegerField;
-    qLoteQTDE: TBCDField;
-    qLoteQTDE_ARMAZENADA: TBCDField;
-    qLoteTAXA_GERMINACAO: TBCDField;
-    qLoteTAXA_DESCARTE: TBCDField;
-    qLoteSTATUS: TSmallintField;
+    qLote_Semente: TRFQuery;
+    qLote_Semente_Matriz: TRFQuery;
+    qLote_SementeID: TIntegerField;
+    qLote_SementeID_ESPECIE: TIntegerField;
+    qLote_SementeID_PESSOA_COLETOU: TIntegerField;
+    qLote_SementeNOME: TStringField;
+    qLote_SementeDATA: TDateField;
+    qLote_SementeNOME_ESPECIE: TStringField;
+    qLote_Semente_MatrizID: TIntegerField;
+    qLote_Semente_MatrizID_MATRIZ: TIntegerField;
+    qLote_SementeQTDE: TBCDField;
+    qLote_SementeQTDE_ARMAZENADA: TBCDField;
+    qLote_SementeTAXA_GERMINACAO: TBCDField;
+    qLote_SementeTAXA_DESCARTE: TBCDField;
+    qLote_SementeSTATUS: TSmallintField;
     qGerminacao: TRFQuery;
     qSemeadura: TRFQuery;
     qGerminacaoID: TIntegerField;
-    qGerminacaoID_LOTE: TIntegerField;
     qGerminacaoID_PESSOA_VERIFICOU: TIntegerField;
     qGerminacaoDATA: TSQLTimeStampField;
     qGerminacaoQTDE_GERMINADA: TIntegerField;
     qSemeaduraID: TIntegerField;
-    qSemeaduraID_LOTE: TIntegerField;
     qSemeaduraID_PESSOA_SEMEOU: TIntegerField;
     qSemeaduraQTDE_SEMEADA: TBCDField;
     qSemeaduraDATA: TSQLTimeStampField;
@@ -68,11 +65,28 @@ type
     qSemeaduraPESSOA_SEMEOU: TStringField;
     qSemeaduraNOME_CANTEIRO: TStringField;
     qGerminacaoPESSOA_VERIFICOU: TStringField;
-    qLoteQTDE_SEMEADA: TBCDField;
+    qLote_SementeQTDE_SEMEADA: TBCDField;
     qSemeaduraDATA_PREVISTA_GERMINACAO: TSQLTimeStampField;
     qEspecieVALOR_MUDA: TBCDField;
     qEspecieVALOR_KG_SEMENTE: TBCDField;
     qEspecieTEMPO_GERMINACAO: TIntegerField;
+    qEspecieINICIO_PERIODO_COLETA: TDateField;
+    qEspecieFIM_PERIODO_COLETA: TDateField;
+    qGerminacaoID_LOTE_SEMENTE: TIntegerField;
+    qLote_Semente_MatrizID_LOTE_SEMENTE: TIntegerField;
+    qSemeaduraID_LOTE_SEMENTE: TIntegerField;
+    qSemeaduraQTDE_TUBETE: TIntegerField;
+    qLote_Muda: TRFQuery;
+    qLote_MudaID: TIntegerField;
+    qLote_MudaID_ESPECIE: TIntegerField;
+    qLote_MudaID_PESSOA: TIntegerField;
+    qLote_MudaNOME: TStringField;
+    qLote_MudaQTDE: TIntegerField;
+    qLote_MudaQTDE_INICIAL: TIntegerField;
+    qLote_MudaDATA: TSQLTimeStampField;
+    qLote_MudaNOME_ESPECIE: TStringField;
+    qLote_MudaPESSOA_INCLUIU: TStringField;
+    qLote_SementePESSOA_COLETOU: TStringField;
   private
     { Private declarations }
   protected
@@ -120,9 +134,9 @@ begin
       else if ipParam.Name = TParametros.coStatus then
         begin
           if vaValor.ToInteger = 0 then
-            Result := Result + ' ((lote.status is null) or (lote.status=0))' + vaOperador
+            Result := Result + ' ((lote_Semente.status is null) or (lote_Semente.status=0))' + vaOperador
           else
-            Result := Result + ' (lote.status=1)' + vaOperador
+            Result := Result + ' (lote_Semente.status=1)' + vaOperador
         end
       else if ipParam.Name = TParametros.coData then
         Result := Result + ' (LOTE.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +

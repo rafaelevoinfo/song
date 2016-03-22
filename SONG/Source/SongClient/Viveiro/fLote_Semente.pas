@@ -1,4 +1,4 @@
-unit fLote;
+unit fLote_Semente;
 
 interface
 
@@ -16,10 +16,10 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, fmGrids,
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
   uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
-  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo;
+  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit;
 
 type
-  TfrmLote = class(TfrmBasicoCrudMasterDetail)
+  TfrmLoteSemente = class(TfrmBasicoCrudMasterDetail)
     pnMatrizes: TPanel;
     pnTopEditsCadastro: TPanel;
     Label3: TLabel;
@@ -48,9 +48,9 @@ type
     cbEspeciePesquisa: TcxLookupComboBox;
     viewRegistrosQTDE_ARMAZENADA: TcxGridDBColumn;
     viewRegistrosQTDE_SEMEADA: TcxGridDBColumn;
-    btnAbrirFecharLote: TButton;
-    Ac_Reabrir_Lote: TAction;
-    Ac_Fechar_Lote: TAction;
+    btnFinalizarReiniciarGerminacao: TButton;
+    Ac_Reiniciar_Etapa_Germinacao: TAction;
+    Ac_Finalizar_Etapa_Germinacao: TAction;
     viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn;
     viewRegistrosTAXA_DESCARTE: TcxGridDBColumn;
     tabDetailGerminacao: TcxTabSheet;
@@ -95,22 +95,27 @@ type
     cbPessoaVerificou: TcxDBLookupComboBox;
     btnPesquisar_Pessoa_Verificou: TButton;
     Label13: TLabel;
-    EditQtdeGerminada: TcxDBCalcEdit;
     Label14: TLabel;
     EditDataVerificacao: TcxDBDateEdit;
     Ac_Pesquisar_Pessoa_Verificou: TAction;
     Label15: TLabel;
     EditDataPrevistaGerminacao: TcxDBDateEdit;
     viewRegistrosDetailDATA_PREVISTA_GERMINACAO: TcxGridDBColumn;
+    lbl3: TLabel;
+    viewRegistrosDetailQTDE_TUBETE: TcxGridDBColumn;
+    EditQtdeTubete: TcxDBSpinEdit;
+    EditQtdeGerminada: TcxDBSpinEdit;
+    viewRegistrosID_ESPECIE: TcxGridDBColumn;
+    viewRegistrosPESSOA_COLETOU: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
     procedure rgStatusPropertiesEditValueChanged(Sender: TObject);
-    procedure Ac_Fechar_LoteExecute(Sender: TObject);
-    procedure Ac_Reabrir_LoteExecute(Sender: TObject);
-    procedure Ac_Fechar_LoteUpdate(Sender: TObject);
+    procedure Ac_Finalizar_Etapa_GerminacaoExecute(Sender: TObject);
+    procedure Ac_Reiniciar_Etapa_GerminacaoExecute(Sender: TObject);
+    procedure Ac_Finalizar_Etapa_GerminacaoUpdate(Sender: TObject);
     procedure Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
     procedure cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -158,61 +163,59 @@ type
   end;
 
 var
-  frmLote: TfrmLote;
+  frmLoteSemente: TfrmLoteSemente;
 
 implementation
 
 {$R *.dfm}
 
 
-procedure TfrmLote.Ac_Fechar_LoteExecute(Sender: TObject);
+procedure TfrmLoteSemente.Ac_Finalizar_Etapa_GerminacaoExecute(Sender: TObject);
 begin
   inherited;
-  if TMensagem.fpuPerguntar('Confirma o fechamento do lote. ' +
+  if TMensagem.fpuPerguntar('Confirma a finalização da etapa de germinação desse lote. ' +
     'Após essa ação nenhuma outra operação será permitida para este lote.', ppSimNao) = rpSim then
     begin
-      dmPrincipal.FuncoesViveiro.ppuFecharLoteSemente(dmViveiro.cdsLoteID.AsInteger);
+      dmPrincipal.FuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
       pprEfetuarPesquisa;
     end;
 end;
 
-procedure TfrmLote.Ac_Fechar_LoteUpdate(Sender: TObject);
+procedure TfrmLoteSemente.Ac_Finalizar_Etapa_GerminacaoUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dmViveiro.cdsLote.Active and (dmViveiro.cdsLote.RecordCount > 0);
+  TAction(Sender).Enabled := dmViveiro.cdsLote_Semente.Active and (dmViveiro.cdsLote_Semente.RecordCount > 0);
 end;
 
-procedure TfrmLote.Ac_Pesquisar_PessoaExecute(Sender: TObject);
+procedure TfrmLoteSemente.Ac_Pesquisar_PessoaExecute(Sender: TObject);
 begin
   inherited;
   ppvPesquisarPessoa(cbPessoaColetou);
 end;
 
-procedure TfrmLote.Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
+procedure TfrmLoteSemente.Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
 begin
   inherited;
   ppvPesquisarPessoa(cbPessoaSemeou);
 end;
 
-procedure TfrmLote.Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
+procedure TfrmLoteSemente.Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
 begin
   inherited;
   ppvPesquisarPessoa(cbPessoaVerificou);
 end;
 
-procedure TfrmLote.Ac_Reabrir_LoteExecute(Sender: TObject);
+procedure TfrmLoteSemente.Ac_Reiniciar_Etapa_GerminacaoExecute(Sender: TObject);
 begin
   inherited;
-  if TMensagem.fpuPerguntar('Confirma a reabertura do lote.', ppSimNao) = rpSim then
+  if TMensagem.fpuPerguntar('Confirma a reinicialização do estado de germinação do lote?', ppSimNao) = rpSim then
     begin
-      dmPrincipal.FuncoesViveiro.ppuReabrirLoteSemente(dmViveiro.cdsLoteID.AsInteger);
+      dmPrincipal.FuncoesViveiro.ppuReiniciarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
       pprEfetuarPesquisa;
     end;
 end;
 
-procedure TfrmLote.ppvCarregarPessoas(ipIdEspecifico: Integer);
-var
-  vaValor: String;
+procedure TfrmLoteSemente.ppvCarregarPessoas(ipIdEspecifico: Integer);
 begin
   dmLookup.cdslkPessoa.ppuLimparParametros;
   if ipIdEspecifico <> 0 then
@@ -223,7 +226,7 @@ begin
     Ord(trpVoluntario).ToString + ',' + Ord(trpMembroDiretoria).ToString]);
 end;
 
-procedure TfrmLote.ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
+procedure TfrmLoteSemente.ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
 var
   vaFrmPessoa: TfrmPessoa;
 begin
@@ -256,10 +259,10 @@ begin
   end;
 end;
 
-procedure TfrmLote.cbEspeciePropertiesEditValueChanged(Sender: TObject);
+procedure TfrmLoteSemente.cbEspeciePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
-  if (pcPrincipal.ActivePage = tabCadastro) and (dmViveiro.cdsLote.State in [dsEdit, dsInsert]) then
+  if (pcPrincipal.ActivePage = tabCadastro) and (dmViveiro.cdsLote_Semente.State in [dsEdit, dsInsert]) then
     begin
       cbEspecie.PostEditValue;
       ppvCarregarMatrizes;
@@ -268,32 +271,32 @@ begin
     end;
 end;
 
-procedure TfrmLote.ppvRemoverMatrizesOutrasEspecie;
+procedure TfrmLoteSemente.ppvRemoverMatrizesOutrasEspecie;
 begin
   cbEspecie.PostEditValue;
-  dmViveiro.cdsLote_Matriz.DisableControls;
+  dmViveiro.cdsLote_Semente_Matriz.DisableControls;
   try
-    dmViveiro.cdsLote_Matriz.First;
-    while not dmViveiro.cdsLote_Matriz.Eof do
+    dmViveiro.cdsLote_Semente_Matriz.First;
+    while not dmViveiro.cdsLote_Semente_Matriz.Eof do
       begin
-        dmViveiro.cdsLote_Matriz.Delete;
+        dmViveiro.cdsLote_Semente_Matriz.Delete;
       end;
   finally
-    dmViveiro.cdsLote_Matriz.EnableControls;
+    dmViveiro.cdsLote_Semente_Matriz.EnableControls;
   end;
 
 end;
 
-procedure TfrmLote.rgStatusPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmLoteSemente.rgStatusPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if rgStatus.ItemIndex = coLoteAberto then
-    btnAbrirFecharLote.Action := Ac_Fechar_Lote
+    btnFinalizarReiniciarGerminacao.Action := Ac_Finalizar_Etapa_Germinacao
   else
-    btnAbrirFecharLote.Action := Ac_Reabrir_Lote;
+    btnFinalizarReiniciarGerminacao.Action := Ac_Reiniciar_Etapa_Germinacao;
 end;
 
-procedure TfrmLote.pcDetailsChange(Sender: TObject);
+procedure TfrmLoteSemente.pcDetailsChange(Sender: TObject);
 begin
   inherited;
   if pcDetails.ActivePage = tabDetail then
@@ -305,41 +308,32 @@ begin
     dsDetail.DataSet.Open;
 end;
 
-procedure TfrmLote.pprAfterSalvarDetail;
-begin
-  inherited;
-  if pcPrincipal.ActivePage = tabCadastroDetail then
-    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueSementeLote(dmViveiro.cdsLoteID.AsInteger)
-  else if pcPrincipal.ActivePage = tabCadastroGerminacao then
-    dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLoteID.AsInteger);
-end;
-
-procedure TfrmLote.pprBeforeAlterar;
+procedure TfrmLoteSemente.pprBeforeAlterar;
 begin
   inherited;
   ppvCarregarMatrizes;
 end;
 
-procedure TfrmLote.pprBeforeIncluirDetail;
+procedure TfrmLoteSemente.pprBeforeIncluirDetail;
 begin
   inherited;
   if pcDetails.ActivePage = tabDetail then
     begin
-      if dmViveiro.cdsLoteQTDE_ARMAZENADA.AsFloat <= 0 then
+      if dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat <= 0 then
         raise Exception.Create('Este lote já foi totalmente semeado.');
     end;
 end;
 
-procedure TfrmLote.pprBeforeSalvar;
+procedure TfrmLoteSemente.pprBeforeSalvar;
 begin
   inherited;
-  if dmViveiro.cdsLote.State = dsInsert then
+  if dmViveiro.cdsLote_Semente.State = dsInsert then
     begin
-      dmViveiro.cdsLoteQTDE_ARMAZENADA.AsFloat := dmViveiro.cdsLoteQTDE.AsFloat;
+      dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat := dmViveiro.cdsLote_SementeQTDE.AsFloat;
     end;
 end;
 
-procedure TfrmLote.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+procedure TfrmLoteSemente.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
   ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.ItemIndex);
@@ -348,7 +342,7 @@ begin
     ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
 end;
 
-procedure TfrmLote.pprDefinirTabDetailCadastro;
+procedure TfrmLoteSemente.pprDefinirTabDetailCadastro;
 begin
   inherited;
   if pcDetails.ActivePage = tabDetail then
@@ -358,49 +352,58 @@ begin
 
 end;
 
-procedure TfrmLote.pprEfetuarPesquisa;
+procedure TfrmLoteSemente.pprEfetuarPesquisa;
 begin
-  dmViveiro.cdsLote_Matriz.Close;
+  dmViveiro.cdsLote_Semente_Matriz.Close;
   inherited;
-  dmViveiro.cdsLote_Matriz.Open;
+  dmViveiro.cdsLote_Semente_Matriz.Open;
 end;
 
-procedure TfrmLote.pprExecutarCancelar;
+procedure TfrmLoteSemente.pprExecutarCancelar;
 begin
-  if dmViveiro.cdsLote_Matriz.ChangeCount > 0 then
-    dmViveiro.cdsLote_Matriz.CancelUpdates;
+  if dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0 then
+    dmViveiro.cdsLote_Semente_Matriz.CancelUpdates;
   inherited;
 end;
 
-procedure TfrmLote.pprExecutarSalvar;
+procedure TfrmLoteSemente.pprExecutarSalvar;
 var
   vaEditando: Boolean;
 begin
-  vaEditando := dmViveiro.cdsLote.State = dsEdit;
+  vaEditando := dmViveiro.cdsLote_Semente.State = dsEdit;
   inherited;
   if vaEditando then
-    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueSementeLote(dmViveiro.cdsLoteID.AsInteger);
+    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueLoteSemente(dmViveiro.cdsLote_SementeID.AsInteger);
 
-  if (dmViveiro.cdsLote_Matriz.ChangeCount > 0) then
-    dmViveiro.cdsLote_Matriz.ApplyUpdates(0);
+  if (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0) then
+    dmViveiro.cdsLote_Semente_Matriz.ApplyUpdates(0);
 end;
 
-procedure TfrmLote.pprValidarDadosDetail;
+procedure TfrmLoteSemente.pprAfterSalvarDetail;
 begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastroDetail then
-    dmPrincipal.FuncoesViveiro.ppuValidarSemeadura(dmViveiro.cdsLoteID.AsInteger, dmViveiro.cdsSemeaduraID.AsInteger,
+    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueLoteSemente(dmViveiro.cdsLote_SementeID.AsInteger)
+  else if pcPrincipal.ActivePage = tabCadastroGerminacao then
+    dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
+end;
+
+procedure TfrmLoteSemente.pprValidarDadosDetail;
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    dmPrincipal.FuncoesViveiro.ppuValidarSemeadura(dmViveiro.cdsLote_SementeID.AsInteger, dmViveiro.cdsSemeaduraID.AsInteger,
       dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsFloat);
 end;
 
-procedure TfrmLote.ppuIncluir;
+procedure TfrmLoteSemente.ppuIncluir;
 begin
   inherited;
   ppvCarregarMatrizes;
-  pprPreencherCamposPadroes(dmViveiro.cdsLote);
+  pprPreencherCamposPadroes(dmViveiro.cdsLote_Semente);
 end;
 
-procedure TfrmLote.ppvCarregarMatrizes;
+procedure TfrmLoteSemente.ppvCarregarMatrizes;
 begin
   cbEspecie.PostEditValue;
 
@@ -416,12 +419,12 @@ begin
           dmLookup.cdslkMatriz.ppuDataRequest([TParametros.coEspecie], [cbEspecie.EditValue], TOperadores.coAnd, true);
         end;
 
-      dmViveiro.cdsLote_Matriz.DisableControls;
+      dmViveiro.cdsLote_Semente_Matriz.DisableControls;
       try
         TUtils.ppuPercorrerCds(dmLookup.cdslkMatriz,
           procedure
           begin
-            if not dmViveiro.cdsLote_Matriz.Locate(dmViveiro.cdsLote_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, []) then
+            if not dmViveiro.cdsLote_Semente_Matriz.Locate(dmViveiro.cdsLote_Semente_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, []) then
               begin
                 cdsLocalMatrizes.Append;
                 cdsLocalMatrizesID.AsInteger := dmLookup.cdslkMatrizID.AsInteger;
@@ -429,12 +432,12 @@ begin
               end;
           end);
       finally
-        dmViveiro.cdsLote_Matriz.EnableControls;
+        dmViveiro.cdsLote_Semente_Matriz.EnableControls;
       end;
     end;
 end;
 
-procedure TfrmLote.cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
+procedure TfrmLoteSemente.cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
 Shift: TShiftState);
 begin
   inherited;
@@ -442,7 +445,7 @@ begin
     ppvPesquisarPessoa(cbPessoaColetou);
 end;
 
-procedure TfrmLote.cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
+procedure TfrmLoteSemente.cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
 Shift: TShiftState);
 begin
   inherited;
@@ -450,7 +453,7 @@ begin
     ppvPesquisarPessoa(cbPessoaSemeou);
 end;
 
-procedure TfrmLote.cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
+procedure TfrmLoteSemente.cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
 Shift: TShiftState);
 begin
   inherited;
@@ -458,14 +461,14 @@ begin
     ppvPesquisarPessoa(cbPessoaVerificou);
 end;
 
-procedure TfrmLote.EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmLoteSemente.EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastroDetail then
     begin
       if not VarIsNull(EditDataSemeadura.EditValue) then
         begin
-          if dmLookup.cdslkEspecie.Locate(TBancoDados.coID, dmViveiro.cdsLoteID_ESPECIE.AsInteger, []) then
+          if dmLookup.cdslkEspecie.Locate(TBancoDados.coID, dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, []) then
             begin
               if not(dmViveiro.cdsSemeadura.State in [dsEdit, dsInsert]) then
                 dmViveiro.cdsSemeadura.Edit;
@@ -477,7 +480,7 @@ begin
     end;
 end;
 
-procedure TfrmLote.FormCreate(Sender: TObject);
+procedure TfrmLoteSemente.FormCreate(Sender: TObject);
 begin
   dmViveiro := TdmViveiro.Create(Self);
   dmViveiro.Name := '';
@@ -499,54 +502,54 @@ begin
   EditDataFinalPesquisa.Date := Now;
 end;
 
-function TfrmLote.fprGetPermissao: String;
+function TfrmLoteSemente.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLote));
+  Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLoteSemente));
 end;
 
-function TfrmLote.fprHabilitarAlterar: Boolean;
-begin
-  Result := inherited and fpvLoteAberto;
-end;
-
-function TfrmLote.fprHabilitarAlterarDetail: Boolean;
+function TfrmLoteSemente.fprHabilitarAlterar: Boolean;
 begin
   Result := inherited and fpvLoteAberto;
 end;
 
-function TfrmLote.fprHabilitarIncluirDetail: Boolean;
+function TfrmLoteSemente.fprHabilitarAlterarDetail: Boolean;
 begin
   Result := inherited and fpvLoteAberto;
 end;
 
-function TfrmLote.fprHabilitarSalvar: Boolean;
+function TfrmLoteSemente.fprHabilitarIncluirDetail: Boolean;
+begin
+  Result := inherited and fpvLoteAberto;
+end;
+
+function TfrmLoteSemente.fprHabilitarSalvar: Boolean;
 begin
   Result := inherited;
   if not Result then
-    Result := dmViveiro.cdsLote_Matriz.Active and ((dmViveiro.cdsLote_Matriz.State in [dsEdit, dsInsert]) or
-      (dmViveiro.cdsLote_Matriz.ChangeCount > 0));
+    Result := dmViveiro.cdsLote_Semente_Matriz.Active and ((dmViveiro.cdsLote_Semente_Matriz.State in [dsEdit, dsInsert]) or
+      (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0));
 end;
 
-function TfrmLote.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+function TfrmLoteSemente.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
 begin
-
-  if inherited then
+  Result := inherited;
+  if Result then
     begin
       if pcDetails.ActivePage = tabDetail then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueSementeLote(dmViveiro.cdsLoteID.AsInteger)
+        dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueLoteSemente(dmViveiro.cdsLote_SementeID.AsInteger)
       else if pcDetails.ActivePage = tabDetailGerminacao then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLoteID.AsInteger);
+        dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
 
       pprEfetuarPesquisa;
     end;
 end;
 
-function TfrmLote.fpvLoteAberto: Boolean;
+function TfrmLoteSemente.fpvLoteAberto: Boolean;
 begin
-  Result :=  dmViveiro.cdsLote.Active and (dmViveiro.cdsLoteSTATUS.AsInteger = 0);
+  Result :=  dmViveiro.cdsLote_Semente.Active and (dmViveiro.cdsLote_SementeSTATUS.AsInteger = 0);
 end;
 
-procedure TfrmLote.ppvConfigurarGrids;
+procedure TfrmLoteSemente.ppvConfigurarGrids;
 begin
   // Esquerda
   frameMatrizes.ppuAdicionarField(frameMatrizes.viewEsquerda, 'ID', dmLookup.replcbMatriz);

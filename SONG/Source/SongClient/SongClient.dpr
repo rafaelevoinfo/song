@@ -32,8 +32,9 @@ uses
   fFinanciador in 'Financeiro\fFinanciador.pas' {frmFinanciador},
   fFornecedor in 'Financeiro\fFornecedor.pas' {frmFornecedor},
   fMatriz in 'Viveiro\fMatriz.pas' {frmMatriz},
-  fLote in 'Viveiro\fLote.pas' {frmLote},
-  fCanteiro in 'Viveiro\fCanteiro.pas' {frmCanteiro};
+  fLote_Semente in 'Viveiro\fLote_Semente.pas' {frmLoteSemente},
+  fCanteiro in 'Viveiro\fCanteiro.pas' {frmCanteiro},
+  fLote_Muda in 'Viveiro\fLote_Muda.pas' {frmLoteMuda};
 
 {$R *.res}
 

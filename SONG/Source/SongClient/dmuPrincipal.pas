@@ -11,7 +11,8 @@ uses
   uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
-  Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList;
+  Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList,
+  cxLocalization;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -32,6 +33,7 @@ type
     Repositorio: TcxEditRepository;
     repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
     dslkCidade: TDataSource;
+    cxLocalizer1: TcxLocalizer;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -86,6 +88,10 @@ procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
   // desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
+
+  cxLocalizer1.FileName := IncludeTrailingBackslash(TDirectory.GetCurrentDirectory)+'CXLOCALIZATION.ini';
+  cxLocalizer1.Active := True;
+  cxLocalizer1.Language := 'Portuguese (Portugal)';
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
