@@ -2170,7 +2170,7 @@ object dmPrincipal: TdmPrincipal
     Top = 200
   end
   object cxLocalizer1: TcxLocalizer
-    FileName = 'CXLOCALIZATION.ini'
+    StorageType = lstResource
     Left = 216
     Top = 136
   end

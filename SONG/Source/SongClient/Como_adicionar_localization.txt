@@ -1,0 +1,19 @@
+Crie um arquivo com a extensao .rc
+Adicione a seguinte linha ao arquivo
+
+CXLOCALIZATION CXLOCALIZATION "CXLOCALIZATION.INI"
+
+A primeira e segunda palavra devem ser exatamente CXLOCALIZATION, já a ultima pode ser qualquer arquivo .ini que contenha
+as traduções. Ex. de formato que precisa estar o ini 
+
+[1046]
+cxNavigator_DeleteRecordQuestion="Excluir o registro?"
+cxNavigatorHint_Append="Acrescentar registros"
+
+O 1046 representa Portugues do Brasil
+
+Salve o arquivo rc e abra a pasta bin do Delphi e digite o seguinte comando no prompt:
+brcc32.exe NOME_ARQUIVO_RC
+
+Isso irá gerar um arquivo .RES, então basta adicionar no .dpr de seu projeto a seguinte linha
+{$R NOME_ARQUIVO.RES}

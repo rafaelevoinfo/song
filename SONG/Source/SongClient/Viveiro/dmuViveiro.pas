@@ -74,14 +74,22 @@ type
     cdsLote_Muda: TRFClientDataSet;
     cdsLote_MudaID: TIntegerField;
     cdsLote_MudaID_ESPECIE: TIntegerField;
-    cdsLote_MudaID_PESSOA: TIntegerField;
     cdsLote_MudaNOME: TStringField;
     cdsLote_MudaQTDE: TIntegerField;
     cdsLote_MudaQTDE_INICIAL: TIntegerField;
     cdsLote_MudaDATA: TSQLTimeStampField;
     cdsLote_SementePESSOA_COLETOU: TStringField;
     cdsLote_MudaNOME_ESPECIE: TStringField;
-    cdsLote_MudaPESSOA_INCLUIU: TStringField;
+    cdsClassificacao: TRFClientDataSet;
+    dsLote_Muda: TDataSource;
+    cdsClassificacaoID: TIntegerField;
+    cdsClassificacaoID_LOTE_MUDA: TIntegerField;
+    cdsClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
+    cdsClassificacaoDATA: TDateField;
+    cdsClassificacaoQTDE: TIntegerField;
+    cdsClassificacaoOBSERVACAO: TStringField;
+    cdsClassificacaoPESSOA_CLASSIFICOU: TStringField;
+    cdsLote_MudaOBSERVACAO: TStringField;
   private
     { Private declarations }
   public

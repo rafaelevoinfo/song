@@ -134,7 +134,7 @@ type
     procedure ppvCarregarPessoas(ipIdEspecifico: Integer);
     procedure ppvRemoverMatrizesOutrasEspecie;
 
-    function fpvLoteAberto:Boolean;
+    function fpvGerminacaoEmAndamento: Boolean;
   protected
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterar; override;
@@ -147,8 +147,8 @@ type
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprHabilitarAlterar: Boolean; override;
-    function fprHabilitarIncluirDetail:Boolean;override;
-    function fprHabilitarAlterarDetail:Boolean;override;
+    function fprHabilitarIncluirDetail: Boolean; override;
+    function fprHabilitarAlterarDetail: Boolean; override;
 
     procedure pprExecutarCancelar; override;
     procedure pprValidarDadosDetail; override;
@@ -424,7 +424,8 @@ begin
         TUtils.ppuPercorrerCds(dmLookup.cdslkMatriz,
           procedure
           begin
-            if not dmViveiro.cdsLote_Semente_Matriz.Locate(dmViveiro.cdsLote_Semente_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, []) then
+            if not dmViveiro.cdsLote_Semente_Matriz.Locate(dmViveiro.cdsLote_Semente_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, [])
+            then
               begin
                 cdsLocalMatrizes.Append;
                 cdsLocalMatrizesID.AsInteger := dmLookup.cdslkMatrizID.AsInteger;
@@ -509,17 +510,17 @@ end;
 
 function TfrmLoteSemente.fprHabilitarAlterar: Boolean;
 begin
-  Result := inherited and fpvLoteAberto;
+  Result := inherited and fpvGerminacaoEmAndamento;
 end;
 
 function TfrmLoteSemente.fprHabilitarAlterarDetail: Boolean;
 begin
-  Result := inherited and fpvLoteAberto;
+  Result := inherited and fpvGerminacaoEmAndamento;
 end;
 
 function TfrmLoteSemente.fprHabilitarIncluirDetail: Boolean;
 begin
-  Result := inherited and fpvLoteAberto;
+  Result := inherited and fpvGerminacaoEmAndamento;
 end;
 
 function TfrmLoteSemente.fprHabilitarSalvar: Boolean;
@@ -544,9 +545,9 @@ begin
     end;
 end;
 
-function TfrmLoteSemente.fpvLoteAberto: Boolean;
+function TfrmLoteSemente.fpvGerminacaoEmAndamento: Boolean;
 begin
-  Result :=  dmViveiro.cdsLote_Semente.Active and (dmViveiro.cdsLote_SementeSTATUS.AsInteger = 0);
+  Result := dmViveiro.cdsLote_Semente.Active and (dmViveiro.cdsLote_SementeSTATUS.AsInteger = 0);
 end;
 
 procedure TfrmLoteSemente.ppvConfigurarGrids;

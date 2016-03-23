@@ -1,5 +1,7 @@
 program SongClient;
 
+
+
 uses
   Vcl.Forms,
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
@@ -36,7 +38,9 @@ uses
   fCanteiro in 'Viveiro\fCanteiro.pas' {frmCanteiro},
   fLote_Muda in 'Viveiro\fLote_Muda.pas' {frmLoteMuda};
 
-{$R *.res}
+  {$R Localization.RES}
+  {$R *.res}
+
 
 begin
   Application.Initialize;

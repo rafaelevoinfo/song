@@ -14,7 +14,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         inherited pnEditsPesquisa: TPanel
           Left = 291
           Width = 684
-          ExplicitLeft = 292
+          ExplicitLeft = 291
           ExplicitWidth = 684
           inherited Label1: TLabel
             Left = 298
@@ -65,7 +65,7 @@ inherited frmLoteSemente: TfrmLoteSemente
                 Value = 2
               end
               item
-                Description = 'Nome'
+                Description = 'Nome/Identifica'#231#227'o'
                 Value = 3
               end
               item
@@ -91,7 +91,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         end
         inherited pnBotoes: TPanel
           Width = 290
-          ExplicitWidth = 311
+          ExplicitWidth = 290
           object btnFinalizarReiniciarGerminacao: TButton
             AlignWithMargins = True
             Left = 188

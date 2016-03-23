@@ -523,16 +523,14 @@ inherited smViveiro: TsmViveiro
     SQL.Strings = (
       'select Lote_Muda.Id,'
       '       Lote_Muda.Id_Especie,'
-      '       Lote_Muda.Id_Pessoa,'
       '       Lote_Muda.Nome,'
       '       Lote_Muda.Qtde,'
       '       Lote_Muda.Qtde_Inicial,'
       '       Lote_Muda.Data,'
-      '       especie.nome as nome_especie,'
-      '       pessoa.nome as pessoa_incluiu'
+      '       Lote_Muda.Observacao,'
+      '       especie.nome as nome_especie'
       'from Lote_Muda'
       'inner join Especie on (Especie.Id = Lote_Muda.Id_Especie)'
-      'inner join pessoa on (pessoa.id = lote_muda.id_pessoa)'
       '&where')
     Left = 320
     Top = 96
@@ -552,11 +550,6 @@ inherited smViveiro: TsmViveiro
       Origin = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qLote_MudaID_PESSOA: TIntegerField
-      FieldName = 'ID_PESSOA'
-      Origin = 'ID_PESSOA'
-      ProviderFlags = [pfInUpdate]
     end
     object qLote_MudaNOME: TStringField
       FieldName = 'NOME'
@@ -590,9 +583,76 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = []
       Size = 100
     end
-    object qLote_MudaPESSOA_INCLUIU: TStringField
+    object qLote_MudaOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+  end
+  object qClassificacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Classificacao.Id,'
+      '       Classificacao.Id_Lote_Muda,'
+      '       Classificacao.Id_Pessoa_Classificou,'
+      '       Classificacao.Data,'
+      '       Classificacao.Qtde,'
+      '       Classificacao.Observacao,'
+      '       Pessoa.nome as Pessoa_Classificou'
+      'from Classificacao'
+      
+        'inner join pessoa on (pessoa.id = classificacao.id_pessoa_classi' +
+        'ficou)'
+      'where Classificacao.id_lote_Muda = :id_lote_muda')
+    Left = 408
+    Top = 104
+    ParamData = <
+      item
+        Name = 'ID_LOTE_MUDA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qClassificacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qClassificacaoID_LOTE_MUDA: TIntegerField
+      FieldName = 'ID_LOTE_MUDA'
+      Origin = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField
+      FieldName = 'ID_PESSOA_CLASSIFICOU'
+      Origin = 'ID_PESSOA_CLASSIFICOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qClassificacaoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qClassificacaoQTDE: TIntegerField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qClassificacaoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 500
+    end
+    object qClassificacaoPESSOA_CLASSIFICOU: TStringField
       AutoGenerateValue = arDefault
-      FieldName = 'PESSOA_INCLUIU'
+      FieldName = 'PESSOA_CLASSIFICOU'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

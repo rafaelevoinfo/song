@@ -79,14 +79,21 @@ type
     qLote_Muda: TRFQuery;
     qLote_MudaID: TIntegerField;
     qLote_MudaID_ESPECIE: TIntegerField;
-    qLote_MudaID_PESSOA: TIntegerField;
     qLote_MudaNOME: TStringField;
     qLote_MudaQTDE: TIntegerField;
     qLote_MudaQTDE_INICIAL: TIntegerField;
     qLote_MudaDATA: TSQLTimeStampField;
     qLote_MudaNOME_ESPECIE: TStringField;
-    qLote_MudaPESSOA_INCLUIU: TStringField;
     qLote_SementePESSOA_COLETOU: TStringField;
+    qLote_MudaOBSERVACAO: TStringField;
+    qClassificacao: TRFQuery;
+    qClassificacaoID: TIntegerField;
+    qClassificacaoID_LOTE_MUDA: TIntegerField;
+    qClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
+    qClassificacaoDATA: TDateField;
+    qClassificacaoQTDE: TIntegerField;
+    qClassificacaoOBSERVACAO: TStringField;
+    qClassificacaoPESSOA_CLASSIFICOU: TStringField;
   private
     { Private declarations }
   protected

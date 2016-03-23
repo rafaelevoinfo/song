@@ -10,7 +10,7 @@ uses
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
-  fLote_Semente;
+  fLote_Semente, fLote_Muda;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -47,6 +47,8 @@ type
     Lotes1: TMenuItem;
     Ac_Canteiro: TAction;
     Canteiros1: TMenuItem;
+    Ac_Lote_Muda: TAction;
+    LotesdeMudas1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -61,6 +63,7 @@ type
     procedure Ac_MatrizExecute(Sender: TObject);
     procedure Ac_Lote_SementeExecute(Sender: TObject);
     procedure Ac_CanteiroExecute(Sender: TObject);
+    procedure Ac_Lote_MudaExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -109,6 +112,12 @@ procedure TfrmPrincipal.Ac_FornecedorExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmFornecedor>(pcPrincipal, TfrmFornecedor, frmFornecedor);
+end;
+
+procedure TfrmPrincipal.Ac_Lote_MudaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmLoteMuda>(pcPrincipal, TfrmLoteMuda, frmLoteMuda);
 end;
 
 procedure TfrmPrincipal.Ac_Lote_SementeExecute(Sender: TObject);

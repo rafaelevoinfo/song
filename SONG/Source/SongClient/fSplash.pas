@@ -8,7 +8,7 @@ uses
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   dxSkinsCore, dxSkinBlack, Vcl.StdCtrls, cxImage, cxProgressBar,
   dxGDIPlusClasses, fLogin, uMensagem, uTypes, uUtils, System.IOUtils,
-  Winapi.ShellAPI, System.Zip, System.ZLib;
+  Winapi.ShellAPI, System.Zip, System.ZLib, System.Types;
 
 type
   TfrmSplash = class(TfrmBasico)

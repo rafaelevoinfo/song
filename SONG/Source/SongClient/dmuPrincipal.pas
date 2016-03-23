@@ -60,6 +60,7 @@ implementation
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
+
 { TdmPrincipal }
 
 procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -89,9 +90,8 @@ begin
   // desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
 
-  cxLocalizer1.FileName := IncludeTrailingBackslash(TDirectory.GetCurrentDirectory)+'CXLOCALIZATION.ini';
   cxLocalizer1.Active := True;
-  cxLocalizer1.Language := 'Portuguese (Portugal)';
+  cxLocalizer1.Locale := 1046;//Portugues Brasil
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
