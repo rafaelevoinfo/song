@@ -13,14 +13,12 @@ type
     cdsEspecieNOME: TStringField;
     cdsEspecieNOME_CIENTIFICO: TStringField;
     cdsEspecieFAMILIA_BOTANICA: TStringField;
-    cdsEspecieOBSERVACAO: TStringField;
     cdsMatriz: TRFClientDataSet;
     cdsMatrizID: TIntegerField;
     cdsMatrizID_ESPECIE: TIntegerField;
     cdsMatrizENDERECO: TStringField;
     cdsMatrizLATITUDE: TFMTBCDField;
     cdsMatrizLONGITUDE: TFMTBCDField;
-    cdsMatrizDESCRICAO: TStringField;
     cdsMatrizESPECIE: TStringField;
     cdsMatrizNOME: TStringField;
     cdsMatrizFOTO: TBlobField;
@@ -51,12 +49,10 @@ type
     cdsSemeaduraID_PESSOA_SEMEOU: TIntegerField;
     cdsSemeaduraQTDE_SEMEADA: TBCDField;
     cdsSemeaduraDATA: TSQLTimeStampField;
-    cdsSemeaduraOBSERVACAO: TStringField;
     cdsSemeaduraID_CANTEIRO: TIntegerField;
     cdsCanteiro: TRFClientDataSet;
     cdsCanteiroID: TIntegerField;
     cdsCanteiroNOME: TStringField;
-    cdsCanteiroDESCRICAO: TStringField;
     cdsSemeaduraPESSOA_SEMEOU: TStringField;
     cdsSemeaduraNOME_CANTEIRO: TStringField;
     cdsGerminacaoPESSOA_VERIFICOU: TStringField;
@@ -75,7 +71,6 @@ type
     cdsLote_MudaID: TIntegerField;
     cdsLote_MudaID_ESPECIE: TIntegerField;
     cdsLote_MudaNOME: TStringField;
-    cdsLote_MudaQTDE: TIntegerField;
     cdsLote_MudaQTDE_INICIAL: TIntegerField;
     cdsLote_MudaDATA: TSQLTimeStampField;
     cdsLote_SementePESSOA_COLETOU: TStringField;
@@ -87,8 +82,12 @@ type
     cdsClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
     cdsClassificacaoDATA: TDateField;
     cdsClassificacaoQTDE: TIntegerField;
-    cdsClassificacaoOBSERVACAO: TStringField;
     cdsClassificacaoPESSOA_CLASSIFICOU: TStringField;
+    cdsSemeaduraOBSERVACAO: TStringField;
+    cdsCanteiroDESCRICAO: TStringField;
+    cdsClassificacaoOBSERVACAO: TStringField;
+    cdsMatrizDESCRICAO: TStringField;
+    cdsEspecieOBSERVACAO: TStringField;
     cdsLote_MudaOBSERVACAO: TStringField;
   private
     { Private declarations }

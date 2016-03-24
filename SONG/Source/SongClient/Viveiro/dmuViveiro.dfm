@@ -7,8 +7,8 @@ inherited dmViveiro: TdmViveiro
     Params = <>
     ProviderName = 'dspqEspecie'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 32
-    Top = 16
+    Left = 256
+    Top = 132
     object cdsEspecieID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -32,12 +32,6 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'FAMILIA_BOTANICA'
       ProviderFlags = [pfInUpdate]
       Size = 100
-    end
-    object cdsEspecieOBSERVACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o'
-      FieldName = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
     end
     object cdsEspecieQTDE_SEMENTE_KILO: TIntegerField
       DisplayLabel = 'Qtde. Sementes por Kilo'
@@ -74,14 +68,20 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'FIM_PERIODO_COLETA'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsEspecieOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqMatriz'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 104
-    Top = 16
+    Left = 172
+    Top = 132
     object cdsMatrizID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -120,12 +120,6 @@ inherited dmViveiro: TdmViveiro
       Precision = 18
       Size = 6
     end
-    object cdsMatrizDESCRICAO: TStringField
-      DisplayLabel = 'Descri'#231#227'o'
-      FieldName = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsMatrizESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ESPECIE'
@@ -137,14 +131,20 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'FOTO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsMatrizDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
   end
   object cdsLote_Semente: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqLote_Semente'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 32
-    Top = 96
+    Left = 340
+    Top = 132
     object cdsLote_SementeID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -241,8 +241,8 @@ inherited dmViveiro: TdmViveiro
     ProviderName = 'dspqLote_Semente_Matriz'
     RemoteServer = dmPrincipal.ProviderViveiro
     RFApplyAutomatico = False
-    Left = 160
-    Top = 104
+    Left = 88
+    Top = 240
     object cdsLote_Semente_MatrizID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -262,8 +262,8 @@ inherited dmViveiro: TdmViveiro
   end
   object dsLote_Semente: TDataSource
     DataSet = cdsLote_Semente
-    Left = 24
-    Top = 160
+    Left = 88
+    Top = 24
   end
   object cdsGerminacao: TRFClientDataSet
     Aggregates = <>
@@ -279,8 +279,8 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqGerminacao'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 376
-    Top = 104
+    Left = 448
+    Top = 132
     object cdsGerminacaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -331,8 +331,8 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqSemeadura'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 280
-    Top = 96
+    Left = 256
+    Top = 24
     object cdsSemeaduraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -363,12 +363,6 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsSemeaduraOBSERVACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o'
-      FieldName = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsSemeaduraID_CANTEIRO: TIntegerField
       DisplayLabel = 'Canteiro'
       FieldName = 'ID_CANTEIRO'
@@ -396,13 +390,19 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'QTDE_TUBETE'
       Required = True
     end
+    object cdsSemeaduraOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
   end
   object cdsCanteiro: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqCanteiro'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 288
+    Left = 340
     Top = 24
     object cdsCanteiroID: TIntegerField
       FieldName = 'ID'
@@ -420,7 +420,7 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object cdsLote_Muda: TRFClientDataSet
@@ -428,8 +428,8 @@ inherited dmViveiro: TdmViveiro
     Params = <>
     ProviderName = 'dspqLote_Muda'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 280
-    Top = 160
+    Left = 88
+    Top = 132
     object cdsLote_MudaID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -444,11 +444,6 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'NOME'
       Required = True
       Size = 100
-    end
-    object cdsLote_MudaQTDE: TIntegerField
-      DisplayLabel = 'Qtde. Atual'
-      FieldName = 'QTDE'
-      Required = True
     end
     object cdsLote_MudaQTDE_INICIAL: TIntegerField
       DisplayLabel = 'Qtde. Inicial'
@@ -469,7 +464,7 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object cdsClassificacao: TRFClientDataSet
@@ -486,8 +481,8 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqClassificacao'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 384
-    Top = 160
+    Left = 448
+    Top = 24
     object cdsClassificacaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -517,21 +512,21 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsClassificacaoOBSERVACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o'
-      FieldName = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsClassificacaoPESSOA_CLASSIFICOU: TStringField
       DisplayLabel = 'Pessoa que Classificou'
       FieldName = 'PESSOA_CLASSIFICOU'
       Size = 100
     end
+    object cdsClassificacaoOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInWhere]
+      Size = 1000
+    end
   end
   object dsLote_Muda: TDataSource
     DataSet = cdsLote_Muda
-    Left = 216
-    Top = 168
+    Left = 172
+    Top = 24
   end
 end

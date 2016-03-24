@@ -216,7 +216,7 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
 end

@@ -19,14 +19,12 @@ type
     qEspecieNOME: TStringField;
     qEspecieNOME_CIENTIFICO: TStringField;
     qEspecieFAMILIA_BOTANICA: TStringField;
-    qEspecieOBSERVACAO: TStringField;
     qMatriz: TRFQuery;
     qMatrizID: TIntegerField;
     qMatrizID_ESPECIE: TIntegerField;
     qMatrizENDERECO: TStringField;
     qMatrizLATITUDE: TFMTBCDField;
     qMatrizLONGITUDE: TFMTBCDField;
-    qMatrizDESCRICAO: TStringField;
     qMatrizESPECIE: TStringField;
     qMatrizNOME: TStringField;
     qMatrizFOTO: TBlobField;
@@ -56,12 +54,10 @@ type
     qSemeaduraID_PESSOA_SEMEOU: TIntegerField;
     qSemeaduraQTDE_SEMEADA: TBCDField;
     qSemeaduraDATA: TSQLTimeStampField;
-    qSemeaduraOBSERVACAO: TStringField;
     qSemeaduraID_CANTEIRO: TIntegerField;
     qCanteiro: TRFQuery;
     qCanteiroID: TIntegerField;
     qCanteiroNOME: TStringField;
-    qCanteiroDESCRICAO: TStringField;
     qSemeaduraPESSOA_SEMEOU: TStringField;
     qSemeaduraNOME_CANTEIRO: TStringField;
     qGerminacaoPESSOA_VERIFICOU: TStringField;
@@ -80,20 +76,23 @@ type
     qLote_MudaID: TIntegerField;
     qLote_MudaID_ESPECIE: TIntegerField;
     qLote_MudaNOME: TStringField;
-    qLote_MudaQTDE: TIntegerField;
     qLote_MudaQTDE_INICIAL: TIntegerField;
     qLote_MudaDATA: TSQLTimeStampField;
     qLote_MudaNOME_ESPECIE: TStringField;
     qLote_SementePESSOA_COLETOU: TStringField;
-    qLote_MudaOBSERVACAO: TStringField;
     qClassificacao: TRFQuery;
     qClassificacaoID: TIntegerField;
     qClassificacaoID_LOTE_MUDA: TIntegerField;
     qClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
     qClassificacaoDATA: TDateField;
     qClassificacaoQTDE: TIntegerField;
-    qClassificacaoOBSERVACAO: TStringField;
     qClassificacaoPESSOA_CLASSIFICOU: TStringField;
+    qLote_MudaOBSERVACAO: TStringField;
+    qCanteiroDESCRICAO: TStringField;
+    qClassificacaoOBSERVACAO: TStringField;
+    qEspecieOBSERVACAO: TStringField;
+    qMatrizDESCRICAO: TStringField;
+    qSemeaduraOBSERVACAO: TStringField;
   private
     { Private declarations }
   protected
@@ -134,7 +133,7 @@ begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_ESPECIE', vaValor, vaOperador)
     end
-  else if ipTabela = 'LOTE' then
+  else if ipTabela = 'LOTE_SEMENTE' then
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
@@ -146,8 +145,16 @@ begin
             Result := Result + ' (lote_Semente.status=1)' + vaOperador
         end
       else if ipParam.Name = TParametros.coData then
-        Result := Result + ' (LOTE.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
-          QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
+        Result := Result + ' (lote_Semente.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
+          QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
+    end
+  else if ipTabela = 'LOTE_MUDA' then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := Result + ' (lote_Muda.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
+          QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
     end;
 end;
 

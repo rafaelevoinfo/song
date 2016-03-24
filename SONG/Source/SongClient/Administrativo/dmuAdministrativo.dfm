@@ -1,14 +1,14 @@
 inherited dmAdministrativo: TdmAdministrativo
   OldCreateOrder = True
   Height = 463
-  Width = 816
+  Width = 1026
   object cdsPerfil: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqPerfil'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 448
-    Top = 84
+    Left = 484
+    Top = 240
     object cdsPerfilID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -48,8 +48,8 @@ inherited dmAdministrativo: TdmAdministrativo
     ProviderName = 'dspqPerfil_Permissao'
     RemoteServer = dmPrincipal.ProviderAdministrativo
     RFApplyAutomatico = False
-    Left = 64
-    Top = 152
+    Left = 632
+    Top = 240
     object cdsPerfil_PermissaoID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
@@ -96,16 +96,16 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object dsPerfil: TDataSource
     DataSet = cdsPerfil
-    Left = 576
-    Top = 16
+    Left = 780
+    Top = 24
   end
   object cdsPessoa: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqPessoa'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 320
-    Top = 152
+    Left = 336
+    Top = 240
     object cdsPessoaID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
@@ -196,7 +196,8 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Required = True
+      Size = 1000
     end
   end
   object cdsPessoa_Perfil: TRFClientDataSet
@@ -209,8 +210,8 @@ inherited dmAdministrativo: TdmAdministrativo
     ProviderName = 'dspqPessoa_Perfil'
     RemoteServer = dmPrincipal.ProviderAdministrativo
     RFApplyAutomatico = False
-    Left = 448
-    Top = 152
+    Left = 40
+    Top = 240
     object cdsPessoa_PerfilID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
@@ -229,16 +230,16 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object dsPessoa: TDataSource
     DataSet = cdsPessoa
-    Left = 192
-    Top = 16
+    Left = 336
+    Top = 24
   end
   object cdsOrganizacao: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqOrganizacao'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 192
-    Top = 152
+    Left = 188
+    Top = 240
     object cdsOrganizacaoID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
@@ -305,8 +306,8 @@ inherited dmAdministrativo: TdmAdministrativo
     Params = <>
     ProviderName = 'dspqOrganizacao_Pessoa'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 192
-    Top = 220
+    Left = 332
+    Top = 348
     object cdsOrganizacao_PessoaID: TIntegerField
       DisplayLabel = 'Id'
       FieldName = 'ID'
@@ -334,21 +335,21 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object dsOrganizacao: TDataSource
     DataSet = cdsOrganizacao
-    Left = 64
-    Top = 16
+    Left = 40
+    Top = 24
   end
   object cdsProjeto: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqProjeto'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 64
-    Top = 220
+    Left = 192
+    Top = 348
     object cdsProjetoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -371,12 +372,6 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DATA_TERMINO'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsProjetoDESCRICAO: TStringField
-      DisplayLabel = 'Descri'#231#227'o'
-      FieldName = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsProjetoORCAMENTO: TBCDField
       Alignment = taLeftJustify
       DisplayLabel = 'Or'#231'amento'
@@ -398,6 +393,12 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsProjetoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
   end
   object cdsProjeto_Pessoa: TRFClientDataSet
     Aggregates = <>
@@ -413,8 +414,8 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqProjeto_Pessoa'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 576
-    Top = 152
+    Left = 40
+    Top = 348
     object cdsProjeto_PessoaID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -455,8 +456,8 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqProjeto_Organizacao'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 192
-    Top = 84
+    Left = 780
+    Top = 240
     object cdsProjeto_OrganizacaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -491,8 +492,8 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqProjeto_Financiador'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 64
-    Top = 84
+    Left = 928
+    Top = 240
     object cdsProjeto_FinanciadorID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -516,7 +517,7 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object cdsProjeto_Documento: TRFClientDataSet
@@ -533,8 +534,8 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqProjeto_Documento'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 320
-    Top = 84
+    Left = 928
+    Top = 132
     object cdsProjeto_DocumentoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -575,8 +576,8 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object dsProjeto: TDataSource
     DataSet = cdsProjeto
-    Left = 448
-    Top = 16
+    Left = 632
+    Top = 24
   end
   object cdsProjeto_Financiador_Pagto: TRFClientDataSet
     Aggregates = <>
@@ -593,8 +594,8 @@ inherited dmAdministrativo: TdmAdministrativo
     ProviderName = 'dspqProjeto_Financiador_Pagto'
     RemoteServer = dmPrincipal.ProviderAdministrativo
     RFApplyAutomatico = False
-    Left = 576
-    Top = 84
+    Left = 40
+    Top = 132
     object cdsProjeto_Financiador_PagtoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -621,16 +622,16 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object dsProjeto_Financiador: TDataSource
     DataSet = cdsProjeto_Financiador
-    Left = 320
-    Top = 16
+    Left = 188
+    Top = 24
   end
   object cdsAtividade: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqAtividade'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 320
-    Top = 216
+    Left = 928
+    Top = 24
     object cdsAtividadeID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -680,11 +681,6 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'NOTIFICAR_ENVOLVIDOS'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsAtividadeDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsAtividadeID_PROJETO: TIntegerField
       Alignment = taLeftJustify
       DisplayLabel = 'Id do Projeto'
@@ -697,6 +693,12 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'NOME_PROJETO'
       Size = 100
     end
+    object cdsAtividadeDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
   end
   object cdsAtividade_Projeto: TRFClientDataSet
     Aggregates = <>
@@ -707,8 +709,8 @@ inherited dmAdministrativo: TdmAdministrativo
     Params = <>
     ProviderName = 'dspqAtividade_Projeto'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 424
-    Top = 216
+    Left = 632
+    Top = 132
     object cdsAtividade_ProjetoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -728,17 +730,17 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsAtividade_ProjetoOBSERVACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o'
-      FieldName = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsAtividade_ProjetoNOME_PROJETO: TStringField
       DisplayLabel = 'Nome do Projeto'
       FieldName = 'NOME_PROJETO'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsAtividade_ProjetoOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object cdsAtividade_Pessoa: TRFClientDataSet
@@ -750,8 +752,8 @@ inherited dmAdministrativo: TdmAdministrativo
     Params = <>
     ProviderName = 'dspqAtividade_Pessoa'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 544
-    Top = 232
+    Left = 780
+    Top = 132
     object cdsAtividade_PessoaID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -788,8 +790,8 @@ inherited dmAdministrativo: TdmAdministrativo
     Params = <>
     ProviderName = 'dspqAtividade_Arquivo'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 664
-    Top = 232
+    Left = 484
+    Top = 132
     object cdsAtividade_ArquivoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -822,17 +824,17 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
       Size = 100
     end
-    object cdsAtividade_ArquivoDESCRICAO: TStringField
-      DisplayLabel = 'Descri'#231#227'o'
-      FieldName = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object cdsAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField
       DisplayLabel = 'Data de Upload'
       FieldName = 'DATA_UPLOAD'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsAtividade_ArquivoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object cdsAtividade_Vinculo: TRFClientDataSet
@@ -845,8 +847,8 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqAtividade_Vinculo'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 64
-    Top = 288
+    Left = 188
+    Top = 132
     object cdsAtividade_VinculoID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -857,12 +859,6 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'TIPO_VINCULO'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object cdsAtividade_VinculoOBSERVACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o'
-      FieldName = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
     end
     object cdsAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField
       Alignment = taLeftJustify
@@ -887,6 +883,12 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'NOME_ATIVIDADE_VINCULO'
       Size = 100
     end
+    object cdsAtividade_VinculoOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
   end
   object cdsAtividade_Comentario: TRFClientDataSet
     Aggregates = <>
@@ -902,8 +904,8 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqAtividade_Comentario'
     RemoteServer = dmPrincipal.ProviderAdministrativo
-    Left = 192
-    Top = 296
+    Left = 336
+    Top = 132
     object cdsAtividade_ComentarioID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -923,23 +925,23 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsAtividade_ComentarioCOMENTARIO: TStringField
-      DisplayLabel = 'Coment'#225'rio'
-      FieldName = 'COMENTARIO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 500
-    end
     object cdsAtividade_ComentarioDATA_HORA: TSQLTimeStampField
       DisplayLabel = 'Data e Hora do Coment'#225'rio'
       FieldName = 'DATA_HORA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsAtividade_ComentarioCOMENTARIO: TStringField
+      DisplayLabel = 'Coment'#225'rio'
+      FieldName = 'COMENTARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 1000
+    end
   end
   object dsAtividade: TDataSource
     DataSet = cdsAtividade
-    Left = 312
-    Top = 280
+    Left = 484
+    Top = 24
   end
 end

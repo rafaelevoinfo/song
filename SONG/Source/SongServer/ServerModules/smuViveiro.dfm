@@ -47,11 +47,6 @@ inherited smViveiro: TsmViveiro
       Origin = 'FAMILIA_BOTANICA'
       Size = 100
     end
-    object qEspecieOBSERVACAO: TStringField
-      FieldName = 'OBSERVACAO'
-      Origin = 'OBSERVACAO'
-      Size = 500
-    end
     object qEspecieQTDE_SEMENTE_KILO: TIntegerField
       FieldName = 'QTDE_SEMENTE_KILO'
       Origin = 'QTDE_SEMENTE_KILO'
@@ -86,6 +81,12 @@ inherited smViveiro: TsmViveiro
       FieldName = 'FIM_PERIODO_COLETA'
       Origin = 'FIM_PERIODO_COLETA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qMatriz: TRFQuery
@@ -142,12 +143,6 @@ inherited smViveiro: TsmViveiro
       Precision = 18
       Size = 6
     end
-    object qMatrizDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qMatrizESPECIE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'ESPECIE'
@@ -166,6 +161,12 @@ inherited smViveiro: TsmViveiro
       FieldName = 'FOTO'
       Origin = 'FOTO'
       ProviderFlags = [pfInUpdate]
+    end
+    object qMatrizDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qLote_Semente: TRFQuery
@@ -445,12 +446,6 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qSemeaduraOBSERVACAO: TStringField
-      FieldName = 'OBSERVACAO'
-      Origin = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qSemeaduraID_CANTEIRO: TIntegerField
       FieldName = 'ID_CANTEIRO'
       Origin = 'ID_CANTEIRO'
@@ -481,6 +476,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'QTDE_TUBETE'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qSemeaduraOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qCanteiro: TRFQuery
@@ -514,8 +515,7 @@ inherited smViveiro: TsmViveiro
     object qCanteiroDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
       Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object qLote_Muda: TRFQuery
@@ -524,7 +524,6 @@ inherited smViveiro: TsmViveiro
       'select Lote_Muda.Id,'
       '       Lote_Muda.Id_Especie,'
       '       Lote_Muda.Nome,'
-      '       Lote_Muda.Qtde,'
       '       Lote_Muda.Qtde_Inicial,'
       '       Lote_Muda.Data,'
       '       Lote_Muda.Observacao,'
@@ -558,12 +557,6 @@ inherited smViveiro: TsmViveiro
       Required = True
       Size = 100
     end
-    object qLote_MudaQTDE: TIntegerField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object qLote_MudaQTDE_INICIAL: TIntegerField
       FieldName = 'QTDE_INICIAL'
       Origin = 'QTDE_INICIAL'
@@ -587,7 +580,7 @@ inherited smViveiro: TsmViveiro
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object qClassificacao: TRFQuery
@@ -644,18 +637,18 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qClassificacaoOBSERVACAO: TStringField
-      FieldName = 'OBSERVACAO'
-      Origin = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qClassificacaoPESSOA_CLASSIFICOU: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'PESSOA_CLASSIFICOU'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qClassificacaoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

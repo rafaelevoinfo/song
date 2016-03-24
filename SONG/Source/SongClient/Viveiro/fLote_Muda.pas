@@ -22,7 +22,6 @@ type
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_ESPECIE: TcxGridDBColumn;
     viewRegistrosNOME: TcxGridDBColumn;
-    viewRegistrosQTDE: TcxGridDBColumn;
     viewRegistrosQTDE_INICIAL: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
     viewRegistrosNOME_ESPECIE: TcxGridDBColumn;
@@ -37,7 +36,6 @@ type
     Label5: TLabel;
     EditQtdeMudas: TcxDBSpinEdit;
     lbl2: TLabel;
-    EditObsLote: TcxDBRichEdit;
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailID_PESSOA_CLASSIFICOU: TcxGridDBColumn;
     viewRegistrosDetailDATA: TcxGridDBColumn;
@@ -53,6 +51,7 @@ type
     EditObservacaoClassificacao: TcxDBMemo;
     EditQtdeClassificada: TcxDBSpinEdit;
     Ac_Pesquisar_Pessoa_Classificou: TAction;
+    EditObsLote: TcxDBMemo;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -64,7 +63,6 @@ type
     procedure ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
   protected
     function fprGetPermissao: String; override;
-    procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar;override;
     procedure pprAfterSalvarDetail; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -149,15 +147,6 @@ procedure TfrmLoteMuda.pprAfterSalvarDetail;
 begin
   inherited;
   //todo; chamar funcao que vai atualizar a quantidade atual de mudas no lote
-end;
-
-procedure TfrmLoteMuda.pprBeforeSalvar;
-begin
-  if dmViveiro.cdsLote_Muda.State = dsInsert then
-    begin
-      dmViveiro.cdsLote_MudaQTDE.AsFloat := dmViveiro.cdsLote_MudaQTDE_INICIAL.AsFloat;
-    end;
-  inherited;
 end;
 
 procedure TfrmLoteMuda.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);

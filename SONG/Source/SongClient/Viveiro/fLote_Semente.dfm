@@ -390,10 +390,15 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
+                Width = 455
+                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
+                Left = 456
+                Width = 48
+                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
@@ -415,6 +420,9 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
               inherited cxGrid2: TcxGrid
+                Left = 504
+                Width = 467
+                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -439,11 +447,14 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 110
+                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
+                  Left = 503
                   Width = 92
+                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 503
                   ExplicitWidth = 92
@@ -832,7 +843,7 @@ inherited frmLoteSemente: TfrmLoteSemente
       OnExecute = Ac_Pesquisar_PessoaExecute
     end
     object Ac_Reiniciar_Etapa_Germinacao: TAction
-      Caption = 'Reabrir Lote'
+      Caption = 'Reiniciar germina'#231#227'o'
       ImageIndex = 11
       OnExecute = Ac_Reiniciar_Etapa_GerminacaoExecute
       OnUpdate = Ac_Finalizar_Etapa_GerminacaoUpdate

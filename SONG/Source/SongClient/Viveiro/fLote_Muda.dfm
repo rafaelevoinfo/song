@@ -1,10 +1,12 @@
 inherited frmLoteMuda: TfrmLoteMuda
+  ActiveControl = cbEspecie
   Caption = 'Lotes de Mudas'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -14,7 +16,7 @@ inherited frmLoteMuda: TfrmLoteMuda
         inherited pnEditsPesquisa: TPanel
           Left = 418
           Width = 557
-          ExplicitLeft = 256
+          ExplicitLeft = 418
           ExplicitWidth = 557
           inherited Label1: TLabel
             Left = 142
@@ -79,6 +81,7 @@ inherited frmLoteMuda: TfrmLoteMuda
         end
         inherited pnBotoes: TPanel
           Width = 417
+          ExplicitWidth = 417
         end
       end
       inherited pnGrid: TPanel
@@ -113,11 +116,6 @@ inherited frmLoteMuda: TfrmLoteMuda
               DataBinding.FieldName = 'QTDE_INICIAL'
               Options.Editing = False
               Width = 98
-            end
-            object viewRegistrosQTDE: TcxGridDBColumn [6]
-              DataBinding.FieldName = 'QTDE'
-              Options.Editing = False
-              Width = 85
             end
           end
         end
@@ -246,14 +244,14 @@ inherited frmLoteMuda: TfrmLoteMuda
           TabOrder = 3
           Width = 95
         end
-        object EditObsLote: TcxDBRichEdit
-          Left = 6
+        object EditObsLote: TcxDBMemo
+          Left = 4
           Top = 58
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
           TabOrder = 4
-          Height = 63
-          Width = 637
+          Height = 71
+          Width = 639
         end
       end
     end

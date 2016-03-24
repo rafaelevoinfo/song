@@ -54,7 +54,6 @@ type
     cdsOrganizacao_PessoaID_PESSOA: TIntegerField;
     cdsOrganizacao_PessoaID_ORGANIZACAO: TIntegerField;
     cdsOrganizacao_PessoaFUNCAO: TStringField;
-    cdsOrganizacao_PessoaOBSERVACAO: TStringField;
     dsOrganizacao: TDataSource;
     cdsPerfilTIPO: TSmallintField;
     cdsProjeto: TRFClientDataSet;
@@ -65,7 +64,6 @@ type
     cdsProjeto_FinanciadorID: TIntegerField;
     cdsProjeto_FinanciadorID_PROJETO: TIntegerField;
     cdsProjeto_FinanciadorID_FINANCIADOR: TIntegerField;
-    cdsProjeto_FinanciadorOBSERVACAO: TStringField;
     cdsProjeto_OrganizacaoID: TIntegerField;
     cdsProjeto_OrganizacaoID_PROJETO: TIntegerField;
     cdsProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
@@ -82,7 +80,6 @@ type
     cdsProjetoNOME: TStringField;
     cdsProjetoDATA_INICIO: TDateField;
     cdsProjetoDATA_TERMINO: TDateField;
-    cdsProjetoDESCRICAO: TStringField;
     cdsProjetoORCAMENTO: TBCDField;
     dsProjeto: TDataSource;
     cdsProjetoID_BANCO_CONTA_CORRENTE: TIntegerField;
@@ -111,7 +108,6 @@ type
     cdsAtividade_ProjetoID: TIntegerField;
     cdsAtividade_ProjetoID_ATIVIDADE: TIntegerField;
     cdsAtividade_ProjetoID_PROJETO: TIntegerField;
-    cdsAtividade_ProjetoOBSERVACAO: TStringField;
     cdsAtividade_PessoaID: TIntegerField;
     cdsAtividade_PessoaID_ATIVIDADE: TIntegerField;
     cdsAtividade_PessoaID_PESSOA: TIntegerField;
@@ -120,18 +116,14 @@ type
     cdsAtividade_ArquivoID_ATIVIDADE: TIntegerField;
     cdsAtividade_ArquivoNOME: TStringField;
     cdsAtividade_ArquivoNOME_ORIGINAL: TStringField;
-    cdsAtividade_ArquivoDESCRICAO: TStringField;
     cdsAtividade_ArquivoARQUIVO: TBlobField;
     cdsAtividade_VinculoID: TIntegerField;
     cdsAtividade_VinculoTIPO_VINCULO: TSmallintField;
-    cdsAtividade_VinculoOBSERVACAO: TStringField;
     cdsAtividade_ComentarioID: TIntegerField;
     cdsAtividade_ComentarioID_ATIVIDADE: TIntegerField;
     cdsAtividade_ComentarioID_PESSOA: TIntegerField;
-    cdsAtividade_ComentarioCOMENTARIO: TStringField;
     cdsAtividade_ComentarioDATA_HORA: TSQLTimeStampField;
     dsAtividade: TDataSource;
-    cdsAtividadeDESCRICAO: TStringField;
     cdsAtividadeID_PROJETO: TIntegerField;
     cdsAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
     cdsAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField;
@@ -146,7 +138,15 @@ type
     cdsOrganizacaoID_CIDADE: TIntegerField;
     cdsOrganizacaoCIDADE: TStringField;
     cdsPessoaDATA_NASCIMENTO: TDateField;
+    cdsAtividadeDESCRICAO: TStringField;
+    cdsAtividade_VinculoOBSERVACAO: TStringField;
+    cdsAtividade_ComentarioCOMENTARIO: TStringField;
+    cdsAtividade_ArquivoDESCRICAO: TStringField;
+    cdsAtividade_ProjetoOBSERVACAO: TStringField;
     cdsPessoaOBSERVACAO: TStringField;
+    cdsProjeto_FinanciadorOBSERVACAO: TStringField;
+    cdsProjetoDESCRICAO: TStringField;
+    cdsOrganizacao_PessoaOBSERVACAO: TStringField;
   private
     { Private declarations }
   public

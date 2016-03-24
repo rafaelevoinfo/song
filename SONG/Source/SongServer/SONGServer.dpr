@@ -20,7 +20,8 @@ uses
   smuViveiro in 'ServerModules\smuViveiro.pas' {smViveiro: TDSServerModule},
   uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
   fAtualizacao in 'fAtualizacao.pas' {frmAtualizacao},
-  smuFuncoesViveiro in 'ServerModules\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule};
+  smuFuncoesViveiro in 'ServerModules\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule},
+  smuFuncoesBasico in 'ServerModules\smuFuncoesBasico.pas' {smFuncoesBasico: TDSServerModule};
 
 {$R *.res}
 
@@ -29,8 +30,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
-  Application.CreateForm(TMensagem, Mensagem);
-  Application.CreateForm(TsmFuncoesViveiro, smFuncoesViveiro);
   Application.Run;
 end.
 

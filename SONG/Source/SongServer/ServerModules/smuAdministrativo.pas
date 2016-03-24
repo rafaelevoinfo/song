@@ -16,7 +16,6 @@ type
     qPessoa: TRfQuery;
     qPerfil: TRfQuery;
     qPerfilNOME: TStringField;
-    qPerfilDESCRICAO: TStringField;
     qPessoaNOME: TStringField;
     qPessoaRG: TStringField;
     qPessoaCPF: TStringField;
@@ -57,13 +56,11 @@ type
     qOrganizacao_PessoaID_PESSOA: TIntegerField;
     qOrganizacao_PessoaID_ORGANIZACAO: TIntegerField;
     qOrganizacao_PessoaFUNCAO: TStringField;
-    qOrganizacao_PessoaOBSERVACAO: TStringField;
     qProjeto: TRfQuery;
     qProjetoID: TIntegerField;
     qProjetoNOME: TStringField;
     qProjetoDATA_INICIO: TDateField;
     qProjetoDATA_TERMINO: TDateField;
-    qProjetoDESCRICAO: TStringField;
     qPerfilTIPO: TSmallintField;
     qProjetoORCAMENTO: TBCDField;
     qProjeto_Organizacao: TRfQuery;
@@ -71,7 +68,6 @@ type
     qProjeto_FinanciadorID: TIntegerField;
     qProjeto_FinanciadorID_PROJETO: TIntegerField;
     qProjeto_FinanciadorID_FINANCIADOR: TIntegerField;
-    qProjeto_FinanciadorOBSERVACAO: TStringField;
     qProjeto_OrganizacaoID: TIntegerField;
     qProjeto_OrganizacaoID_PROJETO: TIntegerField;
     qProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
@@ -108,7 +104,6 @@ type
     qAtividade_ProjetoID: TIntegerField;
     qAtividade_ProjetoID_ATIVIDADE: TIntegerField;
     qAtividade_ProjetoID_PROJETO: TIntegerField;
-    qAtividade_ProjetoOBSERVACAO: TStringField;
     qAtividade_PessoaID: TIntegerField;
     qAtividade_PessoaID_ATIVIDADE: TIntegerField;
     qAtividade_PessoaID_PESSOA: TIntegerField;
@@ -118,19 +113,15 @@ type
     qAtividade_ArquivoID_ATIVIDADE: TIntegerField;
     qAtividade_ArquivoNOME: TStringField;
     qAtividade_ArquivoNOME_ORIGINAL: TStringField;
-    qAtividade_ArquivoDESCRICAO: TStringField;
     qAtividade_Vinculo: TRfQuery;
     qAtividade_VinculoID: TIntegerField;
     qAtividade_VinculoTIPO_VINCULO: TSmallintField;
-    qAtividade_VinculoOBSERVACAO: TStringField;
     qAtividade_Comentario: TRfQuery;
     qAtividade_ComentarioID: TIntegerField;
     qAtividade_ComentarioID_ATIVIDADE: TIntegerField;
     qAtividade_ComentarioID_PESSOA: TIntegerField;
-    qAtividade_ComentarioCOMENTARIO: TStringField;
     qAtividade_ComentarioDATA_HORA: TSQLTimeStampField;
     qAtividade_ArquivoARQUIVO: TBlobField;
-    qAtividadeDESCRICAO: TStringField;
     qAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
     qAtividadeID_PROJETO: TIntegerField;
     qAtividade_ArquivoDATA_UPLOAD: TSQLTimeStampField;
@@ -146,6 +137,15 @@ type
     qOrganizacaoCIDADE: TStringField;
     qPessoaDATA_NASCIMENTO: TDateField;
     qPessoaOBSERVACAO: TStringField;
+    qAtividadeDESCRICAO: TStringField;
+    qAtividade_ArquivoDESCRICAO: TStringField;
+    qAtividade_ComentarioCOMENTARIO: TStringField;
+    qAtividade_ProjetoOBSERVACAO: TStringField;
+    qAtividade_VinculoOBSERVACAO: TStringField;
+    qOrganizacao_PessoaOBSERVACAO: TStringField;
+    qPerfilDESCRICAO: TStringField;
+    qProjetoDESCRICAO: TStringField;
+    qProjeto_FinanciadorOBSERVACAO: TStringField;
   private
     { Private declarations }
   protected

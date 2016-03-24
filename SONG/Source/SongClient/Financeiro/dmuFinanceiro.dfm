@@ -162,7 +162,7 @@ inherited dmFinanceiro: TdmFinanceiro
     object cdsFin_For_CliOBSERVACAO: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
-      Size = 500
+      Size = 1000
     end
   end
 end

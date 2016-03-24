@@ -133,7 +133,8 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Required = True
+      Size = 1000
     end
   end
   object qPerfil: TRFQuery
@@ -165,16 +166,16 @@ inherited smAdministrativo: TsmAdministrativo
       Required = True
       Size = 100
     end
-    object qPerfilDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qPerfilTIPO: TSmallintField
       FieldName = 'TIPO'
       Origin = 'TIPO'
       ProviderFlags = [pfInUpdate]
+    end
+    object qPerfilDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qPerfil_Permissao: TRFQuery
@@ -400,7 +401,7 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object qProjeto: TRFQuery
@@ -446,12 +447,6 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DATA_TERMINO'
       ProviderFlags = [pfInUpdate]
     end
-    object qProjetoDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qProjetoORCAMENTO: TBCDField
       FieldName = 'ORCAMENTO'
       Origin = 'ORCAMENTO'
@@ -470,6 +465,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'STATUS'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qProjetoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qProjeto_Organizacao: TRFQuery
@@ -520,6 +521,7 @@ inherited smAdministrativo: TsmAdministrativo
     ParamData = <
       item
         Name = 'ID_PROJETO'
+        DataType = ftInteger
         ParamType = ptInput
       end>
     object qProjeto_FinanciadorID: TIntegerField
@@ -544,7 +546,7 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Size = 500
+      Size = 1000
     end
   end
   object qProjeto_Documento: TRFQuery
@@ -765,12 +767,6 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOTIFICAR_ENVOLVIDOS'
       ProviderFlags = [pfInUpdate]
     end
-    object qAtividadeDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qAtividadeID_PROJETO: TIntegerField
       FieldName = 'ID_PROJETO'
       Origin = 'ID_PROJETO'
@@ -783,6 +779,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qAtividadeDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qAtividade_Pessoa: TRFQuery
@@ -872,18 +874,18 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qAtividade_ProjetoOBSERVACAO: TStringField
-      FieldName = 'OBSERVACAO'
-      Origin = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qAtividade_ProjetoNOME_PROJETO: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'NOME_PROJETO'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qAtividade_ProjetoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qAtividade_Arquivo: TRFQuery
@@ -932,12 +934,6 @@ inherited smAdministrativo: TsmAdministrativo
       Required = True
       Size = 100
     end
-    object qAtividade_ArquivoDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qAtividade_ArquivoARQUIVO: TBlobField
       FieldName = 'ARQUIVO'
       Origin = 'ARQUIVO'
@@ -949,6 +945,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DATA_UPLOAD'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qAtividade_ArquivoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qAtividade_Vinculo: TRFQuery
@@ -995,12 +997,6 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qAtividade_VinculoOBSERVACAO: TStringField
-      FieldName = 'OBSERVACAO'
-      Origin = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 500
-    end
     object qAtividade_VinculoID_ATIVIDADE_ORIGEM: TIntegerField
       FieldName = 'ID_ATIVIDADE_ORIGEM'
       Origin = 'ID_ATIVIDADE_ORIGEM'
@@ -1026,6 +1022,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qAtividade_VinculoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
   object qAtividade_Comentario: TRFQuery
@@ -1064,18 +1066,18 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qAtividade_ComentarioCOMENTARIO: TStringField
-      FieldName = 'COMENTARIO'
-      Origin = 'COMENTARIO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 500
-    end
     object qAtividade_ComentarioDATA_HORA: TSQLTimeStampField
       FieldName = 'DATA_HORA'
       Origin = 'DATA_HORA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qAtividade_ComentarioCOMENTARIO: TStringField
+      FieldName = 'COMENTARIO'
+      Origin = 'COMENTARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 1000
     end
   end
 end

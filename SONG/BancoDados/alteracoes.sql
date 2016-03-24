@@ -332,3 +332,49 @@ where (RDB$FIELD_NAME = 'ID_LOTE_MUDA') and
 
 ALTER TABLE LOTE_MUDA DROP ID_PESSOA;
 
+
+
+ALTER TABLE LOTE_MUDA
+    ADD ID_LOTE_SEMENTE INTEGER;
+
+alter table LOTE_MUDA
+alter ID position 1;
+
+alter table LOTE_MUDA
+alter ID_ESPECIE position 2;
+
+alter table LOTE_MUDA
+alter ID_LOTE_SEMENTE position 3;
+
+alter table LOTE_MUDA
+alter NOME position 4;
+
+alter table LOTE_MUDA
+alter QTDE position 5;
+
+alter table LOTE_MUDA
+alter QTDE_INICIAL position 6;
+
+alter table LOTE_MUDA
+alter DATA position 7;
+
+alter table LOTE_MUDA
+alter OBSERVACAO position 8;
+
+
+
+ALTER TABLE LOTE_MUDA
+ADD CONSTRAINT FK_LOTE_MUDA_2
+FOREIGN KEY (ID_LOTE_SEMENTE)
+REFERENCES LOTE_SEMENTE(ID)
+ON UPDATE CASCADE;
+
+
+
+ALTER DOMAIN D_DESCRICAO
+TYPE VARCHAR(1000) CHARACTER SET WIN1252;
+
+
+
+ALTER TABLE LOTE_MUDA DROP QTDE;
+

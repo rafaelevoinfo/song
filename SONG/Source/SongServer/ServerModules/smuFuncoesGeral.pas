@@ -9,19 +9,17 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, dmuPrincipal, uUtils, uTypes, System.IOUtils,
-  System.RegularExpressions,  MidasLib, Midas;
+  System.RegularExpressions,  MidasLib, Midas, smuFuncoesBasico;
 
 type
-  TsmFuncoesGeral = class(TsmBasico)
-    qId: TRFQuery;
-    qIdID: TIntegerField;
+  TsmFuncoesGeral = class(TsmFuncoesBasico)
   private
     { Private declarations }
   public
     function fpuVerificarNovaVersao(ipVersaoAtual: string): String;
-    function fpuGetId(ipTabela: string): Integer;
+
     function fpuBaixarAtualizacao(ipVersao: string): TStream;
-    function fpuDataHoraAtual:string;
+
   end;
 
 var
@@ -44,22 +42,6 @@ begin
       TBytesStream(Result).LoadFromFile(vaFile);
       Result.Position := 0;
     end;
-end;
-
-function TsmFuncoesGeral.fpuDataHoraAtual: string;
-begin
-  Result := DateTimeToStr(now);
-end;
-
-function TsmFuncoesGeral.fpuGetId(ipTabela: string): Integer;
-begin
-  qId.Connection := dmPrincipal.Connection;
-
-  qId.Close;
-  qId.MacroByName('GENERATOR').AsRaw := 'GEN_' + ipTabela.ToUpper;
-  qId.Open();
-
-  Result := qIdID.AsInteger;
 end;
 
 function TsmFuncoesGeral.fpuVerificarNovaVersao(ipVersaoAtual: string): String;
