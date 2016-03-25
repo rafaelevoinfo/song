@@ -793,12 +793,14 @@ inherited smAdministrativo: TsmAdministrativo
       'select ATIVIDADE_PESSOA.ID,'
       '       ATIVIDADE_PESSOA.ID_ATIVIDADE,'
       '       ATIVIDADE_PESSOA.ID_PESSOA,'
+      '       PESSOA.NOME AS NOME_PESSOA,'
       '       ATIVIDADE_PESSOA.FUNCAO,'
       '       ATIVIDADE.NOME as NOME_ATIVIDADE'
       'from ATIVIDADE_PESSOA'
       
         'inner join ATIVIDADE on (ATIVIDADE_PESSOA.ID_ATIVIDADE = ATIVIDA' +
         'DE.ID)'
+      'inner join Pessoa on (PESSOA.ID = ATIVIDADE_PESSOA.ID_PESSOA)'
       'where ATIVIDADE_PESSOA.ID_ATIVIDADE = :ID_ATIVIDADE   ')
     Left = 360
     Top = 144
@@ -833,6 +835,22 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 50
+    end
+    object qAtividade_PessoaNOME_PESSOA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_PESSOA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qAtividade_PessoaNOME_ATIVIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ATIVIDADE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
     end
   end
   object qAtividade_Projeto: TRFQuery

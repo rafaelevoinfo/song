@@ -1,15 +1,9 @@
 inherited frmLoteSemente: TfrmLoteSemente
   Caption = 'Lotes de Sementes'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 291
@@ -186,39 +180,40 @@ inherited frmLoteSemente: TfrmLoteSemente
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
                     Options.Editing = False
+                    Width = 40
                   end
                   object viewRegistrosDetailDATA: TcxGridDBColumn [1]
                     DataBinding.FieldName = 'DATA'
                     Options.Editing = False
+                    SortIndex = 0
+                    SortOrder = soDescending
                     Width = 104
                   end
                   object viewRegistrosDetailPESSOA_SEMEOU: TcxGridDBColumn [2]
                     DataBinding.FieldName = 'PESSOA_SEMEOU'
                     Options.Editing = False
-                    Width = 202
+                    Width = 140
                   end
                   object viewRegistrosDetailNOME_CANTEIRO: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'NOME_CANTEIRO'
                     Options.Editing = False
-                    Width = 184
+                    Width = 136
                   end
                   object viewRegistrosDetailQTDE_SEMEADA: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'QTDE_SEMEADA'
                     RepositoryItem = dmLookup.repCalcPadrao
                     Options.Editing = False
+                    Width = 107
                   end
                   object viewRegistrosDetailQTDE_TUBETE: TcxGridDBColumn [5]
                     DataBinding.FieldName = 'QTDE_TUBETE'
                     RepositoryItem = dmLookup.repCalcPadrao
+                    Width = 142
                   end
                   object viewRegistrosDetailDATA_PREVISTA_GERMINACAO: TcxGridDBColumn [6]
                     DataBinding.FieldName = 'DATA_PREVISTA_GERMINACAO'
@@ -241,6 +236,10 @@ inherited frmLoteSemente: TfrmLoteSemente
             object tabDetailGerminacao: TcxTabSheet
               Caption = 'Hist'#243'rico de Germina'#231#227'o'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pn1: TPanel
                 Left = 0
                 Top = 0
@@ -390,15 +389,10 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
-                Width = 455
-                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
-                Left = 456
-                Width = 48
-                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
@@ -420,9 +414,6 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
               inherited cxGrid2: TcxGrid
-                Left = 504
-                Width = 467
-                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -447,14 +438,11 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 110
-                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
-                  Left = 503
                   Width = 92
-                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 503
                   ExplicitWidth = 92
@@ -584,10 +572,6 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 6

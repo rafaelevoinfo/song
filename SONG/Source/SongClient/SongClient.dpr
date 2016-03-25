@@ -36,9 +36,10 @@ uses
   fMatriz in 'Viveiro\fMatriz.pas' {frmMatriz},
   fLote_Semente in 'Viveiro\fLote_Semente.pas' {frmLoteSemente},
   fCanteiro in 'Viveiro\fCanteiro.pas' {frmCanteiro},
-  fLote_Muda in 'Viveiro\fLote_Muda.pas' {frmLoteMuda};
+  fLote_Muda in 'Viveiro\fLote_Muda.pas' {frmLoteMuda},
+  fAreaCusto in 'fAreaCusto.pas' {frmAreaCusto};
 
-  {$R Localization.RES}
+{$R Localization.RES}
   {$R *.res}
 
 

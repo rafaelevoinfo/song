@@ -298,12 +298,6 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsGerminacaoDATA: TSQLTimeStampField
-      DisplayLabel = 'Data'
-      FieldName = 'DATA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object cdsGerminacaoQTDE_GERMINADA: TIntegerField
       DisplayLabel = 'Qtde. Germinada'
       FieldName = 'QTDE_GERMINADA'
@@ -315,6 +309,11 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'PESSOA_VERIFICOU'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsGerminacaoDATA: TDateField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      Required = True
     end
   end
   object cdsSemeadura: TRFClientDataSet
@@ -437,27 +436,26 @@ inherited dmViveiro: TdmViveiro
     object cdsLote_MudaID_ESPECIE: TIntegerField
       DisplayLabel = 'Id da Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsLote_MudaNOME: TStringField
       DisplayLabel = 'Nome do Lote'
       FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
     object cdsLote_MudaQTDE_INICIAL: TIntegerField
       DisplayLabel = 'Qtde. Inicial'
       FieldName = 'QTDE_INICIAL'
-      Required = True
-    end
-    object cdsLote_MudaDATA: TSQLTimeStampField
-      DisplayLabel = 'Data da Inclus'#227'o'
-      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsLote_MudaNOME_ESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'NOME_ESPECIE'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsLote_MudaOBSERVACAO: TStringField
@@ -465,6 +463,17 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object cdsLote_MudaQTDE_ATUAL: TIntegerField
+      DisplayLabel = 'Qtde. Atual'
+      FieldName = 'QTDE_ATUAL'
+      ProviderFlags = []
+    end
+    object cdsLote_MudaDATA: TDateField
+      DisplayLabel = 'Data da Inclus'#227'o'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object cdsClassificacao: TRFClientDataSet

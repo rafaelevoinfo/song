@@ -1,10 +1,12 @@
 inherited frmPessoa: TfrmPessoa
+  ActiveControl = EditNome
   Caption = 'Pessoas'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -171,11 +173,6 @@ inherited frmPessoa: TfrmPessoa
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 156
-              inherited pnBotoesDetail: TPanel
-                inherited btnIncluirDetail: TButton
-                  ExplicitLeft = 1
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -529,7 +526,6 @@ inherited frmPessoa: TfrmPessoa
             end
             inherited pnBotoes: TPanel
               Left = 458
-              Width = 48
               Height = 377
               ExplicitLeft = 458
               ExplicitWidth = 48
@@ -584,14 +580,12 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
-                Height = 15
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 91
-                Height = 15
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 91
@@ -626,7 +620,7 @@ inherited frmPessoa: TfrmPessoa
   inherited dsDetail: TDataSource
     DataSet = dmAdministrativo.cdsPessoa_Perfil
     Left = 360
-    Top = 104
+    Top = 56
   end
   object cdsLocalPerfis: TClientDataSet
     Aggregates = <>

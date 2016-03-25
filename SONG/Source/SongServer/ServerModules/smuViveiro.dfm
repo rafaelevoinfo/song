@@ -367,12 +367,6 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qGerminacaoDATA: TSQLTimeStampField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object qGerminacaoQTDE_GERMINADA: TIntegerField
       FieldName = 'QTDE_GERMINADA'
       Origin = 'QTDE_GERMINADA'
@@ -385,6 +379,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qGerminacaoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object qSemeadura: TRFQuery
@@ -525,6 +525,10 @@ inherited smViveiro: TsmViveiro
       '       Lote_Muda.Id_Especie,'
       '       Lote_Muda.Nome,'
       '       Lote_Muda.Qtde_Inicial,'
+      '       (Select first 1 classificacao.qtde'
+      '         from classificacao '
+      '        where classificacao.id_lote_muda = lote_muda.id'
+      '        order by classificacao.data desc) as qtde_atual,'
       '       Lote_Muda.Data,'
       '       Lote_Muda.Observacao,'
       '       especie.nome as nome_especie'
@@ -563,11 +567,12 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qLote_MudaDATA: TSQLTimeStampField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      ProviderFlags = [pfInUpdate]
-      Required = True
+    object qLote_MudaQTDE_ATUAL: TIntegerField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Qtde. Atual'
+      FieldName = 'QTDE_ATUAL'
+      Origin = 'QTDE_ATUAL'
+      ProviderFlags = []
     end
     object qLote_MudaNOME_ESPECIE: TStringField
       AutoGenerateValue = arDefault
@@ -581,6 +586,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qLote_MudaDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object qClassificacao: TRFQuery

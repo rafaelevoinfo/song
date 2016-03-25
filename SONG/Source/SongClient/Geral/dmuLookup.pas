@@ -5,15 +5,13 @@ interface
 uses
   System.SysUtils, System.Classes, dmuBasico, cxEdit, cxEditRepositoryItems,
   cxClasses, Data.DB, Datasnap.DBClient, cxDBEditRepository,
-  uClientDataSet, dmuPrincipal, uTypes, cxImageComboBox;
+  uClientDataSet, dmuPrincipal, uTypes, cxImageComboBox, uUtils,
+  cxDBLookupEdit, cxDBLookupComboBox;
 
 type
   TdmLookup = class(TdmBasico)
     Repositorio: TcxEditRepository;
     RepIcbNaoSim: TcxEditRepositoryImageComboBoxItem;
-    cdslkPerfil: TClientDataSet;
-    cdslkPerfilID: TIntegerField;
-    cdslkPerfilNOME: TStringField;
     repLcbPerfil: TcxEditRepositoryLookupComboBoxItem;
     dslkPerfil: TDataSource;
     cdslkPessoa: TRFClientDataSet;
@@ -86,12 +84,18 @@ type
     cdslkEspecieVALOR_MUDA: TBCDField;
     cdslkEspecieVALOR_KG_SEMENTE: TBCDField;
     cdslkEspecieTEMPO_GERMINACAO: TIntegerField;
+    cdslkPerfil: TRFClientDataSet;
+    cdslkPerfilID: TIntegerField;
+    cdslkPerfilNOME: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private
+
     { Private declarations }
   public
-    { Public declarations }
+    procedure ppuCarregarPessoasAvulsas(ipCds: TClientDataSet; ipFieldIdPessoa, ipFieldNomePessoa: String);
+    procedure ppuCarregarPessoas(ipIdEspecifico: Integer; ipTipos: TRelacionamentosPessoa);
+    procedure ppuPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox; ipTipos: TRelacionamentosPessoa);
   end;
 
   // var
@@ -99,11 +103,92 @@ type
 
 implementation
 
+uses
+  fPessoa;
 
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
 
+
+procedure TdmLookup.ppuCarregarPessoas(ipIdEspecifico: Integer; ipTipos: TRelacionamentosPessoa);
+var
+  vaTipos: TStringList;
+  I: Integer;
+  vaTipo: TTipoRelacionamentoPessoa;
+begin
+  vaTipos := TStringList.Create;
+  try
+    vaTipos.Delimiter := ',';
+    vaTipos.StrictDelimiter := True;
+
+    cdslkPessoa.ppuLimparParametros;
+    if ipIdEspecifico <> 0 then
+      cdslkPessoa.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
+
+    for vaTipo in ipTipos do
+      vaTipos.Add(Ord(vaTipo).ToString());;
+
+    // recusado, cancelado, executado
+    cdslkPessoa.ppuDataRequest([TParametros.coTipo], [vaTipos.DelimitedText]);
+  finally
+    vaTipos.Free;
+  end;
+end;
+
+procedure TdmLookup.ppuPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox; ipTipos: TRelacionamentosPessoa);
+var
+  vaFrmPessoa: TfrmPessoa;
+begin
+  inherited;
+  vaFrmPessoa := TfrmPessoa.Create(nil);
+  try
+    vaFrmPessoa.ppuConfigurarModoExecucao(mePesquisa);
+
+    vaFrmPessoa.ShowModal;
+    if vaFrmPessoa.IdEscolhido <> 0 then
+      begin
+        if cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
+          begin
+            ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
+            ipEditResultado.PostEditValue;
+          end
+        else
+          begin
+            ppuCarregarPessoas(vaFrmPessoa.IdEscolhido, ipTipos);
+            if cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
+              begin
+                ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
+                ipEditResultado.PostEditValue;
+              end;
+          end;
+
+      end;
+  finally
+    vaFrmPessoa.Free;
+  end;
+end;
+
+procedure TdmLookup.ppuCarregarPessoasAvulsas(ipCds: TClientDataSet; ipFieldIdPessoa, ipFieldNomePessoa: String);
+begin
+  cdslkPessoa.DisableControls;
+  try
+    TUtils.ppuPercorrerCds(ipCds,
+      procedure
+      begin
+        if not cdslkPessoa.Locate(cdslkPessoaID.FieldName, ipCds.FieldByName(ipFieldIdPessoa).AsInteger, []) then
+          begin
+            cdslkPessoa.Append;
+            cdslkPessoaID.AsInteger := ipCds.FieldByName(ipFieldIdPessoa).AsInteger;
+            cdslkPessoaNOME.AsString := ipCds.FieldByName(ipFieldNomePessoa).AsString;
+            cdslkPessoa.Post;
+          end;
+      end);
+  finally
+    cdslkPessoa.EnableControls;
+  end;
+
+end;
 
 procedure TdmLookup.cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
 begin
@@ -115,7 +200,7 @@ end;
 procedure TdmLookup.DataModuleCreate(Sender: TObject);
 var
   vaTipo: TTipoRelacionamentoPessoa;
-  vaItem:TcxImageComboBoxItem;
+  vaItem: TcxImageComboBoxItem;
 begin
   inherited;
   repIcbTipoPessoa.Properties.Items.Clear;

@@ -4,6 +4,7 @@ inherited frmAtividade: TfrmAtividade
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -167,7 +168,6 @@ inherited frmAtividade: TfrmAtividade
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabDetailArquivo
             OnChange = pcDetailsChange
             object tabDetailComentario: TcxTabSheet [0]
               Caption = 'Coment'#225'rios'
@@ -294,12 +294,17 @@ inherited frmAtividade: TfrmAtividade
                   end
                   object viewRegistrosDetailID_PESSOA: TcxGridDBColumn [1]
                     DataBinding.FieldName = 'ID_PESSOA'
-                    RepositoryItem = dmLookup.repLcbPessoa
+                    Visible = False
                     Options.Editing = False
                     Options.ShowEditButtons = isebNever
                     Width = 336
                   end
-                  object viewRegistrosDetailFUNCAO: TcxGridDBColumn [2]
+                  object viewRegistrosDetailNOME_PESSOA: TcxGridDBColumn [2]
+                    DataBinding.FieldName = 'NOME_PESSOA'
+                    Options.Editing = False
+                    Width = 328
+                  end
+                  object viewRegistrosDetailFUNCAO: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'FUNCAO'
                     Options.Editing = False
                   end
@@ -848,9 +853,9 @@ inherited frmAtividade: TfrmAtividade
         object Label12: TLabel
           Left = 5
           Top = 3
-          Width = 83
+          Width = 106
           Height = 13
-          Caption = 'Pessoa envolvida'
+          Caption = 'Pessoa envolvida (F2)'
           FocusControl = cbPessoaEnvolvida
         end
         object EditFuncaoPessoa: TcxDBTextEdit
@@ -869,7 +874,17 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataSource = dsDetail
           Properties.ListColumns = <>
           TabOrder = 0
+          OnKeyDown = cbPessoaEnvolvidaKeyDown
           Width = 209
+        end
+        object btnPesquisarPessoa: TButton
+          Left = 216
+          Top = 19
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Pessoa_Envolvida
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 2
         end
       end
     end
@@ -948,7 +963,6 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataSource = dsAtividade_Projeto
           Properties.ListColumns = <>
           TabOrder = 0
-          OnKeyDown = cbProjetoKeyDown
           Width = 209
         end
         object EditObsAtividadeProjeto: TcxDBMemo
@@ -1293,6 +1307,11 @@ inherited frmAtividade: TfrmAtividade
       Caption = 'Baixar'
       ImageIndex = 8
       OnExecute = Ac_DownloadExecute
+    end
+    object Ac_Pesquisar_Pessoa_Envolvida: TAction
+      Category = 'Detail'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_Pessoa_EnvolvidaExecute
     end
   end
   inherited dsMaster: TDataSource

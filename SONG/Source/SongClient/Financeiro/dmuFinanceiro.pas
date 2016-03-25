@@ -37,6 +37,10 @@ type
     cdsFin_For_CliRAMO_ATIVIDADE: TStringField;
     cdsFin_For_CliPESQUISA: TStringField;
     cdsFin_For_CliOBSERVACAO: TStringField;
+    cdsFin_For_CliCARGO_CONTATO: TStringField;
+    cdsArea_Custo: TRFClientDataSet;
+    cdsArea_CustoID: TIntegerField;
+    cdsArea_CustoNOME: TStringField;
   private
     { Private declarations }
   public

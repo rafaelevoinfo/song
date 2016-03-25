@@ -146,6 +146,8 @@ type
     qPerfilDESCRICAO: TStringField;
     qProjetoDESCRICAO: TStringField;
     qProjeto_FinanciadorOBSERVACAO: TStringField;
+    qAtividade_PessoaNOME_PESSOA: TStringField;
+    qAtividade_PessoaNOME_ATIVIDADE: TStringField;
   private
     { Private declarations }
   protected

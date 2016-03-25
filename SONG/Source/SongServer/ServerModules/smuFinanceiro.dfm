@@ -83,6 +83,7 @@ inherited smFinanceiro: TsmFinanceiro
     SQL.Strings = (
       'select FIN_FOR_CLI.ID,'
       '       FIN_FOR_CLI.ID_CONTATO,'
+      '       FIN_FOR_CLI.CARGO_CONTATO,'
       '       FIN_FOR_CLI.ID_CIDADE,'
       '       FIN_FOR_CLI.NOME_FANTASIA,'
       '       FIN_FOR_CLI.RAZAO_SOCIAL,'
@@ -217,6 +218,40 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qFin_For_CliCARGO_CONTATO: TStringField
+      FieldName = 'CARGO_CONTATO'
+      Origin = 'CARGO_CONTATO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+  end
+  object qArea_Custo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Area_Custo.Id,'
+      '       Area_Custo.Nome'
+      'from Area_Custo'
+      '&WHERE')
+    Left = 144
+    Top = 104
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qArea_CustoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qArea_CustoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
     end
   end
 end

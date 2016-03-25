@@ -147,6 +147,8 @@ type
     cdsProjeto_FinanciadorOBSERVACAO: TStringField;
     cdsProjetoDESCRICAO: TStringField;
     cdsOrganizacao_PessoaOBSERVACAO: TStringField;
+    cdsAtividade_PessoaNOME_PESSOA: TStringField;
+    cdsAtividade_PessoaNOME_ATIVIDADE: TStringField;
   private
     { Private declarations }
   public

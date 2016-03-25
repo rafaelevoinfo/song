@@ -1,17 +1,9 @@
 inherited frmLoteMuda: TfrmLoteMuda
-  ActiveControl = cbEspecie
   Caption = 'Lotes de Mudas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -117,16 +109,17 @@ inherited frmLoteMuda: TfrmLoteMuda
               Options.Editing = False
               Width = 98
             end
+            object viewRegistrosQTDE_ATUAL: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'QTDE_ATUAL'
+              Options.Editing = False
+              Width = 77
+            end
           end
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Classifica'#231#245'es'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -146,6 +139,8 @@ inherited frmLoteMuda: TfrmLoteMuda
                   object viewRegistrosDetailDATA: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'DATA'
                     Options.Editing = False
+                    SortIndex = 0
+                    SortOrder = soDescending
                     Width = 107
                   end
                   object viewRegistrosDetailQTDE: TcxGridDBColumn [4]
@@ -173,14 +168,6 @@ inherited frmLoteMuda: TfrmLoteMuda
           Height = 13
           Caption = 'Nome/Identifica'#231#227'o'
           FocusControl = EditNome
-        end
-        object Label6: TLabel
-          Left = 548
-          Top = 0
-          Width = 86
-          Height = 13
-          Caption = 'Quantidade (Und)'
-          FocusControl = EditQtdeMudas
         end
         object Label7: TLabel
           Left = 6
@@ -236,30 +223,18 @@ inherited frmLoteMuda: TfrmLoteMuda
           TabOrder = 2
           Width = 121
         end
-        object EditQtdeMudas: TcxDBSpinEdit
-          Left = 548
-          Top = 16
-          DataBinding.DataField = 'QTDE_INICIAL'
-          DataBinding.DataSource = dsMaster
-          TabOrder = 3
-          Width = 95
-        end
         object EditObsLote: TcxDBMemo
           Left = 4
           Top = 58
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 4
+          TabOrder = 3
           Height = 71
-          Width = 639
+          Width = 541
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 6
@@ -328,8 +303,8 @@ inherited frmLoteMuda: TfrmLoteMuda
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsDetail
           TabOrder = 4
-          Height = 89
-          Width = 867
+          Height = 63
+          Width = 445
         end
         object EditQtdeClassificada: TcxDBSpinEdit
           Left = 334

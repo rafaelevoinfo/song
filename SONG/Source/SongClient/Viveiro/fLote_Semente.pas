@@ -130,8 +130,6 @@ type
 
     procedure ppvConfigurarGrids;
     procedure ppvCarregarMatrizes;
-    procedure ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
-    procedure ppvCarregarPessoas(ipIdEspecifico: Integer);
     procedure ppvRemoverMatrizesOutrasEspecie;
 
     function fpvGerminacaoEmAndamento: Boolean;
@@ -160,6 +158,7 @@ type
   public const
     coLoteAberto = 0;
     coLoteFechado = 1;
+    coTiposPessoaPadrao:Set of TTipoRelacionamentoPessoa = [trpFuncionario,trpEstagiario,trpVoluntario, trpMembroDiretoria];
   end;
 
 var
@@ -190,19 +189,19 @@ end;
 procedure TfrmLoteSemente.Ac_Pesquisar_PessoaExecute(Sender: TObject);
 begin
   inherited;
-  ppvPesquisarPessoa(cbPessoaColetou);
+  dmLookup.ppuPesquisarPessoa( cbPessoaColetou,coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
 begin
   inherited;
-  ppvPesquisarPessoa(cbPessoaSemeou);
+  dmLookup.ppuPesquisarPessoa(cbPessoaSemeou,coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
 begin
   inherited;
-  ppvPesquisarPessoa(cbPessoaVerificou);
+  dmLookup.ppuPesquisarPessoa( cbPessoaVerificou,coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.Ac_Reiniciar_Etapa_GerminacaoExecute(Sender: TObject);
@@ -213,50 +212,6 @@ begin
       dmPrincipal.FuncoesViveiro.ppuReiniciarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
       pprEfetuarPesquisa;
     end;
-end;
-
-procedure TfrmLoteSemente.ppvCarregarPessoas(ipIdEspecifico: Integer);
-begin
-  dmLookup.cdslkPessoa.ppuLimparParametros;
-  if ipIdEspecifico <> 0 then
-    dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
-
-  // recusado, cancelado, executado
-  dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTipo], [Ord(trpFuncionario).ToString + ',' + Ord(trpEstagiario).ToString + ',' +
-    Ord(trpVoluntario).ToString + ',' + Ord(trpMembroDiretoria).ToString]);
-end;
-
-procedure TfrmLoteSemente.ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
-var
-  vaFrmPessoa: TfrmPessoa;
-begin
-  inherited;
-  vaFrmPessoa := TfrmPessoa.Create(nil);
-  try
-    vaFrmPessoa.ppuConfigurarModoExecucao(mePesquisa);
-
-    vaFrmPessoa.ShowModal;
-    if vaFrmPessoa.IdEscolhido <> 0 then
-      begin
-        if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
-          begin
-            ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
-            ipEditResultado.PostEditValue;
-          end
-        else
-          begin
-            ppvCarregarPessoas(vaFrmPessoa.IdEscolhido);
-            if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
-              begin
-                ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
-                ipEditResultado.PostEditValue;
-              end;
-          end;
-
-      end;
-  finally
-    vaFrmPessoa.Free;
-  end;
 end;
 
 procedure TfrmLoteSemente.cbEspeciePropertiesEditValueChanged(Sender: TObject);
@@ -305,7 +260,19 @@ begin
     dsDetail.DataSet := dmViveiro.cdsGerminacao;
 
   if not dsDetail.DataSet.Active then
-    dsDetail.DataSet.Open;
+    begin
+      dsDetail.DataSet.Open;
+      if dsDetail.DataSet = dmViveiro.cdsSemeadura then
+        begin
+          dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsSemeadura, dmViveiro.cdsSemeaduraID_PESSOA_SEMEOU.FieldName,
+            dmViveiro.cdsSemeaduraPESSOA_SEMEOU.FieldName);
+        end
+      else if dsDetail.DataSet = dmViveiro.cdsGerminacao then
+        begin
+          dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsGerminacao, dmViveiro.cdsGerminacaoID_PESSOA_VERIFICOU.FieldName,
+            dmViveiro.cdsGerminacaoPESSOA_VERIFICOU.FieldName);
+        end;
+    end;
 end;
 
 procedure TfrmLoteSemente.pprBeforeAlterar;
@@ -357,6 +324,14 @@ begin
   dmViveiro.cdsLote_Semente_Matriz.Close;
   inherited;
   dmViveiro.cdsLote_Semente_Matriz.Open;
+
+  dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsLote_Semente, dmViveiro.cdsLote_SementeID_PESSOA_COLETOU.FieldName,
+    dmViveiro.cdsLote_SementePESSOA_COLETOU.FieldName);
+  dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsGerminacao, dmViveiro.cdsGerminacaoID_PESSOA_VERIFICOU.FieldName,
+    dmViveiro.cdsGerminacaoPESSOA_VERIFICOU.FieldName);
+  dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsSemeadura, dmViveiro.cdsSemeaduraID_PESSOA_SEMEOU.FieldName,
+    dmViveiro.cdsSemeaduraPESSOA_SEMEOU.FieldName);
+
 end;
 
 procedure TfrmLoteSemente.pprExecutarCancelar;
@@ -443,7 +418,7 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    ppvPesquisarPessoa(cbPessoaColetou);
+    dmLookup.ppuPesquisarPessoa( cbPessoaColetou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
@@ -451,7 +426,7 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    ppvPesquisarPessoa(cbPessoaSemeou);
+    dmLookup.ppuPesquisarPessoa( cbPessoaSemeou,coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
@@ -459,7 +434,7 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    ppvPesquisarPessoa(cbPessoaVerificou);
+    dmLookup.ppuPesquisarPessoa( cbPessoaVerificou,coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
@@ -493,7 +468,7 @@ begin
 
   PesquisaPadrao := tppData;
 
-  ppvCarregarPessoas(0);
+  dmLookup.ppuCarregarPessoas(0,coTiposPessoaPadrao);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 

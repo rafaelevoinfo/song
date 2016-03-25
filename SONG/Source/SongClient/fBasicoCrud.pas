@@ -14,7 +14,7 @@ uses
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
-  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization;
+  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -80,6 +80,7 @@ type
     FIdEscolhido: Integer;
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
 
+
   protected
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
@@ -137,8 +138,10 @@ var
 
 implementation
 
-{$R *.dfm}
+uses
+  fPessoa;
 
+{$R *.dfm}
 
 procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin

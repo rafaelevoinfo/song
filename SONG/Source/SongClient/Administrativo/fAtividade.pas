@@ -161,6 +161,9 @@ type
     Ac_Pesquisar_Atividade: TAction;
     Ac_Download: TAction;
     ColumnDownload: TcxGridDBColumn;
+    btnPesquisarPessoa: TButton;
+    Ac_Pesquisar_Pessoa_Envolvida: TAction;
+    viewRegistrosDetailNOME_PESSOA: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -172,12 +175,13 @@ type
     procedure cbProjetoPrincipalKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_Detail_ProjetoExecute(Sender: TObject);
-    procedure cbProjetoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure cbAtividadeVinculoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_AtividadeExecute(Sender: TObject);
     procedure Ac_DownloadExecute(Sender: TObject);
+    procedure cbPessoaEnvolvidaKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ac_Pesquisar_Pessoa_EnvolvidaExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     dmAdministrativo: TdmAdministrativo;
@@ -186,7 +190,6 @@ type
     procedure ppvPesquisarProjeto(ipCombo: TcxDBLookupComboBox);
     procedure ppvPesquisarAtividade;
     procedure ppvCarregarAtividades(ipIdEspecifico: Integer = 0);
-
 
     { Private declarations }
   protected
@@ -205,6 +208,8 @@ type
     procedure ppuIncluirDetail; override;
     procedure ppuRetornar; override;
     procedure ppuBaixarArquivo(ipId: Integer);
+  public const
+    coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria, trpParceiro];
 
   end;
 
@@ -258,6 +263,12 @@ begin
   ppvPesquisarProjeto(cbProjeto);
 end;
 
+procedure TfrmAtividade.Ac_Pesquisar_Pessoa_EnvolvidaExecute(Sender: TObject);
+begin
+  inherited;
+  dmLookup.ppuPesquisarPessoa(cbPessoaEnvolvida, coTiposPessoaPadrao);
+end;
+
 procedure TfrmAtividade.Ac_Pesquisar_ProjetoExecute(Sender: TObject);
 begin
   ppvPesquisarProjeto(cbProjetoPrincipal);
@@ -271,12 +282,12 @@ begin
     ppvPesquisarAtividade;
 end;
 
-procedure TfrmAtividade.cbProjetoKeyDown(Sender: TObject; var Key: Word;
+procedure TfrmAtividade.cbPessoaEnvolvidaKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    ppvPesquisarProjeto(cbProjeto);
+    dmLookup.ppuPesquisarPessoa(cbPessoaEnvolvida, coTiposPessoaPadrao);
 end;
 
 procedure TfrmAtividade.cbProjetoPrincipalKeyDown(Sender: TObject;
@@ -367,7 +378,7 @@ begin
   EditDataInicialPesquisa.Date := IncDay(Now, -7);;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
-  dmLookup.cdslkPessoa.Open;
+  dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
   pprCarregarProjetos;
 
   pcDetails.ActivePage := tabDetailComentario;
@@ -420,7 +431,13 @@ begin
     dsDetail.DataSet := dmAdministrativo.cdsAtividade_Comentario;
 
   if not dsDetail.DataSet.Active then
-    dsDetail.DataSet.Open;
+    begin
+      dsDetail.DataSet.Open;
+      if dsDetail.DataSet = dmAdministrativo.cdsAtividade_Pessoa then
+        dmLookup.ppuCarregarPessoasAvulsas(dmAdministrativo.cdsAtividade_Pessoa, dmAdministrativo.cdsAtividade_PessoaID_PESSOA.FieldName,
+          dmAdministrativo.cdsAtividade_PessoaNOME_PESSOA.FieldName);
+
+    end;
 end;
 
 procedure TfrmAtividade.ppvFiltrarAtividade;
@@ -468,7 +485,7 @@ end;
 
 procedure TfrmAtividade.ppuBaixarArquivo(ipId: Integer);
 begin
-  if dmAdministrativo.cdsAtividade_Arquivo.Locate(TBancoDados.coId, ipId, []) then
+  if dmAdministrativo.cdsAtividade_Arquivo.Locate(TBancoDados.coID, ipId, []) then
     begin
       if not dmAdministrativo.cdsAtividade_ArquivoARQUIVO.IsNull then
         begin
@@ -504,6 +521,8 @@ procedure TfrmAtividade.pprEfetuarPesquisa;
 begin
   inherited;
   ppvCarregarAtividadesVinculadas;
+  dmLookup.ppuCarregarPessoasAvulsas(dmAdministrativo.cdsAtividade_Pessoa, dmAdministrativo.cdsAtividade_PessoaID_PESSOA.FieldName,
+    dmAdministrativo.cdsAtividade_PessoaNOME_PESSOA.FieldName);
 end;
 
 procedure TfrmAtividade.pprExecutarSalvarDetail;

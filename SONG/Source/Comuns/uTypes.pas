@@ -41,6 +41,8 @@ type
   TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador, trpParceiro, trpEstagiario,
     trpVoluntario, trpOutro);
 
+  TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;
@@ -57,6 +59,9 @@ const
 
   AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar', 'Inativar');
   TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário','Membro da Diretoria','Cliente','Fornecedor','Financiador','Parceiro','Estagiário','Voluntário','Outro');
+
+
+
 
 implementation
 

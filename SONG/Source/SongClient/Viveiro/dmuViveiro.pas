@@ -42,7 +42,6 @@ type
     cdsGerminacao: TRFClientDataSet;
     cdsGerminacaoID: TIntegerField;
     cdsGerminacaoID_PESSOA_VERIFICOU: TIntegerField;
-    cdsGerminacaoDATA: TSQLTimeStampField;
     cdsGerminacaoQTDE_GERMINADA: TIntegerField;
     cdsSemeadura: TRFClientDataSet;
     cdsSemeaduraID: TIntegerField;
@@ -72,7 +71,6 @@ type
     cdsLote_MudaID_ESPECIE: TIntegerField;
     cdsLote_MudaNOME: TStringField;
     cdsLote_MudaQTDE_INICIAL: TIntegerField;
-    cdsLote_MudaDATA: TSQLTimeStampField;
     cdsLote_SementePESSOA_COLETOU: TStringField;
     cdsLote_MudaNOME_ESPECIE: TStringField;
     cdsClassificacao: TRFClientDataSet;
@@ -89,6 +87,9 @@ type
     cdsMatrizDESCRICAO: TStringField;
     cdsEspecieOBSERVACAO: TStringField;
     cdsLote_MudaOBSERVACAO: TStringField;
+    cdsLote_MudaQTDE_ATUAL: TIntegerField;
+    cdsGerminacaoDATA: TDateField;
+    cdsLote_MudaDATA: TDateField;
   private
     { Private declarations }
   public

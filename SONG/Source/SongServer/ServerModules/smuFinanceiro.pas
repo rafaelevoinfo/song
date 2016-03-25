@@ -40,6 +40,10 @@ type
     qFin_For_CliRAMO_ATIVIDADE: TStringField;
     qFin_For_CliPESQUISA: TStringField;
     qFin_For_CliOBSERVACAO: TStringField;
+    qFin_For_CliCARGO_CONTATO: TStringField;
+    qArea_Custo: TRFQuery;
+    qArea_CustoID: TIntegerField;
+    qArea_CustoNOME: TStringField;
   private
     { Private declarations }
   protected

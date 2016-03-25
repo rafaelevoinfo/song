@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, uControleAcesso, System.TypInfo,
   dmuViveiro, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
   uTypes, uClientDataSet, System.DateUtils, cxCalc, cxDBEdit, cxSpinEdit,
-  cxMemo, cxRichEdit, cxDBRichEdit, fPessoa;
+  cxMemo, fPessoa;
 
 type
   TfrmLoteMuda = class(TfrmBasicoCrudMasterDetail)
@@ -29,12 +29,10 @@ type
     cbEspeciePesquisa: TcxLookupComboBox;
     Label3: TLabel;
     EditNome: TcxDBTextEdit;
-    Label6: TLabel;
     Label7: TLabel;
     cbEspecie: TcxDBLookupComboBox;
     EditData: TcxDBDateEdit;
     Label5: TLabel;
-    EditQtdeMudas: TcxDBSpinEdit;
     lbl2: TLabel;
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailID_PESSOA_CLASSIFICOU: TcxGridDBColumn;
@@ -52,6 +50,7 @@ type
     EditQtdeClassificada: TcxDBSpinEdit;
     Ac_Pesquisar_Pessoa_Classificou: TAction;
     EditObsLote: TcxDBMemo;
+    viewRegistrosQTDE_ATUAL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -59,15 +58,12 @@ type
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
-    procedure ppvCarregarPessoas(ipIdEspecifico: Integer);
-    procedure ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
   protected
     function fprGetPermissao: String; override;
-    procedure pprExecutarSalvar;override;
-    procedure pprAfterSalvarDetail; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
-  public
-    { Public declarations }
+    procedure pprEfetuarPesquisa; override;
+  public const
+    coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
   end;
 
 var
@@ -81,7 +77,7 @@ implementation
 procedure TfrmLoteMuda.Ac_Pesquisar_Pessoa_ClassificouExecute(Sender: TObject);
 begin
   inherited;
-  ppvPesquisarPessoa(cbPessoaClassificou);
+  dmLookup.ppuPesquisarPessoa(cbPessoaClassificou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteMuda.cbPessoaClassificouKeyDown(Sender: TObject;
@@ -89,40 +85,7 @@ procedure TfrmLoteMuda.cbPessoaClassificouKeyDown(Sender: TObject;
 begin
   inherited;
   if Key = VK_F2 then
-    ppvPesquisarPessoa(cbPessoaClassificou);
-end;
-
-procedure TfrmLoteMuda.ppvPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox);
-var
-  vaFrmPessoa: TfrmPessoa;
-begin
-  inherited;
-  vaFrmPessoa := TfrmPessoa.Create(nil);
-  try
-    vaFrmPessoa.ppuConfigurarModoExecucao(mePesquisa);
-
-    vaFrmPessoa.ShowModal;
-    if vaFrmPessoa.IdEscolhido <> 0 then
-      begin
-        if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
-          begin
-            ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
-            ipEditResultado.PostEditValue;
-          end
-        else
-          begin
-            ppvCarregarPessoas(vaFrmPessoa.IdEscolhido);
-            if dmLookup.cdslkPessoa.Locate(TBancoDados.coID, vaFrmPessoa.IdEscolhido, []) then
-              begin
-                ipEditResultado.EditValue := vaFrmPessoa.IdEscolhido;
-                ipEditResultado.PostEditValue;
-              end;
-          end;
-
-      end;
-  finally
-    vaFrmPessoa.Free;
-  end;
+    dmLookup.ppuPesquisarPessoa(cbPessoaClassificou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteMuda.FormCreate(Sender: TObject);
@@ -136,17 +99,11 @@ begin
 
   PesquisaPadrao := tppData;
 
-  ppvCarregarPessoas(0);
+  dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   EditDataInicialPesquisa.Date := IncDay(Now, -7);
   EditDataFinalPesquisa.Date := Now;
 
-end;
-
-procedure TfrmLoteMuda.pprAfterSalvarDetail;
-begin
-  inherited;
-  //todo; chamar funcao que vai atualizar a quantidade atual de mudas no lote
 end;
 
 procedure TfrmLoteMuda.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -156,25 +113,11 @@ begin
     ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
 end;
 
-procedure TfrmLoteMuda.pprExecutarSalvar;
-var
-  vaEditando:Boolean;
+procedure TfrmLoteMuda.pprEfetuarPesquisa;
 begin
-  vaEditando := dmViveiro.cdsLote_Semente.State = dsEdit;
   inherited;
-  if vaEditando then;
-    //todo; fazer funcao que vai atualizar a quantidade
-end;
-
-procedure TfrmLoteMuda.ppvCarregarPessoas(ipIdEspecifico: Integer);
-begin
-  dmLookup.cdslkPessoa.ppuLimparParametros;
-  if ipIdEspecifico <> 0 then
-    dmLookup.cdslkPessoa.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
-
-  // recusado, cancelado, executado
-  dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTipo], [Ord(trpFuncionario).ToString + ',' + Ord(trpEstagiario).ToString + ',' +
-    Ord(trpVoluntario).ToString + ',' + Ord(trpMembroDiretoria).ToString]);
+  dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsClassificacao, dmViveiro.cdsClassificacaoID_PESSOA_CLASSIFICOU.FieldName,
+    dmViveiro.cdsClassificacaoPESSOA_CLASSIFICOU.FieldName);
 end;
 
 function TfrmLoteMuda.fprGetPermissao: String;

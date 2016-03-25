@@ -17,6 +17,8 @@ uses
 
 type
   TfrmFornecedor = class(TfrmFinanciador)
+    lbl1: TLabel;
+    EditCargoContato: TcxDBTextEdit;
   private
     { Private declarations }
   protected

@@ -164,5 +164,31 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'OBSERVACAO'
       Size = 1000
     end
+    object cdsFin_For_CliCARGO_CONTATO: TStringField
+      DisplayLabel = 'Cargo do Contato'
+      FieldName = 'CARGO_CONTATO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+  end
+  object cdsArea_Custo: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqArea_Custo'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 280
+    Top = 160
+    object cdsArea_CustoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsArea_CustoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
   end
 end

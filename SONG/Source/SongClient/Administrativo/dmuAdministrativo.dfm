@@ -196,7 +196,6 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Required = True
       Size = 1000
     end
   end
@@ -768,7 +767,7 @@ inherited dmAdministrativo: TdmAdministrativo
     end
     object cdsAtividade_PessoaID_PESSOA: TIntegerField
       Alignment = taLeftJustify
-      DisplayLabel = 'Pessoa'
+      DisplayLabel = 'Id da Pessoa'
       FieldName = 'ID_PESSOA'
       ProviderFlags = [pfInUpdate]
       Required = True
@@ -779,6 +778,18 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 50
+    end
+    object cdsAtividade_PessoaNOME_PESSOA: TStringField
+      DisplayLabel = 'Pessoa Envolvida'
+      FieldName = 'NOME_PESSOA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsAtividade_PessoaNOME_ATIVIDADE: TStringField
+      DisplayLabel = 'Atividade'
+      FieldName = 'NOME_ATIVIDADE'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object cdsAtividade_Arquivo: TRFClientDataSet

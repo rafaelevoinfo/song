@@ -378,3 +378,90 @@ TYPE VARCHAR(1000) CHARACTER SET WIN1252;
 
 ALTER TABLE LOTE_MUDA DROP QTDE;
 
+
+
+ALTER TABLE LOTE_MUDA
+    ALTER DATA TYPE DATE;
+
+
+
+ALTER TABLE GERMINACAO
+    ALTER DATA TYPE DATE;
+
+
+
+ALTER TABLE FIN_FOR_CLI
+    ADD CARGO_CONTATO D_NOME;
+
+alter table FIN_FOR_CLI
+alter ID position 1;
+
+alter table FIN_FOR_CLI
+alter ID_CONTATO position 2;
+
+alter table FIN_FOR_CLI
+alter ID_CIDADE position 3;
+
+alter table FIN_FOR_CLI
+alter NOME_FANTASIA position 4;
+
+alter table FIN_FOR_CLI
+alter RAZAO_SOCIAL position 5;
+
+alter table FIN_FOR_CLI
+alter CARGO_CONTATO position 6;
+
+alter table FIN_FOR_CLI
+alter ENDERECO position 7;
+
+alter table FIN_FOR_CLI
+alter BAIRRO position 8;
+
+alter table FIN_FOR_CLI
+alter COMPLEMENTO position 9;
+
+alter table FIN_FOR_CLI
+alter TIPO position 10;
+
+alter table FIN_FOR_CLI
+alter TELEFONE position 11;
+
+alter table FIN_FOR_CLI
+alter CELULAR position 12;
+
+alter table FIN_FOR_CLI
+alter EMAIL position 13;
+
+alter table FIN_FOR_CLI
+alter SITE position 14;
+
+alter table FIN_FOR_CLI
+alter CPF_CNPJ position 15;
+
+alter table FIN_FOR_CLI
+alter INSCRICAO_ESTADUAL position 16;
+
+alter table FIN_FOR_CLI
+alter INSCRICAO_MUNICIPAL position 17;
+
+alter table FIN_FOR_CLI
+alter RAMO_ATIVIDADE position 18;
+
+alter table FIN_FOR_CLI
+alter PESQUISA position 19;
+
+alter table FIN_FOR_CLI
+alter OBSERVACAO position 20;
+
+
+
+CREATE TABLE AREA_CUSTO (
+    ID INTEGER NOT NULL,
+    NOME D_NOME NOT NULL);
+
+ALTER TABLE AREA_CUSTO
+ADD CONSTRAINT PK_AREA_CUSTO
+PRIMARY KEY (ID);
+
+CREATE SEQUENCE GEN_AREA_CUSTO;
+

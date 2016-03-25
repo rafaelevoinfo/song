@@ -48,7 +48,6 @@ type
     qSemeadura: TRFQuery;
     qGerminacaoID: TIntegerField;
     qGerminacaoID_PESSOA_VERIFICOU: TIntegerField;
-    qGerminacaoDATA: TSQLTimeStampField;
     qGerminacaoQTDE_GERMINADA: TIntegerField;
     qSemeaduraID: TIntegerField;
     qSemeaduraID_PESSOA_SEMEOU: TIntegerField;
@@ -77,7 +76,6 @@ type
     qLote_MudaID_ESPECIE: TIntegerField;
     qLote_MudaNOME: TStringField;
     qLote_MudaQTDE_INICIAL: TIntegerField;
-    qLote_MudaDATA: TSQLTimeStampField;
     qLote_MudaNOME_ESPECIE: TStringField;
     qLote_SementePESSOA_COLETOU: TStringField;
     qClassificacao: TRFQuery;
@@ -93,6 +91,9 @@ type
     qEspecieOBSERVACAO: TStringField;
     qMatrizDESCRICAO: TStringField;
     qSemeaduraOBSERVACAO: TStringField;
+    qLote_MudaQTDE_ATUAL: TIntegerField;
+    qGerminacaoDATA: TDateField;
+    qLote_MudaDATA: TDateField;
   private
     { Private declarations }
   protected
@@ -145,16 +146,16 @@ begin
             Result := Result + ' (lote_Semente.status=1)' + vaOperador
         end
       else if ipParam.Name = TParametros.coData then
-        Result := Result + ' (lote_Semente.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
-          QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
+        Result := Result + ' (lote_Semente.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
+          QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
     end
   else if ipTabela = 'LOTE_MUDA' then
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
-        Result := Result + ' (lote_Muda.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
-          QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
+        Result := Result + ' (lote_Muda.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
+          QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
     end;
 end;
 
