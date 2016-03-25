@@ -415,7 +415,7 @@ end;
 
 function TfrmBasicoCrud.fprHabilitarAlterar: Boolean;
 begin
-  Result := True;
+  Result := dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0);
 end;
 
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;

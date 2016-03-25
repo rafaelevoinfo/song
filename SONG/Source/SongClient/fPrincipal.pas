@@ -10,7 +10,7 @@ uses
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
-  fLote_Semente, fLote_Muda, fAreaCusto;
+  fLote_Semente, fLote_Muda, fPlano_Contas;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -49,7 +49,7 @@ type
     Canteiros1: TMenuItem;
     Ac_Lote_Muda: TAction;
     LotesdeMudas1: TMenuItem;
-    Ac_Area_Custo: TAction;
+    Ac_Plano_Contas: TAction;
     readeCusto1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
@@ -66,7 +66,7 @@ type
     procedure Ac_Lote_SementeExecute(Sender: TObject);
     procedure Ac_CanteiroExecute(Sender: TObject);
     procedure Ac_Lote_MudaExecute(Sender: TObject);
-    procedure Ac_Area_CustoExecute(Sender: TObject);
+    procedure Ac_Plano_ContasExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -81,10 +81,10 @@ implementation
 {$R *.dfm}
 
 
-procedure TfrmPrincipal.Ac_Area_CustoExecute(Sender: TObject);
+procedure TfrmPrincipal.Ac_Plano_ContasExecute(Sender: TObject);
 begin
   inherited;
-   TUtils.ppuAbrirFormAba<TfrmAreaCusto>(pcPrincipal, TfrmAreaCusto, frmAreaCusto);
+   TUtils.ppuAbrirFormAba<TfrmPlanoContas>(pcPrincipal, TfrmPlanoContas, frmPlanoContas);
 end;
 
 procedure TfrmPrincipal.Ac_AtividadeExecute(Sender: TObject);

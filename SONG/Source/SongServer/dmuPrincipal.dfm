@@ -182,4 +182,10 @@ object dmPrincipal: TdmPrincipal
     Left = 680
     Top = 232
   end
+  object SCFuncoesFinanceiro: TDSServerClass
+    OnGetClass = SCFuncoesFinanceiroGetClass
+    Server = Server
+    Left = 576
+    Top = 312
+  end
 end

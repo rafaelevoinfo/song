@@ -87,6 +87,14 @@ type
     cdslkPerfil: TRFClientDataSet;
     cdslkPerfilID: TIntegerField;
     cdslkPerfilNOME: TStringField;
+    cdslkPlano_Contas: TRFClientDataSet;
+    cdslkPlano_ContasID: TIntegerField;
+    cdslkPlano_ContasID_CONTA_PAI: TIntegerField;
+    cdslkPlano_ContasTIPO: TSmallintField;
+    cdslkPlano_ContasNOME: TStringField;
+    repLcbPlano_Contas: TcxEditRepositoryLookupComboBoxItem;
+    dslkPlano_Contas: TDataSource;
+    repIcbTipoPlanoConta: TcxEditRepositoryImageComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

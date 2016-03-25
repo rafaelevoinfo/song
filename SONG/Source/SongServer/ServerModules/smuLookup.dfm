@@ -374,4 +374,46 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkPlano_Contas: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Plano_Contas.Id,'
+      '       Plano_Contas.Id_Conta_Pai,'
+      
+        '       (Plano_Contas.Identificador || '#39' - '#39' || Plano_Contas.Nome' +
+        ') as Nome,'
+      '       Plano_Contas.Tipo'
+      'from Plano_Contas  '
+      '&where'
+      'order by Plano_Contas.Nome')
+    Left = 400
+    Top = 64
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkPlano_ContasID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkPlano_ContasID_CONTA_PAI: TIntegerField
+      FieldName = 'ID_CONTA_PAI'
+      Origin = 'ID_CONTA_PAI'
+      ProviderFlags = []
+    end
+    object qlkPlano_ContasTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+    end
+    object qlkPlano_ContasNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 123
+    end
+  end
 end

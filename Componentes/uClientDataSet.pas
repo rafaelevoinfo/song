@@ -28,6 +28,8 @@ type
 
     coTipo = 'TIPO';
 
+    coIdentificadorPlanoContas = 'IDENTIFICADOR_PLANO_CONTAS';
+
     coDelimitador = '§';
   end;
 
@@ -59,6 +61,8 @@ type
     procedure ppuAddParametros(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: String = ' AND ';
       ipLimparParametros: Boolean = false);
     procedure ppuLimparParametros;
+
+    procedure ppuCopiarRegistro(ipCds: TClientDataSet);
 
   published
     property RFApplyAutomatico: Boolean read FRFApplyAutomatico write SetRFApplyAutomatico default true;
@@ -136,6 +140,35 @@ begin
     end
   else
     raise Exception.Create('Os arrays devem possuir o mesmo tamanho.');
+end;
+
+procedure TRFClientDataSet.ppuCopiarRegistro(ipCds: TClientDataSet);
+var
+  i: Integer;
+  vaField: TField;
+begin
+
+  if not(State in [dsInsert, dsEdit]) then
+    Insert;
+
+  for i := 0 to FieldCount - 1 do // copiando os fields
+    begin
+      // em caso de campos calculados, caso primeiro seja copiado de um cds q tem campo calculado para um cds qualquer o campo calculado nao vai,
+      // então se tentar retornar os valores deste segundo cds para o primeiro irá ocorrer index out of bounds. por isto foi
+      // adicinado esta condição (Ocorreu isto na prescrição médica)
+      if i < ipCds.FieldCount then
+        begin
+          if ((not Fields[i].ReadOnly) and (Fields[i].FieldKind = fkData)) then
+            begin
+              vaField := ipCds.FindField(Fields[i].FieldName);
+              if Assigned(vaField) then
+                Fields[i].Assign(vaField);
+            end;
+        end
+      else
+        break;
+    end;
+
 end;
 
 procedure TRFClientDataSet.ppuDataRequest(const ipParametros: array of string; ipValores: array of Variant);

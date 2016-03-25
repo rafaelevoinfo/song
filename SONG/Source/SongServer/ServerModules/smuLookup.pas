@@ -56,6 +56,11 @@ type
     qlkEspecieVALOR_MUDA: TBCDField;
     qlkEspecieVALOR_KG_SEMENTE: TBCDField;
     qlkEspecieTEMPO_GERMINACAO: TIntegerField;
+    qlkPlano_Contas: TRFQuery;
+    qlkPlano_ContasID: TIntegerField;
+    qlkPlano_ContasID_CONTA_PAI: TIntegerField;
+    qlkPlano_ContasTIPO: TSmallintField;
+    qlkPlano_ContasNOME: TStringField;
   private
     { Private declarations }
   protected
@@ -111,6 +116,16 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger(), vaOperador);
+    end
+  else if ipTabela = 'PLANO_CONTAS' then
+    begin
+      if ipParam.Name = TParametros.coTipo then
+        begin
+          if vaValor.ToInteger <> 0 then
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger(), vaOperador)
+          else
+            Result := Result + '((PLANO_CONTAS.Tipo = 0) OR (PLANO_CONTAS.Tipo is null)) ' + vaOperador;
+        end;
     end;
 
 end;

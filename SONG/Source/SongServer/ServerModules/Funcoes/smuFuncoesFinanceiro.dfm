@@ -1,0 +1,2 @@
+inherited smFuncoesFinanceiro: TsmFuncoesFinanceiro
+end

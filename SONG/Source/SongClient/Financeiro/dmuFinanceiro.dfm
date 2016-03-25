@@ -171,24 +171,42 @@ inherited dmFinanceiro: TdmFinanceiro
       Size = 100
     end
   end
-  object cdsArea_Custo: TRFClientDataSet
+  object cdsPlano_Contas: TRFClientDataSet
     Aggregates = <>
     Params = <>
-    ProviderName = 'dspqArea_Custo'
+    ProviderName = 'dspqPlano_Contas'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     Left = 280
     Top = 160
-    object cdsArea_CustoID: TIntegerField
+    object cdsPlano_ContasID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsArea_CustoNOME: TStringField
+    object cdsPlano_ContasNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+    object cdsPlano_ContasIDENTIFICADOR: TStringField
+      DisplayLabel = 'Identificador'
+      FieldName = 'IDENTIFICADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsPlano_ContasTIPO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsPlano_ContasID_CONTA_PAI: TIntegerField
+      DisplayLabel = 'Conta Pai'
+      FieldName = 'ID_CONTA_PAI'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

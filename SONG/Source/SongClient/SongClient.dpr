@@ -37,7 +37,7 @@ uses
   fLote_Semente in 'Viveiro\fLote_Semente.pas' {frmLoteSemente},
   fCanteiro in 'Viveiro\fCanteiro.pas' {frmCanteiro},
   fLote_Muda in 'Viveiro\fLote_Muda.pas' {frmLoteMuda},
-  fAreaCusto in 'fAreaCusto.pas' {frmAreaCusto};
+  fPlano_Contas in 'Financeiro\fPlano_Contas.pas' {frmPlanoContas};
 
 {$R Localization.RES}
   {$R *.res}

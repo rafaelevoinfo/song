@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 21/03/2016 23:51:29
+// 25/03/2016 17:08:39
 //
 
 unit uFuncoes;
@@ -23,8 +23,8 @@ type
   TsmFuncoesGeralClient = class(TDSAdminClient)
   private
     FfpuVerificarNovaVersaoCommand: TDBXCommand;
-    FfpuGetIdCommand: TDBXCommand;
     FfpuBaixarAtualizacaoCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
@@ -32,8 +32,8 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuVerificarNovaVersao(ipVersaoAtual: string): string;
-    function fpuGetId(ipTabela: string): Integer;
     function fpuBaixarAtualizacao(ipVersao: string): TStream;
+    function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
@@ -101,6 +101,8 @@ type
     FppuValidarSemeaduraCommand: TDBXCommand;
     FppuFinalizarEtapaGerminacaoLoteCommand: TDBXCommand;
     FppuReiniciarEtapaGerminacaoLoteCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -115,6 +117,26 @@ type
     procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
     procedure ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
     procedure ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
+    function fpuGetId(ipTabela: string): Integer;
+    function fpuDataHoraAtual: string;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFuncoesFinanceiroClient = class(TDSAdminClient)
+  private
+    FfpuVerificarDependenciasPlanoContaCommand: TDBXCommand;
+    FfpuGerarIdentificadorCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
+    function fpuGerarIdentificador(ipIdConta: Integer): string;
+    function fpuGetId(ipTabela: string): Integer;
+    function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -178,20 +200,6 @@ begin
   Result := FfpuVerificarNovaVersaoCommand.Parameters[1].Value.GetWideString;
 end;
 
-function TsmFuncoesGeralClient.fpuGetId(ipTabela: string): Integer;
-begin
-  if FfpuGetIdCommand = nil then
-  begin
-    FfpuGetIdCommand := FDBXConnection.CreateCommand;
-    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuGetIdCommand.Text := 'TsmFuncoesGeral.fpuGetId';
-    FfpuGetIdCommand.Prepare;
-  end;
-  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
-  FfpuGetIdCommand.ExecuteUpdate;
-  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
-end;
-
 function TsmFuncoesGeralClient.fpuBaixarAtualizacao(ipVersao: string): TStream;
 begin
   if FfpuBaixarAtualizacaoCommand = nil then
@@ -204,6 +212,20 @@ begin
   FfpuBaixarAtualizacaoCommand.Parameters[0].Value.SetWideString(ipVersao);
   FfpuBaixarAtualizacaoCommand.ExecuteUpdate;
   Result := FfpuBaixarAtualizacaoCommand.Parameters[1].Value.GetStream(FInstanceOwner);
+end;
+
+function TsmFuncoesGeralClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesGeral.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
 end;
 
 function TsmFuncoesGeralClient.fpuDataHoraAtual: string;
@@ -260,8 +282,8 @@ end;
 destructor TsmFuncoesGeralClient.Destroy;
 begin
   FfpuVerificarNovaVersaoCommand.DisposeOf;
-  FfpuGetIdCommand.DisposeOf;
   FfpuBaixarAtualizacaoCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
@@ -676,6 +698,33 @@ begin
   FppuReiniciarEtapaGerminacaoLoteCommand.ExecuteUpdate;
 end;
 
+function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesViveiro.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesViveiroClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesViveiro.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
 procedure TsmFuncoesViveiroClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -725,6 +774,111 @@ begin
   FppuValidarSemeaduraCommand.DisposeOf;
   FppuFinalizarEtapaGerminacaoLoteCommand.DisposeOf;
   FppuReiniciarEtapaGerminacaoLoteCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+function TsmFuncoesFinanceiroClient.fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
+begin
+  if FfpuVerificarDependenciasPlanoContaCommand = nil then
+  begin
+    FfpuVerificarDependenciasPlanoContaCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarDependenciasPlanoContaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarDependenciasPlanoContaCommand.Text := 'TsmFuncoesFinanceiro.fpuVerificarDependenciasPlanoConta';
+    FfpuVerificarDependenciasPlanoContaCommand.Prepare;
+  end;
+  FfpuVerificarDependenciasPlanoContaCommand.Parameters[0].Value.SetWideString(ipIdentificador);
+  FfpuVerificarDependenciasPlanoContaCommand.ExecuteUpdate;
+  Result := FfpuVerificarDependenciasPlanoContaCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TsmFuncoesFinanceiroClient.fpuGerarIdentificador(ipIdConta: Integer): string;
+begin
+  if FfpuGerarIdentificadorCommand = nil then
+  begin
+    FfpuGerarIdentificadorCommand := FDBXConnection.CreateCommand;
+    FfpuGerarIdentificadorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGerarIdentificadorCommand.Text := 'TsmFuncoesFinanceiro.fpuGerarIdentificador';
+    FfpuGerarIdentificadorCommand.Prepare;
+  end;
+  FfpuGerarIdentificadorCommand.Parameters[0].Value.SetInt32(ipIdConta);
+  FfpuGerarIdentificadorCommand.ExecuteUpdate;
+  Result := FfpuGerarIdentificadorCommand.Parameters[1].Value.GetWideString;
+end;
+
+function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesFinanceiro.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesFinanceiroClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesFinanceiro.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
+procedure TsmFuncoesFinanceiroClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFuncoesFinanceiro.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFuncoesFinanceiroClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFuncoesFinanceiroClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFuncoesFinanceiroClient.Destroy;
+begin
+  FfpuVerificarDependenciasPlanoContaCommand.DisposeOf;
+  FfpuGerarIdentificadorCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

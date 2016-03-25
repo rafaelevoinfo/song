@@ -45,6 +45,7 @@ type
     cdsAtualizacoesVERSAO: TStringField;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     SCFuncoesViveiro: TDSServerClass;
+    SCFuncoesFinanceiro: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -62,6 +63,8 @@ type
     procedure SCViveiroGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure SCFuncoesViveiroGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCFuncoesFinanceiroGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
@@ -90,7 +93,7 @@ implementation
 
 
 uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
-  smuFinanceiro, smuViveiro, smuFuncoesViveiro;
+  smuFinanceiro, smuViveiro, smuFuncoesViveiro, smuFuncoesFinanceiro;
 
 { TdmPrincipal }
 
@@ -343,6 +346,12 @@ procedure TdmPrincipal.SCFuncoesAdministrativoGetClass(
   DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuFuncoesAdministrativo.TsmFuncoesAdministrativo;
+end;
+
+procedure TdmPrincipal.SCFuncoesFinanceiroGetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := smuFuncoesFinanceiro.TSMFuncoesFinanceiro;
 end;
 
 procedure TdmPrincipal.SCFuncoesGeralGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);

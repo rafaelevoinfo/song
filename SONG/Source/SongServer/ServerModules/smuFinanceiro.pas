@@ -41,9 +41,12 @@ type
     qFin_For_CliPESQUISA: TStringField;
     qFin_For_CliOBSERVACAO: TStringField;
     qFin_For_CliCARGO_CONTATO: TStringField;
-    qArea_Custo: TRFQuery;
-    qArea_CustoID: TIntegerField;
-    qArea_CustoNOME: TStringField;
+    qPlano_Contas: TRFQuery;
+    qPlano_ContasID: TIntegerField;
+    qPlano_ContasNOME: TStringField;
+    qPlano_ContasIDENTIFICADOR: TStringField;
+    qPlano_ContasTIPO: TSmallintField;
+    qPlano_ContasID_CONTA_PAI: TIntegerField;
   private
     { Private declarations }
   protected
@@ -78,6 +81,21 @@ begin
       else if ipParam.Name = TParametros.coCpfCnpj then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'CPF_CNPJ', vaValor, vaOperador)
     end
+  else if ipTabela = 'PLANO_CONTAS' then
+    begin
+      if ipParam.Name = TParametros.coTipo then
+        begin
+          if vaValor.ToInteger <> 0 then
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger(), vaOperador)
+          else
+            Result := Result + '((PLANO_CONTAS.Tipo = 0) OR (PLANO_CONTAS.Tipo is null)) ' + vaOperador;
+        end
+      else if ipParam.Name = TParametros.coIdentificadorPlanoContas then
+        begin
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
+        end;
+    end;
+
 end;
 
 end.

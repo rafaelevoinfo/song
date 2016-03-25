@@ -269,6 +269,32 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkCanteiro
     end
+    object repLcbPlano_Contas: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkPlano_Contas
+    end
+    object repIcbTipoPlanoConta: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Despesa'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Receita'
+          Value = 1
+        end>
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -636,5 +662,38 @@ inherited dmLookup: TdmLookup
       FieldName = 'NOME'
       Size = 100
     end
+  end
+  object cdslkPlano_Contas: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkPlano_Contas'
+    RemoteServer = dmPrincipal.ProviderLookup
+    RFApplyAutomatico = False
+    Left = 584
+    Top = 336
+    object cdslkPlano_ContasID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkPlano_ContasID_CONTA_PAI: TIntegerField
+      FieldName = 'ID_CONTA_PAI'
+      ProviderFlags = []
+    end
+    object cdslkPlano_ContasTIPO: TSmallintField
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = []
+    end
+    object cdslkPlano_ContasNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 123
+    end
+  end
+  object dslkPlano_Contas: TDataSource
+    DataSet = cdslkPlano_Contas
+    Left = 488
+    Top = 208
   end
 end

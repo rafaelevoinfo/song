@@ -11,17 +11,18 @@ uses
   uTypes in '..\Comuns\uTypes.pas',
   uSQLGenerator in '..\Comuns\uSQLGenerator.pas',
   uRoles in '..\Comuns\uRoles.pas',
-  smuFuncoesGeral in 'ServerModules\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule},
   smuLookup in 'ServerModules\smuLookup.pas' {smLookup: TDSServerModule},
-  smuFuncoesAdministrativo in 'ServerModules\smuFuncoesAdministrativo.pas' {smFuncoesAdministrativo: TDSServerModule},
   uUtils in '..\Comuns\uUtils.pas',
   smuFinanceiro in 'ServerModules\smuFinanceiro.pas' {smFinanceiro: TDSServerModule},
   uControleAcesso in '..\Comuns\uControleAcesso.pas',
   smuViveiro in 'ServerModules\smuViveiro.pas' {smViveiro: TDSServerModule},
   uMensagem in '..\Comuns\uMensagem.pas' {Mensagem},
   fAtualizacao in 'fAtualizacao.pas' {frmAtualizacao},
-  smuFuncoesViveiro in 'ServerModules\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule},
-  smuFuncoesBasico in 'ServerModules\smuFuncoesBasico.pas' {smFuncoesBasico: TDSServerModule};
+  smuFuncoesAdministrativo in 'ServerModules\Funcoes\smuFuncoesAdministrativo.pas' {smFuncoesAdministrativo: TDSServerModule},
+  smuFuncoesBasico in 'ServerModules\Funcoes\smuFuncoesBasico.pas' {smFuncoesBasico: TDSServerModule},
+  smuFuncoesFinanceiro in 'ServerModules\Funcoes\smuFuncoesFinanceiro.pas' {smFuncoesFinanceiro: TDSServerModule},
+  smuFuncoesGeral in 'ServerModules\Funcoes\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule},
+  smuFuncoesViveiro in 'ServerModules\Funcoes\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule};
 
 {$R *.res}
 

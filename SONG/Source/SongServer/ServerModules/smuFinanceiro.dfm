@@ -226,13 +226,17 @@ inherited smFinanceiro: TsmFinanceiro
       Size = 100
     end
   end
-  object qArea_Custo: TRFQuery
+  object qPlano_Contas: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'Select Area_Custo.Id,'
-      '       Area_Custo.Nome'
-      'from Area_Custo'
-      '&WHERE')
+      'Select Plano_Contas.Id,'
+      '       Plano_Contas.Identificador,'
+      '       Plano_Contas.Nome,'
+      '       Plano_Contas.Tipo,'
+      '       Plano_Contas.Id_Conta_Pai'
+      'from Plano_Contas'
+      '&WHERE'
+      'Order by Plano_Contas.Identificador')
     Left = 144
     Top = 104
     MacroData = <
@@ -240,18 +244,35 @@ inherited smFinanceiro: TsmFinanceiro
         Value = Null
         Name = 'WHERE'
       end>
-    object qArea_CustoID: TIntegerField
+    object qPlano_ContasID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qArea_CustoNOME: TStringField
+    object qPlano_ContasNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+    object qPlano_ContasIDENTIFICADOR: TStringField
+      FieldName = 'IDENTIFICADOR'
+      Origin = 'IDENTIFICADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qPlano_ContasTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qPlano_ContasID_CONTA_PAI: TIntegerField
+      FieldName = 'ID_CONTA_PAI'
+      Origin = 'ID_CONTA_PAI'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

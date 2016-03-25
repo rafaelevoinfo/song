@@ -37,9 +37,6 @@ inherited frmPrincipal: TfrmPrincipal
     Top = 272
     object miFinanceiro: TMenuItem
       Caption = 'Financeiro'
-      object readeCusto1: TMenuItem
-        Action = Ac_Area_Custo
-      end
       object Bancos1: TMenuItem
         Action = Ac_Banco
       end
@@ -48,6 +45,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object Fornecedores1: TMenuItem
         Action = Ac_Fornecedor
+      end
+      object readeCusto1: TMenuItem
+        Action = Ac_Plano_Contas
       end
     end
     object miGestao: TMenuItem
@@ -158,10 +158,10 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = 'Lotes de Mudas'
       OnExecute = Ac_Lote_MudaExecute
     end
-    object Ac_Area_Custo: TAction
+    object Ac_Plano_Contas: TAction
       Category = 'Financeiro'
-      Caption = #193'rea de Custo'
-      OnExecute = Ac_Area_CustoExecute
+      Caption = 'Plano de Contas'
+      OnExecute = Ac_Plano_ContasExecute
     end
   end
   object dxSkinController1: TdxSkinController
