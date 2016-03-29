@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 25/03/2016 17:08:39
+// 28/03/2016 23:17:39
 //
 
 unit uFuncoes;
@@ -125,7 +125,9 @@ type
   TsmFuncoesFinanceiroClient = class(TDSAdminClient)
   private
     FfpuVerificarDependenciasPlanoContaCommand: TDBXCommand;
-    FfpuGerarIdentificadorCommand: TDBXCommand;
+    FfpuVerificarDependenciasRubricaCommand: TDBXCommand;
+    FfpuGerarIdentificadorPlanoContasCommand: TDBXCommand;
+    FfpuGerarIdentificadorRubricaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -134,7 +136,9 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
-    function fpuGerarIdentificador(ipIdConta: Integer): string;
+    function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
+    function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
+    function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -794,18 +798,46 @@ begin
   Result := FfpuVerificarDependenciasPlanoContaCommand.Parameters[1].Value.GetBoolean;
 end;
 
-function TsmFuncoesFinanceiroClient.fpuGerarIdentificador(ipIdConta: Integer): string;
+function TsmFuncoesFinanceiroClient.fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
 begin
-  if FfpuGerarIdentificadorCommand = nil then
+  if FfpuVerificarDependenciasRubricaCommand = nil then
   begin
-    FfpuGerarIdentificadorCommand := FDBXConnection.CreateCommand;
-    FfpuGerarIdentificadorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuGerarIdentificadorCommand.Text := 'TsmFuncoesFinanceiro.fpuGerarIdentificador';
-    FfpuGerarIdentificadorCommand.Prepare;
+    FfpuVerificarDependenciasRubricaCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarDependenciasRubricaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarDependenciasRubricaCommand.Text := 'TsmFuncoesFinanceiro.fpuVerificarDependenciasRubrica';
+    FfpuVerificarDependenciasRubricaCommand.Prepare;
   end;
-  FfpuGerarIdentificadorCommand.Parameters[0].Value.SetInt32(ipIdConta);
-  FfpuGerarIdentificadorCommand.ExecuteUpdate;
-  Result := FfpuGerarIdentificadorCommand.Parameters[1].Value.GetWideString;
+  FfpuVerificarDependenciasRubricaCommand.Parameters[0].Value.SetWideString(ipIdentificador);
+  FfpuVerificarDependenciasRubricaCommand.ExecuteUpdate;
+  Result := FfpuVerificarDependenciasRubricaCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TsmFuncoesFinanceiroClient.fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
+begin
+  if FfpuGerarIdentificadorPlanoContasCommand = nil then
+  begin
+    FfpuGerarIdentificadorPlanoContasCommand := FDBXConnection.CreateCommand;
+    FfpuGerarIdentificadorPlanoContasCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGerarIdentificadorPlanoContasCommand.Text := 'TsmFuncoesFinanceiro.fpuGerarIdentificadorPlanoContas';
+    FfpuGerarIdentificadorPlanoContasCommand.Prepare;
+  end;
+  FfpuGerarIdentificadorPlanoContasCommand.Parameters[0].Value.SetInt32(ipIdConta);
+  FfpuGerarIdentificadorPlanoContasCommand.ExecuteUpdate;
+  Result := FfpuGerarIdentificadorPlanoContasCommand.Parameters[1].Value.GetWideString;
+end;
+
+function TsmFuncoesFinanceiroClient.fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
+begin
+  if FfpuGerarIdentificadorRubricaCommand = nil then
+  begin
+    FfpuGerarIdentificadorRubricaCommand := FDBXConnection.CreateCommand;
+    FfpuGerarIdentificadorRubricaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGerarIdentificadorRubricaCommand.Text := 'TsmFuncoesFinanceiro.fpuGerarIdentificadorRubrica';
+    FfpuGerarIdentificadorRubricaCommand.Prepare;
+  end;
+  FfpuGerarIdentificadorRubricaCommand.Parameters[0].Value.SetInt32(ipIdRubrica);
+  FfpuGerarIdentificadorRubricaCommand.ExecuteUpdate;
+  Result := FfpuGerarIdentificadorRubricaCommand.Parameters[1].Value.GetWideString;
 end;
 
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
@@ -876,7 +908,9 @@ end;
 destructor TsmFuncoesFinanceiroClient.Destroy;
 begin
   FfpuVerificarDependenciasPlanoContaCommand.DisposeOf;
-  FfpuGerarIdentificadorCommand.DisposeOf;
+  FfpuVerificarDependenciasRubricaCommand.DisposeOf;
+  FfpuGerarIdentificadorPlanoContasCommand.DisposeOf;
+  FfpuGerarIdentificadorRubricaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

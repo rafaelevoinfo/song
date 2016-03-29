@@ -145,6 +145,29 @@ type
     Ac_Adicionar_Conta_Corrente: TAction;
     btnAdicionar_Financiador: TButton;
     Ac_Adicionar_Financiador: TAction;
+    tabCadastroDetailRubrica: TcxTabSheet;
+    tabDetailRubrica: TcxTabSheet;
+    Panel7: TPanel;
+    btnIncluirRubrica: TButton;
+    cxGrid6: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridDBColumn6: TcxGridDBColumn;
+    cxGridDBColumn7: TcxGridDBColumn;
+    cxGridLevel5: TcxGridLevel;
+    dsRubrica: TDataSource;
+    cxGridDBTableView1ID: TcxGridDBColumn;
+    cxGridDBTableView1ID_RUBRICA: TcxGridDBColumn;
+    cxGridDBTableView1ORCAMENTO: TcxGridDBColumn;
+    cxGridDBTableView1NOME_RUBRICA: TcxGridDBColumn;
+    Panel8: TPanel;
+    btnSalvarDetailRubrica: TButton;
+    btnCancelarDetailRubrica: TButton;
+    btnSalvarIncluirDetailRubrica: TButton;
+    pnCadastroRubrica: TPanel;
+    Label20: TLabel;
+    cbRubrica: TcxDBLookupComboBox;
+    Label21: TLabel;
+    EditOrcamentoRubrica: TcxDBCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -355,6 +378,8 @@ begin
 
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coAtivo], [coRegistroAtivo]);
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+
   ppvCarregarFinanciadores;
   ppvCarregarContasCorrentes;
 
@@ -404,7 +429,9 @@ begin
   else if pcDetails.ActivePage = tabDetailFinanciador then
     dsDetail.DataSet := dmAdministrativo.cdsProjeto_Financiador
   else if pcDetails.ActivePage = tabDetailDocumento then
-    dsDetail.DataSet := dmAdministrativo.cdsProjeto_Documento;
+    dsDetail.DataSet := dmAdministrativo.cdsProjeto_Documento
+  else if pcDetails.ActivePage = tabDetailRubrica then
+    dsDetail.DataSet := dmAdministrativo.cdsProjeto_Rubrica;
 
   if not dsDetail.DataSet.Active then
     dsDetail.DataSet.Open;
@@ -436,6 +463,8 @@ begin
     pcPrincipal.ActivePage := tabCadastroDetailFinanciador
   else if pcDetails.ActivePage = tabDetailDocumento then
     pcPrincipal.ActivePage := tabCadastroDetailDocumento
+  else if pcDetails.ActivePage = tabDetailRubrica then
+    pcPrincipal.ActivePage := tabCadastroDetailRubrica
 end;
 
 procedure TfrmProjeto.pprEfetuarCancelarDetail;

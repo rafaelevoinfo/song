@@ -1,10 +1,17 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -129,12 +136,15 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailDocumento
+            Properties.ActivePage = tabDetailRubrica
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -462,6 +472,119 @@ inherited frmProjeto: TfrmProjeto
                 end
               end
             end
+            object tabDetailRubrica: TcxTabSheet
+              Caption = 'Rubricas'
+              ImageIndex = 4
+              object Panel7: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = 8
+                object btnIncluirRubrica: TButton
+                  Left = 0
+                  Top = 1
+                  Width = 81
+                  Height = 23
+                  Action = Ac_Incluir_Detail
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGrid6: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 193
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object cxGridDBTableView1: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsRubrica
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.ShowEditButtons = gsebAlways
+                  OptionsView.GroupByBox = False
+                  object cxGridDBTableView1ID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object cxGridDBTableView1ID_RUBRICA: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_RUBRICA'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object cxGridDBTableView1NOME_RUBRICA: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_RUBRICA'
+                    Options.Editing = False
+                    Width = 452
+                  end
+                  object cxGridDBTableView1ORCAMENTO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ORCAMENTO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                  object cxGridDBColumn6: TcxGridDBColumn
+                    Caption = 'Alterar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Alterar_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                  object cxGridDBColumn7: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                end
+                object cxGridLevel5: TcxGridLevel
+                  GridView = cxGridDBTableView1
+                end
+              end
+            end
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
@@ -593,6 +716,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -732,6 +859,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -778,7 +909,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
+        TabOrder = 1
         object btnSalvarDetailOrganizacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -820,7 +951,7 @@ inherited frmProjeto: TfrmProjeto
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 1
+        TabOrder = 0
         object Label11: TLabel
           Left = 5
           Top = 6
@@ -850,7 +981,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
+        TabOrder = 1
         object btnSalvarDetailFinanciador: TButton
           AlignWithMargins = True
           Left = 4
@@ -893,7 +1024,7 @@ inherited frmProjeto: TfrmProjeto
         Align = alClient
         BevelOuter = bvNone
         Caption = 'pnCadastroFinanciador'
-        TabOrder = 1
+        TabOrder = 0
         object Label12: TLabel
           Left = 4
           Top = 6
@@ -1071,7 +1202,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
+        TabOrder = 1
         object btnSalvarDetailDocumento: TButton
           AlignWithMargins = True
           Left = 4
@@ -1113,7 +1244,7 @@ inherited frmProjeto: TfrmProjeto
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 1
+        TabOrder = 0
         object Label15: TLabel
           Left = 5
           Top = 6
@@ -1150,6 +1281,96 @@ inherited frmProjeto: TfrmProjeto
           Properties.Images = dmPrincipal.imgIcons_16
           TabOrder = 1
           Width = 317
+        end
+      end
+    end
+    object tabCadastroDetailRubrica: TcxTabSheet
+      Caption = 'tabCadastroDetailRubrica'
+      ImageIndex = 6
+      object Panel8: TPanel
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 50
+        Align = alTop
+        TabOrder = 1
+        ExplicitTop = 8
+        object btnSalvarDetailRubrica: TButton
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Salvar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 0
+        end
+        object btnCancelarDetailRubrica: TButton
+          AlignWithMargins = True
+          Left = 215
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Cancelar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 2
+        end
+        object btnSalvarIncluirDetailRubrica: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 114
+          Height = 42
+          Action = Ac_Salvar_Incluir_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 1
+        end
+      end
+      object pnCadastroRubrica: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        object Label20: TLabel
+          Left = 5
+          Top = 6
+          Width = 36
+          Height = 13
+          Caption = 'Rubrica'
+          FocusControl = cbRubrica
+        end
+        object Label21: TLabel
+          Left = 245
+          Top = 6
+          Width = 53
+          Height = 13
+          Caption = 'Or'#231'amento'
+          FocusControl = EditOrcamentoRubrica
+        end
+        object cbRubrica: TcxDBLookupComboBox
+          Left = 4
+          Top = 22
+          RepositoryItem = dmLookup.repLcbRubrica
+          DataBinding.DataField = 'ID_RUBRICA'
+          DataBinding.DataSource = dsRubrica
+          Properties.ListColumns = <>
+          TabOrder = 0
+          Width = 237
+        end
+        object EditOrcamentoRubrica: TcxDBCurrencyEdit
+          Left = 245
+          Top = 22
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'ORCAMENTO'
+          DataBinding.DataSource = dsRubrica
+          TabOrder = 1
+          Width = 148
         end
       end
     end
@@ -1227,5 +1448,10 @@ inherited frmProjeto: TfrmProjeto
   object SaveDialogDocumento: TSaveDialog
     Left = 424
     Top = 240
+  end
+  object dsRubrica: TDataSource
+    DataSet = dmAdministrativo.cdsProjeto_Rubrica
+    Left = 544
+    Top = 336
   end
 end

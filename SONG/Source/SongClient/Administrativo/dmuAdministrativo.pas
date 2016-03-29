@@ -149,6 +149,12 @@ type
     cdsOrganizacao_PessoaOBSERVACAO: TStringField;
     cdsAtividade_PessoaNOME_PESSOA: TStringField;
     cdsAtividade_PessoaNOME_ATIVIDADE: TStringField;
+    cdsProjeto_Rubrica: TRFClientDataSet;
+    cdsProjeto_RubricaID: TIntegerField;
+    cdsProjeto_RubricaID_PROJETO: TIntegerField;
+    cdsProjeto_RubricaID_RUBRICA: TIntegerField;
+    cdsProjeto_RubricaORCAMENTO: TBCDField;
+    cdsProjeto_RubricaNOME_RUBRICA: TStringField;
   private
     { Private declarations }
   public

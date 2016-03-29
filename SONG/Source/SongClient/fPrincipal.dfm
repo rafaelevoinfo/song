@@ -49,6 +49,9 @@ inherited frmPrincipal: TfrmPrincipal
       object readeCusto1: TMenuItem
         Action = Ac_Plano_Contas
       end
+      object Rubricas1: TMenuItem
+        Action = Ac_Rubricas
+      end
     end
     object miGestao: TMenuItem
       Caption = 'Gest'#227'o'
@@ -162,6 +165,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Plano de Contas'
       OnExecute = Ac_Plano_ContasExecute
+    end
+    object Ac_Rubricas: TAction
+      Category = 'Financeiro'
+      Caption = 'Rubricas'
+      OnExecute = Ac_RubricasExecute
     end
   end
   object dxSkinController1: TdxSkinController

@@ -1098,4 +1098,64 @@ inherited smAdministrativo: TsmAdministrativo
       Size = 1000
     end
   end
+  object qProjeto_Rubrica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Projeto_Rubrica.Id,'
+      '       Projeto_Rubrica.Id_Projeto,'
+      '       Projeto_Rubrica.Id_Rubrica,'
+      '       Projeto_Rubrica.Orcamento,'
+      
+        '       Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome as Nome_Ru' +
+        'brica'
+      ''
+      'from Projeto_Rubrica'
+      
+        'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica) ' +
+        ' '
+      'where projeto_rubrica.id_projeto = :ID_PROJETO')
+    Left = 224
+    Top = 288
+    ParamData = <
+      item
+        Name = 'ID_PROJETO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qProjeto_RubricaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_RubricaID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_RubricaID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_RubricaORCAMENTO: TBCDField
+      FieldName = 'ORCAMENTO'
+      Origin = 'ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaNOME_RUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+  end
 end

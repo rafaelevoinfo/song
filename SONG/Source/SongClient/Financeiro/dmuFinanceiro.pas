@@ -44,6 +44,11 @@ type
     cdsPlano_ContasIDENTIFICADOR: TStringField;
     cdsPlano_ContasTIPO: TSmallintField;
     cdsPlano_ContasID_CONTA_PAI: TIntegerField;
+    cdsRubrica: TRFClientDataSet;
+    cdsRubricaID: TIntegerField;
+    cdsRubricaNOME: TStringField;
+    cdsRubricaID_RUBRICA_PAI: TIntegerField;
+    cdsRubricaIDENTIFICADOR: TStringField;
   private
     { Private declarations }
   public

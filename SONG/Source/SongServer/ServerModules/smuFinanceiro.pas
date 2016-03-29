@@ -47,6 +47,11 @@ type
     qPlano_ContasIDENTIFICADOR: TStringField;
     qPlano_ContasTIPO: TSmallintField;
     qPlano_ContasID_CONTA_PAI: TIntegerField;
+    qRubrica: TRFQuery;
+    qRubricaID: TIntegerField;
+    qRubricaNOME: TStringField;
+    qRubricaID_RUBRICA_PAI: TIntegerField;
+    qRubricaIDENTIFICADOR: TStringField;
   private
     { Private declarations }
   protected
@@ -90,7 +95,14 @@ begin
           else
             Result := Result + '((PLANO_CONTAS.Tipo = 0) OR (PLANO_CONTAS.Tipo is null)) ' + vaOperador;
         end
-      else if ipParam.Name = TParametros.coIdentificadorPlanoContas then
+      else if ipParam.Name = TParametros.coIdentificadorPlanoContasRubrica then
+        begin
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
+        end;
+    end
+  else if ipTabela = 'RUBRICA' then
+    begin
+      if ipParam.Name = TParametros.coIdentificadorPlanoContasRubrica then
         begin
           Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
         end;

@@ -10,7 +10,7 @@ uses
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
-  fLote_Semente, fLote_Muda, fPlano_Contas;
+  fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -51,6 +51,8 @@ type
     LotesdeMudas1: TMenuItem;
     Ac_Plano_Contas: TAction;
     readeCusto1: TMenuItem;
+    Ac_Rubricas: TAction;
+    Rubricas1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -67,6 +69,7 @@ type
     procedure Ac_CanteiroExecute(Sender: TObject);
     procedure Ac_Lote_MudaExecute(Sender: TObject);
     procedure Ac_Plano_ContasExecute(Sender: TObject);
+    procedure Ac_RubricasExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -84,7 +87,7 @@ implementation
 procedure TfrmPrincipal.Ac_Plano_ContasExecute(Sender: TObject);
 begin
   inherited;
-   TUtils.ppuAbrirFormAba<TfrmPlanoContas>(pcPrincipal, TfrmPlanoContas, frmPlanoContas);
+  TUtils.ppuAbrirFormAba<TfrmPlanoContas>(pcPrincipal, TfrmPlanoContas, frmPlanoContas);
 end;
 
 procedure TfrmPrincipal.Ac_AtividadeExecute(Sender: TObject);
@@ -165,6 +168,12 @@ begin
   TUtils.ppuAbrirFormAba<TfrmProjeto>(pcPrincipal, TfrmProjeto, frmProjeto);
 end;
 
+procedure TfrmPrincipal.Ac_RubricasExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TFrmRubrica>(pcPrincipal, TFrmRubrica, frmRubrica);
+end;
+
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
 begin
   inherited;
@@ -174,10 +183,10 @@ end;
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   inherited;
-  {$IFDEF DEBUG}
+{$IFDEF DEBUG}
   ReportMemoryLeaksOnShutdown := True;
-  {$ENDIF}
-  Self.Caption := Self.Caption+ ' - Versão: '+TUtils.fpuVersaoExecutavel(Application.ExeName,viBuild);
+{$ENDIF}
+  Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
 end;
 
 procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);

@@ -209,4 +209,35 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = [pfInUpdate]
     end
   end
+  object cdsRubrica: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqRubrica'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 280
+    Top = 224
+    object cdsRubricaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsRubricaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsRubricaID_RUBRICA_PAI: TIntegerField
+      DisplayLabel = 'Id da Rubrica Pai'
+      FieldName = 'ID_RUBRICA_PAI'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsRubricaIDENTIFICADOR: TStringField
+      DisplayLabel = 'Identificador'
+      FieldName = 'IDENTIFICADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
 end

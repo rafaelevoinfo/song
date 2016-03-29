@@ -28,7 +28,7 @@ type
 
     coTipo = 'TIPO';
 
-    coIdentificadorPlanoContas = 'IDENTIFICADOR_PLANO_CONTAS';
+    coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 
     coDelimitador = '§';
   end;

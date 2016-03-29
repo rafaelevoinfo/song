@@ -95,6 +95,12 @@ type
     repLcbPlano_Contas: TcxEditRepositoryLookupComboBoxItem;
     dslkPlano_Contas: TDataSource;
     repIcbTipoPlanoConta: TcxEditRepositoryImageComboBoxItem;
+    cdslkRubrica: TRFClientDataSet;
+    cdslkRubricaID: TIntegerField;
+    cdslkRubricaID_RUBRICA_PAI: TIntegerField;
+    cdslkRubricaNOME: TStringField;
+    repLcbRubrica: TcxEditRepositoryLookupComboBoxItem;
+    dslkRubrica: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

@@ -61,6 +61,10 @@ type
     qlkPlano_ContasID_CONTA_PAI: TIntegerField;
     qlkPlano_ContasTIPO: TSmallintField;
     qlkPlano_ContasNOME: TStringField;
+    qlkRubrica: TRFQuery;
+    qlkRubricaID: TIntegerField;
+    qlkRubricaID_RUBRICA_PAI: TIntegerField;
+    qlkRubricaNOME: TStringField;
   private
     { Private declarations }
   protected

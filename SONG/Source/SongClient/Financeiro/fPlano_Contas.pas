@@ -95,7 +95,7 @@ end;
 
 function TfrmPlanoContas.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finPlanoContas));
+  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finPlanoConta));
 end;
 
 function TfrmPlanoContas.fpuExcluir(ipIds: TArray<Integer>): Boolean;
@@ -138,13 +138,19 @@ procedure TfrmPlanoContas.pprAfterSalvar;
 begin
   inherited;
   // incluindo apenas localmente
-  dmLookup.cdslkPlano_Contas.Append;
-  dmLookup.cdslkPlano_ContasID.AsInteger := dmFinanceiro.cdsPlano_ContasID.AsInteger;
+  if not dmLookup.cdslkPlano_Contas.Locate(TBancoDados.coId, dmFinanceiro.cdsPlano_ContasID.AsInteger, []) then
+    begin
+      dmLookup.cdslkPlano_Contas.Append;
+      dmLookup.cdslkPlano_ContasID.AsInteger := dmFinanceiro.cdsPlano_ContasID.AsInteger;
+    end
+  else
+    dmLookup.cdslkPlano_Contas.Edit;
+
   dmLookup.cdslkPlano_ContasID_CONTA_PAI.AsInteger := dmFinanceiro.cdsPlano_ContasID_CONTA_PAI.AsInteger;
   dmLookup.cdslkPlano_ContasTIPO.AsInteger := dmFinanceiro.cdsPlano_ContasTIPO.AsInteger;
-  dmLookup.cdslkPlano_ContasNOME.AsString := dmFinanceiro.cdsPlano_ContasIDENTIFICADOR.AsString + ' - ' + dmFinanceiro.cdsPlano_ContasNOME.AsString;
+  dmLookup.cdslkPlano_ContasNOME.AsString := dmFinanceiro.cdsPlano_ContasIDENTIFICADOR.AsString + ' - ' +
+    dmFinanceiro.cdsPlano_ContasNOME.AsString;
   dmLookup.cdslkPlano_Contas.Post;
-
 end;
 
 procedure TfrmPlanoContas.pprCarregarParametrosPesquisa(
@@ -152,14 +158,18 @@ procedure TfrmPlanoContas.pprCarregarParametrosPesquisa(
 begin
   inherited;
   if cbPesquisarPor.EditValue = coIdentificador then
-    ipCds.ppuAddParametro(TParametros.coIdentificadorPlanoContas, EditPesquisa.Text);
+    ipCds.ppuAddParametro(TParametros.coIdentificadorPlanoContasRubrica, EditPesquisa.Text);
 end;
 
 procedure TfrmPlanoContas.pprPreencherCamposPadroes(ipDataSet: TDataSet);
 begin
   inherited;
-  dmFinanceiro.cdsPlano_ContasIDENTIFICADOR.AsString := dmPrincipal.FuncoesFinanceiro.fpuGerarIdentificador
-    (dmFinanceiro.cdsPlano_ContasID_CONTA_PAI.AsInteger);
+  if dmFinanceiro.cdsRubricaIDENTIFICADOR.IsNull or
+    (dmFinanceiro.cdsPlano_ContasID_CONTA_PAI.NewValue <> dmFinanceiro.cdsPlano_ContasID_CONTA_PAI.OldValue) then
+    begin
+      dmFinanceiro.cdsPlano_ContasIDENTIFICADOR.AsString := dmPrincipal.FuncoesFinanceiro.fpuGerarIdentificadorPlanoContas
+        (dmFinanceiro.cdsPlano_ContasID_CONTA_PAI.AsInteger);
+    end;
 end;
 
 procedure TfrmPlanoContas.pprValidarDados;

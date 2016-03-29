@@ -148,6 +148,12 @@ type
     qProjeto_FinanciadorOBSERVACAO: TStringField;
     qAtividade_PessoaNOME_PESSOA: TStringField;
     qAtividade_PessoaNOME_ATIVIDADE: TStringField;
+    qProjeto_Rubrica: TRFQuery;
+    qProjeto_RubricaID: TIntegerField;
+    qProjeto_RubricaID_PROJETO: TIntegerField;
+    qProjeto_RubricaID_RUBRICA: TIntegerField;
+    qProjeto_RubricaORCAMENTO: TBCDField;
+    qProjeto_RubricaNOME_RUBRICA: TStringField;
   private
     { Private declarations }
   protected

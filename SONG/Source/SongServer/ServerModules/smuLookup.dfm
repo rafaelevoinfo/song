@@ -416,4 +416,39 @@ inherited smLookup: TsmLookup
       Size = 123
     end
   end
+  object qlkRubrica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Rubrica.Id,'
+      '       Rubrica.Id_Rubrica_Pai,'
+      '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
+      'from Rubrica'
+      '&where'
+      'order by Rubrica.Nome')
+    Left = 96
+    Top = 232
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+        DataType = mdIdentifier
+      end>
+    object qlkRubricaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkRubricaID_RUBRICA_PAI: TIntegerField
+      FieldName = 'ID_RUBRICA_PAI'
+      Origin = 'ID_RUBRICA_PAI'
+      ProviderFlags = []
+    end
+    object qlkRubricaNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 123
+    end
+  end
 end

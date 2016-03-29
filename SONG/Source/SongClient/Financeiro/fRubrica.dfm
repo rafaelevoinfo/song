@@ -1,6 +1,6 @@
-inherited frmPlanoContas: TfrmPlanoContas
+inherited frmRubrica: TfrmRubrica
   ActiveControl = btnIncluir
-  Caption = 'Plano de Contas'
+  Caption = 'Rubricas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -32,17 +32,14 @@ inherited frmPlanoContas: TfrmPlanoContas
         end
         inherited pnBotoes: TPanel
           inherited btnIncluir: TButton
-            Width = 105
             WordWrap = True
-            ExplicitWidth = 105
           end
           inherited btnUtilizar: TButton
-            Left = 208
-            ExplicitLeft = 208
+            Left = 188
           end
           object btnIncluirSubItem: TButton
             AlignWithMargins = True
-            Left = 106
+            Left = 86
             Top = 1
             Width = 100
             Height = 40
@@ -55,6 +52,8 @@ inherited frmPlanoContas: TfrmPlanoContas
             Images = dmPrincipal.imgIcons_32
             TabOrder = 2
             WordWrap = True
+            ExplicitLeft = 76
+            ExplicitTop = 0
           end
         end
       end
@@ -74,78 +73,64 @@ inherited frmPlanoContas: TfrmPlanoContas
             object viewRegistrosNOME: TcxGridDBColumn [2]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
-              Width = 469
             end
-            object viewRegistrosTIPO: TcxGridDBColumn [3]
-              DataBinding.FieldName = 'TIPO'
-              RepositoryItem = dmLookup.repIcbTipoPlanoConta
+            object viewRegistrosID_RUBRICA_PAI: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'ID_RUBRICA_PAI'
+              Visible = False
               Options.Editing = False
-              Width = 160
             end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        object lblNome: TLabel
+        ExplicitLeft = 4
+        ExplicitTop = 52
+        object Label3: TLabel
           Left = 4
-          Top = 6
+          Top = 0
           Width = 27
           Height = 13
           Caption = 'Nome'
           FocusControl = EditNome
         end
-        object Label3: TLabel
-          Left = 309
-          Top = 6
-          Width = 20
-          Height = 13
-          Caption = 'Tipo'
-          FocusControl = cbTipo
-        end
         object Label4: TLabel
-          Left = 434
-          Top = 6
-          Width = 46
+          Left = 303
+          Top = 0
+          Width = 53
           Height = 13
-          Caption = 'Conta Pai'
-          FocusControl = cbContaPai
+          Caption = 'Rubrica Pai'
+          FocusControl = cbRubricaPai
         end
         object EditNome: TcxDBTextEdit
           Left = 4
-          Top = 22
+          Top = 16
           DataBinding.DataField = 'NOME'
           DataBinding.DataSource = dsMaster
           TabOrder = 0
           Width = 296
         end
-        object cbTipo: TcxDBImageComboBox
-          Left = 306
-          Top = 22
-          RepositoryItem = dmLookup.repIcbTipoPlanoConta
-          DataBinding.DataField = 'TIPO'
-          DataBinding.DataSource = dsMaster
-          Properties.Items = <>
-          TabOrder = 1
-          Width = 121
-        end
-        object cbContaPai: TcxDBLookupComboBox
-          Left = 433
-          Top = 22
-          RepositoryItem = dmLookup.repLcbPlano_Contas
-          DataBinding.DataField = 'ID_CONTA_PAI'
+        object cbRubricaPai: TcxDBLookupComboBox
+          Left = 302
+          Top = 16
+          RepositoryItem = dmLookup.repLcbRubrica
+          DataBinding.DataField = 'ID_RUBRICA_PAI'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 2
-          Width = 145
+          TabOrder = 1
+          Width = 247
         end
       end
     end
   end
   inherited ActionList1: TActionList
     inherited Ac_Incluir: TAction
-      Caption = 'Incluir Plano de Contas'
+      Caption = 'Incluir Rubrica'
     end
     object Ac_Incluir_Item: TAction
       Category = 'Master'
@@ -156,6 +141,6 @@ inherited frmPlanoContas: TfrmPlanoContas
     end
   end
   inherited dsMaster: TDataSource
-    DataSet = dmFinanceiro.cdsPlano_Contas
+    DataSet = dmFinanceiro.cdsRubrica
   end
 end

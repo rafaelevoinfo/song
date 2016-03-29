@@ -295,6 +295,18 @@ inherited dmLookup: TdmLookup
           Value = 1
         end>
     end
+    object repLcbRubrica: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkRubrica
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -695,5 +707,33 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkPlano_Contas
     Left = 488
     Top = 208
+  end
+  object cdslkRubrica: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkRubrica'
+    RemoteServer = dmPrincipal.ProviderLookup
+    RFApplyAutomatico = False
+    Left = 696
+    Top = 336
+    object cdslkRubricaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkRubricaID_RUBRICA_PAI: TIntegerField
+      FieldName = 'ID_RUBRICA_PAI'
+      ProviderFlags = []
+    end
+    object cdslkRubricaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 123
+    end
+  end
+  object dslkRubrica: TDataSource
+    DataSet = cdslkRubrica
+    Left = 780
+    Top = 336
   end
 end

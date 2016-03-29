@@ -955,4 +955,43 @@ inherited dmAdministrativo: TdmAdministrativo
     Left = 484
     Top = 24
   end
+  object cdsProjeto_Rubrica: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqProjeto_Rubrica'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 480
+    Top = 344
+    object cdsProjeto_RubricaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsProjeto_RubricaID_PROJETO: TIntegerField
+      DisplayLabel = 'Id do Projeto'
+      FieldName = 'ID_PROJETO'
+      Required = True
+    end
+    object cdsProjeto_RubricaID_RUBRICA: TIntegerField
+      DisplayLabel = 'Id da Rubrica'
+      FieldName = 'ID_RUBRICA'
+      Required = True
+    end
+    object cdsProjeto_RubricaORCAMENTO: TBCDField
+      DisplayLabel = 'Or'#231'amento'
+      FieldName = 'ORCAMENTO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_RubricaNOME_RUBRICA: TStringField
+      DisplayLabel = 'Rubrica'
+      FieldName = 'NOME_RUBRICA'
+      ReadOnly = True
+      Size = 100
+    end
+  end
 end

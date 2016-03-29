@@ -275,4 +275,46 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
     end
   end
+  object qRubrica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Rubrica.Id,'
+      '       Rubrica.Id_Rubrica_Pai,'
+      '       Rubrica.Nome,'
+      '       Rubrica.Identificador'
+      'from Rubrica'
+      '&where'
+      'Order by Rubrica.Identificador')
+    Left = 32
+    Top = 168
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qRubricaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qRubricaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qRubricaID_RUBRICA_PAI: TIntegerField
+      FieldName = 'ID_RUBRICA_PAI'
+      Origin = 'ID_RUBRICA_PAI'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qRubricaIDENTIFICADOR: TStringField
+      FieldName = 'IDENTIFICADOR'
+      Origin = 'IDENTIFICADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
 end
