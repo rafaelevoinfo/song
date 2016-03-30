@@ -52,6 +52,30 @@ type
     qRubricaNOME: TStringField;
     qRubricaID_RUBRICA_PAI: TIntegerField;
     qRubricaIDENTIFICADOR: TStringField;
+    qConta_Pagar: TRFQuery;
+    qConta_PagarID: TIntegerField;
+    qConta_PagarID_FORNECEDOR: TIntegerField;
+    qConta_PagarID_RUBRICA: TIntegerField;
+    qConta_PagarID_PLANO_CONTAS: TIntegerField;
+    qConta_PagarID_CONTA_CORRENTE: TIntegerField;
+    qConta_PagarDESCRICAO: TStringField;
+    qConta_PagarVALOR_TOTAL: TBCDField;
+    qConta_PagarFORMA_PAGTO: TSmallintField;
+    qConta_PagarOBSERVACAO: TStringField;
+    qConta_Pagar_Parcela: TRFQuery;
+    qConta_Pagar_ParcelaID: TIntegerField;
+    qConta_Pagar_ParcelaID_CONTA_PAGAR: TIntegerField;
+    qConta_Pagar_ParcelaVENCIMENTO: TDateField;
+    qConta_Pagar_ParcelaVALOR: TBCDField;
+    qConta_Pagar_ParcelaPARCELA: TSmallintField;
+    qConta_Pagar_Projeto: TRFQuery;
+    qConta_Pagar_ProjetoID: TIntegerField;
+    qConta_Pagar_ProjetoID_CONTA_PAGAR: TIntegerField;
+    qConta_Pagar_ProjetoID_PROJETO: TIntegerField;
+    qConta_Pagar_Atividade: TRFQuery;
+    qConta_Pagar_AtividadeID: TIntegerField;
+    qConta_Pagar_AtividadeID_CONTA_PAGAR: TIntegerField;
+    qConta_Pagar_AtividadeID_ATIVIDADE: TIntegerField;
   private
     { Private declarations }
   protected

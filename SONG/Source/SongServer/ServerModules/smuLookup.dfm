@@ -67,10 +67,11 @@ inherited smLookup: TsmLookup
   object qlkFinanciador: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select FINANCIADOR.ID,'
-      '       FINANCIADOR.NOME'
-      'from FINANCIADOR  '
-      '&WHERE')
+      'select FIN_FOR_CLI.ID,'
+      '       FIN_FOR_CLI.NOME_FANTASIA as NOME'
+      'from FIN_FOR_CLI'
+      'where FIN_FOR_CLI.Tipo = 1'
+      '&where')
     Left = 208
     Top = 48
     MacroData = <
@@ -86,9 +87,8 @@ inherited smLookup: TsmLookup
     end
     object qlkFinanciadorNOME: TStringField
       FieldName = 'NOME'
-      Origin = 'NOME'
+      Origin = 'NOME_FANTASIA'
       ProviderFlags = []
-      Required = True
       Size = 100
     end
   end

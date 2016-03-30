@@ -1,5 +1,6 @@
 inherited smFinanceiro: TsmFinanceiro
   OldCreateOrder = True
+  Width = 649
   object qBanco: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -162,6 +163,7 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'TIPO'
       Origin = 'TIPO'
       ProviderFlags = [pfInUpdate]
+      Required = True
     end
     object qFin_For_CliTELEFONE: TStringField
       FieldName = 'TELEFONE'
@@ -189,6 +191,7 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'CPF_CNPJ'
       Origin = 'CPF_CNPJ'
       ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 14
     end
     object qFin_For_CliINSCRICAO_ESTADUAL: TStringField
@@ -313,6 +316,201 @@ inherited smFinanceiro: TsmFinanceiro
     object qRubricaIDENTIFICADOR: TStringField
       FieldName = 'IDENTIFICADOR'
       Origin = 'IDENTIFICADOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qConta_Pagar: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Conta_Pagar.Id,'
+      '       Conta_Pagar.Id_Fornecedor,'
+      '       Conta_Pagar.Id_Rubrica,'
+      '       Conta_Pagar.Id_Plano_Contas,'
+      '       Conta_Pagar.Id_Conta_Corrente,'
+      '       Conta_Pagar.Descricao,'
+      '       Conta_Pagar.Valor_Total,'
+      '       Conta_Pagar.Forma_Pagto,'
+      '       Conta_Pagar.Observacao'
+      'from Conta_Pagar  '
+      '&where')
+    Left = 152
+    Top = 168
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qConta_PagarID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qConta_PagarID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_PagarID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qConta_PagarID_PLANO_CONTAS: TIntegerField
+      FieldName = 'ID_PLANO_CONTAS'
+      Origin = 'ID_PLANO_CONTAS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_PagarID_CONTA_CORRENTE: TIntegerField
+      FieldName = 'ID_CONTA_CORRENTE'
+      Origin = 'ID_CONTA_CORRENTE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qConta_PagarDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qConta_PagarVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qConta_PagarFORMA_PAGTO: TSmallintField
+      FieldName = 'FORMA_PAGTO'
+      Origin = 'FORMA_PAGTO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qConta_PagarOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+  end
+  object qConta_Pagar_Parcela: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Conta_Pagar_Parcela.Id,'
+      '       Conta_Pagar_Parcela.Id_Conta_Pagar,'
+      '       Conta_Pagar_Parcela.Vencimento,'
+      '       Conta_Pagar_Parcela.Valor,'
+      '       Conta_Pagar_Parcela.Parcela'
+      'from Conta_Pagar_Parcela  '
+      'WHERE Conta_Pagar_Parcela.id_conta_pagar = :ID_CONTA_PAGAR')
+    Left = 264
+    Top = 168
+    ParamData = <
+      item
+        Name = 'ID_CONTA_PAGAR'
+        ParamType = ptInput
+      end>
+    object qConta_Pagar_ParcelaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qConta_Pagar_ParcelaID_CONTA_PAGAR: TIntegerField
+      FieldName = 'ID_CONTA_PAGAR'
+      Origin = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_ParcelaVENCIMENTO: TDateField
+      FieldName = 'VENCIMENTO'
+      Origin = 'VENCIMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_ParcelaVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qConta_Pagar_ParcelaPARCELA: TSmallintField
+      FieldName = 'PARCELA'
+      Origin = 'PARCELA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qConta_Pagar_Projeto: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Conta_Pagar_Projeto.Id,'
+      '       Conta_Pagar_Projeto.Id_Conta_Pagar,'
+      '       Conta_Pagar_Projeto.Id_Projeto'
+      'from Conta_Pagar_Projeto'
+      'WHERE Conta_Pagar_Projeto.id_conta_pagar = :id_conta_pagar')
+    Left = 264
+    Top = 104
+    ParamData = <
+      item
+        Name = 'ID_CONTA_PAGAR'
+        ParamType = ptInput
+      end>
+    object qConta_Pagar_ProjetoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qConta_Pagar_ProjetoID_CONTA_PAGAR: TIntegerField
+      FieldName = 'ID_CONTA_PAGAR'
+      Origin = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_ProjetoID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qConta_Pagar_Atividade: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Conta_Pagar_Atividade.Id,'
+      '       Conta_Pagar_Atividade.Id_Conta_Pagar,'
+      '       Conta_Pagar_Atividade.Id_Atividade'
+      'from Conta_Pagar_Atividade'
+      'where conta_pagar_atividade.id_conta_pagar = :ID_CONTA_PAGAR')
+    Left = 400
+    Top = 112
+    ParamData = <
+      item
+        Name = 'ID_CONTA_PAGAR'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qConta_Pagar_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qConta_Pagar_AtividadeID_CONTA_PAGAR: TIntegerField
+      FieldName = 'ID_CONTA_PAGAR'
+      Origin = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_AtividadeID_ATIVIDADE: TIntegerField
+      FieldName = 'ID_ATIVIDADE'
+      Origin = 'ID_ATIVIDADE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end

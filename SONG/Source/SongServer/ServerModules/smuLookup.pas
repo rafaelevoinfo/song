@@ -22,7 +22,6 @@ type
     qlkOrganizacaoNOME: TStringField;
     qlkFinanciador: TRFQuery;
     qlkFinanciadorID: TIntegerField;
-    qlkFinanciadorNOME: TStringField;
     qlkBanco: TRFQuery;
     qlkBancoID: TIntegerField;
     qlkBancoNOME: TStringField;
@@ -65,6 +64,7 @@ type
     qlkRubricaID: TIntegerField;
     qlkRubricaID_RUBRICA_PAI: TIntegerField;
     qlkRubricaNOME: TStringField;
+    qlkFinanciadorNOME: TStringField;
   private
     { Private declarations }
   protected

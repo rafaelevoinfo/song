@@ -4,7 +4,6 @@ inherited frmFinanciador: TfrmFinanciador
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -369,6 +368,7 @@ inherited frmFinanciador: TfrmFinanciador
             Action = Ac_Pesquisar_Pessoa
             Images = dmPrincipal.imgIcons_16
             TabOrder = 9
+            TabStop = False
           end
         end
         object EditCpfCnpj: TcxDBTextEdit

@@ -117,6 +117,7 @@ inherited dmFinanceiro: TdmFinanceiro
     object cdsFin_For_CliTIPO: TIntegerField
       DisplayLabel = 'Tipo'
       FieldName = 'TIPO'
+      Required = True
     end
     object cdsFin_For_CliTELEFONE: TStringField
       DisplayLabel = 'Telefone'
@@ -139,6 +140,7 @@ inherited dmFinanceiro: TdmFinanceiro
     object cdsFin_For_CliCPF_CNPJ: TStringField
       DisplayLabel = 'CPF/CNPJ'
       FieldName = 'CPF_CNPJ'
+      Required = True
       Size = 14
     end
     object cdsFin_For_CliINSCRICAO_ESTADUAL: TStringField

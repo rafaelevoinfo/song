@@ -36,7 +36,7 @@ type
 
   TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, meSomentePesquisa, meSomenteCadastro);
 
-  TTipoFinForCli = (tfFinanciador, tfFornecedor, tfCliente);
+  TTipoFinForCli = (tfFinanciador=1, tfFornecedor, tfCliente);
 
   TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador, trpParceiro, trpEstagiario,
     trpVoluntario, trpOutro);
