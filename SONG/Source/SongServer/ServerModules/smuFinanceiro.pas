@@ -76,6 +76,12 @@ type
     qConta_Pagar_AtividadeID: TIntegerField;
     qConta_Pagar_AtividadeID_CONTA_PAGAR: TIntegerField;
     qConta_Pagar_AtividadeID_ATIVIDADE: TIntegerField;
+    qConta_Pagar_ProjetoPROJETO: TStringField;
+    qConta_Pagar_AtividadeATIVIDADE: TStringField;
+    qConta_PagarFORNECEDOR: TStringField;
+    qConta_PagarRUBRICA: TStringField;
+    qConta_PagarPLANO_CONTAS: TStringField;
+    qConta_PagarCONTA_CORRENTE: TStringField;
   private
     { Private declarations }
   protected

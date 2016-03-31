@@ -331,8 +331,25 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar.Descricao,'
       '       Conta_Pagar.Valor_Total,'
       '       Conta_Pagar.Forma_Pagto,'
-      '       Conta_Pagar.Observacao'
-      'from Conta_Pagar  '
+      '       Conta_Pagar.Observacao,'
+      '       fin_for_cli.nome_fantasia as fornecedor,'
+      '       rubrica.nome as rubrica,'
+      '       plano_contas.nome as plano_contas,'
+      
+        '       (banco.nome || '#39' - '#39'|| banco_conta_corrente.agencia||'#39'/'#39'|' +
+        '|banco_conta_corrente.conta) as conta_corrente'
+      'from Conta_Pagar'
+      
+        'inner join fin_for_cli on (fin_for_cli.id = conta_pagar.id_forne' +
+        'cedor)'
+      'left join rubrica on (rubrica.id = conta_pagar.id_rubrica)'
+      
+        'inner join plano_contas on (plano_contas.id = conta_pagar.id_pla' +
+        'no_contas)'
+      
+        'left join banco_conta_corrente on (banco_conta_corrente.id = con' +
+        'ta_pagar.id_conta_corrente)'
+      'left join banco on (banco.id = banco_conta_corrente.id_banco)'
       '&where')
     Left = 152
     Top = 168
@@ -395,6 +412,34 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object qConta_PagarFORNECEDOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FORNECEDOR'
+      Origin = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_PagarRUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_PagarPLANO_CONTAS: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PLANO_CONTAS'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_PagarCONTA_CORRENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CONTA_CORRENTE'
+      Origin = 'CONTA_CORRENTE'
+      ProviderFlags = []
+      Size = 134
+    end
   end
   object qConta_Pagar_Parcela: TRFQuery
     Connection = dmPrincipal.conSong
@@ -451,15 +496,21 @@ inherited smFinanceiro: TsmFinanceiro
     SQL.Strings = (
       'select Conta_Pagar_Projeto.Id,'
       '       Conta_Pagar_Projeto.Id_Conta_Pagar,'
-      '       Conta_Pagar_Projeto.Id_Projeto'
+      '       Conta_Pagar_Projeto.Id_Projeto,'
+      '       Projeto.nome as Projeto'
       'from Conta_Pagar_Projeto'
+      
+        'inner join projeto on (projeto.id = conta_pagar_projeto.id_conta' +
+        '_pagar)'
       'WHERE Conta_Pagar_Projeto.id_conta_pagar = :id_conta_pagar')
     Left = 264
     Top = 104
     ParamData = <
       item
         Name = 'ID_CONTA_PAGAR'
+        DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object qConta_Pagar_ProjetoID: TIntegerField
       FieldName = 'ID'
@@ -479,14 +530,25 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qConta_Pagar_ProjetoPROJETO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PROJETO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object qConta_Pagar_Atividade: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Conta_Pagar_Atividade.Id,'
       '       Conta_Pagar_Atividade.Id_Conta_Pagar,'
-      '       Conta_Pagar_Atividade.Id_Atividade'
+      '       Conta_Pagar_Atividade.Id_Atividade,'
+      '       Atividade.Nome as Atividade'
       'from Conta_Pagar_Atividade'
+      
+        'inner join atividade on (atividade.id = conta_pagar_atividade.id' +
+        '_atividade)'
       'where conta_pagar_atividade.id_conta_pagar = :ID_CONTA_PAGAR')
     Left = 400
     Top = 112
@@ -495,6 +557,7 @@ inherited smFinanceiro: TsmFinanceiro
         Name = 'ID_CONTA_PAGAR'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object qConta_Pagar_AtividadeID: TIntegerField
       FieldName = 'ID'
@@ -513,6 +576,13 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'ID_ATIVIDADE'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qConta_Pagar_AtividadeATIVIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ATIVIDADE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

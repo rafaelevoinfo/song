@@ -51,8 +51,7 @@ type
 
     procedure Post; override;
 
-    procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string;
-      ipLimparParametros: Boolean); overload;
+    procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string; ipLimparParametros: Boolean); overload;
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string); overload;
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant); overload;
     procedure ppuDataRequest(); overload;

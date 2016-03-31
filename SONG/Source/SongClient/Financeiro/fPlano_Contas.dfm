@@ -1,10 +1,9 @@
 inherited frmPlanoContas: TfrmPlanoContas
-  ActiveControl = btnIncluir
+  ActiveControl = EditNome
   Caption = 'Plano de Contas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -87,6 +86,10 @@ inherited frmPlanoContas: TfrmPlanoContas
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lblNome: TLabel
           Left = 4

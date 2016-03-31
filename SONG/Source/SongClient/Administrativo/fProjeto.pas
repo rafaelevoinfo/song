@@ -387,7 +387,7 @@ end;
 
 procedure TfrmProjeto.ppvCarregarContasCorrentes();
 begin
-  dmLookup.cdslkConta_Corrente.ppuDataRequest();
+  dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'], TOperadores.coAnd,true);
 end;
 
 procedure TfrmProjeto.ppvCarregarFinanciadores();

@@ -1,15 +1,15 @@
 inherited smLookup: TsmLookup
   OldCreateOrder = True
-  Height = 311
-  Width = 488
+  Height = 414
+  Width = 1025
   object qlkPerfil: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PERFIL.ID,'
       '       PERFIL.NOME'
       'from PERFIL  ')
-    Left = 144
-    Top = 104
+    Left = 484
+    Top = 124
     object qlkPerfilID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -28,8 +28,8 @@ inherited smLookup: TsmLookup
       '       PESSOA.NOME'
       'from PESSOA'
       '&WHERE')
-    Left = 40
-    Top = 40
+    Left = 336
+    Top = 124
     MacroData = <
       item
         Value = Null
@@ -43,8 +43,8 @@ inherited smLookup: TsmLookup
       '       ORGANIZACAO.NOME'
       'from ORGANIZACAO  '
       '&WHERE')
-    Left = 112
-    Top = 48
+    Left = 188
+    Top = 124
     MacroData = <
       item
         Value = Null
@@ -72,8 +72,8 @@ inherited smLookup: TsmLookup
       'from FIN_FOR_CLI'
       'where FIN_FOR_CLI.Tipo = 1'
       '&where')
-    Left = 208
-    Top = 48
+    Left = 632
+    Top = 124
     MacroData = <
       item
         Value = Null
@@ -98,8 +98,8 @@ inherited smLookup: TsmLookup
       'select BANCO.ID,'
       '       BANCO.NOME'
       'from BANCO')
-    Left = 232
-    Top = 96
+    Left = 40
+    Top = 232
     object qlkBancoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -123,8 +123,8 @@ inherited smLookup: TsmLookup
       '       BANCO_CONTA_CORRENTE.CONTA'
       'from BANCO_CONTA_CORRENTE'
       'where BANCO_CONTA_CORRENTE.ID_BANCO = :ID_BANCO   ')
-    Left = 232
-    Top = 152
+    Left = 928
+    Top = 124
     ParamData = <
       item
         Name = 'ID_BANCO'
@@ -167,8 +167,8 @@ inherited smLookup: TsmLookup
       '       BANCO_CONTA_CORRENTE.CONTA'
       'from BANCO_CONTA_CORRENTE'
       'inner join BANCO on (BANCO.ID = BANCO_CONTA_CORRENTE.ID_BANCO)  ')
-    Left = 40
-    Top = 120
+    Left = 780
+    Top = 124
     object qlkConta_CorrenteID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -213,8 +213,8 @@ inherited smLookup: TsmLookup
         'left join ATIVIDADE_PROJETO on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
         ' ATIVIDADE.ID)  '
       '&WHERE')
-    Left = 320
-    Top = 48
+    Left = 40
+    Top = 124
     MacroData = <
       item
         Value = Null
@@ -246,8 +246,8 @@ inherited smLookup: TsmLookup
       '       PROJETO.NOME'
       'from PROJETO  '
       '&WHERE')
-    Left = 320
-    Top = 112
+    Left = 336
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -262,8 +262,8 @@ inherited smLookup: TsmLookup
       '       ESTADO.UF'
       'from CIDADE'
       'inner join ESTADO on (CIDADE.ID_ESTADO = ESTADO.ID)  ')
-    Left = 368
-    Top = 176
+    Left = 188
+    Top = 16
     object qlkCidadeID: TIntegerField
       Alignment = taLeftJustify
       FieldName = 'ID'
@@ -297,8 +297,8 @@ inherited smLookup: TsmLookup
       'from especie'
       '&where'
       'order by Especie.nome')
-    Left = 32
-    Top = 192
+    Left = 40
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -344,8 +344,8 @@ inherited smLookup: TsmLookup
       '       MATRIZ.NOME'
       'from MATRIZ '
       '&WHERE')
-    Left = 232
-    Top = 224
+    Left = 484
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -358,8 +358,8 @@ inherited smLookup: TsmLookup
       'select Canteiro.Id,'
       '       Canteiro.Nome'
       'from Canteiro')
-    Left = 368
-    Top = 232
+    Left = 928
+    Top = 16
     object qlkCanteiroID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -386,8 +386,8 @@ inherited smLookup: TsmLookup
       'from Plano_Contas  '
       '&where'
       'order by Plano_Contas.Nome')
-    Left = 400
-    Top = 64
+    Left = 780
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -425,8 +425,8 @@ inherited smLookup: TsmLookup
       'from Rubrica'
       '&where'
       'order by Rubrica.Nome')
-    Left = 96
-    Top = 232
+    Left = 632
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -449,6 +449,35 @@ inherited smLookup: TsmLookup
       Origin = 'NOME'
       ProviderFlags = []
       Size = 123
+    end
+  end
+  object qlkFornecedor: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select FIN_FOR_CLI.ID,'
+      '       FIN_FOR_CLI.NOME_FANTASIA as NOME'
+      'from FIN_FOR_CLI'
+      'where FIN_FOR_CLI.Tipo = 2'
+      '&where')
+    Left = 184
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkFornecedorID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkFornecedorNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Required = True
+      Size = 100
     end
   end
 end

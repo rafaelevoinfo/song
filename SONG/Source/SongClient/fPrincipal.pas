@@ -10,7 +10,7 @@ uses
   cxControls, cxLookAndFeels, dxSkinscxPCPainter, dxBarBuiltInMenu, cxPC,
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
-  fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica;
+  fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -53,6 +53,8 @@ type
     readeCusto1: TMenuItem;
     Ac_Rubricas: TAction;
     Rubricas1: TMenuItem;
+    Ac_Conta_Pagar: TAction;
+    ContasaPagar1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -70,6 +72,7 @@ type
     procedure Ac_Lote_MudaExecute(Sender: TObject);
     procedure Ac_Plano_ContasExecute(Sender: TObject);
     procedure Ac_RubricasExecute(Sender: TObject);
+    procedure Ac_Conta_PagarExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -106,6 +109,12 @@ procedure TfrmPrincipal.Ac_CanteiroExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmCanteiro>(pcPrincipal, TfrmCanteiro, frmCanteiro);
+end;
+
+procedure TfrmPrincipal.Ac_Conta_PagarExecute(Sender: TObject);
+begin
+  inherited;
+   TUtils.ppuAbrirFormAba<TFrmContaPagar>(pcPrincipal, TfrmContaPagar, frmContaPagar);
 end;
 
 procedure TfrmPrincipal.Ac_EspecieExecute(Sender: TObject);

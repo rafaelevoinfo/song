@@ -6,7 +6,6 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -482,7 +481,6 @@ inherited frmProjeto: TfrmProjeto
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirRubrica: TButton
                   Left = 0
                   Top = 1
@@ -1294,7 +1292,6 @@ inherited frmProjeto: TfrmProjeto
         Height = 50
         Align = alTop
         TabOrder = 1
-        ExplicitTop = 8
         object btnSalvarDetailRubrica: TButton
           AlignWithMargins = True
           Left = 4

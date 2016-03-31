@@ -883,3 +883,14 @@ ADD CONSTRAINT UNQ3_FIN_FOR_CLI
 UNIQUE (NOME_FANTASIA,RAZAO_SOCIAL,TIPO)
 USING INDEX UNQ3_FIN_FOR_CLI;
 
+
+
+COMMENT ON COLUMN CONTA_PAGAR.FORMA_PAGTO IS
+'1 - Transferencia Bancaria
+2 - Debito em Conta
+3 - Cartao de Credito
+4 - Cartao de Debito
+5 - Cheque
+6 - Em Especie
+7 - Outro';
+

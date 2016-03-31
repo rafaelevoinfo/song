@@ -49,6 +49,38 @@ type
     cdsRubricaNOME: TStringField;
     cdsRubricaID_RUBRICA_PAI: TIntegerField;
     cdsRubricaIDENTIFICADOR: TStringField;
+    cdsConta_Pagar: TRFClientDataSet;
+    cdsConta_PagarID: TIntegerField;
+    cdsConta_PagarID_FORNECEDOR: TIntegerField;
+    cdsConta_PagarID_RUBRICA: TIntegerField;
+    cdsConta_PagarID_PLANO_CONTAS: TIntegerField;
+    cdsConta_PagarID_CONTA_CORRENTE: TIntegerField;
+    cdsConta_PagarDESCRICAO: TStringField;
+    cdsConta_PagarVALOR_TOTAL: TBCDField;
+    cdsConta_PagarFORMA_PAGTO: TSmallintField;
+    cdsConta_PagarOBSERVACAO: TStringField;
+    cdsConta_PagarFORNECEDOR: TStringField;
+    cdsConta_PagarRUBRICA: TStringField;
+    cdsConta_PagarPLANO_CONTAS: TStringField;
+    cdsConta_PagarCONTA_CORRENTE: TStringField;
+    cdsConta_Pagar_Projeto: TRFClientDataSet;
+    cdsConta_Pagar_Atividade: TRFClientDataSet;
+    cdsConta_Pagar_Parcela: TRFClientDataSet;
+    cdsConta_Pagar_ProjetoID: TIntegerField;
+    cdsConta_Pagar_ProjetoID_CONTA_PAGAR: TIntegerField;
+    cdsConta_Pagar_ProjetoID_PROJETO: TIntegerField;
+    cdsConta_Pagar_ProjetoPROJETO: TStringField;
+    cdsConta_Pagar_AtividadeID: TIntegerField;
+    cdsConta_Pagar_AtividadeID_CONTA_PAGAR: TIntegerField;
+    cdsConta_Pagar_AtividadeID_ATIVIDADE: TIntegerField;
+    cdsConta_Pagar_AtividadeATIVIDADE: TStringField;
+    cdsConta_Pagar_ParcelaID: TIntegerField;
+    cdsConta_Pagar_ParcelaID_CONTA_PAGAR: TIntegerField;
+    cdsConta_Pagar_ParcelaVENCIMENTO: TDateField;
+    cdsConta_Pagar_ParcelaVALOR: TBCDField;
+    cdsConta_Pagar_ParcelaPARCELA: TSmallintField;
+    cdsConta_Pagar_ParcelaSUM_VALOR: TAggregateField;
+    dsConta_Pagar: TDataSource;
   private
     { Private declarations }
   public

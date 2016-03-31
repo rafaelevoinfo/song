@@ -65,6 +65,9 @@ type
     qlkRubricaID_RUBRICA_PAI: TIntegerField;
     qlkRubricaNOME: TStringField;
     qlkFinanciadorNOME: TStringField;
+    qlkFornecedor: TRFQuery;
+    qlkFornecedorID: TIntegerField;
+    qlkFornecedorNOME: TStringField;
   private
     { Private declarations }
   protected

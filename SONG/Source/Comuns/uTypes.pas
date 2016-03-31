@@ -41,6 +41,8 @@ type
   TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador, trpParceiro, trpEstagiario,
     trpVoluntario, trpOutro);
 
+  TTipoPlanoContas = (tpcDespesa, tpcReceita);
+
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
 const

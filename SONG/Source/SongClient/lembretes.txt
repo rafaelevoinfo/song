@@ -1,6 +1,6 @@
 Lembretes da Revisão 1.0.1.xxx
 
-Ao rodar o SQL verificar se existem registros na tabela FINANCIADOR e PROJETO_FINANCIADOR, 
+Antes de rodar o SQL:
+* Verificar se existem registros na tabela FINANCIADOR e PROJETO_FINANCIADOR, 
 pois a tabela FINANCIADOR será excluida.
-
-Verificar se existe registros na tabela FIN_FOR_CLI, pois alguns campos foram marcados como not null.
+* Verificar se existe registros na tabela FIN_FOR_CLI, pois alguns campos foram marcados como not null.

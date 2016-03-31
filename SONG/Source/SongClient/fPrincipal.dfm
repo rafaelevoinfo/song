@@ -40,6 +40,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Bancos1: TMenuItem
         Action = Ac_Banco
       end
+      object ContasaPagar1: TMenuItem
+        Action = Ac_Conta_Pagar
+      end
       object Financiadores2: TMenuItem
         Action = Ac_Financiador
       end
@@ -170,6 +173,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Rubricas'
       OnExecute = Ac_RubricasExecute
+    end
+    object Ac_Conta_Pagar: TAction
+      Category = 'Financeiro'
+      Caption = 'Contas a Pagar'
+      OnExecute = Ac_Conta_PagarExecute
     end
   end
   object dxSkinController1: TdxSkinController

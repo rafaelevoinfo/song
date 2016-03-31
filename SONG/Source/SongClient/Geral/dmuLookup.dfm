@@ -307,6 +307,48 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkRubrica
     end
+    object repIcbFormaPagamento: TcxEditRepositoryImageComboBoxItem
+      Properties.Items = <
+        item
+          Description = 'Transfer'#234'ncia Banc'#225'ria'
+          ImageIndex = 0
+          Value = 1
+        end
+        item
+          Description = 'D'#233'bito em Conta'
+          Value = 2
+        end
+        item
+          Description = 'Cart'#227'o de Cr'#233'dito'
+          Value = 3
+        end
+        item
+          Description = 'Cart'#227'o de D'#233'bito'
+          Value = 4
+        end
+        item
+          Description = 'Cheque'
+          Value = 5
+        end
+        item
+          Description = 'Em Esp'#233'cie'
+          Value = 6
+        end
+        item
+          Description = 'Outro'
+          Value = 7
+        end>
+    end
+    object repLcbFornecedor: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkFornecedor
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -705,8 +747,8 @@ inherited dmLookup: TdmLookup
   end
   object dslkPlano_Contas: TDataSource
     DataSet = cdslkPlano_Contas
-    Left = 488
-    Top = 208
+    Left = 48
+    Top = 399
   end
   object cdslkRubrica: TRFClientDataSet
     Aggregates = <>
@@ -735,5 +777,18 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkRubrica
     Left = 780
     Top = 336
+  end
+  object cdslkFornecedor: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkFornecedor'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 888
+    Top = 336
+  end
+  object dslkFornecedor: TDataSource
+    DataSet = cdslkFornecedor
+    Left = 896
+    Top = 400
   end
 end

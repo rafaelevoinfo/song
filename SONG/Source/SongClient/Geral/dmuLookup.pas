@@ -101,6 +101,10 @@ type
     cdslkRubricaNOME: TStringField;
     repLcbRubrica: TcxEditRepositoryLookupComboBoxItem;
     dslkRubrica: TDataSource;
+    repIcbFormaPagamento: TcxEditRepositoryImageComboBoxItem;
+    repLcbFornecedor: TcxEditRepositoryLookupComboBoxItem;
+    cdslkFornecedor: TRFClientDataSet;
+    dslkFornecedor: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private
