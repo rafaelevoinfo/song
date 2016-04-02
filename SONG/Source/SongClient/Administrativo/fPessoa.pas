@@ -105,7 +105,7 @@ type
     procedure ppuIncluir; override;
 
   public const
-    coLogin = 4;
+    coLogin = 5;
 
   end;
 
