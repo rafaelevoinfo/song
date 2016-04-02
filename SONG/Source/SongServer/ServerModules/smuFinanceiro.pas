@@ -136,6 +136,30 @@ begin
         begin
           Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
         end;
+    end
+  else if ipTabela = 'CONTA_PAGAR' then
+    begin
+      if ipParam.Name = TParametros.coData then
+        begin
+          Result := Result + ' (CONTA_PAGAR_PARCELA.VENCIMENTO between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
+            ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
+        end
+      else if ipParam.Name = TParametros.coDescricao then
+        begin
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'DESCRICAO', vaValor, True, False, vaOperador)
+        end
+      else if ipParam.Name = TParametros.coFornecedor then
+        begin
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador)
+        end
+      else if ipParam.Name = TParametros.coRubrica then
+        begin
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_RUBRICA', vaValor.ToInteger, vaOperador)
+        end
+      else if ipParam.Name = TParametros.coPlanoConta then
+        begin
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PLANO_CONTAS', vaValor.ToInteger, vaOperador)
+        end
     end;
 
 end;

@@ -25,6 +25,10 @@ type
     coRazaoSocial = 'RAZAO_SOCIAL';
     coCpfCnpj = 'CPF_CNPJ';
     coEspecie = 'ESPECIE';
+    coDescricao = 'DESCRICAO';
+    coFornecedor = 'FORNECEDOR';
+    coRubrica = 'RUBRICA';
+    coPlanoConta = 'PLANO_CONTA';
 
     coTipo = 'TIPO';
 

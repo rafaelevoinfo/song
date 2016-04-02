@@ -333,7 +333,12 @@ inherited dmFinanceiro: TdmFinanceiro
     MasterFields = 'ID'
     MasterSource = dsConta_Pagar
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_CONTA_PAGAR'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqConta_Pagar_Projeto'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     RFApplyAutomatico = False
@@ -369,7 +374,12 @@ inherited dmFinanceiro: TdmFinanceiro
     MasterFields = 'ID'
     MasterSource = dsConta_Pagar
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_CONTA_PAGAR'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqConta_Pagar_Atividade'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     RFApplyAutomatico = False
@@ -401,13 +411,16 @@ inherited dmFinanceiro: TdmFinanceiro
   end
   object cdsConta_Pagar_Parcela: TRFClientDataSet
     Aggregates = <>
-    AggregatesActive = True
-    Filtered = True
     IndexFieldNames = 'ID_CONTA_PAGAR'
     MasterFields = 'ID'
     MasterSource = dsConta_Pagar
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_CONTA_PAGAR'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqConta_Pagar_Parcela'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     RFApplyAutomatico = False
@@ -443,12 +456,6 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'PARCELA'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object cdsConta_Pagar_ParcelaSUM_VALOR: TAggregateField
-      FieldName = 'SUM_VALOR'
-      Active = True
-      DisplayName = ''
-      Expression = 'SUM(VALOR)'
     end
   end
   object dsConta_Pagar: TDataSource

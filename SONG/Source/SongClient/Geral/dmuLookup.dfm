@@ -785,6 +785,16 @@ inherited dmLookup: TdmLookup
     RemoteServer = dmPrincipal.ProviderLookup
     Left = 888
     Top = 336
+    object cdslkFornecedorID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdslkFornecedorNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
   end
   object dslkFornecedor: TDataSource
     DataSet = cdslkFornecedor

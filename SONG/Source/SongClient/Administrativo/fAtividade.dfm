@@ -1,11 +1,16 @@
 inherited frmAtividade: TfrmAtividade
   ActiveControl = nil
   Caption = 'Atividades'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 453
@@ -33,7 +38,6 @@ inherited frmAtividade: TfrmAtividade
           inherited pnData: TPanel [3]
             Left = 265
             Width = 153
-            TabOrder = 0
             ExplicitLeft = 265
             ExplicitWidth = 153
             inherited EditDataInicialPesquisa: TcxDateEdit
@@ -286,6 +290,10 @@ inherited frmAtividade: TfrmAtividade
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -668,10 +676,6 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 5
@@ -771,7 +775,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataField = 'ID_SOLICITANTE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 4
+          TabOrder = 5
           Width = 209
         end
         object cbResponsavel: TcxDBLookupComboBox
@@ -781,7 +785,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataField = 'ID_RESPONSAVEL'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 5
+          TabOrder = 6
           Width = 209
         end
         object cbStatus: TcxDBImageComboBox
@@ -791,7 +795,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataField = 'STATUS'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 6
+          TabOrder = 7
           Width = 173
         end
         object chkNotificarEnvolvidos: TcxDBCheckBox
@@ -805,7 +809,7 @@ inherited frmAtividade: TfrmAtividade
           Properties.NullStyle = nssUnchecked
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          TabOrder = 8
+          TabOrder = 9
           Width = 594
         end
         object EditDescricao: TcxDBMemo
@@ -813,7 +817,7 @@ inherited frmAtividade: TfrmAtividade
           Top = 135
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 7
+          TabOrder = 8
           Height = 89
           Width = 596
         end
@@ -835,13 +839,21 @@ inherited frmAtividade: TfrmAtividade
           Height = 20
           Action = Ac_Pesquisar_Projeto
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 9
+          TabOrder = 4
           TabStop = False
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
+      inherited pnBotoesCadastroDetail: TPanel
+        TabOrder = 0
+      end
       inherited pnEditsCadastroDetail: TPanel
+        TabOrder = 1
         object Label11: TLabel
           Left = 5
           Top = 43
@@ -863,7 +875,7 @@ inherited frmAtividade: TfrmAtividade
           Top = 59
           DataBinding.DataField = 'FUNCAO'
           DataBinding.DataSource = dsDetail
-          TabOrder = 1
+          TabOrder = 2
           Width = 209
         end
         object cbPessoaEnvolvida: TcxDBLookupComboBox
@@ -884,7 +896,7 @@ inherited frmAtividade: TfrmAtividade
           Height = 21
           Action = Ac_Pesquisar_Pessoa_Envolvida
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 2
+          TabOrder = 1
         end
       end
     end
@@ -897,7 +909,7 @@ inherited frmAtividade: TfrmAtividade
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarProjeto: TButton
           AlignWithMargins = True
           Left = 4
@@ -939,7 +951,7 @@ inherited frmAtividade: TfrmAtividade
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label13: TLabel
           Left = 6
           Top = 3
@@ -970,7 +982,7 @@ inherited frmAtividade: TfrmAtividade
           Top = 59
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsAtividade_Projeto
-          TabOrder = 1
+          TabOrder = 2
           Height = 89
           Width = 596
         end
@@ -981,7 +993,7 @@ inherited frmAtividade: TfrmAtividade
           Height = 21
           Action = Ac_Pesquisar_Detail_Projeto
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 2
+          TabOrder = 1
           TabStop = False
         end
       end
@@ -996,7 +1008,7 @@ inherited frmAtividade: TfrmAtividade
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label15: TLabel
           Left = 6
           Top = 3
@@ -1067,7 +1079,7 @@ inherited frmAtividade: TfrmAtividade
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarAtividadeVinculo: TButton
           AlignWithMargins = True
           Left = 4
@@ -1112,7 +1124,7 @@ inherited frmAtividade: TfrmAtividade
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarArquivo: TButton
           AlignWithMargins = True
           Left = 4
@@ -1154,7 +1166,7 @@ inherited frmAtividade: TfrmAtividade
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label19: TLabel
           Left = 5
           Top = 6
@@ -1219,7 +1231,7 @@ inherited frmAtividade: TfrmAtividade
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarComentario: TButton
           AlignWithMargins = True
           Left = 4
@@ -1261,7 +1273,7 @@ inherited frmAtividade: TfrmAtividade
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label22: TLabel
           Left = 5
           Top = 3

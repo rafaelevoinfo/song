@@ -16,7 +16,7 @@ uses
   System.TypInfo, uTypes, dmuLookup, cxMemo, cxDBEdit, dmuPrincipal,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.Math;
+  System.Math, System.DateUtils;
 
 type
   TfrmContaPagar = class(TfrmBasicoCrudMasterDetail)
@@ -68,9 +68,7 @@ type
     Ac_Gerar_Parcelas: TAction;
     rgVinculos: TcxGroupBox;
     Label10: TLabel;
-    cbProjeto: TcxDBLookupComboBox;
     Label12: TLabel;
-    cbAtividade: TcxDBLookupComboBox;
     cxGrid2: TcxGrid;
     viewVinculos: TcxGridDBTableView;
     level1: TcxGridLevel;
@@ -89,6 +87,11 @@ type
     ColumnDeletarVinculo: TcxGridDBColumn;
     Ac_Excluir_Vinculo: TAction;
     EditVencimentoParcela: TcxDateEdit;
+    cbProjeto: TcxLookupComboBox;
+    cbAtividade: TcxLookupComboBox;
+    cbPesquisaFornecedor: TcxLookupComboBox;
+    cbPesquisaRubrica: TcxLookupComboBox;
+    cbPesquisaPlanoConta: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
@@ -108,11 +111,20 @@ type
     procedure pprBeforeAlterar; override;
     procedure pprValidarDados; override;
     procedure pprEfetuarPesquisa; override;
+    function fprHabilitarSalvar(): Boolean; override;
+    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+    function fprConfigurarControlesPesquisa: TWinControl; override;
   public
-    procedure ppuIncluir;override;
+    procedure ppuIncluir; override;
   public const
     coProjeto = 1;
     coAtividade = 2;
+
+    coPesquisaDescricao = 5;
+    coPesquisaFornecedor = 6;
+    coPesquisaRubrica = 7;
+    coPesquisaPlanoConta = 8;
+
 
   end;
 
@@ -134,13 +146,14 @@ begin
   TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Projeto,
     procedure
     begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_ProjetoID.AsInteger, coProjeto, dmFinanceiro.cdsConta_Pagar_ProjetoPROJETO.AsString);
+      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto, dmFinanceiro.cdsConta_Pagar_ProjetoPROJETO.AsString);
     end);
 
   TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Atividade,
     procedure
     begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_AtividadeID.AsInteger, coAtividade, dmFinanceiro.cdsConta_Pagar_AtividadeATIVIDADE.AsString);
+      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger, coAtividade,
+        dmFinanceiro.cdsConta_Pagar_AtividadeATIVIDADE.AsString);
     end);
 end;
 
@@ -178,25 +191,49 @@ begin
       begin
         if cdsLocalVinculoTIPO.AsInteger = coProjeto then
           begin
-            dmFinanceiro.cdsConta_Pagar_Projeto.Append;
-            dmFinanceiro.cdsConta_Pagar_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_PROJETO');
-            dmFinanceiro.cdsConta_Pagar_ProjetoID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
-            dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
-            dmFinanceiro.cdsConta_Pagar_Projeto.Post;
+            if not dmFinanceiro.cdsConta_Pagar_Projeto.Locate(dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.FieldName, cdsLocalVinculoID.AsInteger, [])
+            then
+              begin
+                dmFinanceiro.cdsConta_Pagar_Projeto.Append;
+                dmFinanceiro.cdsConta_Pagar_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_PROJETO');
+                dmFinanceiro.cdsConta_Pagar_ProjetoID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
+                dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
+                dmFinanceiro.cdsConta_Pagar_Projeto.Post;
+              end;
           end
         else
           begin
-            dmFinanceiro.cdsConta_Pagar_Atividade.Append;
-            dmFinanceiro.cdsConta_Pagar_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_ATIVIDADE');
-            dmFinanceiro.cdsConta_Pagar_AtividadeID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
-            dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
-            dmFinanceiro.cdsConta_Pagar_Atividade.Post;
+            if not dmFinanceiro.cdsConta_Pagar_Atividade.Locate(dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.FieldName,
+              cdsLocalVinculoID.AsInteger, [])
+            then
+              begin
+                dmFinanceiro.cdsConta_Pagar_Atividade.Append;
+                dmFinanceiro.cdsConta_Pagar_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_ATIVIDADE');
+                dmFinanceiro.cdsConta_Pagar_AtividadeID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
+                dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
+                dmFinanceiro.cdsConta_Pagar_Atividade.Post;
+              end;
           end;
       end);
   finally
     dmFinanceiro.cdsConta_Pagar_Projeto.EnableControls;
     dmFinanceiro.cdsConta_Pagar_Atividade.EnableControls;
   end;
+end;
+
+procedure TfrmContaPagar.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+begin
+  inherited;
+  if cbPesquisarPor.EditValue = coPesquisaDescricao then
+    ipCds.ppuAddParametro(TParametros.coDescricao, EditPesquisa.Text)
+  else if cbPesquisarPor.EditValue = coPesquisaFornecedor then
+    ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaFornecedor.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaRubrica then
+    ipCds.ppuAddParametro(TParametros.coRubrica, cbPesquisaRubrica.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaPlanoConta then
+    ipCds.ppuAddParametro(TParametros.coPlanoConta, cbPesquisaPlanoConta.EditValue)
+
+
 end;
 
 procedure TfrmContaPagar.pprEfetuarPesquisa;
@@ -229,7 +266,14 @@ var
   vaValorParcelado: Double;
 begin
   inherited;
-  if TryStrToFloat(dmFinanceiro.cdsConta_Pagar_ParcelaSUM_VALOR.AsString, vaValorParcelado) then
+  vaValorParcelado := 0;
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Parcela,
+    procedure
+    begin
+      vaValorParcelado := vaValorParcelado + dmFinanceiro.cdsConta_Pagar_ParcelaVALOR.AsFloat;
+    end);
+
+  if dmFinanceiro.cdsConta_Pagar_Parcela.RecordCount <> 0 then
     begin
       if not SameValue(vaValorParcelado, dmFinanceiro.cdsConta_PagarVALOR_TOTAL.AsFloat) then
         raise Exception.Create('O valor total está diferente do valor parcelado.');
@@ -275,6 +319,9 @@ begin
   if VarIsNull(EditQtdeParcelas.Value) then
     raise Exception.Create('Informe o valor total para que seja possível gerar as parcelas.');
 
+  if VarIsNull(EditVencimentoParcela.EditValue) then
+    raise Exception.Create('Informe o vencimento da primeira parcela.');
+
   dmFinanceiro.cdsConta_Pagar_Parcela.DisableControls;
   try
     dmFinanceiro.cdsConta_Pagar_Parcela.First;
@@ -315,7 +362,7 @@ begin
   inherited;
   if not VarIsNull(cbAtividade.EditValue) then
     begin
-      if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, cbAtividade.EditValue, []) then
+      if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, cbAtividade.EditValue, []) then
         begin
           ppvAddVinculo(cbAtividade.EditValue, coAtividade, cbAtividade.Text);
         end;
@@ -344,6 +391,7 @@ begin
       dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coProjeto, cbProjeto.EditValue);
       dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coStatusDiferente, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString,
         TOperadores.coOR);
+      dmLookup.cdslkAtividade.ppuDataRequest();
     end
   else
     dmLookup.cdslkAtividade.Close;
@@ -358,7 +406,11 @@ begin
   dmLookup.Name := '';
   inherited;
 
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := tppData;
+
+
+  EditDataInicialPesquisa.Date := Now;
+  EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
   dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
@@ -369,9 +421,30 @@ begin
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
 end;
 
+function TfrmContaPagar.fprConfigurarControlesPesquisa: TWinControl;
+begin
+  Result := inherited;
+  cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
+  cbPesquisaRubrica.Visible := cbPesquisarPor.EditValue = coPesquisaRubrica;
+  cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
+  EditPesquisa.Visible := EditPesquisa.Visible and (not (cbPesquisaFornecedor.Visible or cbPesquisaRubrica.Visible or cbPesquisaPlanoConta.Visible));
+
+  if cbPesquisaFornecedor.Visible then
+    Result := cbPesquisaFornecedor
+  else if cbPesquisaRubrica.Visible then
+    Result := cbPesquisaRubrica
+  else if cbPesquisaPlanoConta.Visible then
+    Result := cbPesquisaPlanoConta;
+end;
+
 function TfrmContaPagar.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finContaPagar));
+end;
+
+function TfrmContaPagar.fprHabilitarSalvar: Boolean;
+begin
+  Result := inherited or fprHabilitarSalvarDetail or (cdsLocalVinculo.Active and (cdsLocalVinculo.ChangeCount > 0));
 end;
 
 end.

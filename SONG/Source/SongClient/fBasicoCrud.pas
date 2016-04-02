@@ -159,7 +159,9 @@ procedure TfrmBasicoCrud.Ac_CancelarExecute(Sender: TObject);
 begin
   inherited;
   if fpuCancelar then
-    ppuRetornar(False);
+    ppuRetornar(False)
+  else  //salvou
+    ppuRetornar(True);
 end;
 
 procedure TfrmBasicoCrud.Ac_ExcluirExecute(Sender: TObject);

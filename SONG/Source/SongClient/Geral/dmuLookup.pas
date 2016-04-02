@@ -105,6 +105,8 @@ type
     repLcbFornecedor: TcxEditRepositoryLookupComboBoxItem;
     cdslkFornecedor: TRFClientDataSet;
     dslkFornecedor: TDataSource;
+    cdslkFornecedorID: TIntegerField;
+    cdslkFornecedorNOME: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

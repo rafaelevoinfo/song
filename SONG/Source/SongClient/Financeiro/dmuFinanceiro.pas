@@ -79,7 +79,6 @@ type
     cdsConta_Pagar_ParcelaVENCIMENTO: TDateField;
     cdsConta_Pagar_ParcelaVALOR: TBCDField;
     cdsConta_Pagar_ParcelaPARCELA: TSmallintField;
-    cdsConta_Pagar_ParcelaSUM_VALOR: TAggregateField;
     dsConta_Pagar: TDataSource;
   private
     { Private declarations }

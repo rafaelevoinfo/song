@@ -166,8 +166,8 @@ begin
       // vamos adicionar o where e remover o ultimo and
       if not TRegEx.IsMatch(ipWhere, 'where ', [roIgnoreCase]) then
         Result := ' where ' + ipWhere;
-      // remove o ultimo and
-      Result := TRegEx.Replace(Result, 'and\s*$', '', [roIgnoreCase, roMultiLine]);
+      // remove o ultimo AND ou OR
+      Result := TRegEx.Replace(Result, '((and)|(or))\s*$', '', [roIgnoreCase]);
     end;
 end;
 

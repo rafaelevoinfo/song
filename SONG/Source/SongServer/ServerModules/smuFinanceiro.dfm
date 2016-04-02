@@ -323,7 +323,7 @@ inherited smFinanceiro: TsmFinanceiro
   object qConta_Pagar: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Conta_Pagar.Id,'
+      'select DISTINCT Conta_Pagar.Id,'
       '       Conta_Pagar.Id_Fornecedor,'
       '       Conta_Pagar.Id_Rubrica,'
       '       Conta_Pagar.Id_Plano_Contas,'
@@ -350,6 +350,9 @@ inherited smFinanceiro: TsmFinanceiro
         'left join banco_conta_corrente on (banco_conta_corrente.id = con' +
         'ta_pagar.id_conta_corrente)'
       'left join banco on (banco.id = banco_conta_corrente.id_banco)'
+      
+        'LEFT JOIN CONTA_PAGAR_PARCELA ON (CONTA_PAGAR_PARCELA.ID_CONTA_P' +
+        'AGAR = CONTA_PAGAR.ID)'
       '&where')
     Left = 152
     Top = 168
@@ -500,9 +503,10 @@ inherited smFinanceiro: TsmFinanceiro
       '       Projeto.nome as Projeto'
       'from Conta_Pagar_Projeto'
       
-        'inner join projeto on (projeto.id = conta_pagar_projeto.id_conta' +
-        '_pagar)'
-      'WHERE Conta_Pagar_Projeto.id_conta_pagar = :id_conta_pagar')
+        'inner join projeto on (projeto.id = conta_pagar_projeto.Id_Proje' +
+        'to)'
+      'WHERE Conta_Pagar_Projeto.id_conta_pagar = :ID_CONTA_PAGAR'
+      '')
     Left = 264
     Top = 104
     ParamData = <

@@ -1,8 +1,9 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
+  ExplicitLeft = -58
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
@@ -14,7 +15,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -32,9 +33,9 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Align = alTop
         TabOrder = 0
         object pnEditsPesquisa: TPanel
-          Left = 420
+          Left = 432
           Top = 1
-          Width = 555
+          Width = 543
           Height = 42
           Align = alRight
           AutoSize = True
@@ -45,21 +46,22 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           ParentBackground = False
           ParentDoubleBuffered = False
           TabOrder = 1
+          ExplicitLeft = 433
           object Label1: TLabel
-            Left = 140
+            Left = 136
             Top = 4
             Width = 69
             Height = 13
             Caption = 'Pesquisar por:'
           end
           object pnData: TPanel
-            Left = 319
+            Left = 315
             Top = 0
             Width = 129
             Height = 41
             AutoSize = True
             BevelOuter = bvNone
-            TabOrder = 2
+            TabOrder = 0
             Visible = False
             object De: TLabel
               Left = 1
@@ -91,7 +93,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             end
           end
           object EditPesquisa: TcxButtonEdit
-            Left = 271
+            Left = 267
             Top = 20
             Properties.Buttons = <
               item
@@ -102,13 +104,13 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Properties.Images = dmPrincipal.imgIcons_16
             Properties.MaskKind = emkRegExprEx
             Properties.EditMask = '.*'
-            TabOrder = 1
+            TabOrder = 4
             TextHint = 'Digite aqui a sua pesquisa'
             OnKeyPress = EditPesquisaKeyPress
             Width = 177
           end
           object cbPesquisarPor: TcxImageComboBox
-            Left = 138
+            Left = 134
             Top = 20
             EditValue = 1
             Properties.ImmediatePost = True
@@ -124,17 +126,17 @@ inherited frmBasicoCrud: TfrmBasicoCrud
                 Value = 2
               end>
             Properties.OnEditValueChanged = cbPesquisarPorPropertiesEditValueChanged
-            TabOrder = 0
+            TabOrder = 3
             Width = 131
           end
           object btnPesquisar: TButton
-            Left = 455
-            Top = 3
+            Left = 443
+            Top = 5
             Width = 100
             Height = 36
             Action = Ac_Pesquisar
             Images = dmPrincipal.imgIcons_32
-            TabOrder = 3
+            TabOrder = 2
           end
           object rgStatus: TcxRadioGroup
             Left = 2
@@ -149,7 +151,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
                 Caption = 'Inativo'
               end>
             ItemIndex = 0
-            TabOrder = 4
+            TabOrder = 1
             Visible = False
             Height = 40
             Width = 131
@@ -158,11 +160,12 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         object pnBotoes: TPanel
           Left = 1
           Top = 1
-          Width = 419
+          Width = 431
           Height = 42
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 419
           object btnIncluir: TButton
             AlignWithMargins = True
             Left = 0
@@ -289,7 +292,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvar: TButton
           AlignWithMargins = True
           Left = 4
@@ -330,7 +333,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Width = 976
         Height = 398
         Align = alClient
-        TabOrder = 0
+        TabOrder = 1
       end
     end
   end
