@@ -80,6 +80,40 @@ type
     cdsConta_Pagar_ParcelaVALOR: TBCDField;
     cdsConta_Pagar_ParcelaPARCELA: TSmallintField;
     dsConta_Pagar: TDataSource;
+    cdsConta_Pagar_ParcelaSTATUS: TSmallintField;
+    cdsConta_Pagar_ParcelaDATA_PAGAMENTO: TDateField;
+    cdsConta_Receber: TRFClientDataSet;
+    cdsConta_ReceberID: TIntegerField;
+    cdsConta_ReceberID_CLIENTE_FINANCIADOR: TIntegerField;
+    cdsConta_ReceberID_PLANO_CONTAS: TIntegerField;
+    cdsConta_ReceberID_CONTA_CORRENTE: TIntegerField;
+    cdsConta_ReceberDESCRICAO: TStringField;
+    cdsConta_ReceberVALOR_TOTAL: TBCDField;
+    cdsConta_ReceberFORMA_PAGTO: TSmallintField;
+    cdsConta_ReceberOBSERVACAO: TStringField;
+    cdsConta_ReceberTIPO: TIntegerField;
+    cdsConta_ReceberNOME_FANTASIA: TStringField;
+    cdsConta_ReceberPLANO_CONTAS: TStringField;
+    cdsConta_ReceberCONTA_CORRENTE: TStringField;
+    cdsConta_Receber_Parcela: TRFClientDataSet;
+    cdsConta_Receber_ParcelaID: TIntegerField;
+    cdsConta_Receber_ParcelaID_CONTA_RECEBER: TIntegerField;
+    cdsConta_Receber_ParcelaVENCIMENTO: TDateField;
+    cdsConta_Receber_ParcelaVALOR: TBCDField;
+    cdsConta_Receber_ParcelaPARCELA: TSmallintField;
+    cdsConta_Receber_ParcelaSTATUS: TSmallintField;
+    cdsConta_Receber_ParcelaDATA_RECEBIMENTO: TDateField;
+    cdsConta_Receber_Atividade: TRFClientDataSet;
+    cdsConta_Receber_AtividadeID: TIntegerField;
+    cdsConta_Receber_AtividadeID_CONTA_RECEBER: TIntegerField;
+    cdsConta_Receber_AtividadeID_ATIVIDADE: TIntegerField;
+    cdsConta_Receber_AtividadeATIVIDADE: TStringField;
+    cdsConta_Receber_Projeto: TRFClientDataSet;
+    cdsConta_Receber_ProjetoID: TIntegerField;
+    cdsConta_Receber_ProjetoID_CONTA_RECEBER: TIntegerField;
+    cdsConta_Receber_ProjetoID_PROJETO: TIntegerField;
+    cdsConta_Receber_ProjetoPROJETO: TStringField;
+    dsConta_Receber: TDataSource;
   private
     { Private declarations }
   public

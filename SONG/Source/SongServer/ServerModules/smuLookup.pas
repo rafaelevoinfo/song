@@ -68,6 +68,9 @@ type
     qlkFornecedor: TRFQuery;
     qlkFornecedorID: TIntegerField;
     qlkFornecedorNOME: TStringField;
+    qlkFin_For_Cli: TRFQuery;
+    qlkFin_For_CliID: TIntegerField;
+    qlkFin_For_CliNOME: TStringField;
   private
     { Private declarations }
   protected
@@ -132,6 +135,13 @@ begin
             Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger(), vaOperador)
           else
             Result := Result + '((PLANO_CONTAS.Tipo = 0) OR (PLANO_CONTAS.Tipo is null)) ' + vaOperador;
+        end;
+    end
+  else if ipTabela = 'FIN_FOR_CLI' then
+    begin
+      if ipParam.Name = TParametros.coTipo then
+        begin
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
         end;
     end;
 

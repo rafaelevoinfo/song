@@ -1,12 +1,10 @@
-inherited frmContaPagar: TfrmContaPagar
-  ActiveControl = btnSalvar
-  Caption = 'Contas a Pagar'
+inherited frmContaReceber: TfrmContaReceber
+  Caption = 'Contas a Receber'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -25,7 +23,7 @@ inherited frmContaPagar: TfrmContaPagar
           inherited rgStatus: TcxRadioGroup [1]
             Left = 267
             Top = 27
-            TabOrder = 7
+            TabOrder = 6
             ExplicitLeft = 267
             ExplicitTop = 27
           end
@@ -35,6 +33,7 @@ inherited frmContaPagar: TfrmContaPagar
           end
           inherited EditPesquisa: TcxButtonEdit [3]
             Left = 132
+            TabOrder = 3
             ExplicitLeft = 132
           end
           inherited cbPesquisarPor: TcxImageComboBox [4]
@@ -55,16 +54,12 @@ inherited frmContaPagar: TfrmContaPagar
                 Value = 5
               end
               item
-                Description = 'Fornecedor'
+                Description = 'Cliente/Financiador'
                 Value = 6
               end
               item
-                Description = 'Rubrica'
-                Value = 7
-              end
-              item
                 Description = 'Plano de Contas'
-                Value = 8
+                Value = 7
               end
               item
                 Description = 'Data de Vencimento'
@@ -78,20 +73,12 @@ inherited frmContaPagar: TfrmContaPagar
             TabOrder = 1
             ExplicitLeft = 308
           end
-          object cbPesquisaFornecedor: TcxLookupComboBox
+          object cbPesquisaClienteFinanciador: TcxLookupComboBox
             Left = 133
             Top = 20
-            RepositoryItem = dmLookup.repLcbFornecedor
+            RepositoryItem = dmLookup.repLcbFinForCli
             Properties.ListColumns = <>
-            TabOrder = 6
-            Width = 176
-          end
-          object cbPesquisaRubrica: TcxLookupComboBox
-            Left = 132
-            Top = 20
-            RepositoryItem = dmLookup.repLcbRubrica
-            Properties.ListColumns = <>
-            TabOrder = 3
+            TabOrder = 4
             Width = 176
           end
           object cbPesquisaPlanoConta: TcxLookupComboBox
@@ -114,60 +101,50 @@ inherited frmContaPagar: TfrmContaPagar
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
-              Width = 40
+              Width = 43
             end
-            object viewRegistrosID_FORNECEDOR: TcxGridDBColumn [1]
-              DataBinding.FieldName = 'ID_FORNECEDOR'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosID_RUBRICA: TcxGridDBColumn [2]
-              DataBinding.FieldName = 'ID_RUBRICA'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn [3]
-              DataBinding.FieldName = 'ID_PLANO_CONTAS'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn [4]
-              DataBinding.FieldName = 'ID_CONTA_CORRENTE'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosDESCRICAO: TcxGridDBColumn [5]
+            object viewRegistrosDESCRICAO: TcxGridDBColumn [1]
               DataBinding.FieldName = 'DESCRICAO'
               Options.Editing = False
-              Width = 218
+              Width = 180
             end
-            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [6]
+            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [2]
               DataBinding.FieldName = 'VALOR_TOTAL'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosFORMA_PAGTO: TcxGridDBColumn [7]
+            object viewRegistrosFORMA_PAGTO: TcxGridDBColumn [3]
               DataBinding.FieldName = 'FORMA_PAGTO'
               RepositoryItem = dmLookup.repIcbFormaPagamento
               Options.Editing = False
               Width = 107
             end
-            object viewRegistrosFORNECEDOR: TcxGridDBColumn [8]
-              DataBinding.FieldName = 'FORNECEDOR'
+            object viewRegistrosNOME_FANTASIA: TcxGridDBColumn [4]
+              DataBinding.FieldName = 'NOME_FANTASIA'
               Options.Editing = False
-              Width = 140
+              Width = 150
             end
-            object viewRegistrosRUBRICA: TcxGridDBColumn [9]
-              DataBinding.FieldName = 'RUBRICA'
-              Options.Editing = False
-              Width = 100
-            end
-            object viewRegistrosPLANO_CONTAS: TcxGridDBColumn [10]
+            object viewRegistrosPLANO_CONTAS: TcxGridDBColumn [5]
               DataBinding.FieldName = 'PLANO_CONTAS'
               Options.Editing = False
-              Width = 100
+              Width = 150
             end
-            object viewRegistrosCONTA_CORRENTE: TcxGridDBColumn [11]
+            object viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'ID_PLANO_CONTAS'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn [7]
+              DataBinding.FieldName = 'ID_CONTA_CORRENTE'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosID_CLIENTE_FINANCIADOR: TcxGridDBColumn [8]
+              DataBinding.FieldName = 'ID_CLIENTE_FINANCIADOR'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosCONTA_CORRENTE: TcxGridDBColumn [9]
               DataBinding.FieldName = 'CONTA_CORRENTE'
               Visible = False
               Options.Editing = False
@@ -191,12 +168,12 @@ inherited frmContaPagar: TfrmContaPagar
                   TabOrder = 2
                   ExplicitLeft = 183
                 end
-                object btnQuitarReabrir: TButton
+                object btnBaixarReabrir: TButton
                   Left = 82
                   Top = 1
                   Width = 101
                   Height = 23
-                  Action = Ac_Quitar_Reabrir
+                  Action = Ac_Baixar_Reabrir
                   Align = alLeft
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 1
@@ -225,15 +202,15 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object viewRegistrosDetailSTATUS: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'STATUS'
-                    RepositoryItem = dmLookup.repIcbStatusContaPagar
+                    RepositoryItem = dmLookup.repIcbStatusContaReceber
                     Options.Editing = False
                     Width = 92
                   end
-                  object viewRegistrosDetailDATA_PAGAMENTO: TcxGridDBColumn [5]
-                    DataBinding.FieldName = 'DATA_PAGAMENTO'
+                  object viewRegistrosDetailDATA_RECEBIMENTO: TcxGridDBColumn [5]
+                    DataBinding.FieldName = 'DATA_RECEBIMENTO'
                     RepositoryItem = dmLookup.repDateDataPadrao
                     Options.Editing = False
-                    Width = 110
+                    Width = 108
                   end
                   inherited ColumnAlterarDetail: TcxGridDBColumn
                     Visible = False
@@ -260,6 +237,7 @@ inherited frmContaPagar: TfrmContaPagar
       end
       inherited pnEditsCadastro: TPanel
         TabOrder = 0
+        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -287,21 +265,13 @@ inherited frmContaPagar: TfrmContaPagar
         object Label4: TLabel
           Left = 213
           Top = 2
-          Width = 55
+          Width = 92
           Height = 13
-          Caption = 'Fornecedor'
-          FocusControl = cbFornecedor
-        end
-        object lbl1: TLabel
-          Left = 434
-          Top = 2
-          Width = 36
-          Height = 13
-          Caption = 'Rubrica'
-          FocusControl = cbRubrica
+          Caption = 'Cliente/Financiador'
+          FocusControl = cbClienteFinanciador
         end
         object Label5: TLabel
-          Left = 656
+          Left = 433
           Top = 2
           Width = 78
           Height = 13
@@ -322,7 +292,7 @@ inherited frmContaPagar: TfrmContaPagar
           Width = 102
           Height = 13
           Caption = 'Forma de Pagamento'
-          FocusControl = cbFornecedor
+          FocusControl = cbClienteFinanciador
         end
         object EditDescricao: TcxDBTextEdit
           Left = 4
@@ -337,7 +307,7 @@ inherited frmContaPagar: TfrmContaPagar
           Top = 275
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 9
+          TabOrder = 8
           Height = 89
           Width = 965
         end
@@ -348,38 +318,28 @@ inherited frmContaPagar: TfrmContaPagar
           DataBinding.DataField = 'ID_CONTA_CORRENTE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 4
+          TabOrder = 3
           Width = 205
         end
-        object cbFornecedor: TcxDBLookupComboBox
+        object cbClienteFinanciador: TcxDBLookupComboBox
           Left = 211
           Top = 18
-          RepositoryItem = dmLookup.repLcbFornecedor
-          DataBinding.DataField = 'ID_FORNECEDOR'
+          RepositoryItem = dmLookup.repLcbFinForCli
+          DataBinding.DataField = 'ID_CLIENTE_FINANCIADOR'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 1
           Width = 220
         end
-        object cbRubrica: TcxDBLookupComboBox
-          Left = 433
-          Top = 18
-          RepositoryItem = dmLookup.repLcbRubrica
-          DataBinding.DataField = 'ID_RUBRICA'
-          DataBinding.DataSource = dsMaster
-          Properties.ListColumns = <>
-          TabOrder = 2
-          Width = 220
-        end
         object cbPlanoContas: TcxDBLookupComboBox
-          Left = 655
+          Left = 432
           Top = 18
           RepositoryItem = dmLookup.repLcbPlano_Contas
           DataBinding.DataField = 'ID_PLANO_CONTAS'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 3
-          Width = 314
+          TabOrder = 2
+          Width = 221
         end
         object cbFormaPagamento: TcxDBImageComboBox
           Left = 211
@@ -388,7 +348,7 @@ inherited frmContaPagar: TfrmContaPagar
           DataBinding.DataField = 'FORMA_PAGTO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 5
+          TabOrder = 4
           Width = 220
         end
         object EditValorTotal: TcxDBCurrencyEdit
@@ -397,14 +357,14 @@ inherited frmContaPagar: TfrmContaPagar
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_TOTAL'
           DataBinding.DataSource = dsMaster
-          TabOrder = 6
+          TabOrder = 5
           Width = 220
         end
         object rgParcelas: TcxGroupBox
           Left = 4
           Top = 85
           Caption = 'Parcelas'
-          TabOrder = 7
+          TabOrder = 6
           Height = 172
           Width = 427
           object Label9: TLabel
@@ -499,7 +459,7 @@ inherited frmContaPagar: TfrmContaPagar
           Left = 434
           Top = 85
           Caption = 'V'#237'nculos'
-          TabOrder = 8
+          TabOrder = 7
           Height = 172
           Width = 535
           object Label10: TLabel
@@ -658,21 +618,21 @@ inherited frmContaPagar: TfrmContaPagar
       ImageIndex = 2
       OnExecute = Ac_Excluir_VinculoExecute
     end
-    object Ac_Quitar_Reabrir: TAction
+    object Ac_Baixar_Reabrir: TAction
       Category = 'Detail'
-      Caption = 'Quitar Parcela'
+      Caption = 'Baixar Parcela'
       ImageIndex = 8
-      OnExecute = Ac_Quitar_ReabrirExecute
-      OnUpdate = Ac_Quitar_ReabrirUpdate
+      OnExecute = Ac_Baixar_ReabrirExecute
+      OnUpdate = Ac_Baixar_ReabrirUpdate
     end
   end
   inherited dsMaster: TDataSource
-    DataSet = dmFinanceiro.cdsConta_Pagar
+    DataSet = dmFinanceiro.cdsConta_Receber
     Left = 248
     Top = 136
   end
   inherited dsDetail: TDataSource
-    DataSet = dmFinanceiro.cdsConta_Pagar_Parcela
+    DataSet = dmFinanceiro.cdsConta_Receber_Parcela
     Left = 288
     Top = 408
   end

@@ -39,7 +39,8 @@ uses
   fLote_Muda in 'Viveiro\fLote_Muda.pas' {frmLoteMuda},
   fPlano_Contas in 'Financeiro\fPlano_Contas.pas' {frmPlanoContas},
   fRubrica in 'Financeiro\fRubrica.pas' {frmRubrica},
-  fConta_Pagar in 'Financeiro\fConta_Pagar.pas' {frmContaPagar};
+  fConta_Pagar in 'Financeiro\fConta_Pagar.pas' {frmContaPagar},
+  fConta_Receber in 'Financeiro\fConta_Receber.pas' {frmContaReceber};
 
 {$R Localization.RES}
   {$R *.res}

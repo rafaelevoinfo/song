@@ -82,6 +82,39 @@ type
     qConta_PagarRUBRICA: TStringField;
     qConta_PagarPLANO_CONTAS: TStringField;
     qConta_PagarCONTA_CORRENTE: TStringField;
+    qConta_Pagar_ParcelaSTATUS: TSmallintField;
+    qConta_Pagar_ParcelaDATA_PAGAMENTO: TDateField;
+    qConta_Receber: TRFQuery;
+    qConta_ReceberID: TIntegerField;
+    qConta_ReceberID_CLIENTE_FINANCIADOR: TIntegerField;
+    qConta_ReceberID_PLANO_CONTAS: TIntegerField;
+    qConta_ReceberID_CONTA_CORRENTE: TIntegerField;
+    qConta_ReceberDESCRICAO: TStringField;
+    qConta_ReceberVALOR_TOTAL: TBCDField;
+    qConta_ReceberFORMA_PAGTO: TSmallintField;
+    qConta_ReceberOBSERVACAO: TStringField;
+    qConta_Receber_Projeto: TRFQuery;
+    qConta_Receber_ProjetoID: TIntegerField;
+    qConta_Receber_ProjetoID_CONTA_RECEBER: TIntegerField;
+    qConta_Receber_ProjetoID_PROJETO: TIntegerField;
+    qConta_Receber_Atividade: TRFQuery;
+    qConta_Receber_Parcela: TRFQuery;
+    qConta_Receber_ParcelaID: TIntegerField;
+    qConta_Receber_ParcelaID_CONTA_RECEBER: TIntegerField;
+    qConta_Receber_ParcelaVENCIMENTO: TDateField;
+    qConta_Receber_ParcelaVALOR: TBCDField;
+    qConta_Receber_ParcelaPARCELA: TSmallintField;
+    qConta_Receber_ParcelaSTATUS: TSmallintField;
+    qConta_Receber_ParcelaDATA_RECEBIMENTO: TDateField;
+    qConta_ReceberTIPO: TIntegerField;
+    qConta_ReceberNOME_FANTASIA: TStringField;
+    qConta_ReceberPLANO_CONTAS: TStringField;
+    qConta_ReceberCONTA_CORRENTE: TStringField;
+    qConta_Receber_AtividadeID: TIntegerField;
+    qConta_Receber_AtividadeID_CONTA_RECEBER: TIntegerField;
+    qConta_Receber_AtividadeID_ATIVIDADE: TIntegerField;
+    qConta_Receber_AtividadeATIVIDADE: TStringField;
+    qConta_Receber_ProjetoPROJETO: TStringField;
   private
     { Private declarations }
   protected
@@ -137,11 +170,11 @@ begin
           Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
         end;
     end
-  else if ipTabela = 'CONTA_PAGAR' then
+  else if (ipTabela = 'CONTA_PAGAR') OR (ipTabela = 'CONTA_RECEBER') then
     begin
       if ipParam.Name = TParametros.coData then
         begin
-          Result := Result + ' (CONTA_PAGAR_PARCELA.VENCIMENTO between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
+          Result := Result + ' ('+ipTabela+'_PARCELA.VENCIMENTO between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
             ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
         end
       else if ipParam.Name = TParametros.coDescricao then
@@ -151,6 +184,10 @@ begin
       else if ipParam.Name = TParametros.coFornecedor then
         begin
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador)
+        end
+      else if ipParam.Name = TParametros.coClienteFinanciador then
+        begin
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_CLIENTE_FINANCIADOR', vaValor.ToInteger, vaOperador)
         end
       else if ipParam.Name = TParametros.coRubrica then
         begin

@@ -81,7 +81,7 @@ type
   end;
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
-  TPermissaoFinanceiro = (finBanco, finFinanciador,finFornecedor, finPlanoConta, finRubrica,finContaPagar);
+  TPermissaoFinanceiro = (finBanco, finFinanciador,finFornecedor, finPlanoConta, finRubrica,finContaPagar,finContaReceber);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro,vivLoteMuda);
 
 implementation
@@ -131,6 +131,7 @@ begin
   vaPermissoes := TList<TPermissao>.Create;
   plAddFinanceiro(finBanco, 'Bancos');
   plAddFinanceiro(finContaPagar, 'Contas a Pagar');
+  plAddFinanceiro(finContaReceber, 'Contas a Receber');
   plAddFinanceiro(finFinanciador, 'Financiadores');
   plAddFinanceiro(finFinanciador, 'Fornecedores');
   plAddFinanceiro(finRubrica, 'Rubricas');

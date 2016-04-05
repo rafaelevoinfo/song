@@ -480,4 +480,30 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkFin_For_Cli: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select FIN_FOR_CLI.ID,'
+      '       FIN_FOR_CLI.NOME_FANTASIA as NOME'
+      'from FIN_FOR_CLI'
+      '&where')
+    Left = 328
+    Top = 216
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkFin_For_CliID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkFin_For_CliNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

@@ -349,6 +349,47 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkFornecedor
     end
+    object repIcbStatusContaPagar: TcxEditRepositoryImageComboBoxItem
+      Properties.Items = <
+        item
+          Description = 'Em Aberto'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Quitada'
+          Value = 1
+        end>
+    end
+    object repIcbStatusContaReceber: TcxEditRepositoryImageComboBoxItem
+      Properties.Items = <
+        item
+          Description = 'Em Aberto'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Recebida'
+          Value = 1
+        end>
+    end
+    object repDateDataPadrao: TcxEditRepositoryDateItem
+      Properties.ClearKey = 46
+      Properties.DateButtons = [btnToday]
+      Properties.SaveTime = False
+      Properties.ShowTime = False
+    end
+    object repLcbFinForCli: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkFin_For_Cli
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -800,5 +841,26 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkFornecedor
     Left = 896
     Top = 400
+  end
+  object cdslkFin_For_Cli: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkFin_For_Cli'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 480
+    Top = 400
+    object cdslkFin_For_CliID: TIntegerField
+      FieldName = 'ID'
+    end
+    object cdslkFin_For_CliNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Size = 100
+    end
+  end
+  object dslkFin_For_Cli: TDataSource
+    DataSet = cdslkFin_For_Cli
+    Left = 488
+    Top = 208
   end
 end

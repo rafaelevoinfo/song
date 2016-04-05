@@ -107,6 +107,14 @@ type
     dslkFornecedor: TDataSource;
     cdslkFornecedorID: TIntegerField;
     cdslkFornecedorNOME: TStringField;
+    repIcbStatusContaPagar: TcxEditRepositoryImageComboBoxItem;
+    repIcbStatusContaReceber: TcxEditRepositoryImageComboBoxItem;
+    repDateDataPadrao: TcxEditRepositoryDateItem;
+    cdslkFin_For_Cli: TRFClientDataSet;
+    cdslkFin_For_CliID: TIntegerField;
+    cdslkFin_For_CliNOME: TStringField;
+    repLcbFinForCli: TcxEditRepositoryLookupComboBoxItem;
+    dslkFin_For_Cli: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

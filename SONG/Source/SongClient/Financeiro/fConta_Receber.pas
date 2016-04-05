@@ -1,4 +1,4 @@
-unit fConta_Pagar;
+unit fConta_Receber;
 
 interface
 
@@ -19,19 +19,7 @@ uses
   System.Math, System.DateUtils;
 
 type
-  TfrmContaPagar = class(TfrmBasicoCrudMasterDetail)
-    viewRegistrosID: TcxGridDBColumn;
-    viewRegistrosID_FORNECEDOR: TcxGridDBColumn;
-    viewRegistrosID_RUBRICA: TcxGridDBColumn;
-    viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn;
-    viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn;
-    viewRegistrosDESCRICAO: TcxGridDBColumn;
-    viewRegistrosVALOR_TOTAL: TcxGridDBColumn;
-    viewRegistrosFORMA_PAGTO: TcxGridDBColumn;
-    viewRegistrosFORNECEDOR: TcxGridDBColumn;
-    viewRegistrosRUBRICA: TcxGridDBColumn;
-    viewRegistrosPLANO_CONTAS: TcxGridDBColumn;
-    viewRegistrosCONTA_CORRENTE: TcxGridDBColumn;
+  TfrmContaReceber = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailVENCIMENTO: TcxGridDBColumn;
     viewRegistrosDetailVALOR: TcxGridDBColumn;
@@ -43,9 +31,7 @@ type
     Label17: TLabel;
     cbContaCorrente: TcxDBLookupComboBox;
     Label4: TLabel;
-    cbFornecedor: TcxDBLookupComboBox;
-    cbRubrica: TcxDBLookupComboBox;
-    lbl1: TLabel;
+    cbClienteFinanciador: TcxDBLookupComboBox;
     cbPlanoContas: TcxDBLookupComboBox;
     Label5: TLabel;
     Label8: TLabel;
@@ -89,21 +75,30 @@ type
     EditVencimentoParcela: TcxDateEdit;
     cbProjeto: TcxLookupComboBox;
     cbAtividade: TcxLookupComboBox;
-    cbPesquisaFornecedor: TcxLookupComboBox;
-    cbPesquisaRubrica: TcxLookupComboBox;
+    cbPesquisaClienteFinanciador: TcxLookupComboBox;
     cbPesquisaPlanoConta: TcxLookupComboBox;
-    btnQuitarReabrir: TButton;
-    Ac_Quitar_Reabrir: TAction;
+    btnBaixarReabrir: TButton;
+    Ac_Baixar_Reabrir: TAction;
     viewRegistrosDetailSTATUS: TcxGridDBColumn;
-    viewRegistrosDetailDATA_PAGAMENTO: TcxGridDBColumn;
+    viewRegistrosID: TcxGridDBColumn;
+    viewRegistrosID_CLIENTE_FINANCIADOR: TcxGridDBColumn;
+    viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn;
+    viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn;
+    viewRegistrosDESCRICAO: TcxGridDBColumn;
+    viewRegistrosVALOR_TOTAL: TcxGridDBColumn;
+    viewRegistrosFORMA_PAGTO: TcxGridDBColumn;
+    viewRegistrosNOME_FANTASIA: TcxGridDBColumn;
+    viewRegistrosPLANO_CONTAS: TcxGridDBColumn;
+    viewRegistrosCONTA_CORRENTE: TcxGridDBColumn;
+    viewRegistrosDetailDATA_RECEBIMENTO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
     procedure Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
     procedure Ac_Excluir_VinculoExecute(Sender: TObject);
-    procedure Ac_Quitar_ReabrirUpdate(Sender: TObject);
-    procedure Ac_Quitar_ReabrirExecute(Sender: TObject);
+    procedure Ac_Baixar_ReabrirUpdate(Sender: TObject);
+    procedure Ac_Baixar_ReabrirExecute(Sender: TObject);
     procedure viewRegistrosDetailCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
@@ -113,14 +108,14 @@ type
     procedure ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string);
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
       ipValor: Double);
-    procedure ppvQuitarParcela;
+    procedure ppvBaixarParcela;
     procedure ppvReabrirParcela;
   protected
     function fprGetPermissao: string; override;
     procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar; override;
     procedure pprBeforeAlterar; override;
-    procedure pprBeforeIncluir;override;
+     procedure pprBeforeIncluir; override;
     procedure pprValidarDados; override;
     procedure pprEfetuarPesquisa; override;
     function fprHabilitarSalvar(): Boolean; override;
@@ -133,14 +128,13 @@ type
     coAtividade = 2;
 
     coPesquisaDescricao = 5;
-    coPesquisaFornecedor = 6;
-    coPesquisaRubrica = 7;
-    coPesquisaPlanoConta = 8;
+    coPesquisaClienteFinanciador = 6;
+    coPesquisaPlanoConta = 7;
 
   end;
 
 var
-  frmContaPagar: TfrmContaPagar;
+  frmContaReceber: TfrmContaReceber;
 
 implementation
 
@@ -148,7 +142,7 @@ implementation
 
 { TfrmContaPagar }
 
-procedure TfrmContaPagar.pprBeforeAlterar;
+procedure TfrmContaReceber.pprBeforeAlterar;
 begin
   inherited;
   EditQtdeParcelas.Value := 1;
@@ -157,57 +151,56 @@ begin
   if cdsLocalVinculo.Active then
     cdsLocalVinculo.EmptyDataSet;
 
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Projeto,
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Projeto,
     procedure
     begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto, dmFinanceiro.cdsConta_Pagar_ProjetoPROJETO.AsString);
+      ppvAddVinculo(dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.AsInteger, coProjeto, dmFinanceiro.cdsConta_Receber_ProjetoPROJETO.AsString);
     end);
 
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Atividade,
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Atividade,
     procedure
     begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger, coAtividade,
-        dmFinanceiro.cdsConta_Pagar_AtividadeATIVIDADE.AsString);
+      ppvAddVinculo(dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.AsInteger, coAtividade,
+        dmFinanceiro.cdsConta_Receber_AtividadeATIVIDADE.AsString);
     end);
 end;
 
-procedure TfrmContaPagar.pprBeforeIncluir;
+procedure TfrmContaReceber.pprBeforeIncluir;
 begin
   inherited;
-  EditQtdeParcelas.Value := 1;
-  EditVencimentoParcela.Clear;
-
   if cdsLocalVinculo.Active then
     cdsLocalVinculo.EmptyDataSet;
+
+  EditQtdeParcelas.Value := 1;
 end;
 
-procedure TfrmContaPagar.pprBeforeSalvar;
+procedure TfrmContaReceber.pprBeforeSalvar;
 begin
   inherited;
-  dmFinanceiro.cdsConta_Pagar_Projeto.DisableControls;
-  dmFinanceiro.cdsConta_Pagar_Atividade.DisableControls;
+  dmFinanceiro.cdsConta_Receber_Projeto.DisableControls;
+  dmFinanceiro.cdsConta_Receber_Atividade.DisableControls;
   try
     // vamos remover os registros nao existem mais
-    dmFinanceiro.cdsConta_Pagar_Projeto.First;
-    while not dmFinanceiro.cdsConta_Pagar_Projeto.Eof do
+    dmFinanceiro.cdsConta_Receber_Projeto.First;
+    while not dmFinanceiro.cdsConta_Receber_Projeto.Eof do
       begin
         if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO',
-          VarArrayOf([dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto]), []) then
-          dmFinanceiro.cdsConta_Pagar_Projeto.Next
+          VarArrayOf([dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.AsInteger, coProjeto]), []) then
+          dmFinanceiro.cdsConta_Receber_Projeto.Next
         else
-          dmFinanceiro.cdsConta_Pagar_Projeto.Delete;
+          dmFinanceiro.cdsConta_Receber_Projeto.Delete;
       end;
 
     // vamos remover os registros nao existem mais
-    dmFinanceiro.cdsConta_Pagar_Atividade.First;
-    while not dmFinanceiro.cdsConta_Pagar_Atividade.Eof do
+    dmFinanceiro.cdsConta_Receber_Atividade.First;
+    while not dmFinanceiro.cdsConta_Receber_Atividade.Eof do
       begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO', VarArrayOf([dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger,
+        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO', VarArrayOf([dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.AsInteger,
           coAtividade]), [])
         then
-          dmFinanceiro.cdsConta_Pagar_Atividade.Next
+          dmFinanceiro.cdsConta_Receber_Atividade.Next
         else
-          dmFinanceiro.cdsConta_Pagar_Atividade.Delete;
+          dmFinanceiro.cdsConta_Receber_Atividade.Delete;
       end;
 
     TUtils.ppuPercorrerCds(cdsLocalVinculo,
@@ -215,103 +208,101 @@ begin
       begin
         if cdsLocalVinculoTIPO.AsInteger = coProjeto then
           begin
-            if not dmFinanceiro.cdsConta_Pagar_Projeto.Locate(dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.FieldName, cdsLocalVinculoID.AsInteger, [])
+            if not dmFinanceiro.cdsConta_Receber_Projeto.Locate(dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.FieldName, cdsLocalVinculoID.AsInteger, [])
             then
               begin
-                dmFinanceiro.cdsConta_Pagar_Projeto.Append;
-                dmFinanceiro.cdsConta_Pagar_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_PROJETO');
-                dmFinanceiro.cdsConta_Pagar_ProjetoID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_Projeto.Post;
+                dmFinanceiro.cdsConta_Receber_Projeto.Append;
+                dmFinanceiro.cdsConta_Receber_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_PROJETO');
+                dmFinanceiro.cdsConta_Receber_ProjetoID_CONTA_RECEBER.AsInteger := dmFinanceiro.cdsConta_ReceberID.AsInteger;
+                dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
+                dmFinanceiro.cdsConta_Receber_Projeto.Post;
               end;
           end
         else
           begin
-            if not dmFinanceiro.cdsConta_Pagar_Atividade.Locate(dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.FieldName,
+            if not dmFinanceiro.cdsConta_Receber_Atividade.Locate(dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.FieldName,
               cdsLocalVinculoID.AsInteger, [])
             then
               begin
-                dmFinanceiro.cdsConta_Pagar_Atividade.Append;
-                dmFinanceiro.cdsConta_Pagar_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_ATIVIDADE');
-                dmFinanceiro.cdsConta_Pagar_AtividadeID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_Atividade.Post;
+                dmFinanceiro.cdsConta_Receber_Atividade.Append;
+                dmFinanceiro.cdsConta_Receber_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_ATIVIDADE');
+                dmFinanceiro.cdsConta_Receber_AtividadeID_CONTA_RECEBER.AsInteger := dmFinanceiro.cdsConta_ReceberID.AsInteger;
+                dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
+                dmFinanceiro.cdsConta_Receber_Atividade.Post;
               end;
           end;
       end);
   finally
-    dmFinanceiro.cdsConta_Pagar_Projeto.EnableControls;
-    dmFinanceiro.cdsConta_Pagar_Atividade.EnableControls;
+    dmFinanceiro.cdsConta_Receber_Projeto.EnableControls;
+    dmFinanceiro.cdsConta_Receber_Atividade.EnableControls;
   end;
 end;
 
-procedure TfrmContaPagar.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+procedure TfrmContaReceber.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
   if cbPesquisarPor.EditValue = coPesquisaDescricao then
     ipCds.ppuAddParametro(TParametros.coDescricao, EditPesquisa.Text)
-  else if cbPesquisarPor.EditValue = coPesquisaFornecedor then
-    ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaFornecedor.EditValue)
-  else if cbPesquisarPor.EditValue = coPesquisaRubrica then
-    ipCds.ppuAddParametro(TParametros.coRubrica, cbPesquisaRubrica.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaClienteFinanciador then
+    ipCds.ppuAddParametro(TParametros.coClienteFinanciador, cbPesquisaClienteFinanciador.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaPlanoConta then
     ipCds.ppuAddParametro(TParametros.coPlanoConta, cbPesquisaPlanoConta.EditValue)
 
 end;
 
-procedure TfrmContaPagar.pprEfetuarPesquisa;
+procedure TfrmContaReceber.pprEfetuarPesquisa;
 begin
-  dmFinanceiro.cdsConta_Pagar_Projeto.Close;
-  dmFinanceiro.cdsConta_Pagar_Atividade.Close;
+  dmFinanceiro.cdsConta_Receber_Projeto.Close;
+  dmFinanceiro.cdsConta_Receber_Atividade.Close;
   inherited;
-  dmFinanceiro.cdsConta_Pagar_Projeto.Open;
-  dmFinanceiro.cdsConta_Pagar_Atividade.Open;
+  dmFinanceiro.cdsConta_Receber_Projeto.Open;
+  dmFinanceiro.cdsConta_Receber_Atividade.Open;
 end;
 
-procedure TfrmContaPagar.pprExecutarSalvar;
+procedure TfrmContaReceber.pprExecutarSalvar;
 begin
   inherited;
-  if dmFinanceiro.cdsConta_Pagar.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber.ApplyUpdates(0);
 
-  if dmFinanceiro.cdsConta_Pagar_Parcela.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Parcela.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber_Parcela.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber_Parcela.ApplyUpdates(0);
 
-  if dmFinanceiro.cdsConta_Pagar_Projeto.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Projeto.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber_Projeto.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber_Projeto.ApplyUpdates(0);
 
-  if dmFinanceiro.cdsConta_Pagar_Atividade.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Atividade.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber_Atividade.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber_Atividade.ApplyUpdates(0);
 end;
 
-procedure TfrmContaPagar.pprValidarDados;
+procedure TfrmContaReceber.pprValidarDados;
 var
   vaValorParcelado: Double;
 begin
   inherited;
   vaValorParcelado := 0;
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Parcela,
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Parcela,
     procedure
     begin
-      vaValorParcelado := vaValorParcelado + dmFinanceiro.cdsConta_Pagar_ParcelaVALOR.AsFloat;
+      vaValorParcelado := vaValorParcelado + dmFinanceiro.cdsConta_Receber_ParcelaVALOR.AsFloat;
     end);
 
-  if dmFinanceiro.cdsConta_Pagar_Parcela.RecordCount <> 0 then
+  if dmFinanceiro.cdsConta_Receber_Parcela.RecordCount <> 0 then
     begin
-      if not SameValue(vaValorParcelado, dmFinanceiro.cdsConta_PagarVALOR_TOTAL.AsFloat) then
+      if not SameValue(vaValorParcelado, dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.AsFloat) then
         raise Exception.Create('O valor total está diferente do valor parcelado.');
     end
   else
     raise Exception.Create('É necessário gerar pelo menos uma parcela.');
 end;
 
-procedure TfrmContaPagar.ppuIncluir;
+procedure TfrmContaReceber.ppuIncluir;
 begin
   inherited;
-  dmFinanceiro.cdsConta_PagarID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR');
+  dmFinanceiro.cdsConta_ReceberID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER');
 end;
 
-procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string);
+procedure TfrmContaReceber.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string);
 begin
   if not cdsLocalVinculo.Active then
     cdsLocalVinculo.CreateDataSet;
@@ -323,20 +314,20 @@ begin
   cdsLocalVinculo.Post;
 end;
 
-procedure TfrmContaPagar.Ac_Excluir_VinculoExecute(Sender: TObject);
+procedure TfrmContaReceber.Ac_Excluir_VinculoExecute(Sender: TObject);
 begin
   inherited;
   cdsLocalVinculo.Delete;
 end;
 
-procedure TfrmContaPagar.Ac_Gerar_ParcelasExecute(Sender: TObject);
+procedure TfrmContaReceber.Ac_Gerar_ParcelasExecute(Sender: TObject);
 var
   vaValorParcela: Double;
   vaValorParcelado: Double;
   I: Integer;
 begin
   inherited;
-  if dmFinanceiro.cdsConta_PagarVALOR_TOTAL.IsNull then
+  if dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.IsNull then
     raise Exception.Create('Informe o valor total para que seja possível gerar as parcelas.');
 
   if VarIsNull(EditQtdeParcelas.Value) then
@@ -345,42 +336,42 @@ begin
   if VarIsNull(EditVencimentoParcela.EditValue) then
     raise Exception.Create('Informe o vencimento da primeira parcela.');
 
-  dmFinanceiro.cdsConta_Pagar_Parcela.DisableControls;
+  dmFinanceiro.cdsConta_Receber_Parcela.DisableControls;
   try
-    dmFinanceiro.cdsConta_Pagar_Parcela.First;
-    while not dmFinanceiro.cdsConta_Pagar_Parcela.Eof do
-      dmFinanceiro.cdsConta_Pagar_Parcela.Delete;
+    dmFinanceiro.cdsConta_Receber_Parcela.First;
+    while not dmFinanceiro.cdsConta_Receber_Parcela.Eof do
+      dmFinanceiro.cdsConta_Receber_Parcela.Delete;
 
-    vaValorParcela := dmFinanceiro.cdsConta_PagarVALOR_TOTAL.AsFloat / EditQtdeParcelas.Value;
+    vaValorParcela := dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.AsFloat / EditQtdeParcelas.Value;
     vaValorParcelado := 0;
     for I := 1 to EditQtdeParcelas.Value do
       begin
         vaValorParcela := RoundTo(vaValorParcela, -2); // arredonda para 2 casas
 
         if I = EditQtdeParcelas.Value then
-          vaValorParcela := dmFinanceiro.cdsConta_PagarVALOR_TOTAL.AsFloat - vaValorParcelado
+          vaValorParcela := dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.AsFloat - vaValorParcelado
         else
           vaValorParcelado := vaValorParcelado + vaValorParcela;
 
         ppvAdicionarParcela(I, IncMonth(EditVencimentoParcela.Date, I - 1), vaValorParcela);
       end;
   finally
-    dmFinanceiro.cdsConta_Pagar_Parcela.EnableControls;
+    dmFinanceiro.cdsConta_Receber_Parcela.EnableControls;
   end;
 
 end;
 
-procedure TfrmContaPagar.ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate; ipValor: Double);
+procedure TfrmContaReceber.ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate; ipValor: Double);
 begin
-  dmFinanceiro.cdsConta_Pagar_Parcela.Append;
-  dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_PARCELA');
-  dmFinanceiro.cdsConta_Pagar_ParcelaVENCIMENTO.AsDateTime := ipVencimento;
-  dmFinanceiro.cdsConta_Pagar_ParcelaPARCELA.AsInteger := ipParcela;
-  dmFinanceiro.cdsConta_Pagar_ParcelaVALOR.AsFloat := ipValor;
-  dmFinanceiro.cdsConta_Pagar_Parcela.Post;
+  dmFinanceiro.cdsConta_Receber_Parcela.Append;
+  dmFinanceiro.cdsConta_Receber_ParcelaID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_PARCELA');
+  dmFinanceiro.cdsConta_Receber_ParcelaVENCIMENTO.AsDateTime := ipVencimento;
+  dmFinanceiro.cdsConta_Receber_ParcelaPARCELA.AsInteger := ipParcela;
+  dmFinanceiro.cdsConta_Receber_ParcelaVALOR.AsFloat := ipValor;
+  dmFinanceiro.cdsConta_Receber_Parcela.Post;
 end;
 
-procedure TfrmContaPagar.Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
+procedure TfrmContaReceber.Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
 begin
   inherited;
   if not VarIsNull(cbAtividade.EditValue) then
@@ -392,12 +383,11 @@ begin
     end;
 end;
 
-procedure TfrmContaPagar.Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
+procedure TfrmContaReceber.Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
 begin
   inherited;
   if not VarIsNull(cbProjeto.EditValue) then
     begin
-
       if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, cbProjeto.EditValue, []) then
         begin
           ppvAddVinculo(cbProjeto.EditValue, coProjeto, cbProjeto.Text);
@@ -405,38 +395,38 @@ begin
     end;
 end;
 
-procedure TfrmContaPagar.Ac_Quitar_ReabrirExecute(Sender: TObject);
+procedure TfrmContaReceber.Ac_Baixar_ReabrirExecute(Sender: TObject);
 begin
   inherited;
-  if dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger = 0 then
-    ppvQuitarParcela
+  if dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger = 0 then
+    ppvBaixarParcela
   else
     ppvReabrirParcela;
 end;
 
-procedure TfrmContaPagar.ppvQuitarParcela;
+procedure TfrmContaReceber.ppvBaixarParcela;
 begin
-  dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
-  dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.AsDateTime := Now;
-  dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 1;
-  dmFinanceiro.cdsConta_Pagar_Parcela.Post;
+  dmFinanceiro.cdsConta_Receber_Parcela.Edit;
+  dmFinanceiro.cdsConta_Receber_ParcelaDATA_RECEBIMENTO.AsDateTime := Now;
+  dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger := 1;
+  dmFinanceiro.cdsConta_Receber_Parcela.Post;
 
-  if dmFinanceiro.cdsConta_Pagar_Parcela.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Parcela.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber_Parcela.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber_Parcela.ApplyUpdates(0);
 end;
 
-procedure TfrmContaPagar.ppvReabrirParcela;
+procedure TfrmContaReceber.ppvReabrirParcela;
 begin
-  dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
-  dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.Clear;
-  dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 0;
-  dmFinanceiro.cdsConta_Pagar_Parcela.Post;
+  dmFinanceiro.cdsConta_Receber_Parcela.Edit;
+  dmFinanceiro.cdsConta_Receber_ParcelaDATA_RECEBIMENTO.Clear;
+  dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger := 0;
+  dmFinanceiro.cdsConta_Receber_Parcela.Post;
 
-  if dmFinanceiro.cdsConta_Pagar_Parcela.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Parcela.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber_Parcela.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber_Parcela.ApplyUpdates(0);
 end;
 
-procedure TfrmContaPagar.viewRegistrosDetailCustomDrawCell(
+procedure TfrmContaReceber.viewRegistrosDetailCustomDrawCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
 AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
 begin
@@ -460,24 +450,24 @@ begin
 
 end;
 
-procedure TfrmContaPagar.Ac_Quitar_ReabrirUpdate(Sender: TObject);
+procedure TfrmContaReceber.Ac_Baixar_ReabrirUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dmFinanceiro.cdsConta_Pagar_Parcela.Active and (dmFinanceiro.cdsConta_Pagar_Parcela.RecordCount > 0);
+  TAction(Sender).Enabled := dmFinanceiro.cdsConta_Receber_Parcela.Active and (dmFinanceiro.cdsConta_Receber_Parcela.RecordCount > 0);
 
-  if dmFinanceiro.cdsConta_Pagar_Parcela.Active and (dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger = 0) then
+  if dmFinanceiro.cdsConta_Receber_Parcela.Active and (dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger = 0) then
     begin
-      Ac_Quitar_Reabrir.ImageIndex := 8;
-      Ac_Quitar_Reabrir.Caption := 'Quitar Parcela';
+      Ac_Baixar_Reabrir.ImageIndex := 8;
+      Ac_Baixar_Reabrir.Caption := 'Baixar Parcela';
     end
   else
     begin
-      Ac_Quitar_Reabrir.ImageIndex := 3;
-      Ac_Quitar_Reabrir.Caption := 'Reabrir Parcela';
+      Ac_Baixar_Reabrir.ImageIndex := 3;
+      Ac_Baixar_Reabrir.Caption := 'Reabrir Parcela';
     end;
 end;
 
-procedure TfrmContaPagar.cbProjetoPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmContaReceber.cbProjetoPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if not VarIsNull(cbProjeto.EditValue) then
@@ -492,7 +482,7 @@ begin
     dmLookup.cdslkAtividade.Close;
 end;
 
-procedure TfrmContaPagar.FormCreate(Sender: TObject);
+procedure TfrmContaReceber.FormCreate(Sender: TObject);
 begin
   dmFinanceiro := TdmFinanceiro.Create(Self);
   dmFinanceiro.Name := '';
@@ -506,37 +496,33 @@ begin
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
-  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
-  dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
-  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, true);
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo],['1'+coDelimitadorPadrao+'3'],TOperadores.coAnd,true);
+  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcReceita)], TOperadores.coAnd, true);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
 
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
 end;
 
-function TfrmContaPagar.fprConfigurarControlesPesquisa: TWinControl;
+function TfrmContaReceber.fprConfigurarControlesPesquisa: TWinControl;
 begin
   Result := inherited;
-  cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
-  cbPesquisaRubrica.Visible := cbPesquisarPor.EditValue = coPesquisaRubrica;
+  cbPesquisaClienteFinanciador.Visible := cbPesquisarPor.EditValue = coPesquisaClienteFinanciador;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaRubrica.Visible or cbPesquisaPlanoConta.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaClienteFinanciador.Visible or cbPesquisaPlanoConta.Visible));
 
-  if cbPesquisaFornecedor.Visible then
-    Result := cbPesquisaFornecedor
-  else if cbPesquisaRubrica.Visible then
-    Result := cbPesquisaRubrica
+  if cbPesquisaClienteFinanciador.Visible then
+    Result := cbPesquisaClienteFinanciador
   else if cbPesquisaPlanoConta.Visible then
     Result := cbPesquisaPlanoConta;
 end;
 
-function TfrmContaPagar.fprGetPermissao: string;
+function TfrmContaReceber.fprGetPermissao: string;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finContaPagar));
+  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finContaReceber));
 end;
 
-function TfrmContaPagar.fprHabilitarSalvar: Boolean;
+function TfrmContaReceber.fprHabilitarSalvar: Boolean;
 begin
   Result := inherited or fprHabilitarSalvarDetail or (cdsLocalVinculo.Active and (cdsLocalVinculo.ChangeCount > 0));
 end;

@@ -29,6 +29,7 @@ type
     coFornecedor = 'FORNECEDOR';
     coRubrica = 'RUBRICA';
     coPlanoConta = 'PLANO_CONTA';
+    coClienteFinanciador = 'CLIENTE_FINANCIADOR';
 
     coTipo = 'TIPO';
 
