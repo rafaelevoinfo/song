@@ -35,7 +35,6 @@ type
     cdsFin_For_CliINSCRICAO_ESTADUAL: TStringField;
     cdsFin_For_CliINSCRICAO_MUNICIPAL: TStringField;
     cdsFin_For_CliRAMO_ATIVIDADE: TStringField;
-    cdsFin_For_CliPESQUISA: TStringField;
     cdsFin_For_CliOBSERVACAO: TStringField;
     cdsFin_For_CliCARGO_CONTATO: TStringField;
     cdsPlano_Contas: TRFClientDataSet;
@@ -114,6 +113,8 @@ type
     cdsConta_Receber_ProjetoID_PROJETO: TIntegerField;
     cdsConta_Receber_ProjetoPROJETO: TStringField;
     dsConta_Receber: TDataSource;
+    cdsConta_PagarNUMERO_DOCUMENTO: TStringField;
+    cdsConta_ReceberNUMERO_DOCUMENTO: TStringField;
   private
     { Private declarations }
   public

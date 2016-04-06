@@ -38,7 +38,6 @@ type
     qFin_For_CliINSCRICAO_ESTADUAL: TStringField;
     qFin_For_CliINSCRICAO_MUNICIPAL: TStringField;
     qFin_For_CliRAMO_ATIVIDADE: TStringField;
-    qFin_For_CliPESQUISA: TStringField;
     qFin_For_CliOBSERVACAO: TStringField;
     qFin_For_CliCARGO_CONTATO: TStringField;
     qPlano_Contas: TRFQuery;
@@ -115,6 +114,8 @@ type
     qConta_Receber_AtividadeID_ATIVIDADE: TIntegerField;
     qConta_Receber_AtividadeATIVIDADE: TStringField;
     qConta_Receber_ProjetoPROJETO: TStringField;
+    qConta_PagarNUMERO_DOCUMENTO: TStringField;
+    qConta_ReceberNUMERO_DOCUMENTO: TStringField;
   private
     { Private declarations }
   protected

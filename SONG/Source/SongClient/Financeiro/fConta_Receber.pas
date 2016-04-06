@@ -91,6 +91,9 @@ type
     viewRegistrosPLANO_CONTAS: TcxGridDBColumn;
     viewRegistrosCONTA_CORRENTE: TcxGridDBColumn;
     viewRegistrosDetailDATA_RECEBIMENTO: TcxGridDBColumn;
+    viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn;
+    Label13: TLabel;
+    EditNroDocumento: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);

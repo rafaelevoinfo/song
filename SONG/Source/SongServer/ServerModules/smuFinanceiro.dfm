@@ -101,7 +101,6 @@ inherited smFinanceiro: TsmFinanceiro
       '       FIN_FOR_CLI.INSCRICAO_ESTADUAL,'
       '       FIN_FOR_CLI.INSCRICAO_MUNICIPAL,'
       '       FIN_FOR_CLI.RAMO_ATIVIDADE,'
-      '       FIN_FOR_CLI.PESQUISA,'
       '       FIN_FOR_CLI.OBSERVACAO'
       'from FIN_FOR_CLI  '
       '&WHERE')
@@ -210,12 +209,6 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'RAMO_ATIVIDADE'
       ProviderFlags = [pfInUpdate]
       Size = 50
-    end
-    object qFin_For_CliPESQUISA: TStringField
-      FieldName = 'PESQUISA'
-      Origin = 'PESQUISA'
-      ProviderFlags = [pfInUpdate]
-      Size = 100
     end
     object qFin_For_CliOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
@@ -333,6 +326,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar.Valor_Total,'
       '       Conta_Pagar.Forma_Pagto,'
       '       Conta_Pagar.Observacao,'
+      '       Conta_Pagar.Numero_Documento,'
       '       fin_for_cli.nome_fantasia as fornecedor,'
       '       rubrica.nome as rubrica,'
       '       plano_contas.nome as plano_contas,'
@@ -442,6 +436,12 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'CONTA_CORRENTE'
       ProviderFlags = []
       Size = 134
+    end
+    object qConta_PagarNUMERO_DOCUMENTO: TStringField
+      FieldName = 'NUMERO_DOCUMENTO'
+      Origin = 'NUMERO_DOCUMENTO'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
     end
   end
   object qConta_Pagar_Parcela: TRFQuery
@@ -614,6 +614,7 @@ inherited smFinanceiro: TsmFinanceiro
       '                Conta_Receber.Valor_Total,'
       '                Conta_Receber.Forma_Pagto,'
       '                Conta_Receber.Observacao,'
+      '                Conta_Receber.Numero_Documento,'
       '                Fin_For_Cli.Tipo,'
       '                Fin_For_Cli.Nome_Fantasia,'
       '                Plano_Contas.Nome as Plano_Contas,'
@@ -717,6 +718,12 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'CONTA_CORRENTE'
       ProviderFlags = []
       Size = 134
+    end
+    object qConta_ReceberNUMERO_DOCUMENTO: TStringField
+      FieldName = 'NUMERO_DOCUMENTO'
+      Origin = 'NUMERO_DOCUMENTO'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
     end
   end
   object qConta_Receber_Projeto: TRFQuery

@@ -1,8 +1,10 @@
 inherited frmLoteSemente: TfrmLoteSemente
+  ActiveControl = btnIncluir
   Caption = 'Lotes de Sementes'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -180,6 +182,10 @@ inherited frmLoteSemente: TfrmLoteSemente
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -389,10 +395,14 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
+                Width = 455
+                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
+                Left = 456
+                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
@@ -414,6 +424,9 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
               inherited cxGrid2: TcxGrid
+                Left = 504
+                Width = 467
+                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -442,9 +455,10 @@ inherited frmLoteSemente: TfrmLoteSemente
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
+                  Left = 503
                   Width = 92
                   Caption = 'Matr'#237'zes desse lote'
-                  ExplicitLeft = 503
+                  ExplicitLeft = 505
                   ExplicitWidth = 92
                 end
               end
@@ -708,6 +722,10 @@ inherited frmLoteSemente: TfrmLoteSemente
     object tabCadastroGerminacao: TcxTabSheet
       Caption = 'tabCadastroGerminacao'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroGerminacao: TPanel
         Left = 0
         Top = 0

@@ -133,7 +133,6 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
-      Required = True
       Size = 1000
     end
   end

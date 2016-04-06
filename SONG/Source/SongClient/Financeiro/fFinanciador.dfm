@@ -1,9 +1,11 @@
 inherited frmFinanciador: TfrmFinanciador
   ActiveControl = EditNomeFantasia
   Caption = 'Financiadores'
+  ExplicitLeft = 8
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -32,6 +34,9 @@ inherited frmFinanciador: TfrmFinanciador
                 Value = 7
               end>
           end
+        end
+        inherited pnBotoes: TPanel
+          ExplicitWidth = 431
         end
       end
       inherited pnGrid: TPanel
@@ -162,14 +167,6 @@ inherited frmFinanciador: TfrmFinanciador
           Caption = 'Ramo de Atividade'
           FocusControl = EditRamo
         end
-        object Label18: TLabel
-          Left = 516
-          Top = 45
-          Width = 42
-          Height = 13
-          Caption = 'Pesquisa'
-          FocusControl = EditPesquisaCadastro
-        end
         object Label19: TLabel
           Left = 5
           Top = 309
@@ -198,7 +195,7 @@ inherited frmFinanciador: TfrmFinanciador
           Left = 4
           Top = 84
           Caption = 'Informa'#231#245'es para Contato'
-          TabOrder = 7
+          TabOrder = 6
           Height = 221
           Width = 657
           object Label6: TLabel
@@ -271,12 +268,20 @@ inherited frmFinanciador: TfrmFinanciador
             Caption = 'Contato (F2)'
             FocusControl = cbContato
           end
+          object lbl1: TLabel
+            Left = 430
+            Top = 16
+            Width = 86
+            Height = 13
+            Caption = 'Cargo do Contato'
+            FocusControl = EditCargoContato
+          end
           object EditEmail: TcxDBTextEdit
             Left = 5
             Top = 70
             DataBinding.DataField = 'EMAIL'
             DataBinding.DataSource = dsMaster
-            TabOrder = 1
+            TabOrder = 3
             Width = 397
           end
           object EditEndereco: TcxDBTextEdit
@@ -284,7 +289,7 @@ inherited frmFinanciador: TfrmFinanciador
             Top = 109
             DataBinding.DataField = 'ENDERECO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 4
+            TabOrder = 6
             Width = 397
           end
           object EditComplemento: TcxDBTextEdit
@@ -292,7 +297,7 @@ inherited frmFinanciador: TfrmFinanciador
             Top = 150
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 6
+            TabOrder = 8
             Width = 397
           end
           object EditCelular: TcxDBMaskEdit
@@ -302,7 +307,7 @@ inherited frmFinanciador: TfrmFinanciador
             DataBinding.DataSource = dsMaster
             Properties.MaskKind = emkRegExprEx
             Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
-            TabOrder = 2
+            TabOrder = 4
             Width = 121
           end
           object EditTelefone: TcxDBMaskEdit
@@ -312,7 +317,7 @@ inherited frmFinanciador: TfrmFinanciador
             DataBinding.DataSource = dsMaster
             Properties.MaskKind = emkRegExprEx
             Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
-            TabOrder = 3
+            TabOrder = 5
             Width = 118
           end
           object EditBairro: TcxDBTextEdit
@@ -320,7 +325,7 @@ inherited frmFinanciador: TfrmFinanciador
             Top = 109
             DataBinding.DataField = 'BAIRRO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 5
+            TabOrder = 7
             Width = 244
           end
           object cbCidade: TcxDBLookupComboBox
@@ -338,7 +343,7 @@ inherited frmFinanciador: TfrmFinanciador
               item
                 FieldName = 'NOME'
               end>
-            TabOrder = 7
+            TabOrder = 9
             Width = 244
           end
           object EditSite: TcxDBTextEdit
@@ -346,7 +351,7 @@ inherited frmFinanciador: TfrmFinanciador
             Top = 189
             DataBinding.DataField = 'SITE'
             DataBinding.DataSource = dsMaster
-            TabOrder = 8
+            TabOrder = 10
             Width = 644
           end
           object cbContato: TcxDBLookupComboBox
@@ -367,8 +372,16 @@ inherited frmFinanciador: TfrmFinanciador
             Height = 21
             Action = Ac_Pesquisar_Pessoa
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 9
+            TabOrder = 1
             TabStop = False
+          end
+          object EditCargoContato: TcxDBTextEdit
+            Left = 428
+            Top = 32
+            DataBinding.DataField = 'CARGO_CONTATO'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 2
+            Width = 221
           end
         end
         object EditCpfCnpj: TcxDBTextEdit
@@ -401,22 +414,14 @@ inherited frmFinanciador: TfrmFinanciador
           DataBinding.DataField = 'RAMO_ATIVIDADE'
           DataBinding.DataSource = dsMaster
           TabOrder = 5
-          Width = 205
-        end
-        object EditPesquisaCadastro: TcxDBTextEdit
-          Left = 515
-          Top = 61
-          DataBinding.DataField = 'PESQUISA'
-          DataBinding.DataSource = dsMaster
-          TabOrder = 6
-          Width = 147
+          Width = 203
         end
         object EditObs: TcxDBMemo
           Left = 4
           Top = 325
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 8
+          TabOrder = 7
           Height = 50
           Width = 658
         end

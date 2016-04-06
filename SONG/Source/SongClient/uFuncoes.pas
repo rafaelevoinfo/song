@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 28/03/2016 23:17:39
+// 05/04/2016 23:21:52
 //
 
 unit uFuncoes;
@@ -96,6 +96,7 @@ type
     FfpuCalcularTaxaGerminacaoLoteCommand: TDBXCommand;
     FppuAtualizarTaxaGerminacaoLoteCommand: TDBXCommand;
     FppuAtualizarEstoqueLoteSementeCommand: TDBXCommand;
+    FppuAtualizarTaxaClassificacaoMudaCommand: TDBXCommand;
     FfpuValidarNomeMatrizCommand: TDBXCommand;
     FfpuValidarNomeCanteiroCommand: TDBXCommand;
     FppuValidarSemeaduraCommand: TDBXCommand;
@@ -112,6 +113,7 @@ type
     function fpuCalcularTaxaGerminacaoLote(ipIdLote: Integer): Double;
     procedure ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
     procedure ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
+    procedure ppuAtualizarTaxaClassificacaoMuda(ipIdLote: Integer);
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: string): Boolean;
     procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
@@ -631,6 +633,19 @@ begin
   FppuAtualizarEstoqueLoteSementeCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesViveiroClient.ppuAtualizarTaxaClassificacaoMuda(ipIdLote: Integer);
+begin
+  if FppuAtualizarTaxaClassificacaoMudaCommand = nil then
+  begin
+    FppuAtualizarTaxaClassificacaoMudaCommand := FDBXConnection.CreateCommand;
+    FppuAtualizarTaxaClassificacaoMudaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAtualizarTaxaClassificacaoMudaCommand.Text := 'TsmFuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda';
+    FppuAtualizarTaxaClassificacaoMudaCommand.Prepare;
+  end;
+  FppuAtualizarTaxaClassificacaoMudaCommand.Parameters[0].Value.SetInt32(ipIdLote);
+  FppuAtualizarTaxaClassificacaoMudaCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesViveiroClient.fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
 begin
   if FfpuValidarNomeMatrizCommand = nil then
@@ -773,6 +788,7 @@ begin
   FfpuCalcularTaxaGerminacaoLoteCommand.DisposeOf;
   FppuAtualizarTaxaGerminacaoLoteCommand.DisposeOf;
   FppuAtualizarEstoqueLoteSementeCommand.DisposeOf;
+  FppuAtualizarTaxaClassificacaoMudaCommand.DisposeOf;
   FfpuValidarNomeMatrizCommand.DisposeOf;
   FfpuValidarNomeCanteiroCommand.DisposeOf;
   FppuValidarSemeaduraCommand.DisposeOf;

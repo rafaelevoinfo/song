@@ -475,6 +475,12 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsLote_MudaTAXA_CLASSIFICACAO: TBCDField
+      DisplayLabel = '% Classifica'#231#227'o'
+      FieldName = 'TAXA_CLASSIFICACAO'
+      Precision = 18
+      Size = 2
+    end
   end
   object cdsClassificacao: TRFClientDataSet
     Aggregates = <>

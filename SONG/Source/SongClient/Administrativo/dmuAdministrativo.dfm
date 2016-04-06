@@ -114,39 +114,47 @@ inherited dmAdministrativo: TdmAdministrativo
     object cdsPessoaNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
     object cdsPessoaRG: TStringField
       FieldName = 'RG'
+      ProviderFlags = [pfInUpdate]
       Size = 30
     end
     object cdsPessoaCPF: TStringField
       FieldName = 'CPF'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsPessoaENDERECO: TStringField
       DisplayLabel = 'Endere'#231'o'
       FieldName = 'ENDERECO'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsPessoaLOGIN: TStringField
       DisplayLabel = 'Login'
       FieldName = 'LOGIN'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsPessoaSENHA: TStringField
       DisplayLabel = 'Senha'
       FieldName = 'SENHA'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsPessoaBAIRRO: TStringField
       DisplayLabel = 'Bairro'
       FieldName = 'BAIRRO'
+      ProviderFlags = [pfInUpdate]
       Size = 30
     end
     object cdsPessoaCOMPLEMENTO: TStringField
       DisplayLabel = 'Complemento'
       FieldName = 'COMPLEMENTO'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsPessoaEMAIL: TStringField
@@ -181,10 +189,12 @@ inherited dmAdministrativo: TdmAdministrativo
       Alignment = taLeftJustify
       DisplayLabel = 'Cidade'
       FieldName = 'ID_CIDADE'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsPessoaCIDADE: TStringField
       DisplayLabel = 'Cidade'
       FieldName = 'CIDADE'
+      ProviderFlags = []
       Size = 120
     end
     object cdsPessoaDATA_NASCIMENTO: TDateField

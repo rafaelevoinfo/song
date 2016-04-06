@@ -94,6 +94,7 @@ type
     qLote_MudaQTDE_ATUAL: TIntegerField;
     qGerminacaoDATA: TDateField;
     qLote_MudaDATA: TDateField;
+    qLote_MudaTAXA_CLASSIFICACAO: TBCDField;
   private
     { Private declarations }
   protected

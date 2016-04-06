@@ -1,4 +1,5 @@
 inherited frmPessoa: TfrmPessoa
+  ActiveControl = EditNome
   Caption = 'Pessoas'
   ExplicitWidth = 1000
   ExplicitHeight = 515
@@ -312,7 +313,7 @@ inherited frmPessoa: TfrmPessoa
           Left = 4
           Top = 159
           Caption = 'Informa'#231#245'es para Contato'
-          TabOrder = 2
+          TabOrder = 1
           Height = 149
           Width = 657
           object Label6: TLabel
@@ -444,7 +445,7 @@ inherited frmPessoa: TfrmPessoa
           Left = 666
           Top = 4
           Caption = 'Informa'#231#245'es de Login (Somente para usu'#225'rios do sistema)'
-          TabOrder = 1
+          TabOrder = 2
           Height = 109
           Width = 303
           object lbl1: TLabel
@@ -520,15 +521,10 @@ inherited frmPessoa: TfrmPessoa
             ExplicitWidth = 976
             ExplicitHeight = 379
             inherited cxGrid1: TcxGrid
-              Width = 457
-              Height = 377
               ExplicitWidth = 457
               ExplicitHeight = 377
             end
             inherited pnBotoes: TPanel
-              Left = 458
-              Width = 48
-              Height = 377
               ExplicitLeft = 458
               ExplicitWidth = 48
               ExplicitHeight = 377
@@ -552,9 +548,6 @@ inherited frmPessoa: TfrmPessoa
               end
             end
             inherited cxGrid2: TcxGrid
-              Left = 506
-              Width = 469
-              Height = 377
               ExplicitLeft = 506
               ExplicitWidth = 469
               ExplicitHeight = 377
@@ -583,14 +576,11 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
-                Height = 15
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
-                Left = 505
                 Width = 91
-                Height = 15
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 91

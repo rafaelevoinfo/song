@@ -13,12 +13,14 @@ uses
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
   private
+    function fpvCalcularTaxaClassificaoMuda(ipIdLote: Integer): Double;
     { Private declarations }
   public
     function fpuCalcularQuantidadeSemente(ipIdEspecie: Integer; ipQtdeKg: Double): Integer;
     function fpuCalcularTaxaGerminacaoLote(ipIdLote: Integer): Double;
     procedure ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
     procedure ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
+    procedure ppuAtualizarTaxaClassificacaoMuda(ipIdLote: Integer);
 
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: String): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: String): Boolean;
@@ -60,6 +62,41 @@ begin
     end);
 
   Result := vaQtde;
+end;
+
+function TsmFuncoesViveiro.fpvCalcularTaxaClassificaoMuda(
+  ipIdLote: Integer): Double;
+var
+  vaTaxaClassificacao: Double;
+begin
+  vaTaxaClassificacao := 0;
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := ' select Lote_Muda.Qtde_Inicial,' +
+        '       (select first 1 Classificacao.Qtde' +
+        '        from Classificacao' +
+        '        where Classificacao.Id_Lote_Muda = Lote_Muda.Id' +
+        '        order by Classificacao.Data desc) as Qtde_Atual' +
+        ' from Lote_Muda' +
+        ' where Lote_Muda.Id = :Id';
+
+      ipDataSet.ParamByName('ID').AsInteger := ipIdLote;
+      ipDataSet.Open();
+
+      if not ipDataSet.Eof then
+        begin
+          try
+            vaTaxaClassificacao := (ipDataSet.FieldByName('QTDE_ATUAL').AsFloat * 100) / ipDataSet.FieldByName('QTDE_INICIAL').AsFloat;
+          except
+            vaTaxaClassificacao := 0;
+          end;
+        end
+      else
+        raise Exception.Create('Lote não encontrado.');
+    end);
+
+  Result := vaTaxaClassificacao;
 end;
 
 function TsmFuncoesViveiro.fpuCalcularTaxaGerminacaoLote(
@@ -115,8 +152,6 @@ begin
   Result := fprValidarCampoUnico('MATRIZ', 'NOME', ipId, ipNome);
 end;
 
-
-
 procedure TsmFuncoesViveiro.ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
 begin
   Connection.ExecSQL(
@@ -131,6 +166,16 @@ begin
     '                                 else 0' +
     '                              end' +
     ' where Lote_Semente.Id = :Id', [ipIdLote]);
+end;
+
+procedure TsmFuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(
+  ipIdLote: Integer);
+var
+  vaTaxaClassificacao: Double;
+begin
+  vaTaxaClassificacao := fpvCalcularTaxaClassificaoMuda(ipIdLote);
+
+  Connection.ExecSQL('update lote_muda set lote_muda.taxa_classificacao = :taxa where lote_muda.id = :id', [vaTaxaClassificacao, ipIdLote]);
 end;
 
 procedure TsmFuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
@@ -155,7 +200,7 @@ begin
       vaQtdeGerminada, vaIdEspecie: Integer;
     begin
       ipDataSet.SQL.Text := 'select Lote_Semente.Nome,' +
-        '                           Lote_Semente.ID_ESPECIE, '+
+        '                           Lote_Semente.ID_ESPECIE, ' +
         '       (select first 1 Germinacao.Qtde_Germinada' +
         '        from Germinacao' +
         '        where Germinacao.Id_Lote_Semente = Lote_Semente.Id' +
@@ -187,7 +232,7 @@ begin
           ipDataSet.FieldByName('ID').AsInteger := fpuGetId('LOTE_MUDA');
         end
       else
-         ipDataSet.Edit;
+        ipDataSet.Edit;
 
       ipDataSet.FieldByName('ID_LOTE_SEMENTE').AsInteger := ipIdLote;
       ipDataSet.FieldByName('ID_ESPECIE').AsInteger := vaIdEspecie;

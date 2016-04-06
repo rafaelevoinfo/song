@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, uControleAcesso, System.TypInfo,
   dmuViveiro, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
   uTypes, uClientDataSet, System.DateUtils, cxCalc, cxDBEdit, cxSpinEdit,
-  cxMemo, fPessoa;
+  cxMemo, fPessoa, dmuPrincipal;
 
 type
   TfrmLoteMuda = class(TfrmBasicoCrudMasterDetail)
@@ -51,6 +51,7 @@ type
     Ac_Pesquisar_Pessoa_Classificou: TAction;
     EditObsLote: TcxDBMemo;
     viewRegistrosQTDE_ATUAL: TcxGridDBColumn;
+    viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -62,6 +63,9 @@ type
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprEfetuarPesquisa; override;
+    procedure pprAfterSalvarDetail; override;
+  public
+    function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
   public const
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
   end;
@@ -106,6 +110,12 @@ begin
 
 end;
 
+procedure TfrmLoteMuda.pprAfterSalvarDetail;
+begin
+  inherited;
+  dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(dmViveiro.cdsLote_MudaID.AsInteger)
+end;
+
 procedure TfrmLoteMuda.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
@@ -123,6 +133,17 @@ end;
 function TfrmLoteMuda.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLoteMuda));
+end;
+
+function TfrmLoteMuda.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+begin
+  Result := inherited;
+  if Result then
+    begin
+      dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(dmViveiro.cdsLote_MudaID.AsInteger);
+      pprEfetuarPesquisa;
+    end;
+
 end;
 
 end.

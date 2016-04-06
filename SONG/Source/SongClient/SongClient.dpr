@@ -40,7 +40,8 @@ uses
   fPlano_Contas in 'Financeiro\fPlano_Contas.pas' {frmPlanoContas},
   fRubrica in 'Financeiro\fRubrica.pas' {frmRubrica},
   fConta_Pagar in 'Financeiro\fConta_Pagar.pas' {frmContaPagar},
-  fConta_Receber in 'Financeiro\fConta_Receber.pas' {frmContaReceber};
+  fConta_Receber in 'Financeiro\fConta_Receber.pas' {frmContaReceber},
+  fCliente in 'Financeiro\fCliente.pas' {frmCliente};
 
 {$R Localization.RES}
   {$R *.res}

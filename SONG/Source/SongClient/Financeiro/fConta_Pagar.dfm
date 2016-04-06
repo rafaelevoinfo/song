@@ -1,12 +1,11 @@
 inherited frmContaPagar: TfrmContaPagar
-  ActiveControl = btnSalvar
+  ActiveControl = EditDescricao
   Caption = 'Contas a Pagar'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -172,6 +171,11 @@ inherited frmContaPagar: TfrmContaPagar
               Visible = False
               Options.Editing = False
             end
+            object viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn [12]
+              DataBinding.FieldName = 'NUMERO_DOCUMENTO'
+              Visible = False
+              Options.Editing = False
+            end
           end
         end
         inherited pnDetail: TPanel
@@ -255,11 +259,7 @@ inherited frmContaPagar: TfrmContaPagar
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
-      inherited pnBotoesCadastro: TPanel
-        TabOrder = 1
-      end
       inherited pnEditsCadastro: TPanel
-        TabOrder = 0
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -301,7 +301,7 @@ inherited frmContaPagar: TfrmContaPagar
           FocusControl = cbRubrica
         end
         object Label5: TLabel
-          Left = 656
+          Left = 657
           Top = 2
           Width = 78
           Height = 13
@@ -324,6 +324,14 @@ inherited frmContaPagar: TfrmContaPagar
           Caption = 'Forma de Pagamento'
           FocusControl = cbFornecedor
         end
+        object Label13: TLabel
+          Left = 657
+          Top = 42
+          Width = 93
+          Height = 13
+          Caption = 'Nro. do Documento'
+          FocusControl = EditNroDocumento
+        end
         object EditDescricao: TcxDBTextEdit
           Left = 4
           Top = 18
@@ -337,7 +345,7 @@ inherited frmContaPagar: TfrmContaPagar
           Top = 275
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 9
+          TabOrder = 10
           Height = 89
           Width = 965
         end
@@ -404,7 +412,7 @@ inherited frmContaPagar: TfrmContaPagar
           Left = 4
           Top = 85
           Caption = 'Parcelas'
-          TabOrder = 7
+          TabOrder = 8
           Height = 172
           Width = 427
           object Label9: TLabel
@@ -499,7 +507,7 @@ inherited frmContaPagar: TfrmContaPagar
           Left = 434
           Top = 85
           Caption = 'V'#237'nculos'
-          TabOrder = 8
+          TabOrder = 9
           Height = 172
           Width = 535
           object Label10: TLabel
@@ -616,6 +624,14 @@ inherited frmContaPagar: TfrmContaPagar
             TabOrder = 2
             Width = 207
           end
+        end
+        object EditNroDocumento: TcxDBTextEdit
+          Left = 655
+          Top = 58
+          DataBinding.DataField = 'NUMERO_DOCUMENTO'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 7
+          Width = 170
         end
       end
     end

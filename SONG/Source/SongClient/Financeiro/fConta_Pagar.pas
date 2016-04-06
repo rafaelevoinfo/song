@@ -96,6 +96,9 @@ type
     Ac_Quitar_Reabrir: TAction;
     viewRegistrosDetailSTATUS: TcxGridDBColumn;
     viewRegistrosDetailDATA_PAGAMENTO: TcxGridDBColumn;
+    viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn;
+    EditNroDocumento: TcxDBTextEdit;
+    Label13: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);

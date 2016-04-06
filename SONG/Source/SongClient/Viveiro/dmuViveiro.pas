@@ -90,6 +90,7 @@ type
     cdsLote_MudaQTDE_ATUAL: TIntegerField;
     cdsGerminacaoDATA: TDateField;
     cdsLote_MudaDATA: TDateField;
+    cdsLote_MudaTAXA_CLASSIFICACAO: TBCDField;
   private
     { Private declarations }
   public

@@ -62,12 +62,12 @@ type
     EditInscricaoMunicipal: TcxDBTextEdit;
     Label17: TLabel;
     EditRamo: TcxDBTextEdit;
-    Label18: TLabel;
-    EditPesquisaCadastro: TcxDBTextEdit;
     Label19: TLabel;
     EditObs: TcxDBMemo;
     btnPesquisarPessoa: TButton;
     Ac_Pesquisar_Pessoa: TAction;
+    lbl1: TLabel;
+    EditCargoContato: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
     procedure cbContatoKeyDown(Sender: TObject; var Key: Word;

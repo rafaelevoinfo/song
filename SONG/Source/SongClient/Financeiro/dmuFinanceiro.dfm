@@ -156,11 +156,6 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'RAMO_ATIVIDADE'
       Size = 50
     end
-    object cdsFin_For_CliPESQUISA: TStringField
-      DisplayLabel = 'Pesquisa'
-      FieldName = 'PESQUISA'
-      Size = 100
-    end
     object cdsFin_For_CliOBSERVACAO: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
@@ -325,6 +320,11 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'CONTA_CORRENTE'
       ProviderFlags = []
       Size = 134
+    end
+    object cdsConta_PagarNUMERO_DOCUMENTO: TStringField
+      DisplayLabel = 'Nro. do Documento'
+      FieldName = 'NUMERO_DOCUMENTO'
+      Size = 30
     end
   end
   object cdsConta_Pagar_Projeto: TRFClientDataSet
@@ -540,6 +540,11 @@ inherited dmFinanceiro: TdmFinanceiro
       DisplayLabel = 'Conta Corrente'
       FieldName = 'CONTA_CORRENTE'
       Size = 134
+    end
+    object cdsConta_ReceberNUMERO_DOCUMENTO: TStringField
+      DisplayLabel = 'Nro. do Documento'
+      FieldName = 'NUMERO_DOCUMENTO'
+      Size = 30
     end
   end
   object cdsConta_Receber_Parcela: TRFClientDataSet

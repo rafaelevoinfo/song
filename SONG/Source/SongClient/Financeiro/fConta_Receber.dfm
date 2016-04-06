@@ -1,4 +1,5 @@
 inherited frmContaReceber: TfrmContaReceber
+  ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
   ExplicitWidth = 1000
   ExplicitHeight = 515
@@ -149,6 +150,11 @@ inherited frmContaReceber: TfrmContaReceber
               Visible = False
               Options.Editing = False
             end
+            object viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'NUMERO_DOCUMENTO'
+              Visible = False
+              Options.Editing = False
+            end
           end
         end
         inherited pnDetail: TPanel
@@ -232,12 +238,7 @@ inherited frmContaReceber: TfrmContaReceber
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
-      inherited pnBotoesCadastro: TPanel
-        TabOrder = 1
-      end
       inherited pnEditsCadastro: TPanel
-        TabOrder = 0
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -294,6 +295,14 @@ inherited frmContaReceber: TfrmContaReceber
           Caption = 'Forma de Pagamento'
           FocusControl = cbClienteFinanciador
         end
+        object Label13: TLabel
+          Left = 657
+          Top = 42
+          Width = 93
+          Height = 13
+          Caption = 'Nro. do Documento'
+          FocusControl = EditNroDocumento
+        end
         object EditDescricao: TcxDBTextEdit
           Left = 4
           Top = 18
@@ -307,7 +316,7 @@ inherited frmContaReceber: TfrmContaReceber
           Top = 275
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 8
+          TabOrder = 9
           Height = 89
           Width = 965
         end
@@ -364,7 +373,7 @@ inherited frmContaReceber: TfrmContaReceber
           Left = 4
           Top = 85
           Caption = 'Parcelas'
-          TabOrder = 6
+          TabOrder = 7
           Height = 172
           Width = 427
           object Label9: TLabel
@@ -459,7 +468,7 @@ inherited frmContaReceber: TfrmContaReceber
           Left = 434
           Top = 85
           Caption = 'V'#237'nculos'
-          TabOrder = 7
+          TabOrder = 8
           Height = 172
           Width = 535
           object Label10: TLabel
@@ -576,6 +585,14 @@ inherited frmContaReceber: TfrmContaReceber
             TabOrder = 2
             Width = 207
           end
+        end
+        object EditNroDocumento: TcxDBTextEdit
+          Left = 655
+          Top = 58
+          DataBinding.DataField = 'NUMERO_DOCUMENTO'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 6
+          Width = 170
         end
       end
     end

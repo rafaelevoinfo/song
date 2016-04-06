@@ -531,6 +531,7 @@ inherited smViveiro: TsmViveiro
       '        order by classificacao.data desc) as qtde_atual,'
       '       Lote_Muda.Data,'
       '       Lote_Muda.Observacao,'
+      '       Lote_Muda.taxa_classificacao,'
       '       especie.nome as nome_especie'
       'from Lote_Muda'
       'inner join Especie on (Especie.Id = Lote_Muda.Id_Especie)'
@@ -592,6 +593,13 @@ inherited smViveiro: TsmViveiro
       Origin = '"DATA"'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qLote_MudaTAXA_CLASSIFICACAO: TBCDField
+      FieldName = 'TAXA_CLASSIFICACAO'
+      Origin = 'TAXA_CLASSIFICACAO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
     end
   end
   object qClassificacao: TRFQuery

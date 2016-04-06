@@ -1,4 +1,4 @@
-unit fFornecedor;
+unit fCliente;
 
 interface
 
@@ -13,41 +13,40 @@ uses
   cxGroupBox, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxRadioGroup,
   Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit,
-  cxCalendar, Vcl.ExtCtrls, cxPC, System.TypInfo, uControleAcesso, uTypes;
+  cxCalendar, Vcl.ExtCtrls, cxPC, uTypes, uControleAcesso, System.TypInfo;
 
 type
-  TfrmFornecedor = class(TfrmFinanciador)
+  TfrmCliente = class(TfrmFinanciador)
   private
     { Private declarations }
   protected
-    function fprGetTipo: TTipoFinForCli;override;
-    function fprGetTipoPessoa:TTipoRelacionamentoPessoa;override;
+    function fprGetTipo: TTipoFinForCli; override;
+    function fprGetTipoPessoa: TTipoRelacionamentoPessoa; override;
     function fprGetPermissao: String; override;
-    { Public declarations }
   end;
 
 var
-  frmFornecedor: TfrmFornecedor;
+  frmCliente: TfrmCliente;
 
 implementation
 
 {$R *.dfm}
 
-{ TfrmFornecedor }
+{ TfrmFinanciador1 }
 
-function TfrmFornecedor.fprGetPermissao: String;
+function TfrmCliente.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finFinanciador));
+   Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finCliente));
 end;
 
-function TfrmFornecedor.fprGetTipo: TTipoFinForCli;
+function TfrmCliente.fprGetTipo: TTipoFinForCli;
 begin
-   Result := tfFornecedor;
+  Result := tfCliente;
 end;
 
-function TfrmFornecedor.fprGetTipoPessoa: TTipoRelacionamentoPessoa;
+function TfrmCliente.fprGetTipoPessoa: TTipoRelacionamentoPessoa;
 begin
-  Result := trpFornecedor;
+  Result := trpcliente;
 end;
 
 end.
