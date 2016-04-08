@@ -2098,24 +2098,28 @@ object dmPrincipal: TdmPrincipal
   end
   object ProviderAdministrativo: TDSProviderConnection
     ServerClassName = 'TsmAdministrativo'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
   object ProviderLookup: TDSProviderConnection
     ServerClassName = 'TsmLookup'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304
   end
   object ProviderFinanceiro: TDSProviderConnection
     ServerClassName = 'TsmFinanceiro'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 368
   end
   object ProviderViveiro: TDSProviderConnection
     ServerClassName = 'TsmViveiro'
+    Connected = True
     SQLConnection = DataSnapConn
     Left = 192
     Top = 256
@@ -2169,5 +2173,12 @@ object dmPrincipal: TdmPrincipal
     StorageType = lstResource
     Left = 216
     Top = 136
+  end
+  object ProviderEstoque: TDSProviderConnection
+    ServerClassName = 'TsmEstoque'
+    Connected = True
+    SQLConnection = DataSnapConn
+    Left = 256
+    Top = 304
   end
 end

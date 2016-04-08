@@ -35,6 +35,15 @@ inherited frmPrincipal: TfrmPrincipal
   object mmMenuPrincipal: TMainMenu
     Left = 32
     Top = 272
+    object Estoque1: TMenuItem
+      Caption = 'Estoque'
+      object Entradas1: TMenuItem
+        Action = Ac_Entrada
+      end
+      object Itens1: TMenuItem
+        Action = Ac_Item
+      end
+    end
     object miFinanceiro: TMenuItem
       Caption = 'Financeiro'
       object Bancos1: TMenuItem
@@ -194,6 +203,16 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Clientes'
       OnExecute = Ac_ClienteExecute
+    end
+    object Ac_Item: TAction
+      Category = 'Estoque'
+      Caption = 'Itens'
+      OnExecute = Ac_ItemExecute
+    end
+    object Ac_Entrada: TAction
+      Category = 'Estoque'
+      Caption = 'Entradas'
+      OnExecute = Ac_EntradaExecute
     end
   end
   object dxSkinController1: TdxSkinController

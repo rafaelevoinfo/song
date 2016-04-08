@@ -41,7 +41,10 @@ uses
   fRubrica in 'Financeiro\fRubrica.pas' {frmRubrica},
   fConta_Pagar in 'Financeiro\fConta_Pagar.pas' {frmContaPagar},
   fConta_Receber in 'Financeiro\fConta_Receber.pas' {frmContaReceber},
-  fCliente in 'Financeiro\fCliente.pas' {frmCliente};
+  fCliente in 'Financeiro\fCliente.pas' {frmCliente},
+  dmuEstoque in 'Estoque\dmuEstoque.pas' {dmEstoque: TDataModule},
+  fItem in 'Estoque\fItem.pas' {frmItem},
+  fEntrada in 'Estoque\fEntrada.pas' {frmEntrada};
 
 {$R Localization.RES}
   {$R *.res}

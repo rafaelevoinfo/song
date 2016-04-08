@@ -81,9 +81,10 @@ type
   end;
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
-  TPermissaoFinanceiro = (finBanco, finFinanciador,finFornecedor, finPlanoConta, finRubrica,
-    finContaPagar,finContaReceber,finCliente);
-  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro,vivLoteMuda);
+  TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
+    finContaPagar, finContaReceber, finCliente);
+  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda);
+  TPermissaoEstoque = (estItem, estEntrada);
 
 implementation
 
@@ -117,6 +118,14 @@ var
     vaPermissoes.Add(vaPermissao);
   end;
 
+  procedure plAddEstoque(ipPermissao: TPermissaoEstoque; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoEstoque), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
 begin
   FItems := TDictionary < String, TList < TPermissao >>.Create();
 
@@ -147,6 +156,11 @@ begin
   plAddViveiro(vivLoteMuda, 'Lote de Mudas');
   plAddViveiro(vivMatriz, 'Matrizes');
   FItems.Add('Viveiro', vaPermissoes);
+
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddEstoque(estItem, 'Itens');
+  plAddEstoque(estEntrada, 'Entradas');
+  FItems.Add('Estoque', vaPermissoes);
 
 end;
 

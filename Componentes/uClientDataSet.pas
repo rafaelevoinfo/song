@@ -32,6 +32,9 @@ type
     coClienteFinanciador = 'CLIENTE_FINANCIADOR';
 
     coTipo = 'TIPO';
+    coTipoItem = 'TIPO_ITEM';
+    coItem = 'ITEM';
+    coCompra = 'COMPRA';
 
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 

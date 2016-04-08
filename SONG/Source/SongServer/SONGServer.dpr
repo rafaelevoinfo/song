@@ -22,7 +22,9 @@ uses
   smuFuncoesBasico in 'ServerModules\Funcoes\smuFuncoesBasico.pas' {smFuncoesBasico: TDSServerModule},
   smuFuncoesFinanceiro in 'ServerModules\Funcoes\smuFuncoesFinanceiro.pas' {smFuncoesFinanceiro: TDSServerModule},
   smuFuncoesGeral in 'ServerModules\Funcoes\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule},
-  smuFuncoesViveiro in 'ServerModules\Funcoes\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule};
+  smuFuncoesViveiro in 'ServerModules\Funcoes\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule},
+  smuEstoque in 'ServerModules\smuEstoque.pas' {smEstoque: TDSServerModule},
+  smuFuncoesEstoque in 'ServerModules\Funcoes\smuFuncoesEstoque.pas' {smFuncoesEstoque: TDSServerModule};
 
 {$R *.res}
 

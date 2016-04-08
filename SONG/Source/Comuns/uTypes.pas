@@ -43,6 +43,8 @@ type
 
   TTipoPlanoContas = (tpcDespesa, tpcReceita);
 
+  TTipoItem = (tiOutro, tiSemente, tiMuda );
+
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
 const

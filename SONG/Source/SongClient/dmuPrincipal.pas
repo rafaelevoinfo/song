@@ -34,6 +34,7 @@ type
     repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
     dslkCidade: TDataSource;
     cxLocalizer1: TcxLocalizer;
+    ProviderEstoque: TDSProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -44,6 +45,7 @@ type
     FFuncoesAdministrativo: TsmFuncoesAdministrativoClient;
     FFuncoesViveiro: TSMFuncoesViveiroClient;
     FFuncoesFinanceiro: TSMFuncoesFinanceiroClient;
+    FFuncoesEstoque: TSMFuncoesEstoqueClient;
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
@@ -51,7 +53,8 @@ type
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
     property FuncoesViveiro: TSMFuncoesViveiroClient read FFuncoesViveiro;
-    property FuncoesFinanceiro:TSMFuncoesFinanceiroClient read FFuncoesFinanceiro;
+    property FuncoesFinanceiro: TSMFuncoesFinanceiroClient read FFuncoesFinanceiro;
+    property FuncoesEstoque: TSMFuncoesEstoqueClient read FFuncoesEstoque;
   end;
 
 var
@@ -93,7 +96,7 @@ begin
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
 
   cxLocalizer1.Active := True;
-  cxLocalizer1.Locale := 1046;//Portugues Brasil
+  cxLocalizer1.Locale := 1046; // Portugues Brasil
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
@@ -110,6 +113,7 @@ begin
   FFuncoesAdministrativo := TsmFuncoesAdministrativoClient.Create(DataSnapConn.DBXConnection);
   FFuncoesViveiro := TSMFuncoesViveiroClient.Create(DataSnapConn.DBXConnection);
   FFuncoesFinanceiro := TSMFuncoesFinanceiroClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesEstoque := TSMFuncoesEstoqueClient.Create(DataSnapConn.DBXConnection);
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
@@ -125,6 +129,9 @@ begin
 
   if Assigned(FFuncoesFinanceiro) then
     FreeAndNil(FFuncoesFinanceiro);
+
+  if Assigned(FFuncoesEstoque) then
+    FreeAndNil(FFuncoesEstoque);
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

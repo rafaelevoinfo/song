@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/04/2016 23:21:52
+// 07/04/2016 22:21:34
 //
 
 unit uFuncoes;
@@ -141,6 +141,32 @@ type
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
     function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
+    function fpuGetId(ipTabela: string): Integer;
+    function fpuDataHoraAtual: string;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmEstoqueClient = class(TDSAdminClient)
+  private
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFuncoesEstoqueClient = class(TDSAdminClient)
+  private
+    FfpuValidarTipoItemCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function fpuValidarTipoItem(ipId: Integer; ipTipo: Integer): Boolean;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -927,6 +953,139 @@ begin
   FfpuVerificarDependenciasRubricaCommand.DisposeOf;
   FfpuGerarIdentificadorPlanoContasCommand.DisposeOf;
   FfpuGerarIdentificadorRubricaCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmEstoque.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmEstoqueClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmEstoqueClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmEstoqueClient.Destroy;
+begin
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+function TsmFuncoesEstoqueClient.fpuValidarTipoItem(ipId: Integer; ipTipo: Integer): Boolean;
+begin
+  if FfpuValidarTipoItemCommand = nil then
+  begin
+    FfpuValidarTipoItemCommand := FDBXConnection.CreateCommand;
+    FfpuValidarTipoItemCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarTipoItemCommand.Text := 'TsmFuncoesEstoque.fpuValidarTipoItem';
+    FfpuValidarTipoItemCommand.Prepare;
+  end;
+  FfpuValidarTipoItemCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuValidarTipoItemCommand.Parameters[1].Value.SetInt32(ipTipo);
+  FfpuValidarTipoItemCommand.ExecuteUpdate;
+  Result := FfpuValidarTipoItemCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesEstoque.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesEstoqueClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesEstoque.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
+procedure TsmFuncoesEstoqueClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFuncoesEstoque.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFuncoesEstoqueClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFuncoesEstoqueClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFuncoesEstoqueClient.Destroy;
+begin
+  FfpuValidarTipoItemCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

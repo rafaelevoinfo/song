@@ -506,4 +506,36 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkItem: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select item.id,'
+      '       item.nome,'
+      '       item.tipo'
+      'from item'
+      '&where')
+    Left = 472
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkItemNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkItemTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+    end
+  end
 end

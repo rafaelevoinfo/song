@@ -390,6 +390,35 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkFin_For_Cli
     end
+    object repIcbTipoItem: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.Items = <
+        item
+          Description = 'Outro'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Semente'
+          Value = 1
+        end
+        item
+          Description = 'Muda'
+          Value = 2
+        end>
+    end
+    object repLcbItem: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListOptions.SyncMode = True
+      Properties.ListSource = dslkItem
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -862,5 +891,37 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkFin_For_Cli
     Left = 488
     Top = 208
+  end
+  object cdslkItem: TRFClientDataSet
+    Active = True
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkItem'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 336
+    Top = 400
+    object cdslkItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkItemNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkItemTIPO: TSmallintField
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+    end
+  end
+  object dslkItem: TDataSource
+    DataSet = cdslkItem
+    Left = 536
+    Top = 296
   end
 end

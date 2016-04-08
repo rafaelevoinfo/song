@@ -115,6 +115,13 @@ type
     cdslkFin_For_CliNOME: TStringField;
     repLcbFinForCli: TcxEditRepositoryLookupComboBoxItem;
     dslkFin_For_Cli: TDataSource;
+    repIcbTipoItem: TcxEditRepositoryImageComboBoxItem;
+    cdslkItem: TRFClientDataSet;
+    cdslkItemID: TIntegerField;
+    cdslkItemNOME: TStringField;
+    cdslkItemTIPO: TSmallintField;
+    repLcbItem: TcxEditRepositoryLookupComboBoxItem;
+    dslkItem: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

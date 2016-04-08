@@ -71,6 +71,10 @@ type
     qlkFin_For_Cli: TRFQuery;
     qlkFin_For_CliID: TIntegerField;
     qlkFin_For_CliNOME: TStringField;
+    qlkItem: TRFQuery;
+    qlkItemID: TIntegerField;
+    qlkItemNOME: TStringField;
+    qlkItemTIPO: TSmallintField;
   private
     { Private declarations }
   protected

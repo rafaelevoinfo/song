@@ -11,7 +11,7 @@ uses
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
-  fConta_Receber, fCliente;
+  fConta_Receber, fCliente, fItem, fEntrada;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -60,6 +60,11 @@ type
     ContasaReceber1: TMenuItem;
     Ac_Cliente: TAction;
     Clientes1: TMenuItem;
+    Estoque1: TMenuItem;
+    Ac_Item: TAction;
+    Itens1: TMenuItem;
+    Ac_Entrada: TAction;
+    Entradas1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -80,6 +85,8 @@ type
     procedure Ac_Conta_PagarExecute(Sender: TObject);
     procedure Ac_Conta_ReceberExecute(Sender: TObject);
     procedure Ac_ClienteExecute(Sender: TObject);
+    procedure Ac_ItemExecute(Sender: TObject);
+    procedure Ac_EntradaExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -121,19 +128,25 @@ end;
 procedure TfrmPrincipal.Ac_ClienteExecute(Sender: TObject);
 begin
   inherited;
-  TUtils.ppuAbrirFormAba<TFrmCliente>(pcPrincipal, TfrmCliente, frmCliente);
+  TUtils.ppuAbrirFormAba<TFrmCliente>(pcPrincipal, TFrmCliente, frmCliente);
 end;
 
 procedure TfrmPrincipal.Ac_Conta_PagarExecute(Sender: TObject);
 begin
   inherited;
-   TUtils.ppuAbrirFormAba<TFrmContaPagar>(pcPrincipal, TfrmContaPagar, frmContaPagar);
+  TUtils.ppuAbrirFormAba<TFrmContaPagar>(pcPrincipal, TFrmContaPagar, frmContaPagar);
 end;
 
 procedure TfrmPrincipal.Ac_Conta_ReceberExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmContaReceber>(pcPrincipal, TfrmContaReceber, frmContaReceber);
+end;
+
+procedure TfrmPrincipal.Ac_EntradaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmEntrada>(pcPrincipal, TfrmEntrada, frmEntrada);
 end;
 
 procedure TfrmPrincipal.Ac_EspecieExecute(Sender: TObject);
@@ -152,6 +165,12 @@ procedure TfrmPrincipal.Ac_FornecedorExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmFornecedor>(pcPrincipal, TfrmFornecedor, frmFornecedor);
+end;
+
+procedure TfrmPrincipal.Ac_ItemExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmItem>(pcPrincipal, TfrmItem, frmItem);
 end;
 
 procedure TfrmPrincipal.Ac_Lote_MudaExecute(Sender: TObject);

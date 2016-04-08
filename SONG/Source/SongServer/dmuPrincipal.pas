@@ -46,6 +46,8 @@ type
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     SCFuncoesViveiro: TDSServerClass;
     SCFuncoesFinanceiro: TDSServerClass;
+    SCEstoque: TDSServerClass;
+    SCFuncoesEstoque: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -65,6 +67,10 @@ type
     procedure SCFuncoesViveiroGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure SCFuncoesFinanceiroGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCEstoqueGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCFuncoesEstoqueGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
@@ -93,7 +99,8 @@ implementation
 
 
 uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
-  smuFinanceiro, smuViveiro, smuFuncoesViveiro, smuFuncoesFinanceiro;
+  smuFinanceiro, smuViveiro, smuFuncoesViveiro, smuFuncoesFinanceiro, smuEstoque,
+  smuFuncoesEstoque;
 
 { TdmPrincipal }
 
@@ -336,6 +343,12 @@ begin
   PersistentClass := smuAdministrativo.TsmAdministrativo;
 end;
 
+procedure TdmPrincipal.SCEstoqueGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+    PersistentClass := smuEstoque.TsmEstoque;
+end;
+
 procedure TdmPrincipal.SCFinanceiroGetClass(DSServerClass: TDSServerClass;
   var PersistentClass: TPersistentClass);
 begin
@@ -346,6 +359,12 @@ procedure TdmPrincipal.SCFuncoesAdministrativoGetClass(
   DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuFuncoesAdministrativo.TsmFuncoesAdministrativo;
+end;
+
+procedure TdmPrincipal.SCFuncoesEstoqueGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+   PersistentClass := smuFuncoesEstoque.TsmFuncoesEstoque;
 end;
 
 procedure TdmPrincipal.SCFuncoesFinanceiroGetClass(

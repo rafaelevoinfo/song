@@ -188,4 +188,16 @@ object dmPrincipal: TdmPrincipal
     Left = 576
     Top = 312
   end
+  object SCEstoque: TDSServerClass
+    OnGetClass = SCEstoqueGetClass
+    Server = Server
+    Left = 680
+    Top = 304
+  end
+  object SCFuncoesEstoque: TDSServerClass
+    OnGetClass = SCFuncoesEstoqueGetClass
+    Server = Server
+    Left = 816
+    Top = 176
+  end
 end
