@@ -16,45 +16,37 @@ uses
   uControleAcesso, uClientDataSet, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, cxDBEdit, cxCalc, Data.Bind.EngExt, Vcl.Bind.DBEngExt,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.Components,
-  Data.Bind.DBScope, fLote_Semente, fLote_Muda, dmuPrincipal;
+  Data.Bind.DBScope, fLote_Semente, fLote_Muda, dmuPrincipal, System.DateUtils;
 
 type
   TfrmEntrada = class(TfrmBasicoCrud)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_ITEM: TcxGridDBColumn;
-    viewRegistrosID_ESPECIE: TcxGridDBColumn;
     viewRegistrosID_COMPRA: TcxGridDBColumn;
     viewRegistrosQTDE: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
     viewRegistrosNOME_ITEM: TcxGridDBColumn;
     cbPesquisaTipoItem: TcxImageComboBox;
     cbPesquisaItem: TcxLookupComboBox;
-    viewRegistrosNOME_ESPECIE: TcxGridDBColumn;
     cbItem: TcxDBLookupComboBox;
     Label3: TLabel;
     EditDataEntrada: TcxDBDateEdit;
     Label4: TLabel;
-    cbEspecie: TcxDBLookupComboBox;
-    lbl1: TLabel;
     EditQtde: TcxDBCalcEdit;
     Label5: TLabel;
     lbl2: TLabel;
     EditCompra: TcxDBCalcEdit;
+    lbUnidade: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
-    FLoteSemente: TfrmLoteSemente;
-    FLoteMuda: TfrmLoteMuda;
   protected
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
-    procedure pprBeforeSalvar; override;
-    procedure pprAfterSalvar; override;
-    procedure pprValidarDados; override;
 
     { Public declarations }
   public const
@@ -79,8 +71,7 @@ procedure TfrmEntrada.cbItemPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   cbItem.PostEditValue;
-  cbEspecie.Enabled := (Not VarIsNull(cbItem.EditValue)) // and dmLookup.cdslkItem.Locate(TBancoDados.coid, cbItem.EditValue, []) and
-    and (dmLookup.cdslkItemTIPO.AsInteger in [1, 2]);
+  lbUnidade.Caption := dmLookup.cdslkItemUNIDADE.AsString;
 end;
 
 procedure TfrmEntrada.FormCreate(Sender: TObject);
@@ -92,15 +83,12 @@ begin
   dmLookup.Name := '';
   inherited;
 
-  FLoteSemente := TfrmLoteSemente.Create(Self);
-  FLoteSemente.ppuConfigurarModoExecucao(meSomenteCadastro);
-
-  FLoteMuda := TfrmLoteMuda.Create(Self);
-  FLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro);
-
   PesquisaPadrao := tppData;
 
-  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  EditDataInicialPesquisa.Date := IncDay(now, -7);
+  EditDataFinalPesquisa.Date := now;
+
+  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTipo], [Ord(tiOutro)]); // sementes e mudas nao podem ser lançadas aqui
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 end;
 
@@ -127,35 +115,6 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estEntrada));
 end;
 
-procedure TfrmEntrada.pprAfterSalvar;
-begin
-  inherited;
-  if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
-    begin
-      FLoteSemente.Show;
-      FLoteSemente.EditData.EditValue := dmEstoque.cdsEntradaDATA.AsDateTime;
-      FLoteSemente.EditData.PostEditValue;
-
-      FLoteSemente.EditQtde.EditValue := dmEstoque.cdsEntradaQTDE.AsFloat;
-      FLoteSemente.EditQtde.PostEditValue;
-
-      FLoteSemente.cbEspecie.EditValue := dmEstoque.cdsEntradaID_ESPECIE.AsFloat;
-      FLoteSemente.EditQtde.PostEditValue;
-
-      FLoteSemente.cbPessoaColetou.EditValue := TInfoLogin.fpuGetInstance.Usuario.Id;
-      FLoteSemente.cbPessoaColetou.PostEditValue;
-    end
-  else if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda) then
-    FLoteMuda.Show;
-end;
-
-procedure TfrmEntrada.pprBeforeSalvar;
-begin
-  inherited;
-  if not cbEspecie.Enabled then
-    dmEstoque.cdsEntradaID_ESPECIE.Clear;
-end;
-
 procedure TfrmEntrada.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
@@ -165,16 +124,6 @@ begin
     ipCds.ppuAddParametro(TParametros.coItem, cbPesquisaItem.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCompra then
     ipCds.ppuAddParametro(TParametros.coCompra, EditPesquisa.Text)
-end;
-
-procedure TfrmEntrada.pprValidarDados;
-begin
-  inherited;
-  if dmLookup.cdslkItemTIPO.AsInteger in [Ord(tiSemente), Ord(tiMuda)] then
-    begin
-      if dmEstoque.cdsEntradaID_ESPECIE.IsNull then
-        raise Exception.Create('Informe a espécie.');
-    end;
 end;
 
 procedure TfrmEntrada.pprValidarPesquisa;

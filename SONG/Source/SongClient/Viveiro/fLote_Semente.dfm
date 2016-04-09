@@ -1,17 +1,11 @@
 inherited frmLoteSemente: TfrmLoteSemente
-  ActiveControl = EditNome
+  ActiveControl = btnIncluir
   Caption = 'Lotes de Sementes'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 291
@@ -123,6 +117,7 @@ inherited frmLoteSemente: TfrmLoteSemente
             object viewRegistrosID_ESPECIE: TcxGridDBColumn [1]
               DataBinding.FieldName = 'ID_ESPECIE'
               Visible = False
+              Options.Editing = False
             end
             object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [2]
               DataBinding.FieldName = 'NOME_ESPECIE'
@@ -165,6 +160,7 @@ inherited frmLoteSemente: TfrmLoteSemente
             end
             object viewRegistrosPESSOA_COLETOU: TcxGridDBColumn [9]
               DataBinding.FieldName = 'PESSOA_COLETOU'
+              Options.Editing = False
               Width = 103
             end
             object viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn [10]
@@ -188,10 +184,6 @@ inherited frmLoteSemente: TfrmLoteSemente
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -352,10 +344,6 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnMatrizes: TPanel
           Left = 1
@@ -397,15 +385,10 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
-                Width = 455
-                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
-                Left = 456
-                Width = 48
-                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
@@ -427,9 +410,6 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
               inherited cxGrid2: TcxGrid
-                Left = 504
-                Width = 467
-                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -454,16 +434,13 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 110
-                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
-                  Left = 503
                   Width = 92
-                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
-                  ExplicitLeft = 505
+                  ExplicitLeft = 503
                   ExplicitWidth = 92
                 end
               end
@@ -541,7 +518,7 @@ inherited frmLoteSemente: TfrmLoteSemente
             DataBinding.DataSource = dsMaster
             Properties.ListColumns = <>
             Properties.OnEditValueChanged = cbEspeciePropertiesEditValueChanged
-            TabOrder = 4
+            TabOrder = 5
             Width = 205
           end
           object cbPessoaColetou: TcxDBLookupComboBox
@@ -564,7 +541,7 @@ inherited frmLoteSemente: TfrmLoteSemente
             Properties.PostPopupValueOnTab = True
             Properties.SaveTime = False
             Properties.ShowTime = False
-            TabOrder = 2
+            TabOrder = 3
             Width = 121
           end
           object EditQtde: TcxDBCalcEdit
@@ -574,7 +551,7 @@ inherited frmLoteSemente: TfrmLoteSemente
             DataBinding.DataSource = dsMaster
             Properties.DisplayFormat = ',0.00'
             Properties.ImmediatePost = True
-            TabOrder = 3
+            TabOrder = 4
             Width = 121
           end
           object btnPesquisarAtividade: TButton
@@ -584,7 +561,7 @@ inherited frmLoteSemente: TfrmLoteSemente
             Height = 21
             Action = Ac_Pesquisar_Pessoa
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 5
+            TabOrder = 2
             TabStop = False
           end
         end
@@ -595,7 +572,11 @@ inherited frmLoteSemente: TfrmLoteSemente
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
+      inherited pnBotoesCadastroDetail: TPanel
+        TabOrder = 0
+      end
       inherited pnEditsCadastroDetail: TPanel
+        TabOrder = 1
         object Label8: TLabel
           Left = 6
           Top = 8
@@ -737,7 +718,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvar_Germinacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -779,7 +760,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label12: TLabel
           Left = 4
           Top = 3

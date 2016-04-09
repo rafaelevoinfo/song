@@ -78,9 +78,8 @@ type
     FPesquisaPadrao: TTipoPesquisaPadrao;
     FModoExecucao: TModoExecucao;
     FIdEscolhido: Integer;
+    FModelo: TModelo;
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
-
-
   protected
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
@@ -95,6 +94,7 @@ type
     procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
     procedure pprBeforeAlterar; virtual;
+    procedure pprCarregarDadosModelo; virtual;
     // PESQUISA
     procedure pprRealizarPesquisaInicial; virtual;
     procedure pprValidarPesquisa; virtual;
@@ -117,9 +117,12 @@ type
     property PesquisaPadrao: TTipoPesquisaPadrao read FPesquisaPadrao write SetPesquisaPadrao;
     property Permissao: string read fprGetPermissao;
     property ModoExecucao: TModoExecucao read FModoExecucao;
+    // objeto modelo para ser utilizado em caso da tela ser aberta somente para cadastros
+    property Modelo: TModelo read FModelo;
     property IdEscolhido: Integer read FIdEscolhido;
 
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     // CRUD
     procedure ppuIncluir; virtual;
     procedure ppuAlterar(ipId: Integer); virtual;
@@ -129,7 +132,8 @@ type
     // PESQUISA
     procedure ppuPesquisar; virtual;
     // MODO DE EXECUCAO DA TELA
-    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao); virtual;
+    // ipObj somente será utilizado quando ModoExeucacao for somentecadastro. Ele ira conter as informacoes que se deseja que já venha pre preenchidas
+    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo: TModelo = nil); virtual;
   end;
 
 var
@@ -142,6 +146,7 @@ uses
   fPessoa;
 
 {$R *.dfm}
+
 
 procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin
@@ -160,7 +165,7 @@ begin
   inherited;
   if fpuCancelar then
     ppuRetornar(False)
-  else  //salvou
+  else // salvou
     ppuRetornar(True);
 end;
 
@@ -275,6 +280,13 @@ begin
   pprValidarPermissao(atVisualizar, fprGetPermissao);
 end;
 
+destructor TfrmBasicoCrud.Destroy;
+begin
+  if Assigned(FModelo) then
+    FreeAndNil(FModelo);
+  inherited;
+end;
+
 procedure TfrmBasicoCrud.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
@@ -301,12 +313,14 @@ begin
   inherited;
   pprRealizarPesquisaInicial;
   if FModoExecucao = meSomenteCadastro then
-    ppuIncluir;
+    ppuIncluir
+  else if (FModoExecucao = meSomenteEdicao) and Assigned(FModelo) then
+    ppuAlterar(FModelo.Id);
 end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar;
 begin
-  if FModoExecucao = meSomenteCadastro then
+  if FModoExecucao in [meSomenteCadastro,meSomenteEdicao] then
     FIdEscolhido := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
 end;
 
@@ -314,8 +328,13 @@ procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
   if fprHabilitarAlterar then
     begin
-      pprBeforeAlterar;
-      pcPrincipal.ActivePage := tabCadastro;
+      if dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []) then
+        begin
+          pprBeforeAlterar;
+          pcPrincipal.ActivePage := tabCadastro;
+
+          pprCarregarDadosModelo;
+        end;
     end;
 end;
 
@@ -334,9 +353,13 @@ begin
   pprExecutarCancelar;
 end;
 
-procedure TfrmBasicoCrud.ppuConfigurarModoExecucao(ipModo: TModoExecucao);
+procedure TfrmBasicoCrud.ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo: TModelo);
 begin
   FModoExecucao := ipModo;
+  if Assigned(FModelo) then
+    FreeAndNil(FModelo);
+
+  FModelo := ipModelo;
   { TODO -orafae -c :   Implementar comportamentos diferentes para cada tipo de modo de execucao 26/02/2016 23:14:38 }
   case ipModo of
     meNormal:
@@ -554,11 +577,18 @@ begin
   pprValidarPermissao(atIncluir, fprGetPermissao);
 end;
 
+procedure TfrmBasicoCrud.pprCarregarDadosModelo;
+begin
+  // TODO;implementar nas classes filhs que desejam dar suporte ao Modo SomenteCadastro
+end;
+
 procedure TfrmBasicoCrud.ppuIncluir;
 begin
   pprBeforeIncluir;
   dsMaster.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastro;
+
+  pprCarregarDadosModelo;
 end;
 
 procedure TfrmBasicoCrud.ppuPesquisar;
@@ -570,7 +600,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuRetornar(ipAtualizar: Boolean);
 begin
-  if FModoExecucao = meSomenteCadastro then
+  if FModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     Close
   else
     begin

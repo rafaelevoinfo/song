@@ -18,6 +18,10 @@ uses
   cxMemo, fPessoa, dmuPrincipal;
 
 type
+  TLoteMuda = class(TLote)
+
+  end;
+
   TfrmLoteMuda = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_ESPECIE: TcxGridDBColumn;
@@ -52,6 +56,8 @@ type
     EditObsLote: TcxDBMemo;
     viewRegistrosQTDE_ATUAL: TcxGridDBColumn;
     viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn;
+    Label4: TLabel;
+    EditQtdeInicial: TcxDBSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -64,6 +70,8 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprEfetuarPesquisa; override;
     procedure pprAfterSalvarDetail; override;
+
+    procedure pprCarregarDadosModelo; override;
   public
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
   public const
@@ -114,6 +122,38 @@ procedure TfrmLoteMuda.pprAfterSalvarDetail;
 begin
   inherited;
   dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(dmViveiro.cdsLote_MudaID.AsInteger)
+end;
+
+procedure TfrmLoteMuda.pprCarregarDadosModelo;
+var
+  vaLote: TLoteMuda;
+
+  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
+  begin
+    if not VarIsNull(ipValor) then
+      begin
+        ipEdit.EditValue := ipValor;
+        ipEdit.PostEditValue;
+      end;
+  end;
+
+begin
+  inherited;
+  if (ModoExecucao = meSomenteCadastro) and Assigned(Modelo) and (Modelo is TLoteMuda) then
+    begin
+      vaLote := TLoteMuda(Modelo);
+
+      plSetEdit(EditNome, vaLote.Nome);
+      if vaLote.Data <> 0 then
+        plSetEdit(EditData, vaLote.Data);
+
+      if vaLote.Qtde <> 0 then
+        plSetEdit(EditQtdeInicial, vaLote.Qtde);
+
+      if vaLote.IdEspecie <> 0 then
+        plSetEdit(cbEspecie, vaLote.IdEspecie);
+    end;
+
 end;
 
 procedure TfrmLoteMuda.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);

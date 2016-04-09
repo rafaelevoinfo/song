@@ -19,12 +19,11 @@ type
     qEntrada: TRFQuery;
     qEntradaID: TIntegerField;
     qEntradaID_ITEM: TIntegerField;
-    qEntradaID_ESPECIE: TIntegerField;
     qEntradaID_COMPRA: TIntegerField;
     qEntradaQTDE: TBCDField;
     qEntradaDATA: TSQLTimeStampField;
     qEntradaNOME_ITEM: TStringField;
-    qEntradaNOME_ESPECIE: TStringField;
+    qItemUNIDADE: TStringField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
@@ -59,6 +58,10 @@ begin
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_COMPRA', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coTipoItem then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ITEM', 'TIPO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := Result + ' (ENTRADA.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
+            ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
+
     end;
 end;
 

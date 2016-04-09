@@ -1,17 +1,10 @@
 inherited frmLoteMuda: TfrmLoteMuda
-  ActiveControl = btnIncluir
+  ActiveControl = EditNome
   Caption = 'Lotes de Mudas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -32,6 +25,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           inherited rgStatus: TcxRadioGroup [2]
             Left = 3
             Top = 31
+            TabOrder = 5
             ExplicitLeft = 3
             ExplicitTop = 31
           end
@@ -68,6 +62,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           end
           inherited btnPesquisar: TButton [6]
             Left = 457
+            TabOrder = 1
             ExplicitLeft = 457
           end
           object cbEspeciePesquisa: TcxLookupComboBox
@@ -75,7 +70,7 @@ inherited frmLoteMuda: TfrmLoteMuda
             Top = 20
             RepositoryItem = dmLookup.repLcbEspecie
             Properties.ListColumns = <>
-            TabOrder = 5
+            TabOrder = 2
             Width = 137
           end
         end
@@ -134,10 +129,6 @@ inherited frmLoteMuda: TfrmLoteMuda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Classifica'#231#245'es'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -174,13 +165,9 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
-          Left = 213
+          Left = 5
           Top = 0
           Width = 93
           Height = 13
@@ -188,7 +175,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           FocusControl = EditNome
         end
         object Label7: TLabel
-          Left = 6
+          Left = 214
           Top = 0
           Width = 36
           Height = 13
@@ -204,29 +191,37 @@ inherited frmLoteMuda: TfrmLoteMuda
           FocusControl = EditData
         end
         object lbl2: TLabel
-          Left = 6
+          Left = 7
           Top = 42
           Width = 58
           Height = 13
           Caption = 'Observa'#231#227'o'
           FocusControl = EditObsLote
         end
+        object Label4: TLabel
+          Left = 551
+          Top = 0
+          Width = 116
+          Height = 13
+          Caption = 'Quantidade Inicial (Und)'
+          FocusControl = EditQtdeInicial
+        end
         object EditNome: TcxDBTextEdit
-          Left = 213
+          Left = 5
           Top = 15
           DataBinding.DataField = 'NOME'
           DataBinding.DataSource = dsMaster
-          TabOrder = 1
+          TabOrder = 0
           Width = 205
         end
         object cbEspecie: TcxDBLookupComboBox
-          Left = 4
+          Left = 212
           Top = 15
           RepositoryItem = dmLookup.repLcbEspecie
           DataBinding.DataField = 'ID_ESPECIE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 0
+          TabOrder = 1
           Width = 205
         end
         object EditData: TcxDBDateEdit
@@ -242,18 +237,34 @@ inherited frmLoteMuda: TfrmLoteMuda
           Width = 121
         end
         object EditObsLote: TcxDBMemo
-          Left = 4
+          Left = 5
           Top = 58
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 3
+          TabOrder = 4
           Height = 71
-          Width = 541
+          Width = 661
+        end
+        object EditQtdeInicial: TcxDBSpinEdit
+          Left = 551
+          Top = 15
+          DataBinding.DataField = 'QTDE_INICIAL'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 3
+          Width = 115
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
+      inherited pnBotoesCadastroDetail: TPanel
+        TabOrder = 0
+      end
       inherited pnEditsCadastroDetail: TPanel
+        TabOrder = 1
         object Label8: TLabel
           Left = 6
           Top = 8

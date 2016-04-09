@@ -37,11 +37,14 @@ requires
   FireDAC,
   FireDACCommonDriver,
   DbxCommonDriver,
-  dbexpress;
+  dbexpress,
+  DbxClientDriver,
+  DataSnapProviderClient;
 
 contains
   uClientDataSet in 'uClientDataSet.pas',
   uQuery in 'uQuery.pas',
-  uConnection in 'uConnection.pas';
+  uConnection in 'uConnection.pas',
+  uProvider in 'uProvider.pas';
 
 end.

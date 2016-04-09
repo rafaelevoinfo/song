@@ -122,6 +122,7 @@ type
     cdslkItemTIPO: TSmallintField;
     repLcbItem: TcxEditRepositoryLookupComboBoxItem;
     dslkItem: TDataSource;
+    cdslkItemUNIDADE: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

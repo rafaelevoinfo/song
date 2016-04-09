@@ -24,7 +24,11 @@ type
     Label3: TLabel;
     cbTipo: TcxDBImageComboBox;
     Label4: TLabel;
+    lbl1: TLabel;
+    EditUnidade: TcxDBTextEdit;
+    viewRegistrosUNIDADE: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
+    procedure cbTipoPropertiesEditValueChanged(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -41,6 +45,27 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmItem.cbTipoPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  cbTipo.PostEditValue;
+
+  EditUnidade.Enabled := dmEstoque.cdsItemTIPO.AsInteger = Ord(tiOutro);
+  if pcPrincipal.ActivePage = tabCadastro then
+    begin
+      if dmEstoque.cdsItemTIPO.AsInteger = Ord(tiSemente) then
+        begin
+          EditUnidade.EditValue := 'Kg';
+          EditUnidade.PostEditValue;
+        end
+      else if dmEstoque.cdsItemTIPO.AsInteger = Ord(tiMuda) then
+        begin
+          EditUnidade.EditValue := 'Und';
+          EditUnidade.PostEditValue;
+        end;
+    end;
+end;
 
 procedure TfrmItem.FormCreate(Sender: TObject);
 begin

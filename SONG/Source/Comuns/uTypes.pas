@@ -21,6 +21,31 @@ type
     coAnd = ' AND ';
   end;
 
+  TModelo = class
+  private
+    FId: Integer;
+    procedure SetId(const Value: Integer);
+    public
+    property Id:Integer read FId write SetId;
+  end;
+
+  TLote = class(TModelo)
+  private
+    FIdEspecie: Integer;
+    FNome: string;
+    FData: TDateTime;
+    FQtde: Double;
+    procedure SetData(const Value: TDateTime);
+    procedure SetIdEspecie(const Value: Integer);
+    procedure SetNome(const Value: string);
+    procedure SetQtde(const Value: Double);
+  public
+    property Nome: string read FNome write SetNome;
+    property Data: TDateTime read FData write SetData;
+    property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
+    property Qtde: Double read FQtde write SetQtde;
+  end;
+
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
 
   TAcaoTela = (atVisualizar, atIncluir, atAlterar, atExcluir, atAtivar, atInativar);
@@ -34,16 +59,16 @@ type
 
   TTipoVinculo = (tvRelacionado, tvDependente);
 
-  TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, meSomentePesquisa, meSomenteCadastro);
+  TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, meSomentePesquisa, meSomenteCadastro, meSomenteEdicao);
 
-  TTipoFinForCli = (tfFinanciador=1, tfFornecedor, tfCliente);
+  TTipoFinForCli = (tfFinanciador = 1, tfFornecedor, tfCliente);
 
   TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador, trpParceiro, trpEstagiario,
     trpVoluntario, trpOutro);
 
   TTipoPlanoContas = (tpcDespesa, tpcReceita);
 
-  TTipoItem = (tiOutro, tiSemente, tiMuda );
+  TTipoItem = (tiOutro, tiSemente, tiMuda);
 
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
@@ -62,11 +87,38 @@ const
   coRegexUniqueKey = '"UNQ\d+_.+?"'; // pega o nome da unique key
 
   AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar', 'Inativar');
-  TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário','Membro da Diretoria','Cliente','Fornecedor','Financiador','Parceiro','Estagiário','Voluntário','Outro');
-
-
-
+  TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário', 'Membro da Diretoria', 'Cliente', 'Fornecedor',
+    'Financiador', 'Parceiro', 'Estagiário', 'Voluntário', 'Outro');
 
 implementation
+
+{ TLote }
+
+procedure TLote.SetData(const Value: TDateTime);
+begin
+  FData := Value;
+end;
+
+procedure TLote.SetIdEspecie(const Value: Integer);
+begin
+  FIdEspecie := Value;
+end;
+
+procedure TLote.SetNome(const Value: string);
+begin
+  FNome := Value;
+end;
+
+procedure TLote.SetQtde(const Value: Double);
+begin
+  FQtde := Value;
+end;
+
+{ TModelo }
+
+procedure TModelo.SetId(const Value: Integer);
+begin
+  FId := Value;
+end;
 
 end.

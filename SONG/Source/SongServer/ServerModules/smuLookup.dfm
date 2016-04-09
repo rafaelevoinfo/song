@@ -511,7 +511,8 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'Select item.id,'
       '       item.nome,'
-      '       item.tipo'
+      '       item.tipo,'
+      '       item.unidade'
       'from item'
       '&where')
     Left = 472
@@ -536,6 +537,13 @@ inherited smLookup: TsmLookup
       FieldName = 'TIPO'
       Origin = 'TIPO'
       ProviderFlags = []
+    end
+    object qlkItemUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      Required = True
+      Size = 10
     end
   end
 end

@@ -84,7 +84,7 @@ type
     function fpuCancelarDetail: Boolean; virtual;
 
     procedure ppuSalvarDetail;
-    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao); override;
+    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo:TModelo=nil); override;
   end;
 
 var
@@ -260,8 +260,7 @@ begin
   ppuRetornar;
 end;
 
-procedure TfrmBasicoCrudMasterDetail.ppuConfigurarModoExecucao(
-  ipModo: TModoExecucao);
+procedure TfrmBasicoCrudMasterDetail.ppuConfigurarModoExecucao(ipModo: TModoExecucao;ipModelo:TModelo);
 begin
   inherited;
   case ipModo of

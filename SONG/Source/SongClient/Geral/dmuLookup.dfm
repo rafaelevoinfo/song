@@ -893,7 +893,6 @@ inherited dmLookup: TdmLookup
     Top = 208
   end
   object cdslkItem: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkItem'
@@ -917,6 +916,12 @@ inherited dmLookup: TdmLookup
       FieldName = 'TIPO'
       Origin = 'TIPO'
       ProviderFlags = []
+    end
+    object cdslkItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
+      FieldName = 'UNIDADE'
+      Required = True
+      Size = 10
     end
   end
   object dslkItem: TDataSource

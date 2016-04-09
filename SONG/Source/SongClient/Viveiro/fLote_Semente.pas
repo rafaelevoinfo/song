@@ -19,6 +19,15 @@ uses
   fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit;
 
 type
+  TLoteSemente = class(TLote)
+  private
+    FQtde: Double;
+    FIdPessoaColetou: Integer;
+    procedure SetIdPessoaColetou(const Value: Integer);
+  public
+    property IdPessoaColetou: Integer read FIdPessoaColetou write SetIdPessoaColetou;    
+  end;
+
   TfrmLoteSemente = class(TfrmBasicoCrudMasterDetail)
     pnMatrizes: TPanel;
     pnTopEditsCadastro: TPanel;
@@ -151,14 +160,17 @@ type
     procedure pprExecutarCancelar; override;
     procedure pprValidarDadosDetail; override;
     procedure pprDefinirTabDetailCadastro; override;
+
+    procedure pprCarregarDadosModelo; override;
   public
 
     procedure ppuIncluir; override;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
+
   public const
     coLoteAberto = 0;
     coLoteFechado = 1;
-    coTiposPessoaPadrao:Set of TTipoRelacionamentoPessoa = [trpFuncionario,trpEstagiario,trpVoluntario, trpMembroDiretoria];
+    coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
   end;
 
 var
@@ -189,19 +201,19 @@ end;
 procedure TfrmLoteSemente.Ac_Pesquisar_PessoaExecute(Sender: TObject);
 begin
   inherited;
-  dmLookup.ppuPesquisarPessoa( cbPessoaColetou,coTiposPessoaPadrao);
+  dmLookup.ppuPesquisarPessoa(cbPessoaColetou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.Ac_Pesquisar_Pessoa_SemeouExecute(Sender: TObject);
 begin
   inherited;
-  dmLookup.ppuPesquisarPessoa(cbPessoaSemeou,coTiposPessoaPadrao);
+  dmLookup.ppuPesquisarPessoa(cbPessoaSemeou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.Ac_Pesquisar_Pessoa_VerificouExecute(Sender: TObject);
 begin
   inherited;
-  dmLookup.ppuPesquisarPessoa( cbPessoaVerificou,coTiposPessoaPadrao);
+  dmLookup.ppuPesquisarPessoa(cbPessoaVerificou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.Ac_Reiniciar_Etapa_GerminacaoExecute(Sender: TObject);
@@ -298,6 +310,41 @@ begin
     begin
       dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat := dmViveiro.cdsLote_SementeQTDE.AsFloat;
     end;
+end;
+
+procedure TfrmLoteSemente.pprCarregarDadosModelo;
+var
+  vaLote: TLoteSemente;
+
+  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
+  begin
+    if not VarIsNull(ipValor) then
+      begin
+        ipEdit.EditValue := ipValor;
+        ipEdit.PostEditValue;
+      end;
+  end;
+
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TLoteSemente) then
+    begin
+      vaLote := TLoteSemente(Modelo);
+
+      plSetEdit(EditNome, vaLote.Nome);
+      if vaLote.IdPessoaColetou <> 0 then
+        plSetEdit(cbPessoaColetou, vaLote.IdPessoaColetou);
+
+      if vaLote.Data <> 0 then
+        plSetEdit(EditData, vaLote.Data);
+
+      if vaLote.Qtde <> 0 then
+        plSetEdit(EditQtde, vaLote.Qtde);
+
+      if vaLote.IdEspecie <> 0 then
+        plSetEdit(cbEspecie, vaLote.IdEspecie);
+    end;
+
 end;
 
 procedure TfrmLoteSemente.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -418,7 +465,7 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    dmLookup.ppuPesquisarPessoa( cbPessoaColetou, coTiposPessoaPadrao);
+    dmLookup.ppuPesquisarPessoa(cbPessoaColetou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.cbPessoaSemeouKeyDown(Sender: TObject; var Key: Word;
@@ -426,7 +473,7 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    dmLookup.ppuPesquisarPessoa( cbPessoaSemeou,coTiposPessoaPadrao);
+    dmLookup.ppuPesquisarPessoa(cbPessoaSemeou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
@@ -434,7 +481,7 @@ Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
-    dmLookup.ppuPesquisarPessoa( cbPessoaVerificou,coTiposPessoaPadrao);
+    dmLookup.ppuPesquisarPessoa(cbPessoaVerificou, coTiposPessoaPadrao);
 end;
 
 procedure TfrmLoteSemente.EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
@@ -468,7 +515,7 @@ begin
 
   PesquisaPadrao := tppData;
 
-  dmLookup.ppuCarregarPessoas(0,coTiposPessoaPadrao);
+  dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 
@@ -533,6 +580,13 @@ begin
   frameMatrizes.ppuAdicionarField(frameMatrizes.viewDireita, 'ID_MATRIZ', dmLookup.replcbMatriz);
   // mapeando
   frameMatrizes.ppuMapearFields('ID', 'ID_MATRIZ');
+end;
+
+{ TLoteSemente }
+
+procedure TLoteSemente.SetIdPessoaColetou(const Value: Integer);
+begin
+  FIdPessoaColetou := Value;
 end;
 
 end.

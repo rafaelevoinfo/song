@@ -15,12 +15,11 @@ type
     cdsEntrada: TRFClientDataSet;
     cdsEntradaID: TIntegerField;
     cdsEntradaID_ITEM: TIntegerField;
-    cdsEntradaID_ESPECIE: TIntegerField;
     cdsEntradaID_COMPRA: TIntegerField;
     cdsEntradaQTDE: TBCDField;
     cdsEntradaDATA: TSQLTimeStampField;
     cdsEntradaNOME_ITEM: TStringField;
-    cdsEntradaNOME_ESPECIE: TStringField;
+    cdsItemUNIDADE: TStringField;
   private
     { Private declarations }
   public

@@ -75,6 +75,7 @@ type
     qlkItemID: TIntegerField;
     qlkItemNOME: TStringField;
     qlkItemTIPO: TSmallintField;
+    qlkItemUNIDADE: TStringField;
   private
     { Private declarations }
   protected
@@ -142,6 +143,13 @@ begin
         end;
     end
   else if ipTabela = 'FIN_FOR_CLI' then
+    begin
+      if ipParam.Name = TParametros.coTipo then
+        begin
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
+        end;
+    end
+  else if ipTabela = 'ITEM' then
     begin
       if ipParam.Name = TParametros.coTipo then
         begin

@@ -2096,30 +2096,26 @@ object dmPrincipal: TdmPrincipal
           658B2F8C72AA2E8A67AC1030223E000000000000000000000000}
       end>
   end
-  object ProviderAdministrativo: TDSProviderConnection
+  object ProviderAdministrativo: TRFProviderConnection
     ServerClassName = 'TsmAdministrativo'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 64
     Top = 248
   end
-  object ProviderLookup: TDSProviderConnection
+  object ProviderLookup: TRFProviderConnection
     ServerClassName = 'TsmLookup'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 304
   end
-  object ProviderFinanceiro: TDSProviderConnection
+  object ProviderFinanceiro: TRFProviderConnection
     ServerClassName = 'TsmFinanceiro'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 56
     Top = 368
   end
-  object ProviderViveiro: TDSProviderConnection
+  object ProviderViveiro: TRFProviderConnection
     ServerClassName = 'TsmViveiro'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 192
     Top = 256
@@ -2174,9 +2170,8 @@ object dmPrincipal: TdmPrincipal
     Left = 216
     Top = 136
   end
-  object ProviderEstoque: TDSProviderConnection
+  object ProviderEstoque: TRFProviderConnection
     ServerClassName = 'TsmEstoque'
-    Connected = True
     SQLConnection = DataSnapConn
     Left = 256
     Top = 304

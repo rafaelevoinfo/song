@@ -12,7 +12,7 @@ uses
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
   Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList,
-  cxLocalization;
+  cxLocalization, uProvider;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -22,10 +22,10 @@ type
     ApplicationEvents1: TApplicationEvents;
     imgIcons_32: TcxImageList;
     imgIcons_16: TcxImageList;
-    ProviderAdministrativo: TDSProviderConnection;
-    ProviderLookup: TDSProviderConnection;
-    ProviderFinanceiro: TDSProviderConnection;
-    ProviderViveiro: TDSProviderConnection;
+    ProviderAdministrativo: TRFProviderConnection;
+    ProviderLookup: TRFProviderConnection;
+    ProviderFinanceiro: TRFProviderConnection;
+    ProviderViveiro: TRFProviderConnection;
     cdslkCidade: TRFClientDataSet;
     cdslkCidadeID: TIntegerField;
     cdslkCidadeUF: TStringField;
@@ -34,7 +34,7 @@ type
     repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
     dslkCidade: TDataSource;
     cxLocalizer1: TcxLocalizer;
-    ProviderEstoque: TDSProviderConnection;
+    ProviderEstoque: TRFProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);

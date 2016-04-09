@@ -4,13 +4,12 @@ inherited frmEntrada: TfrmEntrada
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
-          ExplicitLeft = 560
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -22,6 +21,7 @@ inherited frmEntrada: TfrmEntrada
           end
           inherited EditPesquisa: TcxButtonEdit
             Left = 135
+            TabOrder = 3
             ExplicitLeft = 135
           end
           inherited cbPesquisarPor: TcxImageComboBox
@@ -53,15 +53,18 @@ inherited frmEntrada: TfrmEntrada
                 Description = 'Id da Compra'
                 Value = 7
               end>
+            TabOrder = 2
             ExplicitLeft = 2
           end
           inherited btnPesquisar: TButton
             Left = 311
+            TabOrder = 1
             ExplicitLeft = 311
           end
           inherited rgStatus: TcxRadioGroup
             Left = 3
             Top = 33
+            TabOrder = 6
             ExplicitLeft = 3
             ExplicitTop = 33
           end
@@ -70,7 +73,7 @@ inherited frmEntrada: TfrmEntrada
             Top = 20
             RepositoryItem = dmLookup.repIcbTipoItem
             Properties.Items = <>
-            TabOrder = 5
+            TabOrder = 4
             Width = 175
           end
           object cbPesquisaItem: TcxLookupComboBox
@@ -78,12 +81,13 @@ inherited frmEntrada: TfrmEntrada
             Top = 20
             RepositoryItem = dmLookup.repLcbItem
             Properties.ListColumns = <>
-            TabOrder = 6
+            TabOrder = 5
             Width = 175
           end
         end
         inherited pnBotoes: TPanel
           Width = 563
+          ExplicitWidth = 563
         end
       end
       inherited pnGrid: TPanel
@@ -99,33 +103,23 @@ inherited frmEntrada: TfrmEntrada
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_ESPECIE: TcxGridDBColumn [2]
-              DataBinding.FieldName = 'ID_ESPECIE'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosID_COMPRA: TcxGridDBColumn [3]
+            object viewRegistrosID_COMPRA: TcxGridDBColumn [2]
               DataBinding.FieldName = 'ID_COMPRA'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosNOME_ITEM: TcxGridDBColumn [4]
+            object viewRegistrosNOME_ITEM: TcxGridDBColumn [3]
               DataBinding.FieldName = 'NOME_ITEM'
               Options.Editing = False
-              Width = 195
+              Width = 254
             end
-            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [5]
-              DataBinding.FieldName = 'NOME_ESPECIE'
-              Visible = False
-              Options.Editing = False
-              Width = 150
-            end
-            object viewRegistrosQTDE: TcxGridDBColumn [6]
+            object viewRegistrosQTDE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'QTDE'
+              RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
-              Width = 61
+              Width = 70
             end
-            object viewRegistrosDATA: TcxGridDBColumn [7]
+            object viewRegistrosDATA: TcxGridDBColumn [5]
               DataBinding.FieldName = 'DATA'
               Options.Editing = False
               Width = 96
@@ -136,7 +130,6 @@ inherited frmEntrada: TfrmEntrada
     end
     inherited tabCadastro: TcxTabSheet
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -153,29 +146,28 @@ inherited frmEntrada: TfrmEntrada
           Caption = 'Data da Entrada'
           FocusControl = EditDataEntrada
         end
-        object lbl1: TLabel
-          Left = 216
-          Top = 2
-          Width = 36
-          Height = 13
-          Caption = 'Esp'#233'cie'
-          FocusControl = cbEspecie
-        end
         object Label5: TLabel
-          Left = 215
-          Top = 42
+          Left = 214
+          Top = 2
           Width = 56
           Height = 13
           Caption = 'Quantidade'
           FocusControl = EditQtde
         end
         object lbl2: TLabel
-          Left = 6
-          Top = 82
+          Left = 215
+          Top = 42
           Width = 37
           Height = 13
           Caption = 'Compra'
           FocusControl = EditCompra
+        end
+        object lbUnidade: TLabel
+          Left = 386
+          Top = 21
+          Width = 19
+          Height = 13
+          Caption = 'Und'
         end
         object cbItem: TcxDBLookupComboBox
           Left = 4
@@ -197,32 +189,22 @@ inherited frmEntrada: TfrmEntrada
           TabOrder = 2
           Width = 204
         end
-        object cbEspecie: TcxDBLookupComboBox
-          Left = 215
-          Top = 18
-          RepositoryItem = dmLookup.repLcbEspecie
-          DataBinding.DataField = 'ID_ESPECIE'
-          DataBinding.DataSource = dsMaster
-          Properties.ListColumns = <>
-          TabOrder = 1
-          Width = 205
-        end
         object EditQtde: TcxDBCalcEdit
-          Left = 215
-          Top = 58
+          Left = 214
+          Top = 18
           RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE'
           DataBinding.DataSource = dsMaster
-          TabOrder = 3
-          Width = 205
+          TabOrder = 1
+          Width = 170
         end
         object EditCompra: TcxDBCalcEdit
-          Left = 6
-          Top = 98
+          Left = 215
+          Top = 58
           DataBinding.DataField = 'ID_COMPRA'
           DataBinding.DataSource = dsMaster
-          TabOrder = 4
-          Width = 205
+          TabOrder = 3
+          Width = 169
         end
       end
     end

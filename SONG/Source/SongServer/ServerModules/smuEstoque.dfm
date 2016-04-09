@@ -1,4 +1,5 @@
 inherited smEstoque: TsmEstoque
+  OldCreateOrder = True
   Height = 374
   Width = 628
   object qItem: TRFQuery
@@ -6,7 +7,8 @@ inherited smEstoque: TsmEstoque
     SQL.Strings = (
       'Select item.id,'
       '       item.nome,'
-      '       item.tipo'
+      '       item.tipo,'
+      '       item.unidade'
       'from item'
       '&where')
     Left = 48
@@ -35,21 +37,25 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qItemUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 10
+    end
   end
   object qEntrada: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Entrada.Id,'
       '       Entrada.Id_Item,'
-      '       Entrada.Id_Especie,'
       '       Entrada.Id_Compra,'
       '       Entrada.Qtde,'
       '       Entrada.Data,'
-      '       item.nome as nome_item,'
-      '       especie.nome as nome_especie'
+      '       item.nome as nome_item'
       'from Entrada '
       'inner join item on (item.id = entrada.id_item)'
-      'left join especie on (especie.id = Entrada.Id_Especie)'
       '&where')
     Left = 128
     Top = 16
@@ -69,11 +75,6 @@ inherited smEstoque: TsmEstoque
       Origin = 'ID_ITEM'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qEntradaID_ESPECIE: TIntegerField
-      FieldName = 'ID_ESPECIE'
-      Origin = 'ID_ESPECIE'
-      ProviderFlags = [pfInUpdate]
     end
     object qEntradaID_COMPRA: TIntegerField
       FieldName = 'ID_COMPRA'
@@ -97,13 +98,6 @@ inherited smEstoque: TsmEstoque
     object qEntradaNOME_ITEM: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'NOME_ITEM'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
-    end
-    object qEntradaNOME_ESPECIE: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'NOME_ESPECIE'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

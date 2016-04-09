@@ -1,6 +1,6 @@
 inherited frmItem: TfrmItem
-  ActiveControl = EditNome
   Caption = 'Itens'
+  ExplicitTop = -140
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -36,6 +36,7 @@ inherited frmItem: TfrmItem
             object viewRegistrosNOME: TcxGridDBColumn [1]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
+              Width = 548
             end
             object viewRegistrosTIPO: TcxGridDBColumn [2]
               DataBinding.FieldName = 'TIPO'
@@ -43,13 +44,20 @@ inherited frmItem: TfrmItem
               Options.Editing = False
               Width = 117
             end
+            object viewRegistrosUNIDADE: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'UNIDADE'
+              Options.Editing = False
+            end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 1
@@ -66,6 +74,14 @@ inherited frmItem: TfrmItem
           Caption = 'Tipo'
           FocusControl = cbTipo
         end
+        object lbl1: TLabel
+          Left = 471
+          Top = 1
+          Width = 134
+          Height = 13
+          Caption = 'Unidade de armazenamento'
+          FocusControl = EditUnidade
+        end
         object EditNome: TcxDBTextEdit
           Left = 4
           Top = 16
@@ -81,8 +97,17 @@ inherited frmItem: TfrmItem
           DataBinding.DataField = 'TIPO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
+          Properties.OnEditValueChanged = cbTipoPropertiesEditValueChanged
           TabOrder = 1
           Width = 161
+        end
+        object EditUnidade: TcxDBTextEdit
+          Left = 468
+          Top = 16
+          DataBinding.DataField = 'UNIDADE'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 2
+          Width = 137
         end
       end
     end

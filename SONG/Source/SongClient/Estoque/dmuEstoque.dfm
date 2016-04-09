@@ -1,4 +1,5 @@
 inherited dmEstoque: TdmEstoque
+  OldCreateOrder = True
   Height = 418
   Width = 753
   object cdsItem: TRFClientDataSet
@@ -27,6 +28,12 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
+      FieldName = 'UNIDADE'
+      Required = True
+      Size = 10
+    end
   end
   object cdsEntrada: TRFClientDataSet
     Aggregates = <>
@@ -45,11 +52,6 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'ID_ITEM'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object cdsEntradaID_ESPECIE: TIntegerField
-      DisplayLabel = 'Id da Esp'#233'cie'
-      FieldName = 'ID_ESPECIE'
-      ProviderFlags = [pfInUpdate]
     end
     object cdsEntradaID_COMPRA: TIntegerField
       DisplayLabel = 'Id da Compra'
@@ -74,12 +76,6 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Item'
       FieldName = 'NOME_ITEM'
       ProviderFlags = [pfInUpdate]
-      Size = 100
-    end
-    object cdsEntradaNOME_ESPECIE: TStringField
-      DisplayLabel = 'Esp'#233'cie'
-      FieldName = 'NOME_ESPECIE'
-      ProviderFlags = []
       Size = 100
     end
   end
