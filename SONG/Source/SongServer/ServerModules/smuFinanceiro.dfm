@@ -319,7 +319,6 @@ inherited smFinanceiro: TsmFinanceiro
     SQL.Strings = (
       'select DISTINCT Conta_Pagar.Id,'
       '       Conta_Pagar.Id_Fornecedor,'
-      '       Conta_Pagar.Id_Rubrica,'
       '       Conta_Pagar.Id_Plano_Contas,'
       '       Conta_Pagar.Id_Conta_Corrente,'
       '       Conta_Pagar.Descricao,'
@@ -366,11 +365,6 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'ID_FORNECEDOR'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qConta_PagarID_RUBRICA: TIntegerField
-      FieldName = 'ID_RUBRICA'
-      Origin = 'ID_RUBRICA'
-      ProviderFlags = [pfInUpdate]
     end
     object qConta_PagarID_PLANO_CONTAS: TIntegerField
       FieldName = 'ID_PLANO_CONTAS'
@@ -514,6 +508,7 @@ inherited smFinanceiro: TsmFinanceiro
       'select Conta_Pagar_Projeto.Id,'
       '       Conta_Pagar_Projeto.Id_Conta_Pagar,'
       '       Conta_Pagar_Projeto.Id_Projeto,'
+      '       Conta_Pagar_Projeto.Id_rubrica,'
       '       Projeto.nome as Projeto'
       'from Conta_Pagar_Projeto'
       
@@ -555,6 +550,12 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = []
       Size = 100
     end
+    object qConta_Pagar_ProjetoID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object qConta_Pagar_Atividade: TRFQuery
     Connection = dmPrincipal.conSong
@@ -562,6 +563,7 @@ inherited smFinanceiro: TsmFinanceiro
       'select Conta_Pagar_Atividade.Id,'
       '       Conta_Pagar_Atividade.Id_Conta_Pagar,'
       '       Conta_Pagar_Atividade.Id_Atividade,'
+      '       Conta_Pagar_Atividade.Id_Rubrica,'
       '       Atividade.Nome as Atividade'
       'from Conta_Pagar_Atividade'
       
@@ -601,6 +603,12 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qConta_Pagar_AtividadeID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object qConta_Receber: TRFQuery

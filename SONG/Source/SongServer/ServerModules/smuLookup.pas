@@ -76,6 +76,7 @@ type
     qlkItemNOME: TStringField;
     qlkItemTIPO: TSmallintField;
     qlkItemUNIDADE: TStringField;
+    qlkRubricaAtividade: TRFQuery;
   private
     { Private declarations }
   protected
@@ -155,6 +156,10 @@ begin
         begin
             Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
         end;
+    end
+  else if ipTabela = 'RUBRICA' then
+    begin
+
     end;
 
 end;

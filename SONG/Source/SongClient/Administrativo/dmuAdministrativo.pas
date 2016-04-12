@@ -155,6 +155,13 @@ type
     cdsProjeto_RubricaID_RUBRICA: TIntegerField;
     cdsProjeto_RubricaORCAMENTO: TBCDField;
     cdsProjeto_RubricaNOME_RUBRICA: TStringField;
+    cdsProjeto_RubricaRECEBIDO: TBCDField;
+    cdsProjeto_RubricaGASTO: TBCDField;
+    cdsProjeto_Area: TRFClientDataSet;
+    cdsProjeto_AreaID: TIntegerField;
+    cdsProjeto_AreaID_PROJETO: TIntegerField;
+    cdsProjeto_AreaNOME: TStringField;
+    cdsProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
   private
     { Private declarations }
   public

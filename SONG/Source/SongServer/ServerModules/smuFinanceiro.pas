@@ -54,7 +54,6 @@ type
     qConta_Pagar: TRFQuery;
     qConta_PagarID: TIntegerField;
     qConta_PagarID_FORNECEDOR: TIntegerField;
-    qConta_PagarID_RUBRICA: TIntegerField;
     qConta_PagarID_PLANO_CONTAS: TIntegerField;
     qConta_PagarID_CONTA_CORRENTE: TIntegerField;
     qConta_PagarDESCRICAO: TStringField;
@@ -116,6 +115,8 @@ type
     qConta_Receber_ProjetoPROJETO: TStringField;
     qConta_PagarNUMERO_DOCUMENTO: TStringField;
     qConta_ReceberNUMERO_DOCUMENTO: TStringField;
+    qConta_Pagar_ProjetoID_RUBRICA: TIntegerField;
+    qConta_Pagar_AtividadeID_RUBRICA: TIntegerField;
   private
     { Private declarations }
   protected

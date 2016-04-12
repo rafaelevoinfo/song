@@ -174,10 +174,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0

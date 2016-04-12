@@ -424,7 +424,7 @@ inherited smLookup: TsmLookup
       '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
       'from Rubrica'
       '&where'
-      'order by Rubrica.Nome')
+      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) desc')
     Left = 632
     Top = 16
     MacroData = <
@@ -545,5 +545,31 @@ inherited smLookup: TsmLookup
       Required = True
       Size = 10
     end
+  end
+  object qlkRubricaAtividade: TRFQuery
+    SQL.Strings = (
+      'select distinct Rubrica.Id,'
+      '       Rubrica.Id_Rubrica_Pai,'
+      '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
+      'from Rubrica'
+      
+        'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
+        'ca.id)'
+      
+        'left join atividade_projeto on (projeto_rubrica.id_projeto = ati' +
+        'vidade_projeto.id_projeto)'
+      
+        'left join atividade on (projeto_rubrica.id_projeto = atividade.i' +
+        'd_projeto)'
+      '&WHERE'
+      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) desc')
+    Left = 624
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+        DataType = mdIdentifier
+      end>
   end
 end

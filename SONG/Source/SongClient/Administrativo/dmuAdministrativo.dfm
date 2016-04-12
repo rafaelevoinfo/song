@@ -628,6 +628,14 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsProjeto_Financiador_PagtoPERCENTUAL: TBCDField
+      DisplayLabel = 'Percentual'
+      FieldName = 'PERCENTUAL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
   end
   object dsProjeto_Financiador: TDataSource
     DataSet = cdsProjeto_Financiador
@@ -974,6 +982,7 @@ inherited dmAdministrativo: TdmAdministrativo
     Params = <>
     ProviderName = 'dspqProjeto_Rubrica'
     RemoteServer = dmPrincipal.ProviderAdministrativo
+    RFApplyAutomatico = False
     Left = 480
     Top = 344
     object cdsProjeto_RubricaID: TIntegerField
@@ -1001,6 +1010,50 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Rubrica'
       FieldName = 'NOME_RUBRICA'
       ReadOnly = True
+      Size = 100
+    end
+    object cdsProjeto_RubricaRECEBIDO: TBCDField
+      DisplayLabel = 'Valor Recebido'
+      FieldName = 'RECEBIDO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_RubricaGASTO: TBCDField
+      DisplayLabel = 'Valor Gasto'
+      FieldName = 'GASTO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+  end
+  object cdsProjeto_Area: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_PROJETO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqProjeto_Area'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 608
+    Top = 352
+    object cdsProjeto_AreaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjeto_AreaID_PROJETO: TIntegerField
+      DisplayLabel = 'Id do Projeto'
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_AreaNOME: TStringField
+      DisplayLabel = 'Nome da '#193'rea'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 100
     end
   end

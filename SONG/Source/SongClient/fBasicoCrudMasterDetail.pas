@@ -70,6 +70,7 @@ type
     procedure pprBeforeAlterarDetail; virtual;
     procedure pprDefinirTabDetailCadastro; virtual;
     procedure pprEfetuarCancelarDetail; virtual;
+    procedure pprEfetuarExcluirDetail(ipId: Integer); virtual;
 
     procedure pprValidarDadosDetail; virtual;
     // OVERRIDE
@@ -84,7 +85,7 @@ type
     function fpuCancelarDetail: Boolean; virtual;
 
     procedure ppuSalvarDetail;
-    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo:TModelo=nil); override;
+    procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo: TModelo = nil); override;
   end;
 
 var
@@ -260,7 +261,7 @@ begin
   ppuRetornar;
 end;
 
-procedure TfrmBasicoCrudMasterDetail.ppuConfigurarModoExecucao(ipModo: TModoExecucao;ipModelo:TModelo);
+procedure TfrmBasicoCrudMasterDetail.ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo: TModelo);
 begin
   inherited;
   case ipModo of
@@ -279,6 +280,12 @@ begin
   TClientDataSet(dsDetail.DataSet).CancelUpdates;
 end;
 
+procedure TfrmBasicoCrudMasterDetail.pprEfetuarExcluirDetail(ipId: Integer);
+begin
+  if dsDetail.DataSet.Locate(TBancoDados.coId, ipId, []) then
+    dsDetail.DataSet.Delete;
+end;
+
 function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
 var
   vaId: Integer;
@@ -290,8 +297,7 @@ begin
       try
         for vaId in ipIds do
           begin
-            if dsDetail.DataSet.Locate(TBancoDados.coId, vaId, []) then
-              dsDetail.DataSet.Delete;
+            pprEfetuarExcluirDetail(vaId);
           end;
 
         if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then

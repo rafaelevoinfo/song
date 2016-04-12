@@ -16,7 +16,7 @@ uses
   System.TypInfo, uTypes, dmuLookup, cxMemo, cxDBEdit, dmuPrincipal,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.Math, System.DateUtils;
+  System.Math, System.DateUtils, uMensagem;
 
 type
   TfrmContaPagar = class(TfrmBasicoCrudMasterDetail)
@@ -44,8 +44,6 @@ type
     cbContaCorrente: TcxDBLookupComboBox;
     Label4: TLabel;
     cbFornecedor: TcxDBLookupComboBox;
-    cbRubrica: TcxDBLookupComboBox;
-    lbl1: TLabel;
     cbPlanoContas: TcxDBLookupComboBox;
     Label5: TLabel;
     Label8: TLabel;
@@ -99,6 +97,13 @@ type
     viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn;
     EditNroDocumento: TcxDBTextEdit;
     Label13: TLabel;
+    cbRubricaProjeto: TcxDBLookupComboBox;
+    lbl1: TLabel;
+    cbRubricaAtividade: TcxDBLookupComboBox;
+    Label14: TLabel;
+    cdsLocalVinculoID_RUBRICA: TIntegerField;
+    cdsLocalVinculoRUBRICA: TStringField;
+    viewVinculosRUBRICA: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
@@ -113,7 +118,7 @@ type
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
-    procedure ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string);
+    procedure ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String);
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
       ipValor: Double);
     procedure ppvQuitarParcela;
@@ -123,9 +128,10 @@ type
     procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar; override;
     procedure pprBeforeAlterar; override;
-    procedure pprBeforeIncluir;override;
+    procedure pprBeforeIncluir; override;
     procedure pprValidarDados; override;
     procedure pprEfetuarPesquisa; override;
+    procedure pprExecutarCancelar; override;
     function fprHabilitarSalvar(): Boolean; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -194,8 +200,9 @@ begin
     dmFinanceiro.cdsConta_Pagar_Projeto.First;
     while not dmFinanceiro.cdsConta_Pagar_Projeto.Eof do
       begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO',
-          VarArrayOf([dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto]), []) then
+        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO;ID_RUBRICA',
+          VarArrayOf([dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto, dmFinanceiro.cdsConta_Pagar_ProjetoID_RUBRICA.AsInteger]
+          ), []) then
           dmFinanceiro.cdsConta_Pagar_Projeto.Next
         else
           dmFinanceiro.cdsConta_Pagar_Projeto.Delete;
@@ -205,8 +212,9 @@ begin
     dmFinanceiro.cdsConta_Pagar_Atividade.First;
     while not dmFinanceiro.cdsConta_Pagar_Atividade.Eof do
       begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO', VarArrayOf([dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger,
-          coAtividade]), [])
+        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO;ID_RUBRICA',
+          VarArrayOf([dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger,
+          coAtividade, dmFinanceiro.cdsConta_Pagar_AtividadeID_RUBRICA.AsInteger]), [])
         then
           dmFinanceiro.cdsConta_Pagar_Atividade.Next
         else
@@ -225,6 +233,7 @@ begin
                 dmFinanceiro.cdsConta_Pagar_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_PROJETO');
                 dmFinanceiro.cdsConta_Pagar_ProjetoID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
                 dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
+                dmFinanceiro.cdsConta_Pagar_ProjetoID_RUBRICA.AsInteger := cdsLocalVinculoID_RUBRICA.AsInteger;
                 dmFinanceiro.cdsConta_Pagar_Projeto.Post;
               end;
           end
@@ -238,6 +247,7 @@ begin
                 dmFinanceiro.cdsConta_Pagar_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_ATIVIDADE');
                 dmFinanceiro.cdsConta_Pagar_AtividadeID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
                 dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
+                dmFinanceiro.cdsConta_Pagar_AtividadeID_RUBRICA.AsInteger := cdsLocalVinculoID_RUBRICA.AsInteger;
                 dmFinanceiro.cdsConta_Pagar_Atividade.Post;
               end;
           end;
@@ -269,6 +279,13 @@ begin
   inherited;
   dmFinanceiro.cdsConta_Pagar_Projeto.Open;
   dmFinanceiro.cdsConta_Pagar_Atividade.Open;
+end;
+
+procedure TfrmContaPagar.pprExecutarCancelar;
+begin
+  dmFinanceiro.cdsConta_Pagar_Parcela.CancelUpdates;
+  inherited;
+
 end;
 
 procedure TfrmContaPagar.pprExecutarSalvar;
@@ -314,7 +331,7 @@ begin
   dmFinanceiro.cdsConta_PagarID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR');
 end;
 
-procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string);
+procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String);
 begin
   if not cdsLocalVinculo.Active then
     cdsLocalVinculo.CreateDataSet;
@@ -323,6 +340,8 @@ begin
   cdsLocalVinculoID.AsInteger := ipId;
   cdsLocalVinculoTIPO.AsInteger := ipTipo;
   cdsLocalVinculoNOME.AsString := ipNome;
+  cdsLocalVinculoID_RUBRICA.AsInteger := ipIdRubrica;
+  cdsLocalVinculoRUBRICA.AsString := ipNomeRubrica;
   cdsLocalVinculo.Post;
 end;
 
@@ -388,24 +407,38 @@ begin
   inherited;
   if not VarIsNull(cbAtividade.EditValue) then
     begin
-      if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, cbAtividade.EditValue, []) then
+      if not VarIsNull(cbRubricaAtividade.EditValue) then
         begin
-          ppvAddVinculo(cbAtividade.EditValue, coAtividade, cbAtividade.Text);
-        end;
-    end;
+          if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, cbAtividade.EditValue, []) then
+            begin
+              ppvAddVinculo(cbAtividade.EditValue, coAtividade, cbAtividade.Text, cbRubricaAtividade.EditValue, cbRubricaAtividade.Text);
+            end;
+        end
+      else
+        TMensagem.ppuShowMessage('Informe a rubrica da atividade.');
+    end
+  else
+    TMensagem.ppuShowMessage('Informe com qual atividade deseja realizar o vinculo.');
 end;
 
 procedure TfrmContaPagar.Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
 begin
   inherited;
-  if not VarIsNull(cbProjeto.EditValue) then
+  if not VarIsNull(cbRubricaProjeto.EditValue) then
     begin
-
-      if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, cbProjeto.EditValue, []) then
+      if not VarIsNull(cbProjeto.EditValue) then
         begin
-          ppvAddVinculo(cbProjeto.EditValue, coProjeto, cbProjeto.Text);
-        end;
-    end;
+          if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, cbProjeto.EditValue, []) then
+            begin
+              ppvAddVinculo(cbProjeto.EditValue, coProjeto, cbProjeto.Text, cbRubricaProjeto.EditValue, cbRubricaProjeto.Text);
+            end;
+        end
+      else
+        TMensagem.ppuShowMessage('Informe a rubrica do projeto.');
+    end
+  else
+    TMensagem.ppuShowMessage('Informe com qual projeto deseja realizar o vinculo.');
+
 end;
 
 procedure TfrmContaPagar.Ac_Quitar_ReabrirExecute(Sender: TObject);

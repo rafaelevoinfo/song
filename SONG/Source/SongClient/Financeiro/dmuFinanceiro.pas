@@ -51,7 +51,6 @@ type
     cdsConta_Pagar: TRFClientDataSet;
     cdsConta_PagarID: TIntegerField;
     cdsConta_PagarID_FORNECEDOR: TIntegerField;
-    cdsConta_PagarID_RUBRICA: TIntegerField;
     cdsConta_PagarID_PLANO_CONTAS: TIntegerField;
     cdsConta_PagarID_CONTA_CORRENTE: TIntegerField;
     cdsConta_PagarDESCRICAO: TStringField;
@@ -115,6 +114,8 @@ type
     dsConta_Receber: TDataSource;
     cdsConta_PagarNUMERO_DOCUMENTO: TStringField;
     cdsConta_ReceberNUMERO_DOCUMENTO: TStringField;
+    cdsConta_Pagar_AtividadeID_RUBRICA: TIntegerField;
+    cdsConta_Pagar_ProjetoID_RUBRICA: TIntegerField;
   private
     { Private declarations }
   public

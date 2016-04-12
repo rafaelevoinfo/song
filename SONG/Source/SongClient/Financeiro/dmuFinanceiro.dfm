@@ -254,11 +254,6 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsConta_PagarID_RUBRICA: TIntegerField
-      DisplayLabel = 'Id da Rubrica'
-      FieldName = 'ID_RUBRICA'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsConta_PagarID_PLANO_CONTAS: TIntegerField
       DisplayLabel = 'Id do Plano de Contas'
       FieldName = 'ID_PLANO_CONTAS'
@@ -367,6 +362,11 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = [pfInUpdate]
       Size = 100
     end
+    object cdsConta_Pagar_ProjetoID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object cdsConta_Pagar_Atividade: TRFClientDataSet
     Aggregates = <>
@@ -407,6 +407,11 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'ATIVIDADE'
       ProviderFlags = [pfInUpdate]
       Size = 100
+    end
+    object cdsConta_Pagar_AtividadeID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object cdsConta_Pagar_Parcela: TRFClientDataSet

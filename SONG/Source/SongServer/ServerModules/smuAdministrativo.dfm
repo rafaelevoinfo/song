@@ -653,7 +653,8 @@ inherited smAdministrativo: TsmAdministrativo
       'select PROJETO_FINANCIADOR_PAGTO.ID,'
       '       PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR,'
       '       PROJETO_FINANCIADOR_PAGTO.VALOR,'
-      '       PROJETO_FINANCIADOR_PAGTO.DATA'
+      '       PROJETO_FINANCIADOR_PAGTO.DATA,'
+      '       PROJETO_FINANCIADOR_PAGTO.PERCENTUAL       '
       'from PROJETO_FINANCIADOR_PAGTO'
       
         'where PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR = :ID_PRO' +
@@ -691,6 +692,14 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = '"DATA"'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qProjeto_Financiador_PagtoPERCENTUAL: TBCDField
+      FieldName = 'PERCENTUAL'
+      Origin = 'PERCENTUAL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
     end
   end
   object qAtividade: TRFQuery
@@ -1104,6 +1113,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       Projeto_Rubrica.Id_Projeto,'
       '       Projeto_Rubrica.Id_Rubrica,'
       '       Projeto_Rubrica.Orcamento,'
+      '       Projeto_Rubrica.Recebido,'
+      '       Projeto_Rubrica.gasto,'
       
         '       Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome as Nome_Ru' +
         'brica'
@@ -1154,6 +1165,57 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOME'
       ProviderFlags = []
       ReadOnly = True
+      Size = 100
+    end
+    object qProjeto_RubricaRECEBIDO: TBCDField
+      FieldName = 'RECEBIDO'
+      Origin = 'RECEBIDO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaGASTO: TBCDField
+      FieldName = 'GASTO'
+      Origin = 'GASTO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+  end
+  object qProjeto_Area: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Projeto_Area.Id,'
+      '       Projeto_Area.Id_Projeto,'
+      '       Projeto_Area.Nome'
+      'from Projeto_Area'
+      'where Projeto_Area.Id_Projeto = :ID_PROJETO')
+    Left = 488
+    Top = 216
+    ParamData = <
+      item
+        Name = 'ID_PROJETO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qProjeto_AreaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_AreaID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_AreaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 100
     end
   end

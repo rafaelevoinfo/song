@@ -154,6 +154,13 @@ type
     qProjeto_RubricaID_RUBRICA: TIntegerField;
     qProjeto_RubricaORCAMENTO: TBCDField;
     qProjeto_RubricaNOME_RUBRICA: TStringField;
+    qProjeto_Area: TRFQuery;
+    qProjeto_AreaID: TIntegerField;
+    qProjeto_AreaID_PROJETO: TIntegerField;
+    qProjeto_AreaNOME: TStringField;
+    qProjeto_RubricaRECEBIDO: TBCDField;
+    qProjeto_RubricaGASTO: TBCDField;
+    qProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
   private
     { Private declarations }
   protected
