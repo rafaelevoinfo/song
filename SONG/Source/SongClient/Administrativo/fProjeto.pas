@@ -236,6 +236,8 @@ type
     procedure pprEfetuarCancelarDetail; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprEfetuarExcluirDetail(ipId: Integer); override;
+
+    procedure pprValidarDadosDetail; override;
   public
     procedure ppuBaixarArquivo(ipId: Integer);
     procedure ppuIncluirDetail; override;
@@ -540,6 +542,17 @@ begin
   if not dmPrincipal.FuncoesAdm.fpuValidarNomeProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
     dmAdministrativo.cdsProjetoNOME.AsString) then
     raise Exception.Create('Já existe um projeto com este nome. Por favor, informe outro nome.');
+
+end;
+
+procedure TfrmProjeto.pprValidarDadosDetail;
+begin
+  inherited;
+  if not dmPrincipal.FuncoesAdm.fpuValidarNomeAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
+    dmAdministrativo.cdsProjeto_AreaID.AsInteger,dmAdministrativo.cdsProjeto_AreaNOME.AsString) then
+    begin
+       raise Exception.Create('Já existe uma área para este projeto com este nome. Por favor, informe outro nome.');
+    end;
 
 end;
 

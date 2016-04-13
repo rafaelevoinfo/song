@@ -58,7 +58,6 @@ type
     cdsConta_PagarFORMA_PAGTO: TSmallintField;
     cdsConta_PagarOBSERVACAO: TStringField;
     cdsConta_PagarFORNECEDOR: TStringField;
-    cdsConta_PagarRUBRICA: TStringField;
     cdsConta_PagarPLANO_CONTAS: TStringField;
     cdsConta_PagarCONTA_CORRENTE: TStringField;
     cdsConta_Pagar_Projeto: TRFClientDataSet;
@@ -116,6 +115,12 @@ type
     cdsConta_ReceberNUMERO_DOCUMENTO: TStringField;
     cdsConta_Pagar_AtividadeID_RUBRICA: TIntegerField;
     cdsConta_Pagar_ProjetoID_RUBRICA: TIntegerField;
+    cdsConta_Pagar_AtividadeID_PROJETO_AREA: TIntegerField;
+    cdsConta_Pagar_ProjetoID_PROJETO_AREA: TIntegerField;
+    cdsConta_Pagar_AtividadeRUBRICA: TStringField;
+    cdsConta_Pagar_AtividadeAREA: TStringField;
+    cdsConta_Pagar_ProjetoRUBRICA: TStringField;
+    cdsConta_Pagar_ProjetoAREA: TStringField;
   private
     { Private declarations }
   public

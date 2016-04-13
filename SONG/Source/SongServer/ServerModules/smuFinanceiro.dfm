@@ -327,7 +327,6 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar.Observacao,'
       '       Conta_Pagar.Numero_Documento,'
       '       fin_for_cli.nome_fantasia as fornecedor,'
-      '       rubrica.nome as rubrica,'
       '       plano_contas.nome as plano_contas,'
       
         '       (banco.nome || '#39' - '#39'|| banco_conta_corrente.agencia||'#39'/'#39'|' +
@@ -336,7 +335,6 @@ inherited smFinanceiro: TsmFinanceiro
       
         'inner join fin_for_cli on (fin_for_cli.id = conta_pagar.id_forne' +
         'cedor)'
-      'left join rubrica on (rubrica.id = conta_pagar.id_rubrica)'
       
         'inner join plano_contas on (plano_contas.id = conta_pagar.id_pla' +
         'no_contas)'
@@ -407,13 +405,6 @@ inherited smFinanceiro: TsmFinanceiro
       AutoGenerateValue = arDefault
       FieldName = 'FORNECEDOR'
       Origin = 'NOME_FANTASIA'
-      ProviderFlags = []
-      Size = 100
-    end
-    object qConta_PagarRUBRICA: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'RUBRICA'
-      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
@@ -509,11 +500,22 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Projeto.Id_Conta_Pagar,'
       '       Conta_Pagar_Projeto.Id_Projeto,'
       '       Conta_Pagar_Projeto.Id_rubrica,'
-      '       Projeto.nome as Projeto'
+      '       Conta_Pagar_Projeto.Id_Projeto_Area,'
+      '       Projeto.nome as Projeto,'
+      
+        '       Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome as Rubrica' +
+        ','
+      '       Projeto_Area.nome as Area'
       'from Conta_Pagar_Projeto'
       
         'inner join projeto on (projeto.id = conta_pagar_projeto.Id_Proje' +
         'to)'
+      
+        'left join rubrica on (rubrica.id = Conta_Pagar_Projeto.id_rubric' +
+        'a)'
+      
+        'left join Projeto_Area on (Projeto_Area.id = Conta_Pagar_Projeto' +
+        '.id_projeto_area)'
       'WHERE Conta_Pagar_Projeto.id_conta_pagar = :ID_CONTA_PAGAR'
       '')
     Left = 416
@@ -556,6 +558,26 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qConta_Pagar_ProjetoID_PROJETO_AREA: TIntegerField
+      FieldName = 'ID_PROJETO_AREA'
+      Origin = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_ProjetoRUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_Pagar_ProjetoAREA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'AREA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object qConta_Pagar_Atividade: TRFQuery
     Connection = dmPrincipal.conSong
@@ -564,11 +586,22 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Atividade.Id_Conta_Pagar,'
       '       Conta_Pagar_Atividade.Id_Atividade,'
       '       Conta_Pagar_Atividade.Id_Rubrica,'
-      '       Atividade.Nome as Atividade'
+      '       Conta_Pagar_Atividade.Id_Projeto_Area,'
+      '       Atividade.Nome as Atividade,'
+      
+        '       Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome as Rubrica' +
+        ','
+      '       Projeto_Area.nome as Area'
       'from Conta_Pagar_Atividade'
       
         'inner join atividade on (atividade.id = conta_pagar_atividade.id' +
         '_atividade)'
+      
+        'left join rubrica on (rubrica.id = conta_pagar_atividade.id_rubr' +
+        'ica)'
+      
+        'left join Projeto_Area on (Projeto_Area.id = conta_pagar_ativida' +
+        'de.id_projeto_area)'
       'where conta_pagar_atividade.id_conta_pagar = :ID_CONTA_PAGAR')
     Left = 416
     Top = 192
@@ -609,6 +642,26 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'ID_RUBRICA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qConta_Pagar_AtividadeID_PROJETO_AREA: TIntegerField
+      FieldName = 'ID_PROJETO_AREA'
+      Origin = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_AtividadeRUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_Pagar_AtividadeAREA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'AREA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qConta_Receber: TRFQuery

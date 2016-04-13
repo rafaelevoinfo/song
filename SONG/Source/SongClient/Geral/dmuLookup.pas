@@ -123,6 +123,24 @@ type
     repLcbItem: TcxEditRepositoryLookupComboBoxItem;
     dslkItem: TDataSource;
     cdslkItemUNIDADE: TStringField;
+    cdslkRubrica_Atividade: TRFClientDataSet;
+    cdslkRubrica_AtividadeID: TIntegerField;
+    cdslkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField;
+    cdslkRubrica_AtividadeNOME: TStringField;
+    cdslkProjeto_Area: TRFClientDataSet;
+    cdslkProjeto_AreaID: TIntegerField;
+    cdslkProjeto_AreaID_PROJETO: TIntegerField;
+    cdslkProjeto_AreaNOME: TStringField;
+    cdslkProjeto_Area_Atividade: TRFClientDataSet;
+    cdslkProjeto_Area_AtividadeID: TIntegerField;
+    cdslkProjeto_Area_AtividadeID_PROJETO: TIntegerField;
+    cdslkProjeto_Area_AtividadeNOME: TStringField;
+    repLcbRubricaAtividade: TcxEditRepositoryLookupComboBoxItem;
+    dslkRubrica_Atividade: TDataSource;
+    repLcbProjetoArea: TcxEditRepositoryLookupComboBoxItem;
+    dslkProjeto_Area: TDataSource;
+    dslkProjeto_Area_Atividade: TDataSource;
+    repLcbProjeto_Area_Atividade: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

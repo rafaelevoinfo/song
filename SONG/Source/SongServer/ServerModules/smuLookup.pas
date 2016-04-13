@@ -76,7 +76,15 @@ type
     qlkItemNOME: TStringField;
     qlkItemTIPO: TSmallintField;
     qlkItemUNIDADE: TStringField;
-    qlkRubricaAtividade: TRFQuery;
+    qlkRubrica_Atividade: TRFQuery;
+    qlkProjeto_Area: TRFQuery;
+    qlkProjeto_Area_Atividade: TRFQuery;
+    qlkProjeto_Area_AtividadeID: TIntegerField;
+    qlkProjeto_Area_AtividadeID_PROJETO: TIntegerField;
+    qlkProjeto_Area_AtividadeNOME: TStringField;
+    qlkProjeto_AreaID: TIntegerField;
+    qlkProjeto_AreaID_PROJETO: TIntegerField;
+    qlkProjeto_AreaNOME: TStringField;
   private
     { Private declarations }
   protected
@@ -147,21 +155,36 @@ begin
     begin
       if ipParam.Name = TParametros.coTipo then
         begin
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
         end;
     end
   else if ipTabela = 'ITEM' then
     begin
       if ipParam.Name = TParametros.coTipo then
         begin
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'tipo', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
         end;
     end
   else if ipTabela = 'RUBRICA' then
     begin
-
-    end;
-
+      if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_RUBRICA', 'ID_PROJETO', vaValor.ToInteger, vaOperador);
+    end
+  else if ipTabela = 'RUBRICA_ATIVIDADE' then
+    begin
+      if ipParam.Name = TParametros.coAtividade then
+        Result := Result + ' ((atividade_projeto.id_atividade ='+vaValor+') or (atividade.id = '+vaValor+'))';
+    end
+  else if ipTabela = 'PROJETO_AREA' then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
+         Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_AREA', 'ID_PROJETO', vaValor.ToInteger, vaOperador);
+    end
+  else if ipTabela = 'PROJETO_AREA_ATIVIDADE' then
+    begin
+      if ipParam.Name = TParametros.coAtividade then
+        Result := Result + ' ((atividade_projeto.id_atividade ='+vaValor+') or (atividade.id = '+vaValor+'))';
+    end
 end;
 
 end.

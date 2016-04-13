@@ -19,6 +19,7 @@ type
     coStatus: string = 'STATUS';
     coStatusDiferente = 'STATUS_DIFERENTE';
     coProjeto: string = 'PROJETO';
+    coAtividade:string = 'ATIVIDADE';
     coNomeCientifico = 'NOME_CIENTIFICO';
     coFamiliaBotanica = 'FAMILIA_BOTANICA';
     coNomeFantasia = 'NOME_FANTASIA';

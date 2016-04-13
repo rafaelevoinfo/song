@@ -77,7 +77,6 @@ type
     qConta_Pagar_ProjetoPROJETO: TStringField;
     qConta_Pagar_AtividadeATIVIDADE: TStringField;
     qConta_PagarFORNECEDOR: TStringField;
-    qConta_PagarRUBRICA: TStringField;
     qConta_PagarPLANO_CONTAS: TStringField;
     qConta_PagarCONTA_CORRENTE: TStringField;
     qConta_Pagar_ParcelaSTATUS: TSmallintField;
@@ -117,6 +116,12 @@ type
     qConta_ReceberNUMERO_DOCUMENTO: TStringField;
     qConta_Pagar_ProjetoID_RUBRICA: TIntegerField;
     qConta_Pagar_AtividadeID_RUBRICA: TIntegerField;
+    qConta_Pagar_ProjetoID_PROJETO_AREA: TIntegerField;
+    qConta_Pagar_AtividadeID_PROJETO_AREA: TIntegerField;
+    qConta_Pagar_AtividadeRUBRICA: TStringField;
+    qConta_Pagar_AtividadeAREA: TStringField;
+    qConta_Pagar_ProjetoRUBRICA: TStringField;
+    qConta_Pagar_ProjetoAREA: TStringField;
   private
     { Private declarations }
   protected

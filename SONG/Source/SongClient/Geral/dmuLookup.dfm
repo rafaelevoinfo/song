@@ -1,10 +1,10 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
   OnCreate = DataModuleCreate
-  Height = 455
+  Height = 618
   Width = 1015
   object Repositorio: TcxEditRepository
-    Left = 188
+    Left = 16
     Top = 16
     object RepIcbNaoSim: TcxEditRepositoryImageComboBoxItem
       Properties.Items = <
@@ -331,7 +331,7 @@ inherited dmLookup: TdmLookup
           Value = 5
         end
         item
-          Description = 'Em Esp'#233'cie'
+          Description = 'Dinheiro'
           Value = 6
         end
         item
@@ -419,11 +419,41 @@ inherited dmLookup: TdmLookup
       Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkItem
     end
+    object repLcbRubricaAtividade: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkRubrica_Atividade
+    end
+    object repLcbProjetoArea: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkProjeto_Area
+    end
+    object repLcbProjeto_Area_Atividade: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkProjeto_Area_Atividade
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
-    Left = 780
-    Top = 124
+    Left = 16
+    Top = 232
   end
   object cdslkPessoa: TRFClientDataSet
     Aggregates = <>
@@ -431,8 +461,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkPessoa'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 336
-    Top = 232
+    Left = 312
+    Top = 448
     object cdslkPessoaID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -446,7 +476,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkPessoa: TDataSource
     DataSet = cdslkPessoa
-    Left = 484
+    Left = 904
     Top = 124
   end
   object cdslkOrganizacao: TRFClientDataSet
@@ -455,8 +485,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkOrganizacao'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 484
-    Top = 232
+    Left = 460
+    Top = 448
     object cdslkOrganizacaoID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -474,8 +504,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkFinanciador'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 40
-    Top = 340
+    Left = 608
+    Top = 448
     object cdslkFinanciadorID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -489,13 +519,13 @@ inherited dmLookup: TdmLookup
   end
   object dslkOrganizacao: TDataSource
     DataSet = cdslkOrganizacao
-    Left = 336
-    Top = 124
+    Left = 608
+    Top = 232
   end
   object dslkFinanciador: TDataSource
     DataSet = cdslkFinanciador
-    Left = 632
-    Top = 124
+    Left = 756
+    Top = 232
   end
   object cdslkBanco: TRFClientDataSet
     Aggregates = <>
@@ -503,8 +533,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkBanco'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 928
-    Top = 232
+    Left = 904
+    Top = 340
     object cdslkBancoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -528,8 +558,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkBanco_Conta_Corrente'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 780
-    Top = 232
+    Left = 16
+    Top = 448
     object cdslkBanco_Conta_CorrenteID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -557,12 +587,12 @@ inherited dmLookup: TdmLookup
   end
   object dslkBanco: TDataSource
     DataSet = cdslkBanco
-    Left = 632
-    Top = 16
+    Left = 460
+    Top = 124
   end
   object dslkConta_Corrente: TDataSource
     DataSet = cdslkConta_Corrente
-    Left = 484
+    Left = 460
     Top = 16
   end
   object cdslkConta_Corrente: TRFClientDataSet
@@ -572,8 +602,8 @@ inherited dmLookup: TdmLookup
     RemoteServer = dmPrincipal.ProviderLookup
     OnCalcFields = cdslkConta_CorrenteCalcFields
     RFApplyAutomatico = False
-    Left = 632
-    Top = 232
+    Left = 164
+    Top = 448
     object cdslkConta_CorrenteID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -619,8 +649,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkProjeto'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 336
-    Top = 340
+    Left = 756
+    Top = 448
     object cdslkProjetoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -640,8 +670,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkAtividade'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 188
-    Top = 340
+    Left = 312
+    Top = 556
     object cdslkAtividadeID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -663,12 +693,12 @@ inherited dmLookup: TdmLookup
   end
   object dslkAtividade: TDataSource
     DataSet = cdslkAtividade
-    Left = 336
+    Left = 312
     Top = 16
   end
   object dslkProjeto: TDataSource
     DataSet = cdslkProjeto
-    Left = 780
+    Left = 756
     Top = 16
   end
   object cdslkEspecie: TRFClientDataSet
@@ -677,8 +707,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkEspecie'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 928
-    Top = 124
+    Left = 460
+    Top = 556
     object cdslkEspecieID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -710,7 +740,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkEspecie: TDataSource
     DataSet = cdslkEspecie
-    Left = 188
+    Left = 312
     Top = 124
   end
   object cdslkMatriz: TRFClientDataSet
@@ -719,8 +749,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkMatriz'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 40
-    Top = 232
+    Left = 608
+    Top = 556
     object cdslkMatrizID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -741,7 +771,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkMatriz: TDataSource
     DataSet = cdslkMatriz
-    Left = 40
+    Left = 16
     Top = 124
   end
   object cdslkCanteiro: TRFClientDataSet
@@ -750,8 +780,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkCanteiro'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 188
-    Top = 232
+    Left = 904
+    Top = 448
     object cdslkCanteiroID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -767,7 +797,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkCanteiro: TDataSource
     DataSet = cdslkCanteiro
-    Left = 928
+    Left = 164
     Top = 16
   end
   object cdslkPerfil: TRFClientDataSet
@@ -776,8 +806,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkPerfil'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 480
-    Top = 336
+    Left = 16
+    Top = 556
     object cdslkPerfilID: TIntegerField
       FieldName = 'ID'
     end
@@ -793,8 +823,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkPlano_Contas'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 584
-    Top = 336
+    Left = 164
+    Top = 556
     object cdslkPlano_ContasID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -817,8 +847,8 @@ inherited dmLookup: TdmLookup
   end
   object dslkPlano_Contas: TDataSource
     DataSet = cdslkPlano_Contas
-    Left = 48
-    Top = 399
+    Left = 312
+    Top = 232
   end
   object cdslkRubrica: TRFClientDataSet
     Aggregates = <>
@@ -826,8 +856,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkRubrica'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 696
-    Top = 336
+    Left = 756
+    Top = 340
     object cdslkRubricaID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -845,16 +875,16 @@ inherited dmLookup: TdmLookup
   end
   object dslkRubrica: TDataSource
     DataSet = cdslkRubrica
-    Left = 780
-    Top = 336
+    Left = 460
+    Top = 232
   end
   object cdslkFornecedor: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkFornecedor'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 888
-    Top = 336
+    Left = 904
+    Top = 232
     object cdslkFornecedorID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -868,16 +898,16 @@ inherited dmLookup: TdmLookup
   end
   object dslkFornecedor: TDataSource
     DataSet = cdslkFornecedor
-    Left = 896
-    Top = 400
+    Left = 904
+    Top = 16
   end
   object cdslkFin_For_Cli: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkFin_For_Cli'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 480
-    Top = 400
+    Left = 460
+    Top = 340
     object cdslkFin_For_CliID: TIntegerField
       FieldName = 'ID'
     end
@@ -889,16 +919,16 @@ inherited dmLookup: TdmLookup
   end
   object dslkFin_For_Cli: TDataSource
     DataSet = cdslkFin_For_Cli
-    Left = 488
-    Top = 208
+    Left = 164
+    Top = 124
   end
   object cdslkItem: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkItem'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 336
-    Top = 400
+    Left = 608
+    Top = 340
     object cdslkItemID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -926,7 +956,90 @@ inherited dmLookup: TdmLookup
   end
   object dslkItem: TDataSource
     DataSet = cdslkItem
-    Left = 536
-    Top = 296
+    Left = 608
+    Top = 16
+  end
+  object cdslkRubrica_Atividade: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkRubrica_Atividade'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 312
+    Top = 340
+    object cdslkRubrica_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField
+      FieldName = 'ID_RUBRICA_PAI'
+      ProviderFlags = []
+    end
+    object cdslkRubrica_AtividadeNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 123
+    end
+  end
+  object cdslkProjeto_Area: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkProjeto_Area'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 16
+    Top = 340
+    object cdslkProjeto_AreaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkProjeto_AreaID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = []
+    end
+    object cdslkProjeto_AreaNOME: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdslkProjeto_Area_Atividade: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkProjeto_Area_Atividade'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 164
+    Top = 340
+    object cdslkProjeto_Area_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkProjeto_Area_AtividadeID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = []
+    end
+    object cdslkProjeto_Area_AtividadeNOME: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object dslkRubrica_Atividade: TDataSource
+    DataSet = cdslkRubrica_Atividade
+    Left = 756
+    Top = 124
+  end
+  object dslkProjeto_Area: TDataSource
+    DataSet = cdslkProjeto_Area
+    Left = 608
+    Top = 124
+  end
+  object dslkProjeto_Area_Atividade: TDataSource
+    DataSet = cdslkProjeto_Area_Atividade
+    Left = 164
+    Top = 232
   end
 end

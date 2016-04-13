@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 07/04/2016 22:21:34
+// 13/04/2016 00:24:05
 //
 
 unit uFuncoes;
@@ -54,6 +54,7 @@ type
     FfpuValidarFinanciadorFornecedorClienteCommand: TDBXCommand;
     FfpuValidarLoginCommand: TDBXCommand;
     FfpuValidarNomeProjetoCommand: TDBXCommand;
+    FfpuValidarNomeAreaProjetoCommand: TDBXCommand;
     FfpuInfoPessoaCommand: TDBXCommand;
     FppuValidarFinalizarAtividadeCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -65,6 +66,7 @@ type
     function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipNomeFantasia: string; ipCpfCnpj: string): string;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
+    function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
     procedure DSServerModuleCreate(Sender: TObject);
@@ -130,6 +132,7 @@ type
     FfpuVerificarDependenciasRubricaCommand: TDBXCommand;
     FfpuGerarIdentificadorPlanoContasCommand: TDBXCommand;
     FfpuGerarIdentificadorRubricaCommand: TDBXCommand;
+    FppuQuitarParcelaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -141,6 +144,7 @@ type
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
     function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
+    procedure ppuQuitarParcela(ipIdParcela: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -427,6 +431,22 @@ begin
   Result := FfpuValidarNomeProjetoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
+begin
+  if FfpuValidarNomeAreaProjetoCommand = nil then
+  begin
+    FfpuValidarNomeAreaProjetoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeAreaProjetoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeAreaProjetoCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeAreaProjeto';
+    FfpuValidarNomeAreaProjetoCommand.Prepare;
+  end;
+  FfpuValidarNomeAreaProjetoCommand.Parameters[0].Value.SetInt32(ipIdProjeto);
+  FfpuValidarNomeAreaProjetoCommand.Parameters[1].Value.SetInt32(ipIdAreaProjeto);
+  FfpuValidarNomeAreaProjetoCommand.Parameters[2].Value.SetWideString(ipNome);
+  FfpuValidarNomeAreaProjetoCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeAreaProjetoCommand.Parameters[3].Value.GetBoolean;
+end;
+
 function TsmFuncoesAdministrativoClient.fpuInfoPessoa(ipLogin: string): TPessoa;
 begin
   if FfpuInfoPessoaCommand = nil then
@@ -510,6 +530,7 @@ begin
   FfpuValidarFinanciadorFornecedorClienteCommand.DisposeOf;
   FfpuValidarLoginCommand.DisposeOf;
   FfpuValidarNomeProjetoCommand.DisposeOf;
+  FfpuValidarNomeAreaProjetoCommand.DisposeOf;
   FfpuInfoPessoaCommand.DisposeOf;
   FppuValidarFinalizarAtividadeCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
@@ -882,6 +903,19 @@ begin
   Result := FfpuGerarIdentificadorRubricaCommand.Parameters[1].Value.GetWideString;
 end;
 
+procedure TsmFuncoesFinanceiroClient.ppuQuitarParcela(ipIdParcela: Integer);
+begin
+  if FppuQuitarParcelaCommand = nil then
+  begin
+    FppuQuitarParcelaCommand := FDBXConnection.CreateCommand;
+    FppuQuitarParcelaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuQuitarParcelaCommand.Text := 'TsmFuncoesFinanceiro.ppuQuitarParcela';
+    FppuQuitarParcelaCommand.Prepare;
+  end;
+  FppuQuitarParcelaCommand.Parameters[0].Value.SetInt32(ipIdParcela);
+  FppuQuitarParcelaCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -953,6 +987,7 @@ begin
   FfpuVerificarDependenciasRubricaCommand.DisposeOf;
   FfpuGerarIdentificadorPlanoContasCommand.DisposeOf;
   FfpuGerarIdentificadorRubricaCommand.DisposeOf;
+  FppuQuitarParcelaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

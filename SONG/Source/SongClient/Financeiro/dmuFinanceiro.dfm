@@ -298,12 +298,6 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = []
       Size = 100
     end
-    object cdsConta_PagarRUBRICA: TStringField
-      DisplayLabel = 'Rubrica'
-      FieldName = 'RUBRICA'
-      ProviderFlags = []
-      Size = 100
-    end
     object cdsConta_PagarPLANO_CONTAS: TStringField
       DisplayLabel = 'Plano de Contas'
       FieldName = 'PLANO_CONTAS'
@@ -363,9 +357,26 @@ inherited dmFinanceiro: TdmFinanceiro
       Size = 100
     end
     object cdsConta_Pagar_ProjetoID_RUBRICA: TIntegerField
+      DisplayLabel = 'Id da Rubrica'
       FieldName = 'ID_RUBRICA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsConta_Pagar_ProjetoID_PROJETO_AREA: TIntegerField
+      DisplayLabel = 'Id da '#193'rea do Projeto'
+      FieldName = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_Pagar_ProjetoRUBRICA: TStringField
+      DisplayLabel = 'Rubrica'
+      FieldName = 'RUBRICA'
+      Size = 100
+    end
+    object cdsConta_Pagar_ProjetoAREA: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'AREA'
+      Size = 100
     end
   end
   object cdsConta_Pagar_Atividade: TRFClientDataSet
@@ -409,9 +420,28 @@ inherited dmFinanceiro: TdmFinanceiro
       Size = 100
     end
     object cdsConta_Pagar_AtividadeID_RUBRICA: TIntegerField
+      DisplayLabel = 'Id da Rubrica'
       FieldName = 'ID_RUBRICA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsConta_Pagar_AtividadeID_PROJETO_AREA: TIntegerField
+      DisplayLabel = 'Id da '#193'rea do Projeto'
+      FieldName = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_Pagar_AtividadeRUBRICA: TStringField
+      DisplayLabel = 'Rubrica'
+      FieldName = 'RUBRICA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsConta_Pagar_AtividadeAREA: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'AREA'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object cdsConta_Pagar_Parcela: TRFClientDataSet

@@ -16,6 +16,7 @@ type
     function fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer; ipRazaoSocial, ipNomeFantasia, ipCpfCnpj: String): String;
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: integer; ipNome: String): Boolean;
+    function fpuValidarNomeAreaProjeto(ipIdProjeto, ipIdAreaProjeto: integer; ipNome: String): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
 
@@ -145,6 +146,29 @@ begin
     vaResult.Free;
   end;
 
+end;
+
+function TsmFuncoesAdministrativo.fpuValidarNomeAreaProjeto(
+  ipIdProjeto, ipIdAreaProjeto: integer; ipNome: String): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select count(*) as Quant ' +
+        '  from Projeto_Area ' +
+        ' where Projeto_Area.Id <> :Id and ' +
+        '       Projeto_Area.Id_Projeto <> :Id_Projeto and ' +
+        '       Projeto_area.nome = :nome';
+      ipDataSet.ParamByName('ID').AsInteger := ipIdAreaProjeto;
+      ipDataSet.ParamByName('ID_PROJETO').AsInteger := ipIdProjeto;
+      ipDataSet.ParamByName('NOME').AsString := ipNome;
+      ipDataSet.Open();
+
+      vaResult := ipDataSet.FieldByName('QUANT').AsInteger = 0;
+    end);
+  Result := vaResult;
 end;
 
 function TsmFuncoesAdministrativo.fpuValidarNomeProjeto(ipIdProjeto: integer;

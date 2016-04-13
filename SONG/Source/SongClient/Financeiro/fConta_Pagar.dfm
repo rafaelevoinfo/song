@@ -1,9 +1,10 @@
 inherited frmContaPagar: TfrmContaPagar
-  ActiveControl = EditDescricao
+  ActiveControl = btnIncluir
   Caption = 'Contas a Pagar'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -150,22 +151,17 @@ inherited frmContaPagar: TfrmContaPagar
               Options.Editing = False
               Width = 140
             end
-            object viewRegistrosRUBRICA: TcxGridDBColumn [9]
-              DataBinding.FieldName = 'RUBRICA'
-              Options.Editing = False
-              Width = 100
-            end
-            object viewRegistrosPLANO_CONTAS: TcxGridDBColumn [10]
+            object viewRegistrosPLANO_CONTAS: TcxGridDBColumn [9]
               DataBinding.FieldName = 'PLANO_CONTAS'
               Options.Editing = False
               Width = 100
             end
-            object viewRegistrosCONTA_CORRENTE: TcxGridDBColumn [11]
+            object viewRegistrosCONTA_CORRENTE: TcxGridDBColumn [10]
               DataBinding.FieldName = 'CONTA_CORRENTE'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn [12]
+            object viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn [11]
               DataBinding.FieldName = 'NUMERO_DOCUMENTO'
               Visible = False
               Options.Editing = False
@@ -176,6 +172,10 @@ inherited frmContaPagar: TfrmContaPagar
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -245,8 +245,11 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 47
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -264,8 +267,8 @@ inherited frmContaPagar: TfrmContaPagar
           FocusControl = EditObservacao
         end
         object Label17: TLabel
-          Left = 6
-          Top = 42
+          Left = 657
+          Top = 2
           Width = 75
           Height = 13
           Caption = 'Conta Corrente'
@@ -280,7 +283,7 @@ inherited frmContaPagar: TfrmContaPagar
           FocusControl = cbFornecedor
         end
         object Label5: TLabel
-          Left = 657
+          Left = 435
           Top = 2
           Width = 78
           Height = 13
@@ -288,7 +291,7 @@ inherited frmContaPagar: TfrmContaPagar
           FocusControl = cbPlanoContas
         end
         object Label8: TLabel
-          Left = 435
+          Left = 7
           Top = 42
           Width = 51
           Height = 13
@@ -304,7 +307,7 @@ inherited frmContaPagar: TfrmContaPagar
           FocusControl = cbFornecedor
         end
         object Label13: TLabel
-          Left = 657
+          Left = 435
           Top = 42
           Width = 93
           Height = 13
@@ -329,8 +332,8 @@ inherited frmContaPagar: TfrmContaPagar
           Width = 965
         end
         object cbContaCorrente: TcxDBLookupComboBox
-          Left = 4
-          Top = 58
+          Left = 655
+          Top = 18
           RepositoryItem = dmLookup.repLcbContaCorrente
           DataBinding.DataField = 'ID_CONTA_CORRENTE'
           DataBinding.DataSource = dsMaster
@@ -349,14 +352,14 @@ inherited frmContaPagar: TfrmContaPagar
           Width = 220
         end
         object cbPlanoContas: TcxDBLookupComboBox
-          Left = 655
+          Left = 433
           Top = 18
           RepositoryItem = dmLookup.repLcbPlano_Contas
           DataBinding.DataField = 'ID_PLANO_CONTAS'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 2
-          Width = 314
+          Width = 220
         end
         object cbFormaPagamento: TcxDBImageComboBox
           Left = 211
@@ -365,17 +368,17 @@ inherited frmContaPagar: TfrmContaPagar
           DataBinding.DataField = 'FORMA_PAGTO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 4
+          TabOrder = 5
           Width = 220
         end
         object EditValorTotal: TcxDBCurrencyEdit
-          Left = 433
+          Left = 5
           Top = 58
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_TOTAL'
           DataBinding.DataSource = dsMaster
-          TabOrder = 5
-          Width = 220
+          TabOrder = 4
+          Width = 204
         end
         object rgParcelas: TcxGroupBox
           Left = 4
@@ -499,7 +502,6 @@ inherited frmContaPagar: TfrmContaPagar
             Width = 89
             Height = 13
             Caption = 'Rubrica do Projeto'
-            FocusControl = cbRubricaProjeto
           end
           object Label14: TLabel
             Left = 182
@@ -507,7 +509,20 @@ inherited frmContaPagar: TfrmContaPagar
             Width = 99
             Height = 13
             Caption = 'Rubrica da Atividade'
-            FocusControl = cbRubricaAtividade
+          end
+          object lbl2: TLabel
+            Left = 354
+            Top = 19
+            Width = 76
+            Height = 13
+            Caption = #193'rea do Projeto'
+          end
+          object lbl3: TLabel
+            Left = 354
+            Top = 61
+            Width = 86
+            Height = 13
+            Caption = #193'rea da Atividade'
           end
           object cbProjeto: TcxLookupComboBox
             Left = 3
@@ -524,9 +539,8 @@ inherited frmContaPagar: TfrmContaPagar
             Width = 612
             Height = 116
             Align = alBottom
-            TabOrder = 4
+            TabOrder = 8
             TabStop = False
-            ExplicitTop = 103
             object viewVinculos: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsVinculos
@@ -557,16 +571,20 @@ inherited frmContaPagar: TfrmContaPagar
                     Value = 2
                   end>
                 Options.Editing = False
-                Width = 113
+                Width = 82
               end
               object viewVinculosNOME: TcxGridDBColumn
                 DataBinding.FieldName = 'NOME'
                 Options.Editing = False
-                Width = 184
+                Width = 164
               end
               object viewVinculosRUBRICA: TcxGridDBColumn
                 DataBinding.FieldName = 'RUBRICA'
-                Width = 235
+                Width = 162
+              end
+              object viewVinculosAREA: TcxGridDBColumn
+                DataBinding.FieldName = 'AREA'
+                Width = 128
               end
               object ColumnDeletarVinculo: TcxGridDBColumn
                 Caption = 'Excluir'
@@ -587,23 +605,23 @@ inherited frmContaPagar: TfrmContaPagar
             end
           end
           object btnAddProjeto: TButton
-            Left = 349
+            Left = 525
             Top = 34
             Width = 69
             Height = 21
             Action = Ac_Incluir_Vinculo_Projeto
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 1
+            TabOrder = 3
             TabStop = False
           end
           object btnAddAtividade: TButton
-            Left = 349
+            Left = 525
             Top = 76
             Width = 69
             Height = 21
             Action = Ac_Incluir_Vinculo_Atividade
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 3
+            TabOrder = 7
             TabStop = False
           end
           object cbAtividade: TcxLookupComboBox
@@ -611,41 +629,58 @@ inherited frmContaPagar: TfrmContaPagar
             Top = 76
             RepositoryItem = dmLookup.repLcbAtividade
             Properties.ListColumns = <>
-            TabOrder = 2
+            Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
+            TabOrder = 4
             Width = 170
           end
-          object cbRubricaProjeto: TcxDBLookupComboBox
+          object cbRubricaProjeto: TcxLookupComboBox
             Left = 179
             Top = 34
             RepositoryItem = dmLookup.repLcbRubrica
-            DataBinding.DataField = 'ID_RUBRICA'
-            DataBinding.DataSource = dsMaster
+            Properties.ListColumns = <>
+            TabOrder = 1
+            Width = 170
+          end
+          object cbRubricaAtividade: TcxLookupComboBox
+            Left = 179
+            Top = 76
+            RepositoryItem = dmLookup.repLcbRubricaAtividade
             Properties.ListColumns = <>
             TabOrder = 5
             Width = 170
           end
-          object cbRubricaAtividade: TcxDBLookupComboBox
-            Left = 179
+          object cbAreaProjeto: TcxLookupComboBox
+            Left = 351
+            Top = 34
+            RepositoryItem = dmLookup.repLcbProjetoArea
+            Properties.ListColumns = <>
+            TabOrder = 2
+            Width = 170
+          end
+          object cbAreaAtividade: TcxLookupComboBox
+            Left = 351
             Top = 76
-            RepositoryItem = dmLookup.repLcbRubrica
-            DataBinding.DataField = 'ID_RUBRICA'
-            DataBinding.DataSource = dsMaster
+            RepositoryItem = dmLookup.repLcbProjeto_Area_Atividade
             Properties.ListColumns = <>
             TabOrder = 6
             Width = 170
           end
         end
         object EditNroDocumento: TcxDBTextEdit
-          Left = 655
+          Left = 433
           Top = 58
           DataBinding.DataField = 'NUMERO_DOCUMENTO'
           DataBinding.DataSource = dsMaster
           TabOrder = 6
-          Width = 170
+          Width = 220
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         TabOrder = 0
       end
@@ -723,6 +758,14 @@ inherited frmContaPagar: TfrmContaPagar
       DisplayLabel = 'Rubrica'
       FieldName = 'RUBRICA'
       Size = 100
+    end
+    object cdsLocalVinculoID_PROJETO_AREA: TIntegerField
+      FieldName = 'ID_PROJETO_AREA'
+    end
+    object cdsLocalVinculoAREA: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'AREA'
+      Size = 60
     end
   end
   object dsVinculos: TDataSource

@@ -385,7 +385,9 @@ inherited smLookup: TsmLookup
       '       Plano_Contas.Tipo'
       'from Plano_Contas  '
       '&where'
-      'order by Plano_Contas.Nome')
+      
+        'order by (Plano_Contas.Identificador || '#39' - '#39' || Plano_Contas.No' +
+        'me) ')
     Left = 780
     Top = 16
     MacroData = <
@@ -423,6 +425,9 @@ inherited smLookup: TsmLookup
       '       Rubrica.Id_Rubrica_Pai,'
       '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
       'from Rubrica'
+      
+        'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
+        'ca.id) '
       '&where'
       'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) desc')
     Left = 632
@@ -546,7 +551,7 @@ inherited smLookup: TsmLookup
       Size = 10
     end
   end
-  object qlkRubricaAtividade: TRFQuery
+  object qlkRubrica_Atividade: TRFQuery
     SQL.Strings = (
       'select distinct Rubrica.Id,'
       '       Rubrica.Id_Rubrica_Pai,'
@@ -571,5 +576,74 @@ inherited smLookup: TsmLookup
         Name = 'WHERE'
         DataType = mdIdentifier
       end>
+  end
+  object qlkProjeto_Area: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Projeto_Area.Id,'
+      '       Projeto_Area.Id_Projeto,'
+      '       Projeto_Area.Nome'
+      'from Projeto_Area'
+      '&where')
+    Left = 760
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkProjeto_AreaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkProjeto_AreaID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = []
+    end
+    object qlkProjeto_AreaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object qlkProjeto_Area_Atividade: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Projeto_Area.Id,'
+      '       Projeto_Area.Id_Projeto,'
+      '       Projeto_Area.Nome'
+      'from Projeto_Area'
+      'inner join Projeto on (Projeto.Id = Projeto_Area.Id_Projeto)'
+      
+        'left join atividade_projeto on (atividade_projeto.id_projeto = p' +
+        'rojeto.id)'
+      'left join atividade on (atividade.id_projeto = projeto.id)'
+      '&where')
+    Left = 872
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkProjeto_Area_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkProjeto_Area_AtividadeID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = []
+    end
+    object qlkProjeto_Area_AtividadeNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
 end
