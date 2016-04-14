@@ -80,11 +80,12 @@ type
     procedure btnDelAtualizacaoClick(Sender: TObject);
   private
     procedure ppvIniciarFinalizarServidor(ipIniciar: Boolean);
-    procedure ppuAdicionarErroLog(ipException: Exception);
+
     procedure ppvAtualizarStatus;
     { Private declarations }
   public
-    { Public declarations }
+    procedure ppuAdicionarErroLog(ipException: Exception);overload;
+    procedure ppuAdicionarErroLog(ipErro:String);overload;
   end;
 
 var
@@ -146,14 +147,28 @@ end;
 
 procedure TfrmPrincipal.ppuAdicionarErroLog(ipException: Exception);
 begin
-  if not cdsLog.Active then
-    cdsLog.CreateDataSet;
+   ppuAdicionarErroLog(ipException);
+end;
 
-  cdsLog.Append;
-  cdsLogDATA.AsDateTime := Now;
-  cdsLogERRO.AsString := ipException.Message;
-  cdsLog.Post;
+procedure TfrmPrincipal.ppuAdicionarErroLog(ipErro: String);
+var
+  vaProc: TThreadProcedure;
+begin
+  vaProc := procedure
+    begin
+      if not cdsLog.Active then
+        cdsLog.CreateDataSet;
 
+      cdsLog.Append;
+      cdsLogDATA.AsDateTime := Now;
+      cdsLogERRO.AsString := ipErro;
+      cdsLog.Post;
+    end;
+
+  if TThread.CurrentThread.ThreadID <> MainThreadID then
+    TThread.Synchronize(nil, vaProc)
+  else
+    vaProc;
 end;
 
 procedure TfrmPrincipal.ppvAtualizarStatus;

@@ -31,6 +31,8 @@ type
     coRubrica = 'RUBRICA';
     coPlanoConta = 'PLANO_CONTA';
     coClienteFinanciador = 'CLIENTE_FINANCIADOR';
+    coSolicitante = 'PESSOA_SOLICITANTE';
+    coResposnavelAnalise = 'PESSOA_ANALISOU';
 
     coTipo = 'TIPO';
     coTipoItem = 'TIPO_ITEM';

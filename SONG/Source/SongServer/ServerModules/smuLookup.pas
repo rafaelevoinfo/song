@@ -85,6 +85,9 @@ type
     qlkProjeto_AreaID: TIntegerField;
     qlkProjeto_AreaID_PROJETO: TIntegerField;
     qlkProjeto_AreaNOME: TStringField;
+    qlkRubrica_AtividadeID: TIntegerField;
+    qlkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField;
+    qlkRubrica_AtividadeNOME: TStringField;
   private
     { Private declarations }
   protected

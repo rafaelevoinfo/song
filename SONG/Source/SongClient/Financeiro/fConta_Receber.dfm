@@ -1,16 +1,9 @@
 inherited frmContaReceber: TfrmContaReceber
-  ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 567
@@ -161,10 +154,6 @@ inherited frmContaReceber: TfrmContaReceber
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -234,11 +223,8 @@ inherited frmContaReceber: TfrmContaReceber
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
+        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -248,8 +234,8 @@ inherited frmContaReceber: TfrmContaReceber
           FocusControl = EditDescricao
         end
         object Label7: TLabel
-          Left = 5
-          Top = 259
+          Left = 6
+          Top = 291
           Width = 58
           Height = 13
           Caption = 'Observa'#231#227'o'
@@ -280,7 +266,7 @@ inherited frmContaReceber: TfrmContaReceber
           FocusControl = cbPlanoContas
         end
         object Label8: TLabel
-          Left = 435
+          Left = 213
           Top = 42
           Width = 51
           Height = 13
@@ -288,7 +274,7 @@ inherited frmContaReceber: TfrmContaReceber
           FocusControl = EditValorTotal
         end
         object Label6: TLabel
-          Left = 213
+          Left = 435
           Top = 42
           Width = 102
           Height = 13
@@ -313,7 +299,7 @@ inherited frmContaReceber: TfrmContaReceber
         end
         object EditObservacao: TcxDBMemo
           Left = 4
-          Top = 275
+          Top = 307
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
           TabOrder = 9
@@ -351,22 +337,22 @@ inherited frmContaReceber: TfrmContaReceber
           Width = 221
         end
         object cbFormaPagamento: TcxDBImageComboBox
-          Left = 211
+          Left = 433
           Top = 58
           RepositoryItem = dmLookup.repIcbFormaPagamento
           DataBinding.DataField = 'FORMA_PAGTO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 4
+          TabOrder = 5
           Width = 220
         end
         object EditValorTotal: TcxDBCurrencyEdit
-          Left = 433
+          Left = 211
           Top = 58
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_TOTAL'
           DataBinding.DataSource = dsMaster
-          TabOrder = 5
+          TabOrder = 4
           Width = 220
         end
         object rgParcelas: TcxGroupBox
@@ -374,7 +360,7 @@ inherited frmContaReceber: TfrmContaReceber
           Top = 85
           Caption = 'Parcelas'
           TabOrder = 7
-          Height = 172
+          Height = 204
           Width = 427
           object Label9: TLabel
             Left = 4
@@ -400,12 +386,13 @@ inherited frmContaReceber: TfrmContaReceber
           end
           object cxGrid1: TcxGrid
             Left = 3
-            Top = 59
+            Top = 56
             Width = 421
-            Height = 103
+            Height = 138
             Align = alBottom
             TabOrder = 3
             TabStop = False
+            ExplicitTop = 57
             object viewParcelas: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsDetail
@@ -469,7 +456,7 @@ inherited frmContaReceber: TfrmContaReceber
           Top = 85
           Caption = 'V'#237'nculos'
           TabOrder = 8
-          Height = 172
+          Height = 204
           Width = 535
           object Label10: TLabel
             Left = 6
@@ -479,20 +466,35 @@ inherited frmContaReceber: TfrmContaReceber
             Caption = 'Projeto'
           end
           object Label12: TLabel
-            Left = 246
-            Top = 18
+            Left = 4
+            Top = 56
             Width = 45
             Height = 13
             Caption = 'Atividade'
           end
+          object lbl2: TLabel
+            Left = 179
+            Top = 18
+            Width = 76
+            Height = 13
+            Caption = #193'rea do Projeto'
+          end
+          object lbl3: TLabel
+            Left = 178
+            Top = 57
+            Width = 86
+            Height = 13
+            Caption = #193'rea da Atividade'
+          end
           object cxGrid2: TcxGrid
             Left = 3
-            Top = 59
+            Top = 95
             Width = 529
-            Height = 103
+            Height = 99
             Align = alBottom
             TabOrder = 4
             TabStop = False
+            ExplicitTop = 94
             object viewVinculos: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsVinculos
@@ -549,7 +551,7 @@ inherited frmContaReceber: TfrmContaReceber
             end
           end
           object btnAddProjeto: TButton
-            Left = 173
+            Left = 349
             Top = 34
             Width = 69
             Height = 21
@@ -559,9 +561,9 @@ inherited frmContaReceber: TfrmContaReceber
             TabStop = False
           end
           object btnAddAtividade: TButton
-            Left = 458
-            Top = 34
-            Width = 71
+            Left = 349
+            Top = 72
+            Width = 69
             Height = 21
             Action = Ac_Incluir_Vinculo_Atividade
             Images = dmPrincipal.imgIcons_16
@@ -578,12 +580,29 @@ inherited frmContaReceber: TfrmContaReceber
             Width = 170
           end
           object cbAtividade: TcxLookupComboBox
-            Left = 245
-            Top = 34
+            Left = 3
+            Top = 72
             RepositoryItem = dmLookup.repLcbAtividade
             Properties.ListColumns = <>
+            Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
             TabOrder = 2
-            Width = 207
+            Width = 170
+          end
+          object cbAreaProjeto: TcxLookupComboBox
+            Left = 175
+            Top = 34
+            RepositoryItem = dmLookup.repLcbProjetoArea
+            Properties.ListColumns = <>
+            TabOrder = 5
+            Width = 170
+          end
+          object cbAreaAtividade: TcxLookupComboBox
+            Left = 175
+            Top = 72
+            RepositoryItem = dmLookup.repLcbProjeto_Area_Atividade
+            Properties.ListColumns = <>
+            TabOrder = 6
+            Width = 170
           end
         end
         object EditNroDocumento: TcxDBTextEdit
@@ -653,6 +672,11 @@ inherited frmContaReceber: TfrmContaReceber
     Left = 288
     Top = 408
   end
+  object dsVinculos: TDataSource
+    DataSet = cdsLocalVinculo
+    Left = 496
+    Top = 408
+  end
   object cdsLocalVinculo: TClientDataSet
     Aggregates = <>
     Params = <>
@@ -671,10 +695,13 @@ inherited frmContaReceber: TfrmContaReceber
       FieldName = 'NOME'
       Size = 100
     end
-  end
-  object dsVinculos: TDataSource
-    DataSet = cdsLocalVinculo
-    Left = 496
-    Top = 408
+    object cdsLocalVinculoID_PROJETO_AREA: TIntegerField
+      FieldName = 'ID_PROJETO_AREA'
+    end
+    object cdsLocalVinculoAREA: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'AREA'
+      Size = 60
+    end
   end
 end

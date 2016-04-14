@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 13/04/2016 00:24:05
+// 13/04/2016 22:41:51
 //
 
 unit uFuncoes;
@@ -133,6 +133,7 @@ type
     FfpuGerarIdentificadorPlanoContasCommand: TDBXCommand;
     FfpuGerarIdentificadorRubricaCommand: TDBXCommand;
     FppuQuitarParcelaCommand: TDBXCommand;
+    FppuReabrirParcelaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -145,6 +146,7 @@ type
     function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
     procedure ppuQuitarParcela(ipIdParcela: Integer);
+    procedure ppuReabrirParcela(ipIdParcela: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -916,6 +918,19 @@ begin
   FppuQuitarParcelaCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesFinanceiroClient.ppuReabrirParcela(ipIdParcela: Integer);
+begin
+  if FppuReabrirParcelaCommand = nil then
+  begin
+    FppuReabrirParcelaCommand := FDBXConnection.CreateCommand;
+    FppuReabrirParcelaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuReabrirParcelaCommand.Text := 'TsmFuncoesFinanceiro.ppuReabrirParcela';
+    FppuReabrirParcelaCommand.Prepare;
+  end;
+  FppuReabrirParcelaCommand.Parameters[0].Value.SetInt32(ipIdParcela);
+  FppuReabrirParcelaCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -988,6 +1003,7 @@ begin
   FfpuGerarIdentificadorPlanoContasCommand.DisposeOf;
   FfpuGerarIdentificadorRubricaCommand.DisposeOf;
   FppuQuitarParcelaCommand.DisposeOf;
+  FppuReabrirParcelaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

@@ -449,6 +449,23 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkProjeto_Area_Atividade
     end
+    object repIcbStatusSolicitacaoCompra: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.Items = <
+        item
+          Description = 'Solicitada'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Aprovada'
+          Value = 1
+        end
+        item
+          Description = 'Negada'
+          Value = 2
+        end>
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil

@@ -4,7 +4,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailArea
+    Properties.ActivePage = tabCadastroDetailFinanciador
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -1255,6 +1255,7 @@ inherited frmProjeto: TfrmProjeto
                 DataBinding.FieldName = 'PERCENTUAL'
                 PropertiesClassName = 'TcxCalcEditProperties'
                 Properties.DisplayFormat = ',0.00 %'
+                Options.Editing = False
               end
               object Column4: TcxGridDBColumn
                 Caption = 'Excluir'

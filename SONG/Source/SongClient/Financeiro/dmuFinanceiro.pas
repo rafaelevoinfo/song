@@ -121,6 +121,23 @@ type
     cdsConta_Pagar_AtividadeAREA: TStringField;
     cdsConta_Pagar_ProjetoRUBRICA: TStringField;
     cdsConta_Pagar_ProjetoAREA: TStringField;
+    cdsConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField;
+    cdsConta_Receber_AtividadeAREA: TStringField;
+    cdsConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
+    cdsConta_Receber_ProjetoAREA: TStringField;
+    cdsSolicitacao_Compra: TRFClientDataSet;
+    cdsSolicitacao_CompraID: TIntegerField;
+    cdsSolicitacao_CompraID_ITEM: TIntegerField;
+    cdsSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField;
+    cdsSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField;
+    cdsSolicitacao_CompraID_COMPRA: TIntegerField;
+    cdsSolicitacao_CompraQTDE: TBCDField;
+    cdsSolicitacao_CompraDATA: TSQLTimeStampField;
+    cdsSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField;
+    cdsSolicitacao_CompraSTATUS: TSmallintField;
+    cdsSolicitacao_CompraSOLICITANTE: TStringField;
+    cdsSolicitacao_CompraNOME_ITEM: TStringField;
+    cdsSolicitacao_CompraRESPONSAVEL_ANALISE: TStringField;
   private
     { Private declarations }
   public

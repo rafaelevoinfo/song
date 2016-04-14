@@ -1,7 +1,7 @@
 inherited dmFinanceiro: TdmFinanceiro
   OldCreateOrder = True
-  Height = 345
-  Width = 590
+  Height = 429
+  Width = 889
   object cdsBanco: TRFClientDataSet
     Aggregates = <>
     Params = <>
@@ -666,6 +666,18 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'ATIVIDADE'
       Size = 100
     end
+    object cdsConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField
+      DisplayLabel = 'Id do Projeto '#193'rea'
+      FieldName = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_Receber_AtividadeAREA: TStringField
+      DisplayLabel = #193'rea de Atua'#231#227'o'
+      FieldName = 'AREA'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsConta_Receber_Projeto: TRFClientDataSet
     Aggregates = <>
@@ -698,10 +710,100 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'PROJETO'
       Size = 100
     end
+    object cdsConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField
+      DisplayLabel = 'Id do Projeto '#193'rea'
+      FieldName = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_Receber_ProjetoAREA: TStringField
+      DisplayLabel = #193'rea de Atua'#231#227'o'
+      FieldName = 'AREA'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object dsConta_Receber: TDataSource
     DataSet = cdsConta_Receber
     Left = 512
     Top = 16
+  end
+  object cdsSolicitacao_Compra: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqSolicitacao_Compra'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 528
+    Top = 120
+    object cdsSolicitacao_CompraID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsSolicitacao_CompraID_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item'
+      FieldName = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField
+      DisplayLabel = 'Id da Pessoa que Solicitou'
+      FieldName = 'ID_PESSOA_SOLICITOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField
+      DisplayLabel = 'Id da Pessoa que Analisou'
+      FieldName = 'ID_PESSOA_ANALISOU'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsSolicitacao_CompraID_COMPRA: TIntegerField
+      DisplayLabel = 'Id da Compra'
+      FieldName = 'ID_COMPRA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsSolicitacao_CompraQTDE: TBCDField
+      DisplayLabel = 'Qtde'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSolicitacao_CompraDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField
+      DisplayLabel = 'Data da An'#225'lise'
+      FieldName = 'DATA_ANALISE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsSolicitacao_CompraSTATUS: TSmallintField
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSolicitacao_CompraSOLICITANTE: TStringField
+      DisplayLabel = 'Solicitante'
+      FieldName = 'SOLICITANTE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSolicitacao_CompraNOME_ITEM: TStringField
+      DisplayLabel = 'Item'
+      FieldName = 'NOME_ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSolicitacao_CompraRESPONSAVEL_ANALISE: TStringField
+      DisplayLabel = 'Respons'#225'vel pela An'#225'lise'
+      FieldName = 'RESPONSAVEL_ANALISE'
+      ProviderFlags = []
+      Size = 100
+    end
   end
 end

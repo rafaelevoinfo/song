@@ -11,7 +11,7 @@ uses
   fPessoa, dxSkinsForm, Vcl.StdCtrls, fOrganizacao, fProjeto, fFinanciador,
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
-  fConta_Receber, fCliente, fItem, fEntrada;
+  fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -65,6 +65,8 @@ type
     Itens1: TMenuItem;
     Ac_Entrada: TAction;
     Entradas1: TMenuItem;
+    Ac_Solicitacao_Compra: TAction;
+    SolicitaodeCompra1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -87,6 +89,7 @@ type
     procedure Ac_ClienteExecute(Sender: TObject);
     procedure Ac_ItemExecute(Sender: TObject);
     procedure Ac_EntradaExecute(Sender: TObject);
+    procedure Ac_Solicitacao_CompraExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -219,6 +222,12 @@ procedure TfrmPrincipal.Ac_RubricasExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TFrmRubrica>(pcPrincipal, TFrmRubrica, frmRubrica);
+end;
+
+procedure TfrmPrincipal.Ac_Solicitacao_CompraExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmSolicitacaoCompra>(pcPrincipal, TfrmSolicitacaoCompra, frmSolicitacaoCompra);
 end;
 
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);

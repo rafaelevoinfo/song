@@ -70,6 +70,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Rubricas1: TMenuItem
         Action = Ac_Rubricas
       end
+      object SolicitaodeCompra1: TMenuItem
+        Action = Ac_Solicitacao_Compra
+      end
     end
     object miGestao: TMenuItem
       Caption = 'Gest'#227'o'
@@ -213,6 +216,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Estoque'
       Caption = 'Entradas'
       OnExecute = Ac_EntradaExecute
+    end
+    object Ac_Solicitacao_Compra: TAction
+      Category = 'Financeiro'
+      Caption = 'Solicita'#231#227'o de Compra'
+      OnExecute = Ac_Solicitacao_CompraExecute
     end
   end
   object dxSkinController1: TdxSkinController

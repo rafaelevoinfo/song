@@ -1,10 +1,8 @@
 inherited frmContaPagar: TfrmContaPagar
-  ActiveControl = btnIncluir
   Caption = 'Contas a Pagar'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -19,7 +17,7 @@ inherited frmContaPagar: TfrmContaPagar
           inherited rgStatus: TcxRadioGroup [1]
             Left = 267
             Top = 27
-            TabOrder = 7
+            TabOrder = 6
             ExplicitLeft = 267
             ExplicitTop = 27
           end
@@ -29,6 +27,7 @@ inherited frmContaPagar: TfrmContaPagar
           end
           inherited EditPesquisa: TcxButtonEdit [3]
             Left = 132
+            TabOrder = 3
             ExplicitLeft = 132
           end
           inherited cbPesquisarPor: TcxImageComboBox [4]
@@ -53,12 +52,8 @@ inherited frmContaPagar: TfrmContaPagar
                 Value = 6
               end
               item
-                Description = 'Rubrica'
-                Value = 7
-              end
-              item
                 Description = 'Plano de Contas'
-                Value = 8
+                Value = 7
               end
               item
                 Description = 'Data de Vencimento'
@@ -77,15 +72,7 @@ inherited frmContaPagar: TfrmContaPagar
             Top = 20
             RepositoryItem = dmLookup.repLcbFornecedor
             Properties.ListColumns = <>
-            TabOrder = 6
-            Width = 176
-          end
-          object cbPesquisaRubrica: TcxLookupComboBox
-            Left = 132
-            Top = 20
-            RepositoryItem = dmLookup.repLcbRubrica
-            Properties.ListColumns = <>
-            TabOrder = 3
+            TabOrder = 5
             Width = 176
           end
           object cbPesquisaPlanoConta: TcxLookupComboBox
@@ -93,7 +80,7 @@ inherited frmContaPagar: TfrmContaPagar
             Top = 20
             RepositoryItem = dmLookup.repLcbPlano_Contas
             Properties.ListColumns = <>
-            TabOrder = 5
+            TabOrder = 4
             Width = 176
           end
         end
@@ -172,10 +159,6 @@ inherited frmContaPagar: TfrmContaPagar
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -245,10 +228,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -511,8 +490,8 @@ inherited frmContaPagar: TfrmContaPagar
             Caption = 'Rubrica da Atividade'
           end
           object lbl2: TLabel
-            Left = 354
-            Top = 19
+            Left = 355
+            Top = 18
             Width = 76
             Height = 13
             Caption = #193'rea do Projeto'

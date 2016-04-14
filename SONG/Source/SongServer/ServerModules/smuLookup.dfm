@@ -421,7 +421,7 @@ inherited smLookup: TsmLookup
   object qlkRubrica: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Rubrica.Id,'
+      'select distinct Rubrica.Id,'
       '       Rubrica.Id_Rubrica_Pai,'
       '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
       'from Rubrica'
@@ -429,7 +429,7 @@ inherited smLookup: TsmLookup
         'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
         'ca.id) '
       '&where'
-      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) desc')
+      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) ')
     Left = 632
     Top = 16
     MacroData = <
@@ -552,6 +552,7 @@ inherited smLookup: TsmLookup
     end
   end
   object qlkRubrica_Atividade: TRFQuery
+    Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Rubrica.Id,'
       '       Rubrica.Id_Rubrica_Pai,'
@@ -567,7 +568,7 @@ inherited smLookup: TsmLookup
         'left join atividade on (projeto_rubrica.id_projeto = atividade.i' +
         'd_projeto)'
       '&WHERE'
-      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) desc')
+      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome)')
     Left = 624
     Top = 224
     MacroData = <
@@ -576,6 +577,25 @@ inherited smLookup: TsmLookup
         Name = 'WHERE'
         DataType = mdIdentifier
       end>
+    object qlkRubrica_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField
+      FieldName = 'ID_RUBRICA_PAI'
+      Origin = 'ID_RUBRICA_PAI'
+      ProviderFlags = []
+    end
+    object qlkRubrica_AtividadeNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 123
+    end
   end
   object qlkProjeto_Area: TRFQuery
     Connection = dmPrincipal.conSong

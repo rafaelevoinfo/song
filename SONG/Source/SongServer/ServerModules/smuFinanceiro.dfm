@@ -793,11 +793,16 @@ inherited smFinanceiro: TsmFinanceiro
       'select Conta_Receber_Projeto.Id,'
       '       Conta_Receber_Projeto.Id_Conta_Receber,'
       '       Conta_Receber_Projeto.Id_Projeto,'
-      '       Projeto.Nome as Projeto'
+      '       Conta_Receber_Projeto.Id_Projeto_area,'
+      '       Projeto.Nome as Projeto,'
+      '       Projeto_Area.nome as Area'
       'from Conta_Receber_Projeto'
       
         'inner join Projeto on (Projeto.Id = Conta_Receber_Projeto.Id_Pro' +
         'jeto)'
+      
+        'inner join Projeto_Area on (Projeto_Area.id = Conta_Receber_Proj' +
+        'eto.id_projeto_area)'
       
         'where Conta_Receber_Projeto.Id_Conta_Receber = :Id_Conta_Receber' +
         '   ')
@@ -835,6 +840,19 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = []
       Size = 100
     end
+    object qConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField
+      FieldName = 'ID_PROJETO_AREA'
+      Origin = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Receber_ProjetoAREA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'AREA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object qConta_Receber_Atividade: TRFQuery
     Connection = dmPrincipal.conSong
@@ -842,11 +860,16 @@ inherited smFinanceiro: TsmFinanceiro
       'select Conta_Receber_Atividade.Id,'
       '       Conta_Receber_Atividade.Id_Conta_Receber,'
       '       Conta_Receber_Atividade.Id_Atividade,'
-      '       Atividade.Nome as Atividade'
+      '       Conta_Receber_Atividade.id_projeto_area,'
+      '       Atividade.Nome as Atividade,'
+      '       Projeto_Area.nome as Area'
       'from Conta_Receber_Atividade'
       
         'inner join Atividade on (Atividade.Id = Conta_Receber_Atividade.' +
         'Id_Atividade)'
+      
+        'inner join Projeto_Area on (Projeto_Area.id = Conta_Receber_Ativ' +
+        'idade.id_projeto_area)'
       
         'where Conta_Receber_Atividade.Id_Conta_Receber = :Id_Conta_Receb' +
         'er   ')
@@ -880,6 +903,19 @@ inherited smFinanceiro: TsmFinanceiro
     object qConta_Receber_AtividadeATIVIDADE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'ATIVIDADE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField
+      FieldName = 'ID_PROJETO_AREA'
+      Origin = 'ID_PROJETO_AREA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Receber_AtividadeAREA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'AREA'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
@@ -949,6 +985,112 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'DATA_RECEBIMENTO'
       Origin = 'DATA_RECEBIMENTO'
       ProviderFlags = [pfInUpdate]
+    end
+  end
+  object qSolicitacao_Compra: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Solicitacao_Compra.Id,'
+      '       Solicitacao_Compra.Id_Item,'
+      '       Solicitacao_Compra.Id_Pessoa_Solicitou,'
+      '       Solicitacao_Compra.Id_Pessoa_Analisou,'
+      '       Solicitacao_Compra.Id_Compra,'
+      '       Solicitacao_Compra.Qtde,'
+      '       Solicitacao_Compra.Data,'
+      '       Solicitacao_Compra.Data_Analise,'
+      '       Solicitacao_Compra.Status,'
+      '       Solicitante.nome as solicitante,'
+      '       item.nome as Nome_Item,'
+      '       Responsavel_Analise.nome as responsavel_analise'
+      'from Solicitacao_Compra'
+      'inner join Item on (Item.Id = Solicitacao_Compra.Id_Item)'
+      
+        'inner join Pessoa Solicitante on (Solicitante.Id = Solicitacao_C' +
+        'ompra.Id_Pessoa_Solicitou)'
+      
+        'left join Pessoa Responsavel_Analise on (Responsavel_Analise.Id ' +
+        '= Solicitacao_Compra.Id_Pessoa_Analisou)  '
+      '&where')
+    Left = 416
+    Top = 264
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qSolicitacao_CompraID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qSolicitacao_CompraID_ITEM: TIntegerField
+      FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField
+      FieldName = 'ID_PESSOA_SOLICITOU'
+      Origin = 'ID_PESSOA_SOLICITOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField
+      FieldName = 'ID_PESSOA_ANALISOU'
+      Origin = 'ID_PESSOA_ANALISOU'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSolicitacao_CompraID_COMPRA: TIntegerField
+      FieldName = 'ID_COMPRA'
+      Origin = 'ID_COMPRA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSolicitacao_CompraQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qSolicitacao_CompraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField
+      FieldName = 'DATA_ANALISE'
+      Origin = 'DATA_ANALISE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSolicitacao_CompraSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSolicitacao_CompraSOLICITANTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'SOLICITANTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSolicitacao_CompraNOME_ITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ITEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSolicitacao_CompraRESPONSAVEL_ANALISE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL_ANALISE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

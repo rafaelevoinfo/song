@@ -87,7 +87,6 @@ type
     cbProjeto: TcxLookupComboBox;
     cbAtividade: TcxLookupComboBox;
     cbPesquisaFornecedor: TcxLookupComboBox;
-    cbPesquisaRubrica: TcxLookupComboBox;
     cbPesquisaPlanoConta: TcxLookupComboBox;
     btnQuitarReabrir: TButton;
     Ac_Quitar_Reabrir: TAction;
@@ -142,6 +141,7 @@ type
     function fprHabilitarSalvar(): Boolean; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
+    function fprHabilitarAlterarDetail: Boolean; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -150,8 +150,7 @@ type
 
     coPesquisaDescricao = 5;
     coPesquisaFornecedor = 6;
-    coPesquisaRubrica = 7;
-    coPesquisaPlanoConta = 8;
+    coPesquisaPlanoConta = 7;
 
   end;
 
@@ -330,8 +329,6 @@ begin
   if (not cdsLocalVinculo.Active) or (cdsLocalVinculo.RecordCount = 0) then
     raise Exception.Create('É necessário informar pelo menos um vínculo.');
 
-
-
   TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Parcela,
     procedure
     begin
@@ -353,8 +350,7 @@ begin
   dmFinanceiro.cdsConta_PagarID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR');
 end;
 
-procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String; ipIdArea: Integer;
-ipArea: String);
+procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String; ipIdArea: Integer; ipArea: String);
 begin
   if not cdsLocalVinculo.Active then
     cdsLocalVinculo.CreateDataSet;
@@ -396,7 +392,12 @@ begin
   try
     dmFinanceiro.cdsConta_Pagar_Parcela.First;
     while not dmFinanceiro.cdsConta_Pagar_Parcela.Eof do
-      dmFinanceiro.cdsConta_Pagar_Parcela.Delete;
+      begin
+        if dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger = 1 then
+          dmPrincipal.FuncoesFinanceiro.ppuReabrirParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
+
+        dmFinanceiro.cdsConta_Pagar_Parcela.Delete;
+      end;
 
     vaValorParcela := dmFinanceiro.cdsConta_PagarVALOR_TOTAL.AsFloat / EditQtdeParcelas.Value;
     vaValorParcelado := 0;
@@ -489,27 +490,29 @@ end;
 
 procedure TfrmContaPagar.ppvQuitarParcela;
 begin
-  //ja alterar a tabela conta_pagar_parcel tbm
+  // ja alterar a tabela conta_pagar_parcel tbm
   dmPrincipal.FuncoesFinanceiro.ppuQuitarParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
- //pra nao precisar fazer um refresh vou alterar manualmente
+  // pra nao precisar fazer um refresh vou alterar manualmente
   dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
   dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.AsDateTime := Now;
   dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 1;
   dmFinanceiro.cdsConta_Pagar_Parcela.Post;
 
-  //faz o cds achar q nada aconteceu
+  // faz o cds achar q nada aconteceu
   dmFinanceiro.cdsConta_Pagar_Parcela.MergeChangeLog;
 end;
 
 procedure TfrmContaPagar.ppvReabrirParcela;
 begin
+
+  dmPrincipal.FuncoesFinanceiro.ppuReabrirParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
+ // pra nao precisar fazer um refresh vou alterar manualmente
   dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
   dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.Clear;
   dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 0;
   dmFinanceiro.cdsConta_Pagar_Parcela.Post;
 
-  if dmFinanceiro.cdsConta_Pagar_Parcela.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Parcela.ApplyUpdates(0);
+  dmFinanceiro.cdsConta_Pagar_Parcela.MergeChangeLog;
 end;
 
 procedure TfrmContaPagar.viewRegistrosDetailCustomDrawCell(
@@ -619,14 +622,11 @@ function TfrmContaPagar.fprConfigurarControlesPesquisa: TWinControl;
 begin
   Result := inherited;
   cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
-  cbPesquisaRubrica.Visible := cbPesquisarPor.EditValue = coPesquisaRubrica;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaRubrica.Visible or cbPesquisaPlanoConta.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible));
 
   if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor
-  else if cbPesquisaRubrica.Visible then
-    Result := cbPesquisaRubrica
   else if cbPesquisaPlanoConta.Visible then
     Result := cbPesquisaPlanoConta;
 end;
@@ -634,6 +634,12 @@ end;
 function TfrmContaPagar.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finContaPagar));
+end;
+
+function TfrmContaPagar.fprHabilitarAlterarDetail: Boolean;
+begin
+  //nao chamar o inherited
+  Result := False;
 end;
 
 function TfrmContaPagar.fprHabilitarSalvar: Boolean;

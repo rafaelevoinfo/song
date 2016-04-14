@@ -26,7 +26,7 @@ type
 
   protected
     procedure pprCriarProvider(ipDataSet: TFDQuery); virtual;
-    function fprMontarWhere(ipTabela,ipWhere: string; ipParam: TParam): string; virtual;
+    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; virtual;
     function fprAjustarWhere(ipWhere: string): string; virtual;
     function fprGetNomeTabela(ipProvider: TDataSetProvider): string;
 
@@ -41,6 +41,9 @@ type
 
 implementation
 
+uses
+  fPrincipal;
+
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
@@ -48,7 +51,7 @@ implementation
 
 procedure TsmBasico.DSServerModuleCreate(Sender: TObject);
 var
-  I: Integer;
+  I: integer;
   vaDataSet: TFDQuery;
 begin
   FScriptsOriginais := TDictionary<String, String>.Create;
@@ -121,29 +124,38 @@ function TsmBasico.fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): Ole
 var
   vaParams: TParams;
   vaDataSet: TFDQuery;
-  vaScript, vaWhere, vaTabela: string;
+  vaScript, vaWhere, vaTabela, vaNomeMacro: string;
   vaMacroWhere: TFDMacro;
 begin
   vaParams := TParams.Create;
   try
-    UnpackParams(ipInput, vaParams);
+    try
+      UnpackParams(ipInput, vaParams);
 
-    // voltando o SQL Original
-    if ipSender is TDataSetProvider and Assigned(TDataSetProvider(ipSender).DataSet) then
-      begin
-        vaDataSet := TDataSetProvider(ipSender).DataSet as TFDQuery;
-        vaMacroWhere := vaDataSet.FindMacro(TBancoDados.coMacroWhere);
-        if Assigned(vaMacroWhere) and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
-          begin
-            vaDataSet.SQL.Text := vaScript;
-            vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
-            vaWhere := fpvMontarWhere(vaTabela, vaParams);
+      // voltando o SQL Original
+      if ipSender is TDataSetProvider and Assigned(TDataSetProvider(ipSender).DataSet) then
+        begin
+          vaDataSet := TDataSetProvider(ipSender).DataSet as TFDQuery;
+          vaMacroWhere := vaDataSet.FindMacro(TBancoDados.coMacroWhere);
+          if Assigned(vaMacroWhere) and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
+            begin
+              vaNomeMacro := vaMacroWhere.Name;
+              vaDataSet.SQL.Text := vaScript;
+              vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
+              vaWhere := fpvMontarWhere(vaTabela, vaParams);
 
-            vaWhere := fprAjustarWhere(vaWhere);
-
-            vaMacroWhere.AsRaw := vaWhere;
-          end;
-      end;
+              vaWhere := fprAjustarWhere(vaWhere);
+              // estou usando o MacroByName para tentar evitar o bug do AV
+              vaDataSet.MacroByName(vaNomeMacro).AsRaw := vaWhere;
+            end;
+        end;
+    except
+      on E: Exception do
+        begin
+          frmPrincipal.ppuAdicionarErroLog('Erro ao realizar o monta SQL. Detalhes: ' + E.message);
+          raise;
+        end;
+    end;
 
   finally
     vaParams.Free;
@@ -190,8 +202,8 @@ begin
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coAtivo, vaValor.ToInteger(), vaOperador)
       else
         begin
-          Result := Result + '(('+ ipTabela + '.' + TBancoDados.coAtivo + ' = '+ IntToStr(coRegistroAtivo)+') OR '
-            +'(' + ipTabela + '.' + TBancoDados.coAtivo + ' is null)) ' + vaOperador;
+          Result := Result + '((' + ipTabela + '.' + TBancoDados.coAtivo + ' = ' + IntToStr(coRegistroAtivo) + ') OR '
+            + '(' + ipTabela + '.' + TBancoDados.coAtivo + ' is null)) ' + vaOperador;
         end;
     end;
 end;
@@ -222,13 +234,13 @@ end;
 
 function TsmBasico.fpvMontarWhere(ipTabela: string; ipParams: TParams): string;
 var
-  I: Integer;
+  I: integer;
 begin
   Result := '';
   // vamos verificar se tem os parametros default
   for I := 0 to ipParams.Count - 1 do
     begin
-      Result := fprMontarWhere(ipTabela,Result, ipParams[i]);
+      Result := fprMontarWhere(ipTabela, Result, ipParams[I]);
     end;
 
 end;

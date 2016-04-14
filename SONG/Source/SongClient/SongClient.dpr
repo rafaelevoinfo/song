@@ -44,7 +44,8 @@ uses
   fCliente in 'Financeiro\fCliente.pas' {frmCliente},
   dmuEstoque in 'Estoque\dmuEstoque.pas' {dmEstoque: TDataModule},
   fItem in 'Estoque\fItem.pas' {frmItem},
-  fEntrada in 'Estoque\fEntrada.pas' {frmEntrada};
+  fEntrada in 'Estoque\fEntrada.pas' {frmEntrada},
+  fSolicitacaoCompra in 'Financeiro\fSolicitacaoCompra.pas' {frmSolicitacaoCompra};
 
 {$R Localization.RES}
   {$R *.res}
