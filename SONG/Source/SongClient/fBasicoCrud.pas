@@ -74,6 +74,7 @@ type
     procedure Ac_Salvar_IncluirExecute(Sender: TObject);
     procedure Ac_Utilizar_SelecionadoExecute(Sender: TObject);
     procedure Ac_AlterarUpdate(Sender: TObject);
+    procedure Ac_ExcluirUpdate(Sender: TObject);
   private
     FPesquisaPadrao: TTipoPesquisaPadrao;
     FModoExecucao: TModoExecucao;
@@ -90,6 +91,7 @@ type
     procedure pprAfterSalvar; virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
     function fprHabilitarAlterar: Boolean; virtual;
+    function fprHabilitarExcluir: Boolean; virtual;
     procedure ppuRetornar(); overload; virtual;
     procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
@@ -177,6 +179,13 @@ begin
   SetLength(vaIds, 1);
   vaIds[0] := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
   fpuExcluir(vaIds);
+end;
+
+procedure TfrmBasicoCrud.Ac_ExcluirUpdate(Sender: TObject);
+begin
+  inherited;
+   if Sender is TAction then
+    TAction(Sender).Enabled := fprHabilitarExcluir();
 end;
 
 procedure TfrmBasicoCrud.Ac_IncluirExecute(Sender: TObject);
@@ -320,7 +329,7 @@ end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar;
 begin
-  if FModoExecucao in [meSomenteCadastro,meSomenteEdicao] then
+  if FModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     FIdEscolhido := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
 end;
 
@@ -443,6 +452,11 @@ begin
   Result := dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0);
 end;
 
+function TfrmBasicoCrud.fprHabilitarExcluir: Boolean;
+begin
+  Result := dsMaster.DataSet.Active and (dsMaster.DataSet.RecordCount > 0);
+end;
+
 function TfrmBasicoCrud.fprHabilitarSalvar(): Boolean;
 begin
   Result := dsMaster.DataSet.Active and ((dsMaster.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsMaster.DataSet).ChangeCount > 0));
@@ -496,75 +510,76 @@ var
   vaField: TField;
 begin
   Result := False;
-
-  vaAcao := atExcluir;
-
-  vaField := dsMaster.DataSet.FindField(TBancoDados.coAtivo);
-  if Assigned(vaField) then
+  if fprHabilitarExcluir then
     begin
-      if vaField.AsInteger = coRegistroAtivo then
-        vaAcao := atInativar
-      else
-        vaAcao := atAtivar;
-    end;
+      vaAcao := atExcluir;
 
-  vaPergunta := 'Realmente deseja ' + AcaoTelaDescricao[vaAcao] + '?';
-
-  pprValidarPermissao(vaAcao, fprGetPermissao);
-
-  if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
-    begin
-      viewRegistros.BeginUpdate(lsimImmediate);
-      try
-        try
-          for vaId in ipIds do
-            begin
-              case vaAcao of
-                atExcluir:
-                  begin
-                    if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                      dsMaster.DataSet.Delete;
-                  end;
-                atAtivar:
-                  begin
-                    if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                      begin
-                        dsMaster.DataSet.Edit;
-                        dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
-                        dsMaster.DataSet.Post;
-                      end;
-                  end;
-                atInativar:
-                  begin
-                    if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                      begin
-                        dsMaster.DataSet.Edit;
-                        dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
-                        dsMaster.DataSet.Post;
-                      end;
-                  end;
-              end;
-
-            end;
-
-          if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
-            TClientDataSet(dsMaster.DataSet).ApplyUpdates(0);
-
-          Result := True;
-
-          if vaAcao in [atAtivar, atInativar] then
-            pprEfetuarPesquisa;
-
-        except
-          if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
-            TClientDataSet(dsMaster.DataSet).CancelUpdates;
-          raise;
+      vaField := dsMaster.DataSet.FindField(TBancoDados.coAtivo);
+      if Assigned(vaField) then
+        begin
+          if vaField.AsInteger = coRegistroAtivo then
+            vaAcao := atInativar
+          else
+            vaAcao := atAtivar;
         end;
-      finally
-        viewRegistros.EndUpdate;
-      end;
-    end;
 
+      vaPergunta := 'Realmente deseja ' + AcaoTelaDescricao[vaAcao] + '?';
+
+      pprValidarPermissao(vaAcao, fprGetPermissao);
+
+      if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
+        begin
+          viewRegistros.BeginUpdate(lsimImmediate);
+          try
+            try
+              for vaId in ipIds do
+                begin
+                  case vaAcao of
+                    atExcluir:
+                      begin
+                        if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                          dsMaster.DataSet.Delete;
+                      end;
+                    atAtivar:
+                      begin
+                        if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                          begin
+                            dsMaster.DataSet.Edit;
+                            dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
+                            dsMaster.DataSet.Post;
+                          end;
+                      end;
+                    atInativar:
+                      begin
+                        if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                          begin
+                            dsMaster.DataSet.Edit;
+                            dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
+                            dsMaster.DataSet.Post;
+                          end;
+                      end;
+                  end;
+
+                end;
+
+              if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
+                TClientDataSet(dsMaster.DataSet).ApplyUpdates(0);
+
+              Result := True;
+
+              if vaAcao in [atAtivar, atInativar] then
+                pprEfetuarPesquisa;
+
+            except
+              if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
+                TClientDataSet(dsMaster.DataSet).CancelUpdates;
+              raise;
+            end;
+          finally
+            viewRegistros.EndUpdate;
+          end;
+        end;
+    end;
 end;
 
 procedure TfrmBasicoCrud.pprBeforeAlterar;

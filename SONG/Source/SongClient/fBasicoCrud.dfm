@@ -1,5 +1,5 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
@@ -14,7 +14,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -252,6 +252,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
               Options.Grouping = False
               Options.HorzSizing = False
               Options.Moving = False
+              VisibleForCustomization = False
             end
             object ColumnExcluir: TcxGridDBColumn
               Caption = 'Excluir'
@@ -272,6 +273,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
               Options.Grouping = False
               Options.HorzSizing = False
               Options.Moving = False
+              VisibleForCustomization = False
             end
           end
           object level: TcxGridLevel
@@ -362,6 +364,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       Caption = 'Excluir'
       ImageIndex = 2
       OnExecute = Ac_ExcluirExecute
+      OnUpdate = Ac_ExcluirUpdate
     end
     object Ac_Salvar: TAction
       Category = 'Master'

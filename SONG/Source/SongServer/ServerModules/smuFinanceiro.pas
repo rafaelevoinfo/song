@@ -126,19 +126,6 @@ type
     qConta_Receber_AtividadeAREA: TStringField;
     qConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
     qConta_Receber_ProjetoAREA: TStringField;
-    qSolicitacao_Compra: TRFQuery;
-    qSolicitacao_CompraID: TIntegerField;
-    qSolicitacao_CompraID_ITEM: TIntegerField;
-    qSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField;
-    qSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField;
-    qSolicitacao_CompraID_COMPRA: TIntegerField;
-    qSolicitacao_CompraQTDE: TBCDField;
-    qSolicitacao_CompraDATA: TSQLTimeStampField;
-    qSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField;
-    qSolicitacao_CompraSTATUS: TSmallintField;
-    qSolicitacao_CompraSOLICITANTE: TStringField;
-    qSolicitacao_CompraNOME_ITEM: TStringField;
-    qSolicitacao_CompraRESPONSAVEL_ANALISE: TStringField;
   private
     { Private declarations }
   protected
@@ -218,18 +205,6 @@ begin
         begin
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PLANO_CONTAS', vaValor.ToInteger, vaOperador)
         end
-    end
-  else if (ipTabela = 'SOLICITACAO_COMPRA') then
-    begin
-      if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
-          vaOperador)
-      else if ipParam.Name = TParametros.coSolicitante then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PESSOA_SOLICITOU', vaValor.ToInteger, vaOperador)
-      else if ipParam.Name = TParametros.coResposnavelAnalise then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PESSOA_ANALISOU', vaValor.ToInteger, vaOperador)
-      else if ipParam.Name = TParametros.coStatus then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
     end;
 
 end;

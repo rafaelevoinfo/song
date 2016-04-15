@@ -66,6 +66,8 @@ type
   TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador, trpParceiro, trpEstagiario,
     trpVoluntario, trpOutro);
 
+  TStatusSolicitacaoCompra = (sscSolicitacada, sscAprovada, sscNegada);
+
   TTipoPlanoContas = (tpcDespesa, tpcReceita);
 
   TTipoItem = (tiOutro, tiSemente, tiMuda);

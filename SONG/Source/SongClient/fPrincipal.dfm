@@ -43,6 +43,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Itens1: TMenuItem
         Action = Ac_Item
       end
+      object SolicitaodeCompra1: TMenuItem
+        Action = Ac_Solicitacao_Compra
+      end
     end
     object miFinanceiro: TMenuItem
       Caption = 'Financeiro'
@@ -69,9 +72,6 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object Rubricas1: TMenuItem
         Action = Ac_Rubricas
-      end
-      object SolicitaodeCompra1: TMenuItem
-        Action = Ac_Solicitacao_Compra
       end
     end
     object miGestao: TMenuItem
@@ -218,7 +218,7 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_EntradaExecute
     end
     object Ac_Solicitacao_Compra: TAction
-      Category = 'Financeiro'
+      Category = 'Estoque'
       Caption = 'Solicita'#231#227'o de Compra'
       OnExecute = Ac_Solicitacao_CompraExecute
     end

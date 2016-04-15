@@ -1,5 +1,4 @@
 inherited frmEntrada: TfrmEntrada
-  ActiveControl = cbItem
   Caption = 'Entradas'
   PixelsPerInch = 96
   TextHeight = 13

@@ -73,7 +73,9 @@ var
   vaException: Exception;
 begin
   vaException := nil;
-  if E is TControlException then
+  if E is TPararExecucaoException then
+    Exit   //vamos ignorar, exception criada apenas parar o fluxo do programa
+  else if E is TControlException then
     begin
       TUtils.fpuFocar(TControlException(E).Control);
       TMensagem.ppuShowMessage(E.Message);

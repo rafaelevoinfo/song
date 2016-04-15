@@ -281,8 +281,6 @@ begin
     ipCds.ppuAddParametro(TParametros.coDescricao, EditPesquisa.Text)
   else if cbPesquisarPor.EditValue = coPesquisaFornecedor then
     ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaFornecedor.EditValue)
-  else if cbPesquisarPor.EditValue = coPesquisaRubrica then
-    ipCds.ppuAddParametro(TParametros.coRubrica, cbPesquisaRubrica.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaPlanoConta then
     ipCds.ppuAddParametro(TParametros.coPlanoConta, cbPesquisaPlanoConta.EditValue)
 

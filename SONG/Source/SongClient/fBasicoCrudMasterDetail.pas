@@ -55,6 +55,7 @@ type
     procedure Ac_Incluir_DetailUpdate(Sender: TObject);
     procedure Ac_Utilizar_Detail_SelecionadoExecute(Sender: TObject);
     procedure Ac_Alterar_DetailUpdate(Sender: TObject);
+    procedure Ac_Excluir_DetailUpdate(Sender: TObject);
   private
     FIdDetailEscolhido: Integer;
     procedure SetIdDetailEscolhido(const Value: Integer);
@@ -66,6 +67,7 @@ type
     function fprHabilitarSalvarDetail(): Boolean; virtual;
     function fprHabilitarIncluirDetail: Boolean; virtual;
     function fprHabilitarAlterarDetail: Boolean; virtual;
+    function fprHabilitarExcluirDetail: Boolean; virtual;
     procedure pprBeforeIncluirDetail; virtual;
     procedure pprBeforeAlterarDetail; virtual;
     procedure pprDefinirTabDetailCadastro; virtual;
@@ -111,7 +113,10 @@ end;
 procedure TfrmBasicoCrudMasterDetail.Ac_Cancelar_DetailExecute(Sender: TObject);
 begin
   inherited;
-  fpuCancelarDetail;
+   if fpuCancelarDetail then
+    ppuRetornar(False)
+  else // salvou
+    ppuRetornar(True);
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Excluir_DetailExecute(Sender: TObject);
@@ -122,6 +127,13 @@ begin
   SetLength(vaIds, 1);
   vaIds[0] := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger;
   fpuExcluirDetail(vaIds);
+end;
+
+procedure TfrmBasicoCrudMasterDetail.Ac_Excluir_DetailUpdate(Sender: TObject);
+begin
+  inherited;
+  if Sender is TAction then
+    TAction(Sender).Enabled := fprHabilitarExcluirDetail();
 end;
 
 procedure TfrmBasicoCrudMasterDetail.Ac_Incluir_DetailExecute(Sender: TObject);
@@ -180,6 +192,11 @@ end;
 function TfrmBasicoCrudMasterDetail.fprHabilitarAlterarDetail: Boolean;
 begin
   Result := dsDetail.DataSet.Active and (dsDetail.DataSet.RecordCount > 0);
+end;
+
+function TfrmBasicoCrudMasterDetail.fprHabilitarExcluirDetail: Boolean;
+begin
+  Result := fprHabilitarAlterarDetail;
 end;
 
 function TfrmBasicoCrudMasterDetail.fprHabilitarIncluirDetail: Boolean;
@@ -257,8 +274,6 @@ begin
     end;
 
   pprEfetuarCancelarDetail;
-
-  ppuRetornar;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo: TModelo);
@@ -290,24 +305,27 @@ function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Bo
 var
   vaId: Integer;
 begin
-  pprValidarPermissao(atExcluir, Permissao);
-  Result := false;
-  if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
+  if fprHabilitarExcluirDetail then
     begin
-      try
-        for vaId in ipIds do
-          begin
-            pprEfetuarExcluirDetail(vaId);
-          end;
+      pprValidarPermissao(atExcluir, Permissao);
+      Result := false;
+      if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
+        begin
+          try
+            for vaId in ipIds do
+              begin
+                pprEfetuarExcluirDetail(vaId);
+              end;
 
-        if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
-          TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
-        Result := True;
-      except
-        if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
-          TClientDataSet(dsDetail.DataSet).CancelUpdates;
-        raise;
-      end;
+            if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+              TClientDataSet(dsDetail.DataSet).ApplyUpdates(0);
+            Result := True;
+          except
+            if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then
+              TClientDataSet(dsDetail.DataSet).CancelUpdates;
+            raise;
+          end;
+        end;
     end;
 end;
 

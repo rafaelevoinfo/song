@@ -228,6 +228,10 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
