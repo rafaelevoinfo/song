@@ -72,6 +72,8 @@ type
 
   TTipoItem = (tiOutro, tiSemente, tiMuda);
 
+  TStatusEntregaProduto = (sepACaminho,sepEntregue);
+
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
 const

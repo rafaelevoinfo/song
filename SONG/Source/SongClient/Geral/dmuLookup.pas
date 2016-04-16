@@ -142,6 +142,7 @@ type
     dslkProjeto_Area_Atividade: TDataSource;
     repLcbProjeto_Area_Atividade: TcxEditRepositoryLookupComboBoxItem;
     repIcbStatusSolicitacaoCompra: TcxEditRepositoryImageComboBoxItem;
+    repIcbStatusEntrega: TcxEditRepositoryImageComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

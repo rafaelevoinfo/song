@@ -43,6 +43,28 @@ type
     qSolicitacao_Compra_ItemNOME_ITEM: TStringField;
     qSolicitacao_Compra_ItemESPECIE: TStringField;
     qSolicitacao_CompraOBSERVACAO: TStringField;
+    qCompra: TRFQuery;
+    qCompraID: TIntegerField;
+    qCompraID_FORNECEDOR: TIntegerField;
+    qCompraID_CONTA_PAGAR: TIntegerField;
+    qCompraID_PESSOA_COMPROU: TIntegerField;
+    qCompraDATA: TSQLTimeStampField;
+    qCompraSTATUS_ENTREGA: TSmallintField;
+    qCompraVALOR_FRETE: TBCDField;
+    qCompraCODIGO_RASTREIO: TStringField;
+    qCompraDESCRICAO: TStringField;
+    qCompraFORNECEDOR: TStringField;
+    qCompraPESSOA_COMPROU: TStringField;
+    qCompra_Item: TRFQuery;
+    qCompra_ItemID: TIntegerField;
+    qCompra_ItemID_COMPRA: TIntegerField;
+    qCompra_ItemID_ITEM: TIntegerField;
+    qCompra_ItemID_ESPECIE: TIntegerField;
+    qCompra_ItemQTDE: TBCDField;
+    qCompra_ItemVALOR_UNITARIO: TBCDField;
+    qCompra_ItemITEM: TStringField;
+    qCompra_ItemESPECIE: TStringField;
+    qCompraVALOR_TOTAL: TBCDField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
@@ -93,8 +115,25 @@ begin
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PESSOA_ANALISOU', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coStatus then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
-       else if ipParam.Name = TParametros.coItem then
+      else if ipParam.Name = TParametros.coItem then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'SOLICITACAO_COMPRA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador)
+    end
+  else if (ipTabela = 'COMPRA') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador)
+      else if ipParam.Name = TParametros.coComprador then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PESSOA_COMPROU', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coStatusEntrega then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS_ENTREGA', TUtils.fpuConverterStringToArrayInteger(vaValor), vaOperador)
+      else if ipParam.Name = TParametros.coItem then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'COMPRA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coCodigoRastreio then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'CODIGO_RASTREIO', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coFornecedor then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador)
+
     end;
 end;
 

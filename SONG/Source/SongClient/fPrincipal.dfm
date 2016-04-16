@@ -37,6 +37,9 @@ inherited frmPrincipal: TfrmPrincipal
     Top = 272
     object Estoque1: TMenuItem
       Caption = 'Estoque'
+      object Compras1: TMenuItem
+        Action = Ac_Compra
+      end
       object Entradas1: TMenuItem
         Action = Ac_Entrada
       end
@@ -221,6 +224,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Estoque'
       Caption = 'Solicita'#231#227'o de Compra'
       OnExecute = Ac_Solicitacao_CompraExecute
+    end
+    object Ac_Compra: TAction
+      Category = 'Estoque'
+      Caption = 'Compras'
+      OnExecute = Ac_CompraExecute
     end
   end
   object dxSkinController1: TdxSkinController

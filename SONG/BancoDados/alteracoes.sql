@@ -1638,3 +1638,48 @@ ALTER TABLE SOLICITACAO_COMPRA DROP ID_ESPECIE;
 
 ALTER TABLE SOLICITACAO_COMPRA DROP QTDE;
 
+
+
+ALTER TABLE COMPRA DROP VALOR_TOTAL;
+
+
+
+ALTER TABLE COMPRA
+    ADD STATUS_ENTREGA SMALLINT NOT NULL,
+    ADD VALOR_FRETE NUMERIC(15,2),
+    ADD CODIGO_RASTREIO VARCHAR(30);
+
+COMMENT ON COLUMN COMPRA.STATUS_ENTREGA IS
+'0 - A caminho
+1 - Entregue';
+
+COMMENT ON COLUMN COMPRA.CODIGO_RASTREIO IS
+'Codigo para restreamento das mercadorias atraves do site dos correios ou transportadora';
+
+alter table COMPRA
+alter ID position 1;
+
+alter table COMPRA
+alter ID_FORNECEDOR position 2;
+
+alter table COMPRA
+alter ID_CONTA_PAGAR position 3;
+
+alter table COMPRA
+alter ID_PESSOA_COMPROU position 4;
+
+alter table COMPRA
+alter DATA position 5;
+
+alter table COMPRA
+alter STATUS_ENTREGA position 6;
+
+alter table COMPRA
+alter VALOR_FRETE position 7;
+
+alter table COMPRA
+alter CODIGO_RASTREIO position 8;
+
+alter table COMPRA
+alter DESCRICAO position 9;
+

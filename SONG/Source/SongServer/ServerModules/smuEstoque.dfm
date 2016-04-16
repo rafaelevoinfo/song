@@ -267,4 +267,193 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
+  object qCompra: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Compra.Id,'
+      '       Compra.Id_Fornecedor,'
+      '       Compra.Id_Conta_Pagar,'
+      '       Compra.Id_Pessoa_Comprou,'
+      '       Compra.Data,'
+      '       Compra.Status_Entrega,'
+      '       Compra.Valor_Frete,'
+      '       Compra.Codigo_Rastreio,'
+      '       Compra.Descricao,'
+      '       fin_for_cli.nome_fantasia as fornecedor,'
+      '       pessoa.nome as pessoa_comprou,'
+      
+        '       (select Sum(coalesce(compra_item.valor_unitario*compra_it' +
+        'em.qtde,0))'
+      '          from compra_item '
+      
+        '        where compra_item.id_compra = compra.id)+ Coalesce(Compr' +
+        'a.Valor_Frete,0) as Valor_Total'
+      'from Compra '
+      'left join compra_item on (compra_item.id_compra = compra.id)'
+      
+        'inner join fin_for_cli on (fin_for_cli.id = compra.id_fornecedor' +
+        ')'
+      'inner join pessoa on (pessoa.id = Compra.Id_Pessoa_Comprou)'
+      '&where')
+    Left = 216
+    Top = 16
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qCompraID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qCompraID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qCompraID_CONTA_PAGAR: TIntegerField
+      FieldName = 'ID_CONTA_PAGAR'
+      Origin = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qCompraID_PESSOA_COMPROU: TIntegerField
+      FieldName = 'ID_PESSOA_COMPROU'
+      Origin = 'ID_PESSOA_COMPROU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qCompraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qCompraSTATUS_ENTREGA: TSmallintField
+      FieldName = 'STATUS_ENTREGA'
+      Origin = 'STATUS_ENTREGA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qCompraVALOR_FRETE: TBCDField
+      FieldName = 'VALOR_FRETE'
+      Origin = 'VALOR_FRETE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qCompraCODIGO_RASTREIO: TStringField
+      FieldName = 'CODIGO_RASTREIO'
+      Origin = 'CODIGO_RASTREIO'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
+    end
+    object qCompraDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object qCompraFORNECEDOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FORNECEDOR'
+      Origin = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qCompraPESSOA_COMPROU: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PESSOA_COMPROU'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qCompraVALOR_TOTAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = []
+      Precision = 18
+    end
+  end
+  object qCompra_Item: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Compra_Item.Id,'
+      '       Compra_Item.Id_Compra,'
+      '       Compra_Item.Id_Item,'
+      '       Compra_Item.Id_Especie,'
+      '       Compra_Item.Qtde,'
+      '       Compra_Item.Valor_Unitario,'
+      '       Item.nome as Item,'
+      '       Especie.nome as Especie'
+      'from Compra_Item'
+      'inner join Item on (Item.Id = Compra_Item.Id_Item)'
+      'left join Especie on (Especie.Id = Compra_Item.Id_Especie)'
+      'where Compra_Item.Id_Compra = :Id_Compra   ')
+    Left = 208
+    Top = 88
+    ParamData = <
+      item
+        Name = 'ID_COMPRA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qCompra_ItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qCompra_ItemID_COMPRA: TIntegerField
+      FieldName = 'ID_COMPRA'
+      Origin = 'ID_COMPRA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qCompra_ItemID_ITEM: TIntegerField
+      FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qCompra_ItemID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qCompra_ItemQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qCompra_ItemVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qCompra_ItemITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ITEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qCompra_ItemESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

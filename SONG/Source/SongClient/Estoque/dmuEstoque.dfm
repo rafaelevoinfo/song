@@ -199,6 +199,159 @@ inherited dmEstoque: TdmEstoque
   end
   object dsSolicitacao_Compra: TDataSource
     DataSet = cdsSolicitacao_Compra
+    Left = 448
+    Top = 112
+  end
+  object cdsCompra: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqCompra'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 400
+    Top = 32
+    object cdsCompraID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsCompraID_FORNECEDOR: TIntegerField
+      DisplayLabel = 'Id do Fornecedor'
+      FieldName = 'ID_FORNECEDOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsCompraID_CONTA_PAGAR: TIntegerField
+      DisplayLabel = 'Id do Contas a Pagar'
+      FieldName = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsCompraID_PESSOA_COMPROU: TIntegerField
+      DisplayLabel = 'Id da Pessoa que Comprou'
+      FieldName = 'ID_PESSOA_COMPROU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsCompraDATA: TSQLTimeStampField
+      DisplayLabel = 'Data da Compra'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsCompraSTATUS_ENTREGA: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Status da Entrega'
+      FieldName = 'STATUS_ENTREGA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsCompraVALOR_FRETE: TBCDField
+      DisplayLabel = 'Valor do Frete'
+      FieldName = 'VALOR_FRETE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsCompraCODIGO_RASTREIO: TStringField
+      DisplayLabel = 'C'#243'digo de Rastreio'
+      FieldName = 'CODIGO_RASTREIO'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
+    end
+    object cdsCompraDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object cdsCompraFORNECEDOR: TStringField
+      DisplayLabel = 'Fornecedor'
+      FieldName = 'FORNECEDOR'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsCompraPESSOA_COMPROU: TStringField
+      DisplayLabel = 'Comprador'
+      FieldName = 'PESSOA_COMPROU'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsCompraVALOR_TOTAL: TBCDField
+      DisplayLabel = 'Valor Total'
+      FieldName = 'VALOR_TOTAL'
+      Precision = 18
+    end
+  end
+  object cdsCompra_Item: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_COMPRA'
+    MasterFields = 'ID'
+    MasterSource = dsCompra
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_COMPRA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqCompra_Item'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 472
+    Top = 192
+    object cdsCompra_ItemID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsCompra_ItemID_COMPRA: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Id da Compra'
+      FieldName = 'ID_COMPRA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsCompra_ItemID_ITEM: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Id do Item'
+      FieldName = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsCompra_ItemID_ESPECIE: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsCompra_ItemQTDE: TBCDField
+      DisplayLabel = 'Quantidade'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsCompra_ItemVALOR_UNITARIO: TBCDField
+      DisplayLabel = 'Valor Unit'#225'rio'
+      FieldName = 'VALOR_UNITARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsCompra_ItemITEM: TStringField
+      DisplayLabel = 'Item'
+      FieldName = 'ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsCompra_ItemESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object dsCompra: TDataSource
+    DataSet = cdsCompra
     Left = 360
     Top = 192
   end

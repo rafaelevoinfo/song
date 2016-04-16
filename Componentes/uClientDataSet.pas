@@ -17,6 +17,7 @@ type
     coLogin: string = 'LOGIN';
     coAtivo: string = 'ATIVO';
     coStatus: string = 'STATUS';
+    coStatusEntrega = 'STATUS_ENTREGA';
     coStatusDiferente = 'STATUS_DIFERENTE';
     coProjeto: string = 'PROJETO';
     coAtividade:string = 'ATIVIDADE';
@@ -33,11 +34,13 @@ type
     coClienteFinanciador = 'CLIENTE_FINANCIADOR';
     coSolicitante = 'PESSOA_SOLICITANTE';
     coResponsavelAnalise = 'PESSOA_ANALISOU';
+    coComprador = 'PESSOA_COMPROU';
 
     coTipo = 'TIPO';
     coTipoItem = 'TIPO_ITEM';
     coItem = 'ITEM';
     coCompra = 'COMPRA';
+    coCodigoRastreio = 'CODIGO_RASTREIO';
 
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 

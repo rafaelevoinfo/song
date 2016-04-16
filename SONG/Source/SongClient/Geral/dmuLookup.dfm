@@ -466,6 +466,18 @@ inherited dmLookup: TdmLookup
           Value = 2
         end>
     end
+    object repIcbStatusEntrega: TcxEditRepositoryImageComboBoxItem
+      Properties.Items = <
+        item
+          Description = 'A caminho'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Entregue'
+          Value = 1
+        end>
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
