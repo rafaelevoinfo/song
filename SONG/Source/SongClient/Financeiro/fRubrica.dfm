@@ -1,10 +1,10 @@
 inherited frmRubrica: TfrmRubrica
-  ActiveControl = btnIncluir
   Caption = 'Rubricas'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -36,6 +36,7 @@ inherited frmRubrica: TfrmRubrica
           end
           inherited btnUtilizar: TButton
             Left = 188
+            ExplicitLeft = 188
           end
           object btnIncluirSubItem: TButton
             AlignWithMargins = True
@@ -84,10 +85,6 @@ inherited frmRubrica: TfrmRubrica
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         ExplicitLeft = 4
         ExplicitTop = 52

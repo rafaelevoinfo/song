@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, cxCheckBox, cxCheckComboBox, dmuLookup,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uTypes, System.DateUtils,
   cxSplitter, dmuEstoque, cxMemo, cxDBEdit, cxCalc, uClientDataSet,
-  uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils;
+  uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils, fCompra;
 
 type
   TfrmSolicitacaoCompra = class(TfrmBasicoCrudMasterDetail)
@@ -170,10 +170,55 @@ begin
 end;
 
 procedure TfrmSolicitacaoCompra.ppvGerarRegistroCompras;
+var
+  vaFrmCompra: TfrmCompra;
+  vaCompra: TCompra;
+  vaItem: TItem;
+  vaIdCompra: Integer;
 begin
   if TMensagem.fpuPerguntar('Deseja incluir um novo registro no compras?', ppSimNao) = rpSim then
     begin
-      // TODO: abrir a tela do compras e depois vincular o id da compra realizada com esta solicitacao
+      vaFrmCompra := TfrmCompra.Create(nil);
+      try
+        vaCompra := TCompra.Create;
+        vaCompra.Data := dmEstoque.cdsSolicitacao_CompraDATA.AsDateTime;
+        vaCompra.IdPessoaComprou := dmEstoque.cdsSolicitacao_CompraID_PESSOA_ANALISOU.AsInteger;
+
+        vaFrmCompra.ppuConfigurarModoExecucao(meSomenteCadastro, vaCompra);
+        vaFrmCompra.ppuIncluir;
+        vaFrmCompra.ShowModal;
+        vaIdCompra := vaFrmCompra.IdEscolhido;
+        if vaIdCompra <> 0 then
+          begin
+
+            dmEstoque.cdsSolicitacao_Compra_Item.First;
+            while not dmEstoque.cdsSolicitacao_Compra_Item.Eof do
+              begin
+                vaItem := TItem.Create;
+                vaItem.IdItem := dmEstoque.cdsSolicitacao_Compra_ItemID_ITEM.AsInteger;
+                vaItem.IdEspecie := dmEstoque.cdsSolicitacao_Compra_ItemID_ESPECIE.AsInteger;
+                vaItem.Qtde := dmEstoque.cdsSolicitacao_Compra_ItemQTDE.AsFloat;
+
+                vaFrmCompra.Modelo := vaItem;
+                vaFrmCompra.ppuIncluirDetail;
+                vaFrmCompra.ShowModal;
+
+
+                dmEstoque.cdsSolicitacao_Compra_Item.Next;
+              end;
+
+            dmEstoque.cdsSolicitacao_Compra.Edit;
+            dmEstoque.cdsSolicitacao_CompraID_COMPRA.AsInteger := vaIdCompra;
+            dmEstoque.cdsSolicitacao_Compra.Post;
+            if dmEstoque.cdsSolicitacao_Compra.ChangeCount > 0 then
+              dmEstoque.cdsSolicitacao_Compra.ApplyUpdates(0);
+
+            TMensagem.ppuShowMessage('Compra gerada com sucesso.');
+
+          end;
+      finally
+        vaFrmCompra.Free;
+      end;
     end;
 end;
 

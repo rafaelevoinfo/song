@@ -48,14 +48,12 @@ inherited smEstoque: TsmEstoque
   object qEntrada: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Entrada.Id,'
-      '       Entrada.Id_Item,'
+      'select distinct Entrada.Id,'
       '       Entrada.Id_Compra,'
-      '       Entrada.Qtde,'
-      '       Entrada.Data,'
-      '       item.nome as nome_item'
+      '       Entrada.Data'
       'from Entrada '
-      'inner join item on (item.id = entrada.id_item)'
+      'left join entrada_item on (entrada_item.id_entrada = entrada.id)'
+      'left join item on (item.id = entrada_item.id_item)'
       '&where')
     Left = 128
     Top = 16
@@ -70,37 +68,16 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qEntradaID_ITEM: TIntegerField
-      FieldName = 'ID_ITEM'
-      Origin = 'ID_ITEM'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object qEntradaID_COMPRA: TIntegerField
       FieldName = 'ID_COMPRA'
       Origin = 'ID_COMPRA'
       ProviderFlags = [pfInUpdate]
-    end
-    object qEntradaQTDE: TBCDField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
     end
     object qEntradaDATA: TSQLTimeStampField
       FieldName = 'DATA'
       Origin = '"DATA"'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qEntradaNOME_ITEM: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'NOME_ITEM'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
     end
   end
   object qSolicitacao_Compra: TRFQuery
@@ -388,7 +365,8 @@ inherited smEstoque: TsmEstoque
       '       Compra_Item.Qtde,'
       '       Compra_Item.Valor_Unitario,'
       '       Item.nome as Item,'
-      '       Especie.nome as Especie'
+      '       Especie.nome as Especie,'
+      '       Item.tipo as tipo_item'
       'from Compra_Item'
       'inner join Item on (Item.Id = Compra_Item.Id_Item)'
       'left join Especie on (Especie.Id = Compra_Item.Id_Especie)'
@@ -451,6 +429,66 @@ inherited smEstoque: TsmEstoque
     object qCompra_ItemESPECIE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qCompra_ItemTIPO_ITEM: TSmallintField
+      AutoGenerateValue = arDefault
+      FieldName = 'TIPO_ITEM'
+      Origin = 'TIPO'
+      ProviderFlags = []
+    end
+  end
+  object qEntrada_Item: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Entrada_Item.Id,'
+      '       Entrada_Item.Id_Entrada,'
+      '       Entrada_Item.Id_Item,'
+      '       Entrada_Item.Qtde,'
+      '       Item.nome as nome_item'
+      'from Entrada_Item'
+      'inner join item on (item.id = entrada_item.id_item)'
+      'where Entrada_Item.Id_Entrada = :Id_Entrada   ')
+    Left = 336
+    Top = 32
+    ParamData = <
+      item
+        Name = 'ID_ENTRADA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qEntrada_ItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qEntrada_ItemID_ENTRADA: TIntegerField
+      FieldName = 'ID_ENTRADA'
+      Origin = 'ID_ENTRADA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qEntrada_ItemID_ITEM: TIntegerField
+      FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qEntrada_ItemQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qEntrada_ItemNOME_ITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ITEM'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

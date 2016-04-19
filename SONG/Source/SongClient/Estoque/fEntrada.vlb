@@ -141,9 +141,6 @@ Coordinates=565,375,70,33
 Coordinates=245,427,106,33
 Visible=False
 
-[viewRegistrosID_ITEM]
-Coordinates=1511,1,124,33
-
 [dmLookup.cdslkItem]
 Coordinates=546,225,117,33
 
@@ -164,24 +161,8 @@ Coordinates=994,474,148,33
 [dmLookup.dslkConta_Corrente]
 Coordinates=546,417,168,33
 
-[Label3]
-Coordinates=909,427,46,33
-Visible=False
-
 [viewRegistrosID]
 Coordinates=663,343,94,33
-
-[cbItem]
-Coordinates=224,549,47,33
-LayerNames=
-Visible=False
-
-[viewRegistrosQTDE]
-Coordinates=1511,56,112,33
-
-[EditCompra]
-Coordinates=668,488,72,33
-Visible=False
 
 [lbl2]
 Coordinates=361,427,40,33
@@ -239,10 +220,6 @@ Coordinates=1274,166,147,33
 Coordinates=819,215,158,33
 Visible=False
 
-[EditQtde]
-Coordinates=601,488,57,33
-Visible=False
-
 [dmLookup.cdslkPlano_Contas]
 Coordinates=699,10,164,33
 Visible=False
@@ -279,9 +256,6 @@ Coordinates=180,807,125,33
 Coordinates=699,427,46,33
 Visible=False
 
-[viewRegistrosNOME_ITEM]
-Coordinates=1511,331,145,33
-
 [dmLookup.dslkFornecedor]
 Coordinates=140,933,147,33
 
@@ -308,10 +282,6 @@ Visible=False
 [dmLookup.dslkAtividade]
 Coordinates=994,881,136,33
 
-[Label5]
-Coordinates=545,488,46,33
-Visible=False
-
 [dmLookup.cdslkMatriz]
 Coordinates=284,215,125,33
 Visible=False
@@ -323,8 +293,8 @@ Coordinates=994,738,111,33
 Coordinates=268,417,116,33
 
 []
-Coordinates=494,488,40,33
-LayerNames=Enable
+Coordinates=668,488,72,33
+LayerNames=
 ExplicitSubNodes=
 Visible=False
 

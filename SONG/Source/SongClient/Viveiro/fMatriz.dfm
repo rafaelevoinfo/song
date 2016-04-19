@@ -1,6 +1,8 @@
 inherited frmMatriz: TfrmMatriz
   ActiveControl = nil
   Caption = 'Matrizes'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -114,10 +116,6 @@ inherited frmMatriz: TfrmMatriz
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5

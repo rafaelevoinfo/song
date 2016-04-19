@@ -88,6 +88,11 @@ type
     qlkRubrica_AtividadeID: TIntegerField;
     qlkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField;
     qlkRubrica_AtividadeNOME: TStringField;
+    qlkCompra: TRFQuery;
+    qlkCompraID: TIntegerField;
+    qlkCompraID_FORNECEDOR: TIntegerField;
+    qlkCompraDATA: TSQLTimeStampField;
+    qlkCompraNOME_FANTASIA: TStringField;
   private
     { Private declarations }
   protected
@@ -187,6 +192,13 @@ begin
     begin
       if ipParam.Name = TParametros.coAtividade then
         Result := Result + ' ((atividade_projeto.id_atividade ='+vaValor+') or (atividade.id = '+vaValor+'))';
+    end
+  else if ipTabela = 'COMPRA' then
+    begin
+      if ipParam.Name = TParametros.coStatusEntrega then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS_ENTREGA', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1),vaOperador);
     end
 end;
 

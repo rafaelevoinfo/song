@@ -15,9 +15,20 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuEstoque, dmuLookup, uTypes,
   System.DateUtils, uClientDataSet, uControleAcesso, System.TypInfo, cxMemo,
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCurrencyEdit,
-  uMensagem, cxCalc, uExceptions;
+  uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda;
 
 type
+  TCompra = class(TModelo)
+  private
+    FIdPessoaComprou: Integer;
+    FData: TDateTime;
+    procedure SetData(const Value: TDateTime);
+    procedure SetIdPessoaComprou(const Value: Integer);
+  public
+    property Data: TDateTime read FData write SetData;
+    property IdPessoaComprou: Integer read FIdPessoaComprou write SetIdPessoaComprou;
+  end;
+
   TfrmCompra = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_FORNECEDOR: TcxGridDBColumn;
@@ -76,13 +87,21 @@ type
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
+    procedure ppvRealizarEntradas;
+    procedure ppvGerarEntrada();
+    procedure ppvGerarEntradaSemente;
+    procedure ppvGerarEntradaMuda;
   protected
     function fprGetPermissao: string; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
+    procedure pprExecutarSalvar; override;
 
     procedure pprBeforeSalvarDetail; override;
+
+    procedure pprCarregarDadosModelo; override;
+    procedure pprCarregarDadosModeloDetail; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -98,6 +117,9 @@ var
 
 implementation
 
+uses
+  fLote_Semente;
+
 {$R *.dfm}
 
 
@@ -108,7 +130,28 @@ begin
   dmEstoque.cdsCompraSTATUS_ENTREGA.AsInteger := Ord(sepEntregue);
   dmEstoque.cdsCompra.Post;
 
-  // TODO: REALIZAR A ENTRADA NO ESTOQUE
+  ppvRealizarEntradas;
+end;
+
+procedure TfrmCompra.ppvRealizarEntradas();
+begin
+  if dmEstoque.cdsCompra_Item.RecordCount > 0 then
+    begin
+      if TMensagem.fpuPerguntar('Deseja realizar a entrada do produtos comprados?', ppSimNao) = rpSim then
+        begin
+          // Tipo Outros
+          if dmEstoque.cdsCompra_Item.Locate(dmEstoque.cdsCompra_ItemTIPO_ITEM.FieldName, Ord(tiOutro), []) then
+            ppvGerarEntrada();
+          // Semente
+          if dmEstoque.cdsCompra_Item.Locate(dmEstoque.cdsCompra_ItemTIPO_ITEM.FieldName, Ord(tiSemente), []) then
+            ppvGerarEntradaSemente();
+          // Muda
+          if dmEstoque.cdsCompra_Item.Locate(dmEstoque.cdsCompra_ItemTIPO_ITEM.FieldName, Ord(tiMuda), []) then
+            ppvGerarEntradaMuda();
+
+          TMensagem.ppuShowMessage('Entradas realizadas com sucesso.');
+        end;
+    end;
 end;
 
 procedure TfrmCompra.Ac_Produto_EntregueUpdate(Sender: TObject);
@@ -171,9 +214,48 @@ end;
 procedure TfrmCompra.pprBeforeSalvarDetail;
 begin
   inherited;
-   // vamos garantir que somente itens do tipo smente e muda vao estar vinculados a uma especie
+  // vamos garantir que somente itens do tipo smente e muda vao estar vinculados a uma especie
   if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiOutro) then
     dmEstoque.cdsCompra_ItemID_ESPECIE.Clear;
+end;
+
+procedure TfrmCompra.pprCarregarDadosModelo;
+var
+  vaCompra: TCompra;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TCompra) then
+    begin
+      vaCompra := TCompra(Modelo);
+
+      EditDataCompra.EditValue := vaCompra.Data;
+      EditDataCompra.PostEditValue;
+
+      cbComprador.EditValue := vaCompra.IdPessoaComprou;
+      cbComprador.PostEditValue;
+    end;
+end;
+
+procedure TfrmCompra.pprCarregarDadosModeloDetail;
+var
+  vaItem: TItem;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
+    begin
+      vaItem := TItem(Modelo);
+      cbItem.EditValue := vaItem.IdItem;
+      cbItem.PostEditValue;
+
+      if vaItem.IdEspecie <> 0 then
+        begin
+          cbEspecie.EditValue := vaItem.IdEspecie;
+          cbEspecie.PostEditValue;
+        end;
+
+      EditQtde.EditValue := vaItem.Qtde;
+      EditQtde.PostEditValue;
+    end;
 end;
 
 procedure TfrmCompra.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -187,6 +269,26 @@ begin
     ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaFornecedor.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCodigoRastreio then
     ipCds.ppuAddParametro(TParametros.coCodigoRastreio, EditPesquisa.Text)
+end;
+
+procedure TfrmCompra.pprExecutarSalvar;
+var
+  vaRealizarEntradas: Boolean;
+begin
+  vaRealizarEntradas := False;
+  if not VarIsNull(dmEstoque.cdsCompraSTATUS_ENTREGA.NewValue) then
+    begin
+      if dmEstoque.cdsCompraSTATUS_ENTREGA.NewValue = Ord(sepEntregue) then
+        begin
+          if (not VarIsNull(dmEstoque.cdsCompraSTATUS_ENTREGA.OldValue)) and
+            (dmEstoque.cdsCompraSTATUS_ENTREGA.NewValue <> dmEstoque.cdsCompraSTATUS_ENTREGA.OldValue) then
+            vaRealizarEntradas := True
+        end;
+    end;
+  inherited;
+
+  if vaRealizarEntradas then
+    ppvRealizarEntradas;
 end;
 
 procedure TfrmCompra.pprValidarPesquisa;
@@ -208,8 +310,113 @@ end;
 procedure TfrmCompra.ppuIncluir;
 begin
   inherited;
-  dmEstoque.cdsCompraSTATUS_ENTREGA.AsInteger := Ord(sepACaminho);
-  dmEstoque.cdsCompraDATA.AsDateTime := Now;
+  if dmEstoque.cdsCompraSTATUS_ENTREGA.isNull then
+    dmEstoque.cdsCompraSTATUS_ENTREGA.AsInteger := Ord(sepACaminho);
+
+  if dmEstoque.cdsCompraDATA.isNull then
+    dmEstoque.cdsCompraDATA.AsDateTime := Now;
+end;
+
+procedure TfrmCompra.ppvGerarEntrada();
+var
+  vaFrmEntrada: TfrmEntrada;
+  vaEntrada: TEntrada;
+  vaItem: TItem;
+begin
+  // realizando a entrada
+  vaFrmEntrada := TfrmEntrada.Create(nil);
+  try
+    vaEntrada := TEntrada.Create; // vai ser destruido pelo frmEntrada
+    vaEntrada.Data := dmEstoque.cdsCompraDATA.AsDateTime;
+    vaEntrada.IdCompra := dmEstoque.cdsCompraID.AsInteger;
+
+    vaFrmEntrada.ppuConfigurarModoExecucao(meSomenteCadastro, vaEntrada);
+    vaFrmEntrada.ppuIncluir;
+    vaFrmEntrada.ppuSalvar;
+    dmEstoque.cdsCompra_Item.First;
+    while not dmEstoque.cdsCompra_Item.Eof do
+      begin
+        if dmEstoque.cdsCompra_ItemTIPO_ITEM.AsInteger = Ord(tiOutro) then
+          begin
+            vaItem := TItem.Create; // vai ser destruido pelo vafrmEntrada
+            vaItem.IdItem := dmEstoque.cdsCompra_ItemID_ITEM.AsInteger;
+            vaItem.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
+
+            vaFrmEntrada.Modelo := vaItem;
+            vaFrmEntrada.ppuIncluirDetail;
+            vaFrmEntrada.ppuSalvarDetail;
+
+          end;
+        dmEstoque.cdsCompra_Item.Next;
+      end;
+  finally
+    vaFrmEntrada.Free;
+  end;
+end;
+
+procedure TfrmCompra.ppvGerarEntradaSemente();
+var
+  vaFrmLoteSemente: TfrmLoteSemente;
+  vaLoteSemente: TLoteSemente;
+begin
+  // realizando a entrada de sementes
+  vaFrmLoteSemente := TfrmLoteSemente.Create(nil);
+  try
+    dmEstoque.cdsCompra_Item.First;
+    while not dmEstoque.cdsCompra_Item.Eof do
+      begin
+        if dmEstoque.cdsCompra_ItemTIPO_ITEM.AsInteger = Ord(tiSemente) then
+          begin
+            vaLoteSemente := TLoteSemente.Create; // vai ser destruido pelo vaFrmLoteSemente
+            vaLoteSemente.Data := dmEstoque.cdsCompraDATA.AsDateTime;
+            vaLoteSemente.IdCompra := dmEstoque.cdsCompraID.AsInteger;
+            vaLoteSemente.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
+            vaLoteSemente.Nome := 'Compra de Semente';
+            vaLoteSemente.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
+            vaLoteSemente.IdPessoaColetouComprou := dmEstoque.cdsCompraID_PESSOA_COMPROU.AsInteger;
+
+            vaFrmLoteSemente.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteSemente);
+            vaFrmLoteSemente.ppuIncluir;
+            vaFrmLoteSemente.ppuSalvar;
+
+          end;
+        dmEstoque.cdsCompra_Item.Next;
+      end;
+  finally
+    vaFrmLoteSemente.Free;
+  end;
+end;
+
+procedure TfrmCompra.ppvGerarEntradaMuda();
+var
+  vaFrmLoteMuda: TfrmLoteMuda;
+  vaLoteMuda: TLoteMuda;
+begin
+  // realizando a entrada de muda
+  vaFrmLoteMuda := TfrmLoteMuda.Create(nil);
+  try
+    dmEstoque.cdsCompra_Item.First;
+    while not dmEstoque.cdsCompra_Item.Eof do
+      begin
+        if dmEstoque.cdsCompra_ItemTIPO_ITEM.AsInteger = Ord(tiMuda) then
+          begin
+            vaLoteMuda := TLoteMuda.Create;
+            vaLoteMuda.Data := dmEstoque.cdsCompraDATA.AsDateTime;
+            vaLoteMuda.IdCompra := dmEstoque.cdsCompraID.AsInteger;
+            vaLoteMuda.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
+            vaLoteMuda.Nome := 'Compra de Muda';
+            vaLoteMuda.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
+
+            vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
+            vaFrmLoteMuda.ppuIncluir;
+            vaFrmLoteMuda.ppuSalvar;
+
+          end;
+        dmEstoque.cdsCompra_Item.Next;
+      end;
+  finally
+    vaFrmLoteMuda.Free;
+  end;
 end;
 
 procedure TfrmCompra.viewRegistrosSTATUS_ENTREGACustomDrawCell(
@@ -233,6 +440,18 @@ begin
   // else
   // ACanvas.Brush.Color := clRed;
   // end;
+end;
+
+{ TCompra }
+
+procedure TCompra.SetData(const Value: TDateTime);
+begin
+  FData := Value;
+end;
+
+procedure TCompra.SetIdPessoaComprou(const Value: Integer);
+begin
+  FIdPessoaComprou := Value;
 end;
 
 end.

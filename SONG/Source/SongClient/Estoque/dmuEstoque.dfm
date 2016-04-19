@@ -47,36 +47,16 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsEntradaID_ITEM: TIntegerField
-      DisplayLabel = 'Id do Item'
-      FieldName = 'ID_ITEM'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object cdsEntradaID_COMPRA: TIntegerField
       DisplayLabel = 'Id da Compra'
       FieldName = 'ID_COMPRA'
       ProviderFlags = [pfInUpdate]
-    end
-    object cdsEntradaQTDE: TBCDField
-      DisplayLabel = 'Quantidade'
-      FieldName = 'QTDE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
     end
     object cdsEntradaDATA: TSQLTimeStampField
       DisplayLabel = 'Data da Entrada'
       FieldName = 'DATA'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object cdsEntradaNOME_ITEM: TStringField
-      DisplayLabel = 'Item'
-      FieldName = 'NOME_ITEM'
-      ProviderFlags = [pfInUpdate]
-      Size = 100
     end
   end
   object cdsSolicitacao_Compra: TRFClientDataSet
@@ -349,10 +329,67 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = []
       Size = 100
     end
+    object cdsCompra_ItemTIPO_ITEM: TSmallintField
+      FieldName = 'TIPO_ITEM'
+      ProviderFlags = []
+    end
   end
   object dsCompra: TDataSource
     DataSet = cdsCompra
     Left = 360
     Top = 192
+  end
+  object cdsEntrada_Item: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ENTRADA'
+    MasterFields = 'ID'
+    MasterSource = dsEntrada
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_ENTRADA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqEntrada_Item'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 128
+    Top = 200
+    object cdsEntrada_ItemID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsEntrada_ItemID_ENTRADA: TIntegerField
+      DisplayLabel = 'Id da Entrada'
+      FieldName = 'ID_ENTRADA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsEntrada_ItemID_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item'
+      FieldName = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsEntrada_ItemQTDE: TBCDField
+      DisplayLabel = 'Quantidade'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsEntrada_ItemNOME_ITEM: TStringField
+      DisplayLabel = 'Nome do Item'
+      FieldName = 'NOME_ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object dsEntrada: TDataSource
+    DataSet = cdsEntrada
+    Left = 128
+    Top = 88
   end
 end

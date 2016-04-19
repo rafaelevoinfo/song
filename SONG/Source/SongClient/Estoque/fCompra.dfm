@@ -1,16 +1,15 @@
 inherited frmCompra: TfrmCompra
-  ActiveControl = cbFornecedor
+  ActiveControl = cbItem
   Caption = 'Compras'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
-          ExplicitLeft = 562
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -99,8 +98,10 @@ inherited frmCompra: TfrmCompra
         end
         inherited pnBotoes: TPanel
           Width = 563
+          ExplicitWidth = 563
           inherited btnUtilizar: TButton
             Left = 188
+            ExplicitLeft = 188
           end
           object btnProdutoEntregue: TButton
             AlignWithMargins = True
@@ -194,8 +195,6 @@ inherited frmCompra: TfrmCompra
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
               inherited cxGridRegistrosDetail: TcxGrid
-                ExplicitLeft = 3
-                ExplicitTop = 27
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -363,9 +362,6 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      inherited pnBotoesCadastroDetail: TPanel
-        ExplicitTop = -6
-      end
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7

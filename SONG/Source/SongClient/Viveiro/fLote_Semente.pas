@@ -21,11 +21,10 @@ uses
 type
   TLoteSemente = class(TLote)
   private
-    FQtde: Double;
     FIdPessoaColetou: Integer;
     procedure SetIdPessoaColetou(const Value: Integer);
   public
-    property IdPessoaColetou: Integer read FIdPessoaColetou write SetIdPessoaColetou;    
+    property IdPessoaColetouComprou: Integer read FIdPessoaColetou write SetIdPessoaColetou;
   end;
 
   TfrmLoteSemente = class(TfrmBasicoCrudMasterDetail)
@@ -332,8 +331,8 @@ begin
       vaLote := TLoteSemente(Modelo);
 
       plSetEdit(EditNome, vaLote.Nome);
-      if vaLote.IdPessoaColetou <> 0 then
-        plSetEdit(cbPessoaColetou, vaLote.IdPessoaColetou);
+      if vaLote.IdPessoaColetouComprou <> 0 then
+        plSetEdit(cbPessoaColetou, vaLote.IdPessoaColetouComprou);
 
       if vaLote.Data <> 0 then
         plSetEdit(EditData, vaLote.Data);

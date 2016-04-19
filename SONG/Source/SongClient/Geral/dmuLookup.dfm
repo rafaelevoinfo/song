@@ -478,6 +478,19 @@ inherited dmLookup: TdmLookup
           Value = 1
         end>
     end
+    object repLcbCompra: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME_FANTASIA'
+        end
+        item
+          FieldName = 'DATA'
+        end>
+      Properties.ListSource = dslkCompra
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1070,5 +1083,41 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkProjeto_Area_Atividade
     Left = 164
     Top = 232
+  end
+  object cdslkCompra: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkCompra'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 752
+    Top = 544
+    object cdslkCompraID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkCompraID_FORNECEDOR: TIntegerField
+      DisplayLabel = 'Id do Fornecedor'
+      FieldName = 'ID_FORNECEDOR'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkCompraDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkCompraNOME_FANTASIA: TStringField
+      DisplayLabel = 'Fornecedor'
+      FieldName = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object dslkCompra: TDataSource
+    DataSet = cdslkCompra
+    Left = 488
+    Top = 296
   end
 end

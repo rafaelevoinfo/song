@@ -16,27 +16,45 @@ uses
   uControleAcesso, uClientDataSet, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, cxDBEdit, cxCalc, Data.Bind.EngExt, Vcl.Bind.DBEngExt,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.Components,
-  Data.Bind.DBScope, fLote_Semente, fLote_Muda, dmuPrincipal, System.DateUtils;
+  Data.Bind.DBScope, fLote_Semente, fLote_Muda, dmuPrincipal, System.DateUtils,
+  fBasicoCrudMasterDetail, cxSplitter, uUtils, System.Generics.Collections, System.Generics.Defaults;
 
 type
-  TfrmEntrada = class(TfrmBasicoCrud)
+  
+
+  TEntrada = class(TModelo)
+  private
+    FItens: TObjectList<TItem>;
+    FIdCompra: Integer;
+    FData: TDateTime;
+    procedure SetData(const Value: TDateTime);
+    procedure SetIdCompra(const Value: Integer);
+    procedure SetItens(const Value: TObjectList<TItem>);
+  public
+    property Data: TDateTime read FData write SetData;
+    property IdCompra: Integer read FIdCompra write SetIdCompra;
+    property Itens:TObjectList<TItem> read FItens write SetItens;
+  end;
+
+  TfrmEntrada = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
-    viewRegistrosID_ITEM: TcxGridDBColumn;
     viewRegistrosID_COMPRA: TcxGridDBColumn;
-    viewRegistrosQTDE: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
-    viewRegistrosNOME_ITEM: TcxGridDBColumn;
     cbPesquisaTipoItem: TcxImageComboBox;
     cbPesquisaItem: TcxLookupComboBox;
-    cbItem: TcxDBLookupComboBox;
-    Label3: TLabel;
     EditDataEntrada: TcxDBDateEdit;
     Label4: TLabel;
-    EditQtde: TcxDBCalcEdit;
-    Label5: TLabel;
     lbl2: TLabel;
-    EditCompra: TcxDBCalcEdit;
+    Label3: TLabel;
+    cbItem: TcxDBLookupComboBox;
+    Label5: TLabel;
+    EditQtde: TcxDBCalcEdit;
     lbUnidade: TLabel;
+    viewRegistrosDetailID: TcxGridDBColumn;
+    viewRegistrosDetailID_ITEM: TcxGridDBColumn;
+    viewRegistrosDetailQTDE: TcxGridDBColumn;
+    viewRegistrosDetailNOME_ITEM: TcxGridDBColumn;
+    cbCompra: TcxDBLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
   private
@@ -47,6 +65,9 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
+
+    procedure pprCarregarDadosModelo; override;
+    procedure pprCarregarDadosModeloDetail; override;
 
     { Public declarations }
   public const
@@ -90,6 +111,8 @@ begin
 
   dmLookup.cdslkItem.ppuDataRequest([TParametros.coTipo], [Ord(tiOutro)]); // sementes e mudas nao podem ser lançadas aqui
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkCompra.ppuDataRequest([TParametros.coStatusEntrega, TParametros.coData],
+    [Ord(sepEntregue), DateToStr(IncMonth(now, -3)) + ';' + DateToStr(now)]);
 end;
 
 function TfrmEntrada.fprConfigurarControlesPesquisa: TWinControl;
@@ -115,6 +138,46 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estEntrada));
 end;
 
+procedure TfrmEntrada.pprCarregarDadosModelo;
+var
+  vaEntrada: TEntrada;
+
+  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
+  begin
+    if not VarIsNull(ipValor) then
+      begin
+        ipEdit.EditValue := ipValor;
+        ipEdit.PostEditValue;
+      end;
+  end;
+
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TEntrada) then
+    begin
+      vaEntrada := TEntrada(Modelo);
+
+      plSetEdit(EditDataEntrada, vaEntrada.Data);
+      plSetEdit(cbCompra, vaEntrada.IdCompra);
+    end;
+end;
+
+procedure TfrmEntrada.pprCarregarDadosModeloDetail;
+var
+  vaItem: TItem;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
+    begin
+      vaItem := TItem(Modelo);
+      cbItem.EditValue := vaItem.IdItem;
+      cbItem.PostEditValue;
+
+      EditQtde.EditValue := vaItem.Qtde;
+      EditQtde.PostEditValue;
+    end;
+end;
+
 procedure TfrmEntrada.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
@@ -134,6 +197,23 @@ begin
 
   if (cbPesquisarPor.EditValue = coPesquisaItem) and (VarIsNull(cbPesquisaItem.EditValue)) then
     raise Exception.Create('Informe o item a ser pesquisado.');
+end;
+
+{ TEntrada }
+
+procedure TEntrada.SetData(const Value: TDateTime);
+begin
+  FData := Value;
+end;
+
+procedure TEntrada.SetIdCompra(const Value: Integer);
+begin
+  FIdCompra := Value;
+end;
+
+procedure TEntrada.SetItens(const Value: TObjectList<TItem>);
+begin
+  FItens := Value;
 end;
 
 end.

@@ -75,6 +75,7 @@ type
     procedure pprEfetuarExcluirDetail(ipId: Integer); virtual;
 
     procedure pprValidarDadosDetail; virtual;
+    procedure pprCarregarDadosModeloDetail; virtual;
     // OVERRIDE
     procedure pprEfetuarPesquisa; override;
 
@@ -113,7 +114,7 @@ end;
 procedure TfrmBasicoCrudMasterDetail.Ac_Cancelar_DetailExecute(Sender: TObject);
 begin
   inherited;
-   if fpuCancelarDetail then
+  if fpuCancelarDetail then
     ppuRetornar(False)
   else // salvou
     ppuRetornar(True);
@@ -211,13 +212,19 @@ end;
 
 procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
 begin
-
+  if ModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
+    FIdDetailEscolhido := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprBeforeSalvarDetail;
 begin
   pprPreencherCamposPadroes(dsDetail.DataSet);
   pprValidarDadosDetail;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.pprCarregarDadosModeloDetail;
+begin
+  // Implementar nas classes filhas
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprEfetuarPesquisa;
@@ -258,6 +265,8 @@ begin
     begin
       pprBeforeAlterarDetail;
       pprDefinirTabDetailCadastro;
+
+      pprCarregarDadosModeloDetail;
     end;
 end;
 
@@ -269,7 +278,7 @@ begin
       if TMensagem.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
           ppuSalvarDetail;
-          Exit(false);
+          Exit(False);
         end;
     end;
 
@@ -282,11 +291,11 @@ begin
   case ipModo of
     mePesquisaDetail:
       begin
-        btnUtilizar.Visible := false;
+        btnUtilizar.Visible := False;
         btnUtilizarDetailSelecionado.Visible := True;
       end;
     meSomentePesquisa:
-      btnIncluirDetail.Visible := false;
+      btnIncluirDetail.Visible := False;
   end;
 end;
 
@@ -308,7 +317,7 @@ begin
   if fprHabilitarExcluirDetail then
     begin
       pprValidarPermissao(atExcluir, Permissao);
-      Result := false;
+      Result := False;
       if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
         begin
           try
@@ -346,6 +355,8 @@ begin
   pprBeforeIncluirDetail;
   dsDetail.DataSet.Append;
   pprDefinirTabDetailCadastro;
+
+  pprCarregarDadosModeloDetail;
 end;
 
 procedure TfrmBasicoCrudMasterDetail.pprDefinirTabDetailCadastro;

@@ -143,6 +143,13 @@ type
     repLcbProjeto_Area_Atividade: TcxEditRepositoryLookupComboBoxItem;
     repIcbStatusSolicitacaoCompra: TcxEditRepositoryImageComboBoxItem;
     repIcbStatusEntrega: TcxEditRepositoryImageComboBoxItem;
+    cdslkCompra: TRFClientDataSet;
+    cdslkCompraID: TIntegerField;
+    cdslkCompraID_FORNECEDOR: TIntegerField;
+    cdslkCompraDATA: TSQLTimeStampField;
+    cdslkCompraNOME_FANTASIA: TStringField;
+    repLcbCompra: TcxEditRepositoryLookupComboBoxItem;
+    dslkCompra: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

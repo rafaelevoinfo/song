@@ -131,7 +131,6 @@ begin
           except
             vaTaxaGerminacao := 0;
           end;
-          // a taxa de descarte é um campo calculado no banco, entao nao preciso calcula-la
         end
       else
         raise Exception.Create('Lote não encontrado.');
@@ -180,11 +179,15 @@ end;
 
 procedure TsmFuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
 var
-  vaTaxaGerminacao: Double;
+  vaTaxaGerminacao,vaTaxaDescarte: Double;
 begin
   vaTaxaGerminacao := fpuCalcularTaxaGerminacaoLote(ipIdLote);
+  vaTaxaDescarte := 100-vaTaxaGerminacao;
+  if vaTaxaDescarte < 0 then
+    vaTaxaDescarte := 0;
   // a taxa de descarte é um campo calculado no banco, entao nao preciso calcula-la
-  Connection.ExecSQL('update lote_Semente set lote_Semente.taxa_germinacao = :taxa where lote_Semente.id = :id', [vaTaxaGerminacao, ipIdLote]);
+  Connection.ExecSQL('update lote_Semente set lote_Semente.taxa_germinacao = :taxa, '+
+   ' lote_semente.taxa_descarte = :taxa_descarte where lote_Semente.id = :id', [vaTaxaGerminacao,vaTaxaDescarte, ipIdLote]);
 end;
 
 procedure TsmFuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);

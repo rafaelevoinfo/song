@@ -18,11 +18,8 @@ type
     qItemTIPO: TSmallintField;
     qEntrada: TRFQuery;
     qEntradaID: TIntegerField;
-    qEntradaID_ITEM: TIntegerField;
     qEntradaID_COMPRA: TIntegerField;
-    qEntradaQTDE: TBCDField;
     qEntradaDATA: TSQLTimeStampField;
-    qEntradaNOME_ITEM: TStringField;
     qItemUNIDADE: TStringField;
     qSolicitacao_Compra: TRFQuery;
     qSolicitacao_CompraID: TIntegerField;
@@ -65,6 +62,13 @@ type
     qCompra_ItemITEM: TStringField;
     qCompra_ItemESPECIE: TStringField;
     qCompraVALOR_TOTAL: TBCDField;
+    qEntrada_Item: TRFQuery;
+    qEntrada_ItemID: TIntegerField;
+    qEntrada_ItemID_ENTRADA: TIntegerField;
+    qEntrada_ItemID_ITEM: TIntegerField;
+    qEntrada_ItemQTDE: TBCDField;
+    qEntrada_ItemNOME_ITEM: TStringField;
+    qCompra_ItemTIPO_ITEM: TSmallintField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
@@ -94,7 +98,7 @@ begin
   else if ipTabela = 'ENTRADA' then
     begin
       if ipParam.Name = TParametros.coItem then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ITEM', vaValor.ToInteger, vaOperador)
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ENTRADA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coCompra then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_COMPRA', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coTipoItem then

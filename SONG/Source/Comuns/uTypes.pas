@@ -25,8 +25,22 @@ type
   private
     FId: Integer;
     procedure SetId(const Value: Integer);
-    public
-    property Id:Integer read FId write SetId;
+  public
+    property Id: Integer read FId write SetId;
+  end;
+
+  TItem = class(TModelo)
+  private
+    FIdItem: Integer;
+    FQtde: Double;
+    FIdEspecie: Integer;
+    procedure SetIdItem(const Value: Integer);
+    procedure SetQtde(const Value: Double);
+    procedure SetIdEspecie(const Value: Integer);
+  public
+    property IdItem: Integer read FIdItem write SetIdItem;
+    property IdEspecie:Integer read FIdEspecie write SetIdEspecie;
+    property Qtde: Double read FQtde write SetQtde;
   end;
 
   TLote = class(TModelo)
@@ -35,15 +49,18 @@ type
     FNome: string;
     FData: TDateTime;
     FQtde: Double;
+    FIdCompra: Integer;
     procedure SetData(const Value: TDateTime);
     procedure SetIdEspecie(const Value: Integer);
     procedure SetNome(const Value: string);
     procedure SetQtde(const Value: Double);
+    procedure SetIdCompra(const Value: Integer);
   public
     property Nome: string read FNome write SetNome;
     property Data: TDateTime read FData write SetData;
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
     property Qtde: Double read FQtde write SetQtde;
+    property IdCompra: Integer read FIdCompra write SetIdCompra;
   end;
 
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
@@ -72,7 +89,7 @@ type
 
   TTipoItem = (tiOutro, tiSemente, tiMuda);
 
-  TStatusEntregaProduto = (sepACaminho,sepEntregue);
+  TStatusEntregaProduto = (sepACaminho, sepEntregue);
 
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
@@ -103,6 +120,11 @@ begin
   FData := Value;
 end;
 
+procedure TLote.SetIdCompra(const Value: Integer);
+begin
+  FIdCompra := Value;
+end;
+
 procedure TLote.SetIdEspecie(const Value: Integer);
 begin
   FIdEspecie := Value;
@@ -123,6 +145,23 @@ end;
 procedure TModelo.SetId(const Value: Integer);
 begin
   FId := Value;
+end;
+
+{ TItem }
+
+procedure TItem.SetIdEspecie(const Value: Integer);
+begin
+  FIdEspecie := Value;
+end;
+
+procedure TItem.SetIdItem(const Value: Integer);
+begin
+  FIdItem := Value;
+end;
+
+procedure TItem.SetQtde(const Value: Double);
+begin
+  FQtde := Value;
 end;
 
 end.

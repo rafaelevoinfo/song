@@ -666,4 +666,46 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkCompra: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Compra.Id,'
+      '       Compra.Id_Fornecedor,'
+      '       Compra.Data,'
+      '       Fin_For_Cli.Nome_Fantasia'
+      'from Compra'
+      
+        'inner join Fin_For_Cli on (Fin_For_Cli.Id = Compra.Id_Fornecedor' +
+        ') '
+      '&where')
+    Left = 472
+    Top = 288
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkCompraID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qlkCompraID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      Required = True
+    end
+    object qlkCompraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+    object qlkCompraNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
+      Origin = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

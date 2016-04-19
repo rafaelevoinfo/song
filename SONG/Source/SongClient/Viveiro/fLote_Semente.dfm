@@ -1,10 +1,10 @@
 inherited frmLoteSemente: TfrmLoteSemente
-  ActiveControl = btnIncluir
+  ActiveControl = btnSalvar_Germinacao
   Caption = 'Lotes de Sementes'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastroGerminacao
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -385,10 +385,15 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
+                Width = 455
+                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
+                Left = 456
+                Width = 48
+                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
@@ -410,6 +415,9 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
               inherited cxGrid2: TcxGrid
+                Left = 504
+                Width = 467
+                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -434,11 +442,14 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 110
+                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
+                  Left = 503
                   Width = 92
+                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 503
                   ExplicitWidth = 92
@@ -568,10 +579,6 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         TabOrder = 0
       end
@@ -783,6 +790,7 @@ inherited frmLoteSemente: TfrmLoteSemente
           Width = 93
           Height = 13
           Caption = 'Data da Verifica'#231#227'o'
+          FocusControl = EditDataVerificacao
         end
         object cbPessoaVerificou: TcxDBLookupComboBox
           Left = 2

@@ -1,10 +1,17 @@
 inherited frmLoteMuda: TfrmLoteMuda
-  ActiveControl = EditNome
+  ActiveControl = btnSalvarDetail
   Caption = 'Lotes de Mudas'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -129,6 +136,10 @@ inherited frmLoteMuda: TfrmLoteMuda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Classifica'#231#245'es'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]

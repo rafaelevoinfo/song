@@ -81,6 +81,7 @@ type
     FIdEscolhido: Integer;
     FModelo: TModelo;
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
+    procedure SetModelo(const Value: TModelo);
   protected
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
@@ -120,7 +121,7 @@ type
     property Permissao: string read fprGetPermissao;
     property ModoExecucao: TModoExecucao read FModoExecucao;
     // objeto modelo para ser utilizado em caso da tela ser aberta somente para cadastros
-    property Modelo: TModelo read FModelo;
+    property Modelo: TModelo read FModelo write SetModelo;
     property IdEscolhido: Integer read FIdEscolhido;
 
     constructor Create(AOwner: TComponent); override;
@@ -134,7 +135,7 @@ type
     // PESQUISA
     procedure ppuPesquisar; virtual;
     // MODO DE EXECUCAO DA TELA
-    // ipObj somente será utilizado quando ModoExeucacao for somentecadastro. Ele ira conter as informacoes que se deseja que já venha pre preenchidas
+    // ipModelo somente será utilizado quando ModoExeucacao for somentecadastro. Ele ira conter as informacoes que se deseja que já venha pre preenchidas
     procedure ppuConfigurarModoExecucao(ipModo: TModoExecucao; ipModelo: TModelo = nil); virtual;
   end;
 
@@ -184,7 +185,7 @@ end;
 procedure TfrmBasicoCrud.Ac_ExcluirUpdate(Sender: TObject);
 begin
   inherited;
-   if Sender is TAction then
+  if Sender is TAction then
     TAction(Sender).Enabled := fprHabilitarExcluir();
 end;
 
@@ -584,11 +585,17 @@ end;
 
 procedure TfrmBasicoCrud.pprBeforeAlterar;
 begin
+  if not dsMaster.DataSet.Active then
+    pprRealizarPesquisaInicial;
+
   pprValidarPermissao(atAlterar, fprGetPermissao);
 end;
 
 procedure TfrmBasicoCrud.pprBeforeIncluir;
 begin
+  if not dsMaster.DataSet.Active then
+    pprRealizarPesquisaInicial;
+
   pprValidarPermissao(atIncluir, fprGetPermissao);
 end;
 
@@ -628,6 +635,14 @@ end;
 procedure TfrmBasicoCrud.ppuRetornar;
 begin
   ppuRetornar(True);
+end;
+
+procedure TfrmBasicoCrud.SetModelo(const Value: TModelo);
+begin
+  if Assigned(FModelo) then
+    FreeAndNil(FModelo);
+
+  FModelo := Value;
 end;
 
 procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);

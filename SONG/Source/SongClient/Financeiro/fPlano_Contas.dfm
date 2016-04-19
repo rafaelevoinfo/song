@@ -1,6 +1,8 @@
 inherited frmPlanoContas: TfrmPlanoContas
   ActiveControl = EditNome
   Caption = 'Plano de Contas'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -86,10 +88,6 @@ inherited frmPlanoContas: TfrmPlanoContas
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lblNome: TLabel
           Left = 4
