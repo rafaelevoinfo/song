@@ -15,7 +15,8 @@ uses
   Vcl.ExtCtrls, cxPC, cxCheckBox, cxCheckComboBox, dmuLookup,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uTypes, System.DateUtils,
   cxSplitter, dmuEstoque, cxMemo, cxDBEdit, cxCalc, uClientDataSet,
-  uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils, fCompra;
+  uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils, fCompra,
+  dmuPrincipal;
 
 type
   TfrmSolicitacaoCompra = class(TfrmBasicoCrudMasterDetail)
@@ -128,8 +129,7 @@ end;
 procedure TfrmSolicitacaoCompra.Ac_Gerar_ComprasUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dmEstoque.cdsSolicitacao_Compra.Active and (dmEstoque.cdsSolicitacao_Compra.RecordCount > 0) and
-    (dmEstoque.cdsSolicitacao_CompraID_COMPRA.IsNull) and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada));
+  TAction(Sender).Enabled := dmEstoque.cdsSolicitacao_Compra.Active and (dmEstoque.cdsSolicitacao_Compra.RecordCount > 0) and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada));
 end;
 
 procedure TfrmSolicitacaoCompra.Ac_NegarExecute(Sender: TObject);
@@ -175,22 +175,29 @@ var
   vaCompra: TCompra;
   vaItem: TItem;
   vaIdCompra: Integer;
+  vaPergunta:string;
+  vaCompraJaGerada:Boolean;
 begin
-  if TMensagem.fpuPerguntar('Deseja incluir um novo registro no compras?', ppSimNao) = rpSim then
+  vaCompraJaGerada := dmPrincipal.FuncoesEstoque.fpuVerificarComprasJaGerada(dmEstoque.cdsSolicitacao_CompraID.AsInteger);
+  if vaCompraJaGerada then
+    vaPergunta := 'Um registro no compras já foi gerado para essa solicitação. Tem certeza que deseja gerar outro?'
+  else
+    vaPergunta := 'Deseja incluir um novo registro no compras?';
+
+  if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
     begin
       vaFrmCompra := TfrmCompra.Create(nil);
       try
         vaCompra := TCompra.Create;
         vaCompra.Data := dmEstoque.cdsSolicitacao_CompraDATA.AsDateTime;
         vaCompra.IdPessoaComprou := dmEstoque.cdsSolicitacao_CompraID_PESSOA_ANALISOU.AsInteger;
+        vaCompra.IdSolicitacao := dmEstoque.cdsSolicitacao_CompraID.AsInteger;
 
         vaFrmCompra.ppuConfigurarModoExecucao(meSomenteCadastro, vaCompra);
-        vaFrmCompra.ppuIncluir;
         vaFrmCompra.ShowModal;
         vaIdCompra := vaFrmCompra.IdEscolhido;
         if vaIdCompra <> 0 then
           begin
-
             dmEstoque.cdsSolicitacao_Compra_Item.First;
             while not dmEstoque.cdsSolicitacao_Compra_Item.Eof do
               begin
@@ -203,18 +210,10 @@ begin
                 vaFrmCompra.ppuIncluirDetail;
                 vaFrmCompra.ShowModal;
 
-
                 dmEstoque.cdsSolicitacao_Compra_Item.Next;
               end;
 
-            dmEstoque.cdsSolicitacao_Compra.Edit;
-            dmEstoque.cdsSolicitacao_CompraID_COMPRA.AsInteger := vaIdCompra;
-            dmEstoque.cdsSolicitacao_Compra.Post;
-            if dmEstoque.cdsSolicitacao_Compra.ChangeCount > 0 then
-              dmEstoque.cdsSolicitacao_Compra.ApplyUpdates(0);
-
             TMensagem.ppuShowMessage('Compra gerada com sucesso.');
-
           end;
       finally
         vaFrmCompra.Free;

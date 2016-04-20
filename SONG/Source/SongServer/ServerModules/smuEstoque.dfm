@@ -86,7 +86,6 @@ inherited smEstoque: TsmEstoque
       'select distinct Solicitacao_Compra.Id,'
       '       Solicitacao_Compra.Id_Pessoa_Solicitou,'
       '       Solicitacao_Compra.Id_Pessoa_Analisou,'
-      '       Solicitacao_Compra.Id_Compra,'
       '       Solicitacao_Compra.Data,'
       '       Solicitacao_Compra.Data_Analise,'
       '       Solicitacao_Compra.Status,'
@@ -126,11 +125,6 @@ inherited smEstoque: TsmEstoque
     object qSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField
       FieldName = 'ID_PESSOA_ANALISOU'
       Origin = 'ID_PESSOA_ANALISOU'
-      ProviderFlags = [pfInUpdate]
-    end
-    object qSolicitacao_CompraID_COMPRA: TIntegerField
-      FieldName = 'ID_COMPRA'
-      Origin = 'ID_COMPRA'
       ProviderFlags = [pfInUpdate]
     end
     object qSolicitacao_CompraDATA: TSQLTimeStampField
@@ -249,8 +243,8 @@ inherited smEstoque: TsmEstoque
     SQL.Strings = (
       'select distinct Compra.Id,'
       '       Compra.Id_Fornecedor,'
-      '       Compra.Id_Conta_Pagar,'
       '       Compra.Id_Pessoa_Comprou,'
+      '       Compra.Id_Solicitacao_Compra,'
       '       Compra.Data,'
       '       Compra.Status_Entrega,'
       '       Compra.Valor_Frete,'
@@ -290,11 +284,6 @@ inherited smEstoque: TsmEstoque
       Origin = 'ID_FORNECEDOR'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qCompraID_CONTA_PAGAR: TIntegerField
-      FieldName = 'ID_CONTA_PAGAR'
-      Origin = 'ID_CONTA_PAGAR'
-      ProviderFlags = [pfInUpdate]
     end
     object qCompraID_PESSOA_COMPROU: TIntegerField
       FieldName = 'ID_PESSOA_COMPROU'
@@ -353,6 +342,11 @@ inherited smEstoque: TsmEstoque
       Origin = 'VALOR_TOTAL'
       ProviderFlags = []
       Precision = 18
+    end
+    object qCompraID_SOLICITACAO_COMPRA: TIntegerField
+      FieldName = 'ID_SOLICITACAO_COMPRA'
+      Origin = 'ID_SOLICITACAO_COMPRA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qCompra_Item: TRFQuery

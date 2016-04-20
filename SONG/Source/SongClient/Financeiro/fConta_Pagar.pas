@@ -19,6 +19,20 @@ uses
   System.Math, System.DateUtils, uMensagem;
 
 type
+  TContaPagar = class(TModelo)
+  private
+    FIdFornecedor: Integer;
+    FValorTotal: Double;
+    FIdCompra: Integer;
+    procedure SetIdFornecedor(const Value: Integer);
+    procedure SetValorTotal(const Value: Double);
+    procedure SetIdCompra(const Value: Integer);
+  public
+    property IdCompra: Integer read FIdCompra write SetIdCompra;
+    property IdFornecedor: Integer read FIdFornecedor write SetIdFornecedor;
+    property ValorTotal: Double read FValorTotal write SetValorTotal;
+  end;
+
   TfrmContaPagar = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_FORNECEDOR: TcxGridDBColumn;
@@ -142,6 +156,8 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     function fprHabilitarAlterarDetail: Boolean; override;
+
+    procedure pprCarregarDadosModelo; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -274,6 +290,26 @@ begin
   end;
 end;
 
+procedure TfrmContaPagar.pprCarregarDadosModelo;
+var
+  vaContaPagar: TContaPagar;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TContaPagar) then
+    begin
+      vaContaPagar := TContaPagar(Modelo);
+
+      cbFornecedor.EditValue := vaContaPagar.IdFornecedor;
+      cbFornecedor.PostEditValue;
+
+      EditValorTotal.EditValue := vaContaPagar.ValorTotal;
+      EditValorTotal.PostEditValue;
+
+      if vaContaPagar.IdCompra <> 0 then
+        dmFinanceiro.cdsConta_PagarID_COMPRA.AsInteger := vaContaPagar.IdCompra;
+    end;
+end;
+
 procedure TfrmContaPagar.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
@@ -346,9 +382,11 @@ procedure TfrmContaPagar.ppuIncluir;
 begin
   inherited;
   dmFinanceiro.cdsConta_PagarID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR');
+
 end;
 
-procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String; ipIdArea: Integer; ipArea: String);
+procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String; ipIdArea: Integer;
+ipArea: String);
 begin
   if not cdsLocalVinculo.Active then
     cdsLocalVinculo.CreateDataSet;
@@ -504,7 +542,7 @@ procedure TfrmContaPagar.ppvReabrirParcela;
 begin
 
   dmPrincipal.FuncoesFinanceiro.ppuReabrirParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
- // pra nao precisar fazer um refresh vou alterar manualmente
+  // pra nao precisar fazer um refresh vou alterar manualmente
   dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
   dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.Clear;
   dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 0;
@@ -636,13 +674,30 @@ end;
 
 function TfrmContaPagar.fprHabilitarAlterarDetail: Boolean;
 begin
-  //nao chamar o inherited
+  // nao chamar o inherited
   Result := False;
 end;
 
 function TfrmContaPagar.fprHabilitarSalvar: Boolean;
 begin
   Result := inherited or fprHabilitarSalvarDetail or (cdsLocalVinculo.Active and (cdsLocalVinculo.ChangeCount > 0));
+end;
+
+{ TContaPagar }
+
+procedure TContaPagar.SetIdCompra(const Value: Integer);
+begin
+  FIdCompra := Value;
+end;
+
+procedure TContaPagar.SetIdFornecedor(const Value: Integer);
+begin
+  FIdFornecedor := Value;
+end;
+
+procedure TContaPagar.SetValorTotal(const Value: Double);
+begin
+  FValorTotal := Value;
 end;
 
 end.

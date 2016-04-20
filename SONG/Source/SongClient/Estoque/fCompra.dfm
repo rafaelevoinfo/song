@@ -1,10 +1,17 @@
 inherited frmCompra: TfrmCompra
-  ActiveControl = cbItem
+  ActiveControl = cbFornecedor
   Caption = 'Compras'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -100,8 +107,8 @@ inherited frmCompra: TfrmCompra
           Width = 563
           ExplicitWidth = 563
           inherited btnUtilizar: TButton
-            Left = 188
-            ExplicitLeft = 188
+            Left = 307
+            ExplicitLeft = 290
           end
           object btnProdutoEntregue: TButton
             AlignWithMargins = True
@@ -117,6 +124,22 @@ inherited frmCompra: TfrmCompra
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
             TabOrder = 2
+            WordWrap = True
+          end
+          object btnGerarContaPagar: TButton
+            AlignWithMargins = True
+            Left = 188
+            Top = 1
+            Width = 117
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Gerar_Conta_Pagar
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 3
             WordWrap = True
           end
         end
@@ -194,6 +217,10 @@ inherited frmCompra: TfrmCompra
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -237,6 +264,10 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 176
@@ -362,6 +393,10 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -449,9 +484,15 @@ inherited frmCompra: TfrmCompra
     object Ac_Produto_Entregue: TAction
       Category = 'Master'
       Caption = 'Produto Entregue'
-      ImageIndex = 6
+      ImageIndex = 13
       OnExecute = Ac_Produto_EntregueExecute
       OnUpdate = Ac_Produto_EntregueUpdate
+    end
+    object Ac_Gerar_Conta_Pagar: TAction
+      Category = 'Master'
+      Caption = 'Gerar Conta a Pagar'
+      ImageIndex = 14
+      OnExecute = Ac_Gerar_Conta_PagarExecute
     end
   end
   inherited dsMaster: TDataSource

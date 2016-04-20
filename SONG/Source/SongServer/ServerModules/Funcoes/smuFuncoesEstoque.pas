@@ -15,6 +15,10 @@ type
     { Private declarations }
   public
     function fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
+    function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
+    function fpuVerificarEntradaJaGerada(ipIdCompra: Integer): Boolean;
+    function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
+
   end;
 
 var
@@ -49,6 +53,87 @@ begin
     end);
 
   Result := vaResult;
+end;
+
+function TsmFuncoesEstoque.fpuVerificarComprasJaGerada(
+  ipIdSolicitacao: Integer): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select count(*) as Qtde ' +
+        ' from Compra ' +
+        ' where Compra.Id_Solicitacao_Compra = :Id_Solicitacao_Compra';
+      ipDataSet.ParamByName('ID_SOLICITACAO_COMPRA').AsInteger := ipIdSolicitacao;
+      ipDataSet.Open();
+
+      vaResult := ipDataSet.FieldByName('QTDE').AsInteger > 0;
+    end);
+
+  Result := vaResult;
+end;
+
+function TsmFuncoesEstoque.fpuVerificarContaPagarJaGerada(
+  ipIdCompra: Integer): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select count(*) as Qtde ' +
+        '   from conta_pagar ' +
+        ' where conta_pagar.Id_Compra = :Id_Compra ';
+
+      ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
+      ipDataSet.Open();
+
+      vaResult := (ipDataSet.FieldByName('QTDE').AsInteger > 0);
+
+    end);
+
+  Result := vaResult;
+
+end;
+
+function TsmFuncoesEstoque.fpuVerificarEntradaJaGerada(
+  ipIdCompra: Integer): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      vaResult := False;
+      ipDataSet.SQL.Text := 'select count(*) as Qtde ' +
+        '   from Entrada ' +
+        ' where Entrada.Id_Compra = :Id_Compra ' +
+        '' +
+        ' union all ' +
+        ' ' +
+        ' select count(*) as Qtde ' +
+        '   from Lote_Semente' +
+        ' where Lote_Semente.Id_Compra = :Id_Compra' +
+        '' +
+        ' union all' +
+        '' +
+        ' select count(*) as Qtde' +
+        '   from Lote_Muda' +
+        ' where Lote_Muda.Id_Compra = :Id_Compra ';
+      ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
+      ipDataSet.Open();
+      while not ipDataSet.Eof do
+        begin
+          vaResult := vaResult or (ipDataSet.FieldByName('QTDE').AsInteger > 0);
+          ipDataSet.Next;
+        end;
+
+    end);
+
+  Result := vaResult;
+
 end;
 
 end.

@@ -82,11 +82,6 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'ID_PESSOA_ANALISOU'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsSolicitacao_CompraID_COMPRA: TIntegerField
-      DisplayLabel = 'Id da Compra'
-      FieldName = 'ID_COMPRA'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsSolicitacao_CompraDATA: TSQLTimeStampField
       DisplayLabel = 'Data'
       FieldName = 'DATA'
@@ -200,11 +195,6 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsCompraID_CONTA_PAGAR: TIntegerField
-      DisplayLabel = 'Id do Contas a Pagar'
-      FieldName = 'ID_CONTA_PAGAR'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsCompraID_PESSOA_COMPROU: TIntegerField
       DisplayLabel = 'Id da Pessoa que Comprou'
       FieldName = 'ID_PESSOA_COMPROU'
@@ -259,6 +249,11 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Valor Total'
       FieldName = 'VALOR_TOTAL'
       Precision = 18
+    end
+    object cdsCompraID_SOLICITACAO_COMPRA: TIntegerField
+      DisplayLabel = 'Id da Solicita'#231#227'o da Compra'
+      FieldName = 'ID_SOLICITACAO_COMPRA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object cdsCompra_Item: TRFClientDataSet

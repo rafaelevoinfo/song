@@ -125,6 +125,7 @@ type
     cdsConta_Receber_AtividadeAREA: TStringField;
     cdsConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
     cdsConta_Receber_ProjetoAREA: TStringField;
+    cdsConta_PagarID_COMPRA: TIntegerField;
   private
     { Private declarations }
   public

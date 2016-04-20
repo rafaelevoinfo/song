@@ -1776,3 +1776,105 @@ alter TAXA_DESCARTE position 10;
 alter table LOTE_SEMENTE
 alter STATUS position 11;
 
+
+
+ALTER TABLE COMPRA
+    ADD ID_SOLICITACAO_COMPRA INTEGER;
+
+alter table COMPRA
+alter ID position 1;
+
+alter table COMPRA
+alter ID_FORNECEDOR position 2;
+
+alter table COMPRA
+alter ID_CONTA_PAGAR position 3;
+
+alter table COMPRA
+alter ID_PESSOA_COMPROU position 4;
+
+alter table COMPRA
+alter ID_SOLICITACAO_COMPRA position 5;
+
+alter table COMPRA
+alter DATA position 6;
+
+alter table COMPRA
+alter STATUS_ENTREGA position 7;
+
+alter table COMPRA
+alter VALOR_FRETE position 8;
+
+alter table COMPRA
+alter CODIGO_RASTREIO position 9;
+
+alter table COMPRA
+alter DESCRICAO position 10;
+
+
+
+ALTER TABLE COMPRA
+ADD CONSTRAINT FK_COMPRA_4
+FOREIGN KEY (ID_SOLICITACAO_COMPRA)
+REFERENCES SOLICITACAO_COMPRA(ID)
+ON UPDATE CASCADE;
+
+
+
+ALTER TABLE SOLICITACAO_COMPRA DROP CONSTRAINT FK_SOLICITACAO_COMPRA_4;
+
+
+
+ALTER TABLE SOLICITACAO_COMPRA DROP ID_COMPRA;
+
+
+
+ALTER TABLE CONTA_PAGAR
+    ADD ID_COMPRA INTEGER;
+
+alter table CONTA_PAGAR
+alter ID position 1;
+
+alter table CONTA_PAGAR
+alter ID_FORNECEDOR position 2;
+
+alter table CONTA_PAGAR
+alter ID_PLANO_CONTAS position 3;
+
+alter table CONTA_PAGAR
+alter ID_CONTA_CORRENTE position 4;
+
+alter table CONTA_PAGAR
+alter ID_COMPRA position 5;
+
+alter table CONTA_PAGAR
+alter DESCRICAO position 6;
+
+alter table CONTA_PAGAR
+alter VALOR_TOTAL position 7;
+
+alter table CONTA_PAGAR
+alter FORMA_PAGTO position 8;
+
+alter table CONTA_PAGAR
+alter OBSERVACAO position 9;
+
+alter table CONTA_PAGAR
+alter NUMERO_DOCUMENTO position 10;
+
+
+
+ALTER TABLE CONTA_PAGAR
+ADD CONSTRAINT FK_CONTA_PAGAR_2
+FOREIGN KEY (ID_COMPRA)
+REFERENCES COMPRA(ID)
+ON UPDATE CASCADE;
+
+
+
+ALTER TABLE COMPRA DROP CONSTRAINT FK_COMPRA_2;
+
+
+
+ALTER TABLE COMPRA DROP ID_CONTA_PAGAR;
+

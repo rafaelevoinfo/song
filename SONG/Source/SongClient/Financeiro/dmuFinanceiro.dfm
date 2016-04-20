@@ -315,6 +315,11 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'NUMERO_DOCUMENTO'
       Size = 30
     end
+    object cdsConta_PagarID_COMPRA: TIntegerField
+      DisplayLabel = 'Id da Compra'
+      FieldName = 'ID_COMPRA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsConta_Pagar_Projeto: TRFClientDataSet
     Aggregates = <>

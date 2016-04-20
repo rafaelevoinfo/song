@@ -126,6 +126,7 @@ type
     qConta_Receber_AtividadeAREA: TStringField;
     qConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
     qConta_Receber_ProjetoAREA: TStringField;
+    qConta_PagarID_COMPRA: TIntegerField;
   private
     { Private declarations }
   protected

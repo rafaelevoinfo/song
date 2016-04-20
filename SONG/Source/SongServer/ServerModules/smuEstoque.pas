@@ -25,7 +25,6 @@ type
     qSolicitacao_CompraID: TIntegerField;
     qSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField;
     qSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField;
-    qSolicitacao_CompraID_COMPRA: TIntegerField;
     qSolicitacao_CompraDATA: TSQLTimeStampField;
     qSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField;
     qSolicitacao_CompraSTATUS: TSmallintField;
@@ -43,7 +42,6 @@ type
     qCompra: TRFQuery;
     qCompraID: TIntegerField;
     qCompraID_FORNECEDOR: TIntegerField;
-    qCompraID_CONTA_PAGAR: TIntegerField;
     qCompraID_PESSOA_COMPROU: TIntegerField;
     qCompraDATA: TSQLTimeStampField;
     qCompraSTATUS_ENTREGA: TSmallintField;
@@ -69,6 +67,7 @@ type
     qEntrada_ItemQTDE: TBCDField;
     qEntrada_ItemNOME_ITEM: TStringField;
     qCompra_ItemTIPO_ITEM: TSmallintField;
+    qCompraID_SOLICITACAO_COMPRA: TIntegerField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
@@ -104,9 +103,7 @@ begin
       else if ipParam.Name = TParametros.coTipoItem then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ITEM', 'TIPO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
-        Result := Result + ' (ENTRADA.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
-          ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
-
+        Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor, 0),TUtils.fpuExtrairData(vaValor, 1),vaOperador);
     end
   else if (ipTabela = 'SOLICITACAO_COMPRA') then
     begin

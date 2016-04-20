@@ -15,18 +15,22 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuEstoque, dmuLookup, uTypes,
   System.DateUtils, uClientDataSet, uControleAcesso, System.TypInfo, cxMemo,
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCurrencyEdit,
-  uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda;
+  uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda, fConta_Pagar,
+  dmuPrincipal;
 
 type
   TCompra = class(TModelo)
   private
     FIdPessoaComprou: Integer;
     FData: TDateTime;
+    FIdSolicitacao: Integer;
     procedure SetData(const Value: TDateTime);
     procedure SetIdPessoaComprou(const Value: Integer);
+    procedure SetIdSolicitacao(const Value: Integer);
   public
     property Data: TDateTime read FData write SetData;
     property IdPessoaComprou: Integer read FIdPessoaComprou write SetIdPessoaComprou;
+    property IdSolicitacao: Integer read FIdSolicitacao write SetIdSolicitacao;
   end;
 
   TfrmCompra = class(TfrmBasicoCrudMasterDetail)
@@ -77,6 +81,8 @@ type
     cbPesquisaFornecedor: TcxLookupComboBox;
     EditCodigoRastreio: TcxDBTextEdit;
     Label6: TLabel;
+    btnGerarContaPagar: TButton;
+    Ac_Gerar_Conta_Pagar: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Produto_EntregueUpdate(Sender: TObject);
     procedure Ac_Produto_EntregueExecute(Sender: TObject);
@@ -84,6 +90,7 @@ type
       Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
       AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Gerar_Conta_PagarExecute(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -91,6 +98,7 @@ type
     procedure ppvGerarEntrada();
     procedure ppvGerarEntradaSemente;
     procedure ppvGerarEntradaMuda;
+    procedure ppvGerarContaPagar;
   protected
     function fprGetPermissao: string; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -122,6 +130,45 @@ uses
 
 {$R *.dfm}
 
+
+procedure TfrmCompra.Ac_Gerar_Conta_PagarExecute(Sender: TObject);
+begin
+  inherited;
+  ppvGerarContaPagar;
+end;
+
+procedure TfrmCompra.ppvGerarContaPagar;
+var
+  vaContaGerada: Boolean;
+  vaPergunta: string;
+  vaFrmContaPagar: TfrmContaPagar;
+  vaContaPagar: TContaPagar;
+begin
+  vaContaGerada := dmPrincipal.FuncoesEstoque.fpuVerificarContaPagarJaGerada(dmEstoque.cdsCompraID.AsInteger);
+  if vaContaGerada then
+    vaPergunta := 'Já existe uma conta a pagar para esta compra. Tem certeza que deseja gerar outra?'
+  else
+    vaPergunta := 'Deseja gerar uma conta a pagar para esta compra?';
+
+  if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
+    begin
+      vaFrmContaPagar := TfrmContaPagar.Create(nil);
+      try
+        vaContaPagar := TContaPagar.Create;
+        vaContaPagar.IdFornecedor := dmEstoque.cdsCompraID_FORNECEDOR.AsInteger;
+        vaContaPagar.IdCompra := dmEstoque.cdsCompraID.AsInteger;
+        vaContaPagar.ValorTotal := dmEstoque.cdsCompraVALOR_TOTAL.AsFloat;
+
+        vaFrmContaPagar.ppuConfigurarModoExecucao(meSomenteCadastro, vaContaPagar);
+        vaFrmContaPagar.ShowModal;
+
+        if vaFrmContaPagar.IdEscolhido <> 0 then
+          TMensagem.ppuShowMessage('Conta a Pagar realizada com sucesso.');
+      finally
+        vaFrmContaPagar.Free;
+      end;
+    end;
+end;
 
 procedure TfrmCompra.Ac_Produto_EntregueExecute(Sender: TObject);
 begin
@@ -233,6 +280,9 @@ begin
 
       cbComprador.EditValue := vaCompra.IdPessoaComprou;
       cbComprador.PostEditValue;
+
+      if vaCompra.IdSolicitacao <> 0 then
+        dmEstoque.cdsCompraID_SOLICITACAO_COMPRA.AsInteger := vaCompra.IdSolicitacao;
     end;
 end;
 
@@ -452,6 +502,11 @@ end;
 procedure TCompra.SetIdPessoaComprou(const Value: Integer);
 begin
   FIdPessoaComprou := Value;
+end;
+
+procedure TCompra.SetIdSolicitacao(const Value: Integer);
+begin
+  FIdSolicitacao := Value;
 end;
 
 end.

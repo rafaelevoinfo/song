@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 13/04/2016 22:41:51
+// 20/04/2016 00:03:09
 //
 
 unit uFuncoes;
@@ -165,6 +165,9 @@ type
   TsmFuncoesEstoqueClient = class(TDSAdminClient)
   private
     FfpuValidarTipoItemCommand: TDBXCommand;
+    FfpuVerificarComprasJaGeradaCommand: TDBXCommand;
+    FfpuVerificarEntradaJaGeradaCommand: TDBXCommand;
+    FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -173,6 +176,9 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuValidarTipoItem(ipId: Integer; ipTipo: Integer): Boolean;
+    function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
+    function fpuVerificarEntradaJaGerada(ipIdCompra: Integer): Boolean;
+    function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -1069,6 +1075,48 @@ begin
   Result := FfpuValidarTipoItemCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesEstoqueClient.fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
+begin
+  if FfpuVerificarComprasJaGeradaCommand = nil then
+  begin
+    FfpuVerificarComprasJaGeradaCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarComprasJaGeradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarComprasJaGeradaCommand.Text := 'TsmFuncoesEstoque.fpuVerificarComprasJaGerada';
+    FfpuVerificarComprasJaGeradaCommand.Prepare;
+  end;
+  FfpuVerificarComprasJaGeradaCommand.Parameters[0].Value.SetInt32(ipIdSolicitacao);
+  FfpuVerificarComprasJaGeradaCommand.ExecuteUpdate;
+  Result := FfpuVerificarComprasJaGeradaCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TsmFuncoesEstoqueClient.fpuVerificarEntradaJaGerada(ipIdCompra: Integer): Boolean;
+begin
+  if FfpuVerificarEntradaJaGeradaCommand = nil then
+  begin
+    FfpuVerificarEntradaJaGeradaCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarEntradaJaGeradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarEntradaJaGeradaCommand.Text := 'TsmFuncoesEstoque.fpuVerificarEntradaJaGerada';
+    FfpuVerificarEntradaJaGeradaCommand.Prepare;
+  end;
+  FfpuVerificarEntradaJaGeradaCommand.Parameters[0].Value.SetInt32(ipIdCompra);
+  FfpuVerificarEntradaJaGeradaCommand.ExecuteUpdate;
+  Result := FfpuVerificarEntradaJaGeradaCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TsmFuncoesEstoqueClient.fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
+begin
+  if FfpuVerificarContaPagarJaGeradaCommand = nil then
+  begin
+    FfpuVerificarContaPagarJaGeradaCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarContaPagarJaGeradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarContaPagarJaGeradaCommand.Text := 'TsmFuncoesEstoque.fpuVerificarContaPagarJaGerada';
+    FfpuVerificarContaPagarJaGeradaCommand.Prepare;
+  end;
+  FfpuVerificarContaPagarJaGeradaCommand.Parameters[0].Value.SetInt32(ipIdCompra);
+  FfpuVerificarContaPagarJaGeradaCommand.ExecuteUpdate;
+  Result := FfpuVerificarContaPagarJaGeradaCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1137,6 +1185,9 @@ end;
 destructor TsmFuncoesEstoqueClient.Destroy;
 begin
   FfpuValidarTipoItemCommand.DisposeOf;
+  FfpuVerificarComprasJaGeradaCommand.DisposeOf;
+  FfpuVerificarEntradaJaGeradaCommand.DisposeOf;
+  FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

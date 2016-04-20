@@ -83,6 +83,7 @@ type
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
     procedure SetModelo(const Value: TModelo);
   protected
+    FShowExecutado: Boolean;
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
     procedure pprValidarDados; virtual;
@@ -320,12 +321,17 @@ end;
 
 procedure TfrmBasicoCrud.FormShow(Sender: TObject);
 begin
+  if FShowExecutado then
+    Exit;
+
   inherited;
   pprRealizarPesquisaInicial;
   if FModoExecucao = meSomenteCadastro then
     ppuIncluir
   else if (FModoExecucao = meSomenteEdicao) and Assigned(FModelo) then
     ppuAlterar(FModelo.Id);
+
+  FShowExecutado := True;
 end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar;

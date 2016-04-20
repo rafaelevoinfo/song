@@ -326,6 +326,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar.Forma_Pagto,'
       '       Conta_Pagar.Observacao,'
       '       Conta_Pagar.Numero_Documento,'
+      '       Conta_Pagar.id_compra,'
       '       fin_for_cli.nome_fantasia as fornecedor,'
       '       plano_contas.nome as plano_contas,'
       
@@ -427,6 +428,11 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'NUMERO_DOCUMENTO'
       ProviderFlags = [pfInUpdate]
       Size = 30
+    end
+    object qConta_PagarID_COMPRA: TIntegerField
+      FieldName = 'ID_COMPRA'
+      Origin = 'ID_COMPRA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qConta_Pagar_Parcela: TRFQuery

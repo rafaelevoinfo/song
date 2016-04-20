@@ -21,7 +21,6 @@ type
     cdsSolicitacao_CompraID: TIntegerField;
     cdsSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField;
     cdsSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField;
-    cdsSolicitacao_CompraID_COMPRA: TIntegerField;
     cdsSolicitacao_CompraDATA: TSQLTimeStampField;
     cdsSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField;
     cdsSolicitacao_CompraSTATUS: TSmallintField;
@@ -40,7 +39,6 @@ type
     cdsCompra: TRFClientDataSet;
     cdsCompraID: TIntegerField;
     cdsCompraID_FORNECEDOR: TIntegerField;
-    cdsCompraID_CONTA_PAGAR: TIntegerField;
     cdsCompraID_PESSOA_COMPROU: TIntegerField;
     cdsCompraDATA: TSQLTimeStampField;
     cdsCompraSTATUS_ENTREGA: TSmallintField;
@@ -68,6 +66,7 @@ type
     cdsEntrada_ItemQTDE: TBCDField;
     cdsEntrada_ItemNOME_ITEM: TStringField;
     cdsCompra_ItemTIPO_ITEM: TSmallintField;
+    cdsCompraID_SOLICITACAO_COMPRA: TIntegerField;
   private
     { Private declarations }
   public
