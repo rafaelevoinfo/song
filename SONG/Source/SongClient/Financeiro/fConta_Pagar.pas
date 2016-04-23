@@ -49,57 +49,10 @@ type
     viewRegistrosDetailVENCIMENTO: TcxGridDBColumn;
     viewRegistrosDetailVALOR: TcxGridDBColumn;
     viewRegistrosDetailPARCELA: TcxGridDBColumn;
-    Label3: TLabel;
-    EditDescricao: TcxDBTextEdit;
-    Label7: TLabel;
-    EditObservacao: TcxDBMemo;
-    Label17: TLabel;
-    cbContaCorrente: TcxDBLookupComboBox;
-    Label4: TLabel;
-    cbFornecedor: TcxDBLookupComboBox;
-    cbPlanoContas: TcxDBLookupComboBox;
-    Label5: TLabel;
-    Label8: TLabel;
-    Label6: TLabel;
-    cbFormaPagamento: TcxDBImageComboBox;
-    EditValorTotal: TcxDBCurrencyEdit;
-    rgParcelas: TcxGroupBox;
-    Label9: TLabel;
-    EditQtdeParcelas: TcxSpinEdit;
-    cxGrid1: TcxGrid;
-    viewParcelas: TcxGridDBTableView;
-    viewParcelasID: TcxGridDBColumn;
-    viewParcelasID_CONTA_PAGAR: TcxGridDBColumn;
-    viewParcelasVENCIMENTO: TcxGridDBColumn;
-    viewParcelasVALOR: TcxGridDBColumn;
-    viewParcelasPARCELA: TcxGridDBColumn;
-    levelGrid1Level1: TcxGridLevel;
-    Label11: TLabel;
-    btnIncluirParcelas: TButton;
     Ac_Gerar_Parcelas: TAction;
-    rgVinculos: TcxGroupBox;
-    Label10: TLabel;
-    Label12: TLabel;
-    cxGrid2: TcxGrid;
-    viewVinculos: TcxGridDBTableView;
-    level1: TcxGridLevel;
-    cdsLocalVinculo: TClientDataSet;
-    cdsLocalVinculoID: TIntegerField;
-    cdsLocalVinculoTIPO: TIntegerField;
-    cdsLocalVinculoNOME: TStringField;
-    btnAddProjeto: TButton;
-    btnAddAtividade: TButton;
-    Ac_Incluir_Vinculo_Projeto: TAction;
-    Ac_Incluir_Vinculo_Atividade: TAction;
+    Ac_Incluir_Vinculo: TAction;
     dsVinculos: TDataSource;
-    viewVinculosID: TcxGridDBColumn;
-    viewVinculosTIPO: TcxGridDBColumn;
-    viewVinculosNOME: TcxGridDBColumn;
-    ColumnDeletarVinculo: TcxGridDBColumn;
     Ac_Excluir_Vinculo: TAction;
-    EditVencimentoParcela: TcxDateEdit;
-    cbProjeto: TcxLookupComboBox;
-    cbAtividade: TcxLookupComboBox;
     cbPesquisaFornecedor: TcxLookupComboBox;
     cbPesquisaPlanoConta: TcxLookupComboBox;
     btnQuitarReabrir: TButton;
@@ -107,26 +60,132 @@ type
     viewRegistrosDetailSTATUS: TcxGridDBColumn;
     viewRegistrosDetailDATA_PAGAMENTO: TcxGridDBColumn;
     viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn;
-    EditNroDocumento: TcxDBTextEdit;
+    pcEditsCadastro: TcxPageControl;
+    tabInfoGeral: TcxTabSheet;
+    tabVinculo: TcxTabSheet;
+    Label3: TLabel;
+    EditDescricao: TcxDBTextEdit;
+    Label8: TLabel;
+    EditValorTotal: TcxDBCurrencyEdit;
+    cbFormaPagamento: TcxDBImageComboBox;
+    Label6: TLabel;
+    cbFornecedor: TcxDBLookupComboBox;
+    Label4: TLabel;
+    Label17: TLabel;
+    cbContaCorrente: TcxDBLookupComboBox;
+    cbPlanoContas: TcxDBLookupComboBox;
+    Label5: TLabel;
     Label13: TLabel;
-    lbl1: TLabel;
+    EditNroDocumento: TcxDBTextEdit;
+    rgParcelas: TcxGroupBox;
+    cxGrid1: TcxGrid;
+    viewParcelas: TcxGridDBTableView;
+    viewParcelasID: TcxGridDBColumn;
+    viewParcelasID_CONTA_PAGAR: TcxGridDBColumn;
+    viewParcelasPARCELA: TcxGridDBColumn;
+    viewParcelasVENCIMENTO: TcxGridDBColumn;
+    viewParcelasVALOR: TcxGridDBColumn;
+    levelGrid1Level1: TcxGridLevel;
+    pnParcelas: TPanel;
+    Label9: TLabel;
+    Label11: TLabel;
+    EditQtdeParcelas: TcxSpinEdit;
+    EditVencimentoParcela: TcxDateEdit;
+    btnIncluirParcelas: TButton;
+    Label7: TLabel;
+    EditObservacao: TcxDBMemo;
+    pnVinculoTop: TPanel;
+    rgTipoOrigemRecurso: TcxRadioGroup;
+    pcOrigemRecurso: TcxPageControl;
+    tabProjeto: TcxTabSheet;
+    Label10: TLabel;
+    cbProjetoOrigem: TcxLookupComboBox;
+    tabFundo: TcxTabSheet;
+    Label15: TLabel;
+    cbFundoOrigem: TcxLookupComboBox;
+    rgRecursoAlocado: TcxRadioGroup;
+    gbOrigem: TcxGroupBox;
+    pcRecursoAlocado: TcxPageControl;
+    tabNao: TcxTabSheet;
     Label14: TLabel;
-    cdsLocalVinculoID_RUBRICA: TIntegerField;
-    cdsLocalVinculoRUBRICA: TStringField;
-    viewVinculosRUBRICA: TcxGridDBColumn;
-    cbRubricaProjeto: TcxLookupComboBox;
-    cbRubricaAtividade: TcxLookupComboBox;
-    cbAreaProjeto: TcxLookupComboBox;
-    lbl2: TLabel;
+    Label12: TLabel;
     lbl3: TLabel;
-    cbAreaAtividade: TcxLookupComboBox;
-    cdsLocalVinculoID_PROJETO_AREA: TIntegerField;
-    cdsLocalVinculoAREA: TStringField;
-    viewVinculosAREA: TcxGridDBColumn;
+    cbRubricaAtividadeOrigem: TcxLookupComboBox;
+    cbAtividadeOrigem: TcxLookupComboBox;
+    cbAreaAtuacaoOrigem: TcxLookupComboBox;
+    tabSim: TcxTabSheet;
+    lb1: TLabel;
+    cbRubricaProjetoOrigem: TcxLookupComboBox;
+    gbAlocado: TcxGroupBox;
+    Label16: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    cbAtividadeAlocada: TcxLookupComboBox;
+    cbRubricaAtividadeAlocada: TcxLookupComboBox;
+    cbAreaAtuacaoAlocada: TcxLookupComboBox;
+    cbProjetoAlocado: TcxLookupComboBox;
+    pnValor: TPanel;
+    btnAdicionarVinculo: TButton;
+    cxGrid2: TcxGrid;
+    viewVinculos: TcxGridDBTableView;
+    ColumnDeletarVinculo: TcxGridDBColumn;
+    level1: TcxGridLevel;
+    dsAtividadeAlocada: TDataSource;
+    dsRubricaAlocada: TDataSource;
+    dsAreaAlocada: TDataSource;
+    viewVinculosID: TcxGridDBColumn;
+    viewVinculosNOME_FUNDO: TcxGridDBColumn;
+    viewVinculosPROJETO_ORIGEM: TcxGridDBColumn;
+    viewVinculosATIVIDADE_ORIGEM: TcxGridDBColumn;
+    viewVinculosRUBRICA_ORIGEM: TcxGridDBColumn;
+    viewVinculosAREA_ATUACAO_ORIGEM: TcxGridDBColumn;
+    viewVinculosPROJETO_ALOCADO: TcxGridDBColumn;
+    viewVinculosATIVIDADE_ALOCADA: TcxGridDBColumn;
+    viewVinculosRUBRICA_ALOCADA: TcxGridDBColumn;
+    viewVinculosAREA_ATUACAO_ALOCADA: TcxGridDBColumn;
+    viewVinculosVALOR: TcxGridDBColumn;
+    viewVinculosID_CONTA_PAGAR: TcxGridDBColumn;
+    viewVinculosID_FUNDO: TcxGridDBColumn;
+    viewVinculosID_PROJETO_ORIGEM: TcxGridDBColumn;
+    viewVinculosID_ATIVIDADE_ORIGEM: TcxGridDBColumn;
+    viewVinculosID_RUBRICA_ORIGEM: TcxGridDBColumn;
+    viewVinculosID_AREA_ATUACAO_ORIGEM: TcxGridDBColumn;
+    viewVinculosID_PROJETO_ALOCADO: TcxGridDBColumn;
+    viewVinculosID_ATIVIDADE_ALOCADO: TcxGridDBColumn;
+    viewVinculosID_RUBRICA_ALOCADO: TcxGridDBColumn;
+    viewVinculosID_AREA_ATUACAO_ALOCADO: TcxGridDBColumn;
+    EditValorVinculo: TcxCurrencyEdit;
+    Label21: TLabel;
+    dsVinculo: TDataSource;
+    tabVinculoPesquisa: TcxTabSheet;
+    cxGrid3: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel2: TcxGridLevel;
+    cxGridDBTableView1ID: TcxGridDBColumn;
+    cxGridDBTableView1ID_CONTA_PAGAR: TcxGridDBColumn;
+    cxGridDBTableView1ID_FUNDO: TcxGridDBColumn;
+    cxGridDBTableView1NOME_FUNDO: TcxGridDBColumn;
+    cxGridDBTableView1ID_PROJETO_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1PROJETO_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1ID_ATIVIDADE_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1ATIVIDADE_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1ID_RUBRICA_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1RUBRICA_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1ID_AREA_ATUACAO_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1AREA_ATUACAO_ORIGEM: TcxGridDBColumn;
+    cxGridDBTableView1ID_PROJETO_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1PROJETO_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1ID_ATIVIDADE_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1ATIVIDADE_ALOCADA: TcxGridDBColumn;
+    cxGridDBTableView1ID_RUBRICA_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1RUBRICA_ALOCADA: TcxGridDBColumn;
+    cxGridDBTableView1ID_AREA_ATUACAO_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1AREA_ATUACAO_ALOCADA: TcxGridDBColumn;
+    cxGridDBTableView1VALOR: TcxGridDBColumn;
+    cbPesquisaProjeto: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
-    procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
-    procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
-    procedure Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
+    procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
     procedure Ac_Excluir_VinculoExecute(Sender: TObject);
     procedure Ac_Quitar_ReabrirUpdate(Sender: TObject);
@@ -135,17 +194,21 @@ type
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
     procedure cbAtividadePropertiesEditValueChanged(Sender: TObject);
+    procedure rgTipoOrigemRecursoPropertiesEditValueChanged(Sender: TObject);
+    procedure rgRecursoAlocadoPropertiesEditValueChanged(Sender: TObject);
+    procedure cbProjetoAlocadoPropertiesEditValueChanged(Sender: TObject);
+    procedure cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
+    procedure cbAtividadeAlocadaPropertiesEditValueChanged(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
-    procedure ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String; ipIdArea: Integer; ipArea: String);
+    procedure ppvAddVinculo();
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
       ipValor: Double);
     procedure ppvQuitarParcela;
     procedure ppvReabrirParcela;
   protected
     function fprGetPermissao: string; override;
-    procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar; override;
     procedure pprBeforeAlterar; override;
     procedure pprBeforeIncluir; override;
@@ -164,9 +227,17 @@ type
     coProjeto = 1;
     coAtividade = 2;
 
+    coOrigemProjeto = 0;
+    coOrigemFundo = 1;
+
+    coSim = 1;
+    coNao = 0;
+
     coPesquisaDescricao = 5;
     coPesquisaFornecedor = 6;
     coPesquisaPlanoConta = 7;
+    coPesquisaProjetoOrigemRecurso = 8;
+    coPesquisaProjetoAlocado = 9;
 
   end;
 
@@ -174,6 +245,9 @@ var
   frmContaPagar: TfrmContaPagar;
 
 implementation
+
+uses
+  uExceptions;
 
 {$R *.dfm}
 
@@ -185,26 +259,8 @@ begin
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
-  if cdsLocalVinculo.Active then
-    cdsLocalVinculo.EmptyDataSet;
-
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Projeto,
-    procedure
-    begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto,
-        dmFinanceiro.cdsConta_Pagar_ProjetoPROJETO.AsString, dmFinanceiro.cdsConta_Pagar_ProjetoID_RUBRICA.AsInteger,
-        dmFinanceiro.cdsConta_Pagar_ProjetoRUBRICA.AsString, dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO_AREA.AsInteger,
-        dmFinanceiro.cdsConta_Pagar_ProjetoAREA.AsString);
-    end);
-
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Atividade,
-    procedure
-    begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger, coAtividade,
-        dmFinanceiro.cdsConta_Pagar_AtividadeATIVIDADE.AsString, dmFinanceiro.cdsConta_Pagar_AtividadeID_RUBRICA.AsInteger,
-        dmFinanceiro.cdsConta_Pagar_AtividadeRUBRICA.AsString, dmFinanceiro.cdsConta_Pagar_AtividadeID_PROJETO_AREA.AsInteger,
-        dmFinanceiro.cdsConta_Pagar_AtividadeAREA.AsString);
-    end);
+  cbProjetoOrigem.Clear;
+  cbProjetoAlocado.Clear;
 end;
 
 procedure TfrmContaPagar.pprBeforeIncluir;
@@ -213,81 +269,8 @@ begin
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
-  if cdsLocalVinculo.Active then
-    cdsLocalVinculo.EmptyDataSet;
-end;
-
-procedure TfrmContaPagar.pprBeforeSalvar;
-begin
-  inherited;
-  dmFinanceiro.cdsConta_Pagar_Projeto.DisableControls;
-  dmFinanceiro.cdsConta_Pagar_Atividade.DisableControls;
-  try
-    // vamos remover os registros nao existem mais
-    dmFinanceiro.cdsConta_Pagar_Projeto.First;
-    while not dmFinanceiro.cdsConta_Pagar_Projeto.Eof do
-      begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO;ID_RUBRICA;ID_PROJETO_AREA',
-          VarArrayOf([dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger, coProjeto,
-          dmFinanceiro.cdsConta_Pagar_ProjetoID_RUBRICA.AsInteger,
-          dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO_AREA.AsInteger]
-          ), []) then
-          dmFinanceiro.cdsConta_Pagar_Projeto.Next
-        else
-          dmFinanceiro.cdsConta_Pagar_Projeto.Delete;
-      end;
-
-    // vamos remover os registros nao existem mais
-    dmFinanceiro.cdsConta_Pagar_Atividade.First;
-    while not dmFinanceiro.cdsConta_Pagar_Atividade.Eof do
-      begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO;ID_RUBRICA;ID_PROJETO_AREA',
-          VarArrayOf([dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger,
-          coAtividade, dmFinanceiro.cdsConta_Pagar_AtividadeID_RUBRICA.AsInteger,
-          dmFinanceiro.cdsConta_Pagar_AtividadeID_PROJETO_AREA.AsInteger]), [])
-        then
-          dmFinanceiro.cdsConta_Pagar_Atividade.Next
-        else
-          dmFinanceiro.cdsConta_Pagar_Atividade.Delete;
-      end;
-
-    TUtils.ppuPercorrerCds(cdsLocalVinculo,
-      procedure
-      begin
-        if cdsLocalVinculoTIPO.AsInteger = coProjeto then
-          begin
-            if not dmFinanceiro.cdsConta_Pagar_Projeto.Locate(dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.FieldName, cdsLocalVinculoID.AsInteger, [])
-            then
-              begin
-                dmFinanceiro.cdsConta_Pagar_Projeto.Append;
-                dmFinanceiro.cdsConta_Pagar_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_PROJETO');
-                dmFinanceiro.cdsConta_Pagar_ProjetoID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_ProjetoID_RUBRICA.AsInteger := cdsLocalVinculoID_RUBRICA.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_ProjetoID_PROJETO_AREA.AsInteger := cdsLocalVinculoID_PROJETO_AREA.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_Projeto.Post;
-              end;
-          end
-        else
-          begin
-            if not dmFinanceiro.cdsConta_Pagar_Atividade.Locate(dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.FieldName,
-              cdsLocalVinculoID.AsInteger, [])
-            then
-              begin
-                dmFinanceiro.cdsConta_Pagar_Atividade.Append;
-                dmFinanceiro.cdsConta_Pagar_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_ATIVIDADE');
-                dmFinanceiro.cdsConta_Pagar_AtividadeID_CONTA_PAGAR.AsInteger := dmFinanceiro.cdsConta_PagarID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_AtividadeID_RUBRICA.AsInteger := cdsLocalVinculoID_RUBRICA.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_AtividadeID_PROJETO_AREA.AsInteger := cdsLocalVinculoID_PROJETO_AREA.AsInteger;
-                dmFinanceiro.cdsConta_Pagar_Atividade.Post;
-              end;
-          end;
-      end);
-  finally
-    dmFinanceiro.cdsConta_Pagar_Projeto.EnableControls;
-    dmFinanceiro.cdsConta_Pagar_Atividade.EnableControls;
-  end;
+  cbProjetoOrigem.Clear;
+  cbProjetoAlocado.Clear;
 end;
 
 procedure TfrmContaPagar.pprCarregarDadosModelo;
@@ -319,16 +302,18 @@ begin
     ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaFornecedor.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaPlanoConta then
     ipCds.ppuAddParametro(TParametros.coPlanoConta, cbPesquisaPlanoConta.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaProjetoOrigemRecurso then
+    ipCds.ppuAddParametro(TParametros.coProjeto, cbPesquisaProjeto.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaProjetoAlocado then
+    ipCds.ppuAddParametro(TParametros.coProjetoAlocado, cbPesquisaProjeto.EditValue)
 
 end;
 
 procedure TfrmContaPagar.pprEfetuarPesquisa;
 begin
-  dmFinanceiro.cdsConta_Pagar_Projeto.Close;
-  dmFinanceiro.cdsConta_Pagar_Atividade.Close;
+  dmFinanceiro.cdsConta_Pagar_Vinculo.Close;
   inherited;
-  dmFinanceiro.cdsConta_Pagar_Projeto.Open;
-  dmFinanceiro.cdsConta_Pagar_Atividade.Open;
+  dmFinanceiro.cdsConta_Pagar_Vinculo.Open;
 end;
 
 procedure TfrmContaPagar.pprExecutarCancelar;
@@ -347,22 +332,30 @@ begin
   if dmFinanceiro.cdsConta_Pagar_Parcela.ChangeCount > 0 then
     dmFinanceiro.cdsConta_Pagar_Parcela.ApplyUpdates(0);
 
-  if dmFinanceiro.cdsConta_Pagar_Projeto.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Projeto.ApplyUpdates(0);
-
-  if dmFinanceiro.cdsConta_Pagar_Atividade.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Pagar_Atividade.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Pagar_Vinculo.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Pagar_Vinculo.ApplyUpdates(0);
 end;
 
 procedure TfrmContaPagar.pprValidarDados;
 var
   vaValorParcelado: Double;
+  vaValorTotalVinculo: Double;
 begin
   inherited;
-  vaValorParcelado := 0;
-  if (not cdsLocalVinculo.Active) or (cdsLocalVinculo.RecordCount = 0) then
-    raise Exception.Create('É necessário informar pelo menos um vínculo.');
+  vaValorTotalVinculo := 0;
+  if dmFinanceiro.cdsConta_Pagar_Vinculo.RecordCount = 0 then
+    raise Exception.Create('É necessário incluir pelo menos um vínculo.');
 
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Vinculo,
+    procedure
+    begin
+      vaValorTotalVinculo := vaValorTotalVinculo + dmFinanceiro.cdsConta_Pagar_VinculoVALOR.AsFloat;
+    end);
+
+  if vaValorTotalVinculo <> dmFinanceiro.cdsConta_PagarVALOR_TOTAL.AsFloat then
+    raise Exception.Create('A soma dos valores de todos os vínculos deve ser igual ao valor total a se pagar da conta.');
+
+  vaValorParcelado := 0;
   TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Parcela,
     procedure
     begin
@@ -382,30 +375,105 @@ procedure TfrmContaPagar.ppuIncluir;
 begin
   inherited;
   dmFinanceiro.cdsConta_PagarID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR');
-
 end;
 
-procedure TfrmContaPagar.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdRubrica: Integer; ipNomeRubrica: String; ipIdArea: Integer;
-ipArea: String);
-begin
-  if not cdsLocalVinculo.Active then
-    cdsLocalVinculo.CreateDataSet;
+procedure TfrmContaPagar.ppvAddVinculo();
+  procedure plValidarInformacoesAlocado;
+  begin
+    if VarIsNull(cbProjetoAlocado.EditValue) then
+      raise TControlException.Create('Informe o projeto para qual foi alocado o recurso.', cbProjetoAlocado);
 
-  cdsLocalVinculo.Append;
-  cdsLocalVinculoID.AsInteger := ipId;
-  cdsLocalVinculoTIPO.AsInteger := ipTipo;
-  cdsLocalVinculoNOME.AsString := ipNome;
-  cdsLocalVinculoID_RUBRICA.AsInteger := ipIdRubrica;
-  cdsLocalVinculoRUBRICA.AsString := ipNomeRubrica;
-  cdsLocalVinculoID_PROJETO_AREA.AsInteger := ipIdArea;
-  cdsLocalVinculoAREA.AsString := ipArea;
-  cdsLocalVinculo.Post;
+    dmFinanceiro.cdsConta_Pagar_VinculoID_PROJETO_ALOCADO.AsInteger := cbProjetoAlocado.EditValue;
+    dmFinanceiro.cdsConta_Pagar_VinculoPROJETO_ALOCADO.AsString := cbProjetoAlocado.Text;
+
+
+    if VarIsNull(cbAtividadeAlocada.EditValue) then
+      raise TControlException.Create('Informe a atividade para qual foi alocado o recurso.', cbAtividadeAlocada);
+
+    dmFinanceiro.cdsConta_Pagar_VinculoID_ATIVIDADE_ALOCADO.AsInteger := cbAtividadeAlocada.EditValue;
+    dmFinanceiro.cdsConta_Pagar_VinculoATIVIDADE_ALOCADA.AsString := cbAtividadeAlocada.Text;
+
+    if VarIsNull(cbRubricaAtividadeAlocada.EditValue) then
+      raise TControlException.Create('Informe a rubrica para qual foi alocado o recurso.', cbRubricaAtividadeAlocada);
+
+    dmFinanceiro.cdsConta_Pagar_VinculoID_RUBRICA_ALOCADO.AsInteger := cbRubricaAtividadeAlocada.EditValue;
+    dmFinanceiro.cdsConta_Pagar_VinculoRUBRICA_ALOCADA.AsString := cbRubricaAtividadeAlocada.Text;
+
+    if VarIsNull(cbAreaAtuacaoAlocada.EditValue) then
+      raise TControlException.Create('Informe a área de atuação para qual foi alocado o recurso.', cbAreaAtuacaoAlocada);
+
+    dmFinanceiro.cdsConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO.AsInteger := cbAreaAtuacaoAlocada.EditValue;
+    dmFinanceiro.cdsConta_Pagar_VinculoAREA_ATUACAO_ALOCADA.AsString := cbAreaAtuacaoAlocada.Text;
+  end;
+
+begin
+  dmFinanceiro.cdsConta_Pagar_Vinculo.Append;
+  try
+    if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
+      begin
+        if VarIsNull(cbProjetoOrigem.EditValue) then
+          raise TControlException.Create('Informe o projeto de origem do recurso.', cbProjetoOrigem);
+
+        dmFinanceiro.cdsConta_Pagar_VinculoID_PROJETO_ORIGEM.AsInteger := cbProjetoOrigem.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoPROJETO_ORIGEM.AsString := cbProjetoOrigem.Text;
+        if rgRecursoAlocado.EditValue = coNao then
+          begin
+            if VarIsNull(cbAtividadeOrigem.EditValue) then
+              raise TControlException.Create('Informe a atividade de origem do recurso.', cbAtividadeOrigem);
+
+            dmFinanceiro.cdsConta_Pagar_VinculoID_ATIVIDADE_ORIGEM.AsInteger := cbAtividadeOrigem.EditValue;
+            dmFinanceiro.cdsConta_Pagar_VinculoATIVIDADE_ORIGEM.AsString := cbAtividadeOrigem.Text;
+
+            if VarIsNull(cbRubricaAtividadeOrigem.EditValue) then
+              raise TControlException.Create('Informe a rubrica de origem do recurso.', cbRubricaAtividadeOrigem);
+
+            dmFinanceiro.cdsConta_Pagar_VinculoID_RUBRICA_ORIGEM.AsInteger := cbRubricaAtividadeOrigem.EditValue;
+            dmFinanceiro.cdsConta_Pagar_VinculoRUBRICA_ORIGEM.AsString := cbRubricaAtividadeOrigem.Text;
+
+            if VarIsNull(cbAreaAtuacaoOrigem.EditValue) then
+              raise TControlException.Create('Informe a área de atuação de origem do recurso.', cbAreaAtuacaoOrigem);
+
+            dmFinanceiro.cdsConta_Pagar_VinculoID_AREA_ATUACAO_ORIGEM.AsInteger := cbAreaAtuacaoOrigem.EditValue;
+            dmFinanceiro.cdsConta_Pagar_VinculoAREA_ATUACAO_ORIGEM.AsString := cbAreaAtuacaoOrigem.Text;
+          end
+        else
+          begin
+            if VarIsNull(cbRubricaProjetoOrigem.EditValue) then
+              raise TControlException.Create('Informe a rubrica de origem do recurso.', cbRubricaProjetoOrigem);
+
+            dmFinanceiro.cdsConta_Pagar_VinculoID_RUBRICA_ORIGEM.AsInteger := cbRubricaProjetoOrigem.EditValue;
+            dmFinanceiro.cdsConta_Pagar_VinculoRUBRICA_ORIGEM.AsString := cbRubricaProjetoOrigem.Text;
+
+            plValidarInformacoesAlocado;
+          end;
+      end
+    else // Fundo
+      begin
+        if VarIsNull(cbFundoOrigem.EditValue) then
+          raise TControlException.Create('Informe o fundo de origem do recurso.', cbFundoOrigem);
+
+        dmFinanceiro.cdsConta_Pagar_VinculoID_FUNDO.AsInteger := cbFundoOrigem.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoNOME_FUNDO.AsString := cbFundoOrigem.Text;
+
+        plValidarInformacoesAlocado;
+      end;
+
+    if VarIsNull(EditValorVinculo.EditValue) then
+      raise TControlException.Create('Informe o valor a ser utilizado neste vínculo.', EditValorVinculo);
+
+    dmFinanceiro.cdsConta_Pagar_VinculoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_VINCULO');
+    dmFinanceiro.cdsConta_Pagar_VinculoVALOR.AsFloat := EditValorVinculo.EditValue;
+    dmFinanceiro.cdsConta_Pagar_Vinculo.Post;
+  except
+    dmFinanceiro.cdsConta_Pagar_Vinculo.Cancel;
+    raise;
+  end;
 end;
 
 procedure TfrmContaPagar.Ac_Excluir_VinculoExecute(Sender: TObject);
 begin
   inherited;
-  cdsLocalVinculo.Delete;
+  dmFinanceiro.cdsConta_Pagar_Vinculo.Delete;
 end;
 
 procedure TfrmContaPagar.Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -464,55 +532,10 @@ begin
   dmFinanceiro.cdsConta_Pagar_Parcela.Post;
 end;
 
-procedure TfrmContaPagar.Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
+procedure TfrmContaPagar.Ac_Incluir_VinculoExecute(Sender: TObject);
 begin
   inherited;
-  if not VarIsNull(cbAtividade.EditValue) then
-    begin
-      if not VarIsNull(cbRubricaAtividade.EditValue) then
-        begin
-          if not VarIsNull(cbAreaAtividade.EditValue) then
-            begin
-              if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, cbAtividade.EditValue, []) then
-                begin
-                  ppvAddVinculo(cbAtividade.EditValue, coAtividade, cbAtividade.Text, cbRubricaAtividade.EditValue, cbRubricaAtividade.Text,
-                    cbAreaAtividade.EditValue, cbAreaAtividade.Text);
-                end;
-            end
-          else
-            TMensagem.ppuShowMessage('Informe a área da atividade.');
-        end
-      else
-        TMensagem.ppuShowMessage('Informe a rubrica da atividade.');
-    end
-  else
-    TMensagem.ppuShowMessage('Informe com qual atividade deseja realizar o vinculo.');
-end;
-
-procedure TfrmContaPagar.Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
-begin
-  inherited;
-  if not VarIsNull(cbProjeto.EditValue) then
-    begin
-      if not VarIsNull(cbRubricaProjeto.EditValue) then
-        begin
-          if not VarIsNull(cbAreaProjeto.EditValue) then
-            begin
-              if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, cbProjeto.EditValue, []) then
-                begin
-                  ppvAddVinculo(cbProjeto.EditValue, coProjeto, cbProjeto.Text, cbRubricaProjeto.EditValue, cbRubricaProjeto.Text,
-                    cbAreaProjeto.EditValue, cbAreaProjeto.Text);
-                end;
-            end
-          else
-            TMensagem.ppuShowMessage('Informe a área do projeto.');
-        end
-      else
-        TMensagem.ppuShowMessage('Informe a rubrica do projeto.');
-    end
-  else
-    TMensagem.ppuShowMessage('Informe com qual projeto deseja realizar o vinculo.');
-
+  ppvAddVinculo;
 end;
 
 procedure TfrmContaPagar.Ac_Quitar_ReabrirExecute(Sender: TObject);
@@ -549,6 +572,37 @@ begin
   dmFinanceiro.cdsConta_Pagar_Parcela.Post;
 
   dmFinanceiro.cdsConta_Pagar_Parcela.MergeChangeLog;
+end;
+
+procedure TfrmContaPagar.rgRecursoAlocadoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if rgRecursoAlocado.EditValue = coSim then
+    pcRecursoAlocado.ActivePage := tabSim
+  else
+    pcRecursoAlocado.ActivePage := tabNao;
+
+  gbAlocado.Visible := (rgTipoOrigemRecurso.EditValue = coOrigemFundo) or (rgRecursoAlocado.EditValue = coSim);
+  gbAlocado.Top := gbAlocado.Top + 5;
+
+  pnValor.Top := gbAlocado.Top + 5;
+end;
+
+procedure TfrmContaPagar.rgTipoOrigemRecursoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+  if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
+    pcOrigemRecurso.ActivePage := tabProjeto
+  else
+    pcOrigemRecurso.ActivePage := tabFundo;
+
+  gbOrigem.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+  gbOrigem.Top := pnVinculoTop.Top + 5;
+
+  rgRecursoAlocadoPropertiesEditValueChanged(rgRecursoAlocado);
 end;
 
 procedure TfrmContaPagar.viewRegistrosDetailCustomDrawCell(
@@ -592,13 +646,29 @@ begin
     end;
 end;
 
+procedure TfrmContaPagar.cbAtividadeAlocadaPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+   if not VarIsNull(cbAtividadeAlocada.EditValue) then
+    begin
+      dmLookup.cdslkRubrica_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, true);
+    end
+  else
+    begin
+      dmLookup.cdslkRubrica_Atividade_Alocada.Close;
+      dmLookup.cdslkProjeto_Area_Atividade_Alocada.Close;
+    end;
+end;
+
 procedure TfrmContaPagar.cbAtividadePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
-  if not VarIsNull(cbAtividade.EditValue) then
+  if not VarIsNull(cbAtividadeOrigem.EditValue) then
     begin
-      dmLookup.cdslkRubrica_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividade.EditValue], TOperadores.coAnd, true);
-      dmLookup.cdslkProjeto_Area_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividade.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkRubrica_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividadeOrigem.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkProjeto_Area_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividadeOrigem.EditValue], TOperadores.coAnd, true);
     end
   else
     begin
@@ -608,27 +678,45 @@ begin
 
 end;
 
-procedure TfrmContaPagar.cbProjetoPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmContaPagar.cbProjetoAlocadoPropertiesEditValueChanged(
+  Sender: TObject);
 begin
   inherited;
-  if not VarIsNull(cbProjeto.EditValue) then
+  if not VarIsNull(cbProjetoAlocado.EditValue) then
+    begin
+      dmLookup.cdslkAtividade_Alocada.ppuLimparParametros;
+      dmLookup.cdslkAtividade_Alocada.ppuAddParametro(TParametros.coProjeto, cbProjetoAlocado.EditValue);
+      dmLookup.cdslkAtividade_Alocada.ppuAddParametro(TParametros.coStatusDiferente, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString,
+        TOperadores.coOR);
+      dmLookup.cdslkAtividade_Alocada.ppuDataRequest();
+
+//      dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coProjeto], [cbProjetoAlocado.EditValue], TOperadores.coAnd, true);
+    end
+  else
+    begin
+      dmLookup.cdslkAtividade_Alocada.Close;
+      //dmLookup.cdslkRubrica_Atividade_Alocada.Close;
+//      dmLookup.cdslkProjeto_Area_Atividade_Alocada.Close;
+    end;
+end;
+
+procedure TfrmContaPagar.cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if not VarIsNull(cbProjetoOrigem.EditValue) then
     begin
       dmLookup.cdslkAtividade.ppuLimparParametros;
-      dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coProjeto, cbProjeto.EditValue);
+      dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coProjeto, cbProjetoOrigem.EditValue);
       dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coStatusDiferente, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString,
         TOperadores.coOR);
       dmLookup.cdslkAtividade.ppuDataRequest();
 
-      dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coProjeto], [cbProjeto.EditValue], TOperadores.coAnd, true);
-      dmLookup.cdslkProjeto_Area.ppuDataRequest([TParametros.coProjeto], [cbProjeto.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coProjeto],[cbProjetoOrigem.EditValue],TOperadores.coAnd,true);
     end
   else
     begin
       dmLookup.cdslkAtividade.Close;
-      dmLookup.cdslkRubrica.Close;
-      dmLookup.cdslkProjeto_Area.Close;
-      dmLookup.cdslkRubrica_Atividade.Close;
-      dmLookup.cdslkProjeto_Area_Atividade.Close;
+      dmLookup.cdslkRubrica.Close;//rubricas do projeto
     end;
 end;
 
@@ -641,6 +729,16 @@ begin
   dmLookup.Name := '';
   inherited;
 
+  pcRecursoAlocado.Properties.HideTabs := true;
+  pcOrigemRecurso.Properties.HideTabs := true;
+  pcOrigemRecurso.Height := 42;
+  gbOrigem.Height := 62;
+  pcRecursoAlocado.Height := 46;
+
+  pcRecursoAlocado.ActivePage := tabNao;
+  pcOrigemRecurso.ActivePage := tabProjeto;
+  pcEditsCadastro.ActivePage := tabInfoGeral;
+
   PesquisaPadrao := tppData;
 
   EditDataInicialPesquisa.Date := Now;
@@ -652,6 +750,7 @@ begin
 
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
+  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'],TOperadores.coAnd,true);
 end;
 
 function TfrmContaPagar.fprConfigurarControlesPesquisa: TWinControl;
@@ -659,12 +758,15 @@ begin
   Result := inherited;
   cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible));
+  cbPesquisaProjeto.Visible := (cbPesquisarPor.EditValue = coPesquisaProjetoOrigemRecurso) or (cbPesquisarPor.EditValue = coPesquisaProjetoAlocado);
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaProjeto.Visible));
 
   if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor
   else if cbPesquisaPlanoConta.Visible then
-    Result := cbPesquisaPlanoConta;
+    Result := cbPesquisaPlanoConta
+  else if cbPesquisaProjeto.Visible then
+    Result := cbPesquisaProjeto;
 end;
 
 function TfrmContaPagar.fprGetPermissao: string;
@@ -680,7 +782,8 @@ end;
 
 function TfrmContaPagar.fprHabilitarSalvar: Boolean;
 begin
-  Result := inherited or fprHabilitarSalvarDetail or (cdsLocalVinculo.Active and (cdsLocalVinculo.ChangeCount > 0));
+  Result := inherited or fprHabilitarSalvarDetail or
+    (dmFinanceiro.cdsConta_Pagar_Vinculo.Active and (dmFinanceiro.cdsConta_Pagar_Vinculo.ChangeCount > 0));
 end;
 
 { TContaPagar }

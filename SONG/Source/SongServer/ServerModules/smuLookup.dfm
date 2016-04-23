@@ -708,4 +708,41 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkFundo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Fundo.Id,'
+      '       Fundo.Nome,'
+      '       Fundo.Saldo'
+      'from Fundo  '
+      '&WHERE')
+    Left = 328
+    Top = 288
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkFundoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qlkFundoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qlkFundoSALDO: TBCDField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+  end
 end

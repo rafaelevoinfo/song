@@ -450,6 +450,7 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'ORCAMENTO'
       Origin = 'ORCAMENTO'
       ProviderFlags = [pfInUpdate]
+      Required = True
       Precision = 18
       Size = 2
     end
@@ -1109,21 +1110,100 @@ inherited smAdministrativo: TsmAdministrativo
   object qProjeto_Rubrica: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Projeto_Rubrica.Id,'
-      '       Projeto_Rubrica.Id_Projeto,'
-      '       Projeto_Rubrica.Id_Rubrica,'
-      '       Projeto_Rubrica.Orcamento,'
-      '       Projeto_Rubrica.Recebido,'
-      '       Projeto_Rubrica.gasto,'
+      ''
+      ''
+      'select distinct Projeto_Rubrica.Id,'
+      '                Projeto_Rubrica.Id_Projeto,'
+      '                Projeto_Rubrica.Id_Rubrica,'
+      '                Projeto_Rubrica.Orcamento,'
       
-        '       Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome as Nome_Ru' +
-        'brica'
+        '                (select sum(Conta_Pagar_Vinculo.Valor / (select ' +
+        'count(*)'
+      
+        '                                                         from Co' +
+        'nta_Pagar_Parcela'
+      
+        '                                                         where C' +
+        'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
+        '_Pagar) * (select count(*)'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '           from Conta_Pagar_Parcela'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '           where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Paga' +
+        'r_Vinculo.Id_Conta_Pagar and'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '                 Conta_Pagar_Parcela.Status = 1))'
+      '                 from Conta_Pagar_Vinculo'
+      
+        '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
+        'rojeto_Rubrica.Id_Rubrica and'
+      
+        '                       Conta_Pagar_Vinculo.Id_Projeto_Origem = P' +
+        'rojeto_Rubrica.Id_Projeto) as Gasto,'
+      ''
+      
+        '                (select sum(Projeto_Financiador_Pagto.Percentual' +
+        ' / 100 * Projeto_Rubrica.Orcamento)'
+      '                 from Projeto_Financiador'
+      
+        '                 inner join Projeto_Financiador_Pagto on (Projet' +
+        'o_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador' +
+        '.Id)'
+      
+        '                 where Projeto_Financiador.Id_Projeto = Projeto_' +
+        'Rubrica.Id_Projeto) as Recebido,'
+      ''
+      
+        '                (select sum(Conta_Pagar_Vinculo.Valor / (select ' +
+        'count(*)'
+      
+        '                                                         from Co' +
+        'nta_Pagar_Parcela'
+      
+        '                                                         where C' +
+        'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
+        '_Pagar) * (select count(*)'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '           from Conta_Pagar_Parcela'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '           where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Paga' +
+        'r_Vinculo.Id_Conta_Pagar and'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '                 Conta_Pagar_Parcela.Status = 0))'
+      '                 from Conta_Pagar_Vinculo'
+      
+        '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
+        'rojeto_Rubrica.Id_Rubrica and'
+      
+        '                       Conta_Pagar_Vinculo.Id_Projeto_Origem = P' +
+        'rojeto_Rubrica.Id_Projeto) as Aprovisionado,'
+      ''
+      
+        '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
+        's Nome_Rubrica'
       ''
       'from Projeto_Rubrica'
+      'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       
-        'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica) ' +
-        ' '
-      'where projeto_rubrica.id_projeto = :ID_PROJETO')
+        'left join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Rubrica' +
+        '_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_' +
+        'Projeto_Origem = Projeto_Rubrica.Id_Projeto)'
+      
+        '--left join Conta_Pagar_Parcela on (Conta_Pagar_Parcela.Id_Conta' +
+        '_Pagar = Conta_Pagar_Vinculo.Id_Conta_Pagar)'
+      'where Projeto_Rubrica.Id_Projeto = :Id_Projeto    ')
     Left = 224
     Top = 288
     ParamData = <
@@ -1167,17 +1247,26 @@ inherited smAdministrativo: TsmAdministrativo
       ReadOnly = True
       Size = 100
     end
-    object qProjeto_RubricaRECEBIDO: TBCDField
-      FieldName = 'RECEBIDO'
-      Origin = 'RECEBIDO'
-      ProviderFlags = [pfInUpdate]
+    object qProjeto_RubricaGASTO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'GASTO'
+      Origin = 'GASTO'
+      ProviderFlags = []
       Precision = 18
       Size = 2
     end
-    object qProjeto_RubricaGASTO: TBCDField
-      FieldName = 'GASTO'
-      Origin = 'GASTO'
-      ProviderFlags = [pfInUpdate]
+    object qProjeto_RubricaRECEBIDO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'RECEBIDO'
+      Origin = 'RECEBIDO'
+      ProviderFlags = []
+      Precision = 18
+    end
+    object qProjeto_RubricaAPROVISIONADO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'APROVISIONADO'
+      Origin = 'APROVISIONADO'
+      ProviderFlags = []
       Precision = 18
       Size = 2
     end

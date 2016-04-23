@@ -1,11 +1,9 @@
 inherited frmFinanciador: TfrmFinanciador
   ActiveControl = EditNomeFantasia
   Caption = 'Financiadores'
-  ExplicitLeft = 8
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -34,9 +32,6 @@ inherited frmFinanciador: TfrmFinanciador
                 Value = 7
               end>
           end
-        end
-        inherited pnBotoes: TPanel
-          ExplicitWidth = 431
         end
       end
       inherited pnGrid: TPanel
@@ -119,7 +114,7 @@ inherited frmFinanciador: TfrmFinanciador
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        object Label3: TLabel
+        object lbNome: TLabel
           Left = 5
           Top = 6
           Width = 71
@@ -135,12 +130,12 @@ inherited frmFinanciador: TfrmFinanciador
           Caption = 'Raz'#227'o Social'
           FocusControl = EditRazaoSocial
         end
-        object Label14: TLabel
+        object lbCpfCnpj: TLabel
           Left = 515
           Top = 6
-          Width = 48
+          Width = 25
           Height = 13
-          Caption = 'CPF/CNPJ'
+          Caption = 'CNPJ'
           FocusControl = EditCpfCnpj
         end
         object Label15: TLabel
@@ -384,14 +379,6 @@ inherited frmFinanciador: TfrmFinanciador
             Width = 221
           end
         end
-        object EditCpfCnpj: TcxDBTextEdit
-          Left = 514
-          Top = 22
-          DataBinding.DataField = 'CPF_CNPJ'
-          DataBinding.DataSource = dsMaster
-          TabOrder = 2
-          Width = 147
-        end
         object EditInscricaoEstadual: TcxDBTextEdit
           Left = 3
           Top = 61
@@ -424,6 +411,18 @@ inherited frmFinanciador: TfrmFinanciador
           TabOrder = 7
           Height = 50
           Width = 658
+        end
+        object EditCpfCnpj: TcxDBMaskEdit
+          Left = 512
+          Top = 22
+          DataBinding.DataField = 'CPF_CNPJ'
+          DataBinding.DataSource = dsMaster
+          Properties.ClearKey = 46
+          Properties.MaskKind = emkRegExprEx
+          Properties.EditMask = '\d\d\.\d\d\d\.\d\d\d/\d\d\d\d-\d\d'
+          Properties.ValidationOptions = [evoShowErrorIcon, evoAllowLoseFocus]
+          TabOrder = 2
+          Width = 150
         end
       end
     end

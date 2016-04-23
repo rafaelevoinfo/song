@@ -155,6 +155,7 @@ begin;
     '      conta_pagar_parcela.status = :STATUS ' +
     '  where conta_pagar_parcela.id = :ID_PARCELA', [vaStatus, ipIdParcela]) > 0 then
     begin
+    {
       pprEncapsularConsulta(
         procedure(ipDataSet: TRFQuery)
         begin
@@ -241,7 +242,7 @@ begin;
                 vaDataSet.Free;
               end;
             end;
-        end);
+        end);  }
     end
   else
     raise Exception.Create('Parcela não encontrada.');

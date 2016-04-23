@@ -386,6 +386,7 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Or'#231'amento'
       FieldName = 'ORCAMENTO'
       ProviderFlags = [pfInUpdate]
+      Required = True
       Precision = 18
       Size = 2
     end
@@ -1012,19 +1013,22 @@ inherited dmAdministrativo: TdmAdministrativo
       ReadOnly = True
       Size = 100
     end
-    object cdsProjeto_RubricaRECEBIDO: TBCDField
-      DisplayLabel = 'Valor Recebido'
-      FieldName = 'RECEBIDO'
-      ProviderFlags = [pfInUpdate]
+    object cdsProjeto_RubricaAPROVISIONADO: TBCDField
+      DisplayLabel = 'Valor Aprovisionado'
+      FieldName = 'APROVISIONADO'
       Precision = 18
       Size = 2
     end
     object cdsProjeto_RubricaGASTO: TBCDField
       DisplayLabel = 'Valor Gasto'
       FieldName = 'GASTO'
-      ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
+    end
+    object cdsProjeto_RubricaRECEBIDO: TBCDField
+      DisplayLabel = 'Valor Recebido'
+      FieldName = 'RECEBIDO'
+      Precision = 18
     end
   end
   object cdsProjeto_Area: TRFClientDataSet

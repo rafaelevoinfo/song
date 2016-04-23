@@ -66,16 +66,6 @@ type
     qConta_Pagar_ParcelaVENCIMENTO: TDateField;
     qConta_Pagar_ParcelaVALOR: TBCDField;
     qConta_Pagar_ParcelaPARCELA: TSmallintField;
-    qConta_Pagar_Projeto: TRFQuery;
-    qConta_Pagar_ProjetoID: TIntegerField;
-    qConta_Pagar_ProjetoID_CONTA_PAGAR: TIntegerField;
-    qConta_Pagar_ProjetoID_PROJETO: TIntegerField;
-    qConta_Pagar_Atividade: TRFQuery;
-    qConta_Pagar_AtividadeID: TIntegerField;
-    qConta_Pagar_AtividadeID_CONTA_PAGAR: TIntegerField;
-    qConta_Pagar_AtividadeID_ATIVIDADE: TIntegerField;
-    qConta_Pagar_ProjetoPROJETO: TStringField;
-    qConta_Pagar_AtividadeATIVIDADE: TStringField;
     qConta_PagarFORNECEDOR: TStringField;
     qConta_PagarPLANO_CONTAS: TStringField;
     qConta_PagarCONTA_CORRENTE: TStringField;
@@ -114,19 +104,38 @@ type
     qConta_Receber_ProjetoPROJETO: TStringField;
     qConta_PagarNUMERO_DOCUMENTO: TStringField;
     qConta_ReceberNUMERO_DOCUMENTO: TStringField;
-    qConta_Pagar_ProjetoID_RUBRICA: TIntegerField;
-    qConta_Pagar_AtividadeID_RUBRICA: TIntegerField;
-    qConta_Pagar_ProjetoID_PROJETO_AREA: TIntegerField;
-    qConta_Pagar_AtividadeID_PROJETO_AREA: TIntegerField;
-    qConta_Pagar_AtividadeRUBRICA: TStringField;
-    qConta_Pagar_AtividadeAREA: TStringField;
-    qConta_Pagar_ProjetoRUBRICA: TStringField;
-    qConta_Pagar_ProjetoAREA: TStringField;
     qConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField;
     qConta_Receber_AtividadeAREA: TStringField;
     qConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
     qConta_Receber_ProjetoAREA: TStringField;
     qConta_PagarID_COMPRA: TIntegerField;
+    qFundo: TRFQuery;
+    qFundoID: TIntegerField;
+    qFundoNOME: TStringField;
+    qFundoSALDO: TBCDField;
+    qFundoDESCRICAO: TStringField;
+    qConta_Pagar_Vinculo: TRFQuery;
+    qConta_Pagar_VinculoID: TIntegerField;
+    qConta_Pagar_VinculoID_CONTA_PAGAR: TIntegerField;
+    qConta_Pagar_VinculoID_FUNDO: TIntegerField;
+    qConta_Pagar_VinculoNOME_FUNDO: TStringField;
+    qConta_Pagar_VinculoID_PROJETO_ORIGEM: TIntegerField;
+    qConta_Pagar_VinculoPROJETO_ORIGEM: TStringField;
+    qConta_Pagar_VinculoID_ATIVIDADE_ORIGEM: TIntegerField;
+    qConta_Pagar_VinculoATIVIDADE_ORIGEM: TStringField;
+    qConta_Pagar_VinculoID_RUBRICA_ORIGEM: TIntegerField;
+    qConta_Pagar_VinculoRUBRICA_ORIGEM: TStringField;
+    qConta_Pagar_VinculoID_AREA_ATUACAO_ORIGEM: TIntegerField;
+    qConta_Pagar_VinculoAREA_ATUACAO_ORIGEM: TStringField;
+    qConta_Pagar_VinculoID_PROJETO_ALOCADO: TIntegerField;
+    qConta_Pagar_VinculoPROJETO_ALOCADO: TStringField;
+    qConta_Pagar_VinculoID_ATIVIDADE_ALOCADO: TIntegerField;
+    qConta_Pagar_VinculoATIVIDADE_ALOCADA: TStringField;
+    qConta_Pagar_VinculoID_RUBRICA_ALOCADO: TIntegerField;
+    qConta_Pagar_VinculoRUBRICA_ALOCADA: TStringField;
+    qConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO: TIntegerField;
+    qConta_Pagar_VinculoAREA_ATUACAO_ALOCADA: TStringField;
+    qConta_Pagar_VinculoVALOR: TBCDField;
   private
     { Private declarations }
   protected
@@ -206,6 +215,10 @@ begin
         begin
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PLANO_CONTAS', vaValor.ToInteger, vaOperador)
         end
+      else if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ORIGEM', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coProjetoAlocado then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ALOCADO', vaValor.ToInteger, vaOperador)
     end;
 
 end;

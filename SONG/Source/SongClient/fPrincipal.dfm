@@ -70,6 +70,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Fornecedores1: TMenuItem
         Action = Ac_Fornecedor
       end
+      object Fundos1: TMenuItem
+        Action = Ac_Fundo
+      end
       object readeCusto1: TMenuItem
         Action = Ac_Plano_Contas
       end
@@ -229,6 +232,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Estoque'
       Caption = 'Compras'
       OnExecute = Ac_CompraExecute
+    end
+    object Ac_Fundo: TAction
+      Category = 'Financeiro'
+      Caption = 'Fundos'
+      OnExecute = Ac_FundoExecute
     end
   end
   object dxSkinController1: TdxSkinController

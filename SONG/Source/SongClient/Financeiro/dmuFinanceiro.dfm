@@ -141,7 +141,7 @@ inherited dmFinanceiro: TdmFinanceiro
       DisplayLabel = 'CPF/CNPJ'
       FieldName = 'CPF_CNPJ'
       Required = True
-      Size = 14
+      Size = 18
     end
     object cdsFin_For_CliINSCRICAO_ESTADUAL: TStringField
       DisplayLabel = 'Inscri'#231#227'o Estadual'
@@ -319,134 +319,6 @@ inherited dmFinanceiro: TdmFinanceiro
       DisplayLabel = 'Id da Compra'
       FieldName = 'ID_COMPRA'
       ProviderFlags = [pfInUpdate]
-    end
-  end
-  object cdsConta_Pagar_Projeto: TRFClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_CONTA_PAGAR'
-    MasterFields = 'ID'
-    MasterSource = dsConta_Pagar
-    PacketRecords = 0
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'ID_CONTA_PAGAR'
-        ParamType = ptInput
-      end>
-    ProviderName = 'dspqConta_Pagar_Projeto'
-    RemoteServer = dmPrincipal.ProviderFinanceiro
-    RFApplyAutomatico = False
-    Left = 64
-    Top = 80
-    object cdsConta_Pagar_ProjetoID: TIntegerField
-      FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cdsConta_Pagar_ProjetoID_CONTA_PAGAR: TIntegerField
-      DisplayLabel = 'Id do Contas a Pagar'
-      FieldName = 'ID_CONTA_PAGAR'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_ProjetoID_PROJETO: TIntegerField
-      DisplayLabel = 'Id do Projeto'
-      FieldName = 'ID_PROJETO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_ProjetoPROJETO: TStringField
-      DisplayLabel = 'Projeto'
-      FieldName = 'PROJETO'
-      ProviderFlags = [pfInUpdate]
-      Size = 100
-    end
-    object cdsConta_Pagar_ProjetoID_RUBRICA: TIntegerField
-      DisplayLabel = 'Id da Rubrica'
-      FieldName = 'ID_RUBRICA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_ProjetoID_PROJETO_AREA: TIntegerField
-      DisplayLabel = 'Id da '#193'rea do Projeto'
-      FieldName = 'ID_PROJETO_AREA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_ProjetoRUBRICA: TStringField
-      DisplayLabel = 'Rubrica'
-      FieldName = 'RUBRICA'
-      Size = 100
-    end
-    object cdsConta_Pagar_ProjetoAREA: TStringField
-      DisplayLabel = #193'rea'
-      FieldName = 'AREA'
-      Size = 100
-    end
-  end
-  object cdsConta_Pagar_Atividade: TRFClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_CONTA_PAGAR'
-    MasterFields = 'ID'
-    MasterSource = dsConta_Pagar
-    PacketRecords = 0
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'ID_CONTA_PAGAR'
-        ParamType = ptInput
-      end>
-    ProviderName = 'dspqConta_Pagar_Atividade'
-    RemoteServer = dmPrincipal.ProviderFinanceiro
-    RFApplyAutomatico = False
-    Left = 64
-    Top = 152
-    object cdsConta_Pagar_AtividadeID: TIntegerField
-      FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cdsConta_Pagar_AtividadeID_CONTA_PAGAR: TIntegerField
-      DisplayLabel = 'Id do Contas a Pagar'
-      FieldName = 'ID_CONTA_PAGAR'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_AtividadeID_ATIVIDADE: TIntegerField
-      DisplayLabel = 'Id da Atividade'
-      FieldName = 'ID_ATIVIDADE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_AtividadeATIVIDADE: TStringField
-      DisplayLabel = 'Atividade'
-      FieldName = 'ATIVIDADE'
-      ProviderFlags = [pfInUpdate]
-      Size = 100
-    end
-    object cdsConta_Pagar_AtividadeID_RUBRICA: TIntegerField
-      DisplayLabel = 'Id da Rubrica'
-      FieldName = 'ID_RUBRICA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_AtividadeID_PROJETO_AREA: TIntegerField
-      DisplayLabel = 'Id da '#193'rea do Projeto'
-      FieldName = 'ID_PROJETO_AREA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Pagar_AtividadeRUBRICA: TStringField
-      DisplayLabel = 'Rubrica'
-      FieldName = 'RUBRICA'
-      ProviderFlags = []
-      Size = 100
-    end
-    object cdsConta_Pagar_AtividadeAREA: TStringField
-      DisplayLabel = #193'rea'
-      FieldName = 'AREA'
-      ProviderFlags = []
-      Size = 100
     end
   end
   object cdsConta_Pagar_Parcela: TRFClientDataSet
@@ -732,5 +604,170 @@ inherited dmFinanceiro: TdmFinanceiro
     DataSet = cdsConta_Receber
     Left = 512
     Top = 16
+  end
+  object cdsFundo: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqFundo'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 520
+    Top = 88
+    object cdsFundoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsFundoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsFundoSALDO: TBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsFundoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+  end
+  object cdsConta_Pagar_Vinculo: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_CONTA_PAGAR'
+    MasterFields = 'ID'
+    MasterSource = dsConta_Pagar
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqConta_Pagar_Vinculo'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    RFApplyAutomatico = False
+    Left = 528
+    Top = 160
+    object cdsConta_Pagar_VinculoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsConta_Pagar_VinculoID_CONTA_PAGAR: TIntegerField
+      DisplayLabel = 'Id do Conta a Pagar'
+      FieldName = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_Pagar_VinculoID_FUNDO: TIntegerField
+      DisplayLabel = 'Id do Fundo'
+      FieldName = 'ID_FUNDO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoNOME_FUNDO: TStringField
+      DisplayLabel = 'Nome do Fundo'
+      FieldName = 'NOME_FUNDO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_PROJETO_ORIGEM: TIntegerField
+      DisplayLabel = 'Id do Projeto de Origem'
+      FieldName = 'ID_PROJETO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoPROJETO_ORIGEM: TStringField
+      DisplayLabel = 'Projeto de Origem do Recurso'
+      FieldName = 'PROJETO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_ATIVIDADE_ORIGEM: TIntegerField
+      DisplayLabel = 'Id da Atividade de Origem do Recurso'
+      FieldName = 'ID_ATIVIDADE_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoATIVIDADE_ORIGEM: TStringField
+      DisplayLabel = 'Atividade de Origem do Recurso'
+      FieldName = 'ATIVIDADE_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_RUBRICA_ORIGEM: TIntegerField
+      DisplayLabel = 'Id da Rubrica de Origem do Recurso'
+      FieldName = 'ID_RUBRICA_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoRUBRICA_ORIGEM: TStringField
+      DisplayLabel = 'Rubrica de Origem do Recurso'
+      FieldName = 'RUBRICA_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_AREA_ATUACAO_ORIGEM: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Atua'#231#227'o de Origem do Recurso'
+      FieldName = 'ID_AREA_ATUACAO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoAREA_ATUACAO_ORIGEM: TStringField
+      DisplayLabel = #193'rea de Atua'#231#227'o de Origem do Recurso'
+      FieldName = 'AREA_ATUACAO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_PROJETO_ALOCADO: TIntegerField
+      DisplayLabel = 'Id do Projeto Alocado'
+      FieldName = 'ID_PROJETO_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoPROJETO_ALOCADO: TStringField
+      DisplayLabel = 'Projeto Alocado'
+      FieldName = 'PROJETO_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_ATIVIDADE_ALOCADO: TIntegerField
+      DisplayLabel = 'Id da Atividade Alocada'
+      FieldName = 'ID_ATIVIDADE_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoATIVIDADE_ALOCADA: TStringField
+      DisplayLabel = 'Atividade Alocada'
+      FieldName = 'ATIVIDADE_ALOCADA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_RUBRICA_ALOCADO: TIntegerField
+      DisplayLabel = 'Id da Rubrica Alocada'
+      FieldName = 'ID_RUBRICA_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoRUBRICA_ALOCADA: TStringField
+      DisplayLabel = 'Rubrica Alocada'
+      FieldName = 'RUBRICA_ALOCADA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Atua'#231#227'o Alocada'
+      FieldName = 'ID_AREA_ATUACAO_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoAREA_ATUACAO_ALOCADA: TStringField
+      DisplayLabel = #193'rea de Atua'#231#227'o Alocada'
+      FieldName = 'AREA_ATUACAO_ALOCADA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsConta_Pagar_VinculoVALOR: TBCDField
+      DisplayLabel = 'Valor'
+      FieldName = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
   end
 end

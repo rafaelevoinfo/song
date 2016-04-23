@@ -13,20 +13,33 @@ uses
   cxGroupBox, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxRadioGroup,
   Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit,
-  cxCalendar, Vcl.ExtCtrls, cxPC, uTypes, uControleAcesso, System.TypInfo;
+  cxCalendar, Vcl.ExtCtrls, cxPC, uTypes, uControleAcesso, System.TypInfo,
+  uUtils, uExceptions;
 
 type
   TfrmCliente = class(TfrmFinanciador)
+    rgTipoFornecedor: TcxRadioGroup;
+    procedure rgTipoFornecedorPropertiesEditValueChanged(Sender: TObject);
   private
+
     { Private declarations }
   protected
     function fprGetTipo: TTipoFinForCli; override;
     function fprGetTipoPessoa: TTipoRelacionamentoPessoa; override;
     function fprGetPermissao: String; override;
+    procedure pprBeforeSalvar; override;
+    procedure pprValidarCPFCNPJ; override;
+  public
+    procedure ppuIncluir; override;
+    procedure ppuAlterar(ipId: Integer); override;
   end;
 
 var
   frmCliente: TfrmCliente;
+
+const
+  coPessoaJuridica = 0;
+  coPessoaFisica = 1;
 
 implementation
 
@@ -36,7 +49,7 @@ implementation
 
 function TfrmCliente.fprGetPermissao: String;
 begin
-   Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finCliente));
+  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finCliente));
 end;
 
 function TfrmCliente.fprGetTipo: TTipoFinForCli;
@@ -47,6 +60,63 @@ end;
 function TfrmCliente.fprGetTipoPessoa: TTipoRelacionamentoPessoa;
 begin
   Result := trpcliente;
+end;
+
+procedure TfrmCliente.ppuAlterar(ipId: Integer);
+begin
+  inherited;
+  if TUtils.fpuExtrairNumeros(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString).Length = 14 then // cnpj
+    rgTipoFornecedor.ItemIndex := coPessoaJuridica
+  else
+    rgTipoFornecedor.ItemIndex := coPessoaFisica;
+end;
+
+procedure TfrmCliente.ppuIncluir;
+begin
+  inherited;
+  rgTipoFornecedor.ItemIndex := coPessoaJuridica;
+end;
+
+procedure TfrmCliente.pprBeforeSalvar;
+begin
+  inherited;
+  if rgTipoFornecedor.ItemIndex = coPessoaFisica then
+    dmFinanceiro.cdsFin_For_CliRAZAO_SOCIAL.Clear;
+
+end;
+
+procedure TfrmCliente.pprValidarCPFCNPJ;
+begin
+  //nao chamar o inherited
+  if rgTipoFornecedor.ItemIndex = coPessoaJuridica then
+    begin
+      if not TUtils.fpuValidarCnpj(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
+        raise TControlException.Create('CNPJ inválido.', EditCpfCnpj);
+    end
+  else
+    begin
+      if not TUtils.fpuValidarCpf(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
+        raise TControlException.Create('CPF inválido.', EditCpfCnpj);
+    end;
+end;
+
+procedure TfrmCliente.rgTipoFornecedorPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if rgTipoFornecedor.ItemIndex = coPessoaJuridica then
+    begin
+      EditCpfCnpj.Properties.EditMask := coRegexCNPJ;
+      lbNome.Caption := 'Nome Fantasia';
+      lbCpfCnpj.Caption := 'CNPJ';
+    end
+  else
+    begin
+      EditCpfCnpj.Properties.EditMask := coRegexCPF;
+      lbNome.Caption := 'Nome do Cliente';
+      lbCpfCnpj.Caption := 'CPF';
+    end;
+  EditRazaoSocial.Enabled := rgTipoFornecedor.ItemIndex = coPessoaJuridica;
 end;
 
 end.

@@ -6,7 +6,7 @@ uses
   System.SysUtils, Vcl.Dialogs, cxPC, Vcl.Forms, Vcl.Controls,
   Datasnap.DBClient, IdHashSHA, System.RegularExpressions,
   System.Types, Winapi.Windows, uTypes, System.Classes, Data.DB,
-  System.Generics.Collections, cxCheckComboBox, System.Variants;
+  System.Generics.Collections, cxCheckComboBox, System.Variants, System.Math;
 
 type
   TUtils = class
@@ -37,7 +37,16 @@ type
     class procedure ppuExtrairValorOperadorParametro(ipInput: string; var opValor: string; var opOperador: string; ipDelimitador: String);
     class procedure ppuExtrairValorParametro(ipInput: string; var opValor: string; ipDelimitador: String);
     class function fpuExtrairValoresCheckComboBox(ipCheckBox: TcxCheckComboBox): string;
+    class function fpuExtrairNumeros(ipValor: string): string;
+
+    class function fpuValidarCpfCnpj(ipCpfCnpj: string): Boolean;
+    class function fpuValidarCpf(ipCpf: string): Boolean;
+    class function fpuValidarCnpj(ipCnpj: string): Boolean;
   end;
+
+const
+  coRegexCPF = '\d{3}\.\d{3}\.\d{3}-\d{2}';
+  coRegexCNPJ = '\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}';
 
 implementation
 
@@ -216,6 +225,21 @@ begin
 
 end;
 
+class function TUtils.fpuValidarCnpj(ipCnpj: string): Boolean;
+begin
+  Result := TRegEx.IsMatch(ipCnpj,coRegexCNPJ);
+end;
+
+class function TUtils.fpuValidarCpf(ipCpf: string): Boolean;
+begin
+  Result := TRegEx.IsMatch(ipCpf,coRegexCPF);
+end;
+
+class function TUtils.fpuValidarCpfCnpj(ipCpfCnpj: string): Boolean;
+begin
+  Result := TRegEx.IsMatch(ipCpfCnpj, '(' + coRegexCPF + ')|(' + coRegexCNPJ + ')');
+end;
+
 class function TUtils.fpuValidarEmail(ipEmail: String): Boolean;
 begin
   Result := TRegEx.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
@@ -327,6 +351,18 @@ begin
         vaCodigosProjetos.Clear;
         vaCodigosProjetos.free;
       end;
+    end;
+end;
+
+class function TUtils.fpuExtrairNumeros(ipValor: string): string;
+var
+  I: Integer;
+begin
+  Result := '';
+  for I := Low(ipValor) to High(ipValor) do
+    begin
+      if TRegEx.IsMatch(ipValor[I], '\d', []) then
+        Result := Result + ipValor[I];
     end;
 end;
 

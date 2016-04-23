@@ -93,6 +93,10 @@ type
     qlkCompraID_FORNECEDOR: TIntegerField;
     qlkCompraDATA: TSQLTimeStampField;
     qlkCompraNOME_FANTASIA: TStringField;
+    qlkFundo: TRFQuery;
+    qlkFundoID: TIntegerField;
+    qlkFundoNOME: TStringField;
+    qlkFundoSALDO: TBCDField;
   private
     { Private declarations }
   protected

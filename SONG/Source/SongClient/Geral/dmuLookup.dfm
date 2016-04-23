@@ -1,7 +1,7 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
   OnCreate = DataModuleCreate
-  Height = 618
+  Height = 755
   Width = 1015
   object Repositorio: TcxEditRepository
     Left = 16
@@ -420,6 +420,7 @@ inherited dmLookup: TdmLookup
       Properties.ListSource = dslkItem
     end
     object repLcbRubricaAtividade: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownAutoSize = True
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
       Properties.KeyFieldNames = 'ID'
@@ -490,6 +491,17 @@ inherited dmLookup: TdmLookup
           FieldName = 'DATA'
         end>
       Properties.ListSource = dslkCompra
+    end
+    object repLcbFundo: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkFundo
     end
   end
   object dslkPerfil: TDataSource
@@ -1117,7 +1129,111 @@ inherited dmLookup: TdmLookup
   end
   object dslkCompra: TDataSource
     DataSet = cdslkCompra
-    Left = 488
-    Top = 296
+    Left = 472
+    Top = 648
+  end
+  object cdslkFundo: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkFundo'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 888
+    Top = 544
+    object cdslkFundoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkFundoNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdslkFundoSALDO: TBCDField
+      FieldName = 'SALDO'
+      ProviderFlags = []
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+  end
+  object dslkFundo: TDataSource
+    DataSet = cdslkFundo
+    Left = 376
+    Top = 656
+  end
+  object cdslkAtividade_Alocada: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkAtividade'
+    RemoteServer = dmPrincipal.ProviderLookup
+    RFApplyAutomatico = False
+    Left = 224
+    Top = 636
+    object IntegerField1: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object StringField1: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object SmallintField1: TSmallintField
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object cdslkRubrica_Atividade_Alocada: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkRubrica_Atividade'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 88
+    Top = 628
+    object IntegerField2: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object IntegerField3: TIntegerField
+      FieldName = 'ID_RUBRICA_PAI'
+      ProviderFlags = []
+    end
+    object StringField2: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 123
+    end
+  end
+  object cdslkProjeto_Area_Atividade_Alocada: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkProjeto_Area_Atividade'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 92
+    Top = 684
+    object IntegerField4: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object IntegerField5: TIntegerField
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = []
+    end
+    object StringField3: TStringField
+      DisplayLabel = #193'rea'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
 end

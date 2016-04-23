@@ -14,11 +14,12 @@ uses
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuFinanceiro, dmuLookup, uTypes, uControleAcesso,
   System.TypInfo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit,
-  dmuPrincipal, uExceptions, System.RegularExpressions, uClientDataSet, cxMemo;
+  dmuPrincipal, uExceptions, System.RegularExpressions, uClientDataSet, cxMemo,
+  uUtils;
 
 type
   TfrmFinanciador = class(TfrmBasicoCrud)
-    Label3: TLabel;
+    lbNome: TLabel;
     EditNomeFantasia: TcxDBTextEdit;
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_CONTATO: TcxGridDBColumn;
@@ -54,8 +55,7 @@ type
     EditSite: TcxDBTextEdit;
     cbContato: TcxDBLookupComboBox;
     Label4: TLabel;
-    Label14: TLabel;
-    EditCpfCnpj: TcxDBTextEdit;
+    lbCpfCnpj: TLabel;
     Label15: TLabel;
     EditInscricaoEstadual: TcxDBTextEdit;
     Label16: TLabel;
@@ -68,14 +68,17 @@ type
     Ac_Pesquisar_Pessoa: TAction;
     lbl1: TLabel;
     EditCargoContato: TcxDBTextEdit;
+    EditCpfCnpj: TcxDBMaskEdit;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
     procedure cbContatoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private
+
+  protected
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
-  protected
+
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -83,6 +86,7 @@ type
     procedure pprPesquisarPessoa(); virtual;
     procedure pprCarregarPessoas(ipIdEspecifico: Integer = 0); virtual;
     function fprGetTipoPessoa: TTipoRelacionamentoPessoa; virtual;
+    procedure pprValidarCPFCNPJ;virtual;
 
     function fprGetTipo: TTipoFinForCli; virtual;
   public
@@ -213,6 +217,12 @@ begin
   dmFinanceiro.cdsFin_For_CliTIPO.AsInteger := Ord(fprGetTipo);
 end;
 
+procedure TfrmFinanciador.pprValidarCPFCNPJ;
+begin
+   if not TUtils.fpuValidarCnpj(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
+    raise TControlException.Create('CNPJ inválido.', EditCpfCnpj);
+end;
+
 procedure TfrmFinanciador.pprValidarDados;
 var
   vaErros, vaResult: string;
@@ -221,6 +231,8 @@ var
   vaEdit: TWinControl;
 begin
   inherited;
+  pprValidarCPFCNPJ;
+
   vaResult := dmPrincipal.FuncoesAdm.fpuValidarFinanciadorFornecedorCliente(dmFinanceiro.cdsFin_For_CliID.AsInteger,
     Ord(fprGetTipo),
     dmFinanceiro.cdsFin_For_CliRAZAO_SOCIAL.AsString, dmFinanceiro.cdsFin_For_CliNOME_FANTASIA.AsString,

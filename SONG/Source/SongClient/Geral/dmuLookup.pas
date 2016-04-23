@@ -150,6 +150,24 @@ type
     cdslkCompraNOME_FANTASIA: TStringField;
     repLcbCompra: TcxEditRepositoryLookupComboBoxItem;
     dslkCompra: TDataSource;
+    cdslkFundo: TRFClientDataSet;
+    cdslkFundoID: TIntegerField;
+    cdslkFundoNOME: TStringField;
+    cdslkFundoSALDO: TBCDField;
+    repLcbFundo: TcxEditRepositoryLookupComboBoxItem;
+    dslkFundo: TDataSource;
+    cdslkAtividade_Alocada: TRFClientDataSet;
+    IntegerField1: TIntegerField;
+    StringField1: TStringField;
+    SmallintField1: TSmallintField;
+    cdslkRubrica_Atividade_Alocada: TRFClientDataSet;
+    IntegerField2: TIntegerField;
+    IntegerField3: TIntegerField;
+    StringField2: TStringField;
+    cdslkProjeto_Area_Atividade_Alocada: TRFClientDataSet;
+    IntegerField4: TIntegerField;
+    IntegerField5: TIntegerField;
+    StringField3: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

@@ -46,7 +46,8 @@ uses
   fItem in 'Estoque\fItem.pas' {frmItem},
   fEntrada in 'Estoque\fEntrada.pas' {frmEntrada},
   fCompra in 'Estoque\fCompra.pas' {frmCompra},
-  fSolicitacaoCompra in 'Estoque\fSolicitacaoCompra.pas' {frmSolicitacaoCompra};
+  fSolicitacaoCompra in 'Estoque\fSolicitacaoCompra.pas' {frmSolicitacaoCompra},
+  fFundo in 'Financeiro\fFundo.pas' {frmFundo};
 
 {$R Localization.RES}
   {$R *.res}

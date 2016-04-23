@@ -198,6 +198,7 @@ type
     Label22: TLabel;
     EditPercentualPagamento: TcxCalcEdit;
     viewPagamentosCadastroPERCENTUAL: TcxGridDBColumn;
+    cxGridDBTableView1APROVISIONADO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -353,38 +354,38 @@ procedure TfrmProjeto.ppvAtualizarRubricas(ipIncrementar: Boolean);
 var
   vaAutoApply: Boolean;
 begin
-  if not dmAdministrativo.cdsProjeto_Rubrica.Active then
-    dmAdministrativo.cdsProjeto_Rubrica.Open;
-
-  vaAutoApply := dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico;
-  try
-    dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := False;
-
-    TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Rubrica,
-      procedure
-      begin
-        dmAdministrativo.cdsProjeto_Rubrica.Edit;
-        if ipIncrementar then
-          begin
-            dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat +
-              (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
-          end
-        else
-          begin
-            dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat -
-              (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
-
-            if dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat < 0 then
-              dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := 0;
-          end;
-        dmAdministrativo.cdsProjeto_Rubrica.Post;
-      end);
-
-    if dmAdministrativo.cdsProjeto_Rubrica.ChangeCount > 0 then
-      dmAdministrativo.cdsProjeto_Rubrica.ApplyUpdates(0);
-  finally
-    dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := vaAutoApply;
-  end;
+//  if not dmAdministrativo.cdsProjeto_Rubrica.Active then
+//    dmAdministrativo.cdsProjeto_Rubrica.Open;
+//
+//  vaAutoApply := dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico;
+//  try
+//    dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := False;
+//
+//    TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Rubrica,
+//      procedure
+//      begin
+//        dmAdministrativo.cdsProjeto_Rubrica.Edit;
+//        if ipIncrementar then
+//          begin
+//            dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat +
+//              (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
+//          end
+//        else
+//          begin
+//            dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat -
+//              (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
+//
+//            if dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat < 0 then
+//              dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := 0;
+//          end;
+//        dmAdministrativo.cdsProjeto_Rubrica.Post;
+//      end);
+//
+//    if dmAdministrativo.cdsProjeto_Rubrica.ChangeCount > 0 then
+//      dmAdministrativo.cdsProjeto_Rubrica.ApplyUpdates(0);
+//  finally
+//    dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := vaAutoApply;
+//  end;
 end;
 
 procedure TfrmProjeto.ppvExcluirPagamento();

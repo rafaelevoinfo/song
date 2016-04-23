@@ -20,6 +20,7 @@ type
     coStatusEntrega = 'STATUS_ENTREGA';
     coStatusDiferente = 'STATUS_DIFERENTE';
     coProjeto: string = 'PROJETO';
+    coProjetoAlocado: string = 'PROJETO_ALOCADO';
     coAtividade:string = 'ATIVIDADE';
     coNomeCientifico = 'NOME_CIENTIFICO';
     coFamiliaBotanica = 'FAMILIA_BOTANICA';
