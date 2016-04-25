@@ -1013,22 +1013,22 @@ inherited dmAdministrativo: TdmAdministrativo
       ReadOnly = True
       Size = 100
     end
-    object cdsProjeto_RubricaAPROVISIONADO: TBCDField
-      DisplayLabel = 'Valor Aprovisionado'
-      FieldName = 'APROVISIONADO'
-      Precision = 18
-      Size = 2
-    end
-    object cdsProjeto_RubricaGASTO: TBCDField
+    object cdsProjeto_RubricaGASTO: TFMTBCDField
       DisplayLabel = 'Valor Gasto'
       FieldName = 'GASTO'
       Precision = 18
-      Size = 2
+      Size = 6
     end
     object cdsProjeto_RubricaRECEBIDO: TBCDField
       DisplayLabel = 'Valor Recebido'
       FieldName = 'RECEBIDO'
       Precision = 18
+    end
+    object cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField
+      DisplayLabel = 'Valor Aprovisionado'
+      FieldName = 'APROVISIONADO'
+      Precision = 18
+      Size = 6
     end
   end
   object cdsProjeto_Area: TRFClientDataSet

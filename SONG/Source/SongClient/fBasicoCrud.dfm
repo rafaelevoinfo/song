@@ -3,7 +3,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13

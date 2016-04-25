@@ -1117,28 +1117,22 @@ inherited smAdministrativo: TsmAdministrativo
       '                Projeto_Rubrica.Id_Rubrica,'
       '                Projeto_Rubrica.Orcamento,'
       
-        '                (select sum(Conta_Pagar_Vinculo.Valor / (select ' +
-        'count(*)'
+        '                (select sum(Conta_Pagar_Vinculo.Valor * (select ' +
+        'sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)'
       
         '                                                         from Co' +
         'nta_Pagar_Parcela'
       
+        '                                                         inner j' +
+        'oin Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Cont' +
+        'a_Pagar)'
+      
         '                                                         where C' +
         'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
-        '_Pagar) * (select count(*)'
+        '_Pagar and'
       
-        '                                                                ' +
-        '                                                                ' +
-        '           from Conta_Pagar_Parcela'
-      
-        '                                                                ' +
-        '                                                                ' +
-        '           where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Paga' +
-        'r_Vinculo.Id_Conta_Pagar and'
-      
-        '                                                                ' +
-        '                                                                ' +
-        '                 Conta_Pagar_Parcela.Status = 1))'
+        '                                                               C' +
+        'onta_Pagar_Parcela.Status = 1))'
       '                 from Conta_Pagar_Vinculo'
       
         '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
@@ -1160,28 +1154,22 @@ inherited smAdministrativo: TsmAdministrativo
         'Rubrica.Id_Projeto) as Recebido,'
       ''
       
-        '                (select sum(Conta_Pagar_Vinculo.Valor / (select ' +
-        'count(*)'
+        '                (select sum(Conta_Pagar_Vinculo.Valor * (select ' +
+        'sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)'
       
         '                                                         from Co' +
         'nta_Pagar_Parcela'
       
+        '                                                         inner j' +
+        'oin Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Cont' +
+        'a_Pagar)'
+      
         '                                                         where C' +
         'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
-        '_Pagar) * (select count(*)'
+        '_Pagar and'
       
-        '                                                                ' +
-        '                                                                ' +
-        '           from Conta_Pagar_Parcela'
-      
-        '                                                                ' +
-        '                                                                ' +
-        '           where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Paga' +
-        'r_Vinculo.Id_Conta_Pagar and'
-      
-        '                                                                ' +
-        '                                                                ' +
-        '                 Conta_Pagar_Parcela.Status = 0))'
+        '                                                               C' +
+        'onta_Pagar_Parcela.Status = 0))'
       '                 from Conta_Pagar_Vinculo'
       
         '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
@@ -1193,16 +1181,12 @@ inherited smAdministrativo: TsmAdministrativo
       
         '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
         's Nome_Rubrica'
-      ''
       'from Projeto_Rubrica'
       'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       
         'left join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Rubrica' +
         '_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_' +
         'Projeto_Origem = Projeto_Rubrica.Id_Projeto)'
-      
-        '--left join Conta_Pagar_Parcela on (Conta_Pagar_Parcela.Id_Conta' +
-        '_Pagar = Conta_Pagar_Vinculo.Id_Conta_Pagar)'
       'where Projeto_Rubrica.Id_Projeto = :Id_Projeto    ')
     Left = 224
     Top = 288
@@ -1247,13 +1231,13 @@ inherited smAdministrativo: TsmAdministrativo
       ReadOnly = True
       Size = 100
     end
-    object qProjeto_RubricaGASTO: TBCDField
+    object qProjeto_RubricaGASTO: TFMTBCDField
       AutoGenerateValue = arDefault
       FieldName = 'GASTO'
       Origin = 'GASTO'
       ProviderFlags = []
       Precision = 18
-      Size = 2
+      Size = 6
     end
     object qProjeto_RubricaRECEBIDO: TBCDField
       AutoGenerateValue = arDefault
@@ -1262,13 +1246,13 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = []
       Precision = 18
     end
-    object qProjeto_RubricaAPROVISIONADO: TBCDField
+    object qProjeto_RubricaAPROVISIONADO: TFMTBCDField
       AutoGenerateValue = arDefault
       FieldName = 'APROVISIONADO'
       Origin = 'APROVISIONADO'
       ProviderFlags = []
       Precision = 18
-      Size = 2
+      Size = 6
     end
   end
   object qProjeto_Area: TRFQuery

@@ -94,7 +94,7 @@ type
     procedure pprRealizarPesquisaInicial; override;
     procedure pprExecutarSalvarDetail; override;
 
-    function fprHabilitarAlterar:Boolean;override;
+    function fprHabilitarAlterar: Boolean; override;
 
     function fprGetPermissao: String; override;
   public
@@ -226,7 +226,7 @@ var
   vaTipos: string;
 begin
   inherited;
-   ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
+  ipCds.ppuAddParametro(TParametros.coAtivo, rgStatus.ItemIndex);
 
   if (cbPesquisarPor.EditValue = coLogin) then
     ipCds.ppuAddParametro(TParametros.coLogin, EditPesquisa.Text);

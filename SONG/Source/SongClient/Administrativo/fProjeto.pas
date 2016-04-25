@@ -150,15 +150,15 @@ type
     Panel7: TPanel;
     btnIncluirRubrica: TButton;
     cxGrid6: TcxGrid;
-    cxGridDBTableView1: TcxGridDBTableView;
+    viewRubricas: TcxGridDBTableView;
     cxGridDBColumn6: TcxGridDBColumn;
     cxGridDBColumn7: TcxGridDBColumn;
     cxGridLevel5: TcxGridLevel;
     dsRubrica: TDataSource;
-    cxGridDBTableView1ID: TcxGridDBColumn;
-    cxGridDBTableView1ID_RUBRICA: TcxGridDBColumn;
-    cxGridDBTableView1ORCAMENTO: TcxGridDBColumn;
-    cxGridDBTableView1NOME_RUBRICA: TcxGridDBColumn;
+    viewRubricasID: TcxGridDBColumn;
+    viewRubricasID_RUBRICA: TcxGridDBColumn;
+    viewRubricasORCAMENTO: TcxGridDBColumn;
+    viewRubricasNOME_RUBRICA: TcxGridDBColumn;
     Panel8: TPanel;
     btnSalvarDetailRubrica: TButton;
     btnCancelarDetailRubrica: TButton;
@@ -189,16 +189,12 @@ type
     ColumnAlterarDetailArea: TcxGridDBColumn;
     ColumnExcluirDetailArea: TcxGridDBColumn;
     viewPagamentosPERCENTUAL: TcxGridDBColumn;
-    cxGridDBTableView1RECEBIDO: TcxGridDBColumn;
-    cxGridDBTableView1GASTO: TcxGridDBColumn;
-    lbl1: TLabel;
-    EditValorGasto: TcxDBCurrencyEdit;
-    lbl3: TLabel;
-    EditValorRecebido: TcxDBCurrencyEdit;
+    viewRubricasRECEBIDO: TcxGridDBColumn;
+    viewRubricasGASTO: TcxGridDBColumn;
     Label22: TLabel;
     EditPercentualPagamento: TcxCalcEdit;
     viewPagamentosCadastroPERCENTUAL: TcxGridDBColumn;
-    cxGridDBTableView1APROVISIONADO: TcxGridDBColumn;
+    viewRubricasAPROVISIONADO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -213,6 +209,9 @@ type
     procedure cbContaCorrenteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure EditValorPagamentoPropertiesEditValueChanged(Sender: TObject);
+    procedure viewRubricasCustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -354,38 +353,38 @@ procedure TfrmProjeto.ppvAtualizarRubricas(ipIncrementar: Boolean);
 var
   vaAutoApply: Boolean;
 begin
-//  if not dmAdministrativo.cdsProjeto_Rubrica.Active then
-//    dmAdministrativo.cdsProjeto_Rubrica.Open;
-//
-//  vaAutoApply := dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico;
-//  try
-//    dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := False;
-//
-//    TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Rubrica,
-//      procedure
-//      begin
-//        dmAdministrativo.cdsProjeto_Rubrica.Edit;
-//        if ipIncrementar then
-//          begin
-//            dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat +
-//              (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
-//          end
-//        else
-//          begin
-//            dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat -
-//              (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
-//
-//            if dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat < 0 then
-//              dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := 0;
-//          end;
-//        dmAdministrativo.cdsProjeto_Rubrica.Post;
-//      end);
-//
-//    if dmAdministrativo.cdsProjeto_Rubrica.ChangeCount > 0 then
-//      dmAdministrativo.cdsProjeto_Rubrica.ApplyUpdates(0);
-//  finally
-//    dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := vaAutoApply;
-//  end;
+  // if not dmAdministrativo.cdsProjeto_Rubrica.Active then
+  // dmAdministrativo.cdsProjeto_Rubrica.Open;
+  //
+  // vaAutoApply := dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico;
+  // try
+  // dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := False;
+  //
+  // TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Rubrica,
+  // procedure
+  // begin
+  // dmAdministrativo.cdsProjeto_Rubrica.Edit;
+  // if ipIncrementar then
+  // begin
+  // dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat +
+  // (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
+  // end
+  // else
+  // begin
+  // dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat -
+  // (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
+  //
+  // if dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat < 0 then
+  // dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := 0;
+  // end;
+  // dmAdministrativo.cdsProjeto_Rubrica.Post;
+  // end);
+  //
+  // if dmAdministrativo.cdsProjeto_Rubrica.ChangeCount > 0 then
+  // dmAdministrativo.cdsProjeto_Rubrica.ApplyUpdates(0);
+  // finally
+  // dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := vaAutoApply;
+  // end;
 end;
 
 procedure TfrmProjeto.ppvExcluirPagamento();
@@ -433,7 +432,7 @@ begin
 end;
 
 procedure TfrmProjeto.cbContaCorrenteKeyDown(Sender: TObject; var Key: Word;
-Shift: TShiftState);
+  Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -441,11 +440,41 @@ begin
 end;
 
 procedure TfrmProjeto.cbFinanciadorKeyDown(Sender: TObject; var Key: Word;
-Shift: TShiftState);
+  Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
     ppvAdicionarFinanciador;
+end;
+
+procedure TfrmProjeto.viewRubricasCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+var
+  vaPercentualGasto: Double;
+begin
+  inherited;
+  if (not VarIsNull(AViewInfo.GridRecord.Values[viewRubricasGASTO.Index])) and
+    (not VarIsNull(AViewInfo.GridRecord.Values[viewRubricasORCAMENTO.Index])) then
+    begin
+      vaPercentualGasto := AViewInfo.GridRecord.Values[viewRubricasGASTO.Index] / AViewInfo.GridRecord.Values[viewRubricasORCAMENTO.Index];
+      if vaPercentualGasto >= 0.9 then
+        begin
+          ACanvas.Font.Color := clWhite;
+          if AViewInfo.GridRecord.Selected then
+            ACanvas.Brush.Color := clMaroon
+          else
+            ACanvas.Brush.Color := clRed;
+        end
+      else if vaPercentualGasto > 0.75 then
+        begin
+          ACanvas.Font.Color := clBlack;
+          if AViewInfo.GridRecord.Selected then
+            ACanvas.Brush.Color := $0039D5C9
+          else
+            ACanvas.Brush.Color := clYellow;
+        end;
+    end;
 end;
 
 procedure TfrmProjeto.EditValorPagamentoPropertiesEditValueChanged(
@@ -550,9 +579,9 @@ procedure TfrmProjeto.pprValidarDadosDetail;
 begin
   inherited;
   if not dmPrincipal.FuncoesAdm.fpuValidarNomeAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
-    dmAdministrativo.cdsProjeto_AreaID.AsInteger,dmAdministrativo.cdsProjeto_AreaNOME.AsString) then
+    dmAdministrativo.cdsProjeto_AreaID.AsInteger, dmAdministrativo.cdsProjeto_AreaNOME.AsString) then
     begin
-       raise Exception.Create('Já existe uma área para este projeto com este nome. Por favor, informe outro nome.');
+      raise Exception.Create('Já existe uma área para este projeto com este nome. Por favor, informe outro nome.');
     end;
 
 end;

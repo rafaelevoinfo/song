@@ -160,9 +160,9 @@ type
     cdsProjeto_AreaID_PROJETO: TIntegerField;
     cdsProjeto_AreaNOME: TStringField;
     cdsProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
-    cdsProjeto_RubricaAPROVISIONADO: TBCDField;
-    cdsProjeto_RubricaGASTO: TBCDField;
+    cdsProjeto_RubricaGASTO: TFMTBCDField;
     cdsProjeto_RubricaRECEBIDO: TBCDField;
+    cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField;
   private
     { Private declarations }
   public

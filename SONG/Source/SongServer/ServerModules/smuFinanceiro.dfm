@@ -882,7 +882,9 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Id_Atividade_Origem,'
       '       atividade_origem.nome as atividade_origem,'
       '       Conta_Pagar_Vinculo.Id_Rubrica_Origem,'
-      '       rubrica_origem.nome as rubrica_origem,'
+      
+        '       rubrica_origem.identificador || '#39' - '#39'||rubrica_origem.nom' +
+        'e as rubrica_origem,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,'
       '       area_origem.nome as area_atuacao_origem,'
       '       Conta_Pagar_Vinculo.Id_Projeto_Alocado,'
@@ -890,7 +892,9 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Id_Atividade_Alocado,'
       '       atividade_alocado.nome as atividade_alocada,'
       '       Conta_Pagar_Vinculo.Id_Rubrica_Alocado,'
-      '       rubrica_alocado.nome as rubrica_alocada,'
+      
+        '       rubrica_alocado.identificador || '#39' - '#39'|| rubrica_alocado.' +
+        'nome as rubrica_alocada,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Alocado,'
       '       area_alocado.nome as area_atuacao_alocada,'
       '       Conta_Pagar_Vinculo.Valor'

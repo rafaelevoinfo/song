@@ -12,7 +12,7 @@ uses
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
-  fFundo;
+  fFundo, uControleAcesso, System.TypInfo;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -72,6 +72,9 @@ type
     Compras1: TMenuItem;
     Ac_Fundo: TAction;
     Fundos1: TMenuItem;
+    Ac_Meus_Dados: TAction;
+    Sistema1: TMenuItem;
+    MeusDados1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -97,6 +100,7 @@ type
     procedure Ac_Solicitacao_CompraExecute(Sender: TObject);
     procedure Ac_CompraExecute(Sender: TObject);
     procedure Ac_FundoExecute(Sender: TObject);
+    procedure Ac_Meus_DadosExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -211,6 +215,53 @@ procedure TfrmPrincipal.Ac_MatrizExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmMatriz>(pcPrincipal, TfrmMatriz, frmMatriz);
+end;
+
+procedure TfrmPrincipal.Ac_Meus_DadosExecute(Sender: TObject);
+var
+  vaFrmPessoa: TfrmPessoa;
+  vaPessoa: TPessoa;
+begin
+  inherited;
+  // vamos dar permissao temporaria de acesso a essa tela. Nao importando se ja tem acesso ou nao.
+  if not TInfoLogin.fpuGetInstance.Usuario.Permissoes.Locate('PERMISSAO',
+    GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa)), []) then
+    begin
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.Append;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('PERMISSAO').AsString :=
+        GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('VISUALIZAR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('ALTERAR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('INCLUIR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('EXCLUIR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.Post;
+    end
+  else
+    begin
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.Edit;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('PERMISSAO').AsString :=
+        GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('VISUALIZAR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('ALTERAR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('INCLUIR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('EXCLUIR').AsInteger := 1;
+      TInfoLogin.fpuGetInstance.Usuario.Permissoes.Post;
+    end;
+
+  vaPessoa := TPessoa.Create;
+  try
+    vaPessoa.Id := TInfoLogin.fpuGetInstance.Usuario.Id;
+    vaPessoa.Nome := TInfoLogin.fpuGetInstance.Usuario.Nome;
+
+    vaFrmPessoa := TfrmPessoa.Create(nil);
+    vaFrmPessoa.ppuConfigurarModoExecucao(meSomenteEdicao,vaPessoa);
+    vaFrmPessoa.ShowModal;
+
+  finally
+    TInfoLogin.fpuGetInstance.Usuario.Permissoes.Cancel;
+    vaFrmPessoa.Free;
+  end;
+
 end;
 
 procedure TfrmPrincipal.Ac_OrganizacaoExecute(Sender: TObject);

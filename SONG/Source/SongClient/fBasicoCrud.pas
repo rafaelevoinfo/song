@@ -342,6 +342,17 @@ end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
+  if (ModoExecucao = meSomenteEdicao) and ((not fprHabilitarAlterar) or (not dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []))) then
+    begin
+      cbPesquisarPor.EditValue := Ord(tppId);
+      cbPesquisarPor.PostEditValue;
+
+      EditPesquisa.EditValue := FModelo.Id;
+      EditPesquisa.PostEditValue;
+
+      ppuPesquisar;
+    end;
+
   if fprHabilitarAlterar then
     begin
       if dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []) then
@@ -389,6 +400,10 @@ begin
       end;
     meSomenteCadastro:
       ;
+    meSomenteEdicao:
+      begin
+        btnSalvarIncluir.Visible := False;
+      end;
   end;
 end;
 

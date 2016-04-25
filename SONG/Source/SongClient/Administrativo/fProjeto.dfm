@@ -494,10 +494,11 @@ inherited frmProjeto: TfrmProjeto
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                object cxGridDBTableView1: TcxGridDBTableView
+                object viewRubricas: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
                   Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  OnCustomDrawCell = viewRubricasCustomDrawCell
                   DataController.DataSource = dsRubrica
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
@@ -512,36 +513,36 @@ inherited frmProjeto: TfrmProjeto
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
                   OptionsView.ShowEditButtons = gsebAlways
                   OptionsView.GroupByBox = False
-                  object cxGridDBTableView1ID: TcxGridDBColumn
+                  object viewRubricasID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
                     Options.Editing = False
                   end
-                  object cxGridDBTableView1ID_RUBRICA: TcxGridDBColumn
+                  object viewRubricasID_RUBRICA: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_RUBRICA'
                     Visible = False
                     Options.Editing = False
                   end
-                  object cxGridDBTableView1NOME_RUBRICA: TcxGridDBColumn
+                  object viewRubricasNOME_RUBRICA: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_RUBRICA'
                     Options.Editing = False
                     Width = 314
                   end
-                  object cxGridDBTableView1ORCAMENTO: TcxGridDBColumn
+                  object viewRubricasORCAMENTO: TcxGridDBColumn
                     DataBinding.FieldName = 'ORCAMENTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                   end
-                  object cxGridDBTableView1RECEBIDO: TcxGridDBColumn
+                  object viewRubricasRECEBIDO: TcxGridDBColumn
                     DataBinding.FieldName = 'RECEBIDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                   end
-                  object cxGridDBTableView1GASTO: TcxGridDBColumn
+                  object viewRubricasGASTO: TcxGridDBColumn
                     DataBinding.FieldName = 'GASTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                   end
-                  object cxGridDBTableView1APROVISIONADO: TcxGridDBColumn
+                  object viewRubricasAPROVISIONADO: TcxGridDBColumn
                     DataBinding.FieldName = 'APROVISIONADO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
@@ -588,7 +589,7 @@ inherited frmProjeto: TfrmProjeto
                   end
                 end
                 object cxGridLevel5: TcxGridLevel
-                  GridView = cxGridDBTableView1
+                  GridView = viewRubricas
                 end
               end
             end
@@ -1477,22 +1478,6 @@ inherited frmProjeto: TfrmProjeto
           Caption = 'Or'#231'amento'
           FocusControl = EditOrcamentoRubrica
         end
-        object lbl1: TLabel
-          Left = 551
-          Top = 6
-          Width = 55
-          Height = 13
-          Caption = 'Valor Gasto'
-          FocusControl = EditValorGasto
-        end
-        object lbl3: TLabel
-          Left = 399
-          Top = 6
-          Width = 71
-          Height = 13
-          Caption = 'Valor Recebido'
-          FocusControl = EditValorRecebido
-        end
         object cbRubrica: TcxDBLookupComboBox
           Left = 4
           Top = 22
@@ -1510,26 +1495,6 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'ORCAMENTO'
           DataBinding.DataSource = dsRubrica
           TabOrder = 1
-          Width = 148
-        end
-        object EditValorGasto: TcxDBCurrencyEdit
-          Left = 551
-          Top = 22
-          RepositoryItem = dmLookup.repCurPadrao
-          DataBinding.DataField = 'GASTO'
-          DataBinding.DataSource = dsRubrica
-          Enabled = False
-          TabOrder = 3
-          Width = 148
-        end
-        object EditValorRecebido: TcxDBCurrencyEdit
-          Left = 399
-          Top = 22
-          RepositoryItem = dmLookup.repCurPadrao
-          DataBinding.DataField = 'RECEBIDO'
-          DataBinding.DataSource = dsRubrica
-          Enabled = False
-          TabOrder = 2
           Width = 148
         end
       end

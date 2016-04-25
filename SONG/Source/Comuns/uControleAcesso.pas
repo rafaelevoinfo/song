@@ -34,14 +34,11 @@ type
     destructor Destroy; override;
   end;
 
-  TPessoa = class
+  TPessoa = class(TModelo)
   private
-    FId: Integer;
     FNome: string;
-    procedure SetId(const Value: Integer);
     procedure SetNome(const Value: string);
   public
-    property Id: Integer read FId write SetId;
     property Nome: string read FNome write SetNome;
   end;
 
@@ -82,9 +79,9 @@ type
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
-    finContaPagar, finContaReceber, finCliente,finFundo);
+    finContaPagar, finContaReceber, finCliente, finFundo);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda);
-  TPermissaoEstoque = (estItem, estEntrada,estSolicitacaoCompra,estCompra,estAnalizarSolicitacaoCompra);
+  TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra);
 
 implementation
 
@@ -251,11 +248,6 @@ begin
 end;
 
 { TPessoa }
-
-procedure TPessoa.SetId(const Value: Integer);
-begin
-  FId := Value;
-end;
 
 procedure TPessoa.SetNome(const Value: string);
 begin

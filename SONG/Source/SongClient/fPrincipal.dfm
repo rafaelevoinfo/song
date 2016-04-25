@@ -119,6 +119,12 @@ inherited frmPrincipal: TfrmPrincipal
         Action = Ac_Lote_Semente
       end
     end
+    object Sistema1: TMenuItem
+      Caption = 'Sistema'
+      object MeusDados1: TMenuItem
+        Action = Ac_Meus_Dados
+      end
+    end
   end
   object ActionList1: TActionList
     Left = 264
@@ -237,6 +243,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Fundos'
       OnExecute = Ac_FundoExecute
+    end
+    object Ac_Meus_Dados: TAction
+      Category = 'Sistema'
+      Caption = 'Meus Dados'
+      OnExecute = Ac_Meus_DadosExecute
     end
   end
   object dxSkinController1: TdxSkinController

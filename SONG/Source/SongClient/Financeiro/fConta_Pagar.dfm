@@ -10,23 +10,23 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     ExplicitWidth = 994
-    ExplicitHeight = 501
+    ExplicitHeight = 491
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 986
-      ExplicitHeight = 473
+      ExplicitHeight = 463
       inherited pnPesquisa: TPanel
         Width = 986
         ExplicitWidth = 986
         inherited pnEditsPesquisa: TPanel
           Left = 577
           Width = 408
-          ExplicitLeft = 576
+          ExplicitLeft = 577
           ExplicitWidth = 408
           inherited Label1: TLabel
             Left = 4
@@ -129,12 +129,12 @@ inherited frmContaPagar: TfrmContaPagar
         Width = 986
         Height = 419
         ExplicitWidth = 986
-        ExplicitHeight = 429
+        ExplicitHeight = 419
         inherited cxGridRegistros: TcxGrid
           Width = 984
           Height = 223
           ExplicitWidth = 984
-          ExplicitHeight = 233
+          ExplicitHeight = 223
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -202,17 +202,16 @@ inherited frmContaPagar: TfrmContaPagar
         inherited cxSplitter1: TcxSplitter
           Top = 224
           Width = 984
-          ExplicitTop = 234
+          ExplicitTop = 224
           ExplicitWidth = 984
         end
         inherited pnDetail: TPanel
           Top = 230
           Width = 984
-          ExplicitTop = 240
+          ExplicitTop = 230
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
-            Properties.ActivePage = tabVinculoPesquisa
             ExplicitWidth = 982
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
@@ -300,9 +299,6 @@ inherited frmContaPagar: TfrmContaPagar
                 Align = alClient
                 TabOrder = 0
                 TabStop = False
-                ExplicitTop = 260
-                ExplicitWidth = 977
-                ExplicitHeight = 131
                 object cxGridDBTableView1: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsVinculo
@@ -414,7 +410,7 @@ inherited frmContaPagar: TfrmContaPagar
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 986
-      ExplicitHeight = 473
+      ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
         Width = 986
         ExplicitWidth = 986
@@ -423,7 +419,7 @@ inherited frmContaPagar: TfrmContaPagar
         Width = 986
         Height = 413
         ExplicitWidth = 986
-        ExplicitHeight = 423
+        ExplicitHeight = 413
         object pcEditsCadastro: TcxPageControl
           Left = 1
           Top = 1
@@ -434,7 +430,6 @@ inherited frmContaPagar: TfrmContaPagar
           TabStop = False
           Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
-          ExplicitHeight = 421
           ClientRectBottom = 406
           ClientRectLeft = 2
           ClientRectRight = 979
@@ -442,7 +437,6 @@ inherited frmContaPagar: TfrmContaPagar
           object tabInfoGeral: TcxTabSheet
             Caption = 'Informa'#231#245'es Gerais'
             ImageIndex = 0
-            ExplicitHeight = 391
             object Label3: TLabel
               Left = 5
               Top = 2
@@ -698,7 +692,6 @@ inherited frmContaPagar: TfrmContaPagar
           object tabVinculo: TcxTabSheet
             Caption = 'V'#237'nculos'
             ImageIndex = 1
-            ExplicitHeight = 391
             object pnVinculoTop: TPanel
               Left = 0
               Top = 0
@@ -763,6 +756,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabFundo: TcxTabSheet
                   Caption = 'tabFundo'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label15: TLabel
                     Left = 4
                     Top = 3
@@ -826,6 +823,9 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabNao: TcxTabSheet
                   Caption = 'tabNao'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
                   ExplicitHeight = 44
                   object Label14: TLabel
                     Left = 206
@@ -877,7 +877,6 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabSim: TcxTabSheet
                   Caption = 'tabSim'
                   ImageIndex = 1
-                  ExplicitHeight = 45
                   object lb1: TLabel
                     Left = 2
                     Top = 1
@@ -903,7 +902,6 @@ inherited frmContaPagar: TfrmContaPagar
               Caption = 'Recurso Alocado Para'
               TabOrder = 2
               Visible = False
-              ExplicitTop = 170
               Height = 63
               Width = 977
               object Label16: TLabel
@@ -998,7 +996,6 @@ inherited frmContaPagar: TfrmContaPagar
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 3
-              ExplicitTop = 233
               object Label21: TLabel
                 Left = 5
                 Top = 6
@@ -1030,8 +1027,6 @@ inherited frmContaPagar: TfrmContaPagar
               Align = alClient
               TabOrder = 4
               TabStop = False
-              ExplicitTop = 260
-              ExplicitHeight = 131
               object viewVinculos: TcxGridDBTableView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dsVinculo
