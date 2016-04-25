@@ -144,108 +144,116 @@ var
   vaValorGastoRubrica: Double;
   vaDataSet: TRFQuery;
   vaStatus: Integer;
+  vaUpdate: string;
 begin;
   if ipQuitar then
-    vaStatus := 1
-  else
-    vaStatus := 0;
-
-  if Connection.ExecSQL('update conta_pagar_parcela ' +
-    '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
-    '      conta_pagar_parcela.status = :STATUS ' +
-    '  where conta_pagar_parcela.id = :ID_PARCELA', [vaStatus, ipIdParcela]) > 0 then
     begin
-    {
-      pprEncapsularConsulta(
-        procedure(ipDataSet: TRFQuery)
-        begin
-          ipDataSet.SQL.Text := ' with Rubricas' +
-            ' as (select Conta_Pagar_Parcela.Valor,' +
-            '            Conta_Pagar_Projeto.Id_Rubrica,' +
-            '            Conta_Pagar_Projeto.Id_Projeto' +
-            '     from Conta_Pagar_Parcela' +
-            '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-            '    left join Conta_Pagar_Projeto on (Conta_Pagar_Projeto.Id_Conta_Pagar = Conta_Pagar.Id)' +
-            '    where Conta_Pagar_Parcela.Id = :Id' +
-            '' +
-            '    union all' +
-            '' +
-            '    select Conta_Pagar_Parcela.Valor,' +
-            '           Conta_Pagar_Atividade.Id_Rubrica,' +
-            '           Atividade_Projeto.Id_Projeto' +
-            '    from Conta_Pagar_Parcela' +
-            '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-            '    left join Conta_Pagar_Atividade on (Conta_Pagar_Atividade.Id_Conta_Pagar = Conta_Pagar.Id)' +
-            '    left join Atividade_Projeto on (Atividade_Projeto.Id_Atividade = Conta_Pagar_Atividade.Id_Atividade)' +
-            '    inner join Projeto_Rubrica on (Projeto_Rubrica.Id_Projeto = Atividade_Projeto.Id_Projeto and Projeto_Rubrica.Id_Rubrica = Conta_Pagar_Atividade.Id_Rubrica) '
-            +
-            '    where Conta_Pagar_Parcela.Id = :Id' +
-            '' +
-            '    union all' +
-            '' +
-            '    select Conta_Pagar_Parcela.Valor,' +
-            '           Conta_Pagar_Atividade.Id_Rubrica,' +
-            '           Atividade.Id_Projeto' +
-            '    from Conta_Pagar_Parcela' +
-            '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-            '    left join Conta_Pagar_Atividade on (Conta_Pagar_Atividade.Id_Conta_Pagar = Conta_Pagar.Id)' +
-            '    left join Atividade_Projeto on (Atividade_Projeto.Id_Atividade = Conta_Pagar_Atividade.Id_Atividade)' +
-            '    left join Atividade on (Atividade.Id = Conta_Pagar_Atividade.Id_Atividade)' +
-            '    inner join Projeto_Rubrica on (Projeto_Rubrica.Id_Projeto = Atividade.Id_Projeto and Projeto_Rubrica.Id_Rubrica = Conta_Pagar_Atividade.Id_Rubrica) '
-            +
-            '    where Conta_Pagar_Parcela.Id = :Id)' +
-            '' +
-            ' select distinct *' +
-            '  from Rubricas' +
-            ' where Rubricas.Id_Rubrica is not null';
-
-          ipDataSet.ParamByName('ID').AsInteger := ipIdParcela;
-          ipDataSet.Open();
-          if not ipDataSet.Eof then
-            begin
-              pprCriarDataSet(vaDataSet);
-              try
-                vaValorGastoRubrica := RoundTo(ipDataSet.FieldByName('VALOR').AsFloat / ipDataSet.RecordCount, -2);
-                while not ipDataSet.Eof do
-                  begin
-                    vaDataSet.Close;
-                    vaDataSet.SQL.Text := ' select Projeto_Rubrica.Id,' +
-                      '        Projeto_Rubrica.Orcamento,' +
-                      '        Projeto_Rubrica.Gasto' +
-                      '  from Projeto_Rubrica' +
-                      ' where Projeto_Rubrica.Id_Projeto = :Id_Projeto and' +
-                      '       Projeto_Rubrica.Id_Rubrica = :Id_Rubrica ';
-                    vaDataSet.ParamByName('ID_PROJETO').AsInteger := ipDataSet.FieldByName('ID_PROJETO').AsInteger;
-                    vaDataSet.ParamByName('ID_RUBRICA').AsInteger := ipDataSet.FieldByName('ID_RUBRICA').AsInteger;
-                    vaDataSet.Open;
-                    if not vaDataSet.Eof then
-                      begin
-                        vaDataSet.Edit;
-                        if ipQuitar then
-                          begin
-                            vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('GASTO').AsFloat + vaValorGastoRubrica;
-                            if Abs(vaDataSet.FieldByName('GASTO').AsFloat - vaDataSet.FieldByName('ORCAMENTO').AsFloat) <= 0.01 then
-                              vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('ORCAMENTO').AsFloat;
-                          end
-                        else
-                          begin
-                            vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('GASTO').AsFloat - vaValorGastoRubrica;
-                            if vaDataSet.FieldByName('GASTO').AsFloat < 0 then
-                              vaDataSet.FieldByName('GASTO').AsFloat := 0;
-                          end;
-                        vaDataSet.Post;
-                      end;
-
-                    ipDataSet.Next;
-                  end;
-              finally
-                vaDataSet.Free;
-              end;
-            end;
-        end);  }
+      vaUpdate := 'update conta_pagar_parcela ' +
+        '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
+        '      conta_pagar_parcela.status = 1 ' +
+        '  where conta_pagar_parcela.id = :ID_PARCELA';
     end
   else
+    vaUpdate := 'update conta_pagar_parcela ' +
+      '  set conta_pagar_parcela.data_pagamento = null,  ' +
+      '      conta_pagar_parcela.status = 0 ' +
+      '  where conta_pagar_parcela.id = :ID_PARCELA';
+
+
+  if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
     raise Exception.Create('Parcela não encontrada.');
+//    begin
+      {
+        pprEncapsularConsulta(
+        procedure(ipDataSet: TRFQuery)
+        begin
+        ipDataSet.SQL.Text := ' with Rubricas' +
+        ' as (select Conta_Pagar_Parcela.Valor,' +
+        '            Conta_Pagar_Projeto.Id_Rubrica,' +
+        '            Conta_Pagar_Projeto.Id_Projeto' +
+        '     from Conta_Pagar_Parcela' +
+        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
+        '    left join Conta_Pagar_Projeto on (Conta_Pagar_Projeto.Id_Conta_Pagar = Conta_Pagar.Id)' +
+        '    where Conta_Pagar_Parcela.Id = :Id' +
+        '' +
+        '    union all' +
+        '' +
+        '    select Conta_Pagar_Parcela.Valor,' +
+        '           Conta_Pagar_Atividade.Id_Rubrica,' +
+        '           Atividade_Projeto.Id_Projeto' +
+        '    from Conta_Pagar_Parcela' +
+        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
+        '    left join Conta_Pagar_Atividade on (Conta_Pagar_Atividade.Id_Conta_Pagar = Conta_Pagar.Id)' +
+        '    left join Atividade_Projeto on (Atividade_Projeto.Id_Atividade = Conta_Pagar_Atividade.Id_Atividade)' +
+        '    inner join Projeto_Rubrica on (Projeto_Rubrica.Id_Projeto = Atividade_Projeto.Id_Projeto and Projeto_Rubrica.Id_Rubrica = Conta_Pagar_Atividade.Id_Rubrica) '
+        +
+        '    where Conta_Pagar_Parcela.Id = :Id' +
+        '' +
+        '    union all' +
+        '' +
+        '    select Conta_Pagar_Parcela.Valor,' +
+        '           Conta_Pagar_Atividade.Id_Rubrica,' +
+        '           Atividade.Id_Projeto' +
+        '    from Conta_Pagar_Parcela' +
+        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
+        '    left join Conta_Pagar_Atividade on (Conta_Pagar_Atividade.Id_Conta_Pagar = Conta_Pagar.Id)' +
+        '    left join Atividade_Projeto on (Atividade_Projeto.Id_Atividade = Conta_Pagar_Atividade.Id_Atividade)' +
+        '    left join Atividade on (Atividade.Id = Conta_Pagar_Atividade.Id_Atividade)' +
+        '    inner join Projeto_Rubrica on (Projeto_Rubrica.Id_Projeto = Atividade.Id_Projeto and Projeto_Rubrica.Id_Rubrica = Conta_Pagar_Atividade.Id_Rubrica) '
+        +
+        '    where Conta_Pagar_Parcela.Id = :Id)' +
+        '' +
+        ' select distinct *' +
+        '  from Rubricas' +
+        ' where Rubricas.Id_Rubrica is not null';
+
+        ipDataSet.ParamByName('ID').AsInteger := ipIdParcela;
+        ipDataSet.Open();
+        if not ipDataSet.Eof then
+        begin
+        pprCriarDataSet(vaDataSet);
+        try
+        vaValorGastoRubrica := RoundTo(ipDataSet.FieldByName('VALOR').AsFloat / ipDataSet.RecordCount, -2);
+        while not ipDataSet.Eof do
+        begin
+        vaDataSet.Close;
+        vaDataSet.SQL.Text := ' select Projeto_Rubrica.Id,' +
+        '        Projeto_Rubrica.Orcamento,' +
+        '        Projeto_Rubrica.Gasto' +
+        '  from Projeto_Rubrica' +
+        ' where Projeto_Rubrica.Id_Projeto = :Id_Projeto and' +
+        '       Projeto_Rubrica.Id_Rubrica = :Id_Rubrica ';
+        vaDataSet.ParamByName('ID_PROJETO').AsInteger := ipDataSet.FieldByName('ID_PROJETO').AsInteger;
+        vaDataSet.ParamByName('ID_RUBRICA').AsInteger := ipDataSet.FieldByName('ID_RUBRICA').AsInteger;
+        vaDataSet.Open;
+        if not vaDataSet.Eof then
+        begin
+        vaDataSet.Edit;
+        if ipQuitar then
+        begin
+        vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('GASTO').AsFloat + vaValorGastoRubrica;
+        if Abs(vaDataSet.FieldByName('GASTO').AsFloat - vaDataSet.FieldByName('ORCAMENTO').AsFloat) <= 0.01 then
+        vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('ORCAMENTO').AsFloat;
+        end
+        else
+        begin
+        vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('GASTO').AsFloat - vaValorGastoRubrica;
+        if vaDataSet.FieldByName('GASTO').AsFloat < 0 then
+        vaDataSet.FieldByName('GASTO').AsFloat := 0;
+        end;
+        vaDataSet.Post;
+        end;
+
+        ipDataSet.Next;
+        end;
+        finally
+        vaDataSet.Free;
+        end;
+        end;
+        end); }
+//    end
+//  else
+//    raise Exception.Create('Parcela não encontrada.');
 
 end;
 
