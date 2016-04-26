@@ -3,6 +3,7 @@ inherited frmContaPagar: TfrmContaPagar
   Caption = 'Contas a Pagar'
   ClientHeight = 491
   ClientWidth = 994
+  OnDestroy = FormDestroy
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -10,7 +11,7 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
@@ -407,8 +408,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -428,7 +427,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabVinculo
+          Properties.ActivePage = tabInfoGeral
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -756,10 +755,6 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabFundo: TcxTabSheet
                   Caption = 'tabFundo'
                   ImageIndex = 1
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object Label15: TLabel
                     Left = 4
                     Top = 3
@@ -814,7 +809,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 68
                 Align = alTop
                 TabOrder = 0
-                Properties.ActivePage = tabSim
+                Properties.ActivePage = tabNao
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 63
                 ClientRectLeft = 2
@@ -823,10 +818,6 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabNao: TcxTabSheet
                   Caption = 'tabNao'
                   ImageIndex = 0
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 44
                   object Label14: TLabel
                     Left = 206
                     Top = 2
@@ -1175,7 +1166,7 @@ inherited frmContaPagar: TfrmContaPagar
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 986
-      ExplicitHeight = 473
+      ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel
         Width = 986
         TabOrder = 0
@@ -1186,7 +1177,7 @@ inherited frmContaPagar: TfrmContaPagar
         Height = 413
         TabOrder = 1
         ExplicitWidth = 986
-        ExplicitHeight = 423
+        ExplicitHeight = 413
       end
     end
   end

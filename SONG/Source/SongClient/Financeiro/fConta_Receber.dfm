@@ -1,14 +1,23 @@
 inherited frmContaReceber: TfrmContaReceber
+  ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
+  OnDestroy = FormDestroy
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 567
           Width = 408
-          ExplicitLeft = 567
+          ExplicitLeft = 566
           ExplicitWidth = 408
           inherited Label1: TLabel
             Left = 4
@@ -58,6 +67,10 @@ inherited frmContaReceber: TfrmContaReceber
               item
                 Description = 'Data de Vencimento'
                 Value = 4
+              end
+              item
+                Description = 'Fundo'
+                Value = 8
               end>
             TabOrder = 2
             ExplicitLeft = 2
@@ -82,6 +95,15 @@ inherited frmContaReceber: TfrmContaReceber
             Properties.ListColumns = <>
             TabOrder = 5
             Width = 176
+          end
+          object cbPesquisaFundo: TcxLookupComboBox
+            Left = 134
+            Top = 20
+            RepositoryItem = dmLookup.repLcbFundo
+            Properties.ListColumns = <>
+            TabOrder = 7
+            Visible = False
+            Width = 175
           end
         end
         inherited pnBotoes: TPanel
@@ -154,6 +176,10 @@ inherited frmContaReceber: TfrmContaReceber
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -218,13 +244,67 @@ inherited frmContaReceber: TfrmContaReceber
                 end
               end
             end
+            object tabVinculos: TcxTabSheet
+              Caption = 'V'#237'nculos'
+              ImageIndex = 1
+              object cxGrid3: TcxGrid
+                Left = 0
+                Top = 18
+                Width = 965
+                Height = 138
+                Align = alBottom
+                TabOrder = 0
+                TabStop = False
+                ExplicitLeft = 3
+                ExplicitTop = 56
+                ExplicitWidth = 529
+                object viewPesquisaVinculo: TcxGridDBTableView
+                  Navigator.Buttons.CustomButtons = <>
+                  DataController.DataSource = dsVinculos
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Editing = False
+                  OptionsData.Inserting = False
+                  OptionsView.GroupByBox = False
+                  object viewPesquisaVinculoID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewPesquisaVinculoID_CONTA_RECEBER: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_CONTA_RECEBER'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewPesquisaVinculoID_FUNDO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_FUNDO'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewPesquisaVinculoFUNDO: TcxGridDBColumn
+                    DataBinding.FieldName = 'FUNDO'
+                    Options.Editing = False
+                  end
+                  object viewPesquisaVinculoVALOR: TcxGridDBColumn
+                    DataBinding.FieldName = 'VALOR'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                end
+                object level2: TcxGridLevel
+                  GridView = viewPesquisaVinculo
+                end
+              end
+            end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 2
@@ -392,7 +472,6 @@ inherited frmContaReceber: TfrmContaReceber
             Align = alBottom
             TabOrder = 3
             TabStop = False
-            ExplicitTop = 57
             object viewParcelas: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsDetail
@@ -461,40 +540,25 @@ inherited frmContaReceber: TfrmContaReceber
           object Label10: TLabel
             Left = 6
             Top = 18
-            Width = 35
+            Width = 30
             Height = 13
-            Caption = 'Projeto'
+            Caption = 'Fundo'
           end
-          object Label12: TLabel
-            Left = 4
-            Top = 56
-            Width = 45
+          object Label21: TLabel
+            Left = 176
+            Top = 20
+            Width = 24
             Height = 13
-            Caption = 'Atividade'
-          end
-          object lbl2: TLabel
-            Left = 179
-            Top = 18
-            Width = 76
-            Height = 13
-            Caption = #193'rea do Projeto'
-          end
-          object lbl3: TLabel
-            Left = 178
-            Top = 57
-            Width = 86
-            Height = 13
-            Caption = #193'rea da Atividade'
+            Caption = 'Valor'
           end
           object cxGrid2: TcxGrid
             Left = 3
-            Top = 95
+            Top = 56
             Width = 529
-            Height = 99
+            Height = 138
             Align = alBottom
-            TabOrder = 4
+            TabOrder = 3
             TabStop = False
-            ExplicitTop = 94
             object viewVinculos: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsVinculos
@@ -509,28 +573,24 @@ inherited frmContaReceber: TfrmContaReceber
               object viewVinculosID: TcxGridDBColumn
                 DataBinding.FieldName = 'ID'
                 Visible = False
-                VisibleForCustomization = False
+                Width = 38
               end
-              object viewVinculosTIPO: TcxGridDBColumn
-                DataBinding.FieldName = 'TIPO'
-                PropertiesClassName = 'TcxImageComboBoxProperties'
-                Properties.Items = <
-                  item
-                    Description = 'Projeto'
-                    ImageIndex = 0
-                    Value = 1
-                  end
-                  item
-                    Description = 'Atividade'
-                    Value = 2
-                  end>
-                Options.Editing = False
-                Width = 113
+              object viewVinculosID_CONTA_RECEBER: TcxGridDBColumn
+                DataBinding.FieldName = 'ID_CONTA_RECEBER'
+                Visible = False
               end
-              object viewVinculosNOME: TcxGridDBColumn
-                DataBinding.FieldName = 'NOME'
-                Options.Editing = False
-                Width = 298
+              object viewVinculosID_FUNDO: TcxGridDBColumn
+                DataBinding.FieldName = 'ID_FUNDO'
+                Visible = False
+              end
+              object viewVinculosFUNDO: TcxGridDBColumn
+                DataBinding.FieldName = 'FUNDO'
+                Width = 300
+              end
+              object viewVinculosVALOR: TcxGridDBColumn
+                DataBinding.FieldName = 'VALOR'
+                RepositoryItem = dmLookup.repCurPadrao
+                Width = 161
               end
               object ColumnDeletarVinculo: TcxGridDBColumn
                 Caption = 'Excluir'
@@ -551,58 +611,27 @@ inherited frmContaReceber: TfrmContaReceber
             end
           end
           object btnAddProjeto: TButton
-            Left = 349
+            Left = 297
             Top = 34
             Width = 69
             Height = 21
-            Action = Ac_Incluir_Vinculo_Projeto
+            Action = Ac_Incluir_Vinculo
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 1
-            TabStop = False
+            TabOrder = 2
           end
-          object btnAddAtividade: TButton
-            Left = 349
-            Top = 72
-            Width = 69
-            Height = 21
-            Action = Ac_Incluir_Vinculo_Atividade
-            Images = dmPrincipal.imgIcons_16
-            TabOrder = 3
-            TabStop = False
-          end
-          object cbProjeto: TcxLookupComboBox
+          object cbFundo: TcxLookupComboBox
             Left = 3
             Top = 34
-            RepositoryItem = dmLookup.repLcbProjeto
+            RepositoryItem = dmLookup.repLcbFundo
             Properties.ListColumns = <>
-            Properties.OnEditValueChanged = cbProjetoPropertiesEditValueChanged
             TabOrder = 0
             Width = 170
           end
-          object cbAtividade: TcxLookupComboBox
-            Left = 3
-            Top = 72
-            RepositoryItem = dmLookup.repLcbAtividade
-            Properties.ListColumns = <>
-            Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
-            TabOrder = 2
-            Width = 170
-          end
-          object cbAreaProjeto: TcxLookupComboBox
-            Left = 175
+          object EditValorVinculo: TcxCurrencyEdit
+            Left = 174
             Top = 34
-            RepositoryItem = dmLookup.repLcbProjetoArea
-            Properties.ListColumns = <>
-            TabOrder = 5
-            Width = 170
-          end
-          object cbAreaAtividade: TcxLookupComboBox
-            Left = 175
-            Top = 72
-            RepositoryItem = dmLookup.repLcbProjeto_Area_Atividade
-            Properties.ListColumns = <>
-            TabOrder = 6
-            Width = 170
+            TabOrder = 1
+            Width = 121
           end
         end
         object EditNroDocumento: TcxDBTextEdit
@@ -637,17 +666,11 @@ inherited frmContaReceber: TfrmContaReceber
       ImageIndex = 3
       OnExecute = Ac_Gerar_ParcelasExecute
     end
-    object Ac_Incluir_Vinculo_Projeto: TAction
+    object Ac_Incluir_Vinculo: TAction
       Category = 'Detail'
       Caption = 'Adicionar'
       ImageIndex = 3
-      OnExecute = Ac_Incluir_Vinculo_ProjetoExecute
-    end
-    object Ac_Incluir_Vinculo_Atividade: TAction
-      Category = 'Detail'
-      Caption = 'Adicionar'
-      ImageIndex = 3
-      OnExecute = Ac_Incluir_Vinculo_AtividadeExecute
+      OnExecute = Ac_Incluir_VinculoExecute
     end
     object Ac_Excluir_Vinculo: TAction
       Category = 'Detail'
@@ -673,35 +696,8 @@ inherited frmContaReceber: TfrmContaReceber
     Top = 408
   end
   object dsVinculos: TDataSource
-    DataSet = cdsLocalVinculo
+    DataSet = dmFinanceiro.cdsConta_Receber_Vinculo
     Left = 496
     Top = 408
-  end
-  object cdsLocalVinculo: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 400
-    Top = 400
-    object cdsLocalVinculoID: TIntegerField
-      FieldName = 'ID'
-    end
-    object cdsLocalVinculoTIPO: TIntegerField
-      Alignment = taLeftJustify
-      DisplayLabel = 'Tipo de V'#237'nculo'
-      FieldName = 'TIPO'
-    end
-    object cdsLocalVinculoNOME: TStringField
-      DisplayLabel = 'Nome'
-      FieldName = 'NOME'
-      Size = 100
-    end
-    object cdsLocalVinculoID_PROJETO_AREA: TIntegerField
-      FieldName = 'ID_PROJETO_AREA'
-    end
-    object cdsLocalVinculoAREA: TStringField
-      DisplayLabel = #193'rea'
-      FieldName = 'AREA'
-      Size = 60
-    end
   end
 end

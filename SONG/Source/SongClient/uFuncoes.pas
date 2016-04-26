@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 20/04/2016 00:03:09
+// 25/04/2016 23:29:30
 //
 
 unit uFuncoes;
@@ -134,6 +134,8 @@ type
     FfpuGerarIdentificadorRubricaCommand: TDBXCommand;
     FppuQuitarParcelaCommand: TDBXCommand;
     FppuReabrirParcelaCommand: TDBXCommand;
+    FppuReceberParcelaCommand: TDBXCommand;
+    FppuCancelarRecebimentoParcelaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -147,6 +149,8 @@ type
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
     procedure ppuQuitarParcela(ipIdParcela: Integer);
     procedure ppuReabrirParcela(ipIdParcela: Integer);
+    procedure ppuReceberParcela(ipIdParcela: Integer);
+    procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -937,6 +941,32 @@ begin
   FppuReabrirParcelaCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesFinanceiroClient.ppuReceberParcela(ipIdParcela: Integer);
+begin
+  if FppuReceberParcelaCommand = nil then
+  begin
+    FppuReceberParcelaCommand := FDBXConnection.CreateCommand;
+    FppuReceberParcelaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuReceberParcelaCommand.Text := 'TsmFuncoesFinanceiro.ppuReceberParcela';
+    FppuReceberParcelaCommand.Prepare;
+  end;
+  FppuReceberParcelaCommand.Parameters[0].Value.SetInt32(ipIdParcela);
+  FppuReceberParcelaCommand.ExecuteUpdate;
+end;
+
+procedure TsmFuncoesFinanceiroClient.ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
+begin
+  if FppuCancelarRecebimentoParcelaCommand = nil then
+  begin
+    FppuCancelarRecebimentoParcelaCommand := FDBXConnection.CreateCommand;
+    FppuCancelarRecebimentoParcelaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuCancelarRecebimentoParcelaCommand.Text := 'TsmFuncoesFinanceiro.ppuCancelarRecebimentoParcela';
+    FppuCancelarRecebimentoParcelaCommand.Prepare;
+  end;
+  FppuCancelarRecebimentoParcelaCommand.Parameters[0].Value.SetInt32(ipIdParcela);
+  FppuCancelarRecebimentoParcelaCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1010,6 +1040,8 @@ begin
   FfpuGerarIdentificadorRubricaCommand.DisposeOf;
   FppuQuitarParcelaCommand.DisposeOf;
   FppuReabrirParcelaCommand.DisposeOf;
+  FppuReceberParcelaCommand.DisposeOf;
+  FppuCancelarRecebimentoParcelaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

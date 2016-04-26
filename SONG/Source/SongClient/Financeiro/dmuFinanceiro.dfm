@@ -513,93 +513,6 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cdsConta_Receber_Atividade: TRFClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_CONTA_RECEBER'
-    MasterFields = 'ID'
-    MasterSource = dsConta_Receber
-    PacketRecords = 0
-    Params = <>
-    ProviderName = 'dspqConta_Receber_Atividade'
-    RemoteServer = dmPrincipal.ProviderFinanceiro
-    RFApplyAutomatico = False
-    Left = 408
-    Top = 224
-    object cdsConta_Receber_AtividadeID: TIntegerField
-      FieldName = 'ID'
-      Required = True
-    end
-    object cdsConta_Receber_AtividadeID_CONTA_RECEBER: TIntegerField
-      DisplayLabel = 'Id do Conta a Receber'
-      FieldName = 'ID_CONTA_RECEBER'
-      Required = True
-    end
-    object cdsConta_Receber_AtividadeID_ATIVIDADE: TIntegerField
-      FieldName = 'ID_ATIVIDADE'
-      Required = True
-    end
-    object cdsConta_Receber_AtividadeATIVIDADE: TStringField
-      DisplayLabel = 'Atividade'
-      FieldName = 'ATIVIDADE'
-      Size = 100
-    end
-    object cdsConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField
-      DisplayLabel = 'Id do Projeto '#193'rea'
-      FieldName = 'ID_PROJETO_AREA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Receber_AtividadeAREA: TStringField
-      DisplayLabel = #193'rea de Atua'#231#227'o'
-      FieldName = 'AREA'
-      ProviderFlags = []
-      Size = 100
-    end
-  end
-  object cdsConta_Receber_Projeto: TRFClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_CONTA_RECEBER'
-    MasterFields = 'ID'
-    MasterSource = dsConta_Receber
-    PacketRecords = 0
-    Params = <>
-    ProviderName = 'dspqConta_Receber_Projeto'
-    RemoteServer = dmPrincipal.ProviderFinanceiro
-    RFApplyAutomatico = False
-    Left = 408
-    Top = 280
-    object cdsConta_Receber_ProjetoID: TIntegerField
-      FieldName = 'ID'
-      Required = True
-    end
-    object cdsConta_Receber_ProjetoID_CONTA_RECEBER: TIntegerField
-      DisplayLabel = 'Id do Conta a Receber'
-      FieldName = 'ID_CONTA_RECEBER'
-      Required = True
-    end
-    object cdsConta_Receber_ProjetoID_PROJETO: TIntegerField
-      DisplayLabel = 'Id do Projeto'
-      FieldName = 'ID_PROJETO'
-      Required = True
-    end
-    object cdsConta_Receber_ProjetoPROJETO: TStringField
-      DisplayLabel = 'Projeto'
-      FieldName = 'PROJETO'
-      Size = 100
-    end
-    object cdsConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField
-      DisplayLabel = 'Id do Projeto '#193'rea'
-      FieldName = 'ID_PROJETO_AREA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object cdsConta_Receber_ProjetoAREA: TStringField
-      DisplayLabel = #193'rea de Atua'#231#227'o'
-      FieldName = 'AREA'
-      ProviderFlags = []
-      Size = 100
-    end
-  end
   object dsConta_Receber: TDataSource
     DataSet = cdsConta_Receber
     Left = 512
@@ -645,7 +558,12 @@ inherited dmFinanceiro: TdmFinanceiro
     MasterFields = 'ID'
     MasterSource = dsConta_Pagar
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_CONTA_PAGAR'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqConta_Pagar_Vinculo'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     RFApplyAutomatico = False
@@ -768,6 +686,51 @@ inherited dmFinanceiro: TdmFinanceiro
       Required = True
       Precision = 18
       Size = 2
+    end
+  end
+  object cdsConta_Receber_Vinculo: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_CONTA_RECEBER'
+    MasterFields = 'ID'
+    MasterSource = dsConta_Receber
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_CONTA_RECEBER'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqConta_Receber_Vinculo'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    RFApplyAutomatico = False
+    Left = 264
+    Top = 328
+    object cdsConta_Receber_VinculoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsConta_Receber_VinculoID_CONTA_RECEBER: TIntegerField
+      DisplayLabel = 'Id do Conta a Receber'
+      FieldName = 'ID_CONTA_RECEBER'
+      Required = True
+    end
+    object cdsConta_Receber_VinculoID_FUNDO: TIntegerField
+      DisplayLabel = 'Id do Fundo'
+      FieldName = 'ID_FUNDO'
+      Required = True
+    end
+    object cdsConta_Receber_VinculoVALOR: TBCDField
+      DisplayLabel = 'Valor'
+      FieldName = 'VALOR'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsConta_Receber_VinculoFUNDO: TStringField
+      DisplayLabel = 'Fundo'
+      FieldName = 'FUNDO'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

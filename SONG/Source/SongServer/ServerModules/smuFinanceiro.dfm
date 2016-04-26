@@ -529,6 +529,9 @@ inherited smFinanceiro: TsmFinanceiro
         'inner join Plano_Contas on (Plano_Contas.Id = Conta_Receber.Id_P' +
         'lano_Contas)'
       
+        'inner join conta_receber_vinculo on (conta_receber_vinculo.id_co' +
+        'nta_receber = conta_receber.id)'
+      
         'left join Banco_Conta_Corrente on (Banco_Conta_Corrente.Id = Con' +
         'ta_Receber.Id_Conta_Corrente)'
       'left join Banco on (Banco.Id = Banco_Conta_Corrente.Id_Banco)'
@@ -624,140 +627,6 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'NUMERO_DOCUMENTO'
       ProviderFlags = [pfInUpdate]
       Size = 30
-    end
-  end
-  object qConta_Receber_Projeto: TRFQuery
-    Connection = dmPrincipal.conSong
-    SQL.Strings = (
-      'select Conta_Receber_Projeto.Id,'
-      '       Conta_Receber_Projeto.Id_Conta_Receber,'
-      '       Conta_Receber_Projeto.Id_Projeto,'
-      '       Conta_Receber_Projeto.Id_Projeto_area,'
-      '       Projeto.Nome as Projeto,'
-      '       Projeto_Area.nome as Area'
-      'from Conta_Receber_Projeto'
-      
-        'inner join Projeto on (Projeto.Id = Conta_Receber_Projeto.Id_Pro' +
-        'jeto)'
-      
-        'inner join Projeto_Area on (Projeto_Area.id = Conta_Receber_Proj' +
-        'eto.id_projeto_area)'
-      
-        'where Conta_Receber_Projeto.Id_Conta_Receber = :Id_Conta_Receber' +
-        '   ')
-    Left = 608
-    Top = 72
-    ParamData = <
-      item
-        Name = 'ID_CONTA_RECEBER'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qConta_Receber_ProjetoID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qConta_Receber_ProjetoID_CONTA_RECEBER: TIntegerField
-      FieldName = 'ID_CONTA_RECEBER'
-      Origin = 'ID_CONTA_RECEBER'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qConta_Receber_ProjetoID_PROJETO: TIntegerField
-      FieldName = 'ID_PROJETO'
-      Origin = 'ID_PROJETO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qConta_Receber_ProjetoPROJETO: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'PROJETO'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
-    end
-    object qConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField
-      FieldName = 'ID_PROJETO_AREA'
-      Origin = 'ID_PROJETO_AREA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qConta_Receber_ProjetoAREA: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'AREA'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
-    end
-  end
-  object qConta_Receber_Atividade: TRFQuery
-    Connection = dmPrincipal.conSong
-    SQL.Strings = (
-      'select Conta_Receber_Atividade.Id,'
-      '       Conta_Receber_Atividade.Id_Conta_Receber,'
-      '       Conta_Receber_Atividade.Id_Atividade,'
-      '       Conta_Receber_Atividade.id_projeto_area,'
-      '       Atividade.Nome as Atividade,'
-      '       Projeto_Area.nome as Area'
-      'from Conta_Receber_Atividade'
-      
-        'inner join Atividade on (Atividade.Id = Conta_Receber_Atividade.' +
-        'Id_Atividade)'
-      
-        'inner join Projeto_Area on (Projeto_Area.id = Conta_Receber_Ativ' +
-        'idade.id_projeto_area)'
-      
-        'where Conta_Receber_Atividade.Id_Conta_Receber = :Id_Conta_Receb' +
-        'er   ')
-    Left = 616
-    Top = 192
-    ParamData = <
-      item
-        Name = 'ID_CONTA_RECEBER'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qConta_Receber_AtividadeID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qConta_Receber_AtividadeID_CONTA_RECEBER: TIntegerField
-      FieldName = 'ID_CONTA_RECEBER'
-      Origin = 'ID_CONTA_RECEBER'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qConta_Receber_AtividadeID_ATIVIDADE: TIntegerField
-      FieldName = 'ID_ATIVIDADE'
-      Origin = 'ID_ATIVIDADE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qConta_Receber_AtividadeATIVIDADE: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'ATIVIDADE'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
-    end
-    object qConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField
-      FieldName = 'ID_PROJETO_AREA'
-      Origin = 'ID_PROJETO_AREA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qConta_Receber_AtividadeAREA: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'AREA'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
     end
   end
   object qConta_Receber_Parcela: TRFQuery
@@ -1058,6 +927,58 @@ inherited smFinanceiro: TsmFinanceiro
       Size = 100
     end
     object qConta_Pagar_VinculoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+  end
+  object qConta_Receber_Vinculo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Conta_Receber_Vinculo.Id,'
+      '       Conta_Receber_Vinculo.Id_Conta_Receber,'
+      '       Conta_Receber_Vinculo.Id_Fundo,'
+      '       Fundo.Nome as Fundo,'
+      '       Conta_Receber_Vinculo.Valor'
+      'from Conta_Receber_Vinculo'
+      'inner join fundo on (Fundo.id = conta_receber_vinculo.id_fundo)'
+      'where Conta_Receber_Vinculo.Id_Conta_Receber = :Id_Conta_Receber')
+    Left = 600
+    Top = 72
+    ParamData = <
+      item
+        Name = 'ID_CONTA_RECEBER'
+        ParamType = ptInput
+      end>
+    object qConta_Receber_VinculoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qConta_Receber_VinculoID_CONTA_RECEBER: TIntegerField
+      FieldName = 'ID_CONTA_RECEBER'
+      Origin = 'ID_CONTA_RECEBER'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Receber_VinculoID_FUNDO: TIntegerField
+      FieldName = 'ID_FUNDO'
+      Origin = 'ID_FUNDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Receber_VinculoFUNDO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FUNDO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_Receber_VinculoVALOR: TBCDField
       FieldName = 'VALOR'
       Origin = 'VALOR'
       ProviderFlags = [pfInUpdate]

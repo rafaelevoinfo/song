@@ -42,6 +42,7 @@ type
     coItem = 'ITEM';
     coCompra = 'COMPRA';
     coCodigoRastreio = 'CODIGO_RASTREIO';
+    coFundo = 'FUNDO';
 
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 

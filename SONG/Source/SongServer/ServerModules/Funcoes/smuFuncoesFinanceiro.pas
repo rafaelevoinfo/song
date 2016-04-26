@@ -16,6 +16,8 @@ type
     function fpvGerarIdentificador(ipDataSet: TRFQuery; ipIdentificadorPai: String): string;
     function fpvVerificarDependenciasPorIdentificador(ipIdentificador, ipNomeTabela: string): Boolean;
     procedure ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
+    procedure ppvReceberReabrirParcela(ipIdParcela: Integer; ipReceber: Boolean);
+    procedure ppvAtualizarSaldoFundo(ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar: Boolean);
   public
     function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
@@ -25,6 +27,9 @@ type
 
     procedure ppuQuitarParcela(ipIdParcela: Integer);
     procedure ppuReabrirParcela(ipIdParcela: Integer);
+
+    procedure ppuReceberParcela(ipIdParcela: Integer);
+    procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
   end;
 
 var
@@ -141,120 +146,167 @@ end;
 
 procedure TsmFuncoesFinanceiro.ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
 var
-  vaValorGastoRubrica: Double;
-  vaDataSet: TRFQuery;
-  vaStatus: Integer;
   vaUpdate: string;
+  vaValorPercentual: Double;
 begin;
-  if ipQuitar then
-    begin
+  Connection.StartTransaction;
+  try
+    if ipQuitar then
+      begin
+        vaUpdate := 'update conta_pagar_parcela ' +
+          '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
+          '      conta_pagar_parcela.status = 1 ' +
+          '  where conta_pagar_parcela.id = :ID_PARCELA';
+      end
+    else
       vaUpdate := 'update conta_pagar_parcela ' +
-        '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
-        '      conta_pagar_parcela.status = 1 ' +
+        '  set conta_pagar_parcela.data_pagamento = null,  ' +
+        '      conta_pagar_parcela.status = 0 ' +
         '  where conta_pagar_parcela.id = :ID_PARCELA';
-    end
-  else
-    vaUpdate := 'update conta_pagar_parcela ' +
-      '  set conta_pagar_parcela.data_pagamento = null,  ' +
-      '      conta_pagar_parcela.status = 0 ' +
-      '  where conta_pagar_parcela.id = :ID_PARCELA';
 
+    if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
+      raise Exception.Create('Parcela não encontrada.');
 
-  if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
-    raise Exception.Create('Parcela não encontrada.');
-//    begin
-      {
-        pprEncapsularConsulta(
-        procedure(ipDataSet: TRFQuery)
-        begin
-        ipDataSet.SQL.Text := ' with Rubricas' +
-        ' as (select Conta_Pagar_Parcela.Valor,' +
-        '            Conta_Pagar_Projeto.Id_Rubrica,' +
-        '            Conta_Pagar_Projeto.Id_Projeto' +
-        '     from Conta_Pagar_Parcela' +
-        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-        '    left join Conta_Pagar_Projeto on (Conta_Pagar_Projeto.Id_Conta_Pagar = Conta_Pagar.Id)' +
-        '    where Conta_Pagar_Parcela.Id = :Id' +
-        '' +
-        '    union all' +
-        '' +
-        '    select Conta_Pagar_Parcela.Valor,' +
-        '           Conta_Pagar_Atividade.Id_Rubrica,' +
-        '           Atividade_Projeto.Id_Projeto' +
-        '    from Conta_Pagar_Parcela' +
-        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-        '    left join Conta_Pagar_Atividade on (Conta_Pagar_Atividade.Id_Conta_Pagar = Conta_Pagar.Id)' +
-        '    left join Atividade_Projeto on (Atividade_Projeto.Id_Atividade = Conta_Pagar_Atividade.Id_Atividade)' +
-        '    inner join Projeto_Rubrica on (Projeto_Rubrica.Id_Projeto = Atividade_Projeto.Id_Projeto and Projeto_Rubrica.Id_Rubrica = Conta_Pagar_Atividade.Id_Rubrica) '
-        +
-        '    where Conta_Pagar_Parcela.Id = :Id' +
-        '' +
-        '    union all' +
-        '' +
-        '    select Conta_Pagar_Parcela.Valor,' +
-        '           Conta_Pagar_Atividade.Id_Rubrica,' +
-        '           Atividade.Id_Projeto' +
-        '    from Conta_Pagar_Parcela' +
-        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-        '    left join Conta_Pagar_Atividade on (Conta_Pagar_Atividade.Id_Conta_Pagar = Conta_Pagar.Id)' +
-        '    left join Atividade_Projeto on (Atividade_Projeto.Id_Atividade = Conta_Pagar_Atividade.Id_Atividade)' +
-        '    left join Atividade on (Atividade.Id = Conta_Pagar_Atividade.Id_Atividade)' +
-        '    inner join Projeto_Rubrica on (Projeto_Rubrica.Id_Projeto = Atividade.Id_Projeto and Projeto_Rubrica.Id_Rubrica = Conta_Pagar_Atividade.Id_Rubrica) '
-        +
-        '    where Conta_Pagar_Parcela.Id = :Id)' +
-        '' +
-        ' select distinct *' +
-        '  from Rubricas' +
-        ' where Rubricas.Id_Rubrica is not null';
-
-        ipDataSet.ParamByName('ID').AsInteger := ipIdParcela;
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select Conta_Pagar_Parcela.id_conta_pagar, ' +
+          '                          (Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total) as Percentual, ' +
+          '                           Conta_Pagar.Valor_Total, ' +
+          '                           (select sum(Conta_Pagar_Parcela.Valor)  ' +
+          '                             from Conta_Pagar_Parcela  ' +
+          '                           where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id and ' +
+          '                                 Conta_Pagar_Parcela.status = 1) as Valor_Total_Pago ' +
+          ' from Conta_Pagar_Parcela ' +
+          ' inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar) ' +
+          ' where Conta_Pagar_Parcela.Id = :Id_Parcela';
+        ipDataSet.ParamByName('ID_PARCELA').AsInteger := ipIdParcela;
         ipDataSet.Open();
-        if not ipDataSet.Eof then
-        begin
-        pprCriarDataSet(vaDataSet);
-        try
-        vaValorGastoRubrica := RoundTo(ipDataSet.FieldByName('VALOR').AsFloat / ipDataSet.RecordCount, -2);
-        while not ipDataSet.Eof do
-        begin
-        vaDataSet.Close;
-        vaDataSet.SQL.Text := ' select Projeto_Rubrica.Id,' +
-        '        Projeto_Rubrica.Orcamento,' +
-        '        Projeto_Rubrica.Gasto' +
-        '  from Projeto_Rubrica' +
-        ' where Projeto_Rubrica.Id_Projeto = :Id_Projeto and' +
-        '       Projeto_Rubrica.Id_Rubrica = :Id_Rubrica ';
-        vaDataSet.ParamByName('ID_PROJETO').AsInteger := ipDataSet.FieldByName('ID_PROJETO').AsInteger;
-        vaDataSet.ParamByName('ID_RUBRICA').AsInteger := ipDataSet.FieldByName('ID_RUBRICA').AsInteger;
-        vaDataSet.Open;
-        if not vaDataSet.Eof then
-        begin
-        vaDataSet.Edit;
-        if ipQuitar then
-        begin
-        vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('GASTO').AsFloat + vaValorGastoRubrica;
-        if Abs(vaDataSet.FieldByName('GASTO').AsFloat - vaDataSet.FieldByName('ORCAMENTO').AsFloat) <= 0.01 then
-        vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('ORCAMENTO').AsFloat;
-        end
-        else
-        begin
-        vaDataSet.FieldByName('GASTO').AsFloat := vaDataSet.FieldByName('GASTO').AsFloat - vaValorGastoRubrica;
-        if vaDataSet.FieldByName('GASTO').AsFloat < 0 then
-        vaDataSet.FieldByName('GASTO').AsFloat := 0;
-        end;
-        vaDataSet.Post;
-        end;
 
-        ipDataSet.Next;
-        end;
-        finally
-        vaDataSet.Free;
-        end;
-        end;
-        end); }
-//    end
-//  else
-//    raise Exception.Create('Parcela não encontrada.');
+        pprEncapsularConsulta(
+          procedure(ipDataSetVinculo: TRFQuery)
+          begin
+            ipDataSetVinculo.SQL.Text := 'Select conta_pagar_vinculo.ID_FUNDO, ' +
+              '                                  conta_pagar_vinculo.valor ' +
+              ' from conta_pagar_vinculo ' +
+              ' where conta_pagar_vinculo.id_conta_pagar = :ID_CONTA_PAGAR and  ' +
+              '       conta_pagar_vinculo.id_fundo is not null';
+            ipDataSetVinculo.ParamByName('ID_CONTA_PAGAR').AsInteger := ipDataSet.FieldByName('ID_CONTA_PAGAR').AsInteger;
+            ipDataSetVinculo.Open();
 
+//            ppvAtualizarSaldoFundo(ipDataSetVinculo, ipDataSet.FieldByName('VALOR_TOTAL').AsFloat,
+//              ipDataSet.FieldByName('VALOR_TOTAL_PAGO').AsFloat, ipDataSet.FieldByName('PERCENTUAL').AsFloat, not ipQuitar);
+          end);
+
+      end);
+
+    Connection.Commit;
+  except
+    Connection.Rollback;
+    raise;
+
+  end;
+end;
+
+procedure TsmFuncoesFinanceiro.ppvAtualizarSaldoFundo(ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar: Boolean);
+var
+  vaValorPercentual, vaPercentual, vaSomaPercentuais: Double;
+begin
+  vaPercentual := ipDataSetParcela.FieldByName('VALOR_PARCELA').AsFloat / ipDataSetParcela.FieldByName('VALOR_TOTAL').AsFloat;
+  vaSomaPercentuais := 0;
+
+  while not ipDataSetVinculo.Eof do
+    begin
+      vaValorPercentual := ipDataSetVinculo.FieldByName('VALOR_PARCELA').AsFloat * vaPercentual;
+      ipDataSetVinculo.Next;
+      if ipDataSetVinculo.Eof then//vamos jogar os quebrados tudo para o ultimo fundo
+        vaValorPercentual := ipDataSetParcela.FieldByName('VALOR_PARCELA').AsFloat - vaSomaPercentuais;
+
+      if ipIncrementar then
+        Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
+          [vaValorPercentual, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger])
+      else
+        Connection.ExecSQL('update Fundo ' +
+          ' set Fundo.Saldo = case ' +
+          '                    when Fundo.Saldo - :Valor < 0 then 0' +
+          '                    else Fundo.Saldo - :Valor' +
+          '                  end' +
+          ' where Fundo.Id = :Id   ',
+          [vaValorPercentual, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger]);
+
+      ipDataSetVinculo.Next;
+    end;
+
+end;
+
+procedure TsmFuncoesFinanceiro.ppvReceberReabrirParcela(ipIdParcela: Integer;
+ipReceber: Boolean);
+var
+  vaUpdate: string;
+  vaValorPercentual: Double;
+begin;
+  Connection.StartTransaction;
+  try
+    if ipReceber then
+      begin
+        vaUpdate := 'update conta_receber_parcela ' +
+          '  set conta_receber_parcela.data_recebimento = current_timestamp,  ' +
+          '      conta_receber_parcela.status = 1 ' +
+          '  where conta_receber_parcela.id = :ID_PARCELA';
+      end
+    else
+      vaUpdate := 'update conta_receber_parcela ' +
+        '  set conta_receber_parcela.data_recebimento = null,  ' +
+        '      conta_receber_parcela.status = 0 ' +
+        '  where conta_receber_parcela.id = :ID_PARCELA';
+
+    if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
+      raise Exception.Create('Parcela não encontrada.');
+
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select Conta_Receber_Parcela.id_conta_receber, ' +
+          '                           Conta_Receber_Parcela.Valor as VALOR_PARCELA, ' +
+          '                           Conta_Receber.Valor_Total, ' +
+          '                          (select sum(Conta_Receber_Parcela.Valor)  ' +
+          '                            from Conta_Receber_Parcela ' +
+          '                           where Conta_Receber_Parcela.Id_Conta_Receber = Conta_Receber.Id and ' +
+          '                                 Conta_Receber_Parcela.status = 1) as Valor_Total_Pago ' +
+          ' from Conta_Receber_Parcela ' +
+          ' inner join Conta_Receber on (Conta_Receber.Id = Conta_Receber_Parcela.Id_Conta_Receber) ' +
+          ' where Conta_Receber_Parcela.Id = :Id_Parcela';
+        ipDataSet.ParamByName('ID_PARCELA').AsInteger := ipIdParcela;
+        ipDataSet.Open();
+
+        pprEncapsularConsulta(
+          procedure(ipDataSetVinculo: TRFQuery)
+          begin
+            ipDataSetVinculo.SQL.Text := 'Select conta_receber_vinculo.ID_FUNDO, ' +
+              '                                  conta_receber_vinculo.valor ' +
+              ' from conta_receber_vinculo ' +
+              ' where conta_receber_vinculo.id_conta_receber = :ID_CONTA_RECEBER';
+            ipDataSetVinculo.ParamByName('ID_CONTA_RECEBER').AsInteger := ipDataSet.FieldByName('ID_CONTA_RECEBER').AsInteger;
+            ipDataSetVinculo.Open();
+
+//            ppvAtualizarSaldoFundo(ipDataSetVinculo, ipDataSet.FieldByName('VALOR_TOTAL').AsFloat,
+//              ipDataSet.FieldByName('VALOR_TOTAL_PAGO').AsFloat, ipDataSet.FieldByName('PERCENTUAL').AsFloat, ipReceber);
+          end);
+
+      end);
+
+    Connection.Commit;
+  except
+    Connection.Rollback;
+    raise;
+  end;
+
+end;
+
+procedure TsmFuncoesFinanceiro.ppuCancelarRecebimentoParcela(
+  ipIdParcela: Integer);
+begin
+  ppvReceberReabrirParcela(ipIdParcela, False);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuQuitarParcela(ipIdParcela: Integer);
@@ -264,7 +316,12 @@ end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirParcela(ipIdParcela: Integer);
 begin
-  ppvQuitarReabrirParcela(ipIdParcela, false);
+  ppvQuitarReabrirParcela(ipIdParcela, False);
+end;
+
+procedure TsmFuncoesFinanceiro.ppuReceberParcela(ipIdParcela: Integer);
+begin
+  ppvReceberReabrirParcela(ipIdParcela, true);
 end;
 
 function TsmFuncoesFinanceiro.fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;

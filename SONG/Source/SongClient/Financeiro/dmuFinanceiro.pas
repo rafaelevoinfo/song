@@ -90,23 +90,9 @@ type
     cdsConta_Receber_ParcelaPARCELA: TSmallintField;
     cdsConta_Receber_ParcelaSTATUS: TSmallintField;
     cdsConta_Receber_ParcelaDATA_RECEBIMENTO: TDateField;
-    cdsConta_Receber_Atividade: TRFClientDataSet;
-    cdsConta_Receber_AtividadeID: TIntegerField;
-    cdsConta_Receber_AtividadeID_CONTA_RECEBER: TIntegerField;
-    cdsConta_Receber_AtividadeID_ATIVIDADE: TIntegerField;
-    cdsConta_Receber_AtividadeATIVIDADE: TStringField;
-    cdsConta_Receber_Projeto: TRFClientDataSet;
-    cdsConta_Receber_ProjetoID: TIntegerField;
-    cdsConta_Receber_ProjetoID_CONTA_RECEBER: TIntegerField;
-    cdsConta_Receber_ProjetoID_PROJETO: TIntegerField;
-    cdsConta_Receber_ProjetoPROJETO: TStringField;
     dsConta_Receber: TDataSource;
     cdsConta_PagarNUMERO_DOCUMENTO: TStringField;
     cdsConta_ReceberNUMERO_DOCUMENTO: TStringField;
-    cdsConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField;
-    cdsConta_Receber_AtividadeAREA: TStringField;
-    cdsConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
-    cdsConta_Receber_ProjetoAREA: TStringField;
     cdsConta_PagarID_COMPRA: TIntegerField;
     cdsFundo: TRFClientDataSet;
     cdsFundoID: TIntegerField;
@@ -135,6 +121,12 @@ type
     cdsConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO: TIntegerField;
     cdsConta_Pagar_VinculoAREA_ATUACAO_ALOCADA: TStringField;
     cdsConta_Pagar_VinculoVALOR: TBCDField;
+    cdsConta_Receber_Vinculo: TRFClientDataSet;
+    cdsConta_Receber_VinculoID: TIntegerField;
+    cdsConta_Receber_VinculoID_CONTA_RECEBER: TIntegerField;
+    cdsConta_Receber_VinculoID_FUNDO: TIntegerField;
+    cdsConta_Receber_VinculoVALOR: TBCDField;
+    cdsConta_Receber_VinculoFUNDO: TStringField;
   private
     { Private declarations }
   public

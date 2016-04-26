@@ -80,11 +80,6 @@ type
     qConta_ReceberVALOR_TOTAL: TBCDField;
     qConta_ReceberFORMA_PAGTO: TSmallintField;
     qConta_ReceberOBSERVACAO: TStringField;
-    qConta_Receber_Projeto: TRFQuery;
-    qConta_Receber_ProjetoID: TIntegerField;
-    qConta_Receber_ProjetoID_CONTA_RECEBER: TIntegerField;
-    qConta_Receber_ProjetoID_PROJETO: TIntegerField;
-    qConta_Receber_Atividade: TRFQuery;
     qConta_Receber_Parcela: TRFQuery;
     qConta_Receber_ParcelaID: TIntegerField;
     qConta_Receber_ParcelaID_CONTA_RECEBER: TIntegerField;
@@ -97,17 +92,8 @@ type
     qConta_ReceberNOME_FANTASIA: TStringField;
     qConta_ReceberPLANO_CONTAS: TStringField;
     qConta_ReceberCONTA_CORRENTE: TStringField;
-    qConta_Receber_AtividadeID: TIntegerField;
-    qConta_Receber_AtividadeID_CONTA_RECEBER: TIntegerField;
-    qConta_Receber_AtividadeID_ATIVIDADE: TIntegerField;
-    qConta_Receber_AtividadeATIVIDADE: TStringField;
-    qConta_Receber_ProjetoPROJETO: TStringField;
     qConta_PagarNUMERO_DOCUMENTO: TStringField;
     qConta_ReceberNUMERO_DOCUMENTO: TStringField;
-    qConta_Receber_AtividadeID_PROJETO_AREA: TIntegerField;
-    qConta_Receber_AtividadeAREA: TStringField;
-    qConta_Receber_ProjetoID_PROJETO_AREA: TIntegerField;
-    qConta_Receber_ProjetoAREA: TStringField;
     qConta_PagarID_COMPRA: TIntegerField;
     qFundo: TRFQuery;
     qFundoID: TIntegerField;
@@ -136,6 +122,12 @@ type
     qConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO: TIntegerField;
     qConta_Pagar_VinculoAREA_ATUACAO_ALOCADA: TStringField;
     qConta_Pagar_VinculoVALOR: TBCDField;
+    qConta_Receber_Vinculo: TRFQuery;
+    qConta_Receber_VinculoID: TIntegerField;
+    qConta_Receber_VinculoID_CONTA_RECEBER: TIntegerField;
+    qConta_Receber_VinculoID_FUNDO: TIntegerField;
+    qConta_Receber_VinculoVALOR: TBCDField;
+    qConta_Receber_VinculoFUNDO: TStringField;
   private
     { Private declarations }
   protected
@@ -215,10 +207,19 @@ begin
         begin
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PLANO_CONTAS', vaValor.ToInteger, vaOperador)
         end
-      else if ipParam.Name = TParametros.coProjeto then
-        Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ORIGEM', vaValor.ToInteger, vaOperador)
-      else if ipParam.Name = TParametros.coProjetoAlocado then
-        Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ALOCADO', vaValor.ToInteger, vaOperador)
+      else
+        begin
+          if ipTabela = 'CONTA_PAGAR' then
+            begin
+              if ipParam.Name = TParametros.coProjeto then
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ORIGEM', vaValor.ToInteger, vaOperador)
+              else if ipParam.Name = TParametros.coProjetoAlocado then
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ALOCADO', vaValor.ToInteger, vaOperador)
+            end
+          else if ipTabela = 'CONTA_RECEBER' then
+            if ipParam.Name = TParametros.coFundo then
+              Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_RECEBER_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador)
+        end;
     end;
 
 end;

@@ -16,7 +16,7 @@ uses
   System.TypInfo, uTypes, dmuLookup, cxMemo, cxDBEdit, dmuPrincipal,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.Math, System.DateUtils, uMensagem;
+  System.Math, System.DateUtils, uMensagem, System.Generics.Collections;
 
 type
   TContaPagar = class(TModelo)
@@ -199,9 +199,11 @@ type
     procedure cbProjetoAlocadoPropertiesEditValueChanged(Sender: TObject);
     procedure cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
     procedure cbAtividadeAlocadaPropertiesEditValueChanged(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
+    FIdsParcelasCancelar: TList<Integer>;
     procedure ppvAddVinculo();
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
       ipValor: Double);
@@ -261,6 +263,8 @@ begin
 
   cbProjetoOrigem.Clear;
   cbProjetoAlocado.Clear;
+
+  FIdsParcelasCancelar.Clear;
 end;
 
 procedure TfrmContaPagar.pprBeforeIncluir;
@@ -271,6 +275,8 @@ begin
 
   cbProjetoOrigem.Clear;
   cbProjetoAlocado.Clear;
+
+  FIdsParcelasCancelar.Clear;
 end;
 
 procedure TfrmContaPagar.pprCarregarDadosModelo;
@@ -319,13 +325,20 @@ end;
 procedure TfrmContaPagar.pprExecutarCancelar;
 begin
   dmFinanceiro.cdsConta_Pagar_Parcela.CancelUpdates;
+  dmFinanceiro.cdsConta_Pagar_Vinculo.CancelUpdates;
   inherited;
-
 end;
 
 procedure TfrmContaPagar.pprExecutarSalvar;
+var
+  vaIdParcela: Integer;
 begin
   inherited;
+  for vaIdParcela in FIdsParcelasCancelar do
+    begin
+      dmPrincipal.FuncoesFinanceiro.ppuReabrirParcela(vaIdParcela);
+    end;
+
   if dmFinanceiro.cdsConta_Pagar.ChangeCount > 0 then
     dmFinanceiro.cdsConta_Pagar.ApplyUpdates(0);
 
@@ -385,7 +398,6 @@ procedure TfrmContaPagar.ppvAddVinculo();
 
     dmFinanceiro.cdsConta_Pagar_VinculoID_PROJETO_ALOCADO.AsInteger := cbProjetoAlocado.EditValue;
     dmFinanceiro.cdsConta_Pagar_VinculoPROJETO_ALOCADO.AsString := cbProjetoAlocado.Text;
-
 
     if VarIsNull(cbAtividadeAlocada.EditValue) then
       raise TControlException.Create('Informe a atividade para qual foi alocado o recurso.', cbAtividadeAlocada);
@@ -498,7 +510,7 @@ begin
     while not dmFinanceiro.cdsConta_Pagar_Parcela.Eof do
       begin
         if dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger = 1 then
-          dmPrincipal.FuncoesFinanceiro.ppuReabrirParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
+          FIdsParcelasCancelar.Add(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
 
         dmFinanceiro.cdsConta_Pagar_Parcela.Delete;
       end;
@@ -529,6 +541,7 @@ begin
   dmFinanceiro.cdsConta_Pagar_ParcelaVENCIMENTO.AsDateTime := ipVencimento;
   dmFinanceiro.cdsConta_Pagar_ParcelaPARCELA.AsInteger := ipParcela;
   dmFinanceiro.cdsConta_Pagar_ParcelaVALOR.AsFloat := ipValor;
+  dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 0;
   dmFinanceiro.cdsConta_Pagar_Parcela.Post;
 end;
 
@@ -650,7 +663,7 @@ procedure TfrmContaPagar.cbAtividadeAlocadaPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-   if not VarIsNull(cbAtividadeAlocada.EditValue) then
+  if not VarIsNull(cbAtividadeAlocada.EditValue) then
     begin
       dmLookup.cdslkRubrica_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, true);
       dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, true);
@@ -690,13 +703,13 @@ begin
         TOperadores.coOR);
       dmLookup.cdslkAtividade_Alocada.ppuDataRequest();
 
-//      dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coProjeto], [cbProjetoAlocado.EditValue], TOperadores.coAnd, true);
+      // dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coProjeto], [cbProjetoAlocado.EditValue], TOperadores.coAnd, true);
     end
   else
     begin
       dmLookup.cdslkAtividade_Alocada.Close;
-      //dmLookup.cdslkRubrica_Atividade_Alocada.Close;
-//      dmLookup.cdslkProjeto_Area_Atividade_Alocada.Close;
+      // dmLookup.cdslkRubrica_Atividade_Alocada.Close;
+      // dmLookup.cdslkProjeto_Area_Atividade_Alocada.Close;
     end;
 end;
 
@@ -711,12 +724,12 @@ begin
         TOperadores.coOR);
       dmLookup.cdslkAtividade.ppuDataRequest();
 
-      dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coProjeto],[cbProjetoOrigem.EditValue],TOperadores.coAnd,true);
+      dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coProjeto], [cbProjetoOrigem.EditValue], TOperadores.coAnd, true);
     end
   else
     begin
       dmLookup.cdslkAtividade.Close;
-      dmLookup.cdslkRubrica.Close;//rubricas do projeto
+      dmLookup.cdslkRubrica.Close; // rubricas do projeto
     end;
 end;
 
@@ -728,6 +741,8 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
+
+  FIdsParcelasCancelar := TList<Integer>.Create;;
 
   pcRecursoAlocado.Properties.HideTabs := true;
   pcOrigemRecurso.Properties.HideTabs := true;
@@ -750,7 +765,13 @@ begin
 
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
-  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'],TOperadores.coAnd,true);
+  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+end;
+
+procedure TfrmContaPagar.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  FIdsParcelasCancelar.Free;
 end;
 
 function TfrmContaPagar.fprConfigurarControlesPesquisa: TWinControl;

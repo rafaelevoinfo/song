@@ -16,7 +16,7 @@ uses
   System.TypInfo, uTypes, dmuLookup, cxMemo, cxDBEdit, dmuPrincipal,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.Math, System.DateUtils, uMensagem;
+  System.Math, System.DateUtils, uMensagem, System.Generics.Collections;
 
 type
   TfrmContaReceber = class(TfrmBasicoCrudMasterDetail)
@@ -54,23 +54,16 @@ type
     Ac_Gerar_Parcelas: TAction;
     rgVinculos: TcxGroupBox;
     Label10: TLabel;
-    Label12: TLabel;
     cxGrid2: TcxGrid;
     viewVinculos: TcxGridDBTableView;
     level1: TcxGridLevel;
     btnAddProjeto: TButton;
-    btnAddAtividade: TButton;
-    Ac_Incluir_Vinculo_Projeto: TAction;
-    Ac_Incluir_Vinculo_Atividade: TAction;
+    Ac_Incluir_Vinculo: TAction;
     dsVinculos: TDataSource;
-    viewVinculosID: TcxGridDBColumn;
-    viewVinculosTIPO: TcxGridDBColumn;
-    viewVinculosNOME: TcxGridDBColumn;
     ColumnDeletarVinculo: TcxGridDBColumn;
     Ac_Excluir_Vinculo: TAction;
     EditVencimentoParcela: TcxDateEdit;
-    cbProjeto: TcxLookupComboBox;
-    cbAtividade: TcxLookupComboBox;
+    cbFundo: TcxLookupComboBox;
     cbPesquisaClienteFinanciador: TcxLookupComboBox;
     cbPesquisaPlanoConta: TcxLookupComboBox;
     btnBaixarReabrir: TButton;
@@ -90,20 +83,25 @@ type
     viewRegistrosNUMERO_DOCUMENTO: TcxGridDBColumn;
     Label13: TLabel;
     EditNroDocumento: TcxDBTextEdit;
-    cdsLocalVinculo: TClientDataSet;
-    cdsLocalVinculoID: TIntegerField;
-    cdsLocalVinculoTIPO: TIntegerField;
-    cdsLocalVinculoNOME: TStringField;
-    cdsLocalVinculoID_PROJETO_AREA: TIntegerField;
-    cdsLocalVinculoAREA: TStringField;
-    lbl2: TLabel;
-    cbAreaProjeto: TcxLookupComboBox;
-    lbl3: TLabel;
-    cbAreaAtividade: TcxLookupComboBox;
+    Label21: TLabel;
+    EditValorVinculo: TcxCurrencyEdit;
+    viewVinculosID: TcxGridDBColumn;
+    viewVinculosID_CONTA_RECEBER: TcxGridDBColumn;
+    viewVinculosID_FUNDO: TcxGridDBColumn;
+    viewVinculosVALOR: TcxGridDBColumn;
+    viewVinculosFUNDO: TcxGridDBColumn;
+    tabVinculos: TcxTabSheet;
+    cxGrid3: TcxGrid;
+    viewPesquisaVinculo: TcxGridDBTableView;
+    level2: TcxGridLevel;
+    viewPesquisaVinculoID: TcxGridDBColumn;
+    viewPesquisaVinculoID_CONTA_RECEBER: TcxGridDBColumn;
+    viewPesquisaVinculoID_FUNDO: TcxGridDBColumn;
+    viewPesquisaVinculoVALOR: TcxGridDBColumn;
+    viewPesquisaVinculoFUNDO: TcxGridDBColumn;
+    cbPesquisaFundo: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
-    procedure cbProjetoPropertiesEditValueChanged(Sender: TObject);
-    procedure Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
-    procedure Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
+    procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
     procedure Ac_Excluir_VinculoExecute(Sender: TObject);
     procedure Ac_Baixar_ReabrirUpdate(Sender: TObject);
@@ -111,18 +109,18 @@ type
     procedure viewRegistrosDetailCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
-    procedure cbAtividadePropertiesEditValueChanged(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
-    procedure ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdArea: Integer; ipArea: String);
+    FIdsParcelasCancelar: TList<Integer>;
+    procedure ppvAddVinculo();
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
       ipValor: Double);
-    procedure ppvBaixarParcela;
-    procedure ppvReabrirParcela;
+    procedure ppvReceberParcela;
+    procedure ppvCancelarRecebimento;
   protected
     function fprGetPermissao: string; override;
-    procedure pprBeforeSalvar; override;
     procedure pprExecutarSalvar; override;
     procedure pprBeforeAlterar; override;
     procedure pprBeforeIncluir; override;
@@ -132,6 +130,7 @@ type
     function fprHabilitarAlterarDetail: Boolean; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
+    procedure pprExecutarCancelar; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -141,6 +140,7 @@ type
     coPesquisaDescricao = 5;
     coPesquisaClienteFinanciador = 6;
     coPesquisaPlanoConta = 7;
+    coPesquisaFundo = 8;
 
   end;
 
@@ -159,102 +159,21 @@ begin
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
-  if cdsLocalVinculo.Active then
-    cdsLocalVinculo.EmptyDataSet;
+  cbFundo.Clear;
+  EditValorVinculo.Clear;
 
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Projeto,
-    procedure
-    begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.AsInteger, coProjeto,
-        dmFinanceiro.cdsConta_Receber_ProjetoPROJETO.AsString, dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO_AREA.AsInteger,
-        dmFinanceiro.cdsConta_Receber_ProjetoAREA.AsString);
-    end);
-
-  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Atividade,
-    procedure
-    begin
-      ppvAddVinculo(dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.AsInteger, coAtividade,
-        dmFinanceiro.cdsConta_Receber_AtividadeATIVIDADE.AsString, dmFinanceiro.cdsConta_Receber_AtividadeID_PROJETO_AREA.AsInteger,
-        dmFinanceiro.cdsConta_Receber_AtividadeAREA.AsString);
-    end);
+  FIdsParcelasCancelar.Clear;
 end;
 
 procedure TfrmContaReceber.pprBeforeIncluir;
 begin
   inherited;
-  if cdsLocalVinculo.Active then
-    cdsLocalVinculo.EmptyDataSet;
-
   EditQtdeParcelas.Value := 1;
-end;
+  EditVencimentoParcela.Clear;
+  cbFundo.Clear;
+  EditValorVinculo.Clear;
 
-procedure TfrmContaReceber.pprBeforeSalvar;
-begin
-  inherited;
-  dmFinanceiro.cdsConta_Receber_Projeto.DisableControls;
-  dmFinanceiro.cdsConta_Receber_Atividade.DisableControls;
-  try
-    // vamos remover os registros nao existem mais
-    dmFinanceiro.cdsConta_Receber_Projeto.First;
-    while not dmFinanceiro.cdsConta_Receber_Projeto.Eof do
-      begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO;ID_PROJETO_AREA',
-          VarArrayOf([dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.AsInteger, coProjeto,
-          dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO_AREA.AsInteger]), []) then
-          dmFinanceiro.cdsConta_Receber_Projeto.Next
-        else
-          dmFinanceiro.cdsConta_Receber_Projeto.Delete;
-      end;
-
-    // vamos remover os registros nao existem mais
-    dmFinanceiro.cdsConta_Receber_Atividade.First;
-    while not dmFinanceiro.cdsConta_Receber_Atividade.Eof do
-      begin
-        if cdsLocalVinculo.Active and cdsLocalVinculo.Locate('ID;TIPO;ID_PROJETO_AREA',
-          VarArrayOf([dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.AsInteger,
-          coAtividade, dmFinanceiro.cdsConta_Receber_AtividadeID_PROJETO_AREA.AsInteger]), [])
-        then
-          dmFinanceiro.cdsConta_Receber_Atividade.Next
-        else
-          dmFinanceiro.cdsConta_Receber_Atividade.Delete;
-      end;
-
-    TUtils.ppuPercorrerCds(cdsLocalVinculo,
-      procedure
-      begin
-        if cdsLocalVinculoTIPO.AsInteger = coProjeto then
-          begin
-            if not dmFinanceiro.cdsConta_Receber_Projeto.Locate(dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.FieldName,
-              cdsLocalVinculoID.AsInteger, [])
-            then
-              begin
-                dmFinanceiro.cdsConta_Receber_Projeto.Append;
-                dmFinanceiro.cdsConta_Receber_ProjetoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_PROJETO');
-                dmFinanceiro.cdsConta_Receber_ProjetoID_CONTA_RECEBER.AsInteger := dmFinanceiro.cdsConta_ReceberID.AsInteger;
-                dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO.AsInteger := cdsLocalVinculoID.AsInteger;
-                dmFinanceiro.cdsConta_Receber_ProjetoID_PROJETO_AREA.AsInteger := cdsLocalVinculoID_PROJETO_AREA.AsInteger;
-                dmFinanceiro.cdsConta_Receber_Projeto.Post;
-              end;
-          end
-        else
-          begin
-            if not dmFinanceiro.cdsConta_Receber_Atividade.Locate(dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.FieldName,
-              cdsLocalVinculoID.AsInteger, [])
-            then
-              begin
-                dmFinanceiro.cdsConta_Receber_Atividade.Append;
-                dmFinanceiro.cdsConta_Receber_AtividadeID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_ATIVIDADE');
-                dmFinanceiro.cdsConta_Receber_AtividadeID_CONTA_RECEBER.AsInteger := dmFinanceiro.cdsConta_ReceberID.AsInteger;
-                dmFinanceiro.cdsConta_Receber_AtividadeID_ATIVIDADE.AsInteger := cdsLocalVinculoID.AsInteger;
-                dmFinanceiro.cdsConta_Receber_AtividadeID_PROJETO_AREA.AsInteger := cdsLocalVinculoID_PROJETO_AREA.AsInteger;
-                dmFinanceiro.cdsConta_Receber_Atividade.Post;
-              end;
-          end;
-      end);
-  finally
-    dmFinanceiro.cdsConta_Receber_Projeto.EnableControls;
-    dmFinanceiro.cdsConta_Receber_Atividade.EnableControls;
-  end;
+  FIdsParcelasCancelar.Clear;
 end;
 
 procedure TfrmContaReceber.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -266,40 +185,63 @@ begin
     ipCds.ppuAddParametro(TParametros.coClienteFinanciador, cbPesquisaClienteFinanciador.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaPlanoConta then
     ipCds.ppuAddParametro(TParametros.coPlanoConta, cbPesquisaPlanoConta.EditValue)
-
+  else if cbPesquisarPor.EditValue = coPesquisaFundo then
+    ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue)
 end;
 
 procedure TfrmContaReceber.pprEfetuarPesquisa;
 begin
-  dmFinanceiro.cdsConta_Receber_Projeto.Close;
-  dmFinanceiro.cdsConta_Receber_Atividade.Close;
+  dmFinanceiro.cdsConta_Receber_Vinculo.Close;
   inherited;
-  dmFinanceiro.cdsConta_Receber_Projeto.Open;
-  dmFinanceiro.cdsConta_Receber_Atividade.Open;
+  dmFinanceiro.cdsConta_Receber_Vinculo.Open;
+end;
+
+procedure TfrmContaReceber.pprExecutarCancelar;
+begin
+  dmFinanceiro.cdsConta_Pagar_Parcela.CancelUpdates;
+  dmFinanceiro.cdsConta_Receber_Vinculo.CancelUpdates;
+  inherited;
 end;
 
 procedure TfrmContaReceber.pprExecutarSalvar;
+var
+  vaIdParcela: Integer;
 begin
   inherited;
+  for vaIdParcela in FIdsParcelasCancelar do
+    begin
+      dmPrincipal.FuncoesFinanceiro.ppuCancelarRecebimentoParcela(vaIdParcela);
+    end;
+
   if dmFinanceiro.cdsConta_Receber.ChangeCount > 0 then
     dmFinanceiro.cdsConta_Receber.ApplyUpdates(0);
 
   if dmFinanceiro.cdsConta_Receber_Parcela.ChangeCount > 0 then
     dmFinanceiro.cdsConta_Receber_Parcela.ApplyUpdates(0);
 
-  if dmFinanceiro.cdsConta_Receber_Projeto.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Receber_Projeto.ApplyUpdates(0);
-
-  if dmFinanceiro.cdsConta_Receber_Atividade.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Receber_Atividade.ApplyUpdates(0);
+  if dmFinanceiro.cdsConta_Receber_Vinculo.ChangeCount > 0 then
+    dmFinanceiro.cdsConta_Receber_Vinculo.ApplyUpdates(0);
 end;
 
 procedure TfrmContaReceber.pprValidarDados;
 var
-  vaValorParcelado: Double;
+  vaValorParcelado, vaValorTotalVinculo: Double;
 begin
   inherited;
   vaValorParcelado := 0;
+  vaValorTotalVinculo := 0;
+  if dmFinanceiro.cdsConta_Receber_Vinculo.RecordCount = 0 then
+    raise Exception.Create('É necessário incluir pelo menos um vínculo.');
+
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Vinculo,
+    procedure
+    begin
+      vaValorTotalVinculo := vaValorTotalVinculo + dmFinanceiro.cdsConta_Receber_VinculoVALOR.AsFloat;
+    end);
+
+  if vaValorTotalVinculo <> dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.AsFloat then
+    raise Exception.Create('A soma dos valores de todos os vínculos deve ser igual ao valor total a se receber da conta.');
+
   TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Parcela,
     procedure
     begin
@@ -321,24 +263,30 @@ begin
   dmFinanceiro.cdsConta_ReceberID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER');
 end;
 
-procedure TfrmContaReceber.ppvAddVinculo(ipId, ipTipo: Integer; ipNome: string; ipIdArea: Integer; ipArea: String);
+procedure TfrmContaReceber.ppvAddVinculo();
 begin
-  if not cdsLocalVinculo.Active then
-    cdsLocalVinculo.CreateDataSet;
-
-  cdsLocalVinculo.Append;
-  cdsLocalVinculoID.AsInteger := ipId;
-  cdsLocalVinculoTIPO.AsInteger := ipTipo;
-  cdsLocalVinculoNOME.AsString := ipNome;
-  cdsLocalVinculoID_PROJETO_AREA.AsInteger := ipIdArea;
-  cdsLocalVinculoAREA.AsString := ipArea;
-  cdsLocalVinculo.Post;
+  if not VarIsNull(cbFundo.EditValue) then
+    begin
+      if not VarIsNull(EditValorVinculo.EditValue) then
+        begin
+          dmFinanceiro.cdsConta_Receber_Vinculo.Append;
+          dmFinanceiro.cdsConta_Receber_VinculoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_VINCULO');
+          dmFinanceiro.cdsConta_Receber_VinculoID_FUNDO.AsInteger := cbFundo.EditValue;
+          dmFinanceiro.cdsConta_Receber_VinculoFUNDO.AsString := cbFundo.Text;
+          dmFinanceiro.cdsConta_Receber_VinculoVALOR.AsFloat := EditValorVinculo.EditValue;
+          dmFinanceiro.cdsConta_Receber_Vinculo.Post;
+        end
+      else
+        TMensagem.ppuShowMessage('Informe o valor.');
+    end
+  else
+    TMensagem.ppuShowMessage('Informe para qual fundo o dinheiro será encaminhado.');
 end;
 
 procedure TfrmContaReceber.Ac_Excluir_VinculoExecute(Sender: TObject);
 begin
   inherited;
-  cdsLocalVinculo.Delete;
+  dmFinanceiro.cdsConta_Receber_Vinculo.Delete;
 end;
 
 procedure TfrmContaReceber.Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -361,7 +309,12 @@ begin
   try
     dmFinanceiro.cdsConta_Receber_Parcela.First;
     while not dmFinanceiro.cdsConta_Receber_Parcela.Eof do
-      dmFinanceiro.cdsConta_Receber_Parcela.Delete;
+      begin
+        if dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger = 1 then
+          FIdsParcelasCancelar.Add(dmFinanceiro.cdsConta_Receber_ParcelaID.AsInteger);
+
+        dmFinanceiro.cdsConta_Receber_Parcela.Delete;
+      end;
 
     vaValorParcela := dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.AsFloat / EditQtdeParcelas.Value;
     vaValorParcelado := 0;
@@ -382,76 +335,53 @@ begin
 
 end;
 
-procedure TfrmContaReceber.ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate; ipValor: Double);
+procedure TfrmContaReceber.ppvAdicionarParcela(ipParcela: Integer;
+ipVencimento:
+  TDate;
+ipValor:
+  Double);
 begin
   dmFinanceiro.cdsConta_Receber_Parcela.Append;
   dmFinanceiro.cdsConta_Receber_ParcelaID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_RECEBER_PARCELA');
   dmFinanceiro.cdsConta_Receber_ParcelaVENCIMENTO.AsDateTime := ipVencimento;
   dmFinanceiro.cdsConta_Receber_ParcelaPARCELA.AsInteger := ipParcela;
   dmFinanceiro.cdsConta_Receber_ParcelaVALOR.AsFloat := ipValor;
+  dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger := 0;
   dmFinanceiro.cdsConta_Receber_Parcela.Post;
 end;
 
-procedure TfrmContaReceber.Ac_Incluir_Vinculo_AtividadeExecute(Sender: TObject);
+procedure TfrmContaReceber.Ac_Incluir_VinculoExecute(Sender: TObject);
 begin
   inherited;
-  if not VarIsNull(cbAtividade.EditValue) then
-    begin
-      if not VarIsNull(cbAreaAtividade.EditValue) then
-        begin
-          if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, cbAtividade.EditValue, []) then
-            begin
-              ppvAddVinculo(cbAtividade.EditValue, coAtividade, cbAtividade.Text, cbAreaAtividade.EditValue, cbAreaAtividade.Text);
-            end;
-        end
-      else
-        TMensagem.ppuShowMessage('Informe a área da atividade.');
-    end
-  else
-    TMensagem.ppuShowMessage('Informe com qual atividade deseja realizar o vinculo.');
-end;
-
-procedure TfrmContaReceber.Ac_Incluir_Vinculo_ProjetoExecute(Sender: TObject);
-begin
-  inherited;
-  if not VarIsNull(cbProjeto.EditValue) then
-    begin
-      if not VarIsNull(cbAreaProjeto.EditValue) then
-        begin
-          if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, cbProjeto.EditValue, []) then
-            begin
-              ppvAddVinculo(cbProjeto.EditValue, coProjeto, cbProjeto.Text, cbAreaProjeto.EditValue, cbAreaProjeto.Text);
-            end;
-        end
-      else
-        TMensagem.ppuShowMessage('Informe a área do projeto.');
-    end
-  else
-    TMensagem.ppuShowMessage('Informe com qual projeto deseja realizar o vinculo.');
+  ppvAddVinculo;
 end;
 
 procedure TfrmContaReceber.Ac_Baixar_ReabrirExecute(Sender: TObject);
 begin
   inherited;
   if dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger = 0 then
-    ppvBaixarParcela
+    ppvReceberParcela
   else
-    ppvReabrirParcela;
+    ppvCancelarRecebimento;
 end;
 
-procedure TfrmContaReceber.ppvBaixarParcela;
+procedure TfrmContaReceber.ppvReceberParcela;
 begin
+  dmPrincipal.FuncoesFinanceiro.ppuReceberParcela(dmFinanceiro.cdsConta_Receber_ParcelaID.AsInteger);
+
   dmFinanceiro.cdsConta_Receber_Parcela.Edit;
   dmFinanceiro.cdsConta_Receber_ParcelaDATA_RECEBIMENTO.AsDateTime := Now;
   dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger := 1;
   dmFinanceiro.cdsConta_Receber_Parcela.Post;
 
   if dmFinanceiro.cdsConta_Receber_Parcela.ChangeCount > 0 then
-    dmFinanceiro.cdsConta_Receber_Parcela.ApplyUpdates(0);
+    dmFinanceiro.cdsConta_Receber_Parcela.MergeChangeLog;
 end;
 
-procedure TfrmContaReceber.ppvReabrirParcela;
+procedure TfrmContaReceber.ppvCancelarRecebimento;
 begin
+  dmPrincipal.FuncoesFinanceiro.ppuCancelarRecebimentoParcela(dmFinanceiro.cdsConta_Receber_ParcelaID.AsInteger);
+
   dmFinanceiro.cdsConta_Receber_Parcela.Edit;
   dmFinanceiro.cdsConta_Receber_ParcelaDATA_RECEBIMENTO.Clear;
   dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger := 0;
@@ -462,8 +392,14 @@ begin
 end;
 
 procedure TfrmContaReceber.viewRegistrosDetailCustomDrawCell(
-  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
-AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+  Sender: TcxCustomGridTableView;
+ACanvas:
+  TcxCanvas;
+AViewInfo:
+  TcxGridTableDataCellViewInfo;
+var
+  ADone:
+  Boolean);
 begin
   inherited;
   if AViewInfo.GridRecord.Values[viewRegistrosDetailSTATUS.Index] = 1 then
@@ -502,40 +438,6 @@ begin
     end;
 end;
 
-procedure TfrmContaReceber.cbAtividadePropertiesEditValueChanged(
-  Sender: TObject);
-begin
-  inherited;
-  if not VarIsNull(cbAtividade.EditValue) then
-    begin
-      dmLookup.cdslkProjeto_Area_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividade.EditValue], TOperadores.coAnd, true);
-    end
-  else
-    begin
-      dmLookup.cdslkProjeto_Area_Atividade.Close;
-    end;
-end;
-
-procedure TfrmContaReceber.cbProjetoPropertiesEditValueChanged(Sender: TObject);
-begin
-  inherited;
-  if not VarIsNull(cbProjeto.EditValue) then
-    begin
-      dmLookup.cdslkAtividade.ppuLimparParametros;
-      dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coProjeto, cbProjeto.EditValue);
-      dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coStatusDiferente, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString,
-        TOperadores.coOR);
-      dmLookup.cdslkAtividade.ppuDataRequest();
-      dmLookup.cdslkProjeto_Area.ppuDataRequest([TParametros.coProjeto], [cbProjeto.EditValue], TOperadores.coAnd, true);
-    end
-  else
-    begin
-      dmLookup.cdslkAtividade.Close;
-      dmLookup.cdslkProjeto_Area.Close;
-      dmLookup.cdslkProjeto_Area_Atividade.Close;
-    end;
-end;
-
 procedure TfrmContaReceber.FormCreate(Sender: TObject);
 begin
   dmFinanceiro := TdmFinanceiro.Create(Self);
@@ -544,6 +446,8 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
+
+  FIdsParcelasCancelar := TList<Integer>.Create;
 
   PesquisaPadrao := tppData;
 
@@ -554,8 +458,15 @@ begin
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcReceita)], TOperadores.coAnd, true);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
 
-  dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
-    [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
+  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+
+  pcDetails.ActivePage := tabDetail;
+end;
+
+procedure TfrmContaReceber.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  FIdsParcelasCancelar.Free;
 end;
 
 function TfrmContaReceber.fprConfigurarControlesPesquisa: TWinControl;
@@ -563,12 +474,16 @@ begin
   Result := inherited;
   cbPesquisaClienteFinanciador.Visible := cbPesquisarPor.EditValue = coPesquisaClienteFinanciador;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaClienteFinanciador.Visible or cbPesquisaPlanoConta.Visible));
+  cbPesquisaFundo.Visible := cbPesquisarPor.EditValue = coPesquisaFundo;
+  EditPesquisa.Visible := EditPesquisa.Visible and
+    (not(cbPesquisaClienteFinanciador.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaFundo.Visible));
 
   if cbPesquisaClienteFinanciador.Visible then
     Result := cbPesquisaClienteFinanciador
   else if cbPesquisaPlanoConta.Visible then
-    Result := cbPesquisaPlanoConta;
+    Result := cbPesquisaPlanoConta
+  else if cbFundo.Visible then
+    Result := cbFundo;
 end;
 
 function TfrmContaReceber.fprGetPermissao: string;
@@ -578,13 +493,14 @@ end;
 
 function TfrmContaReceber.fprHabilitarAlterarDetail: Boolean;
 begin
-  //nao chamar o inherited
+  // nao chamar o inherited
   Result := False;
 end;
 
 function TfrmContaReceber.fprHabilitarSalvar: Boolean;
 begin
-  Result := inherited or fprHabilitarSalvarDetail or (cdsLocalVinculo.Active and (cdsLocalVinculo.ChangeCount > 0));
+  Result := inherited or fprHabilitarSalvarDetail or
+    (dmFinanceiro.cdsConta_Receber_Vinculo.Active and (dmFinanceiro.cdsConta_Receber_Vinculo.ChangeCount > 0));
 end;
 
 end.
