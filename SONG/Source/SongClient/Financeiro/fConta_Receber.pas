@@ -111,8 +111,10 @@ type
       var ADone: Boolean);
     procedure FormDestroy(Sender: TObject);
   private
+
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
+    FParcelasBaixadas: Boolean;
     FIdsParcelasCancelar: TList<Integer>;
     procedure ppvAddVinculo();
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
@@ -131,6 +133,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprExecutarCancelar; override;
+    procedure pprBeforeExcluir(ipAcao: TAcaoTela); override;
   public
     procedure ppuIncluir; override;
   public const
@@ -156,6 +159,28 @@ implementation
 procedure TfrmContaReceber.pprBeforeAlterar;
 begin
   inherited;
+  FParcelasBaixadas := False;
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Receber_Parcela,
+    function: Boolean
+    begin
+      if dmFinanceiro.cdsConta_Receber_ParcelaSTATUS.AsInteger = 1 then // recebida
+        begin
+          FParcelasBaixadas := True;
+          Exit(False);
+        end
+      else
+        Exit(True);
+    end);
+
+  rgVinculos.Enabled := not FParcelasBaixadas;
+  viewParcelasVALOR.Options.Editing := not FParcelasBaixadas;
+
+  if FParcelasBaixadas then
+    begin
+      TMensagem.ppuShowMessage
+        ('Algumas parcelas já foram baixadas, portanto não será mais possível editar os vínculos e nem o valor individual de uma parcela.');
+    end;
+
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
@@ -163,6 +188,12 @@ begin
   EditValorVinculo.Clear;
 
   FIdsParcelasCancelar.Clear;
+end;
+
+procedure TfrmContaReceber.pprBeforeExcluir(ipAcao: TAcaoTela);
+begin
+  inherited;
+  dmPrincipal.FuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber(dmFinanceiro.cdsConta_ReceberID.AsInteger);
 end;
 
 procedure TfrmContaReceber.pprBeforeIncluir;
@@ -174,6 +205,10 @@ begin
   EditValorVinculo.Clear;
 
   FIdsParcelasCancelar.Clear;
+
+  rgVinculos.Enabled := True;
+  viewParcelasVALOR.Options.Editing := True;
+  FParcelasBaixadas := False;
 end;
 
 procedure TfrmContaReceber.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -198,7 +233,7 @@ end;
 
 procedure TfrmContaReceber.pprExecutarCancelar;
 begin
-  dmFinanceiro.cdsConta_Pagar_Parcela.CancelUpdates;
+  dmFinanceiro.cdsConta_Receber_Parcela.CancelUpdates;
   dmFinanceiro.cdsConta_Receber_Vinculo.CancelUpdates;
   inherited;
 end;
@@ -296,6 +331,13 @@ var
   I: Integer;
 begin
   inherited;
+  if FParcelasBaixadas then
+    begin
+      if TMensagem.fpuPerguntar('Ao gerar novas parcelas todas as parcelas baixadas ' +
+        'serão reabertas. Tem certeza que deseja fazer isso?', ppSimNao) = rpNao then
+        Exit;
+    end;
+
   if dmFinanceiro.cdsConta_ReceberVALOR_TOTAL.IsNull then
     raise Exception.Create('Informe o valor total para que seja possível gerar as parcelas.');
 
@@ -329,6 +371,8 @@ begin
 
         ppvAdicionarParcela(I, IncMonth(EditVencimentoParcela.Date, I - 1), vaValorParcela);
       end;
+
+    viewParcelasVALOR.Options.Editing := True;
   finally
     dmFinanceiro.cdsConta_Receber_Parcela.EnableControls;
   end;
@@ -454,11 +498,11 @@ begin
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
-  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], ['1' + coDelimitadorPadrao + '3'], TOperadores.coAnd, true);
-  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcReceita)], TOperadores.coAnd, true);
-  dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], ['1' + coDelimitadorPadrao + '3'], TOperadores.coAnd, True);
+  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcReceita)], TOperadores.coAnd, True);
+  dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 
-  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 
   pcDetails.ActivePage := tabDetail;
 end;

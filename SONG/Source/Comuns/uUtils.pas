@@ -42,6 +42,8 @@ type
     class function fpuValidarCpfCnpj(ipCpfCnpj: string): Boolean;
     class function fpuValidarCpf(ipCpf: string): Boolean;
     class function fpuValidarCnpj(ipCnpj: string): Boolean;
+
+    class function fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer):Double;
   end;
 
 const
@@ -51,6 +53,24 @@ const
 implementation
 
 { TUtils }
+
+
+class function TUtils.fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer): Double;
+var
+  vaAux: string;
+  vaQuantCasas: string;
+begin
+  try
+    vaQuantCasas := IntToStr(ipCasasDecimais);
+    vaAux := FloatToStr(ipValor);
+    // considerando somente a quant de casas decimais informada
+    vaAux := TRegex.Replace(vaAux, '(?<=,\d{' + vaQuantCasas + ',' + vaQuantCasas + '})\d*', '');
+    Result := StrToFloat(vaAux);
+  except
+    on E: Exception do
+      raise Exception.Create('Não foi possível truncar o valor especificado.' + sLineBreak + 'Detalhes: ' + E.Message);
+  end;
+end;
 
 class procedure TUtils.ppuCopyStreamToByteStream(ipOrigem: TStream; var ipDestino: TBytesStream);
 const

@@ -69,10 +69,7 @@ implementation
 { TdmPrincipal }
 
 procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
-var
-  vaException: Exception;
 begin
-  vaException := nil;
   if E is TPararExecucaoException then
     Exit   //vamos ignorar, exception criada apenas parar o fluxo do programa
   else if E is TControlException then

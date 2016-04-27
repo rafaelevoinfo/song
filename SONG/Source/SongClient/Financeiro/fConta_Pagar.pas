@@ -203,6 +203,7 @@ type
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
+    FParcelasQuitadas:Boolean;
     FIdsParcelasCancelar: TList<Integer>;
     procedure ppvAddVinculo();
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
@@ -221,6 +222,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     function fprHabilitarAlterarDetail: Boolean; override;
+    procedure pprBeforeExcluir(ipAcao: TAcaoTela); override;
 
     procedure pprCarregarDadosModelo; override;
   public
@@ -258,6 +260,8 @@ uses
 procedure TfrmContaPagar.pprBeforeAlterar;
 begin
   inherited;
+  pcEditsCadastro.ActivePage := tabInfoGeral;
+
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
@@ -265,11 +269,41 @@ begin
   cbProjetoAlocado.Clear;
 
   FIdsParcelasCancelar.Clear;
+
+  FParcelasQuitadas := False;
+  TUtils.ppuPercorrerCds(dmFinanceiro.cdsConta_Pagar_Parcela,
+    function: Boolean
+    begin
+      if dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger = 1 then // quitada
+        begin
+          FParcelasQuitadas := True;
+          Exit(False);
+        end
+      else
+        Exit(True);
+    end);
+
+  tabVinculo.Enabled := not FParcelasQuitadas;
+  viewParcelasVALOR.Options.Editing := not FParcelasQuitadas;
+
+  if FParcelasQuitadas then
+    begin
+      TMensagem.ppuShowMessage
+        ('Algumas parcelas já foram quitadas, portanto não será mais possível editar os vínculos e nem o valor individual de uma parcela.');
+    end;
+end;
+
+procedure TfrmContaPagar.pprBeforeExcluir(ipAcao: TAcaoTela);
+begin
+  inherited;
+  dmPrincipal.FuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar(dmFinanceiro.cdsConta_PagarID.AsInteger);
 end;
 
 procedure TfrmContaPagar.pprBeforeIncluir;
 begin
   inherited;
+  pcEditsCadastro.ActivePage := tabInfoGeral;
+
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
@@ -277,6 +311,10 @@ begin
   cbProjetoAlocado.Clear;
 
   FIdsParcelasCancelar.Clear;
+
+  tabVinculo.Enabled := True;
+  viewParcelasVALOR.Options.Editing := True;
+  FParcelasQuitadas := False;
 end;
 
 procedure TfrmContaPagar.pprCarregarDadosModelo;
@@ -495,6 +533,13 @@ var
   I: Integer;
 begin
   inherited;
+  if FParcelasQuitadas then
+    begin
+      if TMensagem.fpuPerguntar('Ao gerar novas parcelas todas as parcelas quitadas ' +
+        'serão reabertas. Tem certeza que deseja fazer isso?', ppSimNao) = rpNao then
+        Exit;
+    end;
+
   if dmFinanceiro.cdsConta_PagarVALOR_TOTAL.IsNull then
     raise Exception.Create('Informe o valor total para que seja possível gerar as parcelas.');
 
@@ -528,6 +573,8 @@ begin
 
         ppvAdicionarParcela(I, IncMonth(EditVencimentoParcela.Date, I - 1), vaValorParcela);
       end;
+
+    viewParcelasVALOR.Options.Editing := True;
   finally
     dmFinanceiro.cdsConta_Pagar_Parcela.EnableControls;
   end;

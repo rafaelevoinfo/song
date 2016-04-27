@@ -98,6 +98,7 @@ type
     procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
     procedure pprBeforeAlterar; virtual;
+    procedure pprBeforeExcluir(ipAcao:TAcaoTela);virtual;
     procedure pprCarregarDadosModelo; virtual;
     // PESQUISA
     procedure pprRealizarPesquisaInicial; virtual;
@@ -556,6 +557,8 @@ begin
             try
               for vaId in ipIds do
                 begin
+                  pprBeforeExcluir(vaAcao);
+
                   case vaAcao of
                     atExcluir:
                       begin
@@ -610,6 +613,11 @@ begin
     pprRealizarPesquisaInicial;
 
   pprValidarPermissao(atAlterar, fprGetPermissao);
+end;
+
+procedure TfrmBasicoCrud.pprBeforeExcluir(ipAcao: TAcaoTela);
+begin
+  // TODO;implementar nas classes filhas
 end;
 
 procedure TfrmBasicoCrud.pprBeforeIncluir;
@@ -741,6 +749,7 @@ var
   vaDataBind: TObject;
   vaFieldName: string;
 begin
+  Result := nil;
   for I := 0 to ComponentCount - 1 do
     begin
       if Components[I] is TcxCustomEdit then

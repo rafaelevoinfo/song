@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 25/04/2016 23:29:30
+// 27/04/2016 00:11:45
 //
 
 unit uFuncoes;
@@ -134,8 +134,10 @@ type
     FfpuGerarIdentificadorRubricaCommand: TDBXCommand;
     FppuQuitarParcelaCommand: TDBXCommand;
     FppuReabrirParcelaCommand: TDBXCommand;
+    FppuReabrirTodasParcelasContaPagarCommand: TDBXCommand;
     FppuReceberParcelaCommand: TDBXCommand;
     FppuCancelarRecebimentoParcelaCommand: TDBXCommand;
+    FppuCancelarTodosRecebimentosContaReceberCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -149,8 +151,10 @@ type
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
     procedure ppuQuitarParcela(ipIdParcela: Integer);
     procedure ppuReabrirParcela(ipIdParcela: Integer);
+    procedure ppuReabrirTodasParcelasContaPagar(ipIdContaPagar: Integer);
     procedure ppuReceberParcela(ipIdParcela: Integer);
     procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
+    procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -941,6 +945,19 @@ begin
   FppuReabrirParcelaCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesFinanceiroClient.ppuReabrirTodasParcelasContaPagar(ipIdContaPagar: Integer);
+begin
+  if FppuReabrirTodasParcelasContaPagarCommand = nil then
+  begin
+    FppuReabrirTodasParcelasContaPagarCommand := FDBXConnection.CreateCommand;
+    FppuReabrirTodasParcelasContaPagarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuReabrirTodasParcelasContaPagarCommand.Text := 'TsmFuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar';
+    FppuReabrirTodasParcelasContaPagarCommand.Prepare;
+  end;
+  FppuReabrirTodasParcelasContaPagarCommand.Parameters[0].Value.SetInt32(ipIdContaPagar);
+  FppuReabrirTodasParcelasContaPagarCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesFinanceiroClient.ppuReceberParcela(ipIdParcela: Integer);
 begin
   if FppuReceberParcelaCommand = nil then
@@ -965,6 +982,19 @@ begin
   end;
   FppuCancelarRecebimentoParcelaCommand.Parameters[0].Value.SetInt32(ipIdParcela);
   FppuCancelarRecebimentoParcelaCommand.ExecuteUpdate;
+end;
+
+procedure TsmFuncoesFinanceiroClient.ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
+begin
+  if FppuCancelarTodosRecebimentosContaReceberCommand = nil then
+  begin
+    FppuCancelarTodosRecebimentosContaReceberCommand := FDBXConnection.CreateCommand;
+    FppuCancelarTodosRecebimentosContaReceberCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuCancelarTodosRecebimentosContaReceberCommand.Text := 'TsmFuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber';
+    FppuCancelarTodosRecebimentosContaReceberCommand.Prepare;
+  end;
+  FppuCancelarTodosRecebimentosContaReceberCommand.Parameters[0].Value.SetInt32(ipIdContaReceber);
+  FppuCancelarTodosRecebimentosContaReceberCommand.ExecuteUpdate;
 end;
 
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
@@ -1040,8 +1070,10 @@ begin
   FfpuGerarIdentificadorRubricaCommand.DisposeOf;
   FppuQuitarParcelaCommand.DisposeOf;
   FppuReabrirParcelaCommand.DisposeOf;
+  FppuReabrirTodasParcelasContaPagarCommand.DisposeOf;
   FppuReceberParcelaCommand.DisposeOf;
   FppuCancelarRecebimentoParcelaCommand.DisposeOf;
+  FppuCancelarTodosRecebimentosContaReceberCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

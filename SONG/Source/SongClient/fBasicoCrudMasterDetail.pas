@@ -314,10 +314,10 @@ function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Bo
 var
   vaId: Integer;
 begin
+  Result := False;
   if fprHabilitarExcluirDetail then
     begin
       pprValidarPermissao(atExcluir, Permissao);
-      Result := False;
       if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
         begin
           try

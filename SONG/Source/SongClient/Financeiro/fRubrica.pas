@@ -103,7 +103,8 @@ begin
         Exit(False);
     end;
 
-  if inherited then
+  Result := inherited;
+  if Result then
     begin
       if vaDependencias then
         begin

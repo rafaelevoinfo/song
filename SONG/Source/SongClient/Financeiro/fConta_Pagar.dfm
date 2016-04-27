@@ -427,7 +427,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabInfoGeral
+          Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -668,8 +668,8 @@ inherited frmContaPagar: TfrmContaPagar
                   Width = 125
                 end
                 object btnIncluirParcelas: TButton
-                  Left = 208
-                  Top = 1
+                  Left = 210
+                  Top = 0
                   Width = 119
                   Height = 37
                   Action = Ac_Gerar_Parcelas

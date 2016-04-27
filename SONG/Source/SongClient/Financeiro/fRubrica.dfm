@@ -1,6 +1,5 @@
 inherited frmRubrica: TfrmRubrica
   Caption = 'Rubricas'
-  ExplicitWidth = 320
   ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
@@ -85,6 +84,10 @@ inherited frmRubrica: TfrmRubrica
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         ExplicitLeft = 4
         ExplicitTop = 52

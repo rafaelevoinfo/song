@@ -195,7 +195,6 @@ uses
 procedure TdmLookup.ppuCarregarPessoas(ipIdEspecifico: Integer; ipTipos: TRelacionamentosPessoa);
 var
   vaTipos: TStringList;
-  I: Integer;
   vaTipo: TTipoRelacionamentoPessoa;
 begin
   vaTipos := TStringList.Create;

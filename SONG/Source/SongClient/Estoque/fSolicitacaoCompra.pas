@@ -82,7 +82,7 @@ type
     procedure pprBeforeSalvar; override;
     procedure pprBeforeSalvarDetail; override;
     procedure pprValidarDados; override;
-    procedure ppuIncluir; override;
+
     procedure pprAfterSalvar; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -91,6 +91,8 @@ type
     function fprHabilitarIncluirDetail: Boolean; override;
     function fprHabilitarAlterarDetail: Boolean; override;
     function fprHabilitarAlterar: Boolean; override;
+  public
+     procedure ppuIncluir; override;
   public const
     coPesquisaItem = 5;
     coPesquisaSolicitante = 6;

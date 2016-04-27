@@ -248,12 +248,12 @@ begin
       TInfoLogin.fpuGetInstance.Usuario.Permissoes.Post;
     end;
 
-  vaPessoa := TPessoa.Create;
+  vaFrmPessoa := TfrmPessoa.Create(nil);
   try
+    vaPessoa := TPessoa.Create;
     vaPessoa.Id := TInfoLogin.fpuGetInstance.Usuario.Id;
     vaPessoa.Nome := TInfoLogin.fpuGetInstance.Usuario.Nome;
 
-    vaFrmPessoa := TfrmPessoa.Create(nil);
     vaFrmPessoa.ppuConfigurarModoExecucao(meSomenteEdicao,vaPessoa);
     vaFrmPessoa.ShowModal;
 

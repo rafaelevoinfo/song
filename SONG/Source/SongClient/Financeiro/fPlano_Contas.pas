@@ -43,9 +43,9 @@ type
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
     procedure pprAfterSalvar; override;
 
-    function fpuExcluir(ipIds: TArray<Integer>): Boolean; override;
-
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+  public
+    function fpuExcluir(ipIds: TArray<Integer>): Boolean; override;
   public const
     coIdentificador = 5;
     { Public declarations }
@@ -110,7 +110,8 @@ begin
         Exit(False);
     end;
 
-  if inherited then
+  Result := inherited;
+  if Result then
     begin
       if vaDependencias then
         begin

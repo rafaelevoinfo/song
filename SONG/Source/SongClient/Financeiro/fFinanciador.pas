@@ -231,6 +231,7 @@ var
   vaEdit: TWinControl;
 begin
   inherited;
+  vaEdit := nil;
   pprValidarCPFCNPJ;
 
   vaResult := dmPrincipal.FuncoesAdm.fpuValidarFinanciadorFornecedorCliente(dmFinanceiro.cdsFin_For_CliID.AsInteger,

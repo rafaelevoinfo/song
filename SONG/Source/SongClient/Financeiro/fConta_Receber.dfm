@@ -17,7 +17,7 @@ inherited frmContaReceber: TfrmContaReceber
         inherited pnEditsPesquisa: TPanel
           Left = 567
           Width = 408
-          ExplicitLeft = 566
+          ExplicitLeft = 567
           ExplicitWidth = 408
           inherited Label1: TLabel
             Left = 4
@@ -174,6 +174,7 @@ inherited frmContaReceber: TfrmContaReceber
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabVinculos
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
               ExplicitLeft = 2
@@ -255,9 +256,6 @@ inherited frmContaReceber: TfrmContaReceber
                 Align = alBottom
                 TabOrder = 0
                 TabStop = False
-                ExplicitLeft = 3
-                ExplicitTop = 56
-                ExplicitWidth = 529
                 object viewPesquisaVinculo: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsVinculos
