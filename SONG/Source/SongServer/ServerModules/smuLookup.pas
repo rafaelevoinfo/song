@@ -97,6 +97,8 @@ type
     qlkFundoID: TIntegerField;
     qlkFundoNOME: TStringField;
     qlkFundoSALDO: TBCDField;
+    qlkRubricaSALDO_REAL: TFMTBCDField;
+    qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
   private
     { Private declarations }
   protected

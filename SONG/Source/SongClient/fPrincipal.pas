@@ -12,7 +12,7 @@ uses
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
-  fFundo, uControleAcesso, System.TypInfo;
+  fFundo, uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel;
 
 type
   TfrmPrincipal = class(TfrmBasico)

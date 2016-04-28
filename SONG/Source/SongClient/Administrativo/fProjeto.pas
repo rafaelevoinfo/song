@@ -16,7 +16,7 @@ uses
   cxDBEdit, cxMemo, dmuLookup, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
   uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit, cxLocalization,
-  cxCheckBox;
+  cxCheckBox, uMensagem;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -34,7 +34,6 @@ type
     Label7: TLabel;
     EditDescricao: TcxDBMemo;
     Label8: TLabel;
-    EditOrcamento: TcxDBCalcEdit;
     Label9: TLabel;
     cbPessoa: TcxDBLookupComboBox;
     Label10: TLabel;
@@ -195,6 +194,7 @@ type
     EditPercentualPagamento: TcxCalcEdit;
     viewPagamentosCadastroPERCENTUAL: TcxGridDBColumn;
     viewRubricasAPROVISIONADO: TcxGridDBColumn;
+    EditOrcamento: TcxDBCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -221,7 +221,8 @@ type
     procedure ppvAdicionarFinanciador;
     procedure ppvCarregarFinanciadores;
     procedure ppvExcluirPagamento;
-    procedure ppvAtualizarRubricas(ipIncrementar: Boolean);
+    procedure ppvAtualizarRubricas();
+    function fpvValidarSomaOrcamentoRubricas: Boolean;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -232,10 +233,13 @@ type
     procedure pprEfetuarPesquisa; override;
 
     procedure pprExecutarSalvarDetail; override;
+    procedure pprAfterSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     procedure pprEfetuarCancelarDetail; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprEfetuarExcluirDetail(ipId: Integer); override;
+
+    procedure pprBeforeIncluirDetail; override;
 
     procedure pprValidarDadosDetail; override;
   public
@@ -349,47 +353,15 @@ begin
   ppuBaixarArquivo(dmAdministrativo.cdsProjeto_DocumentoID.AsInteger);
 end;
 
-procedure TfrmProjeto.ppvAtualizarRubricas(ipIncrementar: Boolean);
-var
-  vaAutoApply: Boolean;
+procedure TfrmProjeto.ppvAtualizarRubricas();
 begin
-  // if not dmAdministrativo.cdsProjeto_Rubrica.Active then
-  // dmAdministrativo.cdsProjeto_Rubrica.Open;
-  //
-  // vaAutoApply := dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico;
-  // try
-  // dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := False;
-  //
-  // TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Rubrica,
-  // procedure
-  // begin
-  // dmAdministrativo.cdsProjeto_Rubrica.Edit;
-  // if ipIncrementar then
-  // begin
-  // dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat +
-  // (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
-  // end
-  // else
-  // begin
-  // dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat -
-  // (dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat * ((dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100)));
-  //
-  // if dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat < 0 then
-  // dmAdministrativo.cdsProjeto_RubricaRECEBIDO.AsFloat := 0;
-  // end;
-  // dmAdministrativo.cdsProjeto_Rubrica.Post;
-  // end);
-  //
-  // if dmAdministrativo.cdsProjeto_Rubrica.ChangeCount > 0 then
-  // dmAdministrativo.cdsProjeto_Rubrica.ApplyUpdates(0);
-  // finally
-  // dmAdministrativo.cdsProjeto_Rubrica.RFApplyAutomatico := vaAutoApply;
-  // end;
+  if dmAdministrativo.cdsProjeto_Rubrica.Active then
+    dmAdministrativo.cdsProjeto_Rubrica.ppuDataRequest();
 end;
 
 procedure TfrmProjeto.ppvExcluirPagamento();
 begin
-  ppvAtualizarRubricas(False);
+  ppvAtualizarRubricas();
   dmAdministrativo.cdsProjeto_Financiador_Pagto.Delete;
 end;
 
@@ -420,7 +392,7 @@ begin
     dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat := EditPercentualPagamento.Value;
     dmAdministrativo.cdsProjeto_Financiador_Pagto.Post;
 
-    ppvAtualizarRubricas(true);
+    ppvAtualizarRubricas();
   except
     dmAdministrativo.cdsProjeto_Financiador_Pagto.Cancel;
     raise;
@@ -573,17 +545,64 @@ begin
     dmAdministrativo.cdsProjetoNOME.AsString) then
     raise Exception.Create('Já existe um projeto com este nome. Por favor, informe outro nome.');
 
+  if dmAdministrativo.cdsProjetoORCAMENTO.AsFloat < 0 then
+    raise TControlException.Create('Informe um orçamento para o projeto.', EditOrcamento);
 end;
 
 procedure TfrmProjeto.pprValidarDadosDetail;
 begin
   inherited;
-  if not dmPrincipal.FuncoesAdm.fpuValidarNomeAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
-    dmAdministrativo.cdsProjeto_AreaID.AsInteger, dmAdministrativo.cdsProjeto_AreaNOME.AsString) then
+  if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Area then
     begin
-      raise Exception.Create('Já existe uma área para este projeto com este nome. Por favor, informe outro nome.');
+      if not dmPrincipal.FuncoesAdm.fpuValidarNomeAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
+        dmAdministrativo.cdsProjeto_AreaID.AsInteger, dmAdministrativo.cdsProjeto_AreaNOME.AsString) then
+        begin
+          raise Exception.Create('Já existe uma área para este projeto com este nome. Por favor, informe outro nome.');
+        end;
+    end
+  else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Rubrica then
+    begin
+      if dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat < 0 then
+        raise TControlException.Create('Informe um orçamento para a rubrica.', EditOrcamentoRubrica);
     end;
+end;
 
+procedure TfrmProjeto.pprAfterSalvarDetail;
+begin
+  inherited;
+  if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Rubrica then
+    begin
+      if not fpvValidarSomaOrcamentoRubricas then
+        begin
+          if TMensagem.fpuPerguntar('A soma dos orçamentos das rubricas atuais está diferente do valor do orçamento do projeto.' +
+            ' Isso irá fazer com que o sistema exiba saldos incorretos para as rubricas. Deseja continuar vinculando rubricas para este projeto?',
+            ppSimNao) = rpSim then
+            begin
+              ppuIncluirDetail;
+              raise TPararExecucaoException.Create('');
+            end;
+        end;
+    end;
+end;
+
+function TfrmProjeto.fpvValidarSomaOrcamentoRubricas: Boolean;
+begin
+  Result := dmAdministrativo.cdsProjeto_RubricaCALC_SOMA_ORCAMENTO.AsString.ToDouble = dmAdministrativo.cdsProjetoORCAMENTO.AsFloat;
+end;
+
+procedure TfrmProjeto.pprBeforeIncluirDetail;
+begin
+  inherited;
+  if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
+    begin
+      if not fpvValidarSomaOrcamentoRubricas then
+        begin
+          TMensagem.ppuShowMessage('A soma dos orçamentos das rubricas atuais está diferente do valor do orçamento do projeto.' +
+            ' Isso irá fazer com que o sistema exiba saldos incorretos para as rubricas. Insira ou altere os valores das rubricas para que seja possível incluir pagamentos de financiadores.');
+
+          raise TPararExecucaoException.Create('');
+        end;
+    end;
 end;
 
 procedure TfrmProjeto.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -611,8 +630,9 @@ end;
 
 procedure TfrmProjeto.pprEfetuarCancelarDetail;
 begin
+  if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
+    dmAdministrativo.cdsProjeto_Financiador_Pagto.CancelUpdates;
   inherited;
-  dmAdministrativo.cdsProjeto_Financiador_Pagto.CancelUpdates;
 end;
 
 procedure TfrmProjeto.pprEfetuarExcluirDetail(ipId: Integer);

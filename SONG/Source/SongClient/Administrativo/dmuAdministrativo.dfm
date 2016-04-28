@@ -604,8 +604,8 @@ inherited dmAdministrativo: TdmAdministrativo
     ProviderName = 'dspqProjeto_Financiador_Pagto'
     RemoteServer = dmPrincipal.ProviderAdministrativo
     RFApplyAutomatico = False
-    Left = 40
-    Top = 132
+    Left = 840
+    Top = 372
     object cdsProjeto_Financiador_PagtoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -976,33 +976,97 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object cdsProjeto_Rubrica: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_PROJETO'
+    AggregatesActive = True
+    FieldDefs = <
+      item
+        Name = 'ID'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_PROJETO'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_RUBRICA'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'ORCAMENTO'
+        Attributes = [faRequired]
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'NOME_RUBRICA'
+        Attributes = [faReadonly]
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'GASTO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 6
+      end
+      item
+        Name = 'RECEBIDO'
+        DataType = ftBCD
+        Precision = 18
+        Size = 4
+      end
+      item
+        Name = 'APROVISIONADO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 6
+      end>
+    IndexDefs = <
+      item
+        Name = 'ORDER_BY_ID_PROJETO'
+        Fields = 'ID_PROJETO'
+        GroupingLevel = 1
+      end>
+    IndexName = 'ORDER_BY_ID_PROJETO'
     MasterFields = 'ID'
     MasterSource = dsProjeto
     PacketRecords = 0
     Params = <>
     ProviderName = 'dspqProjeto_Rubrica'
     RemoteServer = dmPrincipal.ProviderAdministrativo
+    StoreDefs = True
+    OnCalcFields = cdsProjeto_RubricaCalcFields
     RFApplyAutomatico = False
     Left = 480
     Top = 344
     object cdsProjeto_RubricaID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsProjeto_RubricaID_PROJETO: TIntegerField
       DisplayLabel = 'Id do Projeto'
       FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsProjeto_RubricaID_RUBRICA: TIntegerField
       DisplayLabel = 'Id da Rubrica'
       FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsProjeto_RubricaORCAMENTO: TBCDField
       DisplayLabel = 'Or'#231'amento'
       FieldName = 'ORCAMENTO'
+      Origin = 'ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Precision = 18
       Size = 2
@@ -1010,25 +1074,53 @@ inherited dmAdministrativo: TdmAdministrativo
     object cdsProjeto_RubricaNOME_RUBRICA: TStringField
       DisplayLabel = 'Rubrica'
       FieldName = 'NOME_RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
       ReadOnly = True
       Size = 100
     end
     object cdsProjeto_RubricaGASTO: TFMTBCDField
       DisplayLabel = 'Valor Gasto'
       FieldName = 'GASTO'
+      Origin = 'GASTO'
+      ProviderFlags = []
       Precision = 18
       Size = 6
     end
     object cdsProjeto_RubricaRECEBIDO: TBCDField
       DisplayLabel = 'Valor Recebido'
       FieldName = 'RECEBIDO'
+      Origin = 'RECEBIDO'
+      ProviderFlags = []
       Precision = 18
     end
     object cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField
       DisplayLabel = 'Valor Aprovisionado'
       FieldName = 'APROVISIONADO'
+      Origin = 'APROVISIONADO'
+      ProviderFlags = []
       Precision = 18
       Size = 6
+    end
+    object cdsProjeto_RubricaCALC_SALDO_REAL: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_SALDO_REAL'
+      Size = 0
+      Calculated = True
+    end
+    object cdsProjeto_RubricaCALC_SALDO_PREVISTO: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_SALDO_PREVISTO'
+      Calculated = True
+    end
+    object cdsProjeto_RubricaCALC_SOMA_ORCAMENTO: TAggregateField
+      DisplayLabel = 'Soma dos or'#231'amentos'
+      FieldName = 'CALC_SOMA_ORCAMENTO'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(ORCAMENTO)'
+      GroupingLevel = 1
+      IndexName = 'ORDER_BY_ID_PROJETO'
     end
   end
   object cdsProjeto_Area: TRFClientDataSet

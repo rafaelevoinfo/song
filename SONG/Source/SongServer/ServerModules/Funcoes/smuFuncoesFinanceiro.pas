@@ -17,7 +17,7 @@ type
     function fpvVerificarDependenciasPorIdentificador(ipIdentificador, ipNomeTabela: string): Boolean;
     procedure ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
     procedure ppvReceberReabrirParcela(ipIdParcela: Integer; ipReceber: Boolean);
-    procedure ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar,ipContaReceber: Boolean);
+    procedure ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar, ipContaReceber: Boolean);
   public
     function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
@@ -194,13 +194,17 @@ begin;
           procedure(ipDataSetVinculo: TRFQuery)
           begin
             ipDataSetVinculo.SQL.Text := 'Select Conta_Pagar_vinculo.ID_FUNDO, ' +
+              '                                  Fundo.Nome as nome_fundo, '+
               '                                  Conta_Pagar_vinculo.valor ' +
               ' from Conta_Pagar_vinculo ' +
-              ' where Conta_Pagar_vinculo.id_Conta_Pagar = :ID_Conta_Pagar';
+              ' left join fundo on (fundo.id = conta_pagar_vinculo.id_fundo) '+
+              ' where Conta_Pagar_vinculo.id_Conta_Pagar = :ID_Conta_Pagar and '+
+              '       Conta_Pagar_Vinculo.id_fundo is not null';
             ipDataSetVinculo.ParamByName('ID_Conta_Pagar').AsInteger := ipDataSet.FieldByName('ID_Conta_Pagar').AsInteger;
             ipDataSetVinculo.Open();
 
-            ppvAtualizarSaldoFundo(ipIdParcela, ipDataSetVinculo, ipDataSet, not ipQuitar, false);
+            if not ipDataSetVinculo.Eof then
+              ppvAtualizarSaldoFundo(ipIdParcela, ipDataSetVinculo, ipDataSet, not ipQuitar, false);
           end);
       end);
 
@@ -212,10 +216,32 @@ begin;
   end;
 end;
 
-procedure TsmFuncoesFinanceiro.ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar,ipContaReceber: Boolean);
+procedure TsmFuncoesFinanceiro.ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery;
+ipIncrementar, ipContaReceber: Boolean);
 var
-  vaValorPercentual, vaDiferencaArredondamento, vaPercentual, vaSomaPercentuais: Double;
+  vaValorPercentual, vaPercentual, vaSomaPercentuais, vaSomaParcelas: Double;
   vaUpdate: string;
+  I, j: Integer;
+  vaDataSet: TRFQuery;
+
+  procedure plAtualizarSaldoFundo(ipValor: Double);
+  begin
+    vaDataSet.Close;
+    vaDataSet.ParamByName('ID_FUNDO').AsInteger := ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger;
+    vaDataSet.Open();
+
+    if (not vaDataSet.Eof) and (vaDataSet.FieldByName('SALDO').AsFloat < ipValor) and (not ipIncrementar) then
+      begin
+        if (not ipContaReceber) then
+          raise Exception.Create('O fundo ' + ipDataSetVinculo.FieldByName('NOME_FUNDO').AsString +
+            ' não possui saldo suficiente para quitar essa parcela.')
+        else if ipContaReceber then // cancelando um pagamento
+          raise Exception.Create('Não é possível reabrir esta parcela pois o fundo ' + ipDataSetVinculo.FieldByName('NOME_FUNDO').AsString +
+            ' não possui saldo suficiente.');
+      end;
+
+    Connection.ExecSQL(vaUpdate, [ipValor, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger]);
+  end;
 
   function flCalcularValorPercentual: Double;
   var
@@ -226,70 +252,101 @@ var
   end;
 
 begin
-  if ipIncrementar then
-    vaUpdate := 'update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO'
-  else
-    vaUpdate := 'update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO';
+  pprCriarDataSet(vaDataSet);
+  try
+    vaDataSet.SQL.Text := 'Select fundo.saldo from fundo where fundo.id = :ID_FUNDO';
+    if ipIncrementar then
+      vaUpdate := 'update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO'
+    else
+      vaUpdate := 'update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO';
 
-  if ipDataSetParcela.RecordCount = 1 then
-    begin
-      ipDataSetVinculo.First;
-      while not ipDataSetVinculo.Eof do
-        begin
-          Connection.ExecSQL(vaUpdate, [ipDataSetVinculo.FieldByName('VALOR').AsFloat, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger]);
-          ipDataSetVinculo.Next;
-        end;
-    end
-  else
-    begin
-      if ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = 1) and ipIncrementar and ipContaReceber) or//recebeu primeira parcela
-         ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = 1) and (not ipIncrementar) and (not ipContaReceber)) or//pagou primeira parcela          
-         ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = 0) and (not ipIncrementar) and ipContaReceber) or//cancelou todos as parcelas
-         ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = 0) and (ipIncrementar) and (not ipContaReceber)) then //Reabriu todos as parcelas
-        begin
-          ipDataSetVinculo.First;
-          while not ipDataSetVinculo.Eof do
-            begin
+    if ipDataSetParcela.RecordCount = 1 then
+      begin
+        ipDataSetVinculo.First;
+        while not ipDataSetVinculo.Eof do
+          begin
+            plAtualizarSaldoFundo(ipDataSetVinculo.FieldByName('VALOR').AsFloat);
+            ipDataSetVinculo.Next;
+          end;
+      end
+    else
+      begin
+        if ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = ipDataSetParcela.FieldByName('QTDE_PARCELAS').AsInteger) and
+          ipIncrementar and ipContaReceber) or // recebeu a ultima parcela
+          ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = ipDataSetParcela.FieldByName('QTDE_PARCELAS').AsInteger) and
+          (not ipIncrementar) and (not ipContaReceber)) or // pagou ultima parcela
+          ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = ipDataSetParcela.FieldByName('QTDE_PARCELAS').AsInteger - 1) and
+          (not ipIncrementar) and ipContaReceber) or
+        // cancelou a primeira parcela apos ter recebido todas
+          ((ipDataSetParcela.FieldByName('QTDE_PARCELAS_PAGA').AsInteger = ipDataSetParcela.FieldByName('QTDE_PARCELAS').AsInteger - 1) and
+          (ipIncrementar) and (not ipContaReceber)) then
+          // Reabriu a primeira parcela apos ter pago todas
+          begin
+            ipDataSetVinculo.First;
+            for I := 1 to ipDataSetVinculo.RecordCount do
+              begin
+                vaSomaParcelas := 0;
+                ipDataSetParcela.First;
+                while not ipDataSetParcela.Eof do
+                  begin
+                    if ipDataSetParcela.FieldByName('ID').AsInteger <> ipIdParcela then
+                      begin
+                        if I = ipDataSetVinculo.RecordCount then
+                          begin
+                            vaSomaPercentuais := 0;
+                            ipDataSetVinculo.First;
+                            for j := 1 to ipDataSetVinculo.RecordCount do
+                              begin
+                                vaValorPercentual := flCalcularValorPercentual;
+                                if j = ipDataSetVinculo.RecordCount then
+                                  vaSomaParcelas :=
+                                    TUtils.fpuTruncTo(vaSomaParcelas + (ipDataSetParcela.FieldByName('VALOR_PARCELA').AsFloat - vaSomaPercentuais), 2)
+                                else
+                                  vaSomaPercentuais := TUtils.fpuTruncTo(vaSomaPercentuais + vaValorPercentual, 2);
 
-              if not ipDataSetParcela.Locate(TBancoDados.coId, ipIdParcela, []) then
-                raise Exception.Create('Erro ao atualizar o saldo do Fundo. Detalhes: Parcela de id ' + ipIdParcela.ToString + ' não encontrada.');
+                                ipDataSetVinculo.Next;
+                              end;
 
-              vaValorPercentual := flCalcularValorPercentual;
-              vaSomaPercentuais := vaValorPercentual;
+                            ipDataSetVinculo.RecNo := I;
+                          end
+                        else
+                          vaSomaParcelas := TUtils.fpuTruncTo(vaSomaParcelas + flCalcularValorPercentual, 2);
+                      end;
 
-              ipDataSetParcela.First;
-              while not ipDataSetParcela.Eof do
-                begin
-                  if ipDataSetParcela.FieldByName('ID').AsInteger <> ipIdParcela then
-                    begin
-                      vaSomaPercentuais := vaSomaPercentuais + flCalcularValorPercentual;
-                    end;
+                    ipDataSetParcela.Next;
+                  end;
 
-                  ipDataSetParcela.Next;
-                end;
+                plAtualizarSaldoFundo(ipDataSetVinculo.FieldByName('VALOR').AsFloat - vaSomaParcelas);
 
-              vaDiferencaArredondamento := ipDataSetVinculo.FieldByName('VALOR').AsFloat - vaSomaPercentuais;
+                ipDataSetVinculo.Next;
+              end;
+          end
+        else
+          begin
 
-              vaValorPercentual := vaValorPercentual + vaDiferencaArredondamento;
-              Connection.ExecSQL(vaUpdate, [vaValorPercentual, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger]);
+            if not ipDataSetParcela.Locate(TBancoDados.coId, ipIdParcela, []) then
+              raise Exception.Create('Erro ao atualizar o saldo do Fundo. Detalhes: Parcela de id ' + ipIdParcela.ToString + ' não encontrada.');
 
-              ipDataSetVinculo.Next;
-            end;
-        end
-      else
-        begin
-          if not ipDataSetParcela.Locate(TBancoDados.coId, ipIdParcela, []) then
-            raise Exception.Create('Erro ao atualizar o saldo do Fundo. Detalhes: Parcela de id ' + ipIdParcela.ToString + ' não encontrada.');
+            ipDataSetVinculo.First;
+            for I := 1 to ipDataSetVinculo.RecordCount do
+              begin
+                vaValorPercentual := flCalcularValorPercentual;
 
-          ipDataSetVinculo.First;
-          while not ipDataSetVinculo.Eof do
-            begin
-              Connection.ExecSQL(vaUpdate, [flCalcularValorPercentual, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger]);
+                if I = ipDataSetVinculo.RecordCount then
+                  vaValorPercentual := ipDataSetParcela.FieldByName('VALOR_PARCELA').AsFloat - vaSomaPercentuais
+                else
+                  vaSomaPercentuais := TUtils.fpuTruncTo(vaSomaPercentuais + vaValorPercentual, 2);
 
-              ipDataSetVinculo.Next;
-            end;
-        end;
-    end;
+                plAtualizarSaldoFundo(vaValorPercentual);
+
+                ipDataSetVinculo.Next;
+              end;
+          end;
+      end;
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+  end;
 end;
 
 procedure TsmFuncoesFinanceiro.ppvReceberReabrirParcela(ipIdParcela: Integer;
@@ -341,8 +398,10 @@ begin;
           procedure(ipDataSetVinculo: TRFQuery)
           begin
             ipDataSetVinculo.SQL.Text := 'Select conta_receber_vinculo.ID_FUNDO, ' +
+              '                                  Fundo.Nome as nome_fundo, '+
               '                                  conta_receber_vinculo.valor ' +
               ' from conta_receber_vinculo ' +
+              ' inner join fundo on (fundo.id = conta_receber_vinculo.id_fundo) '+
               ' where conta_receber_vinculo.id_conta_receber = :ID_CONTA_RECEBER';
             ipDataSetVinculo.ParamByName('ID_CONTA_RECEBER').AsInteger := ipDataSet.FieldByName('ID_CONTA_RECEBER').AsInteger;
             ipDataSetVinculo.Open();
@@ -363,7 +422,7 @@ end;
 procedure TsmFuncoesFinanceiro.ppuCancelarRecebimentoParcela(
   ipIdParcela: Integer);
 begin
-  ppvReceberReabrirParcela(ipIdParcela, False);
+  ppvReceberReabrirParcela(ipIdParcela, false);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber(
@@ -393,7 +452,7 @@ end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirParcela(ipIdParcela: Integer);
 begin
-  ppvQuitarReabrirParcela(ipIdParcela, False);
+  ppvQuitarReabrirParcela(ipIdParcela, false);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar(

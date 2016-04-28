@@ -2,16 +2,11 @@ inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
   ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -146,9 +141,6 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -277,6 +269,158 @@ inherited frmProjeto: TfrmProjeto
                 end
                 object level1: TcxGridLevel
                   GridView = viewProjetoOrganizacao
+                end
+              end
+            end
+            object tabDetailRubrica: TcxTabSheet
+              Caption = 'Rubricas'
+              ImageIndex = 4
+              object Panel7: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                object btnIncluirRubrica: TButton
+                  Left = 0
+                  Top = 1
+                  Width = 81
+                  Height = 23
+                  Action = Ac_Incluir_Detail
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGrid6: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 193
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object viewRubricas: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  OnCustomDrawCell = viewRubricasCustomDrawCell
+                  DataController.DataSource = dsRubrica
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      Column = viewRubricasORCAMENTO
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      Column = viewRubricasGASTO
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      Column = viewRubricasRECEBIDO
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      Column = viewRubricasAPROVISIONADO
+                    end>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.ShowEditButtons = gsebAlways
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
+                  OptionsView.GroupByBox = False
+                  object viewRubricasID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewRubricasID_RUBRICA: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_RUBRICA'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRubricasNOME_RUBRICA: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_RUBRICA'
+                    Options.Editing = False
+                    Width = 314
+                  end
+                  object viewRubricasORCAMENTO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ORCAMENTO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                  object viewRubricasRECEBIDO: TcxGridDBColumn
+                    DataBinding.FieldName = 'RECEBIDO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                  object viewRubricasGASTO: TcxGridDBColumn
+                    DataBinding.FieldName = 'GASTO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                  object viewRubricasAPROVISIONADO: TcxGridDBColumn
+                    DataBinding.FieldName = 'APROVISIONADO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                  object cxGridDBColumn6: TcxGridDBColumn
+                    Caption = 'Alterar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Alterar_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 45
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                    Width = 45
+                  end
+                  object cxGridDBColumn7: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 45
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                    Width = 45
+                  end
+                end
+                object cxGridLevel5: TcxGridLevel
+                  GridView = viewRubricas
                 end
               end
             end
@@ -460,136 +604,6 @@ inherited frmProjeto: TfrmProjeto
                 end
                 object cxGridLevel2: TcxGridLevel
                   GridView = viewPagamentos
-                end
-              end
-            end
-            object tabDetailRubrica: TcxTabSheet
-              Caption = 'Rubricas'
-              ImageIndex = 4
-              object Panel7: TPanel
-                Left = 0
-                Top = 0
-                Width = 965
-                Height = 25
-                Align = alTop
-                TabOrder = 0
-                object btnIncluirRubrica: TButton
-                  Left = 0
-                  Top = 1
-                  Width = 81
-                  Height = 23
-                  Action = Ac_Incluir_Detail
-                  Images = dmPrincipal.imgIcons_16
-                  TabOrder = 0
-                end
-              end
-              object cxGrid6: TcxGrid
-                Left = 0
-                Top = 25
-                Width = 965
-                Height = 193
-                Align = alClient
-                Images = dmPrincipal.imgIcons_16
-                TabOrder = 1
-                LockedStateImageOptions.Effect = lsieDark
-                LockedStateImageOptions.ShowText = True
-                LockedStateImageOptions.Text = 'Pesquisando...'
-                object viewRubricas: TcxGridDBTableView
-                  OnDblClick = viewRegistrosDetailDblClick
-                  Navigator.Buttons.CustomButtons = <>
-                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
-                  OnCustomDrawCell = viewRubricasCustomDrawCell
-                  DataController.DataSource = dsRubrica
-                  DataController.Summary.DefaultGroupSummaryItems = <>
-                  DataController.Summary.FooterSummaryItems = <>
-                  DataController.Summary.SummaryGroups = <>
-                  FilterRow.Visible = True
-                  OptionsCustomize.ColumnsQuickCustomization = True
-                  OptionsData.CancelOnExit = False
-                  OptionsData.Deleting = False
-                  OptionsData.DeletingConfirmation = False
-                  OptionsData.Inserting = False
-                  OptionsSelection.MultiSelect = True
-                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-                  OptionsView.ShowEditButtons = gsebAlways
-                  OptionsView.GroupByBox = False
-                  object viewRubricasID: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID'
-                    Options.Editing = False
-                  end
-                  object viewRubricasID_RUBRICA: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_RUBRICA'
-                    Visible = False
-                    Options.Editing = False
-                  end
-                  object viewRubricasNOME_RUBRICA: TcxGridDBColumn
-                    DataBinding.FieldName = 'NOME_RUBRICA'
-                    Options.Editing = False
-                    Width = 314
-                  end
-                  object viewRubricasORCAMENTO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ORCAMENTO'
-                    RepositoryItem = dmLookup.repCurPadrao
-                    Options.Editing = False
-                  end
-                  object viewRubricasRECEBIDO: TcxGridDBColumn
-                    DataBinding.FieldName = 'RECEBIDO'
-                    RepositoryItem = dmLookup.repCurPadrao
-                    Options.Editing = False
-                  end
-                  object viewRubricasGASTO: TcxGridDBColumn
-                    DataBinding.FieldName = 'GASTO'
-                    RepositoryItem = dmLookup.repCurPadrao
-                    Options.Editing = False
-                  end
-                  object viewRubricasAPROVISIONADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'APROVISIONADO'
-                    RepositoryItem = dmLookup.repCurPadrao
-                    Options.Editing = False
-                  end
-                  object cxGridDBColumn6: TcxGridDBColumn
-                    Caption = 'Alterar'
-                    PropertiesClassName = 'TcxButtonEditProperties'
-                    Properties.Buttons = <
-                      item
-                        Action = Ac_Alterar_Detail
-                        Default = True
-                        Kind = bkGlyph
-                      end>
-                    Properties.Images = dmPrincipal.imgIcons_16
-                    Properties.ViewStyle = vsButtonsOnly
-                    MinWidth = 45
-                    Options.Filtering = False
-                    Options.ShowEditButtons = isebAlways
-                    Options.GroupFooters = False
-                    Options.Grouping = False
-                    Options.HorzSizing = False
-                    Options.Moving = False
-                    Width = 45
-                  end
-                  object cxGridDBColumn7: TcxGridDBColumn
-                    Caption = 'Excluir'
-                    PropertiesClassName = 'TcxButtonEditProperties'
-                    Properties.Buttons = <
-                      item
-                        Action = Ac_Excluir_Detail
-                        Default = True
-                        Kind = bkGlyph
-                      end>
-                    Properties.Images = dmPrincipal.imgIcons_16
-                    Properties.ViewStyle = vsButtonsOnly
-                    MinWidth = 45
-                    Options.Filtering = False
-                    Options.ShowEditButtons = isebAlways
-                    Options.GroupFooters = False
-                    Options.Grouping = False
-                    Options.HorzSizing = False
-                    Options.Moving = False
-                    Width = 45
-                  end
-                end
-                object cxGridLevel5: TcxGridLevel
-                  GridView = viewRubricas
                 end
               end
             end
@@ -913,7 +927,7 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'STATUS'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 4
+          TabOrder = 3
           Width = 195
         end
         object EditDescricao: TcxDBMemo
@@ -921,21 +935,9 @@ inherited frmProjeto: TfrmProjeto
           Top = 109
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 7
+          TabOrder = 6
           Height = 89
           Width = 838
-        end
-        object EditOrcamento: TcxDBCalcEdit
-          Left = 607
-          Top = 18
-          DataBinding.DataField = 'ORCAMENTO'
-          DataBinding.DataSource = dsMaster
-          Properties.DisplayFormat = 'R$ ,0.00'
-          Properties.ImmediatePost = True
-          Properties.ReadOnly = False
-          Properties.UseThousandSeparator = True
-          TabOrder = 3
-          Width = 133
         end
         object cbContaCorrente: TcxDBLookupComboBox
           Left = 205
@@ -944,7 +946,7 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'ID_BANCO_CONTA_CORRENTE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 5
+          TabOrder = 4
           OnKeyDown = cbContaCorrenteKeyDown
           Width = 220
         end
@@ -955,15 +957,21 @@ inherited frmProjeto: TfrmProjeto
           Height = 21
           Action = Ac_Adicionar_Conta_Corrente
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 6
+          TabOrder = 5
+        end
+        object EditOrcamento: TcxDBCurrencyEdit
+          Left = 606
+          Top = 18
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'ORCAMENTO'
+          DataBinding.DataSource = dsMaster
+          Properties.AssignedValues.MinValue = True
+          TabOrder = 7
+          Width = 121
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1260,7 +1268,6 @@ inherited frmProjeto: TfrmProjeto
               OptionsData.Inserting = False
               OptionsSelection.MultiSelect = True
               OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
-              OptionsView.ShowEditButtons = gsebAlways
               OptionsView.GroupByBox = False
               object Column1: TcxGridDBColumn
                 DataBinding.FieldName = 'ID'

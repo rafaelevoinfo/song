@@ -120,6 +120,7 @@ inherited dmLookup: TdmLookup
       Properties.ListSource = dslkConta_Corrente
     end
     object repCurPadrao: TcxEditRepositoryCurrencyItem
+      Properties.AssignedValues.MinValue = True
       Properties.ClearKey = 46
       Properties.UseThousandSeparator = True
     end
@@ -926,6 +927,12 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Size = 123
     end
+    object cdslkRubricaSALDO_REAL: TFMTBCDField
+      DisplayLabel = 'Saldo Real'
+      FieldName = 'SALDO_REAL'
+      Precision = 18
+      Size = 6
+    end
   end
   object dslkRubrica: TDataSource
     DataSet = cdslkRubrica
@@ -1035,6 +1042,12 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 123
+    end
+    object cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField
+      DisplayLabel = 'Saldo Real'
+      FieldName = 'SALDO_REAL'
+      Precision = 18
+      Size = 6
     end
   end
   object cdslkProjeto_Area: TRFClientDataSet

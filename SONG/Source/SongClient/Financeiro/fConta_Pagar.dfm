@@ -17,8 +17,6 @@ inherited frmContaPagar: TfrmContaPagar
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -213,14 +211,12 @@ inherited frmContaPagar: TfrmContaPagar
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
+            Properties.ActivePage = tabVinculoPesquisa
             ExplicitWidth = 982
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
               ExplicitWidth = 975
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -408,6 +404,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -726,7 +724,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Width = 231
                 Height = 73
                 TabOrder = 1
-                Properties.ActivePage = tabProjeto
+                Properties.ActivePage = tabFundo
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 68
                 ClientRectLeft = 2
@@ -809,7 +807,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 68
                 Align = alTop
                 TabOrder = 0
-                Properties.ActivePage = tabNao
+                Properties.ActivePage = tabSim
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 63
                 ClientRectLeft = 2
@@ -1006,6 +1004,7 @@ inherited frmContaPagar: TfrmContaPagar
               object EditValorVinculo: TcxCurrencyEdit
                 Left = 3
                 Top = 20
+                RepositoryItem = dmLookup.repCurPadrao
                 TabOrder = 0
                 Width = 121
               end
@@ -1163,8 +1162,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel

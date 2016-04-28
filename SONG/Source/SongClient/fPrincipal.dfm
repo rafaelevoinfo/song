@@ -30,6 +30,8 @@ inherited frmPrincipal: TfrmPrincipal
       AllowCloseButton = False
       Caption = 'Avisos'
       ImageIndex = 0
+      ExplicitLeft = -254
+      ExplicitTop = -124
     end
   end
   object mmMenuPrincipal: TMainMenu

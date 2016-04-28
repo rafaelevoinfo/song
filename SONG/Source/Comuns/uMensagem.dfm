@@ -23,7 +23,7 @@ object Mensagem: TMensagem
     Height = 172
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabMensagem
+    Properties.ActivePage = tabErro
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 167
     ClientRectLeft = 2

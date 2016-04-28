@@ -203,13 +203,14 @@ type
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
-    FParcelasQuitadas:Boolean;
+    FParcelasQuitadas: Boolean;
     FIdsParcelasCancelar: TList<Integer>;
     procedure ppvAddVinculo();
     procedure ppvAdicionarParcela(ipParcela: Integer; ipVencimento: TDate;
       ipValor: Double);
     procedure ppvQuitarParcela;
     procedure ppvReabrirParcela;
+    procedure ppvValidarSaldos;
   protected
     function fprGetPermissao: string; override;
     procedure pprExecutarSalvar; override;
@@ -459,6 +460,9 @@ procedure TfrmContaPagar.ppvAddVinculo();
 begin
   dmFinanceiro.cdsConta_Pagar_Vinculo.Append;
   try
+    if VarIsNull(EditValorVinculo.EditValue) then
+      raise TControlException.Create('Informe o valor a ser utilizado neste vínculo.', EditValorVinculo);
+
     if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
       begin
         if VarIsNull(cbProjetoOrigem.EditValue) then
@@ -508,8 +512,7 @@ begin
         plValidarInformacoesAlocado;
       end;
 
-    if VarIsNull(EditValorVinculo.EditValue) then
-      raise TControlException.Create('Informe o valor a ser utilizado neste vínculo.', EditValorVinculo);
+    ppvValidarSaldos;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_VINCULO');
     dmFinanceiro.cdsConta_Pagar_VinculoVALOR.AsFloat := EditValorVinculo.EditValue;
@@ -518,6 +521,49 @@ begin
     dmFinanceiro.cdsConta_Pagar_Vinculo.Cancel;
     raise;
   end;
+end;
+
+procedure TfrmContaPagar.ppvValidarSaldos;
+begin
+  if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
+    begin
+      if rgRecursoAlocado.EditValue = coSim then
+        begin
+          if dmLookup.cdslkRubricaSALDO_REAL.AsFloat < EditValorVinculo.EditValue then
+            begin
+              if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
+                'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
+                begin
+                  raise TPararExecucaoException.Create('');
+                end;
+            end;
+        end
+      else
+        begin
+          if dmLookup.cdslkRubrica_AtividadeSALDO_REAL.AsFloat < EditValorVinculo.EditValue then
+            begin
+              if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
+                'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
+                begin
+                  raise TPararExecucaoException.Create('');
+                end;
+            end;
+        end;
+
+    end
+  else if dmLookup.cdslkFundo.Locate(TBancoDados.coId, cbFundoOrigem.EditValue, []) then
+    begin
+      if dmLookup.cdslkFundoSALDO.AsFloat < EditValorVinculo.EditValue then
+        begin
+          if TMensagem.fpuPerguntar('O fundo selecionado não possui saldo suficiente para quitar esse valor. ' +
+            'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
+            begin
+              raise TPararExecucaoException.Create('');
+            end;
+        end;
+    end
+  else
+    raise TControlException.Create('Fundo de origem do recurso não encontrado.', cbFundoOrigem);
 end;
 
 procedure TfrmContaPagar.Ac_Excluir_VinculoExecute(Sender: TObject);
@@ -712,8 +758,9 @@ begin
   inherited;
   if not VarIsNull(cbAtividadeAlocada.EditValue) then
     begin
-      dmLookup.cdslkRubrica_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, true);
-      dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkRubrica_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue], TOperadores.coAnd, True);
+      dmLookup.cdslkProjeto_Area_Atividade_Alocada.ppuDataRequest([TParametros.coAtividade], [cbAtividadeAlocada.EditValue],
+        TOperadores.coAnd, True);
     end
   else
     begin
@@ -727,8 +774,8 @@ begin
   inherited;
   if not VarIsNull(cbAtividadeOrigem.EditValue) then
     begin
-      dmLookup.cdslkRubrica_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividadeOrigem.EditValue], TOperadores.coAnd, true);
-      dmLookup.cdslkProjeto_Area_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividadeOrigem.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkRubrica_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividadeOrigem.EditValue], TOperadores.coAnd, True);
+      dmLookup.cdslkProjeto_Area_Atividade.ppuDataRequest([TParametros.coAtividade], [cbAtividadeOrigem.EditValue], TOperadores.coAnd, True);
     end
   else
     begin
@@ -771,7 +818,7 @@ begin
         TOperadores.coOR);
       dmLookup.cdslkAtividade.ppuDataRequest();
 
-      dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coProjeto], [cbProjetoOrigem.EditValue], TOperadores.coAnd, true);
+      dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coProjeto], [cbProjetoOrigem.EditValue], TOperadores.coAnd, True);
     end
   else
     begin
@@ -791,8 +838,8 @@ begin
 
   FIdsParcelasCancelar := TList<Integer>.Create;;
 
-  pcRecursoAlocado.Properties.HideTabs := true;
-  pcOrigemRecurso.Properties.HideTabs := true;
+  pcRecursoAlocado.Properties.HideTabs := True;
+  pcOrigemRecurso.Properties.HideTabs := True;
   pcOrigemRecurso.Height := 42;
   gbOrigem.Height := 62;
   pcRecursoAlocado.Height := 46;
@@ -806,13 +853,13 @@ begin
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
-  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
-  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, true);
-  dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
+  dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
-  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 end;
 
 procedure TfrmContaPagar.FormDestroy(Sender: TObject);
