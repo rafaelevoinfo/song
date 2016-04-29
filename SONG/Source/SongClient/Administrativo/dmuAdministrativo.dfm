@@ -1103,19 +1103,21 @@ inherited dmAdministrativo: TdmAdministrativo
       Size = 6
     end
     object cdsProjeto_RubricaCALC_SALDO_REAL: TBCDField
+      DisplayLabel = 'Saldo Real'
       FieldKind = fkCalculated
       FieldName = 'CALC_SALDO_REAL'
       Size = 0
       Calculated = True
     end
     object cdsProjeto_RubricaCALC_SALDO_PREVISTO: TBCDField
+      DisplayLabel = 'Saldo Previsto'
       FieldKind = fkCalculated
       FieldName = 'CALC_SALDO_PREVISTO'
       Calculated = True
     end
-    object cdsProjeto_RubricaCALC_SOMA_ORCAMENTO: TAggregateField
+    object cdsProjeto_RubricaAGG_SOMA_ORCAMENTO: TAggregateField
       DisplayLabel = 'Soma dos or'#231'amentos'
-      FieldName = 'CALC_SOMA_ORCAMENTO'
+      FieldName = 'AGG_SOMA_ORCAMENTO'
       Active = True
       DisplayName = ''
       Expression = 'SUM(ORCAMENTO)'

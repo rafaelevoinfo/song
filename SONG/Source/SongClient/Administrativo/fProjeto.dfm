@@ -5,7 +5,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastroDetailRubrica
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -141,6 +141,9 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -330,6 +333,18 @@ inherited frmProjeto: TfrmProjeto
                       Format = 'R$ ,0.00'
                       Kind = skSum
                       Column = viewRubricasAPROVISIONADO
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'CALC_SALDO_REAL'
+                      Column = ColumnRubricasCALC_SALDO_REAL
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'CALC_SALDO_PREVISTO'
+                      Column = ColumnRubricasCALC_SALDO_PREVISTO
                     end>
                   DataController.Summary.SummaryGroups = <>
                   FilterRow.Visible = True
@@ -346,7 +361,9 @@ inherited frmProjeto: TfrmProjeto
                   OptionsView.GroupByBox = False
                   object viewRubricasID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
+                    Visible = False
                     Options.Editing = False
+                    Width = 34
                   end
                   object viewRubricasID_RUBRICA: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_RUBRICA'
@@ -356,27 +373,43 @@ inherited frmProjeto: TfrmProjeto
                   object viewRubricasNOME_RUBRICA: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_RUBRICA'
                     Options.Editing = False
-                    Width = 314
+                    Width = 252
                   end
                   object viewRubricasORCAMENTO: TcxGridDBColumn
                     DataBinding.FieldName = 'ORCAMENTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 96
                   end
                   object viewRubricasRECEBIDO: TcxGridDBColumn
                     DataBinding.FieldName = 'RECEBIDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 101
                   end
                   object viewRubricasGASTO: TcxGridDBColumn
                     DataBinding.FieldName = 'GASTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 101
                   end
                   object viewRubricasAPROVISIONADO: TcxGridDBColumn
                     DataBinding.FieldName = 'APROVISIONADO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 106
+                  end
+                  object ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn
+                    DataBinding.FieldName = 'CALC_SALDO_REAL'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                    Width = 91
+                  end
+                  object ColumnRubricasCALC_SALDO_PREVISTO: TcxGridDBColumn
+                    DataBinding.FieldName = 'CALC_SALDO_PREVISTO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                    Width = 110
                   end
                   object cxGridDBColumn6: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -972,6 +1005,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5

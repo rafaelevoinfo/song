@@ -168,8 +168,6 @@ type
     IntegerField4: TIntegerField;
     IntegerField5: TIntegerField;
     StringField3: TStringField;
-    cdslkRubricaSALDO_REAL: TFMTBCDField;
-    cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

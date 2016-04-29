@@ -163,7 +163,7 @@ type
     cdsProjeto_RubricaGASTO: TFMTBCDField;
     cdsProjeto_RubricaRECEBIDO: TBCDField;
     cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField;
-    cdsProjeto_RubricaCALC_SOMA_ORCAMENTO: TAggregateField;
+    cdsProjeto_RubricaAGG_SOMA_ORCAMENTO: TAggregateField;
     cdsProjeto_RubricaCALC_SALDO_REAL: TBCDField;
     cdsProjeto_RubricaCALC_SALDO_PREVISTO: TBCDField;
     procedure cdsProjeto_RubricaCalcFields(DataSet: TDataSet);

@@ -48,6 +48,7 @@ type
     SCFuncoesFinanceiro: TDSServerClass;
     SCEstoque: TDSServerClass;
     SCFuncoesEstoque: TDSServerClass;
+    SCRelatorio: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -71,6 +72,8 @@ type
     procedure SCEstoqueGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure SCFuncoesEstoqueGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCRelatorioGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
@@ -100,7 +103,7 @@ implementation
 
 uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
   smuFinanceiro, smuViveiro, smuFuncoesViveiro, smuFuncoesFinanceiro, smuEstoque,
-  smuFuncoesEstoque;
+  smuFuncoesEstoque, smuRelatorio;
 
 { TdmPrincipal }
 
@@ -387,6 +390,12 @@ end;
 procedure TdmPrincipal.SCLookupGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuLookup.TsmLookup;
+end;
+
+procedure TdmPrincipal.SCRelatorioGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+   PersistentClass := smuRelatorio.TSMRelatorio;
 end;
 
 procedure TdmPrincipal.SCViveiroGetClass(DSServerClass: TDSServerClass;

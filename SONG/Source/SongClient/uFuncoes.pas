@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 27/04/2016 00:11:45
+// 28/04/2016 23:21:25
 //
 
 unit uFuncoes;
@@ -57,6 +57,7 @@ type
     FfpuValidarNomeAreaProjetoCommand: TDBXCommand;
     FfpuInfoPessoaCommand: TDBXCommand;
     FppuValidarFinalizarAtividadeCommand: TDBXCommand;
+    FfpuSomaOrcamentoRubricaCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -69,6 +70,7 @@ type
     function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
+    function fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -138,6 +140,7 @@ type
     FppuReceberParcelaCommand: TDBXCommand;
     FppuCancelarRecebimentoParcelaCommand: TDBXCommand;
     FppuCancelarTodosRecebimentosContaReceberCommand: TDBXCommand;
+    FfpuSaldoRealRubricaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -155,6 +158,7 @@ type
     procedure ppuReceberParcela(ipIdParcela: Integer);
     procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
     procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
+    function fpuSaldoRealRubrica(ipIdProjeto: Integer; ipIdRubrica: Integer): Double;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -502,6 +506,20 @@ begin
   FppuValidarFinalizarAtividadeCommand.ExecuteUpdate;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
+begin
+  if FfpuSomaOrcamentoRubricaCommand = nil then
+  begin
+    FfpuSomaOrcamentoRubricaCommand := FDBXConnection.CreateCommand;
+    FfpuSomaOrcamentoRubricaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuSomaOrcamentoRubricaCommand.Text := 'TsmFuncoesAdministrativo.fpuSomaOrcamentoRubrica';
+    FfpuSomaOrcamentoRubricaCommand.Prepare;
+  end;
+  FfpuSomaOrcamentoRubricaCommand.Parameters[0].Value.SetInt32(ipIdProjeto);
+  FfpuSomaOrcamentoRubricaCommand.ExecuteUpdate;
+  Result := FfpuSomaOrcamentoRubricaCommand.Parameters[1].Value.GetDouble;
+end;
+
 procedure TsmFuncoesAdministrativoClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -549,6 +567,7 @@ begin
   FfpuValidarNomeAreaProjetoCommand.DisposeOf;
   FfpuInfoPessoaCommand.DisposeOf;
   FppuValidarFinalizarAtividadeCommand.DisposeOf;
+  FfpuSomaOrcamentoRubricaCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -997,6 +1016,21 @@ begin
   FppuCancelarTodosRecebimentosContaReceberCommand.ExecuteUpdate;
 end;
 
+function TsmFuncoesFinanceiroClient.fpuSaldoRealRubrica(ipIdProjeto: Integer; ipIdRubrica: Integer): Double;
+begin
+  if FfpuSaldoRealRubricaCommand = nil then
+  begin
+    FfpuSaldoRealRubricaCommand := FDBXConnection.CreateCommand;
+    FfpuSaldoRealRubricaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuSaldoRealRubricaCommand.Text := 'TsmFuncoesFinanceiro.fpuSaldoRealRubrica';
+    FfpuSaldoRealRubricaCommand.Prepare;
+  end;
+  FfpuSaldoRealRubricaCommand.Parameters[0].Value.SetInt32(ipIdProjeto);
+  FfpuSaldoRealRubricaCommand.Parameters[1].Value.SetInt32(ipIdRubrica);
+  FfpuSaldoRealRubricaCommand.ExecuteUpdate;
+  Result := FfpuSaldoRealRubricaCommand.Parameters[2].Value.GetDouble;
+end;
+
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1074,6 +1108,7 @@ begin
   FppuReceberParcelaCommand.DisposeOf;
   FppuCancelarRecebimentoParcelaCommand.DisposeOf;
   FppuCancelarTodosRecebimentosContaReceberCommand.DisposeOf;
+  FfpuSaldoRealRubricaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

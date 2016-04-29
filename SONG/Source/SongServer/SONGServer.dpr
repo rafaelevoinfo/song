@@ -24,7 +24,8 @@ uses
   smuFuncoesGeral in 'ServerModules\Funcoes\smuFuncoesGeral.pas' {smFuncoesGeral: TDSServerModule},
   smuFuncoesViveiro in 'ServerModules\Funcoes\smuFuncoesViveiro.pas' {smFuncoesViveiro: TDSServerModule},
   smuEstoque in 'ServerModules\smuEstoque.pas' {smEstoque: TDSServerModule},
-  smuFuncoesEstoque in 'ServerModules\Funcoes\smuFuncoesEstoque.pas' {smFuncoesEstoque: TDSServerModule};
+  smuFuncoesEstoque in 'ServerModules\Funcoes\smuFuncoesEstoque.pas' {smFuncoesEstoque: TDSServerModule},
+  smuRelatorio in 'ServerModules\smuRelatorio.pas' {smRelatorio: TDSServerModule};
 
 {$R *.res}
 

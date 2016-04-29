@@ -35,6 +35,7 @@ type
     dslkCidade: TDataSource;
     cxLocalizer1: TcxLocalizer;
     ProviderEstoque: TRFProviderConnection;
+    ProviderRelatorio: TRFProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);

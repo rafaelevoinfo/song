@@ -422,52 +422,18 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Rubrica.Id,'
-      '       Rubrica.Id_Rubrica_Pai,'
-      '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome,'
+      '                Rubrica.Id_Rubrica_Pai,'
       
-        '       ((select sum(Projeto_Financiador_Pagto.Percentual / 100 *' +
-        ' Projeto_Rubrica.Orcamento)'
-      '                 from Projeto_Financiador'
-      
-        '                 inner join Projeto_Financiador_Pagto on (Projet' +
-        'o_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador' +
-        '.Id)'
-      
-        '                 where Projeto_Financiador.Id_Projeto = Projeto_' +
-        'Rubrica.Id_Projeto) -'
-      ''
-      
-        '       (select sum(Conta_Pagar_Vinculo.Valor * (select sum(Conta' +
-        '_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)'
-      
-        '                                                         from Co' +
-        'nta_Pagar_Parcela'
-      
-        '                                                         inner j' +
-        'oin Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Cont' +
-        'a_Pagar)'
-      
-        '                                                         where C' +
-        'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
-        '_Pagar and'
-      
-        '                                                               C' +
-        'onta_Pagar_Parcela.Status = 1))'
-      '                 from Conta_Pagar_Vinculo'
-      
-        '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
-        'rojeto_Rubrica.Id_Rubrica and'
-      
-        '                       Conta_Pagar_Vinculo.Id_Projeto_Origem = P' +
-        'rojeto_Rubrica.Id_Projeto)) as Saldo_Real'
+        '                (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome)' +
+        ' as Nome'
       'from Rubrica'
       
-        'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
-        'ca.id) '
+        'left join Projeto_Rubrica on (Projeto_Rubrica.Id_Rubrica = Rubri' +
+        'ca.Id)'
       '&where'
       'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) ')
-    Left = 632
-    Top = 16
+    Left = 616
+    Top = 296
     MacroData = <
       item
         Value = Null
@@ -490,14 +456,6 @@ inherited smLookup: TsmLookup
       Origin = 'NOME'
       ProviderFlags = []
       Size = 123
-    end
-    object qlkRubricaSALDO_REAL: TFMTBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'SALDO_REAL'
-      Origin = 'SALDO_REAL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
   end
   object qlkFornecedor: TRFQuery
@@ -600,43 +558,7 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select distinct Rubrica.Id,'
       '       Rubrica.Id_Rubrica_Pai,'
-      '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome,'
-      
-        '       ((select sum(Projeto_Financiador_Pagto.Percentual / 100 *' +
-        ' Projeto_Rubrica.Orcamento)'
-      '                 from Projeto_Financiador'
-      
-        '                 inner join Projeto_Financiador_Pagto on (Projet' +
-        'o_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador' +
-        '.Id)'
-      
-        '                 where Projeto_Financiador.Id_Projeto = Projeto_' +
-        'Rubrica.Id_Projeto) -'
-      ''
-      
-        '       (select sum(Conta_Pagar_Vinculo.Valor * (select sum(Conta' +
-        '_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)'
-      
-        '                                                         from Co' +
-        'nta_Pagar_Parcela'
-      
-        '                                                         inner j' +
-        'oin Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Cont' +
-        'a_Pagar)'
-      
-        '                                                         where C' +
-        'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
-        '_Pagar and'
-      
-        '                                                               C' +
-        'onta_Pagar_Parcela.Status = 1))'
-      '                 from Conta_Pagar_Vinculo'
-      
-        '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
-        'rojeto_Rubrica.Id_Rubrica and'
-      
-        '                       Conta_Pagar_Vinculo.Id_Projeto_Origem = P' +
-        'rojeto_Rubrica.Id_Projeto)) as Saldo_Real'
+      '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
       'from Rubrica'
       
         'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
@@ -675,14 +597,6 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 123
-    end
-    object qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'SALDO_REAL'
-      Origin = 'SALDO_REAL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
   end
   object qlkProjeto_Area: TRFQuery

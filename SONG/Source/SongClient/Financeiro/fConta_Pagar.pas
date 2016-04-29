@@ -529,7 +529,7 @@ begin
     begin
       if rgRecursoAlocado.EditValue = coSim then
         begin
-          if dmLookup.cdslkRubricaSALDO_REAL.AsFloat < EditValorVinculo.EditValue then
+          if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue,cbRubricaProjetoOrigem.EditValue) < EditValorVinculo.EditValue then
             begin
               if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
                 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
@@ -540,7 +540,7 @@ begin
         end
       else
         begin
-          if dmLookup.cdslkRubrica_AtividadeSALDO_REAL.AsFloat < EditValorVinculo.EditValue then
+          if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue,cbRubricaAtividadeOrigem.EditValue) < EditValorVinculo.EditValue then
             begin
               if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
                 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then

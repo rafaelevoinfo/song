@@ -32,6 +32,9 @@ type
     procedure ppuReceberParcela(ipIdParcela: Integer);
     procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
     procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
+
+    function fpuSaldoRealRubrica(ipIdProjeto,ipIdRubrica: Integer): Double;
+
   end;
 
 var
@@ -146,9 +149,75 @@ begin
   Result := vaResult;
 end;
 
+function TsmFuncoesFinanceiro.fpuSaldoRealRubrica(ipIdProjeto, ipIdRubrica: Integer): Double;
+var
+  vaSaldo: Double;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select View_Rubrica_Projeto.Saldo_Real' +
+                            ' from View_Rubrica_Projeto' +
+                            ' where View_Rubrica_Projeto.Id_Projeto = :Id_Projeto and' +
+                            '       View_Rubrica_Projeto.Id_Rubrica = :Id_Rubrica';
+      ipDataSet.ParamByName('ID_PROJETO').AsInteger := ipIdProjeto;
+      ipDataSet.ParamByName('ID_RUBRICA').AsInteger := ipIdRubrica;
+      ipDataSet.Open();
+
+      vaSaldo := ipDataSet.FieldByName('SALDO_REAL').AsFloat;
+    end);
+
+  Result := vaSaldo;
+end;
+
 procedure TsmFuncoesFinanceiro.ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
 var
   vaUpdate: string;
+
+  procedure plValidarSaldoRubricas;
+  var
+    vaRubricas: TStringList;
+  begin
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select Rubrica.Identificador || '' - '' || Rubrica.Nome as Nome_Rubrica,' +
+          '       View_Rubrica_Projeto.Saldo_Real' +
+          ' from Conta_Pagar_Parcela' +
+          '   inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
+          '   inner join View_Rubrica_Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = View_Rubrica_Projeto.Id_Projeto and Conta_Pagar_Vinculo.Id_Rubrica_Origem = View_Rubrica_Projeto.Id_Rubrica)'
+          +
+          '   inner join Rubrica on (Rubrica.Id = View_Rubrica_Projeto.Id_Rubrica)' +
+          ' where Conta_Pagar_Parcela.Id = :ID_PARCELA';
+        ipDataSet.ParamByName('ID_PARCELA').AsInteger := ipIdParcela;
+        ipDataSet.Open();
+
+        vaRubricas := TStringList.Create;
+        try
+          vaRubricas.Delimiter := ',';
+          vaRubricas.StrictDelimiter := True;
+
+          while not ipDataSet.Eof do
+            begin
+              if ipDataSet.FieldByName('SALDO_REAL').AsFloat < 0 then
+                begin
+                  vaRubricas.Add(' ' + ipDataSet.FieldByName('NOME_RUBRICA').AsString);
+                end;
+
+              ipDataSet.Next;
+            end;
+
+          if vaRubricas.Count > 0 then
+            begin
+              raise Exception.Create('Não é possível quitar essa parcela.' + slineBreak +
+                'As seguintes rubricas não possuem saldo suficiente:' + vaRubricas.Text);
+            end;
+        finally
+          vaRubricas.Free;
+        end;
+      end);
+  end;
+
 begin;
   Connection.StartTransaction;
   try
@@ -167,6 +236,12 @@ begin;
 
     if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
       raise Exception.Create('Parcela não encontrada.');
+
+    if ipQuitar then
+      begin
+        // para facilitar, vou realizar o pagamento primeiro e depois vou verificar o saldo, caso seja negativo faço um rollback
+        plValidarSaldoRubricas;
+      end;
 
     pprEncapsularConsulta(
       procedure(ipDataSet: TRFQuery)
@@ -194,11 +269,11 @@ begin;
           procedure(ipDataSetVinculo: TRFQuery)
           begin
             ipDataSetVinculo.SQL.Text := 'Select Conta_Pagar_vinculo.ID_FUNDO, ' +
-              '                                  Fundo.Nome as nome_fundo, '+
+              '                                  Fundo.Nome as nome_fundo, ' +
               '                                  Conta_Pagar_vinculo.valor ' +
               ' from Conta_Pagar_vinculo ' +
-              ' left join fundo on (fundo.id = conta_pagar_vinculo.id_fundo) '+
-              ' where Conta_Pagar_vinculo.id_Conta_Pagar = :ID_Conta_Pagar and '+
+              ' left join fundo on (fundo.id = conta_pagar_vinculo.id_fundo) ' +
+              ' where Conta_Pagar_vinculo.id_Conta_Pagar = :ID_Conta_Pagar and ' +
               '       Conta_Pagar_Vinculo.id_fundo is not null';
             ipDataSetVinculo.ParamByName('ID_Conta_Pagar').AsInteger := ipDataSet.FieldByName('ID_Conta_Pagar').AsInteger;
             ipDataSetVinculo.Open();
@@ -398,15 +473,15 @@ begin;
           procedure(ipDataSetVinculo: TRFQuery)
           begin
             ipDataSetVinculo.SQL.Text := 'Select conta_receber_vinculo.ID_FUNDO, ' +
-              '                                  Fundo.Nome as nome_fundo, '+
+              '                                  Fundo.Nome as nome_fundo, ' +
               '                                  conta_receber_vinculo.valor ' +
               ' from conta_receber_vinculo ' +
-              ' inner join fundo on (fundo.id = conta_receber_vinculo.id_fundo) '+
+              ' inner join fundo on (fundo.id = conta_receber_vinculo.id_fundo) ' +
               ' where conta_receber_vinculo.id_conta_receber = :ID_CONTA_RECEBER';
             ipDataSetVinculo.ParamByName('ID_CONTA_RECEBER').AsInteger := ipDataSet.FieldByName('ID_CONTA_RECEBER').AsInteger;
             ipDataSetVinculo.Open();
 
-            ppvAtualizarSaldoFundo(ipIdParcela, ipDataSetVinculo, ipDataSet, ipReceber, true);
+            ppvAtualizarSaldoFundo(ipIdParcela, ipDataSetVinculo, ipDataSet, ipReceber, True);
           end);
 
       end);
@@ -447,7 +522,7 @@ end;
 
 procedure TsmFuncoesFinanceiro.ppuQuitarParcela(ipIdParcela: Integer);
 begin
-  ppvQuitarReabrirParcela(ipIdParcela, true);
+  ppvQuitarReabrirParcela(ipIdParcela, True);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirParcela(ipIdParcela: Integer);
@@ -477,7 +552,7 @@ end;
 
 procedure TsmFuncoesFinanceiro.ppuReceberParcela(ipIdParcela: Integer);
 begin
-  ppvReceberReabrirParcela(ipIdParcela, true);
+  ppvReceberReabrirParcela(ipIdParcela, True);
 end;
 
 function TsmFuncoesFinanceiro.fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;

@@ -17,6 +17,8 @@ inherited frmContaPagar: TfrmContaPagar
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -216,7 +218,10 @@ inherited frmContaPagar: TfrmContaPagar
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
               ExplicitWidth = 975
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -724,7 +729,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Width = 231
                 Height = 73
                 TabOrder = 1
-                Properties.ActivePage = tabFundo
+                Properties.ActivePage = tabProjeto
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 68
                 ClientRectLeft = 2
@@ -807,7 +812,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 68
                 Align = alTop
                 TabOrder = 0
-                Properties.ActivePage = tabSim
+                Properties.ActivePage = tabNao
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 63
                 ClientRectLeft = 2
@@ -1162,6 +1167,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel

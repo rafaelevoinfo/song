@@ -20,6 +20,8 @@ type
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
 
+    function fpuSomaOrcamentoRubrica(ipIdProjeto: integer):Double;
+
   end;
 
 var
@@ -175,6 +177,27 @@ function TsmFuncoesAdministrativo.fpuValidarNomeProjeto(ipIdProjeto: integer;
 ipNome: String): Boolean;
 begin
   Result := fprValidarCampoUnico('PROJETO', 'NOME', ipIdProjeto, ipNome);
+end;
+
+function TsmFuncoesAdministrativo.fpuSomaOrcamentoRubrica(ipIdProjeto: integer):Double;
+var
+  vaSaldo:Double;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select sum(Projeto_Rubrica.Orcamento) as Soma_Orcamentos, ' +
+        '                           Projeto.Orcamento ' +
+        ' from Projeto_Rubrica' +
+        ' inner join projeto on (projeto.id = projeto_rubrica.id_projeto)' +
+        ' where Projeto_Rubrica.Id_Projeto = :Id_Projeto ' +
+        ' group by Projeto.Orcamento';
+      ipDataSet.ParamByName('Id_Projeto').AsInteger := ipIdProjeto;
+      ipDataSet.Open();
+      vaSaldo := ipDataSet.FieldByName('SOMA_ORCAMENTOS').AsFloat;
+    end);
+
+  Result := vaSaldo;
 end;
 
 procedure TsmFuncoesAdministrativo.ppuValidarFinalizarAtividade(ipIdAtividade: integer);

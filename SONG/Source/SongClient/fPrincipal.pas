@@ -12,7 +12,8 @@ uses
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
-  fFundo, uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel;
+  fFundo, uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
+  fRelatorioFinanceiro;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -75,6 +76,8 @@ type
     Ac_Meus_Dados: TAction;
     Sistema1: TMenuItem;
     MeusDados1: TMenuItem;
+    Ac_Relatorio_Financeiro: TAction;
+    Relatrios1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -101,6 +104,7 @@ type
     procedure Ac_CompraExecute(Sender: TObject);
     procedure Ac_FundoExecute(Sender: TObject);
     procedure Ac_Meus_DadosExecute(Sender: TObject);
+    procedure Ac_Relatorio_FinanceiroExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -286,6 +290,12 @@ procedure TfrmPrincipal.Ac_ProjetoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmProjeto>(pcPrincipal, TfrmProjeto, frmProjeto);
+end;
+
+procedure TfrmPrincipal.Ac_Relatorio_FinanceiroExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmRelatorioFinanceiro>(pcPrincipal, TfrmRelatorioFinanceiro, frmRelatorioFinanceiro);
 end;
 
 procedure TfrmPrincipal.Ac_RubricasExecute(Sender: TObject);

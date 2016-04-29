@@ -306,6 +306,7 @@ inherited dmLookup: TdmLookup
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkRubrica
     end
     object repIcbFormaPagamento: TcxEditRepositoryImageComboBoxItem
@@ -429,6 +430,7 @@ inherited dmLookup: TdmLookup
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkRubrica_Atividade
     end
     object repLcbProjetoArea: TcxEditRepositoryLookupComboBoxItem
@@ -927,12 +929,6 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Size = 123
     end
-    object cdslkRubricaSALDO_REAL: TFMTBCDField
-      DisplayLabel = 'Saldo Real'
-      FieldName = 'SALDO_REAL'
-      Precision = 18
-      Size = 6
-    end
   end
   object dslkRubrica: TDataSource
     DataSet = cdslkRubrica
@@ -1042,12 +1038,6 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 123
-    end
-    object cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField
-      DisplayLabel = 'Saldo Real'
-      FieldName = 'SALDO_REAL'
-      Precision = 18
-      Size = 6
     end
   end
   object cdslkProjeto_Area: TRFClientDataSet
@@ -1234,8 +1224,8 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkProjeto_Area_Atividade'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 316
-    Top = 652
+    Left = 324
+    Top = 628
     object IntegerField4: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []

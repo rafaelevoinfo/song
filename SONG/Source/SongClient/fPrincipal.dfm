@@ -30,8 +30,6 @@ inherited frmPrincipal: TfrmPrincipal
       AllowCloseButton = False
       Caption = 'Avisos'
       ImageIndex = 0
-      ExplicitLeft = -254
-      ExplicitTop = -124
     end
   end
   object mmMenuPrincipal: TMainMenu
@@ -80,6 +78,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object Rubricas1: TMenuItem
         Action = Ac_Rubricas
+      end
+      object Relatrios1: TMenuItem
+        Action = Ac_Relatorio_Financeiro
       end
     end
     object miGestao: TMenuItem
@@ -250,6 +251,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Sistema'
       Caption = 'Meus Dados'
       OnExecute = Ac_Meus_DadosExecute
+    end
+    object Ac_Relatorio_Financeiro: TAction
+      Category = 'Financeiro'
+      Caption = 'Relat'#243'rios'
+      OnExecute = Ac_Relatorio_FinanceiroExecute
     end
   end
   object dxSkinController1: TdxSkinController

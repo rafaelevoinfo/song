@@ -195,6 +195,8 @@ type
     viewPagamentosCadastroPERCENTUAL: TcxGridDBColumn;
     viewRubricasAPROVISIONADO: TcxGridDBColumn;
     EditOrcamento: TcxDBCurrencyEdit;
+    ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn;
+    ColumnRubricasCALC_SALDO_PREVISTO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -222,7 +224,6 @@ type
     procedure ppvCarregarFinanciadores;
     procedure ppvExcluirPagamento;
     procedure ppvAtualizarRubricas();
-    function fpvValidarSomaOrcamentoRubricas: Boolean;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -233,7 +234,6 @@ type
     procedure pprEfetuarPesquisa; override;
 
     procedure pprExecutarSalvarDetail; override;
-    procedure pprAfterSalvarDetail; override;
     function fprHabilitarSalvarDetail(): Boolean; override;
     procedure pprEfetuarCancelarDetail; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -550,6 +550,8 @@ begin
 end;
 
 procedure TfrmProjeto.pprValidarDadosDetail;
+var
+  vaSaldoReal: Double;
 begin
   inherited;
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Area then
@@ -564,30 +566,17 @@ begin
     begin
       if dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat < 0 then
         raise TControlException.Create('Informe um orçamento para a rubrica.', EditOrcamentoRubrica);
-    end;
-end;
 
-procedure TfrmProjeto.pprAfterSalvarDetail;
-begin
-  inherited;
-  if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Rubrica then
-    begin
-      if not fpvValidarSomaOrcamentoRubricas then
+      vaSaldoReal := dmPrincipal.FuncoesAdm.fpuSomaOrcamentoRubrica(dmAdministrativo.cdsProjetoID.AsInteger);
+      if dmAdministrativo.cdsProjeto_Rubrica.State = dsEdit then
         begin
-          if TMensagem.fpuPerguntar('A soma dos orçamentos das rubricas atuais está diferente do valor do orçamento do projeto.' +
-            ' Isso irá fazer com que o sistema exiba saldos incorretos para as rubricas. Deseja continuar vinculando rubricas para este projeto?',
-            ppSimNao) = rpSim then
-            begin
-              ppuIncluirDetail;
-              raise TPararExecucaoException.Create('');
-            end;
-        end;
+          if (vaSaldoReal - dmAdministrativo.cdsProjeto_RubricaORCAMENTO.OldValue) + dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat >
+            dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
+            raise Exception.Create('A soma de todos os orçamentos das rubricas deste projeto não pode ser superior ao orçamento do projeto.');
+        end
+      else if vaSaldoReal + dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat > dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
+        raise Exception.Create('A soma de todos os orçamentos das rubricas deste projeto não pode ser superior ao orçamento do projeto.');
     end;
-end;
-
-function TfrmProjeto.fpvValidarSomaOrcamentoRubricas: Boolean;
-begin
-  Result := dmAdministrativo.cdsProjeto_RubricaCALC_SOMA_ORCAMENTO.AsString.ToDouble = dmAdministrativo.cdsProjetoORCAMENTO.AsFloat;
 end;
 
 procedure TfrmProjeto.pprBeforeIncluirDetail;
@@ -595,13 +584,8 @@ begin
   inherited;
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     begin
-      if not fpvValidarSomaOrcamentoRubricas then
-        begin
-          TMensagem.ppuShowMessage('A soma dos orçamentos das rubricas atuais está diferente do valor do orçamento do projeto.' +
-            ' Isso irá fazer com que o sistema exiba saldos incorretos para as rubricas. Insira ou altere os valores das rubricas para que seja possível incluir pagamentos de financiadores.');
-
-          raise TPararExecucaoException.Create('');
-        end;
+      if dmPrincipal.FuncoesAdm.fpuSomaOrcamentoRubrica(dmAdministrativo.cdsProjetoID.AsInteger) <> dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
+        raise Exception.Create('Não é possível incluir financiadores enquanto a soma dos orçamentos das rubricas não for igual ao orçamento do projeto.');
     end;
 end;
 

@@ -47,7 +47,10 @@ uses
   fEntrada in 'Estoque\fEntrada.pas' {frmEntrada},
   fCompra in 'Estoque\fCompra.pas' {frmCompra},
   fSolicitacaoCompra in 'Estoque\fSolicitacaoCompra.pas' {frmSolicitacaoCompra},
-  fFundo in 'Financeiro\fFundo.pas' {frmFundo};
+  fFundo in 'Financeiro\fFundo.pas' {frmFundo},
+  fRelatorioBasico in 'Relatorios\fRelatorioBasico.pas' {frmRelatorioBasico},
+  fRelatorioFinanceiro in 'Relatorios\fRelatorioFinanceiro.pas' {frmRelatorioFinanceiro},
+  dmuRelatorio in 'Relatorios\dmuRelatorio.pas' {dmRelatorio: TDataModule};
 
 {$R Localization.RES}
   {$R *.res}

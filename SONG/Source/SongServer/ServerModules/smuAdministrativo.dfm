@@ -1110,74 +1110,15 @@ inherited smAdministrativo: TsmAdministrativo
   object qProjeto_Rubrica: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      ''
-      ''
       'select distinct Projeto_Rubrica.Id,'
       '                Projeto_Rubrica.Id_Projeto,'
       '                Projeto_Rubrica.Id_Rubrica,'
       '                Projeto_Rubrica.Orcamento,'
+      '                view_rubrica_projeto.valor_gasto as Gasto,'
+      '                view_rubrica_projeto.valor_recebido as Recebido,'
       
-        '                (select sum(Conta_Pagar_Vinculo.Valor * (select ' +
-        'sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)'
-      
-        '                                                         from Co' +
-        'nta_Pagar_Parcela'
-      
-        '                                                         inner j' +
-        'oin Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Cont' +
-        'a_Pagar)'
-      
-        '                                                         where C' +
-        'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
-        '_Pagar and'
-      
-        '                                                               C' +
-        'onta_Pagar_Parcela.Status = 1))'
-      '                 from Conta_Pagar_Vinculo'
-      
-        '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
-        'rojeto_Rubrica.Id_Rubrica and'
-      
-        '                       Conta_Pagar_Vinculo.Id_Projeto_Origem = P' +
-        'rojeto_Rubrica.Id_Projeto) as Gasto,'
-      ''
-      
-        '                (select sum(Projeto_Financiador_Pagto.Percentual' +
-        ' / 100 * Projeto_Rubrica.Orcamento)'
-      '                 from Projeto_Financiador'
-      
-        '                 inner join Projeto_Financiador_Pagto on (Projet' +
-        'o_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador' +
-        '.Id)'
-      
-        '                 where Projeto_Financiador.Id_Projeto = Projeto_' +
-        'Rubrica.Id_Projeto) as Recebido,'
-      ''
-      
-        '                (select sum(Conta_Pagar_Vinculo.Valor * (select ' +
-        'sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)'
-      
-        '                                                         from Co' +
-        'nta_Pagar_Parcela'
-      
-        '                                                         inner j' +
-        'oin Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Cont' +
-        'a_Pagar)'
-      
-        '                                                         where C' +
-        'onta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta' +
-        '_Pagar and'
-      
-        '                                                               C' +
-        'onta_Pagar_Parcela.Status = 0))'
-      '                 from Conta_Pagar_Vinculo'
-      
-        '                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = P' +
-        'rojeto_Rubrica.Id_Rubrica and'
-      
-        '                       Conta_Pagar_Vinculo.Id_Projeto_Origem = P' +
-        'rojeto_Rubrica.Id_Projeto) as Aprovisionado,'
-      ''
+        '                view_rubrica_projeto.valor_aprovisionado as Apro' +
+        'visionado,'
       
         '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
         's Nome_Rubrica'
@@ -1187,7 +1128,11 @@ inherited smAdministrativo: TsmAdministrativo
         'left join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Rubrica' +
         '_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_' +
         'Projeto_Origem = Projeto_Rubrica.Id_Projeto)'
-      'where Projeto_Rubrica.Id_Projeto = :Id_Projeto    ')
+      
+        'left join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proje' +
+        'to = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rubr' +
+        'ica = Projeto_Rubrica.Id_Rubrica)'
+      'where Projeto_Rubrica.Id_Projeto = :Id_Projeto   ')
     Left = 224
     Top = 288
     ParamData = <
