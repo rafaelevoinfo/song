@@ -19,6 +19,13 @@ type
     qSaldoProjetoSALDO_REAL: TFMTBCDField;
     qSaldoProjetoSALDO_PREVISTO: TFMTBCDField;
     qSaldoProjetoID: TIntegerField;
+    qSaldoDetalhado: TRFQuery;
+    qSaldoDetalhadoORIGEM: TStringField;
+    qSaldoDetalhadoDESCRICAO: TStringField;
+    qSaldoDetalhadoVALOR: TBCDField;
+    dtfldSaldoDetalhadoDATA: TDateField;
+    qSaldoDetalhadoPROJETO_FUNDO: TStringField;
+    qSaldoDetalhadoTIPO: TStringField;
   private
     { Private declarations }
   public

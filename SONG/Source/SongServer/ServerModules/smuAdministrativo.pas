@@ -162,6 +162,7 @@ type
     qProjeto_RubricaGASTO: TFMTBCDField;
     qProjeto_RubricaRECEBIDO: TBCDField;
     qProjeto_RubricaAPROVISIONADO: TFMTBCDField;
+    qOrganizacaoLOGO: TBlobField;
   private
     { Private declarations }
   protected

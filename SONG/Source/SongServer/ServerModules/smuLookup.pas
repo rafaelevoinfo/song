@@ -97,6 +97,8 @@ type
     qlkFundoID: TIntegerField;
     qlkFundoNOME: TStringField;
     qlkFundoSALDO: TBCDField;
+    qlkOrganizacaoCNPJ: TStringField;
+    qlkOrganizacaoLOGO: TBlobField;
   private
     { Private declarations }
   protected

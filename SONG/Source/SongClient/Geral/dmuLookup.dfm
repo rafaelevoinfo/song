@@ -4,7 +4,7 @@ inherited dmLookup: TdmLookup
   Height = 755
   Width = 1015
   object Repositorio: TcxEditRepository
-    Left = 16
+    Left = 48
     Top = 16
     object RepIcbNaoSim: TcxEditRepositoryImageComboBoxItem
       Properties.Items = <
@@ -509,7 +509,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
-    Left = 16
+    Left = 48
     Top = 232
   end
   object cdslkPessoa: TRFClientDataSet
@@ -518,7 +518,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkPessoa'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 312
+    Left = 352
     Top = 448
     object cdslkPessoaID: TIntegerField
       FieldName = 'ID'
@@ -533,7 +533,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkPessoa: TDataSource
     DataSet = cdslkPessoa
-    Left = 904
+    Left = 936
     Top = 124
   end
   object cdslkOrganizacao: TRFClientDataSet
@@ -542,7 +542,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkOrganizacao'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 460
+    Left = 500
     Top = 448
     object cdslkOrganizacaoID: TIntegerField
       FieldName = 'ID'
@@ -554,6 +554,16 @@ inherited dmLookup: TdmLookup
       Required = True
       Size = 100
     end
+    object cdslkOrganizacaoCNPJ: TStringField
+      FieldName = 'CNPJ'
+      ProviderFlags = []
+      Size = 14
+    end
+    object cdslkOrganizacaoLOGO: TBlobField
+      DisplayLabel = 'Logo'
+      FieldName = 'LOGO'
+      ProviderFlags = []
+    end
   end
   object cdslkFinanciador: TRFClientDataSet
     Aggregates = <>
@@ -561,7 +571,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkFinanciador'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 608
+    Left = 648
     Top = 448
     object cdslkFinanciadorID: TIntegerField
       FieldName = 'ID'
@@ -576,12 +586,12 @@ inherited dmLookup: TdmLookup
   end
   object dslkOrganizacao: TDataSource
     DataSet = cdslkOrganizacao
-    Left = 608
+    Left = 640
     Top = 232
   end
   object dslkFinanciador: TDataSource
     DataSet = cdslkFinanciador
-    Left = 756
+    Left = 788
     Top = 232
   end
   object cdslkBanco: TRFClientDataSet
@@ -590,7 +600,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkBanco'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 904
+    Left = 944
     Top = 340
     object cdslkBancoID: TIntegerField
       FieldName = 'ID'
@@ -615,7 +625,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkBanco_Conta_Corrente'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 16
+    Left = 56
     Top = 448
     object cdslkBanco_Conta_CorrenteID: TIntegerField
       FieldName = 'ID'
@@ -644,12 +654,12 @@ inherited dmLookup: TdmLookup
   end
   object dslkBanco: TDataSource
     DataSet = cdslkBanco
-    Left = 460
+    Left = 492
     Top = 124
   end
   object dslkConta_Corrente: TDataSource
     DataSet = cdslkConta_Corrente
-    Left = 460
+    Left = 492
     Top = 16
   end
   object cdslkConta_Corrente: TRFClientDataSet
@@ -659,7 +669,7 @@ inherited dmLookup: TdmLookup
     RemoteServer = dmPrincipal.ProviderLookup
     OnCalcFields = cdslkConta_CorrenteCalcFields
     RFApplyAutomatico = False
-    Left = 164
+    Left = 204
     Top = 448
     object cdslkConta_CorrenteID: TIntegerField
       FieldName = 'ID'
@@ -706,7 +716,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkProjeto'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 756
+    Left = 796
     Top = 448
     object cdslkProjetoID: TIntegerField
       FieldName = 'ID'
@@ -727,7 +737,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkAtividade'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 312
+    Left = 352
     Top = 556
     object cdslkAtividadeID: TIntegerField
       FieldName = 'ID'
@@ -750,12 +760,12 @@ inherited dmLookup: TdmLookup
   end
   object dslkAtividade: TDataSource
     DataSet = cdslkAtividade
-    Left = 312
+    Left = 344
     Top = 16
   end
   object dslkProjeto: TDataSource
     DataSet = cdslkProjeto
-    Left = 756
+    Left = 788
     Top = 16
   end
   object cdslkEspecie: TRFClientDataSet
@@ -764,7 +774,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkEspecie'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 460
+    Left = 500
     Top = 556
     object cdslkEspecieID: TIntegerField
       FieldName = 'ID'
@@ -797,7 +807,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkEspecie: TDataSource
     DataSet = cdslkEspecie
-    Left = 312
+    Left = 344
     Top = 124
   end
   object cdslkMatriz: TRFClientDataSet
@@ -806,7 +816,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkMatriz'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 608
+    Left = 648
     Top = 556
     object cdslkMatrizID: TIntegerField
       FieldName = 'ID'
@@ -828,7 +838,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkMatriz: TDataSource
     DataSet = cdslkMatriz
-    Left = 16
+    Left = 48
     Top = 124
   end
   object cdslkCanteiro: TRFClientDataSet
@@ -837,7 +847,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkCanteiro'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 904
+    Left = 944
     Top = 448
     object cdslkCanteiroID: TIntegerField
       FieldName = 'ID'
@@ -854,7 +864,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkCanteiro: TDataSource
     DataSet = cdslkCanteiro
-    Left = 164
+    Left = 196
     Top = 16
   end
   object cdslkPerfil: TRFClientDataSet
@@ -863,7 +873,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkPerfil'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 24
+    Left = 64
     Top = 564
     object cdslkPerfilID: TIntegerField
       FieldName = 'ID'
@@ -880,7 +890,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkPlano_Contas'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 164
+    Left = 204
     Top = 556
     object cdslkPlano_ContasID: TIntegerField
       FieldName = 'ID'
@@ -904,7 +914,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkPlano_Contas: TDataSource
     DataSet = cdslkPlano_Contas
-    Left = 312
+    Left = 344
     Top = 232
   end
   object cdslkRubrica: TRFClientDataSet
@@ -913,7 +923,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkRubrica'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 756
+    Left = 796
     Top = 340
     object cdslkRubricaID: TIntegerField
       FieldName = 'ID'
@@ -932,7 +942,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkRubrica: TDataSource
     DataSet = cdslkRubrica
-    Left = 460
+    Left = 492
     Top = 232
   end
   object cdslkFornecedor: TRFClientDataSet
@@ -940,7 +950,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkFornecedor'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 904
+    Left = 936
     Top = 232
     object cdslkFornecedorID: TIntegerField
       FieldName = 'ID'
@@ -955,7 +965,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkFornecedor: TDataSource
     DataSet = cdslkFornecedor
-    Left = 904
+    Left = 936
     Top = 16
   end
   object cdslkFin_For_Cli: TRFClientDataSet
@@ -963,7 +973,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkFin_For_Cli'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 460
+    Left = 500
     Top = 340
     object cdslkFin_For_CliID: TIntegerField
       FieldName = 'ID'
@@ -976,7 +986,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkFin_For_Cli: TDataSource
     DataSet = cdslkFin_For_Cli
-    Left = 164
+    Left = 196
     Top = 124
   end
   object cdslkItem: TRFClientDataSet
@@ -984,7 +994,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkItem'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 608
+    Left = 648
     Top = 340
     object cdslkItemID: TIntegerField
       FieldName = 'ID'
@@ -1013,7 +1023,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkItem: TDataSource
     DataSet = cdslkItem
-    Left = 608
+    Left = 640
     Top = 16
   end
   object cdslkRubrica_Atividade: TRFClientDataSet
@@ -1021,7 +1031,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkRubrica_Atividade'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 312
+    Left = 352
     Top = 340
     object cdslkRubrica_AtividadeID: TIntegerField
       FieldName = 'ID'
@@ -1045,7 +1055,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkProjeto_Area'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 16
+    Left = 56
     Top = 340
     object cdslkProjeto_AreaID: TIntegerField
       FieldName = 'ID'
@@ -1067,7 +1077,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkProjeto_Area_Atividade'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 164
+    Left = 204
     Top = 340
     object cdslkProjeto_Area_AtividadeID: TIntegerField
       FieldName = 'ID'
@@ -1086,17 +1096,17 @@ inherited dmLookup: TdmLookup
   end
   object dslkRubrica_Atividade: TDataSource
     DataSet = cdslkRubrica_Atividade
-    Left = 756
+    Left = 788
     Top = 124
   end
   object dslkProjeto_Area: TDataSource
     DataSet = cdslkProjeto_Area
-    Left = 608
+    Left = 640
     Top = 124
   end
   object dslkProjeto_Area_Atividade: TDataSource
     DataSet = cdslkProjeto_Area_Atividade
-    Left = 164
+    Left = 196
     Top = 232
   end
   object cdslkCompra: TRFClientDataSet
@@ -1104,7 +1114,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkCompra'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 752
+    Left = 792
     Top = 544
     object cdslkCompraID: TIntegerField
       FieldName = 'ID'
@@ -1132,7 +1142,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkCompra: TDataSource
     DataSet = cdslkCompra
-    Left = 472
+    Left = 512
     Top = 648
   end
   object cdslkFundo: TRFClientDataSet
@@ -1140,7 +1150,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkFundo'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 888
+    Left = 928
     Top = 544
     object cdslkFundoID: TIntegerField
       FieldName = 'ID'
@@ -1165,7 +1175,7 @@ inherited dmLookup: TdmLookup
   end
   object dslkFundo: TDataSource
     DataSet = cdslkFundo
-    Left = 608
+    Left = 648
     Top = 656
   end
   object cdslkAtividade_Alocada: TRFClientDataSet
@@ -1174,7 +1184,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkAtividade'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 192
+    Left = 232
     Top = 660
     object IntegerField1: TIntegerField
       FieldName = 'ID'
@@ -1200,7 +1210,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkRubrica_Atividade'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 40
+    Left = 80
     Top = 652
     object IntegerField2: TIntegerField
       FieldName = 'ID'
@@ -1224,7 +1234,7 @@ inherited dmLookup: TdmLookup
     Params = <>
     ProviderName = 'dspqlkProjeto_Area_Atividade'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 324
+    Left = 364
     Top = 628
     object IntegerField4: TIntegerField
       FieldName = 'ID'

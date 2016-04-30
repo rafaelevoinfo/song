@@ -39,9 +39,11 @@ inherited smLookup: TsmLookup
   object qlkOrganizacao: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select ORGANIZACAO.ID,'
-      '       ORGANIZACAO.NOME'
-      'from ORGANIZACAO  '
+      'select Organizacao.Id,'
+      '       Organizacao.Nome,'
+      '       Organizacao.Cnpj,'
+      '       organizacao.logo'
+      'from Organizacao'
       '&WHERE')
     Left = 188
     Top = 124
@@ -62,6 +64,17 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
       Size = 100
+    end
+    object qlkOrganizacaoCNPJ: TStringField
+      FieldName = 'CNPJ'
+      Origin = 'CNPJ'
+      ProviderFlags = []
+      Size = 14
+    end
+    object qlkOrganizacaoLOGO: TBlobField
+      FieldName = 'LOGO'
+      Origin = 'LOGO'
+      ProviderFlags = []
     end
   end
   object qlkFinanciador: TRFQuery

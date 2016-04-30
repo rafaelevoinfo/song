@@ -283,7 +283,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       ORGANIZACAO.COMPLEMENTO,'
       '       cidade.nome as CIDADE,'
       '       ORGANIZACAO.TELEFONE,'
-      '       ORGANIZACAO.ID_CIDADE'
+      '       ORGANIZACAO.ID_CIDADE,'
+      '       ORGANIZACAO.LOGO'
       'from ORGANIZACAO  '
       'left join cidade on (cidade.id = organizacao.id_cidade)'
       '&WHERE')
@@ -351,6 +352,11 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOME'
       ProviderFlags = []
       Size = 120
+    end
+    object qOrganizacaoLOGO: TBlobField
+      FieldName = 'LOGO'
+      Origin = 'LOGO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qOrganizacao_Pessoa: TRFQuery

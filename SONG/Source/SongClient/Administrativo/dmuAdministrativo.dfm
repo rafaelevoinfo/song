@@ -305,6 +305,10 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = []
       Size = 120
     end
+    object cdsOrganizacaoLOGO: TBlobField
+      FieldName = 'LOGO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsOrganizacao_Pessoa: TRFClientDataSet
     Aggregates = <>

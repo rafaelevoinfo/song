@@ -640,3 +640,8 @@ from Projeto_Rubrica
 inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)
 left join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Rubrica_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto_Rubrica.Id_Projeto);
 
+
+
+ALTER TABLE ORGANIZACAO
+    ADD LOGO BLOB SUB_TYPE 0 SEGMENT SIZE 80;
+

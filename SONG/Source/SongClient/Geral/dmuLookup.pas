@@ -168,6 +168,8 @@ type
     IntegerField4: TIntegerField;
     IntegerField5: TIntegerField;
     StringField3: TStringField;
+    cdslkOrganizacaoCNPJ: TStringField;
+    cdslkOrganizacaoLOGO: TBlobField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

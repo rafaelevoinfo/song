@@ -1,5 +1,7 @@
 inherited frmRelatorioBasico: TfrmRelatorioBasico
+  ActiveControl = cbOrganizacao
   Caption = 'frmRelatorioBasico'
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object pnBotoes: TPanel
@@ -21,9 +23,6 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
       Images = dmPrincipal.imgIcons_32
       TabOrder = 0
       WordWrap = True
-      ExplicitLeft = 1
-      ExplicitTop = 1
-      ExplicitWidth = 128
     end
   end
   object pnConfiguracoes: TPanel
@@ -34,8 +33,34 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 169
-    ExplicitWidth = 815
+    object pnOrganizacao: TPanel
+      AlignWithMargins = True
+      Left = 0
+      Top = 3
+      Width = 852
+      Height = 48
+      Margins.Left = 0
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitLeft = 3
+      ExplicitWidth = 849
+      object lb2: TLabel
+        Left = 1
+        Top = 11
+        Width = 60
+        Height = 16
+        Caption = 'Organiza'#231#227'o'
+      end
+      object cbOrganizacao: TcxLookupComboBox
+        Left = 0
+        Top = 27
+        RepositoryItem = dmLookup.repLcbOrganizacao
+        Properties.ListColumns = <>
+        TabOrder = 0
+        Width = 281
+      end
+    end
   end
   object ActionList: TActionList
     Images = dmPrincipal.imgIcons_32
@@ -44,6 +69,12 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
     object Ac_GerarRelatorio: TAction
       Caption = 'Gerar Relat'#243'rio'
       ImageIndex = 15
+      OnExecute = Ac_GerarRelatorioExecute
     end
+  end
+  object dsOrganizacao: TDataSource
+    DataSet = dmLookup.cdslkOrganizacao
+    Left = 296
+    Top = 112
   end
 end

@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
-  dmuPrincipal;
+  dmuPrincipal, uMensagem, cxImage;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)
@@ -55,7 +55,15 @@ type
     EditTelefone: TcxDBMaskEdit;
     cbCidade: TcxDBLookupComboBox;
     dslkCidade: TDataSource;
+    EditFoto: TcxDBImage;
+    lb1: TLabel;
+    btnLimparFoto: TButton;
+    btnCarregarFoto: TButton;
+    Ac_CarregarImagem: TAction;
+    Ac_Limpar: TAction;
     procedure FormCreate(Sender: TObject);
+    procedure Ac_CarregarImagemExecute(Sender: TObject);
+    procedure Ac_LimparExecute(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -78,6 +86,31 @@ implementation
 {$R *.dfm}
 
 { TfrmOrganizacao }
+
+procedure TfrmOrganizacao.Ac_CarregarImagemExecute(Sender: TObject);
+begin
+  inherited;
+  try
+    EditFoto.LoadFromFile;
+  except
+    on e: Exception do
+      TMensagem.ppuShowException('Imagem inválida.', e);
+  end;
+end;
+
+procedure TfrmOrganizacao.Ac_LimparExecute(Sender: TObject);
+begin
+  inherited;
+   try
+    if not(dmAdministrativo.cdsOrganizacao.State in [dsEdit, dsInsert]) then
+      dmAdministrativo.cdsOrganizacao.Edit;
+
+    dmAdministrativo.cdsOrganizacaoLOGO.Clear;
+  except
+    on e: Exception do
+      TMensagem.ppuShowException('Erro ao remover a logo.', e);
+  end;
+end;
 
 procedure TfrmOrganizacao.FormCreate(Sender: TObject);
 begin

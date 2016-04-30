@@ -31,7 +31,7 @@ type
     Label17: TLabel;
     cbContaCorrente: TcxDBLookupComboBox;
     Label4: TLabel;
-    cbClienteFinanciador: TcxDBLookupComboBox;
+    cbCliente: TcxDBLookupComboBox;
     cbPlanoContas: TcxDBLookupComboBox;
     Label5: TLabel;
     Label8: TLabel;
@@ -498,7 +498,7 @@ begin
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
-  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], ['1' + coDelimitadorPadrao + '3'], TOperadores.coAnd, True);
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcReceita)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 

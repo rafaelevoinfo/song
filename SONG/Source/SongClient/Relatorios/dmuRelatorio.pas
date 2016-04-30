@@ -16,6 +16,13 @@ type
     cdsSaldoProjetoVALOR_GASTO: TFMTBCDField;
     cdsSaldoProjetoSALDO_REAL: TFMTBCDField;
     cdsSaldoProjetoSALDO_PREVISTO: TFMTBCDField;
+    cdsSaldoDetalhado: TRFClientDataSet;
+    cdsSaldoDetalhadoTIPO: TStringField;
+    cdsSaldoDetalhadoORIGEM: TStringField;
+    cdsSaldoDetalhadoDESCRICAO: TStringField;
+    cdsSaldoDetalhadoVALOR: TBCDField;
+    dtfldSaldoDetalhadoDATA: TDateField;
+    cdsSaldoDetalhadoPROJETO_FUNDO: TStringField;
   private
     { Private declarations }
   public

@@ -17,6 +17,7 @@ inherited frmPrincipal: TfrmPrincipal
     Height = 387
     Align = alClient
     TabOrder = 0
+    TabStop = False
     Properties.ActivePage = tabDashBoard
     Properties.AllowTabDragDrop = True
     Properties.CloseButtonMode = cbmEveryTab

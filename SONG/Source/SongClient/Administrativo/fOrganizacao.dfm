@@ -89,11 +89,6 @@ inherited frmOrganizacao: TfrmOrganizacao
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 156
-              inherited pnBotoesDetail: TPanel
-                inherited btnIncluirDetail: TButton
-                  ExplicitLeft = 1
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -154,6 +149,13 @@ inherited frmOrganizacao: TfrmOrganizacao
           Width = 42
           Height = 13
           Caption = 'Telefone'
+        end
+        object lb1: TLabel
+          Left = 653
+          Top = 6
+          Width = 23
+          Height = 13
+          Caption = 'Logo'
         end
         object EditNome: TcxDBTextEdit
           Left = 6
@@ -272,6 +274,36 @@ inherited frmOrganizacao: TfrmOrganizacao
           TabOrder = 3
           Width = 135
         end
+        object EditFoto: TcxDBImage
+          Left = 652
+          Top = 22
+          DataBinding.DataField = 'LOGO'
+          DataBinding.DataSource = dsMaster
+          Properties.FitMode = ifmProportionalStretch
+          Properties.GraphicClassName = 'TdxSmartImage'
+          Properties.ImmediatePost = True
+          TabOrder = 5
+          Height = 122
+          Width = 188
+        end
+        object btnLimparFoto: TButton
+          Left = 654
+          Top = 154
+          Width = 75
+          Height = 28
+          Action = Ac_Limpar
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 6
+        end
+        object btnCarregarFoto: TButton
+          Left = 733
+          Top = 154
+          Width = 107
+          Height = 28
+          Action = Ac_CarregarImagem
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 7
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
@@ -332,6 +364,20 @@ inherited frmOrganizacao: TfrmOrganizacao
           Width = 500
         end
       end
+    end
+  end
+  inherited ActionList1: TActionList
+    object Ac_CarregarImagem: TAction
+      Category = 'Master'
+      Caption = 'Carregar Imagem'
+      ImageIndex = 9
+      OnExecute = Ac_CarregarImagemExecute
+    end
+    object Ac_Limpar: TAction
+      Category = 'Master'
+      Caption = 'Limpar'
+      ImageIndex = 5
+      OnExecute = Ac_LimparExecute
     end
   end
   inherited dsMaster: TDataSource

@@ -1,13 +1,12 @@
 inherited frmContaReceber: TfrmContaReceber
-  ActiveControl = btnIncluir
+  ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -329,10 +328,10 @@ inherited frmContaReceber: TfrmContaReceber
         object Label4: TLabel
           Left = 213
           Top = 2
-          Width = 92
+          Width = 33
           Height = 13
-          Caption = 'Cliente/Financiador'
-          FocusControl = cbClienteFinanciador
+          Caption = 'Cliente'
+          FocusControl = cbCliente
         end
         object Label5: TLabel
           Left = 433
@@ -356,7 +355,7 @@ inherited frmContaReceber: TfrmContaReceber
           Width = 102
           Height = 13
           Caption = 'Forma de Pagamento'
-          FocusControl = cbClienteFinanciador
+          FocusControl = cbCliente
         end
         object Label13: TLabel
           Left = 657
@@ -393,7 +392,7 @@ inherited frmContaReceber: TfrmContaReceber
           TabOrder = 3
           Width = 205
         end
-        object cbClienteFinanciador: TcxDBLookupComboBox
+        object cbCliente: TcxDBLookupComboBox
           Left = 211
           Top = 18
           RepositoryItem = dmLookup.repLcbFinForCli
