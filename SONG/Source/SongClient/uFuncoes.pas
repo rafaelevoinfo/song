@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 28/04/2016 23:21:25
+// 02/05/2016 23:55:55
 //
 
 unit uFuncoes;
@@ -58,6 +58,7 @@ type
     FfpuInfoPessoaCommand: TDBXCommand;
     FppuValidarFinalizarAtividadeCommand: TDBXCommand;
     FfpuSomaOrcamentoRubricaCommand: TDBXCommand;
+    FfpuSomaPagametosFinanciadorCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -71,6 +72,7 @@ type
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
     function fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
+    function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: Integer): Double;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -193,6 +195,16 @@ type
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmRelatorioClient = class(TDSAdminClient)
+  private
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -520,6 +532,20 @@ begin
   Result := FfpuSomaOrcamentoRubricaCommand.Parameters[1].Value.GetDouble;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: Integer): Double;
+begin
+  if FfpuSomaPagametosFinanciadorCommand = nil then
+  begin
+    FfpuSomaPagametosFinanciadorCommand := FDBXConnection.CreateCommand;
+    FfpuSomaPagametosFinanciadorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuSomaPagametosFinanciadorCommand.Text := 'TsmFuncoesAdministrativo.fpuSomaPagametosFinanciador';
+    FfpuSomaPagametosFinanciadorCommand.Prepare;
+  end;
+  FfpuSomaPagametosFinanciadorCommand.Parameters[0].Value.SetInt32(ipIdProjetoFinanciador);
+  FfpuSomaPagametosFinanciadorCommand.ExecuteUpdate;
+  Result := FfpuSomaPagametosFinanciadorCommand.Parameters[1].Value.GetDouble;
+end;
+
 procedure TsmFuncoesAdministrativoClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -568,6 +594,7 @@ begin
   FfpuInfoPessoaCommand.DisposeOf;
   FppuValidarFinalizarAtividadeCommand.DisposeOf;
   FfpuSomaOrcamentoRubricaCommand.DisposeOf;
+  FfpuSomaPagametosFinanciadorCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1289,6 +1316,50 @@ begin
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+procedure TsmRelatorioClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmRelatorio.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmRelatorioClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmRelatorioClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmRelatorioClient.Destroy;
+begin
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

@@ -197,6 +197,9 @@ type
     EditOrcamento: TcxDBCurrencyEdit;
     ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn;
     ColumnRubricasCALC_SALDO_PREVISTO: TcxGridDBColumn;
+    Label23: TLabel;
+    EditValorFinanciar: TcxDBCurrencyEdit;
+    viewProjetoFinanciadorVALOR_FINANCIADO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -576,6 +579,17 @@ begin
         end
       else if vaSaldoReal + dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat > dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
         raise Exception.Create('A soma de todos os orçamentos das rubricas deste projeto não pode ser superior ao orçamento do projeto.');
+    end
+  else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
+    begin
+      if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat < 0 then
+        raise TControlException.Create('Informe um valor a ser financiado.', EditOrcamentoRubrica);
+
+      if (dmAdministrativo.cdsProjeto_Financiador_Pagto.RecordCount > 0) then
+        begin
+          if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat < StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0) then
+            raise Exception.Create('A soma de todas as parcelas não pode ser superior ao valor a financiar.');
+        end;
     end;
 end;
 
@@ -585,7 +599,8 @@ begin
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     begin
       if dmPrincipal.FuncoesAdm.fpuSomaOrcamentoRubrica(dmAdministrativo.cdsProjetoID.AsInteger) <> dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
-        raise Exception.Create('Não é possível incluir financiadores enquanto a soma dos orçamentos das rubricas não for igual ao orçamento do projeto.');
+        raise Exception.Create
+          ('Não é possível incluir financiadores enquanto a soma dos orçamentos das rubricas não for igual ao orçamento do projeto.');
     end;
 end;
 

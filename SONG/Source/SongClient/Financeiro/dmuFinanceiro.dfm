@@ -518,40 +518,6 @@ inherited dmFinanceiro: TdmFinanceiro
     Left = 512
     Top = 16
   end
-  object cdsFundo: TRFClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspqFundo'
-    RemoteServer = dmPrincipal.ProviderFinanceiro
-    Left = 520
-    Top = 88
-    object cdsFundoID: TIntegerField
-      FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cdsFundoNOME: TStringField
-      DisplayLabel = 'Nome'
-      FieldName = 'NOME'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 100
-    end
-    object cdsFundoSALDO: TBCDField
-      DisplayLabel = 'Saldo'
-      FieldName = 'SALDO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
-    end
-    object cdsFundoDESCRICAO: TStringField
-      DisplayLabel = 'Descri'#231#227'o'
-      FieldName = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 1000
-    end
-  end
   object cdsConta_Pagar_Vinculo: TRFClientDataSet
     Aggregates = <>
     IndexFieldNames = 'ID_CONTA_PAGAR'

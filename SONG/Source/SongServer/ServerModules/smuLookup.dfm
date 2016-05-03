@@ -254,10 +254,15 @@ inherited smLookup: TsmLookup
     end
   end
   object qlkProjeto: TRFQuery
+    Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select PROJETO.ID,'
+      'select distinct PROJETO.ID,'
       '       PROJETO.NOME'
       'from PROJETO  '
+      
+        'inner join projeto_organizacao on (projeto.id = projeto_organiza' +
+        'cao.id_projeto)--Todo projeto deve estar vinculado a pelo menos ' +
+        'uma organizacao'
       '&WHERE')
     Left = 336
     Top = 16
@@ -266,6 +271,19 @@ inherited smLookup: TsmLookup
         Value = Null
         Name = 'WHERE'
       end>
+    object qlkProjetoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkProjetoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
   end
   object qlkCidade: TRFQuery
     Connection = dmPrincipal.conSong
@@ -728,8 +746,12 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select Fundo.Id,'
       '       Fundo.Nome,'
+      '       Organizacao.Nome as Organizacao,'
       '       Fundo.Saldo'
       'from Fundo  '
+      
+        'inner join organizacao on (fundo.id_organizacao = organizacao.id' +
+        ')'
       '&WHERE')
     Left = 328
     Top = 288
@@ -758,6 +780,13 @@ inherited smLookup: TsmLookup
       Required = True
       Precision = 18
       Size = 2
+    end
+    object qlkFundoORGANIZACAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ORGANIZACAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

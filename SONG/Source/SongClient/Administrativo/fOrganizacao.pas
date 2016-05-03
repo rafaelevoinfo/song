@@ -61,9 +61,32 @@ type
     btnCarregarFoto: TButton;
     Ac_CarregarImagem: TAction;
     Ac_Limpar: TAction;
+    tabDetailFundo: TcxTabSheet;
+    pnBotoesDetailFundo: TPanel;
+    Button1: TButton;
+    cxGridFundo: TcxGrid;
+    viewFundo: TcxGridDBTableView;
+    ColumnAlterarFundo: TcxGridDBColumn;
+    ColumnExcluirFundo: TcxGridDBColumn;
+    level1: TcxGridLevel;
+    tabCadastroFundo: TcxTabSheet;
+    pnBotoesCadastroFundo: TPanel;
+    btnSalvarFundo: TButton;
+    btnCancelarFundo: TButton;
+    btnSalvarIncluirFundo: TButton;
+    pnEditsCadastroFundo: TPanel;
+    dsDetailFundo: TDataSource;
+    viewFundoID: TcxGridDBColumn;
+    viewFundoNOME: TcxGridDBColumn;
+    viewFundoSALDO: TcxGridDBColumn;
+    Label14: TLabel;
+    EditNomeFundo: TcxDBTextEdit;
+    Label15: TLabel;
+    EditDescricaoFundo: TcxDBMemo;
     procedure FormCreate(Sender: TObject);
     procedure Ac_CarregarImagemExecute(Sender: TObject);
     procedure Ac_LimparExecute(Sender: TObject);
+    procedure pcDetailsChange(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -71,6 +94,9 @@ type
     function fprGetPermissao: String; override;
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterarDetail; override;
+
+    procedure pprDefinirTabDetailCadastro; override;
+    procedure pprPreencherCamposPadroes(ipDataSet: TDataSet);override;
 
     procedure pprFiltrarPessoas(ipIdPessoaIgnorar: Integer = 0);
   public
@@ -150,10 +176,29 @@ begin
   dmLookup.cdslkPessoa.Filtered := dmLookup.cdslkPessoa.Filter <> '';
 end;
 
+procedure TfrmOrganizacao.pprPreencherCamposPadroes(ipDataSet: TDataSet);
+begin
+  inherited;
+  if dmAdministrativo.cdsFundoSALDO.IsNull then
+    dmAdministrativo.cdsFundoSALDO.AsFloat := 0;
+end;
+
 procedure TfrmOrganizacao.ppuRetornar;
 begin
   inherited;
   dmLookup.cdslkPessoa.Filtered := False;
+end;
+
+procedure TfrmOrganizacao.pcDetailsChange(Sender: TObject);
+begin
+  inherited;
+  if pcDetails.ActivePage = tabDetail then
+    dsDetail.DataSet := dmAdministrativo.cdsOrganizacao_Pessoa
+  else if pcDetails.ActivePage = tabDetailFundo then
+    dsDetail.DataSet := dmAdministrativo.cdsFundo;
+
+  if not dsDetail.DataSet.Active then
+    dsDetail.DataSet.Open;
 end;
 
 procedure TfrmOrganizacao.pprBeforeAlterarDetail;
@@ -166,6 +211,14 @@ procedure TfrmOrganizacao.pprBeforeIncluirDetail;
 begin
   inherited;
   pprFiltrarPessoas;
+end;
+
+procedure TfrmOrganizacao.pprDefinirTabDetailCadastro;
+begin
+   if pcDetails.ActivePage = tabDetail then
+    pcPrincipal.ActivePage := tabCadastroDetail
+  else if pcDetails.ActivePage = tabDetailFundo then
+    pcPrincipal.ActivePage := tabCadastroFundo;
 end;
 
 end.

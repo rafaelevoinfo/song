@@ -1,5 +1,7 @@
 inherited smRelatorio: TsmRelatorio
   OldCreateOrder = True
+  Height = 390
+  Width = 551
   object qSaldoProjeto: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -20,8 +22,8 @@ inherited smRelatorio: TsmRelatorio
         'to = Projeto.Id)'
       'where Projeto.Id = :Id_Projeto or :Id_Projeto is null'
       'group by Projeto.id, Projeto.Nome, Projeto.Orcamento')
-    Left = 48
-    Top = 24
+    Left = 56
+    Top = 32
     ParamData = <
       item
         Name = 'ID_PROJETO'
@@ -150,7 +152,7 @@ inherited smRelatorio: TsmRelatorio
         'ente_financiador)'
       'inner join fundo on (fundo.id =  conta_receber_vinculo.id_fundo)'
       'where Conta_Receber_Vinculo.Id_Fundo = :Id_Fundo     ')
-    Left = 152
+    Left = 264
     Top = 32
     ParamData = <
       item
@@ -204,5 +206,23 @@ inherited smRelatorio: TsmRelatorio
       ProviderFlags = []
       Size = 100
     end
+  end
+  object qSaldoGeral: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select View_Movimentacao_Financeira.Id_Movimentacao,'
+      '       View_Movimentacao_Financeira.Id_Organizacao,'
+      '       View_Movimentacao_Financeira.Nome_Organizacao,'
+      '       View_Movimentacao_Financeira.Tipo_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Id_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Tipo,'
+      '       View_Movimentacao_Financeira.Descricao_Tipo,'
+      '       View_Movimentacao_Financeira.Descricao_Movimentacao,'
+      '       View_Movimentacao_Financeira.Valor_Previsto,'
+      '       View_Movimentacao_Financeira.Valor_Real'
+      'from View_Movimentacao_Financeira  ')
+    Left = 72
+    Top = 120
   end
 end

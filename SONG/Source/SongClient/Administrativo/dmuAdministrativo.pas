@@ -167,6 +167,14 @@ type
     cdsProjeto_RubricaCALC_SALDO_REAL: TBCDField;
     cdsProjeto_RubricaCALC_SALDO_PREVISTO: TBCDField;
     cdsOrganizacaoLOGO: TBlobField;
+    cdsFundo: TRFClientDataSet;
+    cdsFundoID: TIntegerField;
+    cdsFundoNOME: TStringField;
+    cdsFundoSALDO: TBCDField;
+    cdsFundoDESCRICAO: TStringField;
+    cdsFundoID_ORGANIZACAO: TIntegerField;
+    cdsProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
+    cdsProjeto_Financiador_PagtoTOTAL: TAggregateField;
     procedure cdsProjeto_RubricaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

@@ -12,7 +12,7 @@ uses
   fBanco, fAtividade, fEspecie, fFornecedor, fMatriz, fCanteiro,
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
-  fFundo, uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
+  uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
   fRelatorioFinanceiro;
 
 type
@@ -71,8 +71,6 @@ type
     SolicitaodeCompra1: TMenuItem;
     Ac_Compra: TAction;
     Compras1: TMenuItem;
-    Ac_Fundo: TAction;
-    Fundos1: TMenuItem;
     Ac_Meus_Dados: TAction;
     Sistema1: TMenuItem;
     MeusDados1: TMenuItem;
@@ -102,7 +100,6 @@ type
     procedure Ac_EntradaExecute(Sender: TObject);
     procedure Ac_Solicitacao_CompraExecute(Sender: TObject);
     procedure Ac_CompraExecute(Sender: TObject);
-    procedure Ac_FundoExecute(Sender: TObject);
     procedure Ac_Meus_DadosExecute(Sender: TObject);
     procedure Ac_Relatorio_FinanceiroExecute(Sender: TObject);
   protected
@@ -189,12 +186,6 @@ procedure TfrmPrincipal.Ac_FornecedorExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmFornecedor>(pcPrincipal, TfrmFornecedor, frmFornecedor);
-end;
-
-procedure TfrmPrincipal.Ac_FundoExecute(Sender: TObject);
-begin
-  inherited;
-  TUtils.ppuAbrirFormAba<TfrmFundo>(pcPrincipal, TfrmFundo, frmFundo);
 end;
 
 procedure TfrmPrincipal.Ac_ItemExecute(Sender: TObject);

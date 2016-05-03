@@ -21,6 +21,7 @@ type
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
 
     function fpuSomaOrcamentoRubrica(ipIdProjeto: integer):Double;
+    function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: integer):Double;
 
   end;
 
@@ -198,6 +199,26 @@ begin
     end);
 
   Result := vaSaldo;
+end;
+
+function TsmFuncoesAdministrativo.fpuSomaPagametosFinanciador(
+  ipIdProjetoFinanciador: integer): Double;
+var
+  vaSaldo:Double;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select sum(Projeto_Financiador_Pagto.Valor) as Soma_Valor ' +
+        ' from Projeto_Financiador_Pagto' +
+        ' where Projeto_Financiador_Pagto.Id_Projeto_Financiador = :Id_Projeto_Financiador ';
+      ipDataSet.ParamByName('Id_Projeto_Financiador').AsInteger := ipIdProjetoFinanciador;
+      ipDataSet.Open();
+      vaSaldo := ipDataSet.FieldByName('SOMA_VALOR').AsFloat;
+    end);
+
+  Result := vaSaldo;
+
 end;
 
 procedure TsmFuncoesAdministrativo.ppuValidarFinalizarAtividade(ipIdAtividade: integer);

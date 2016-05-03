@@ -94,11 +94,6 @@ type
     cdsConta_PagarNUMERO_DOCUMENTO: TStringField;
     cdsConta_ReceberNUMERO_DOCUMENTO: TStringField;
     cdsConta_PagarID_COMPRA: TIntegerField;
-    cdsFundo: TRFClientDataSet;
-    cdsFundoID: TIntegerField;
-    cdsFundoNOME: TStringField;
-    cdsFundoSALDO: TBCDField;
-    cdsFundoDESCRICAO: TStringField;
     cdsConta_Pagar_Vinculo: TRFClientDataSet;
     cdsConta_Pagar_VinculoID: TIntegerField;
     cdsConta_Pagar_VinculoID_CONTA_PAGAR: TIntegerField;

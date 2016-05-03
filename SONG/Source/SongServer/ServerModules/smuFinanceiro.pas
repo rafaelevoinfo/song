@@ -95,11 +95,6 @@ type
     qConta_PagarNUMERO_DOCUMENTO: TStringField;
     qConta_ReceberNUMERO_DOCUMENTO: TStringField;
     qConta_PagarID_COMPRA: TIntegerField;
-    qFundo: TRFQuery;
-    qFundoID: TIntegerField;
-    qFundoNOME: TStringField;
-    qFundoSALDO: TBCDField;
-    qFundoDESCRICAO: TStringField;
     qConta_Pagar_Vinculo: TRFQuery;
     qConta_Pagar_VinculoID: TIntegerField;
     qConta_Pagar_VinculoID_CONTA_PAGAR: TIntegerField;

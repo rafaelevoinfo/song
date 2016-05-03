@@ -92,6 +92,8 @@ type
     lb3: TLabel;
     cbProjetoSaldoDetalhado: TcxLookupComboBox;
     ppLine3: TppLine;
+    tabSaldoGeral: TcxTabSheet;
+    chkTodasOrganizacoes: TcxCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure SaldoProjetoBindAssignedValue(Sender: TObject;

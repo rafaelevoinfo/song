@@ -170,6 +170,7 @@ type
     StringField3: TStringField;
     cdslkOrganizacaoCNPJ: TStringField;
     cdslkOrganizacaoLOGO: TBlobField;
+    cdslkFundoORGANIZACAO: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

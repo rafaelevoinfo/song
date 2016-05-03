@@ -163,6 +163,13 @@ type
     qProjeto_RubricaRECEBIDO: TBCDField;
     qProjeto_RubricaAPROVISIONADO: TFMTBCDField;
     qOrganizacaoLOGO: TBlobField;
+    qFundo: TRFQuery;
+    qFundoID: TIntegerField;
+    qFundoID_ORGANIZACAO: TIntegerField;
+    qFundoNOME: TStringField;
+    qFundoSALDO: TBCDField;
+    qFundoDESCRICAO: TStringField;
+    qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
   private
     { Private declarations }
   protected

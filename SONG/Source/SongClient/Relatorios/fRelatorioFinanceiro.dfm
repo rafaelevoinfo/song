@@ -1,5 +1,7 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
+  ExplicitWidth = 1000
+  ExplicitHeight = 720
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnConfiguracoes: TPanel
@@ -11,12 +13,25 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 1
       TabStop = False
-      Properties.ActivePage = tabSaldoDetalhado
+      Properties.ActivePage = tabSaldoGeral
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
       ClientRectRight = 850
       ClientRectTop = 25
+      object tabSaldoGeral: TcxTabSheet
+        Caption = 'Saldo Geral'
+        ImageIndex = 2
+        object chkTodasOrganizacoes: TcxCheckBox
+          Left = 4
+          Top = 5
+          Caption = 'Saldo geral de todas as organiza'#231#245'es'
+          Properties.OnEditValueChanged = chkTodosSaldosProjetosPropertiesEditValueChanged
+          TabOrder = 0
+          Transparent = True
+          Width = 245
+        end
+      end
       object tabSaldoProjeto: TcxTabSheet
         Caption = 'Saldo Por Projeto'
         ImageIndex = 0
@@ -66,10 +81,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     inherited pnOrganizacao: TPanel
-      inherited lb2: TLabel
-        Height = 13
-        ExplicitHeight = 13
-      end
+      ExplicitLeft = 0
+      ExplicitWidth = 852
     end
   end
   inherited ActionList: TActionList

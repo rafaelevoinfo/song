@@ -99,6 +99,9 @@ type
     qlkFundoSALDO: TBCDField;
     qlkOrganizacaoCNPJ: TStringField;
     qlkOrganizacaoLOGO: TBlobField;
+    qlkProjetoID: TIntegerField;
+    qlkProjetoNOME: TStringField;
+    qlkFundoORGANIZACAO: TStringField;
   private
     { Private declarations }
   protected

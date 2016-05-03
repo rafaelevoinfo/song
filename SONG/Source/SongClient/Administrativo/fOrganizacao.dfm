@@ -1,17 +1,12 @@
 inherited frmOrganizacao: TfrmOrganizacao
-  ActiveControl = EditNome
+  ActiveControl = btnIncluir
   Caption = 'Organiza'#231#245'es'
   ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -83,6 +78,116 @@ inherited frmOrganizacao: TfrmOrganizacao
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabDetailFundo
+            OnChange = pcDetailsChange
+            object tabDetailFundo: TcxTabSheet [0]
+              Caption = 'Fundos'
+              ImageIndex = 1
+              object pnBotoesDetailFundo: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = 8
+                object Button1: TButton
+                  Left = 1
+                  Top = 1
+                  Width = 81
+                  Height = 23
+                  Action = Ac_Incluir_Detail
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGridFundo: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 131
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object viewFundo: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsDetailFundo
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewFundoID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewFundoNOME: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME'
+                    Options.Editing = False
+                    Width = 525
+                  end
+                  object viewFundoSALDO: TcxGridDBColumn
+                    DataBinding.FieldName = 'SALDO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                  end
+                  object ColumnAlterarFundo: TcxGridDBColumn
+                    Caption = 'Alterar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Alterar_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                  object ColumnExcluirFundo: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                end
+                object level1: TcxGridLevel
+                  GridView = viewFundo
+                end
+              end
+            end
             inherited tabDetail: TcxTabSheet
               Caption = 'Contatos da Organiza'#231#227'o'
               ExplicitLeft = 2
@@ -307,10 +412,6 @@ inherited frmOrganizacao: TfrmOrganizacao
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 258
@@ -365,6 +466,94 @@ inherited frmOrganizacao: TfrmOrganizacao
         end
       end
     end
+    object tabCadastroFundo: TcxTabSheet
+      Caption = 'tabCadastroFundo'
+      ImageIndex = 3
+      object pnBotoesCadastroFundo: TPanel
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 50
+        Align = alTop
+        TabOrder = 0
+        ExplicitTop = 8
+        object btnSalvarFundo: TButton
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Salvar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 0
+        end
+        object btnCancelarFundo: TButton
+          AlignWithMargins = True
+          Left = 215
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Cancelar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 2
+        end
+        object btnSalvarIncluirFundo: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 114
+          Height = 42
+          Action = Ac_Salvar_Incluir_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 1
+        end
+      end
+      object pnEditsCadastroFundo: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        object Label14: TLabel
+          Left = 5
+          Top = 3
+          Width = 27
+          Height = 13
+          Caption = 'Nome'
+          FocusControl = EditNomeFundo
+        end
+        object Label15: TLabel
+          Left = 5
+          Top = 44
+          Width = 46
+          Height = 13
+          Caption = 'Descri'#231#227'o'
+          FocusControl = EditDescricaoFundo
+        end
+        object EditNomeFundo: TcxDBTextEdit
+          Left = 4
+          Top = 17
+          DataBinding.DataField = 'NOME'
+          DataBinding.DataSource = dsDetailFundo
+          TabOrder = 0
+          Width = 296
+        end
+        object EditDescricaoFundo: TcxDBMemo
+          Left = 4
+          Top = 60
+          DataBinding.DataField = 'DESCRICAO'
+          DataBinding.DataSource = dsDetailFundo
+          TabOrder = 1
+          Height = 89
+          Width = 964
+        end
+      end
+    end
   end
   inherited ActionList1: TActionList
     object Ac_CarregarImagem: TAction
@@ -392,5 +581,10 @@ inherited frmOrganizacao: TfrmOrganizacao
     DataSet = dmPrincipal.cdslkCidade
     Left = 400
     Top = 184
+  end
+  object dsDetailFundo: TDataSource
+    DataSet = dmAdministrativo.cdsFundo
+    Left = 560
+    Top = 232
   end
 end

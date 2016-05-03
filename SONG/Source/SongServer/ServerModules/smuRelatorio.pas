@@ -26,10 +26,11 @@ type
     dtfldSaldoDetalhadoDATA: TDateField;
     qSaldoDetalhadoPROJETO_FUNDO: TStringField;
     qSaldoDetalhadoTIPO: TStringField;
+    qSaldoGeral: TRFQuery;
   private
     { Private declarations }
   public
-    { Public declarations }
+    function fpuRelatorioSaldoGeral(ipIdOrganizacao:Integer):OleVariant;
   end;
 
 var
@@ -41,5 +42,18 @@ uses
   dmuPrincipal;
 
 {$R *.dfm}
+
+{ TsmRelatorio }
+
+function TsmRelatorio.fpuRelatorioSaldoGeral(
+  ipIdOrganizacao: Integer): OleVariant;
+begin
+  qSaldoGeral.Close;
+  qSaldoGeral.Open;
+  //TODO: Jogar os registros para um cds e realizar os devidos calculos para se saber o valor total para cada
+//  organizacao
+
+
+end;
 
 end.

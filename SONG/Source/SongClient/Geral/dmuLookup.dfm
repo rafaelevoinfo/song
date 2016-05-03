@@ -120,7 +120,6 @@ inherited dmLookup: TdmLookup
       Properties.ListSource = dslkConta_Corrente
     end
     object repCurPadrao: TcxEditRepositoryCurrencyItem
-      Properties.AssignedValues.MinValue = True
       Properties.ClearKey = 46
       Properties.UseThousandSeparator = True
     end
@@ -496,13 +495,18 @@ inherited dmLookup: TdmLookup
       Properties.ListSource = dslkCompra
     end
     object repLcbFundo: TcxEditRepositoryLookupComboBoxItem
-      Properties.DropDownAutoSize = True
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
+      Properties.DropDownWidth = 400
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 200
           FieldName = 'NOME'
+        end
+        item
+          Width = 200
+          FieldName = 'ORGANIZACAO'
         end>
       Properties.ListSource = dslkFundo
     end
@@ -1171,6 +1175,12 @@ inherited dmLookup: TdmLookup
       Required = True
       Precision = 18
       Size = 2
+    end
+    object cdslkFundoORGANIZACAO: TStringField
+      DisplayLabel = 'Organiza'#231#227'o'
+      FieldName = 'ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object dslkFundo: TDataSource

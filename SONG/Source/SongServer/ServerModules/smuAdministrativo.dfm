@@ -519,6 +519,7 @@ inherited smAdministrativo: TsmAdministrativo
       'select PROJETO_FINANCIADOR.ID,'
       '       PROJETO_FINANCIADOR.ID_PROJETO,'
       '       PROJETO_FINANCIADOR.ID_FINANCIADOR,'
+      '       PROJETO_FINANCIADOR.VALOR_FINANCIADO,'
       '       PROJETO_FINANCIADOR.OBSERVACAO'
       'from PROJETO_FINANCIADOR  '
       'where PROJETO_FINANCIADOR.ID_PROJETO = :ID_PROJETO')
@@ -529,6 +530,7 @@ inherited smAdministrativo: TsmAdministrativo
         Name = 'ID_PROJETO'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object qProjeto_FinanciadorID: TIntegerField
       FieldName = 'ID'
@@ -553,6 +555,14 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField
+      FieldName = 'VALOR_FINANCIADO'
+      Origin = 'VALOR_FINANCIADO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
     end
   end
   object qProjeto_Documento: TRFQuery
@@ -1241,6 +1251,59 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+  end
+  object qFundo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Fundo.Id,'
+      '       Fundo.id_organizacao,'
+      '       Fundo.Nome,'
+      '       Fundo.Saldo,'
+      '       Fundo.Descricao'
+      'from Fundo  '
+      'where Fundo.id_organizacao = :id_organizacao')
+    Left = 488
+    Top = 288
+    ParamData = <
+      item
+        Name = 'ID_ORGANIZACAO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qFundoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qFundoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qFundoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qFundoSALDO: TBCDField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qFundoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

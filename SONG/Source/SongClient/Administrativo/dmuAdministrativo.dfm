@@ -533,6 +533,13 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object cdsProjeto_FinanciadorVALOR_FINANCIADO: TBCDField
+      DisplayLabel = 'Valor a Financiar'
+      FieldName = 'VALOR_FINANCIADO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
   end
   object cdsProjeto_Documento: TRFClientDataSet
     Aggregates = <>
@@ -595,7 +602,15 @@ inherited dmAdministrativo: TdmAdministrativo
   end
   object cdsProjeto_Financiador_Pagto: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_PROJETO_FINANCIADOR'
+    AggregatesActive = True
+    FieldDefs = <>
+    IndexDefs = <
+      item
+        Name = 'ORDER_BY_ID_PROJETO_FINANCIADOR'
+        Fields = 'ID_PROJETO_FINANCIADOR'
+        GroupingLevel = 1
+      end>
+    IndexName = 'ORDER_BY_ID_PROJETO_FINANCIADOR'
     MasterFields = 'ID'
     MasterSource = dsProjeto_Financiador
     PacketRecords = 0
@@ -607,6 +622,7 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     ProviderName = 'dspqProjeto_Financiador_Pagto'
     RemoteServer = dmPrincipal.ProviderAdministrativo
+    StoreDefs = True
     RFApplyAutomatico = False
     Left = 840
     Top = 372
@@ -640,6 +656,15 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
       Precision = 18
       Size = 2
+    end
+    object cdsProjeto_Financiador_PagtoTOTAL: TAggregateField
+      DisplayLabel = 'Total Financiado'
+      FieldName = 'TOTAL'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(VALOR)'
+      GroupingLevel = 1
+      IndexName = 'ORDER_BY_ID_PROJETO_FINANCIADOR'
     end
   end
   object dsProjeto_Financiador: TDataSource
@@ -1157,6 +1182,50 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+  end
+  object cdsFundo: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ORGANIZACAO'
+    MasterFields = 'ID'
+    MasterSource = dsOrganizacao
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqFundo'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 688
+    Top = 400
+    object cdsFundoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsFundoID_ORGANIZACAO: TIntegerField
+      DisplayLabel = 'Id da Organiza'#231#227'o'
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsFundoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsFundoSALDO: TBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsFundoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

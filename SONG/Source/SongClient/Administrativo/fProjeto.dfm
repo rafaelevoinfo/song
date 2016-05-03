@@ -5,7 +5,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailRubrica
+    Properties.ActivePage = tabCadastroDetailFinanciador
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -135,7 +135,7 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailRubrica
+            Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
@@ -539,7 +539,13 @@ inherited frmProjeto: TfrmProjeto
                       RepositoryItem = dmLookup.repLcbFinanciador
                       Options.Editing = False
                       Options.ShowEditButtons = isebNever
-                      Width = 263
+                      Width = 193
+                    end
+                    object viewProjetoFinanciadorVALOR_FINANCIADO: TcxGridDBColumn
+                      DataBinding.FieldName = 'VALOR_FINANCIADO'
+                      RepositoryItem = dmLookup.repCurPadrao
+                      Options.Editing = False
+                      Width = 88
                     end
                     object ColumnAlterarDetailFinanciador: TcxGridDBColumn
                       Caption = 'Alterar'
@@ -1005,10 +1011,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1187,6 +1189,14 @@ inherited frmProjeto: TfrmProjeto
           Caption = 'Observa'#231#227'o'
           FocusControl = EditObservacao
         end
+        object Label23: TLabel
+          Left = 269
+          Top = 6
+          Width = 79
+          Height = 13
+          Caption = 'Valor a Financiar'
+          FocusControl = EditValorFinanciar
+        end
         object cbFinanciador: TcxDBLookupComboBox
           Left = 3
           Top = 22
@@ -1360,6 +1370,15 @@ inherited frmProjeto: TfrmProjeto
           Images = dmPrincipal.imgIcons_16
           TabOrder = 1
           TabStop = False
+        end
+        object EditValorFinanciar: TcxDBCurrencyEdit
+          Left = 269
+          Top = 22
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'VALOR_FINANCIADO'
+          DataBinding.DataSource = dsFinanciador
+          TabOrder = 4
+          Width = 148
         end
       end
     end

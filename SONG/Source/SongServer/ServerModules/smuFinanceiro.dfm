@@ -695,50 +695,6 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qFundo: TRFQuery
-    Connection = dmPrincipal.conSong
-    SQL.Strings = (
-      'select Fundo.Id,'
-      '       Fundo.Nome,'
-      '       Fundo.Saldo,'
-      '       Fundo.Descricao'
-      'from Fundo  '
-      '&WHERE')
-    Left = 416
-    Top = 264
-    MacroData = <
-      item
-        Value = Null
-        Name = 'WHERE'
-      end>
-    object qFundoID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qFundoNOME: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 100
-    end
-    object qFundoSALDO: TBCDField
-      FieldName = 'SALDO'
-      Origin = 'SALDO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Precision = 18
-      Size = 2
-    end
-    object qFundoDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 1000
-    end
-  end
   object qConta_Pagar_Vinculo: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
