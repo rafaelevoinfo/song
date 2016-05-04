@@ -77,7 +77,7 @@ type
       ipLimparParametros: Boolean = false);
     procedure ppuLimparParametros;
 
-    procedure ppuCopiarRegistro(ipCds: TClientDataSet);
+    procedure ppuCopiarRegistro(ipDataSet: TDataSet);
 
   published
     property RFApplyAutomatico: Boolean read FRFApplyAutomatico write SetRFApplyAutomatico default true;
@@ -157,7 +157,7 @@ begin
     raise Exception.Create('Os arrays devem possuir o mesmo tamanho.');
 end;
 
-procedure TRFClientDataSet.ppuCopiarRegistro(ipCds: TClientDataSet);
+procedure TRFClientDataSet.ppuCopiarRegistro(ipDataSet: TDataSet);
 var
   i: Integer;
   vaField: TField;
@@ -171,11 +171,11 @@ begin
       // em caso de campos calculados, caso primeiro seja copiado de um cds q tem campo calculado para um cds qualquer o campo calculado nao vai,
       // então se tentar retornar os valores deste segundo cds para o primeiro irá ocorrer index out of bounds. por isto foi
       // adicinado esta condição (Ocorreu isto na prescrição médica)
-      if i < ipCds.FieldCount then
+      if i < ipDataSet.FieldCount then
         begin
           if ((not Fields[i].ReadOnly) and (Fields[i].FieldKind = fkData)) then
             begin
-              vaField := ipCds.FindField(Fields[i].FieldName);
+              vaField := ipDataSet.FindField(Fields[i].FieldName);
               if Assigned(vaField) then
                 Fields[i].Assign(vaField);
             end;

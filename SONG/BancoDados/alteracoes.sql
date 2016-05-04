@@ -904,3 +904,348 @@ inner join Projeto on (Projeto_Financiador.Id_Projeto = Projeto.Id)
 inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
 inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)     ;
 
+
+
+CREATE OR ALTER VIEW VIEW_MOVIMENTACAO_FINANCEIRA(
+    ID_MOVIMENTACAO,
+    ID_ORGANIZACAO,
+    NOME_ORGANIZACAO,
+    TIPO_ORIGEM_RECURSO,
+    ID_ORIGEM_RECURSO,
+    ORIGEM_RECURSO,
+    TIPO,
+    DESCRICAO_TIPO,
+    DESCRICAO_MOVIMENTACAO,
+    VALOR_TOTAL,
+    VALOR_PARCIAL,
+    VALOR_REAL)
+AS
+--DESPESA DE PROJETO
+select Conta_Pagar.Id as Id_Movimentacao,
+       Projeto_Organizacao.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       0 as Tipoorigem, --Projeto
+       Projeto.Id as Idorigem,
+       Projeto.Nome as Origem,
+       0 as Tipo,
+       'Despesa' as Descricaotipo,
+       Conta_Pagar.Descricao,
+       Conta_Pagar.Valor_Total ,
+       conta_pagar_vinculo.valor as valor_parcial,
+       (select sum(Conta_Pagar_Parcela.Valor)
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Status = 1 and
+              Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id) as Valor_Real
+from Conta_Pagar_Vinculo
+inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id)
+inner join Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto.Id)
+inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
+inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
+where Conta_Pagar_Vinculo.Id_Fundo is null
+
+union all
+
+
+select Conta_Pagar.Id as Id_Movimentacao,
+       Fundo.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       1 as Tipoorigem, --Fundo
+       Fundo.Id as Idorigem,
+       Fundo.Nome as Origem,
+       0 as Tipo,
+       'Despesa' as Descricaotipo,
+       Conta_Pagar.Descricao,
+       conta_pagar.valor_total,
+       conta_pagar_vinculo.valor as valor_parcial,
+       (select sum(Conta_Pagar_Parcela.Valor)
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Status = 1 and
+              Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id) as Valor_Real
+from Conta_Pagar_Vinculo
+inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id)
+inner join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)
+inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
+where Conta_Pagar_Vinculo.Id_Projeto_Origem is null
+
+union all
+
+--RECEITA VINDA DE CONTAS A RECEBER
+
+select Conta_Receber.Id as Id_Movimentacao,
+       Fundo.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       1 as Tipoorigem, --Fundo
+       Fundo.Id as Idorigem,
+       Fundo.Nome as Origem,
+       1 as Tipo,
+       'Receita' as Descricaotipo,
+       Conta_Receber.Descricao,
+       Conta_Receber.valor_total,
+       Conta_Receber_Vinculo.Valor as Valor_Parcial,
+       (select sum(Conta_Receber_Parcela.Valor)
+        from Conta_Receber_Parcela
+        where Conta_Receber_Parcela.Status = 1 and
+              Conta_Receber_Parcela.Id_Conta_Receber = Conta_Receber.Id) as Valor_Real
+from Conta_Receber_Vinculo
+inner join Conta_Receber on (Conta_Receber_Vinculo.Id_Conta_Receber = Conta_Receber.Id)
+inner join Fundo on (Fundo.Id = Conta_Receber_Vinculo.Id_Fundo)
+inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
+
+union all
+
+select Projeto_Financiador_Pagto.Id as Id_Movimentacao,
+       Projeto_Organizacao.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       0 as Tipoorigem,
+       Projeto.Id as Idorigem,
+       Projeto.Nome as Origem,
+       1 as Tipo,
+       'Receita' as Descricaotipo,
+       'Pagamento Financiador' as Descricao,
+       Projeto_Financiador.Valor_Financiado as Valor_Total,
+       Projeto_Financiador.Valor_Financiado as Valor_Parcial,
+       (select sum(Projeto_Financiador_Pagto.Valor)
+        from Projeto_Financiador_Pagto
+        where Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id) as Valor_Real
+from Projeto_Financiador
+inner join Projeto_Financiador_Pagto on (Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id)
+inner join Projeto on (Projeto_Financiador.Id_Projeto = Projeto.Id)
+inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
+inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
+;
+
+
+
+CREATE OR ALTER VIEW VIEW_MOVIMENTACAO_FINANCEIRA(
+    ID_MOVIMENTACAO,
+    ID_ORGANIZACAO,
+    NOME_ORGANIZACAO,
+    TIPO_ORIGEM_RECURSO,
+    ID_ORIGEM_RECURSO,
+    ORIGEM_RECURSO,
+    TIPO,
+    DESCRICAO_TIPO,
+    DESCRICAO_MOVIMENTACAO,
+    VALOR_TOTAL,  -- Total da movimentacao (total da conta a pagar, receber ou financiamento)
+    VALOR_PARCIAL,-- Valor sem levar em conta a divisao por organizacao
+    VALOR_REAL) -- Valor pago/recebido ou financiado de fato, ou seja, somente contabiliza o que ja recebeu ou pagou
+AS
+--DESPESA DE PROJETO
+select Conta_Pagar.Id as Id_Movimentacao,
+       Projeto_Organizacao.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       0 as Tipoorigem, --Projeto
+       Projeto.Id as Idorigem,
+       Projeto.Nome as Origem,
+       0 as Tipo,
+       'Despesa' as Descricaotipo,
+       Conta_Pagar.Descricao,
+       Conta_Pagar.Valor_Total ,
+       conta_pagar_vinculo.valor as valor_parcial,
+       (select sum(Conta_Pagar_Parcela.Valor)
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Status = 1 and
+              Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id) as Valor_Real
+from Conta_Pagar_Vinculo
+inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id)
+inner join Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto.Id)
+inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
+inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
+where Conta_Pagar_Vinculo.Id_Fundo is null
+
+union all
+
+
+select Conta_Pagar.Id as Id_Movimentacao,
+       Fundo.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       1 as Tipoorigem, --Fundo
+       Fundo.Id as Idorigem,
+       Fundo.Nome as Origem,
+       0 as Tipo,
+       'Despesa' as Descricaotipo,
+       Conta_Pagar.Descricao,
+       conta_pagar.valor_total,
+       conta_pagar_vinculo.valor as valor_parcial,
+       (select sum(Conta_Pagar_Parcela.Valor)
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Status = 1 and
+              Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id) as Valor_Real
+from Conta_Pagar_Vinculo
+inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id)
+inner join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)
+inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
+where Conta_Pagar_Vinculo.Id_Projeto_Origem is null
+
+union all
+
+--RECEITA VINDA DE CONTAS A RECEBER
+
+select Conta_Receber.Id as Id_Movimentacao,
+       Fundo.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       1 as Tipoorigem, --Fundo
+       Fundo.Id as Idorigem,
+       Fundo.Nome as Origem,
+       1 as Tipo,
+       'Receita' as Descricaotipo,
+       Conta_Receber.Descricao,
+       Conta_Receber.valor_total,
+       Conta_Receber_Vinculo.Valor as Valor_Parcial,
+       (select sum(Conta_Receber_Parcela.Valor)
+        from Conta_Receber_Parcela
+        where Conta_Receber_Parcela.Status = 1 and
+              Conta_Receber_Parcela.Id_Conta_Receber = Conta_Receber.Id) as Valor_Real
+from Conta_Receber_Vinculo
+inner join Conta_Receber on (Conta_Receber_Vinculo.Id_Conta_Receber = Conta_Receber.Id)
+inner join Fundo on (Fundo.Id = Conta_Receber_Vinculo.Id_Fundo)
+inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
+
+union all
+
+select Projeto_Financiador_Pagto.Id as Id_Movimentacao,
+       Projeto_Organizacao.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       0 as Tipoorigem,
+       Projeto.Id as Idorigem,
+       Projeto.Nome as Origem,
+       1 as Tipo,
+       'Receita' as Descricaotipo,
+       'Pagamento Financiador' as Descricao,
+       Projeto_Financiador.Valor_Financiado as Valor_Total,
+       Projeto_Financiador.Valor_Financiado as Valor_Parcial,
+       (select sum(Projeto_Financiador_Pagto.Valor)
+        from Projeto_Financiador_Pagto
+        where Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id) as Valor_Real
+from Projeto_Financiador
+inner join Projeto_Financiador_Pagto on (Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id)
+inner join Projeto on (Projeto_Financiador.Id_Projeto = Projeto.Id)
+inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
+inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
+;
+
+
+
+create or alter view View_Movimentacao_Financeira (
+    Id_Movimentacao,
+    Id_Organizacao,
+    Nome_Organizacao,
+    Tipo_Origem_Recurso,
+    Id_Origem_Recurso,
+    Origem_Recurso,
+    Tipo,
+    Descricao_Tipo,
+    Descricao_Movimentacao,
+    Data,
+    Valor_Total,
+-- Total da movimentacao (total da conta a pagar, receber ou financiamento)
+    Valor_Parcial,
+-- Valor sem levar em conta a divisao por organizacao
+    Valor_Real)
+as
+
+--DESPESA DE PROJETO
+select Conta_Pagar.Id as Id_Movimentacao,
+       Projeto_Organizacao.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       0 as Tipoorigem, --Projeto
+       Projeto.Id as Idorigem,
+       Projeto.Nome as Origem,
+       0 as Tipo,
+       'Despesa' as Descricaotipo,
+       Conta_Pagar.Descricao,
+       (select first 1 Conta_Pagar_Parcela.vencimento
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id
+        order by Conta_Pagar_Parcela.Vencimento) as Data,
+       Conta_Pagar.Valor_Total,
+       Conta_Pagar_Vinculo.Valor as Valor_Parcial,
+       (select sum(Conta_Pagar_Parcela.Valor)
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Status = 1 and
+              Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id) as Valor_Real
+from Conta_Pagar_Vinculo
+inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id)
+inner join Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto.Id)
+inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
+inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
+where Conta_Pagar_Vinculo.Id_Fundo is null
+
+union all
+
+select Conta_Pagar.Id as Id_Movimentacao,
+       Fundo.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       1 as Tipoorigem, --Fundo
+       Fundo.Id as Idorigem,
+       Fundo.Nome as Origem,
+       0 as Tipo,
+       'Despesa' as Descricaotipo,
+       Conta_Pagar.Descricao,
+       (select first 1 Conta_Pagar_Parcela.vencimento
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id
+        order by Conta_Pagar_Parcela.Vencimento) as Data,
+       Conta_Pagar.Valor_Total,
+       Conta_Pagar_Vinculo.Valor as Valor_Parcial,
+       (select sum(Conta_Pagar_Parcela.Valor)
+        from Conta_Pagar_Parcela
+        where Conta_Pagar_Parcela.Status = 1 and
+              Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar.Id) as Valor_Real
+from Conta_Pagar_Vinculo
+inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id)
+inner join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)
+inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
+where Conta_Pagar_Vinculo.Id_Projeto_Origem is null
+
+union all
+
+--RECEITA VINDA DE CONTAS A RECEBER
+
+select Conta_Receber.Id as Id_Movimentacao,
+       Fundo.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       1 as Tipoorigem, --Fundo
+       Fundo.Id as Idorigem,
+       Fundo.Nome as Origem,
+       1 as Tipo,
+       'Receita' as Descricaotipo,
+       Conta_Receber.Descricao,
+       (select first 1 Conta_Receber_Parcela.Vencimento
+        from Conta_Receber_Parcela
+        where Conta_Receber_Parcela.id_conta_receber = Conta_Receber.Id
+        order by Conta_Receber_Parcela.Vencimento) as Data,
+       Conta_Receber.Valor_Total,
+       Conta_Receber_Vinculo.Valor as Valor_Parcial,
+       (select sum(Conta_Receber_Parcela.Valor)
+        from Conta_Receber_Parcela
+        where Conta_Receber_Parcela.Status = 1 and
+              Conta_Receber_Parcela.Id_Conta_Receber = Conta_Receber.Id) as Valor_Real
+from Conta_Receber_Vinculo
+inner join Conta_Receber on (Conta_Receber_Vinculo.Id_Conta_Receber = Conta_Receber.Id)
+inner join Fundo on (Fundo.Id = Conta_Receber_Vinculo.Id_Fundo)
+inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
+
+union all
+
+select Projeto_Financiador_Pagto.Id as Id_Movimentacao,
+       Projeto_Organizacao.Id_Organizacao,
+       Organizacao.Nome as Nome_Organizacao,
+       0 as Tipoorigem,
+       Projeto.Id as Idorigem,
+       Projeto.Nome as Origem,
+       1 as Tipo,
+       'Receita' as Descricaotipo,
+       'Pagamento Financiador' as Descricao,
+       Projeto_Financiador_Pagto.data,
+       Projeto_Financiador.Valor_Financiado as Valor_Total,
+       Projeto_Financiador.Valor_Financiado as Valor_Parcial,
+       (select sum(Projeto_Financiador_Pagto.Valor)
+        from Projeto_Financiador_Pagto
+        where Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id) as Valor_Real
+from Projeto_Financiador
+inner join Projeto_Financiador_Pagto on (Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id)
+inner join Projeto on (Projeto_Financiador.Id_Projeto = Projeto.Id)
+inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
+inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao);
+

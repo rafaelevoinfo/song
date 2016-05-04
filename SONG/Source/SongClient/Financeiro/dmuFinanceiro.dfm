@@ -662,7 +662,7 @@ inherited dmFinanceiro: TdmFinanceiro
     PacketRecords = 0
     Params = <
       item
-        DataType = ftUnknown
+        DataType = ftInteger
         Name = 'ID_CONTA_RECEBER'
         ParamType = ptInput
       end>

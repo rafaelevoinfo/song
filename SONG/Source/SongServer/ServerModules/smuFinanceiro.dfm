@@ -907,7 +907,9 @@ inherited smFinanceiro: TsmFinanceiro
     ParamData = <
       item
         Name = 'ID_CONTA_RECEBER'
+        DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object qConta_Receber_VinculoID: TIntegerField
       FieldName = 'ID'

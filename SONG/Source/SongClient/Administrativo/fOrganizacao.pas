@@ -98,6 +98,8 @@ type
     procedure pprDefinirTabDetailCadastro; override;
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet);override;
 
+    procedure pprEfetuarPesquisa; override;
+
     procedure pprFiltrarPessoas(ipIdPessoaIgnorar: Integer = 0);
   public
     procedure ppuRetornar; override;
@@ -219,6 +221,19 @@ begin
     pcPrincipal.ActivePage := tabCadastroDetail
   else if pcDetails.ActivePage = tabDetailFundo then
     pcPrincipal.ActivePage := tabCadastroFundo;
+end;
+
+procedure TfrmOrganizacao.pprEfetuarPesquisa;
+begin
+   viewFundo.BeginUpdate(lsimImmediate);
+  try
+    dmAdministrativo.cdsFundo.Close;
+    inherited;
+    dmAdministrativo.cdsFundo.Open;
+  finally
+    viewFundo.EndUpdate;
+  end;
+
 end;
 
 end.

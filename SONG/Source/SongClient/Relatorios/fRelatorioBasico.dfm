@@ -1,7 +1,8 @@
 inherited frmRelatorioBasico: TfrmRelatorioBasico
-  ActiveControl = cbOrganizacao
   Caption = 'frmRelatorioBasico'
   OnCreate = FormCreate
+  ExplicitWidth = 1000
+  ExplicitHeight = 720
   PixelsPerInch = 96
   TextHeight = 13
   object pnBotoes: TPanel
@@ -43,13 +44,11 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 3
-      ExplicitWidth = 849
       object lb2: TLabel
         Left = 1
         Top = 11
         Width = 60
-        Height = 16
+        Height = 13
         Caption = 'Organiza'#231#227'o'
       end
       object cbOrganizacao: TcxLookupComboBox
@@ -59,6 +58,15 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
         Properties.ListColumns = <>
         TabOrder = 0
         Width = 281
+      end
+      object chkTodasOrganizacoes: TcxCheckBox
+        Left = 287
+        Top = 27
+        Caption = 'Todas'
+        Properties.OnEditValueChanged = chkTodasOrganizacoesPropertiesEditValueChanged
+        TabOrder = 1
+        Transparent = True
+        Width = 67
       end
     end
   end

@@ -206,4 +206,10 @@ object dmPrincipal: TdmPrincipal
     Left = 416
     Top = 232
   end
+  object SCFuncoesRelatorio: TDSServerClass
+    OnGetClass = SCFuncoesRelatorioGetClass
+    Server = Server
+    Left = 800
+    Top = 232
+  end
 end

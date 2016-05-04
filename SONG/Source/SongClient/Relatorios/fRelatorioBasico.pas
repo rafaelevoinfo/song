@@ -9,7 +9,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, Data.DB, uClientDataSet,
-  uTypes;
+  uTypes, cxCheckBox;
 
 type
   TfrmRelatorioBasico = class(TfrmBasico)
@@ -22,8 +22,10 @@ type
     lb2: TLabel;
     cbOrganizacao: TcxLookupComboBox;
     dsOrganizacao: TDataSource;
+    chkTodasOrganizacoes: TcxCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
+    procedure chkTodasOrganizacoesPropertiesEditValueChanged(Sender: TObject);
   private
 
   protected
@@ -45,6 +47,13 @@ begin
     raise Exception.Create('Informe para qual organização o relatório está sendo gerado.');
 
   dmLookup.cdslkOrganizacao.Locate(TBancoDados.coId, cbOrganizacao.EditValue,[]);
+end;
+
+procedure TfrmRelatorioBasico.chkTodasOrganizacoesPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbOrganizacao.Enabled := not chkTodasOrganizacoes.Checked;
 end;
 
 procedure TfrmRelatorioBasico.FormCreate(Sender: TObject);

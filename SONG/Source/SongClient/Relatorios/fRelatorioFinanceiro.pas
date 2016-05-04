@@ -15,7 +15,8 @@ uses
   Vcl.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors,
   Data.Bind.Components, cxCheckBox, CodeSiteLogging,
   System.Bindings.Expression, System.Bindings.NotifierContracts, System.Bindings.NotifierDefaults,
-  System.Bindings.Helper, ppChrt, ppChrtDP;
+  System.Bindings.Helper, ppChrt, ppChrtDP, Vcl.ComCtrls, dxCore, cxDateUtils,
+  cxCalendar, cxGroupBox, dxCheckGroupBox, Datasnap.DBClient;
 
 type
   TfrmRelatorioFinanceiro = class(TfrmRelatorioBasico)
@@ -92,8 +93,52 @@ type
     lb3: TLabel;
     cbProjetoSaldoDetalhado: TcxLookupComboBox;
     ppLine3: TppLine;
-    tabSaldoGeral: TcxTabSheet;
-    chkTodasOrganizacoes: TcxCheckBox;
+    tabMovimentacao: TcxTabSheet;
+    cgbData: TdxCheckGroupBox;
+    EditDataFinal: TcxDateEdit;
+    Label2: TLabel;
+    Label1: TLabel;
+    EditDataInicial: TcxDateEdit;
+    cdsMovimentacao: TRFClientDataSet;
+    cdsMovimentacaoID_MOVIMENTACAO: TIntegerField;
+    cdsMovimentacaoID_ORGANIZACAO: TIntegerField;
+    cdsMovimentacaoNOME_ORGANIZACAO: TStringField;
+    cdsMovimentacaoTIPO_ORIGEM_RECURSO: TIntegerField;
+    cdsMovimentacaoID_ORIGEM_RECURSO: TIntegerField;
+    cdsMovimentacaoORIGEM_RECURSO: TStringField;
+    cdsMovimentacaoTIPO: TIntegerField;
+    cdsMovimentacaoDESCRICAO_TIPO: TStringField;
+    cdsMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField;
+    cdsMovimentacaoVALOR_TOTAL: TBCDField;
+    cdsMovimentacaoVALOR_PARCIAL: TBCDField;
+    cdsMovimentacaoVALOR_REAL: TBCDField;
+    DBPipeMovimentacao: TppDBPipeline;
+    dsMovimentacao: TDataSource;
+    ppMovimentacao: TppReport;
+    ppHeaderBand3: TppHeaderBand;
+    ppLabel15: TppLabel;
+    ppDBImage3: TppDBImage;
+    ppLine4: TppLine;
+    ppSystemVariable7: TppSystemVariable;
+    ppSystemVariable8: TppSystemVariable;
+    ppDetailBand3: TppDetailBand;
+    ppDBText19: TppDBText;
+    ppDBText20: TppDBText;
+    ppDBText21: TppDBText;
+    ppFooterBand3: TppFooterBand;
+    ppLabel17: TppLabel;
+    ppDBText22: TppDBText;
+    ppDBText23: TppDBText;
+    ppSystemVariable9: TppSystemVariable;
+    ppDesignLayers3: TppDesignLayers;
+    ppDesignLayer3: TppDesignLayer;
+    ppParameterList3: TppParameterList;
+    ppLabel18: TppLabel;
+    ppLabel19: TppLabel;
+    ppLabel20: TppLabel;
+    cdsMovimentacaoVALOR: TBCDField;
+    ppDBText12: TppDBText;
+    ppLabel21: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure SaldoProjetoBindAssignedValue(Sender: TObject;
@@ -114,9 +159,25 @@ implementation
 
 
 procedure TfrmRelatorioFinanceiro.Ac_GerarRelatorioExecute(Sender: TObject);
+var
+  vaIdOrganizacao:Integer;
 begin
   inherited;
-  if pcPrincipal.ActivePage = tabSaldoProjeto then
+  vaIdOrganizacao := 0;
+  if not chkTodasOrganizacoes.Checked then
+    vaIdOrganizacao := cbOrganizacao.EditValue;
+
+  if pcPrincipal.ActivePage = tabMovimentacao then
+    begin
+       if cgbData.CheckBox.Checked then
+        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao,DateToStr(EditDataInicial.Date),DateToStr(EditDataFinal.Date))
+       else
+        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao,'','');
+
+       ppMovimentacao.PrintReport;
+    end
+  else
+    if pcPrincipal.ActivePage = tabSaldoProjeto then
     begin
       if VarIsNull(cbProjetoSaldoProjeto.EditValue) then
         raise TControlException.Create('Informe o projeto.', cbProjetoSaldoProjeto);

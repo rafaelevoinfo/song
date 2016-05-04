@@ -1,7 +1,5 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
-  ExplicitWidth = 1000
-  ExplicitHeight = 720
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnConfiguracoes: TPanel
@@ -13,23 +11,62 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 1
       TabStop = False
-      Properties.ActivePage = tabSaldoGeral
+      Properties.ActivePage = tabMovimentacao
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
       ClientRectRight = 850
       ClientRectTop = 25
-      object tabSaldoGeral: TcxTabSheet
-        Caption = 'Saldo Geral'
+      object tabMovimentacao: TcxTabSheet
+        Caption = 'Movimenta'#231#227'o Financeira'
         ImageIndex = 2
-        object chkTodasOrganizacoes: TcxCheckBox
+        object cgbData: TdxCheckGroupBox
           Left = 4
-          Top = 5
-          Caption = 'Saldo geral de todas as organiza'#231#245'es'
-          Properties.OnEditValueChanged = chkTodosSaldosProjetosPropertiesEditValueChanged
+          Top = 3
+          Caption = 'Filtrar por Data'
           TabOrder = 0
-          Transparent = True
-          Width = 245
+          Height = 110
+          Width = 141
+          object Label2: TLabel
+            Left = 3
+            Top = 17
+            Width = 135
+            Height = 13
+            Align = alTop
+            Caption = 'Data Inicial'
+            ExplicitLeft = 131
+            ExplicitTop = 4
+            ExplicitWidth = 53
+          end
+          object Label1: TLabel
+            Left = 3
+            Top = 51
+            Width = 135
+            Height = 13
+            Align = alTop
+            Caption = 'Data Final'
+            ExplicitWidth = 48
+          end
+          object EditDataFinal: TcxDateEdit
+            Left = 3
+            Top = 64
+            Align = alTop
+            TabOrder = 0
+            ExplicitLeft = 0
+            ExplicitTop = 78
+            ExplicitWidth = 179
+            Width = 135
+          end
+          object EditDataInicial: TcxDateEdit
+            Left = 3
+            Top = 30
+            Align = alTop
+            TabOrder = 1
+            ExplicitLeft = 0
+            ExplicitTop = 19
+            ExplicitWidth = 179
+            Width = 135
+          end
         end
       end
       object tabSaldoProjeto: TcxTabSheet
@@ -80,14 +117,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         end
       end
     end
-    inherited pnOrganizacao: TPanel
-      ExplicitLeft = 0
-      ExplicitWidth = 852
-    end
   end
   inherited ActionList: TActionList
-    Left = 288
-    Top = 152
+    Left = 416
+    Top = 208
   end
   object ppSaldoProjeto: TppReport [3]
     AutoStop = False
@@ -141,8 +174,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
-    Left = 184
-    Top = 112
+    Left = 440
+    Top = 272
     Version = '16.02'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeSaldoProjeto'
@@ -649,6 +682,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Position = 6
     end
   end
+  inherited dsOrganizacao: TDataSource
+    Left = 576
+    Top = 216
+  end
   object DBPipeOrganizacao: TppDBPipeline
     DataSource = dmLookup.dslkOrganizacao
     UserName = 'DBPipeOrganizacao'
@@ -660,7 +697,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 10
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField
@@ -1271,5 +1308,623 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataSet = dmRelatorio.cdsSaldoDetalhado
     Left = 536
     Top = 280
+  end
+  object cdsMovimentacao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    RFApplyAutomatico = False
+    Left = 848
+    Top = 168
+    object cdsMovimentacaoID_MOVIMENTACAO: TIntegerField
+      FieldName = 'ID_MOVIMENTACAO'
+      ProviderFlags = []
+    end
+    object cdsMovimentacaoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object cdsMovimentacaoNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMovimentacaoTIPO_ORIGEM_RECURSO: TIntegerField
+      FieldName = 'TIPO_ORIGEM_RECURSO'
+      ProviderFlags = []
+    end
+    object cdsMovimentacaoID_ORIGEM_RECURSO: TIntegerField
+      FieldName = 'ID_ORIGEM_RECURSO'
+      ProviderFlags = []
+    end
+    object cdsMovimentacaoORIGEM_RECURSO: TStringField
+      FieldName = 'ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMovimentacaoTIPO: TIntegerField
+      FieldName = 'TIPO'
+      ProviderFlags = []
+    end
+    object cdsMovimentacaoDESCRICAO_TIPO: TStringField
+      FieldName = 'DESCRICAO_TIPO'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 7
+    end
+    object cdsMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField
+      FieldName = 'DESCRICAO_MOVIMENTACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMovimentacaoVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      ProviderFlags = []
+      DisplayFormat = 'R$ ,0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsMovimentacaoVALOR_PARCIAL: TBCDField
+      FieldName = 'VALOR_PARCIAL'
+      ProviderFlags = []
+      DisplayFormat = 'R$ ,0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsMovimentacaoVALOR_REAL: TBCDField
+      FieldName = 'VALOR_REAL'
+      ProviderFlags = []
+      DisplayFormat = 'R$ ,0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsMovimentacaoVALOR: TBCDField
+      FieldName = 'VALOR'
+      ProviderFlags = []
+      DisplayFormat = 'R$ ,0.00'
+      Size = 2
+    end
+  end
+  object DBPipeMovimentacao: TppDBPipeline
+    DataSource = dsMovimentacao
+    UserName = 'DBPipeMovimentacao'
+    Left = 848
+    Top = 296
+    object DBPipeMovimentacaoppField1: TppField
+      FieldAlias = 'ID_MOVIMENTACAO'
+      FieldName = 'ID_MOVIMENTACAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField2: TppField
+      FieldAlias = 'ID_ORGANIZACAO'
+      FieldName = 'ID_ORGANIZACAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField3: TppField
+      FieldAlias = 'NOME_ORGANIZACAO'
+      FieldName = 'NOME_ORGANIZACAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField4: TppField
+      FieldAlias = 'TIPO_ORIGEM_RECURSO'
+      FieldName = 'TIPO_ORIGEM_RECURSO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField5: TppField
+      FieldAlias = 'ID_ORIGEM_RECURSO'
+      FieldName = 'ID_ORIGEM_RECURSO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField6: TppField
+      FieldAlias = 'ORIGEM_RECURSO'
+      FieldName = 'ORIGEM_RECURSO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField7: TppField
+      FieldAlias = 'TIPO'
+      FieldName = 'TIPO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField8: TppField
+      FieldAlias = 'DESCRICAO_TIPO'
+      FieldName = 'DESCRICAO_TIPO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField9: TppField
+      FieldAlias = 'DESCRICAO_MOVIMENTACAO'
+      FieldName = 'DESCRICAO_MOVIMENTACAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 8
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField10: TppField
+      FieldAlias = 'VALOR_TOTAL'
+      FieldName = 'VALOR_TOTAL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField11: TppField
+      FieldAlias = 'VALOR_PARCIAL'
+      FieldName = 'VALOR_PARCIAL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField12: TppField
+      FieldAlias = 'VALOR_REAL'
+      FieldName = 'VALOR_REAL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 11
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField13: TppField
+      FieldAlias = 'VALOR'
+      FieldName = 'VALOR'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 12
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object dsMovimentacao: TDataSource
+    DataSet = cdsMovimentacao
+    Left = 856
+    Top = 232
+  end
+  object ppMovimentacao: TppReport
+    AutoStop = False
+    DataPipeline = DBPipeMovimentacao
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    Units = utMillimeters
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 856
+    Top = 360
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeMovimentacao'
+    object ppHeaderBand3: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 30956
+      mmPrintPosition = 0
+      object ppLabel15: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label1'
+        Caption = 'Movimenta'#231#227'o Financeira'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 70908
+        mmTop = 17198
+        mmWidth = 51594
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppDBImage3: TppDBImage
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 1588
+        mmTop = 794
+        mmWidth = 30692
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppLine4: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line1'
+        Weight = 0.750000000000000000
+        mmHeight = 2117
+        mmLeft = 1852
+        mmTop = 23813
+        mmWidth = 195527
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppSystemVariable7: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 182562
+        mmTop = 14552
+        mmWidth = 14287
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppSystemVariable8: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 185209
+        mmTop = 18521
+        mmWidth = 11113
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppLabel18: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label18'
+        Caption = 'Tipo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 1852
+        mmTop = 26723
+        mmWidth = 6350
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppLabel19: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label19'
+        Caption = 'Origem'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 79378
+        mmTop = 26723
+        mmWidth = 10848
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppLabel20: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label20'
+        Caption = 'Valor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 119065
+        mmTop = 26723
+        mmWidth = 7673
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppLabel21: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label21'
+        Caption = 'Descri'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 36777
+        mmTop = 26723
+        mmWidth = 14288
+        BandType = 0
+        LayerName = BandLayer3
+      end
+    end
+    object ppDetailBand3: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5821
+      mmPrintPosition = 0
+      object ppDBText19: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText9'
+        DataField = 'VALOR'
+        DataPipeline = DBPipeMovimentacao
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 4763
+        mmLeft = 119065
+        mmTop = 0
+        mmWidth = 28046
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText20: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText10'
+        DataField = 'ORIGEM_RECURSO'
+        DataPipeline = DBPipeMovimentacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 4763
+        mmLeft = 79378
+        mmTop = 0
+        mmWidth = 37306
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText21: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText11'
+        DataField = 'DESCRICAO_TIPO'
+        DataPipeline = DBPipeMovimentacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 4763
+        mmLeft = 1588
+        mmTop = 0
+        mmWidth = 34131
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText12: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText101'
+        DataField = 'DESCRICAO_MOVIMENTACAO'
+        DataPipeline = DBPipeMovimentacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 4763
+        mmLeft = 36777
+        mmTop = 0
+        mmWidth = 40481
+        BandType = 4
+        LayerName = BandLayer3
+      end
+    end
+    object ppFooterBand3: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+      object ppLabel17: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 81227
+        mmTop = 794
+        mmWidth = 7409
+        BandType = 8
+        LayerName = BandLayer3
+      end
+      object ppDBText22: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText7'
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 89435
+        mmTop = 265
+        mmWidth = 41275
+        BandType = 8
+        LayerName = BandLayer3
+      end
+      object ppDBText23: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText1'
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 2111
+        mmTop = 0
+        mmWidth = 76994
+        BandType = 8
+        LayerName = BandLayer3
+      end
+      object ppSystemVariable9: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable2'
+        VarType = vtPageNo
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 193146
+        mmTop = 529
+        mmWidth = 1588
+        BandType = 8
+        LayerName = BandLayer3
+      end
+    end
+    object ppDesignLayers3: TppDesignLayers
+      object ppDesignLayer3: TppDesignLayer
+        UserName = 'BandLayer3'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList3: TppParameterList
+    end
   end
 end

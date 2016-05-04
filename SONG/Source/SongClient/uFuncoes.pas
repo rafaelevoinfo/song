@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 02/05/2016 23:55:55
+// 04/05/2016 00:27:57
 //
 
 unit uFuncoes;
@@ -205,6 +205,22 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFuncoesRelatorioClient = class(TDSAdminClient)
+  private
+    FfpuMovimentacaoFinanceiraCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
+    function fpuGetId(ipTabela: string): Integer;
+    function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -1360,6 +1376,96 @@ end;
 
 destructor TsmRelatorioClient.Destroy;
 begin
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
+begin
+  if FfpuMovimentacaoFinanceiraCommand = nil then
+  begin
+    FfpuMovimentacaoFinanceiraCommand := FDBXConnection.CreateCommand;
+    FfpuMovimentacaoFinanceiraCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuMovimentacaoFinanceiraCommand.Text := 'TsmFuncoesRelatorio.fpuMovimentacaoFinanceira';
+    FfpuMovimentacaoFinanceiraCommand.Prepare;
+  end;
+  FfpuMovimentacaoFinanceiraCommand.Parameters[0].Value.SetInt32(ipIdOrganizacao);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[1].Value.SetWideString(ipDataInicial);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[2].Value.SetWideString(ipDataFinal);
+  FfpuMovimentacaoFinanceiraCommand.ExecuteUpdate;
+  Result := FfpuMovimentacaoFinanceiraCommand.Parameters[3].Value.AsVariant;
+end;
+
+function TsmFuncoesRelatorioClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesRelatorio.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesRelatorioClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesRelatorio.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
+procedure TsmFuncoesRelatorioClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFuncoesRelatorio.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFuncoesRelatorioClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFuncoesRelatorioClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFuncoesRelatorioClient.Destroy;
+begin
+  FfpuMovimentacaoFinanceiraCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

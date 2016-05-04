@@ -90,7 +90,6 @@ inherited frmOrganizacao: TfrmOrganizacao
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object Button1: TButton
                   Left = 1
                   Top = 1
@@ -412,6 +411,10 @@ inherited frmOrganizacao: TfrmOrganizacao
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 258
@@ -469,6 +472,10 @@ inherited frmOrganizacao: TfrmOrganizacao
     object tabCadastroFundo: TcxTabSheet
       Caption = 'tabCadastroFundo'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroFundo: TPanel
         Left = 0
         Top = 0

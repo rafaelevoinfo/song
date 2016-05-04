@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery,
+  Datasnap.DBClient, uClientDataSet, uUtils;
 
 type
   TsmRelatorio = class(TsmBasico)
@@ -30,11 +31,13 @@ type
   private
     { Private declarations }
   public
-    function fpuRelatorioSaldoGeral(ipIdOrganizacao:Integer):OleVariant;
+    
   end;
 
 var
   smRelatorio: TsmRelatorio;
+
+
 
 implementation
 
@@ -44,16 +47,5 @@ uses
 {$R *.dfm}
 
 { TsmRelatorio }
-
-function TsmRelatorio.fpuRelatorioSaldoGeral(
-  ipIdOrganizacao: Integer): OleVariant;
-begin
-  qSaldoGeral.Close;
-  qSaldoGeral.Open;
-  //TODO: Jogar os registros para um cds e realizar os devidos calculos para se saber o valor total para cada
-//  organizacao
-
-
-end;
 
 end.

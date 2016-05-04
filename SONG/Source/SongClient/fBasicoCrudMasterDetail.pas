@@ -187,7 +187,7 @@ end;
 procedure TfrmBasicoCrudMasterDetail.FormCreate(Sender: TObject);
 begin
   inherited;
-  pcDetails.ActivePage := tabDetail;
+  pcDetails.ActivePageIndex := 0;
 end;
 
 function TfrmBasicoCrudMasterDetail.fprHabilitarAlterarDetail: Boolean;

@@ -18,6 +18,8 @@ type
     procedure ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
     procedure ppvReceberReabrirParcela(ipIdParcela: Integer; ipReceber: Boolean);
     procedure ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar, ipContaReceber: Boolean);
+    function fpvVerificarStatusParcela(ipIdParcela: Integer;
+      ipContaReceber: Boolean; ipStatus: Integer): Boolean;
   public
     function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
@@ -33,7 +35,7 @@ type
     procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
     procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
 
-    function fpuSaldoRealRubrica(ipIdProjeto,ipIdRubrica: Integer): Double;
+    function fpuSaldoRealRubrica(ipIdProjeto, ipIdRubrica: Integer): Double;
 
   end;
 
@@ -157,9 +159,9 @@ begin
     procedure(ipDataSet: TRFQuery)
     begin
       ipDataSet.SQL.Text := 'select View_Rubrica_Projeto.Saldo_Real' +
-                            ' from View_Rubrica_Projeto' +
-                            ' where View_Rubrica_Projeto.Id_Projeto = :Id_Projeto and' +
-                            '       View_Rubrica_Projeto.Id_Rubrica = :Id_Rubrica';
+        ' from View_Rubrica_Projeto' +
+        ' where View_Rubrica_Projeto.Id_Projeto = :Id_Projeto and' +
+        '       View_Rubrica_Projeto.Id_Rubrica = :Id_Rubrica';
       ipDataSet.ParamByName('ID_PROJETO').AsInteger := ipIdProjeto;
       ipDataSet.ParamByName('ID_RUBRICA').AsInteger := ipIdRubrica;
       ipDataSet.Open();
@@ -223,16 +225,23 @@ begin;
   try
     if ipQuitar then
       begin
+        if fpvVerificarStatusParcela(ipIdParcela, False, 1) then
+          Exit; //ja quitou
+
         vaUpdate := 'update conta_pagar_parcela ' +
           '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
           '      conta_pagar_parcela.status = 1 ' +
           '  where conta_pagar_parcela.id = :ID_PARCELA';
       end
     else
-      vaUpdate := 'update conta_pagar_parcela ' +
-        '  set conta_pagar_parcela.data_pagamento = null,  ' +
-        '      conta_pagar_parcela.status = 0 ' +
-        '  where conta_pagar_parcela.id = :ID_PARCELA';
+      begin
+        if fpvVerificarStatusParcela(ipIdParcela, False, 0) then
+          Exit;
+        vaUpdate := 'update conta_pagar_parcela ' +
+          '  set conta_pagar_parcela.data_pagamento = null,  ' +
+          '      conta_pagar_parcela.status = 0 ' +
+          '  where conta_pagar_parcela.id = :ID_PARCELA';
+      end;
 
     if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
       raise Exception.Create('Parcela não encontrada.');
@@ -279,7 +288,7 @@ begin;
             ipDataSetVinculo.Open();
 
             if not ipDataSetVinculo.Eof then
-              ppvAtualizarSaldoFundo(ipIdParcela, ipDataSetVinculo, ipDataSet, not ipQuitar, false);
+              ppvAtualizarSaldoFundo(ipIdParcela, ipDataSetVinculo, ipDataSet, not ipQuitar, False);
           end);
       end);
 
@@ -424,6 +433,31 @@ begin
   end;
 end;
 
+function TsmFuncoesFinanceiro.fpvVerificarStatusParcela(ipIdParcela: Integer; ipContaReceber: Boolean; ipStatus: Integer): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      if ipContaReceber then
+        ipDataSet.SQL.Text := 'Select conta_receber_parcela.status ' +
+          '   from conta_receber_parcela ' +
+          'where conta_receber_parcela.id = :ID'
+      else
+        ipDataSet.SQL.Text := 'Select conta_pagar_parcela.status ' +
+          '   from conta_pagar_parcela ' +
+          'where conta_pagar_parcela.id = :ID';
+
+      ipDataSet.ParamByName('ID').AsInteger := ipIdParcela;
+      ipDataSet.Open();
+
+      vaResult := ipDataSet.FieldByName('STATUS').AsInteger = ipStatus;
+    end);
+
+  Result := vaResult;
+end;
+
 procedure TsmFuncoesFinanceiro.ppvReceberReabrirParcela(ipIdParcela: Integer;
 ipReceber: Boolean);
 var
@@ -433,16 +467,23 @@ begin;
   try
     if ipReceber then
       begin
+        if fpvVerificarStatusParcela(ipIdParcela, True, 1) then
+          Exit; // ja recebeu
+
         vaUpdate := 'update conta_receber_parcela ' +
           '  set conta_receber_parcela.data_recebimento = current_timestamp,  ' +
           '      conta_receber_parcela.status = 1 ' +
           '  where conta_receber_parcela.id = :ID_PARCELA';
       end
     else
-      vaUpdate := 'update conta_receber_parcela ' +
-        '  set conta_receber_parcela.data_recebimento = null,  ' +
-        '      conta_receber_parcela.status = 0 ' +
-        '  where conta_receber_parcela.id = :ID_PARCELA';
+      begin
+        if fpvVerificarStatusParcela(ipIdParcela, True, 0) then
+          Exit; // ja reabriu
+        vaUpdate := 'update conta_receber_parcela ' +
+          '  set conta_receber_parcela.data_recebimento = null,  ' +
+          '      conta_receber_parcela.status = 0 ' +
+          '  where conta_receber_parcela.id = :ID_PARCELA';
+      end;
 
     if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
       raise Exception.Create('Parcela não encontrada.');
@@ -497,7 +538,7 @@ end;
 procedure TsmFuncoesFinanceiro.ppuCancelarRecebimentoParcela(
   ipIdParcela: Integer);
 begin
-  ppvReceberReabrirParcela(ipIdParcela, false);
+  ppvReceberReabrirParcela(ipIdParcela, False);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber(
@@ -527,7 +568,7 @@ end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirParcela(ipIdParcela: Integer);
 begin
-  ppvQuitarReabrirParcela(ipIdParcela, false);
+  ppvQuitarReabrirParcela(ipIdParcela, False);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar(
