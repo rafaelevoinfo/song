@@ -96,7 +96,7 @@ type
     procedure pprBeforeAlterarDetail; override;
 
     procedure pprDefinirTabDetailCadastro; override;
-    procedure pprPreencherCamposPadroes(ipDataSet: TDataSet);override;
+    procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
 
     procedure pprEfetuarPesquisa; override;
 
@@ -129,7 +129,7 @@ end;
 procedure TfrmOrganizacao.Ac_LimparExecute(Sender: TObject);
 begin
   inherited;
-   try
+  try
     if not(dmAdministrativo.cdsOrganizacao.State in [dsEdit, dsInsert]) then
       dmAdministrativo.cdsOrganizacao.Edit;
 
@@ -151,6 +151,8 @@ begin
   PesquisaPadrao := tppTodos;
 
   dmLookup.cdslkPessoa.Open;
+  // Essa tela tela é um caso especial, por isso precisei fazer isso
+  dsDetail.DataSet := dmAdministrativo.cdsFundo;
 end;
 
 function TfrmOrganizacao.fprGetPermissao: String;
@@ -206,18 +208,20 @@ end;
 procedure TfrmOrganizacao.pprBeforeAlterarDetail;
 begin
   inherited;
-  pprFiltrarPessoas(dmAdministrativo.cdsOrganizacao_PessoaID_PESSOA.AsInteger);
+  if pcDetails.ActivePage = tabDetail then
+    pprFiltrarPessoas(dmAdministrativo.cdsOrganizacao_PessoaID_PESSOA.AsInteger);
 end;
 
 procedure TfrmOrganizacao.pprBeforeIncluirDetail;
 begin
   inherited;
-  pprFiltrarPessoas;
+  if pcDetails.ActivePage = tabDetail then
+    pprFiltrarPessoas;
 end;
 
 procedure TfrmOrganizacao.pprDefinirTabDetailCadastro;
 begin
-   if pcDetails.ActivePage = tabDetail then
+  if pcDetails.ActivePage = tabDetail then
     pcPrincipal.ActivePage := tabCadastroDetail
   else if pcDetails.ActivePage = tabDetailFundo then
     pcPrincipal.ActivePage := tabCadastroFundo;
@@ -225,7 +229,7 @@ end;
 
 procedure TfrmOrganizacao.pprEfetuarPesquisa;
 begin
-   viewFundo.BeginUpdate(lsimImmediate);
+  viewFundo.BeginUpdate(lsimImmediate);
   try
     dmAdministrativo.cdsFundo.Close;
     inherited;

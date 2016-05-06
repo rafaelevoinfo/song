@@ -2,16 +2,11 @@ inherited frmContaReceber: TfrmContaReceber
   ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 567
@@ -175,10 +170,6 @@ inherited frmContaReceber: TfrmContaReceber
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -300,6 +291,10 @@ inherited frmContaReceber: TfrmContaReceber
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -626,6 +621,7 @@ inherited frmContaReceber: TfrmContaReceber
           object EditValorVinculo: TcxCurrencyEdit
             Left = 174
             Top = 34
+            RepositoryItem = dmLookup.repCurPadrao
             TabOrder = 1
             Width = 121
           end
@@ -641,10 +637,6 @@ inherited frmContaReceber: TfrmContaReceber
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         TabOrder = 0
       end

@@ -21,7 +21,7 @@ type
     coStatusDiferente = 'STATUS_DIFERENTE';
     coProjeto: string = 'PROJETO';
     coProjetoAlocado: string = 'PROJETO_ALOCADO';
-    coAtividade:string = 'ATIVIDADE';
+    coAtividade: string = 'ATIVIDADE';
     coNomeCientifico = 'NOME_CIENTIFICO';
     coFamiliaBotanica = 'FAMILIA_BOTANICA';
     coNomeFantasia = 'NOME_FANTASIA';
@@ -67,7 +67,8 @@ type
 
     procedure Post; override;
 
-    procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string; ipLimparParametros: Boolean); overload;
+    procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string;
+      ipLimparParametros: Boolean); overload;
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string); overload;
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant); overload;
     procedure ppuDataRequest(); overload;
@@ -166,22 +167,14 @@ begin
   if not(State in [dsInsert, dsEdit]) then
     Insert;
 
-  for i := 0 to FieldCount - 1 do // copiando os fields
+  for i := 0 to ipDataSet.FieldCount - 1 do // copiando os fields
     begin
-      // em caso de campos calculados, caso primeiro seja copiado de um cds q tem campo calculado para um cds qualquer o campo calculado nao vai,
-      // então se tentar retornar os valores deste segundo cds para o primeiro irá ocorrer index out of bounds. por isto foi
-      // adicinado esta condição (Ocorreu isto na prescrição médica)
-      if i < ipDataSet.FieldCount then
+      vaField := FindField(ipDataSet.Fields[i].FieldName);
+
+      if Assigned(vaField) and (not vaField.ReadOnly) and (vaField.FieldKind = fkData) then
         begin
-          if ((not Fields[i].ReadOnly) and (Fields[i].FieldKind = fkData)) then
-            begin
-              vaField := ipDataSet.FindField(Fields[i].FieldName);
-              if Assigned(vaField) then
-                Fields[i].Assign(vaField);
-            end;
-        end
-      else
-        break;
+          vaField.Assign(ipDataSet.Fields[i]);
+        end;
     end;
 
 end;

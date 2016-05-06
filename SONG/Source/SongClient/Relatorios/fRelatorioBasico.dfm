@@ -7,12 +7,14 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
   TextHeight = 13
   object pnBotoes: TPanel
     Left = 0
-    Top = 0
+    Top = 54
     Width = 129
-    Height = 681
+    Height = 627
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 0
+    ExplicitHeight = 681
     object btnGerarRelatorio: TButton
       AlignWithMargins = True
       Left = 3
@@ -28,46 +30,51 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
   end
   object pnConfiguracoes: TPanel
     Left = 129
-    Top = 0
+    Top = 54
     Width = 855
-    Height = 681
+    Height = 627
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    object pnOrganizacao: TPanel
-      AlignWithMargins = True
-      Left = 0
-      Top = 3
-      Width = 852
-      Height = 48
-      Margins.Left = 0
-      Align = alTop
-      BevelOuter = bvNone
+    ExplicitTop = 0
+    ExplicitHeight = 681
+  end
+  object pnOrganizacao: TPanel
+    AlignWithMargins = True
+    Left = 0
+    Top = 3
+    Width = 981
+    Height = 48
+    Margins.Left = 0
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 2
+    ExplicitWidth = 852
+    object lb2: TLabel
+      Left = 4
+      Top = 11
+      Width = 60
+      Height = 13
+      Caption = 'Organiza'#231#227'o'
+    end
+    object cbOrganizacao: TcxLookupComboBox
+      Left = 3
+      Top = 27
+      RepositoryItem = dmLookup.repLcbOrganizacao
+      Enabled = False
+      Properties.ListColumns = <>
       TabOrder = 0
-      object lb2: TLabel
-        Left = 1
-        Top = 11
-        Width = 60
-        Height = 13
-        Caption = 'Organiza'#231#227'o'
-      end
-      object cbOrganizacao: TcxLookupComboBox
-        Left = 0
-        Top = 27
-        RepositoryItem = dmLookup.repLcbOrganizacao
-        Properties.ListColumns = <>
-        TabOrder = 0
-        Width = 281
-      end
-      object chkTodasOrganizacoes: TcxCheckBox
-        Left = 287
-        Top = 27
-        Caption = 'Todas'
-        Properties.OnEditValueChanged = chkTodasOrganizacoesPropertiesEditValueChanged
-        TabOrder = 1
-        Transparent = True
-        Width = 67
-      end
+      Width = 281
+    end
+    object chkTodasOrganizacoes: TcxCheckBox
+      Left = 290
+      Top = 27
+      Caption = 'Todas'
+      Properties.OnEditValueChanged = chkTodasOrganizacoesPropertiesEditValueChanged
+      State = cbsChecked
+      TabOrder = 1
+      Transparent = True
+      Width = 67
     end
   end
   object ActionList: TActionList

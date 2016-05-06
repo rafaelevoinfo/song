@@ -18,10 +18,10 @@ type
     btnGerarRelatorio: TButton;
     ActionList: TActionList;
     Ac_GerarRelatorio: TAction;
+    dsOrganizacao: TDataSource;
     pnOrganizacao: TPanel;
     lb2: TLabel;
     cbOrganizacao: TcxLookupComboBox;
-    dsOrganizacao: TDataSource;
     chkTodasOrganizacoes: TcxCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);

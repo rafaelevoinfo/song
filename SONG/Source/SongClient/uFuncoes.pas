@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 04/05/2016 00:27:57
+// 04/05/2016 22:16:38
 //
 
 unit uFuncoes;
@@ -218,7 +218,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
+    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -1380,7 +1380,7 @@ begin
   inherited;
 end;
 
-function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
+function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
 begin
   if FfpuMovimentacaoFinanceiraCommand = nil then
   begin
@@ -1390,10 +1390,11 @@ begin
     FfpuMovimentacaoFinanceiraCommand.Prepare;
   end;
   FfpuMovimentacaoFinanceiraCommand.Parameters[0].Value.SetInt32(ipIdOrganizacao);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[1].Value.SetWideString(ipDataInicial);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[2].Value.SetWideString(ipDataFinal);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[1].Value.SetInt32(ipIdProjeto);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[2].Value.SetWideString(ipDataInicial);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[3].Value.SetWideString(ipDataFinal);
   FfpuMovimentacaoFinanceiraCommand.ExecuteUpdate;
-  Result := FfpuMovimentacaoFinanceiraCommand.Parameters[3].Value.AsVariant;
+  Result := FfpuMovimentacaoFinanceiraCommand.Parameters[4].Value.AsVariant;
 end;
 
 function TsmFuncoesRelatorioClient.fpuGetId(ipTabela: string): Integer;

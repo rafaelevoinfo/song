@@ -93,6 +93,8 @@ type
 
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
+  TOrigemRecurso = (orProjeto, orFundo, orFinanciamento);
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;

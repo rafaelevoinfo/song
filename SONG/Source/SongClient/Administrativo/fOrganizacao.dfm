@@ -1,11 +1,8 @@
 inherited frmOrganizacao: TfrmOrganizacao
-  ActiveControl = btnIncluir
   Caption = 'Organiza'#231#245'es'
-  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -112,6 +109,8 @@ inherited frmOrganizacao: TfrmOrganizacao
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitLeft = 1
+                ExplicitTop = 30
                 object viewFundo: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -189,10 +188,6 @@ inherited frmOrganizacao: TfrmOrganizacao
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Contatos da Organiza'#231#227'o'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -411,10 +406,6 @@ inherited frmOrganizacao: TfrmOrganizacao
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 258
@@ -472,10 +463,6 @@ inherited frmOrganizacao: TfrmOrganizacao
     object tabCadastroFundo: TcxTabSheet
       Caption = 'tabCadastroFundo'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroFundo: TPanel
         Left = 0
         Top = 0
@@ -483,7 +470,6 @@ inherited frmOrganizacao: TfrmOrganizacao
         Height = 50
         Align = alTop
         TabOrder = 0
-        ExplicitTop = 8
         object btnSalvarFundo: TButton
           AlignWithMargins = True
           Left = 4

@@ -3,98 +3,135 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnConfiguracoes: TPanel
-    object pcPrincipal: TcxPageControl [0]
+    object pcPrincipal: TcxPageControl
       Left = 0
-      Top = 54
+      Top = 0
       Width = 855
       Height = 627
       Align = alClient
-      TabOrder = 1
+      TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabMovimentacao
+      Properties.ActivePage = tabSaldoProjeto
       Properties.CustomButtons.Buttons = <>
+      ExplicitTop = 54
       ClientRectBottom = 622
       ClientRectLeft = 2
       ClientRectRight = 850
       ClientRectTop = 25
+      object tabSaldoProjeto: TcxTabSheet
+        Caption = 'Saldos'
+        ImageIndex = 0
+        object cgbSaldoProjeto: TdxCheckGroupBox
+          Left = 3
+          Top = 3
+          Caption = 'Saldos de Projetos'
+          TabOrder = 0
+          Height = 49
+          Width = 280
+          object cbSaldoProjeto: TcxLookupComboBox
+            Left = 2
+            Top = 17
+            RepositoryItem = dmLookup.repLcbProjeto
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 225
+          end
+          object chkSaldoTodosProjeto: TcxCheckBox
+            Left = 227
+            Top = 18
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkSaldoTodosProjetoPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
+        end
+        object cgbSaldoFundo: TdxCheckGroupBox
+          Left = 3
+          Top = 58
+          Caption = 'Saldos de Fundos'
+          TabOrder = 1
+          Height = 49
+          Width = 280
+          object cbSaldoFundo: TcxLookupComboBox
+            Left = 2
+            Top = 17
+            RepositoryItem = dmLookup.repLcbProjeto
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 225
+          end
+          object chkSaldoTodosFundo: TcxCheckBox
+            Left = 227
+            Top = 18
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkSaldoTodosFundoPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
+        end
+      end
       object tabMovimentacao: TcxTabSheet
         Caption = 'Movimenta'#231#227'o Financeira'
         ImageIndex = 2
+        object Label3: TLabel
+          Left = 7
+          Top = 5
+          Width = 35
+          Height = 13
+          Caption = 'Projeto'
+        end
         object cgbData: TdxCheckGroupBox
           Left = 4
-          Top = 3
+          Top = 48
           Caption = 'Filtrar por Data'
           TabOrder = 0
-          Height = 110
-          Width = 141
-          object Label2: TLabel
-            Left = 3
+          Height = 61
+          Width = 280
+          object lbDataInicial: TLabel
+            Left = 6
             Top = 17
-            Width = 135
+            Width = 53
             Height = 13
-            Align = alTop
             Caption = 'Data Inicial'
-            ExplicitLeft = 131
-            ExplicitTop = 4
-            ExplicitWidth = 53
           end
           object Label1: TLabel
-            Left = 3
-            Top = 51
-            Width = 135
+            Left = 143
+            Top = 17
+            Width = 48
             Height = 13
-            Align = alTop
             Caption = 'Data Final'
-            ExplicitWidth = 48
           end
           object EditDataFinal: TcxDateEdit
-            Left = 3
-            Top = 64
-            Align = alTop
+            Left = 140
+            Top = 30
             TabOrder = 0
-            ExplicitLeft = 0
-            ExplicitTop = 78
-            ExplicitWidth = 179
             Width = 135
           end
           object EditDataInicial: TcxDateEdit
             Left = 3
             Top = 30
-            Align = alTop
             TabOrder = 1
-            ExplicitLeft = 0
-            ExplicitTop = 19
-            ExplicitWidth = 179
             Width = 135
           end
         end
-      end
-      object tabSaldoProjeto: TcxTabSheet
-        Caption = 'Saldo Por Projeto'
-        ImageIndex = 0
-        object lb1: TLabel
-          Left = 3
-          Top = 3
-          Width = 35
-          Height = 13
-          Caption = 'Projeto'
-        end
-        object cbProjetoSaldoProjeto: TcxLookupComboBox
-          Left = 1
-          Top = 20
+        object cbProjeto: TcxLookupComboBox
+          Left = 4
+          Top = 21
           RepositoryItem = dmLookup.repLcbProjeto
           Properties.ListColumns = <>
-          TabOrder = 0
+          TabOrder = 1
           Width = 280
         end
-        object chkTodosSaldosProjetos: TcxCheckBox
-          Left = 280
-          Top = 22
+        object chkTodosProjetos: TcxCheckBox
+          Left = 283
+          Top = 23
           Caption = 'Todos'
           Properties.OnEditValueChanged = chkTodosSaldosProjetosPropertiesEditValueChanged
-          TabOrder = 1
+          TabOrder = 2
           Transparent = True
-          Width = 121
+          Width = 69
         end
       end
       object tabSaldoDetalhado: TcxTabSheet
@@ -118,11 +155,19 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
   end
+  inherited pnOrganizacao: TPanel
+    inherited cbOrganizacao: TcxLookupComboBox
+      Enabled = False
+    end
+    inherited chkTodasOrganizacoes: TcxCheckBox
+      State = cbsChecked
+    end
+  end
   inherited ActionList: TActionList
     Left = 416
     Top = 208
   end
-  object ppSaldoProjeto: TppReport [3]
+  object ppSaldoProjeto: TppReport [4]
     AutoStop = False
     DataPipeline = DBPipeSaldoProjeto
     PrinterSetup.BinName = 'Default'
@@ -610,16 +655,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppParameterList1: TppParameterList
     end
   end
-  object dsSaldoProjeto: TDataSource [4]
+  object dsSaldoProjeto: TDataSource [5]
     DataSet = dmRelatorio.cdsSaldoProjeto
     Left = 488
     Top = 344
   end
-  object DBPipeSaldoProjeto: TppDBPipeline [5]
+  object DBPipeSaldoProjeto: TppDBPipeline [6]
     DataSource = dsSaldoProjeto
     UserName = 'DBPipeSaldoProjeto'
     Left = 184
-    Top = 232
+    Top = 248
     object DBPipeSaldoProjetoppField1: TppField
       Alignment = taRightJustify
       FieldAlias = 'ID'
@@ -697,7 +742,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField
@@ -777,8 +822,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
-    Left = 424
-    Top = 112
+    Left = 496
+    Top = 144
     Version = '16.02'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeSaldoDetalhado'
@@ -1383,6 +1428,11 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       DisplayFormat = 'R$ ,0.00'
       Size = 2
     end
+    object cdsMovimentacaoSALDO_GERAL: TBCDField
+      FieldName = 'SALDO_GERAL'
+      ProviderFlags = []
+      Size = 2
+    end
   end
   object DBPipeMovimentacao: TppDBPipeline
     DataSource = dsMovimentacao
@@ -1516,6 +1566,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       DataType = dtNotKnown
       DisplayWidth = 0
       Position = 12
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField14: TppField
+      FieldAlias = 'SALDO_GERAL'
+      FieldName = 'SALDO_GERAL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 13
       Searchable = False
       Sortable = False
     end
@@ -1671,82 +1731,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         BandType = 0
         LayerName = BandLayer3
       end
-      object ppLabel18: TppLabel
-        DesignLayer = ppDesignLayer3
-        UserName = 'Label18'
-        Caption = 'Tipo'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = [fsBold]
-        FormField = False
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 1852
-        mmTop = 26723
-        mmWidth = 6350
-        BandType = 0
-        LayerName = BandLayer3
-      end
-      object ppLabel19: TppLabel
-        DesignLayer = ppDesignLayer3
-        UserName = 'Label19'
-        Caption = 'Origem'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = [fsBold]
-        FormField = False
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 79378
-        mmTop = 26723
-        mmWidth = 10848
-        BandType = 0
-        LayerName = BandLayer3
-      end
-      object ppLabel20: TppLabel
-        DesignLayer = ppDesignLayer3
-        UserName = 'Label20'
-        Caption = 'Valor'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = [fsBold]
-        FormField = False
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 119065
-        mmTop = 26723
-        mmWidth = 7673
-        BandType = 0
-        LayerName = BandLayer3
-      end
-      object ppLabel21: TppLabel
-        DesignLayer = ppDesignLayer3
-        UserName = 'Label21'
-        Caption = 'Descri'#231#227'o'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = [fsBold]
-        FormField = False
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 36777
-        mmTop = 26723
-        mmWidth = 14288
-        BandType = 0
-        LayerName = BandLayer3
-      end
     end
     object ppDetailBand3: TppDetailBand
       Background1.Brush.Style = bsClear
@@ -1765,50 +1749,13 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
+        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
         mmHeight = 4763
-        mmLeft = 119065
+        mmLeft = 148696
         mmTop = 0
-        mmWidth = 28046
-        BandType = 4
-        LayerName = BandLayer3
-      end
-      object ppDBText20: TppDBText
-        DesignLayer = ppDesignLayer3
-        UserName = 'DBText10'
-        DataField = 'ORIGEM_RECURSO'
-        DataPipeline = DBPipeMovimentacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        Transparent = True
-        DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
-        mmLeft = 79378
-        mmTop = 0
-        mmWidth = 37306
-        BandType = 4
-        LayerName = BandLayer3
-      end
-      object ppDBText21: TppDBText
-        DesignLayer = ppDesignLayer3
-        UserName = 'DBText11'
-        DataField = 'DESCRICAO_TIPO'
-        DataPipeline = DBPipeMovimentacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        Transparent = True
-        DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
-        mmLeft = 1588
-        mmTop = 0
-        mmWidth = 34131
+        mmWidth = 46038
         BandType = 4
         LayerName = BandLayer3
       end
@@ -1825,9 +1772,29 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
         mmHeight = 4763
-        mmLeft = 36777
+        mmLeft = 12171
         mmTop = 0
-        mmWidth = 40481
+        mmWidth = 98161
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText21: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText21'
+        DataField = 'VALOR_REAL'
+        DataPipeline = DBPipeMovimentacao
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 4763
+        mmLeft = 111388
+        mmTop = 0
+        mmWidth = 35454
         BandType = 4
         LayerName = BandLayer3
       end
@@ -1916,6 +1883,376 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         BandType = 8
         LayerName = BandLayer3
       end
+    end
+    object ppGroupOrganizacao: TppGroup
+      BreakName = 'ID_ORGANIZACAO'
+      DataPipeline = DBPipeMovimentacao
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      OutlineSettings.CreateNode = True
+      ReprintOnSubsequentPage = False
+      StartOnOddPage = False
+      UserName = 'GroupOrganizacao'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeMovimentacao'
+      NewFile = False
+      object ppGroupHeaderBand2: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 5821
+        mmPrintPosition = 0
+        object ppShape1: TppShape
+          DesignLayer = ppDesignLayer3
+          UserName = 'Shape1'
+          Brush.Color = clGray
+          mmHeight = 4763
+          mmLeft = 1852
+          mmTop = 529
+          mmWidth = 194998
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppDBText18: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBText18'
+          DataField = 'NOME_ORGANIZACAO'
+          DataPipeline = DBPipeMovimentacao
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 11
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4763
+          mmLeft = 2118
+          mmTop = 529
+          mmWidth = 193146
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+      end
+      object ppGroupFooterBand2: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 5292
+        mmPrintPosition = 0
+        object ppShape2: TppShape
+          DesignLayer = ppDesignLayer3
+          UserName = 'Shape2'
+          Brush.Color = clGray
+          mmHeight = 4763
+          mmLeft = 139700
+          mmTop = 0
+          mmWidth = 57150
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppLabel19: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label19'
+          Caption = 'Saldo Geral'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taCentered
+          Transparent = True
+          mmHeight = 5027
+          mmLeft = 141552
+          mmTop = 0
+          mmWidth = 23283
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppDBText20: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBText20'
+          DataField = 'SALDO_GERAL'
+          DataPipeline = DBPipeMovimentacao
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4763
+          mmLeft = 166688
+          mmTop = 0
+          mmWidth = 28046
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+      end
+    end
+    object ppGroupOrigemRecurso: TppGroup
+      BreakName = 'ID_ORIGEM_RECURSO'
+      DataPipeline = DBPipeMovimentacao
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      OutlineSettings.CreateNode = True
+      ReprintOnSubsequentPage = False
+      StartOnOddPage = False
+      UserName = 'GroupOrigemRecurso'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeMovimentacao'
+      NewFile = False
+      object ppGroupHeaderBand3: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 5292
+        mmPrintPosition = 0
+        object ShapeOrigemRecurso: TppShape
+          DesignLayer = ppDesignLayer3
+          UserName = 'ShapeOrigemRecurso'
+          Brush.Color = clMoneyGreen
+          mmHeight = 5000
+          mmLeft = 6879
+          mmTop = 0
+          mmWidth = 189972
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
+        object ppDBText24: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBText24'
+          DataField = 'ORIGEM_RECURSO'
+          DataPipeline = DBPipeMovimentacao
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4763
+          mmLeft = 7409
+          mmTop = 529
+          mmWidth = 187855
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
+      end
+      object ppGroupFooterBand3: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
+    end
+    object ppGroupTipo: TppGroup
+      BreakName = 'TIPO'
+      DataPipeline = DBPipeMovimentacao
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      OutlineSettings.CreateNode = True
+      ReprintOnSubsequentPage = False
+      StartOnOddPage = False
+      UserName = 'GroupTipo'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeMovimentacao'
+      NewFile = False
+      object ppGroupHeaderBand4: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 9525
+        mmPrintPosition = 0
+        object ShapeRecDesp: TppShape
+          DesignLayer = ppDesignLayer3
+          UserName = 'ShapeRecDesp'
+          Brush.Color = clMaroon
+          mmHeight = 9525
+          mmLeft = 9260
+          mmTop = 0
+          mmWidth = 187591
+          BandType = 3
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+        object EditDescricaoTipo: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'EditDescricaoTipo'
+          DataField = 'DESCRICAO_TIPO'
+          DataPipeline = DBPipeMovimentacao
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4763
+          mmLeft = 9786
+          mmTop = 794
+          mmWidth = 69056
+          BandType = 3
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+        object ppLabel21: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label21'
+          Caption = 'Descri'#231#227'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taCentered
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 12171
+          mmTop = 5821
+          mmWidth = 14287
+          BandType = 3
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+        object ppLabel20: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label20'
+          Caption = 'Valor Pago/Recebido/Financiado'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taCentered
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 148696
+          mmTop = 5821
+          mmWidth = 46038
+          BandType = 3
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+        object ppLabel22: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label201'
+          Caption = 'Valor'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taCentered
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 111388
+          mmTop = 5821
+          mmWidth = 7673
+          BandType = 3
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+      end
+      object ppGroupFooterBand4: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 5292
+        mmPrintPosition = 0
+        object ppLabel18: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label18'
+          Caption = 'Totais'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taCentered
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 88371
+          mmTop = 794
+          mmWidth = 8996
+          BandType = 5
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+        object ppDBCalc2: TppDBCalc
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBCalc2'
+          DataField = 'VALOR'
+          DataPipeline = DBPipeMovimentacao
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          ResetGroup = ppGroupTipo
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4498
+          mmLeft = 148696
+          mmTop = 794
+          mmWidth = 46038
+          BandType = 5
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+        object ppDBCalc3: TppDBCalc
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBCalc3'
+          DataField = 'VALOR_REAL'
+          DataPipeline = DBPipeMovimentacao
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          ResetGroup = ppGroupTipo
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4498
+          mmLeft = 111390
+          mmTop = 794
+          mmWidth = 35454
+          BandType = 5
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
+      end
+    end
+    object raCodeModule1: TraCodeModule
+      ProgramStream = {
+        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650613
+        5368617065526563446573704F6E5072696E740B50726F6772616D5479706507
+        0B747450726F63656475726506536F7572636506B770726F6365647572652053
+        68617065526563446573704F6E5072696E743B0D0A626567696E0D0A20202020
+        6966204442506970654D6F76696D656E746163616F5B275449504F275D203D20
+        30207468656E0D0A202020205368617065526563446573702E42727573682E43
+        6F6C6F72203A3D20636C4D61726F6F6E0D0A2020656C73650D0A202020205368
+        617065526563446573702E42727573682E436F6C6F72203A3D20636C47726565
+        6E3B20200D0A656E643B0D0A0D436F6D706F6E656E744E616D65060C53686170
+        6552656344657370094576656E744E616D6506074F6E5072696E74074576656E
+        7449440220084361726574506F730102290204000000}
     end
     object ppDesignLayers3: TppDesignLayers
       object ppDesignLayer3: TppDesignLayer

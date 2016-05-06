@@ -1,10 +1,11 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
-  ActiveControl = btnSalvarDetail
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrudMasterDetail'
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -62,10 +63,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
