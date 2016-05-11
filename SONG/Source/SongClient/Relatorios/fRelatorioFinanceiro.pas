@@ -22,7 +22,7 @@ uses
 type
   TfrmRelatorioFinanceiro = class(TfrmRelatorioBasico)
     pcPrincipal: TcxPageControl;
-    tabSaldoProjeto: TcxTabSheet;
+    tabSaldos: TcxTabSheet;
     ppSaldoProjeto: TppReport;
     dsSaldoProjeto: TDataSource;
     ppParameterList1: TppParameterList;
@@ -117,8 +117,8 @@ type
     cdsMovimentacaoVALOR: TBCDField;
     cdsMovimentacaoSALDO_GERAL: TBCDField;
     Label3: TLabel;
-    cbProjeto: TcxLookupComboBox;
-    chkTodosProjetos: TcxCheckBox;
+    cbProjetoMovimentacao: TcxLookupComboBox;
+    chkTodosProjetosMovimentacao: TcxCheckBox;
     ppHeaderBand3: TppHeaderBand;
     ppLabel15: TppLabel;
     ppDBImage3: TppDBImage;
@@ -139,10 +139,6 @@ type
     ppGroupFooterBand2: TppGroupFooterBand;
     ppLabel19: TppLabel;
     ppDBText20: TppDBText;
-    ppGroupOrigemRecurso: TppGroup;
-    ppGroupHeaderBand3: TppGroupHeaderBand;
-    ppDBText24: TppDBText;
-    ppGroupFooterBand3: TppGroupFooterBand;
     ppGroupTipo: TppGroup;
     ppGroupHeaderBand4: TppGroupHeaderBand;
     EditDescricaoTipo: TppDBText;
@@ -156,17 +152,54 @@ type
     ppLabel22: TppLabel;
     ppDBText21: TppDBText;
     ppShape1: TppShape;
-    ShapeOrigemRecurso: TppShape;
     ShapeRecDesp: TppShape;
     raCodeModule1: TraCodeModule;
     ppDBCalc3: TppDBCalc;
     ppShape2: TppShape;
-    cgbSaldoProjeto: TdxCheckGroupBox;
-    cbSaldoProjeto: TcxLookupComboBox;
-    chkSaldoTodosProjeto: TcxCheckBox;
-    cgbSaldoFundo: TdxCheckGroupBox;
-    cbSaldoFundo: TcxLookupComboBox;
-    chkSaldoTodosFundo: TcxCheckBox;
+    ppSaldo: TppReport;
+    ppHeaderBand4: TppHeaderBand;
+    ppLabel23: TppLabel;
+    ppDBImage4: TppDBImage;
+    ppSystemVariable10: TppSystemVariable;
+    ppSystemVariable11: TppSystemVariable;
+    ppDetailBand4: TppDetailBand;
+    ppDBText25: TppDBText;
+    ppDBText26: TppDBText;
+    ppFooterBand4: TppFooterBand;
+    ppLabel24: TppLabel;
+    ppDBText28: TppDBText;
+    ppDBText29: TppDBText;
+    ppSystemVariable12: TppSystemVariable;
+    GrupoOrganizacao: TppGroup;
+    ppGroupHeaderBand5: TppGroupHeaderBand;
+    ppShape3: TppShape;
+    ppDBText30: TppDBText;
+    ppGroupFooterBand5: TppGroupFooterBand;
+    ppShape4: TppShape;
+    ppLabel25: TppLabel;
+    raCodeModule2: TraCodeModule;
+    ppDesignLayers4: TppDesignLayers;
+    ppDesignLayer4: TppDesignLayer;
+    ppParameterList4: TppParameterList;
+    cdsSaldo: TClientDataSet;
+    cdsSaldoID_ORGANIZACAO: TIntegerField;
+    cdsSaldoNOME_ORGANIZACAO: TStringField;
+    cdsSaldoID_PROJETO_FUNDO: TIntegerField;
+    cdsSaldoNOME_PROJETO_FUNDO: TStringField;
+    cdsSaldoSALDO: TBCDField;
+    cdsSaldoSALDO_GERAL: TBCDField;
+    cbFundoMovimentacao: TcxLookupComboBox;
+    chkTodosFundoMovimentacao: TcxCheckBox;
+    DBPipeSaldo: TppDBPipeline;
+    dsSaldo: TDataSource;
+    cbProjetoSaldo: TcxLookupComboBox;
+    chkTodosProjetosSaldo: TcxCheckBox;
+    chkTodosFundoSaldos: TcxCheckBox;
+    cbFundoSaldo: TcxLookupComboBox;
+    ppDBCalc4: TppDBCalc;
+    ppLabel26: TppLabel;
+    ppDBText27: TppDBText;
+    cdsSaldoTIPO_ORIGEM: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure SaldoProjetoBindAssignedValue(Sender: TObject;
@@ -174,8 +207,12 @@ type
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
     procedure chkSaldoTodosProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure chkSaldoTodosFundoPropertiesEditValueChanged(Sender: TObject);
+    procedure chkTodosFundoMovimentacaoPropertiesEditValueChanged(
+      Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
+    function fpvExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox;
+      ipMsgErro: string): Integer;
   public
     { Public declarations }
   end;
@@ -188,51 +225,53 @@ implementation
 {$R *.dfm}
 
 
+function TfrmRelatorioFinanceiro.fpvExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
+begin
+  Result := 0;
+  if not ipChkTodos.Checked then
+    begin
+      if VarIsNull(ipLookup.EditValue) then
+        raise Exception.Create(ipMsgErro);
+
+      Result := ipLookup.EditValue;
+    end;
+end;
+
 procedure TfrmRelatorioFinanceiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
-  vaIdOrganizacao, vaIdProjeto: Integer;
+  vaIdOrganizacao, vaIdProjeto, vaIdFundo: Integer;
 begin
   inherited;
-  vaIdOrganizacao := 0;
+  vaIdOrganizacao := fpvExtrairValor(chkTodasOrganizacoes,cbOrganizacao,'Informe a organização ou marque todas');
   vaIdProjeto := 0;
-  if not chkTodasOrganizacoes.Checked then
-    vaIdOrganizacao := cbOrganizacao.EditValue;
+  vaIdFundo := 0;
 
   if pcPrincipal.ActivePage = tabMovimentacao then
     begin
-      if not chkTodosProjetos.Checked then
-        begin
-          if VarIsNull(cbProjeto.EditValue) then
-            raise Exception.Create('Informe o projeto, ou marque o todos.');
-
-          vaIdProjeto := cbProjeto.EditValue;
-        end;
+      vaIdProjeto := fpvExtrairValor(chkTodosProjetosMovimentacao, cbProjetoMovimentacao, 'Informe o projeto, ou marque o todos.');
+      vaIdFundo := fpvExtrairValor(chkTodosFundoMovimentacao, cbFundoMovimentacao, 'Informe o fundo, ou marque o todos.');
 
       if cgbData.CheckBox.Checked then
-        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, DateToStr(EditDataInicial.Date),
+        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo,
+          DateToStr(EditDataInicial.Date),
           DateToStr(EditDataFinal.Date))
       else
-        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, '', '');
+        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '');
 
-      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' + cdsMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
+      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' + cdsMovimentacaoTIPO_ORIGEM_RECURSO.FieldName+';'+ cdsMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
         cdsMovimentacaoTIPO.FieldName;
 
       ppMovimentacao.PrintReport;
     end
   else
-    if pcPrincipal.ActivePage = tabSaldoProjeto then
+    if pcPrincipal.ActivePage = tabSaldos then
     begin
-      // if VarIsNull(cbProjetoSaldoProjeto.EditValue) then
-      // raise TControlException.Create('Informe o projeto.', cbProjetoSaldoProjeto);
-      //
-      // dmRelatorio.cdsSaldoProjeto.Close;
-      // if chkTodosSaldosProjetos.Checked then
-      // dmRelatorio.cdsSaldoProjeto.ParamByName('ID_PROJETO').Clear
-      // else
-      // dmRelatorio.cdsSaldoProjeto.ParamByName('ID_PROJETO').AsInteger := cbProjetoSaldoProjeto.EditValue;
-      // dmRelatorio.cdsSaldoProjeto.Open;
+      vaIdProjeto := fpvExtrairValor(chkTodosProjetosSaldo, cbProjetoSaldo, 'Informe o projeto, ou marque o todos.');
+      vaIdFundo := fpvExtrairValor(chkTodosFundoSaldos, cbFundoSaldo, 'Informe o fundo, ou marque o todos.');
 
-      ppSaldoProjeto.PrintReport;
+      cdsSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(vaIdOrganizacao,vaIdProjeto,vaIdFundo);
+
+      ppSaldo.PrintReport;
     end
   else if pcPrincipal.ActivePage = tabSaldoDetalhado then
     begin
@@ -259,21 +298,28 @@ procedure TfrmRelatorioFinanceiro.chkSaldoTodosFundoPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  cbSaldoFundo.Enabled := not chkSaldoTodosFundo.Checked
+  cbFundoSaldo.Enabled := not chkTodosFundoSaldos.Checked
 end;
 
 procedure TfrmRelatorioFinanceiro.chkSaldoTodosProjetoPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  cbSaldoProjeto.Enabled := not chkSaldoTodosProjeto.Checked;
+  cbProjetoSaldo.Enabled := not chkTodosProjetosSaldo.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodosFundoMovimentacaoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbFundoMovimentacao.Enabled := not chkTodosFundoMovimentacao.Checked;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkTodosSaldosProjetosPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  cbProjeto.Enabled := not chkTodosProjetos.Checked;
+  cbProjetoMovimentacao.Enabled := not chkTodosProjetosMovimentacao.Checked;
 end;
 
 procedure TfrmRelatorioFinanceiro.FormCreate(Sender: TObject);
@@ -283,15 +329,30 @@ begin
   dmRelatorio.Name := '';
   inherited;
 
+  pcPrincipal.ActivePage := tabSaldos;
+
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 
   EditDataInicial.Date := IncDay(now, -30);
   EditDataFinal.Date := now;
 
   if dmLookup.cdslkProjeto.RecordCount > 0 then
     begin
-      cbProjeto.EditValue := dmLookup.cdslkProjetoID.AsInteger;
-      cbProjeto.PostEditValue;
+      cbProjetoMovimentacao.EditValue := dmLookup.cdslkProjetoID.AsInteger;
+      cbProjetoMovimentacao.PostEditValue;
+
+      cbProjetoSaldo.EditValue := dmLookup.cdslkProjetoID.AsInteger;
+      cbProjetoSaldo.PostEditValue;
+    end;
+
+  if dmLookup.cdslkFundo.RecordCount > 0 then
+    begin
+      cbFundoMovimentacao.EditValue := dmLookup.cdslkFundoID.AsInteger;
+      cbFundoMovimentacao.PostEditValue;
+
+      cbFundoSaldo.EditValue := dmLookup.cdslkFundoID.AsInteger;
+      cbFundoSaldo.PostEditValue;
     end;
 
 end;

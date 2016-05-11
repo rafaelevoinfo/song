@@ -2,12 +2,15 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
   object qMovimentacao: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select View_Movimentacao_Financeira.Id_Movimentacao,'
+      'select View_Movimentacao_Financeira.ID_IDENTIFICACAO_TABELA,'
+      '       View_Movimentacao_Financeira.Id,'
+      '       View_Movimentacao_Financeira.Id_Movimentacao,'
       '       View_Movimentacao_Financeira.Id_Organizacao,'
       '       View_Movimentacao_Financeira.Nome_Organizacao,'
       '       View_Movimentacao_Financeira.Tipo_Origem_Recurso,'
       '       View_Movimentacao_Financeira.Id_Origem_Recurso,'
       '       View_Movimentacao_Financeira.Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Tipo_origem,'
       '       View_Movimentacao_Financeira.Tipo,'
       '       View_Movimentacao_Financeira.Descricao_Tipo,'
       '       View_Movimentacao_Financeira.Descricao_Movimentacao,'
@@ -20,9 +23,10 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
         'where (View_Movimentacao_Financeira.Data between :data_inicial a' +
         'nd :data_final) or (:todas_datas = 1)'
       
-        'ORDER BY View_Movimentacao_Financeira.Id_Movimentacao, View_Movi' +
-        'mentacao_Financeira.Id_Origem_Recurso, View_Movimentacao_Finance' +
-        'ira.Id_Organizacao')
+        'ORDER BY View_Movimentacao_Financeira.id_identificacao_tabela, V' +
+        'iew_Movimentacao_Financeira.Id_Movimentacao, View_Movimentacao_F' +
+        'inanceira.Id_Origem_Recurso, View_Movimentacao_Financeira.Id,'
+      ' View_Movimentacao_Financeira.Id_Organizacao')
     Left = 256
     Top = 176
     ParamData = <
@@ -44,6 +48,11 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
         ParamType = ptInput
         Value = Null
       end>
+    object qMovimentacaoID_IDENTIFICACAO_TABELA: TIntegerField
+      FieldName = 'ID_IDENTIFICACAO_TABELA'
+      Origin = 'ID_IDENTIFICACAO_TABELA'
+      ProviderFlags = []
+    end
     object qMovimentacaoID_MOVIMENTACAO: TIntegerField
       FieldName = 'ID_MOVIMENTACAO'
       Origin = 'ID_MOVIMENTACAO'
@@ -114,6 +123,54 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
       ProviderFlags = []
       Precision = 18
       Size = 2
+    end
+    object qMovimentacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+    end
+    object qMovimentacaoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+    end
+    object qMovimentacaoTIPO_ORIGEM: TIntegerField
+      FieldName = 'TIPO_ORIGEM'
+      Origin = 'TIPO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object cdsSaldo: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 41
+    Top = 40
+    object cdsSaldoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object cdsSaldoNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldoID_PROJETO_FUNDO: TIntegerField
+      FieldName = 'ID_PROJETO_FUNDO'
+      ProviderFlags = []
+    end
+    object cdsSaldoNOME_PROJETO_FUNDO: TStringField
+      FieldName = 'NOME_PROJETO_FUNDO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldoSALDO: TBCDField
+      FieldName = 'SALDO'
+      ProviderFlags = []
+    end
+    object cdsSaldoSALDO_GERAL: TBCDField
+      FieldName = 'SALDO_GERAL'
+      ProviderFlags = []
+    end
+    object cdsSaldoTIPO_ORIGEM: TIntegerField
+      FieldName = 'TIPO_ORIGEM'
     end
   end
 end

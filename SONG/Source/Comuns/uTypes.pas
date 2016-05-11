@@ -94,6 +94,10 @@ type
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
   TOrigemRecurso = (orProjeto, orFundo, orFinanciamento);
+  TOrigem = (oriProjeto, oriFundo);
+
+
+  TTipoMovimentacao = (tmDespesa, tmReceita);
 
 const
   // mensagens customizadas do windows
