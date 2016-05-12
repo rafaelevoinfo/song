@@ -12,22 +12,16 @@ uses
 
 type
   TsmRelatorio = class(TsmBasico)
-    qSaldoProjeto: TRFQuery;
-    qSaldoProjetoNOME: TStringField;
-    qSaldoProjetoORCAMENTO: TBCDField;
-    qSaldoProjetoVALOR_RECEBIDO: TBCDField;
-    qSaldoProjetoVALOR_GASTO: TFMTBCDField;
-    qSaldoProjetoSALDO_REAL: TFMTBCDField;
-    qSaldoProjetoSALDO_PREVISTO: TFMTBCDField;
-    qSaldoProjetoID: TIntegerField;
-    qSaldoDetalhado: TRFQuery;
-    qSaldoDetalhadoORIGEM: TStringField;
-    qSaldoDetalhadoDESCRICAO: TStringField;
-    qSaldoDetalhadoVALOR: TBCDField;
-    dtfldSaldoDetalhadoDATA: TDateField;
-    qSaldoDetalhadoPROJETO_FUNDO: TStringField;
-    qSaldoDetalhadoTIPO: TStringField;
-    qSaldoGeral: TRFQuery;
+    qSaldo_Rubrica: TRFQuery;
+    qSaldo_RubricaID_RUBRICA: TIntegerField;
+    qSaldo_RubricaID_PROJETO: TIntegerField;
+    qSaldo_RubricaNOME_PROJETO: TStringField;
+    qSaldo_RubricaNOME_RUBRICA: TStringField;
+    qSaldo_RubricaRECEBIDO: TBCDField;
+    qSaldo_RubricaGASTO: TFMTBCDField;
+    qSaldo_RubricaAPROVISIONADO: TFMTBCDField;
+    qSaldo_RubricaSALDO_REAL: TFMTBCDField;
+    qSaldo_RubricaORCAMENTO: TBCDField;
   private
     { Private declarations }
   public

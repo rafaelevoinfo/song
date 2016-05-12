@@ -23,74 +23,7 @@ type
   TfrmRelatorioFinanceiro = class(TfrmRelatorioBasico)
     pcPrincipal: TcxPageControl;
     tabSaldos: TcxTabSheet;
-    ppSaldoProjeto: TppReport;
-    dsSaldoProjeto: TDataSource;
-    ppParameterList1: TppParameterList;
-    ppDesignLayers1: TppDesignLayers;
-    ppDesignLayer1: TppDesignLayer;
-    ppHeaderBand1: TppHeaderBand;
-    ppDetailBand1: TppDetailBand;
-    ppFooterBand1: TppFooterBand;
-    ppLabel1: TppLabel;
-    ppLabel3: TppLabel;
-    ppDBText2: TppDBText;
-    ppDBText3: TppDBText;
-    ppLabel4: TppLabel;
-    ppDBText4: TppDBText;
-    ppLabel5: TppLabel;
-    ppDBText5: TppDBText;
-    ppLabel6: TppLabel;
-    ppDBText6: TppDBText;
-    ppLabel7: TppLabel;
-    DBPipeSaldoProjeto: TppDBPipeline;
-    ppDBImage1: TppDBImage;
-    ppLine1: TppLine;
-    ppLabel2: TppLabel;
-    ppDBText7: TppDBText;
-    ppDBText1: TppDBText;
-    ppSystemVariable1: TppSystemVariable;
-    ppSystemVariable2: TppSystemVariable;
-    ppLabel8: TppLabel;
-    ppDBText8: TppDBText;
-    DBPipeOrganizacao: TppDBPipeline;
-    ppSystemVariable3: TppSystemVariable;
-    tabSaldoDetalhado: TcxTabSheet;
-    ppSaldoDetalhado: TppReport;
-    ppHeaderBand2: TppHeaderBand;
-    ppLabel9: TppLabel;
-    ppLabel10: TppLabel;
-    ppLabel11: TppLabel;
-    ppLabel12: TppLabel;
-    ppLabel13: TppLabel;
-    ppDBImage2: TppDBImage;
-    ppLine2: TppLine;
-    ppSystemVariable4: TppSystemVariable;
-    ppSystemVariable5: TppSystemVariable;
-    ppDetailBand2: TppDetailBand;
-    ppDBText13: TppDBText;
-    ppFooterBand2: TppFooterBand;
-    ppLabel16: TppLabel;
-    ppDBText15: TppDBText;
-    ppDBText16: TppDBText;
-    ppSystemVariable6: TppSystemVariable;
-    ppDesignLayers2: TppDesignLayers;
-    ppDesignLayer2: TppDesignLayer;
-    ppParameterList2: TppParameterList;
-    ppDBText14: TppDBText;
-    DBPipeSaldoDetalhado: TppDBPipeline;
-    dsSaldoDetalhado: TDataSource;
-    GrupoTipo: TppGroup;
-    ppGroupHeaderBand1: TppGroupHeaderBand;
-    ppGroupFooterBand1: TppGroupFooterBand;
-    ppDBText17: TppDBText;
-    ppDBText9: TppDBText;
-    ppDBText10: TppDBText;
-    ppDBText11: TppDBText;
-    ppLabel14: TppLabel;
-    ppDBCalc1: TppDBCalc;
-    lb3: TLabel;
-    cbProjetoSaldoDetalhado: TcxLookupComboBox;
-    ppLine3: TppLine;
+    tabSaldoRubrica: TcxTabSheet;
     tabMovimentacao: TcxTabSheet;
     cgbData: TdxCheckGroupBox;
     EditDataFinal: TcxDateEdit;
@@ -122,10 +55,9 @@ type
     ppHeaderBand3: TppHeaderBand;
     ppLabel15: TppLabel;
     ppDBImage3: TppDBImage;
-    ppLine4: TppLine;
     ppSystemVariable7: TppSystemVariable;
     ppSystemVariable8: TppSystemVariable;
-    ppDetailBand3: TppDetailBand;
+    ppDetailBandMovimentacao: TppDetailBand;
     ppDBText19: TppDBText;
     ppDBText12: TppDBText;
     ppFooterBand3: TppFooterBand;
@@ -142,8 +74,8 @@ type
     ppGroupTipo: TppGroup;
     ppGroupHeaderBand4: TppGroupHeaderBand;
     EditDescricaoTipo: TppDBText;
-    ppLabel21: TppLabel;
-    ppLabel20: TppLabel;
+    ppLabelDescricao: TppLabel;
+    ppLabelValorPagoRecebido: TppLabel;
     ppGroupFooterBand4: TppGroupFooterBand;
     ppLabel18: TppLabel;
     ppDBCalc2: TppDBCalc;
@@ -197,9 +129,58 @@ type
     chkTodosFundoSaldos: TcxCheckBox;
     cbFundoSaldo: TcxLookupComboBox;
     ppDBCalc4: TppDBCalc;
-    ppLabel26: TppLabel;
+    ppLabelProjetoFundo: TppLabel;
     ppDBText27: TppDBText;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    chkReceitas: TcxCheckBox;
+    chkDespesas: TcxCheckBox;
+    chkSomenteTotais: TcxCheckBox;
+    ppLabel20: TppLabel;
+    cdsMovimentacaoVALOR_RESTANTE: TBCDField;
+    ppDBText24: TppDBText;
+    ppDBCalc5: TppDBCalc;
+    chkSomenteRegistrosAbertos: TcxCheckBox;
+    lb1: TLabel;
+    cbProjetoRubrica: TcxLookupComboBox;
+    chkTodosProjetosRubricas: TcxCheckBox;
+    ppSaldoRubrica: TppReport;
+    ppParameterList1: TppParameterList;
+    DBPipeRubrica: TppDBPipeline;
+    DBPipeOrganizacao: TppDBPipeline;
+    ppHeaderBand1: TppHeaderBand;
+    ppLabel1: TppLabel;
+    ppDBImage1: TppDBImage;
+    ppSystemVariable1: TppSystemVariable;
+    ppSystemVariable2: TppSystemVariable;
+    ppDetailBand1: TppDetailBand;
+    ppDBText1: TppDBText;
+    ppDBText2: TppDBText;
+    ppDBText3: TppDBText;
+    ppDBText4: TppDBText;
+    ppDBText5: TppDBText;
+    ppDBText9: TppDBText;
+    ppFooterBand1: TppFooterBand;
+    ppLabel2: TppLabel;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppSystemVariable3: TppSystemVariable;
+    ppGroup1: TppGroup;
+    ppGroupHeaderBand1: TppGroupHeaderBand;
+    ppShape5: TppShape;
+    ppDBText8: TppDBText;
+    ppLabel4: TppLabel;
+    ppLabel5: TppLabel;
+    ppLabel6: TppLabel;
+    ppLabel7: TppLabel;
+    ppLabel8: TppLabel;
+    ppLabel9: TppLabel;
+    ppGroupFooterBand1: TppGroupFooterBand;
+    raCodeModule3: TraCodeModule;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure SaldoProjetoBindAssignedValue(Sender: TObject;
@@ -208,6 +189,8 @@ type
     procedure chkSaldoTodosProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure chkSaldoTodosFundoPropertiesEditValueChanged(Sender: TObject);
     procedure chkTodosFundoMovimentacaoPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure chkTodosProjetoRubricasPropertiesEditValueChanged(
       Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
@@ -240,26 +223,32 @@ end;
 procedure TfrmRelatorioFinanceiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
   vaIdOrganizacao, vaIdProjeto, vaIdFundo: Integer;
+  vaSomenteRegistrosAberto: Boolean;
 begin
   inherited;
-  vaIdOrganizacao := fpvExtrairValor(chkTodasOrganizacoes,cbOrganizacao,'Informe a organização ou marque todas');
-  vaIdProjeto := 0;
-  vaIdFundo := 0;
+  vaIdOrganizacao := fpvExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
 
   if pcPrincipal.ActivePage = tabMovimentacao then
     begin
       vaIdProjeto := fpvExtrairValor(chkTodosProjetosMovimentacao, cbProjetoMovimentacao, 'Informe o projeto, ou marque o todos.');
       vaIdFundo := fpvExtrairValor(chkTodosFundoMovimentacao, cbFundoMovimentacao, 'Informe o fundo, ou marque o todos.');
 
+      vaSomenteRegistrosAberto := chkSomenteRegistrosAbertos.Enabled and chkSomenteRegistrosAbertos.Checked;
+
       if cgbData.CheckBox.Checked then
         cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo,
-          DateToStr(EditDataInicial.Date),
-          DateToStr(EditDataFinal.Date))
+          DateToStr(EditDataInicial.Date), DateToStr(EditDataFinal.Date), chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto)
       else
-        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '');
+        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '',
+          chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
 
-      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' + cdsMovimentacaoTIPO_ORIGEM_RECURSO.FieldName+';'+ cdsMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
+      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' + cdsMovimentacaoTIPO_ORIGEM_RECURSO.FieldName + ';' +
+        cdsMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
         cdsMovimentacaoTIPO.FieldName;
+
+      ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
+      ppLabelProjetoFundo.Visible := ppDetailBandMovimentacao.Visible;
+      ppLabelDescricao.Visible := ppDetailBandMovimentacao.Visible;
 
       ppMovimentacao.PrintReport;
     end
@@ -269,21 +258,23 @@ begin
       vaIdProjeto := fpvExtrairValor(chkTodosProjetosSaldo, cbProjetoSaldo, 'Informe o projeto, ou marque o todos.');
       vaIdFundo := fpvExtrairValor(chkTodosFundoSaldos, cbFundoSaldo, 'Informe o fundo, ou marque o todos.');
 
-      cdsSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(vaIdOrganizacao,vaIdProjeto,vaIdFundo);
+      cdsSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(vaIdOrganizacao, vaIdProjeto, vaIdFundo);
 
       ppSaldo.PrintReport;
     end
-  else if pcPrincipal.ActivePage = tabSaldoDetalhado then
+  else if pcPrincipal.ActivePage = tabSaldoRubrica then
     begin
-      if VarIsNull(cbProjetoSaldoDetalhado.EditValue) then
-        raise TControlException.Create('Informe o projeto.', cbProjetoSaldoDetalhado);
+      vaIdProjeto := fpvExtrairValor(chkTodosProjetosRubricas, cbProjetoRubrica, 'Informe o projeto, ou marque o todos.');
 
-      dmRelatorio.cdsSaldoDetalhado.Close;
-      dmRelatorio.cdsSaldoDetalhado.ParamByName('ID_PROJETO').AsInteger := cbProjetoSaldoDetalhado.EditValue;
-      dmRelatorio.cdsSaldoDetalhado.ParamByName('ID_FUNDO').Clear;
-      dmRelatorio.cdsSaldoDetalhado.Open;
+      dmRelatorio.cdsSaldo_Rubrica.Close;
+      if vaIdProjeto <> 0 then
+        dmRelatorio.cdsSaldo_Rubrica.ParamByName('ID_PROJETO').AsInteger := vaIdProjeto
+      else
+        dmRelatorio.cdsSaldo_Rubrica.ParamByName('ID_PROJETO').Clear;
 
-      ppSaldoDetalhado.PrintReport;
+      dmRelatorio.cdsSaldo_Rubrica.Open;
+
+      ppSaldoRubrica.PrintReport;
     end;
 end;
 
@@ -313,6 +304,13 @@ procedure TfrmRelatorioFinanceiro.chkTodosFundoMovimentacaoPropertiesEditValueCh
 begin
   inherited;
   cbFundoMovimentacao.Enabled := not chkTodosFundoMovimentacao.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodosProjetoRubricasPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbProjetoRubrica.Enabled := not chkTodosProjetosRubricas.Checked;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkTodosSaldosProjetosPropertiesEditValueChanged(

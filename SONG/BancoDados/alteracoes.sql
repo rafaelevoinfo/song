@@ -2522,3 +2522,74 @@ inner join Projeto_Organizacao on (Projeto_Organizacao.Id_Projeto = Projeto.Id)
 inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
 ;
 
+
+
+CREATE OR ALTER VIEW VIEW_RUBRICA_PROJETO(
+    ID_RUBRICA,
+    ID_PROJETO,
+    NOME_PROJETO,
+    NOME_RUBRICA,
+    ORCAMENTO,
+    VALOR_GASTO,
+    VALOR_RECEBIDO,
+    VALOR_APROVISIONADO,
+    SALDO_REAL,
+    SALDO_PREVISTO)
+AS
+select distinct Projeto_Rubrica.Id_Rubrica,
+                Projeto_Rubrica.Id_Projeto,
+                Projeto.nome as Nome_Projeto,
+                Rubrica.Identificador || ' - ' || Rubrica.Nome as Nome_Rubrica,
+                Projeto_Rubrica.Orcamento,
+                coalesce((select sum(Conta_Pagar_Vinculo.Valor * coalesce((select sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)
+                                                         from Conta_Pagar_Parcela
+                                                         inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)
+                                                         where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta_Pagar and
+                                                               Conta_Pagar_Parcela.Status = 1),0))
+                 from Conta_Pagar_Vinculo
+                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = Projeto_Rubrica.Id_Rubrica and
+                       Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto_Rubrica.Id_Projeto),0) as Valor_Gasto,
+
+                coalesce((select sum(Projeto_Financiador_Pagto.Percentual / 100 * Projeto_Rubrica.Orcamento)
+                 from Projeto_Financiador
+                 inner join Projeto_Financiador_Pagto on (Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id)
+                 where Projeto_Financiador.Id_Projeto = Projeto_Rubrica.Id_Projeto),0) as Valor_Recebido,
+
+                coalesce((select sum(Conta_Pagar_Vinculo.Valor * coalesce((select sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)
+                                                         from Conta_Pagar_Parcela
+                                                         inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)
+                                                         where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta_Pagar and
+                                                               Conta_Pagar_Parcela.Status = 0),0))
+                 from Conta_Pagar_Vinculo
+                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = Projeto_Rubrica.Id_Rubrica and
+                       Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto_Rubrica.Id_Projeto),0) as Valor_Aprovisionado,
+
+                coalesce((coalesce((select sum(Projeto_Financiador_Pagto.Percentual / 100 * Projeto_Rubrica.Orcamento)
+                 from Projeto_Financiador
+                 inner join Projeto_Financiador_Pagto on (Projeto_Financiador_Pagto.Id_Projeto_Financiador = Projeto_Financiador.Id)
+                 where Projeto_Financiador.Id_Projeto = Projeto_Rubrica.Id_Projeto),0) -
+
+                (select sum(Conta_Pagar_Vinculo.Valor * coalesce((select sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)
+                                                         from Conta_Pagar_Parcela
+                                                         inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)
+                                                         where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta_Pagar and
+                                                               Conta_Pagar_Parcela.Status = 1),0))
+                 from Conta_Pagar_Vinculo
+                 where Conta_Pagar_Vinculo.Id_Rubrica_Origem = Projeto_Rubrica.Id_Rubrica and
+                       Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto_Rubrica.Id_Projeto)),0) as Saldo_Real,
+
+                Projeto_Rubrica.Orcamento - coalesce((select sum(Conta_Pagar_Vinculo.Valor * (select sum(Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total)
+                                                                                     from Conta_Pagar_Parcela
+                                                                                     inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.Id_Conta_Pagar)
+                                                                                     where Conta_Pagar_Parcela.Id_Conta_Pagar = Conta_Pagar_Vinculo.Id_Conta_Pagar and
+                                                                                           Conta_Pagar_Parcela.Status = 1))
+                                             from Conta_Pagar_Vinculo
+                                             where Conta_Pagar_Vinculo.Id_Rubrica_Origem = Projeto_Rubrica.Id_Rubrica and
+                                                   Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto_Rubrica.Id_Projeto),0)
+
+from Projeto_Rubrica
+inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)
+inner join projeto on (Projeto.id = projeto_rubrica.id_projeto)
+left join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Rubrica_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_Projeto_Origem = Projeto_Rubrica.Id_Projeto)
+;
+

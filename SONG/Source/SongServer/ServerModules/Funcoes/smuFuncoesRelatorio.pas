@@ -41,7 +41,8 @@ type
     procedure ppvCalcularSaldoGeral(ipCds: TClientDataSet);
     { Private declarations }
   public
-    function fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer; ipDataInicial, ipDataFinal: String): OleVariant;
+    function fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer;
+      ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto:Boolean): OleVariant;
     function fpuSaldo(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer): OleVariant;
   end;
 
@@ -51,15 +52,19 @@ var
 const
   coProcessado = 'PROCESSADO';
   coValor = 'VALOR';
+  coValorRestante = 'VALOR_RESTANTE';
   coSaldoGeral = 'SALDO_GERAL';
+
+  coDespesa = 0;
+  coReceita = 1;
 
 implementation
 
 {$R *.dfm}
 
 
-function TsmFuncoesRelatorio.fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer; ipDataInicial, ipDataFinal: String)
-  : OleVariant;
+function TsmFuncoesRelatorio.fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer;
+ ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto:Boolean):OleVariant;
 var
   vaCds: TRFClientDataSet;
   vaRecNo, vaRecNoAux, vaIdOrganizacao, vaQtdeOrganizacoes: Integer;
@@ -75,6 +80,7 @@ var
     vaCds.FieldByName(coProcessado).AsBoolean := True;
     vaCds.FieldByName(qMovimentacaoVALOR_REAL.FieldName).AsFloat := ipValorReal;
     vaCds.FieldByName(coValor).AsFloat := ipValorPagoRecebido;
+    vaCds.FieldByName(coValorRestante).AsFloat := ipValorReal - ipValorPagoRecebido;
     vaCds.Post;
   end;
 
@@ -149,6 +155,7 @@ begin
     vaCds.FieldDefs.Assign(qMovimentacao.FieldDefs);
     vaCds.FieldDefs.Add(coProcessado, ftBoolean);
     vaCds.FieldDefs.Add(coValor, ftBCD, 2);
+    vaCds.FieldDefs.Add(coValorRestante, ftBCD, 2);
     vaCds.FieldDefs.Add(coSaldoGeral, ftBCD, 2);
     vaCds.CreateDataSet;
 
@@ -225,7 +232,13 @@ begin
           (ipIdProjeto <> vaCds.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger)) or
 
           ((ipIdFundo <> 0) and (vaCds.FieldByName(qMovimentacaoTIPO_ORIGEM.FieldName).AsInteger = Ord(oriFundo)) and
-          (ipIdFundo <> vaCds.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger)) then
+          (ipIdFundo <> vaCds.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger)) or
+
+          ((not ipReceitas) and (vaCds.FieldByName(qMovimentacaoTIPO.FieldName).AsInteger = coReceita)) or
+
+          ((not ipDespesas) and (vaCds.FieldByName(qMovimentacaoTIPO.FieldName).AsInteger = coDespesa)) or
+
+          (ipSomenteRegistroAberto and (vaCds.FieldByName(coValorRestante).AsFloat = 0)) then
           begin
             vaCds.Delete;
           end
@@ -259,7 +272,7 @@ begin
 
   vaCdsMovimentacao := TClientDataSet.Create(nil);
   try
-    vaCdsMovimentacao.Data := fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo, '', '');
+    vaCdsMovimentacao.Data := fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo, '', '',true,true,false);
     // vamos ordenar por Organizacao, projeto/Fundo
     vaCdsMovimentacao.IndexFieldNames := qMovimentacaoID_ORGANIZACAO.FieldName + ';' + qMovimentacaoID_ORIGEM_RECURSO.FieldName;
 
@@ -306,9 +319,7 @@ procedure TsmFuncoesRelatorio.ppvCalcularSaldoGeral(ipCds: TClientDataSet);
 var
   vaCdsClone: TClientDataSet;
   vaSoma: Double;
-const
-  coDespesa = 0;
-  coReceita = 1;
+
 begin
 
   vaCdsClone := TClientDataSet.Create(nil);

@@ -2,8 +2,7 @@ inherited dmRelatorio: TdmRelatorio
   OldCreateOrder = True
   Height = 220
   Width = 386
-  object cdsSaldoProjeto: TRFClientDataSet
-    Active = True
+  object cdsSaldo_Rubrica: TRFClientDataSet
     Aggregates = <>
     Params = <
       item
@@ -11,119 +10,71 @@ inherited dmRelatorio: TdmRelatorio
         Name = 'ID_PROJETO'
         ParamType = ptInput
       end>
-    ProviderName = 'dspqSaldoProjeto'
+    ProviderName = 'dspqSaldo_Rubrica'
     RemoteServer = dmPrincipal.ProviderRelatorio
-    Left = 72
-    Top = 48
-    object cdsSaldoProjetoID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
+    Left = 48
+    Top = 16
+    object cdsSaldo_RubricaID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
       ProviderFlags = []
     end
-    object cdsSaldoProjetoNOME: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
+    object cdsSaldo_RubricaID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = []
+    end
+    object cdsSaldo_RubricaNOME_PROJETO: TStringField
+      FieldName = 'NOME_PROJETO'
+      Origin = 'NOME_PROJETO'
       ProviderFlags = []
       Size = 100
     end
-    object cdsSaldoProjetoORCAMENTO: TBCDField
-      FieldName = 'ORCAMENTO'
-      Origin = 'ORCAMENTO'
+    object cdsSaldo_RubricaNOME_RUBRICA: TStringField
+      FieldName = 'NOME_RUBRICA'
+      Origin = 'NOME_RUBRICA'
       ProviderFlags = []
-      DisplayFormat = 'R$ ,0.00'
-      Precision = 18
-      Size = 2
+      ReadOnly = True
+      Size = 123
     end
-    object cdsSaldoProjetoVALOR_RECEBIDO: TBCDField
-      FieldName = 'VALOR_RECEBIDO'
+    object cdsSaldo_RubricaRECEBIDO: TBCDField
+      FieldName = 'RECEBIDO'
       Origin = 'VALOR_RECEBIDO'
       ProviderFlags = []
-      DisplayFormat = 'R$ ,0.00'
       Precision = 18
     end
-    object cdsSaldoProjetoVALOR_GASTO: TFMTBCDField
-      FieldName = 'VALOR_GASTO'
+    object cdsSaldo_RubricaGASTO: TFMTBCDField
+      FieldName = 'GASTO'
       Origin = 'VALOR_GASTO'
       ProviderFlags = []
-      DisplayFormat = 'R$ ,0.00'
       Precision = 18
       Size = 6
     end
-    object cdsSaldoProjetoSALDO_REAL: TFMTBCDField
+    object cdsSaldo_RubricaAPROVISIONADO: TFMTBCDField
+      FieldName = 'APROVISIONADO'
+      Origin = 'VALOR_APROVISIONADO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+    end
+    object cdsSaldo_RubricaSALDO_REAL: TFMTBCDField
       FieldName = 'SALDO_REAL'
       Origin = 'SALDO_REAL'
       ProviderFlags = []
-      DisplayFormat = 'R$ ,0.00'
       Precision = 18
       Size = 6
     end
-    object cdsSaldoProjetoSALDO_PREVISTO: TFMTBCDField
-      FieldName = 'SALDO_PREVISTO'
-      Origin = 'SALDO_PREVISTO'
+    object cdsSaldo_RubricaORCAMENTO: TBCDField
+      FieldName = 'ORCAMENTO'
+      Origin = 'ORCAMENTO'
       ProviderFlags = []
-      DisplayFormat = 'R$ ,0.00'
-      Precision = 18
-      Size = 6
-    end
-  end
-  object cdsSaldoDetalhado: TRFClientDataSet
-    Active = True
-    Aggregates = <>
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'ID_PROJETO'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'ID_FUNDO'
-        ParamType = ptInput
-      end>
-    ProviderName = 'dspqSaldoDetalhado'
-    RemoteServer = dmPrincipal.ProviderRelatorio
-    Left = 176
-    Top = 96
-    object cdsSaldoDetalhadoTIPO: TStringField
-      FieldName = 'TIPO'
-      Origin = 'TIPO'
-      ProviderFlags = []
-      Required = True
-      FixedChar = True
-      Size = 7
-    end
-    object cdsSaldoDetalhadoORIGEM: TStringField
-      FieldName = 'ORIGEM'
-      Origin = 'ORIGEM'
-      ProviderFlags = []
-      Required = True
-      Size = 100
-    end
-    object cdsSaldoDetalhadoDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = []
-      Required = True
-      Size = 100
-    end
-    object cdsSaldoDetalhadoVALOR: TBCDField
-      FieldName = 'VALOR'
-      Origin = 'VALOR'
-      ProviderFlags = []
-      Required = True
       Precision = 18
       Size = 2
     end
-    object dtfldSaldoDetalhadoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      ProviderFlags = []
-    end
-    object cdsSaldoDetalhadoPROJETO_FUNDO: TStringField
-      FieldName = 'PROJETO_FUNDO'
-      Origin = 'PROJETO_FUNDO'
-      ProviderFlags = []
-      Size = 100
-    end
+  end
+  object dsSaldo_Rubrica: TDataSource
+    DataSet = cdsSaldo_Rubrica
+    Left = 176
+    Top = 96
   end
 end

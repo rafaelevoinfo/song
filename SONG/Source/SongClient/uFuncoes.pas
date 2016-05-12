@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/05/2016 21:53:07
+// 11/05/2016 23:31:25
 //
 
 unit uFuncoes;
@@ -219,7 +219,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
+    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteDespesaAberto: Boolean): OleVariant;
     function fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
@@ -1382,7 +1382,7 @@ begin
   inherited;
 end;
 
-function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string): OleVariant;
+function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteDespesaAberto: Boolean): OleVariant;
 begin
   if FfpuMovimentacaoFinanceiraCommand = nil then
   begin
@@ -1396,8 +1396,11 @@ begin
   FfpuMovimentacaoFinanceiraCommand.Parameters[2].Value.SetInt32(ipIdFundo);
   FfpuMovimentacaoFinanceiraCommand.Parameters[3].Value.SetWideString(ipDataInicial);
   FfpuMovimentacaoFinanceiraCommand.Parameters[4].Value.SetWideString(ipDataFinal);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[5].Value.SetBoolean(ipReceitas);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[6].Value.SetBoolean(ipDespesas);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[7].Value.SetBoolean(ipSomenteDespesaAberto);
   FfpuMovimentacaoFinanceiraCommand.ExecuteUpdate;
-  Result := FfpuMovimentacaoFinanceiraCommand.Parameters[5].Value.AsVariant;
+  Result := FfpuMovimentacaoFinanceiraCommand.Parameters[8].Value.AsVariant;
 end;
 
 function TsmFuncoesRelatorioClient.fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant;

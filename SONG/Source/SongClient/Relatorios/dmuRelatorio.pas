@@ -8,21 +8,17 @@ uses
 
 type
   TdmRelatorio = class(TdmBasico)
-    cdsSaldoProjeto: TRFClientDataSet;
-    cdsSaldoProjetoID: TIntegerField;
-    cdsSaldoProjetoNOME: TStringField;
-    cdsSaldoProjetoORCAMENTO: TBCDField;
-    cdsSaldoProjetoVALOR_RECEBIDO: TBCDField;
-    cdsSaldoProjetoVALOR_GASTO: TFMTBCDField;
-    cdsSaldoProjetoSALDO_REAL: TFMTBCDField;
-    cdsSaldoProjetoSALDO_PREVISTO: TFMTBCDField;
-    cdsSaldoDetalhado: TRFClientDataSet;
-    cdsSaldoDetalhadoTIPO: TStringField;
-    cdsSaldoDetalhadoORIGEM: TStringField;
-    cdsSaldoDetalhadoDESCRICAO: TStringField;
-    cdsSaldoDetalhadoVALOR: TBCDField;
-    dtfldSaldoDetalhadoDATA: TDateField;
-    cdsSaldoDetalhadoPROJETO_FUNDO: TStringField;
+    cdsSaldo_Rubrica: TRFClientDataSet;
+    cdsSaldo_RubricaID_RUBRICA: TIntegerField;
+    cdsSaldo_RubricaID_PROJETO: TIntegerField;
+    cdsSaldo_RubricaNOME_PROJETO: TStringField;
+    cdsSaldo_RubricaNOME_RUBRICA: TStringField;
+    cdsSaldo_RubricaRECEBIDO: TBCDField;
+    cdsSaldo_RubricaGASTO: TFMTBCDField;
+    cdsSaldo_RubricaAPROVISIONADO: TFMTBCDField;
+    cdsSaldo_RubricaSALDO_REAL: TFMTBCDField;
+    dsSaldo_Rubrica: TDataSource;
+    cdsSaldo_RubricaORCAMENTO: TBCDField;
   private
     { Private declarations }
   public
