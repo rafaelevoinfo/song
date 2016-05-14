@@ -17,8 +17,6 @@ inherited frmContaPagar: TfrmContaPagar
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -48,6 +46,7 @@ inherited frmContaPagar: TfrmContaPagar
             Left = 132
             TabOrder = 3
             ExplicitLeft = 132
+            ExplicitHeight = 21
           end
           inherited cbPesquisarPor: TcxImageComboBox [4]
             Left = 2
@@ -215,13 +214,10 @@ inherited frmContaPagar: TfrmContaPagar
             Width = 982
             Properties.ActivePage = tabVinculoPesquisa
             ExplicitWidth = 982
-            ClientRectRight = 977
+            ClientRectRight = 978
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
               ExplicitWidth = 975
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -293,6 +289,10 @@ inherited frmContaPagar: TfrmContaPagar
             object tabVinculoPesquisa: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -409,8 +409,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -432,13 +430,17 @@ inherited frmContaPagar: TfrmContaPagar
           TabStop = False
           Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
-          ClientRectBottom = 406
-          ClientRectLeft = 2
-          ClientRectRight = 979
-          ClientRectTop = 25
+          ClientRectBottom = 407
+          ClientRectLeft = 4
+          ClientRectRight = 980
+          ClientRectTop = 24
           object tabInfoGeral: TcxTabSheet
             Caption = 'Informa'#231#245'es Gerais'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label3: TLabel
               Left = 5
               Top = 2
@@ -585,13 +587,17 @@ inherited frmContaPagar: TfrmContaPagar
               Height = 220
               Width = 857
               object cxGrid1: TcxGrid
-                Left = 3
-                Top = 56
-                Width = 851
-                Height = 154
+                Left = 2
+                Top = 59
+                Width = 853
+                Height = 159
                 Align = alClient
                 TabOrder = 0
                 TabStop = False
+                ExplicitLeft = 3
+                ExplicitTop = 56
+                ExplicitWidth = 851
+                ExplicitHeight = 154
                 object viewParcelas: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsDetail
@@ -633,13 +639,16 @@ inherited frmContaPagar: TfrmContaPagar
                 end
               end
               object pnParcelas: TPanel
-                Left = 3
-                Top = 15
-                Width = 851
+                Left = 2
+                Top = 18
+                Width = 853
                 Height = 41
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitLeft = 3
+                ExplicitTop = 15
+                ExplicitWidth = 851
                 object Label9: TLabel
                   Left = 4
                   Top = 0
@@ -694,15 +703,20 @@ inherited frmContaPagar: TfrmContaPagar
           object tabVinculo: TcxTabSheet
             Caption = 'V'#237'nculos'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnVinculoTop: TPanel
               Left = 0
               Top = 0
-              Width = 977
+              Width = 976
               Height = 73
               Align = alTop
               AutoSize = True
               BevelOuter = bvNone
               TabOrder = 0
+              ExplicitWidth = 977
               object rgTipoOrigemRecurso: TcxRadioGroup
                 Left = 3
                 Top = 0
@@ -731,13 +745,17 @@ inherited frmContaPagar: TfrmContaPagar
                 TabOrder = 1
                 Properties.ActivePage = tabProjeto
                 Properties.CustomButtons.Buttons = <>
-                ClientRectBottom = 68
-                ClientRectLeft = 2
-                ClientRectRight = 226
-                ClientRectTop = 25
+                ClientRectBottom = 69
+                ClientRectLeft = 4
+                ClientRectRight = 227
+                ClientRectTop = 24
                 object tabProjeto: TcxTabSheet
                   Caption = 'tabProjeto'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label10: TLabel
                     Left = 4
                     Top = 3
@@ -758,6 +776,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabFundo: TcxTabSheet
                   Caption = 'tabFundo'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label15: TLabel
                     Left = 4
                     Top = 3
@@ -803,24 +825,32 @@ inherited frmContaPagar: TfrmContaPagar
               Align = alTop
               Caption = 'Origem do Recurso'
               TabOrder = 1
+              ExplicitWidth = 977
               Height = 88
-              Width = 977
+              Width = 976
               object pcRecursoAlocado: TcxPageControl
-                Left = 3
-                Top = 15
-                Width = 971
+                Left = 2
+                Top = 18
+                Width = 972
                 Height = 68
                 Align = alTop
                 TabOrder = 0
                 Properties.ActivePage = tabNao
                 Properties.CustomButtons.Buttons = <>
-                ClientRectBottom = 63
-                ClientRectLeft = 2
-                ClientRectRight = 966
-                ClientRectTop = 25
+                ExplicitLeft = 3
+                ExplicitTop = 15
+                ExplicitWidth = 971
+                ClientRectBottom = 64
+                ClientRectLeft = 4
+                ClientRectRight = 968
+                ClientRectTop = 24
                 object tabNao: TcxTabSheet
                   Caption = 'tabNao'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label14: TLabel
                     Left = 206
                     Top = 2
@@ -871,6 +901,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabSim: TcxTabSheet
                   Caption = 'tabSim'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object lb1: TLabel
                     Left = 2
                     Top = 1
@@ -896,8 +930,9 @@ inherited frmContaPagar: TfrmContaPagar
               Caption = 'Recurso Alocado Para'
               TabOrder = 2
               Visible = False
+              ExplicitWidth = 977
               Height = 63
-              Width = 977
+              Width = 976
               object Label16: TLabel
                 Left = 212
                 Top = 15
@@ -985,11 +1020,12 @@ inherited frmContaPagar: TfrmContaPagar
             object pnValor: TPanel
               Left = 0
               Top = 224
-              Width = 977
+              Width = 976
               Height = 43
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 3
+              ExplicitWidth = 977
               object Label21: TLabel
                 Left = 5
                 Top = 6
@@ -1017,11 +1053,13 @@ inherited frmContaPagar: TfrmContaPagar
             object cxGrid2: TcxGrid
               Left = 0
               Top = 267
-              Width = 977
-              Height = 114
+              Width = 976
+              Height = 116
               Align = alClient
               TabOrder = 4
               TabStop = False
+              ExplicitWidth = 977
+              ExplicitHeight = 114
               object viewVinculos: TcxGridDBTableView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dsVinculo
@@ -1167,8 +1205,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel

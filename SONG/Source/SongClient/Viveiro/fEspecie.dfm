@@ -1,10 +1,12 @@
 inherited frmEspecie: TfrmEspecie
+  ActiveControl = btnIncluir
   Caption = 'Esp'#233'cies Produzidas'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
+  ExplicitTop = -136
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -41,6 +43,7 @@ inherited frmEspecie: TfrmEspecie
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
+              Visible = False
               Options.Editing = False
               Width = 47
             end
@@ -67,27 +70,57 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 121
             end
-            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [5]
+            object viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn [5]
+              DataBinding.FieldName = 'QTDE_SEMENTE_ESTOQUE'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = ',0.00 Kg'
+              Options.Editing = False
+              Width = 152
+            end
+            object viewRegistrosQTDE_MUDA_ESTOQUE: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'QTDE_MUDA_ESTOQUE'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = ',0 Und'
+              Options.Editing = False
+              Width = 136
+            end
+            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [7]
               DataBinding.FieldName = 'VALOR_MUDA'
               RepositoryItem = dmLookup.repCurPadrao
+              Visible = False
               Options.Editing = False
             end
-            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [6]
+            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [8]
               DataBinding.FieldName = 'VALOR_KG_SEMENTE'
               RepositoryItem = dmLookup.repCurPadrao
+              Visible = False
               Options.Editing = False
             end
-            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [7]
+            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [9]
               DataBinding.FieldName = 'TEMPO_GERMINACAO'
               Visible = False
               Options.Editing = False
               Width = 152
+            end
+            object viewRegistrosINICIO_PERIODO_COLETA: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'INICIO_PERIODO_COLETA'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosFIM_PERIODO_COLETA: TcxGridDBColumn [11]
+              DataBinding.FieldName = 'FIM_PERIODO_COLETA'
+              Visible = False
+              Options.Editing = False
             end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5

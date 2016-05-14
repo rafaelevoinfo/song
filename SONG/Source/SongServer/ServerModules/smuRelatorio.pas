@@ -22,6 +22,7 @@ type
     qSaldo_RubricaAPROVISIONADO: TFMTBCDField;
     qSaldo_RubricaSALDO_REAL: TFMTBCDField;
     qSaldo_RubricaORCAMENTO: TBCDField;
+    qSaldo_Semente_Muda: TRFQuery;
   private
     { Private declarations }
   public

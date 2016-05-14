@@ -16,8 +16,10 @@ type
   public
     function fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
-    function fpuVerificarEntradaJaGerada(ipIdCompra: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
+
+    function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
+    function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
 
   end;
 
@@ -29,6 +31,57 @@ implementation
 {$R *.dfm}
 
 { TsmFuncoesEstoque }
+
+function TsmFuncoesEstoque.fpuBuscarItemEntrada(
+  ipIdCompraItem: Integer): Integer;
+var
+  vaId: Integer;
+begin
+  vaId := 0;
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select Entrada_Item.id from Entrada_Item ' +
+        ' where Entrada_Item.id_compra_item = :ID_COMPRA_ITEM';
+      ipDataSet.ParamByName('ID_COMPRA_ITEM').AsInteger := ipIdCompraItem;
+      ipDataSet.Open();
+      if (not ipDataSet.Eof) then
+        vaId := ipDataSet.FieldByName('ID').AsInteger;
+    end);
+
+  Result := vaId;
+
+end;
+
+function TsmFuncoesEstoque.fpuBuscarItensEntrada(ipIdCompra: Integer): string;
+var
+  vaIds: TStringList;
+begin
+  vaIds := TStringList.Create();
+  try
+    vaIds.Delimiter := coDelimitadorPadrao;
+    vaIds.StrictDelimiter := True;
+
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select Entrada_Item.id from Entrada_Item ' +
+          ' where Entrada_Item.id_compra_item in (select compra_item.id from compra_item where compra_item.id_compra = :ID_COMPRA)';
+        ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
+        ipDataSet.Open();
+        while (not ipDataSet.Eof) do
+          begin
+            vaIds.Add(ipDataSet.FieldByName(TBancoDados.coId).AsString);
+            ipDataSet.Next;
+          end;
+      end);
+
+    Result := vaIds.DelimitedText;
+  finally
+    vaIds.Free;
+  end;
+
+end;
 
 function TsmFuncoesEstoque.fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
 var
@@ -91,44 +144,6 @@ begin
       ipDataSet.Open();
 
       vaResult := (ipDataSet.FieldByName('QTDE').AsInteger > 0);
-
-    end);
-
-  Result := vaResult;
-
-end;
-
-function TsmFuncoesEstoque.fpuVerificarEntradaJaGerada(
-  ipIdCompra: Integer): Boolean;
-var
-  vaResult: Boolean;
-begin
-  pprEncapsularConsulta(
-    procedure(ipDataSet: TRFQuery)
-    begin
-      vaResult := False;
-      ipDataSet.SQL.Text := 'select count(*) as Qtde ' +
-        '   from Entrada ' +
-        ' where Entrada.Id_Compra = :Id_Compra ' +
-        '' +
-        ' union all ' +
-        ' ' +
-        ' select count(*) as Qtde ' +
-        '   from Lote_Semente' +
-        ' where Lote_Semente.Id_Compra = :Id_Compra' +
-        '' +
-        ' union all' +
-        '' +
-        ' select count(*) as Qtde' +
-        '   from Lote_Muda' +
-        ' where Lote_Muda.Id_Compra = :Id_Compra ';
-      ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
-      ipDataSet.Open();
-      while not ipDataSet.Eof do
-        begin
-          vaResult := vaResult or (ipDataSet.FieldByName('QTDE').AsInteger > 0);
-          ipDataSet.Next;
-        end;
 
     end);
 

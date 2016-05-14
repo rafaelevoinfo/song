@@ -164,10 +164,6 @@ Coordinates=546,417,168,33
 [viewRegistrosID]
 Coordinates=663,343,94,33
 
-[lbl2]
-Coordinates=361,427,40,33
-Visible=False
-
 [dmLookup.cdslkConta_Corrente]
 Coordinates=149,10,174,33
 Visible=False
@@ -231,9 +227,6 @@ Visible=False
 [viewRegistrosDATA]
 Coordinates=1511,221,112,33
 
-[viewRegistrosID_COMPRA]
-Coordinates=1511,276,145,33
-
 [dmLookup.cdslkRubrica]
 Coordinates=873,10,134,33
 Visible=False
@@ -293,7 +286,7 @@ Coordinates=994,738,111,33
 Coordinates=268,417,116,33
 
 []
-Coordinates=668,488,72,33
+Coordinates=361,427,40,33
 LayerNames=
 ExplicitSubNodes=
 Visible=False

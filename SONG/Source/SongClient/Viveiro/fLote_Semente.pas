@@ -148,7 +148,10 @@ type
 
     function fprHabilitarSalvar(): Boolean; override;
     procedure pprBeforeSalvar; override;
+
     procedure pprExecutarSalvar; override;
+    procedure pprExecutarSalvarDetail; override;
+
     procedure pprAfterSalvarDetail; override;
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -161,6 +164,8 @@ type
     procedure pprDefinirTabDetailCadastro; override;
 
     procedure pprCarregarDadosModelo; override;
+
+    procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
   public
 
     procedure ppuIncluir; override;
@@ -342,6 +347,9 @@ begin
 
       if vaLote.IdEspecie <> 0 then
         plSetEdit(cbEspecie, vaLote.IdEspecie);
+
+      if vaLote.IdItemCompra <> 0 then
+        dmViveiro.cdsLote_SementeID_COMPRA_ITEM.AsInteger := vaLote.IdItemCompra;
     end;
 
 end;
@@ -390,22 +398,40 @@ end;
 procedure TfrmLoteSemente.pprExecutarSalvar;
 var
   vaEditando: Boolean;
+  vaQtdeAnterior: Double;
 begin
   vaEditando := dmViveiro.cdsLote_Semente.State = dsEdit;
+  vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmViveiro.cdsLote_SementeQTDE.OldValue, '0'), 0);
+
   inherited;
-  if vaEditando then
-    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueLoteSemente(dmViveiro.cdsLote_SementeID.AsInteger);
+  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, dmViveiro.cdsLote_SementeID.AsInteger,
+    vaQtdeAnterior, dmViveiro.cdsLote_SementeQTDE.AsFloat);
 
   if (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0) then
     dmViveiro.cdsLote_Semente_Matriz.ApplyUpdates(0);
 end;
 
+procedure TfrmLoteSemente.pprExecutarSalvarDetail;
+var
+  vaQtdeAnterior: Double;
+begin
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    begin
+      vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmViveiro.cdsSemeaduraQTDE_SEMEADA.OldValue, '0'), 0);
+      inherited;
+      // coloco negativo para que a conta fique certa, pois semeadura faz diminuir o saldo
+      dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, dmViveiro.cdsLote_SementeID.AsInteger,
+        -vaQtdeAnterior, -dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsFloat);
+    end
+  else
+    inherited;
+
+end;
+
 procedure TfrmLoteSemente.pprAfterSalvarDetail;
 begin
   inherited;
-  if pcPrincipal.ActivePage = tabCadastroDetail then
-    dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueLoteSemente(dmViveiro.cdsLote_SementeID.AsInteger)
-  else if pcPrincipal.ActivePage = tabCadastroGerminacao then
+  if pcPrincipal.ActivePage = tabCadastroGerminacao then
     dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
 end;
 
@@ -552,13 +578,42 @@ begin
       (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0));
 end;
 
-function TfrmLoteSemente.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+procedure TfrmLoteSemente.pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela);
+var
+  vaIdEspecie: Integer;
+  vaQtdeDiminuir, vaQtdeAumentar: Double;
 begin
+  vaIdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
+  vaQtdeDiminuir := dmViveiro.cdsLote_SementeQTDE.AsFloat;
+  vaQtdeAumentar := 0;
+  TUtils.ppuPercorrerCds(dmViveiro.cdsSemeadura,
+    procedure
+    begin
+      vaQtdeAumentar := vaQtdeAumentar + dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsFloat;
+    end);
+
+  inherited;
+
+  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecie, 0, vaQtdeDiminuir, vaQtdeAumentar);
+
+end;
+
+function TfrmLoteSemente.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+var
+  vaQtdeAumentar: Double;
+begin
+  vaQtdeAumentar := 0;
+  if pcDetails.ActivePage = tabDetail then
+    vaQtdeAumentar := dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsFloat;
+
   Result := inherited;
   if Result then
     begin
       if pcDetails.ActivePage = tabDetail then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarEstoqueLoteSemente(dmViveiro.cdsLote_SementeID.AsInteger)
+        begin
+          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger,
+            dmViveiro.cdsLote_SementeID.AsInteger, 0, vaQtdeAumentar);
+        end
       else if pcDetails.ActivePage = tabDetailGerminacao then
         dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
 

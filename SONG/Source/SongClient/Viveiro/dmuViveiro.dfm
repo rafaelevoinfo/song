@@ -74,6 +74,18 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object cdsEspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      DisplayLabel = 'Qtde. de Semente em Estoque'
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsEspecieQTDE_MUDA_ESTOQUE: TIntegerField
+      DisplayLabel = 'Qtde. de Muda em Estoque'
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
@@ -224,6 +236,10 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Pessoa que Coletou'
       FieldName = 'PESSOA_COLETOU'
       Size = 100
+    end
+    object cdsLote_SementeID_COMPRA_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item da Compra'
+      FieldName = 'ID_COMPRA_ITEM'
     end
   end
   object cdsLote_Semente_Matriz: TRFClientDataSet
@@ -480,6 +496,11 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'TAXA_CLASSIFICACAO'
       Precision = 18
       Size = 2
+    end
+    object cdsLote_MudaID_COMPRA_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item da Compra'
+      FieldName = 'ID_COMPRA_ITEM'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object cdsClassificacao: TRFClientDataSet

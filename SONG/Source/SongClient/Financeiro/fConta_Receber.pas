@@ -133,7 +133,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprExecutarCancelar; override;
-    procedure pprBeforeExcluir(ipAcao: TAcaoTela); override;
+    procedure pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela); override;
   public
     procedure ppuIncluir; override;
   public const
@@ -190,10 +190,10 @@ begin
   FIdsParcelasCancelar.Clear;
 end;
 
-procedure TfrmContaReceber.pprBeforeExcluir(ipAcao: TAcaoTela);
+procedure TfrmContaReceber.pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela);
 begin
   inherited;
-  dmPrincipal.FuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber(dmFinanceiro.cdsConta_ReceberID.AsInteger);
+  dmPrincipal.FuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber(ipId);
 end;
 
 procedure TfrmContaReceber.pprBeforeIncluir;

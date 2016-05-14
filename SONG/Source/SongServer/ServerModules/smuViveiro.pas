@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, dmuPrincipal, uUtils, uClientDataSet,
-  uSQLGenerator;
+  uSQLGenerator, Datasnap.Provider, Datasnap.DBClient;
 
 type
   TsmViveiro = class(TsmBasico)
@@ -95,6 +95,10 @@ type
     qGerminacaoDATA: TDateField;
     qLote_MudaDATA: TDateField;
     qLote_MudaTAXA_CLASSIFICACAO: TBCDField;
+    qEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
+    qEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
+    qLote_SementeID_COMPRA_ITEM: TIntegerField;
+    qLote_MudaID_COMPRA_ITEM: TIntegerField;
   private
     { Private declarations }
   protected

@@ -240,7 +240,7 @@ type
     function fprHabilitarSalvarDetail(): Boolean; override;
     procedure pprEfetuarCancelarDetail; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
-    procedure pprEfetuarExcluirDetail(ipId: Integer); override;
+    procedure pprExecutarExcluirDetail(ipId: Integer); override;
 
     procedure pprBeforeIncluirDetail; override;
 
@@ -634,7 +634,7 @@ begin
   inherited;
 end;
 
-procedure TfrmProjeto.pprEfetuarExcluirDetail(ipId: Integer);
+procedure TfrmProjeto.pprExecutarExcluirDetail(ipId: Integer);
 begin
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     begin

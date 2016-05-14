@@ -186,12 +186,27 @@ end;
 function TsmBasico.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
+  vaIdsString: TArray<string>;
+  vaIds: TArray<integer>;
+  I: Integer;
 begin
   Result := ipWhere;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
 
   if ipParam.Name = TParametros.coID then
-    Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
+    begin
+      vaIdsString := TRegEx.split(vaValor, coDelimitadorPadrao);
+      if Length(vaIdsString) > 1 then
+        begin
+          SetLength(vaIds, Length(vaIdsString));
+          for I := 0 to High(vaIdsString) do
+            vaIds[i] := vaIdsString[i].ToInteger();
+
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaIds, vaOperador)
+        end
+      else
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
+    end
   else if ipParam.Name = TParametros.coNome then
     Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaValor, vaOperador)
   else if ipParam.Name = TParametros.coActive then

@@ -1,12 +1,16 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
-  ExplicitWidth = 1000
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastroDetailFinanciador
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -138,12 +142,9 @@ inherited frmProjeto: TfrmProjeto
             Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
             ExplicitHeight = 248
-            ClientRectBottom = 243
+            ClientRectBottom = 244
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -174,6 +175,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -278,6 +283,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailRubrica: TcxTabSheet
               Caption = 'Rubricas'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel7: TPanel
                 Left = 0
                 Top = 0
@@ -460,6 +469,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailFinanciador: TcxTabSheet
               Caption = 'Financiadores'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -649,6 +662,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailArea: TcxTabSheet
               Caption = #193'reas de Atua'#231#227'o'
               ImageIndex = 5
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -742,6 +759,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -870,10 +891,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1011,6 +1028,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1051,6 +1072,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailOrganizacao: TcxTabSheet
       Caption = 'tabCadastroDetailOrganizacao'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -1123,6 +1148,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailFinanciador: TcxTabSheet
       Caption = 'tabCadastroDetailFinanciador'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -1225,13 +1254,16 @@ inherited frmProjeto: TfrmProjeto
           Height = 274
           Width = 837
           object pnEditsPagamento: TPanel
-            Left = 3
-            Top = 15
-            Width = 831
+            Left = 2
+            Top = 18
+            Width = 833
             Height = 46
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitLeft = 3
+            ExplicitTop = 15
+            ExplicitWidth = 831
             object Label14: TLabel
               Left = 2
               Top = 4
@@ -1288,10 +1320,10 @@ inherited frmProjeto: TfrmProjeto
             end
           end
           object cxGrid5: TcxGrid
-            Left = 3
-            Top = 61
-            Width = 831
-            Height = 203
+            Left = 2
+            Top = 64
+            Width = 833
+            Height = 208
             Align = alClient
             Images = dmPrincipal.imgIcons_16
             TabOrder = 1
@@ -1299,6 +1331,10 @@ inherited frmProjeto: TfrmProjeto
             LockedStateImageOptions.Effect = lsieDark
             LockedStateImageOptions.ShowText = True
             LockedStateImageOptions.Text = 'Pesquisando...'
+            ExplicitLeft = 3
+            ExplicitTop = 61
+            ExplicitWidth = 831
+            ExplicitHeight = 203
             object viewPagamentosCadastro: TcxGridDBTableView
               OnDblClick = viewRegistrosDetailDblClick
               Navigator.Buttons.CustomButtons = <>
@@ -1385,6 +1421,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailDocumento: TcxTabSheet
       Caption = 'tabCadastroDetailDocumento'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -1476,6 +1516,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailRubrica: TcxTabSheet
       Caption = 'tabCadastroDetailRubrica'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0
@@ -1565,6 +1609,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailArea: TcxTabSheet
       Caption = 'tabCadastroDetailArea'
       ImageIndex = 7
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel9: TPanel
         Left = 0
         Top = 0

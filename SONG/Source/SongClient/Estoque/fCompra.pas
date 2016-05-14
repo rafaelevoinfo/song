@@ -16,7 +16,7 @@ uses
   System.DateUtils, uClientDataSet, uControleAcesso, System.TypInfo, cxMemo,
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCurrencyEdit,
   uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda, fConta_Pagar,
-  dmuPrincipal;
+  dmuPrincipal, System.RegularExpressions, fLote_Semente;
 
 type
   TCompra = class(TModelo)
@@ -99,6 +99,10 @@ type
     procedure ppvGerarEntradaSemente;
     procedure ppvGerarEntradaMuda;
     procedure ppvGerarContaPagar;
+    procedure ppvExcluirLotesMuda(ipIds: TArray<Integer>);
+    procedure ppvExcluirLotesSemente(ipIds: TArray<Integer>);
+    procedure ppvExcluirItensEntrada(ipIds: TArray<Integer>);
+
   protected
     function fprGetPermissao: string; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -107,6 +111,9 @@ type
     procedure pprExecutarSalvar; override;
 
     procedure pprBeforeSalvarDetail; override;
+    procedure pprBeforeExcluirDetail(ipId: Integer); override;
+
+    procedure pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
 
     procedure pprCarregarDadosModelo; override;
     procedure pprCarregarDadosModeloDetail; override;
@@ -124,9 +131,6 @@ var
   frmCompra: TfrmCompra;
 
 implementation
-
-uses
-  fLote_Semente;
 
 {$R *.dfm}
 
@@ -173,11 +177,11 @@ end;
 procedure TfrmCompra.Ac_Produto_EntregueExecute(Sender: TObject);
 begin
   inherited;
+  ppvRealizarEntradas;
+
   dmEstoque.cdsCompra.Edit;
   dmEstoque.cdsCompraSTATUS_ENTREGA.AsInteger := Ord(sepEntregue);
   dmEstoque.cdsCompra.Post;
-
-  ppvRealizarEntradas;
 end;
 
 procedure TfrmCompra.ppvRealizarEntradas();
@@ -258,6 +262,189 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estCompra));
 end;
 
+procedure TfrmCompra.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
+var
+  vaIdsExcluir: String;
+  vaIdsString: TArray<String>;
+  vaIds: TArray<Integer>;
+  I: Integer;
+begin
+  inherited;
+  vaIdsExcluir := dmPrincipal.FuncoesViveiro.fpuBuscarLotesMudas(ipId);
+  if vaIdsExcluir <> '' then
+    begin
+      if TMensagem.fpuPerguntar('Existem lotes de mudas vinculados a esta compra. Deseja excluí-los também?', ppSimNao) = rpSim then
+        begin
+          vaIdsString := TRegex.Split(vaIdsExcluir, coDelimitadorPadrao);
+          SetLength(vaIds, length(vaIdsString));
+          for I := 0 to High(vaIdsString) do
+            vaIds[I] := vaIdsString[I].ToInteger;
+
+          ppvExcluirLotesMuda(vaIds);
+        end;
+    end;
+
+  vaIdsExcluir := dmPrincipal.FuncoesViveiro.fpuBuscarLotesSementes(ipId);
+  if vaIdsExcluir <> '' then
+    begin
+      if TMensagem.fpuPerguntar('Existem lotes de sementes vinculados a esta compra. Deseja excluí-los também?', ppSimNao) = rpSim then
+        begin
+          vaIdsString := TRegex.Split(vaIdsExcluir, coDelimitadorPadrao);
+          SetLength(vaIds, length(vaIdsString));
+          for I := 0 to High(vaIdsString) do
+            vaIds[I] := vaIdsString[I].ToInteger;
+
+          ppvExcluirLotesSemente(vaIds);
+        end;
+    end;
+
+  vaIdsExcluir := dmPrincipal.FuncoesEstoque.fpuBuscarItensEntrada(ipId);
+  if vaIdsExcluir <> '' then
+    begin
+      if TMensagem.fpuPerguntar('Existem itens de entradas vinculados a esta compra. Deseja excluí-los também?', ppSimNao) = rpSim then
+        begin
+          vaIdsString := TRegex.Split(vaIdsExcluir, coDelimitadorPadrao);
+          SetLength(vaIds, length(vaIdsString));
+          for I := 0 to High(vaIdsString) do
+            vaIds[I] := vaIdsString[I].ToInteger;
+
+          ppvExcluirItensEntrada(vaIds);
+        end;
+    end;
+end;
+
+procedure TfrmCompra.ppvExcluirItensEntrada(ipIds: TArray<Integer>);
+var
+  vaFrmEntrada: TfrmEntrada;
+  vaIds: TStringList;
+  I: Integer;
+begin
+  vaFrmEntrada := TfrmEntrada.Create(nil);
+  try
+    vaFrmEntrada.ModoSilencioso := True;
+    vaFrmEntrada.ppuConfigurarPesquisa(TfrmEntrada.coPesquisaCompra, dmEstoque.cdsCompraID.AsString);
+    vaFrmEntrada.ppuPesquisar;
+
+    vaFrmEntrada.fpuExcluirDetail(ipIds);
+  finally
+    vaFrmEntrada.Free;
+  end;
+end;
+
+procedure TfrmCompra.ppvExcluirLotesSemente(ipIds: TArray<Integer>);
+var
+  vaFrmLoteSemente: TfrmLoteSemente;
+  vaIds: TStringList;
+  I: Integer;
+begin
+  vaFrmLoteSemente := TfrmLoteSemente.Create(nil);
+  try
+    vaFrmLoteSemente.ModoSilencioso := True;
+    if length(ipIds) > 1 then
+      begin
+        vaIds := TStringList.Create;
+        try
+          vaIds.StrictDelimiter := True;
+          vaIds.Delimiter := coDelimitadorPadrao;
+
+          for I := 0 to High(ipIds) do
+            vaIds.Add(ipIds[I].ToString());
+
+          vaFrmLoteSemente.ppuConfigurarPesquisa(Ord(tppId), vaIds.DelimitedText);
+        finally
+          vaIds.Free;
+        end;
+      end
+    else
+      vaFrmLoteSemente.ppuConfigurarPesquisa(Ord(tppId), ipIds[0].ToString);
+    vaFrmLoteSemente.ppuPesquisar;
+
+    vaFrmLoteSemente.fpuExcluir(ipIds);
+  finally
+    vaFrmLoteSemente.Free;
+  end;
+end;
+
+procedure TfrmCompra.ppvExcluirLotesMuda(ipIds: TArray<Integer>);
+var
+  vaFrmLoteMuda: TfrmLoteMuda;
+  vaIds: TStringList;
+  I: Integer;
+begin
+  vaFrmLoteMuda := TfrmLoteMuda.Create(nil);
+  try
+    vaFrmLoteMuda.ModoSilencioso := True;
+    if length(ipIds) > 1 then
+      begin
+        vaIds := TStringList.Create;
+        try
+          vaIds.StrictDelimiter := True;
+          vaIds.Delimiter := coDelimitadorPadrao;
+
+          for I := 0 to High(ipIds) do
+            vaIds.Add(ipIds[I].ToString());
+
+          vaFrmLoteMuda.ppuConfigurarPesquisa(Ord(tppId), vaIds.DelimitedText);
+        finally
+          vaIds.Free;
+        end;
+      end
+    else
+      vaFrmLoteMuda.ppuConfigurarPesquisa(Ord(tppId), ipIds[0].ToString);
+    vaFrmLoteMuda.ppuPesquisar;
+
+    vaFrmLoteMuda.fpuExcluir(ipIds);
+  finally
+    vaFrmLoteMuda.Free;
+  end;
+end;
+
+procedure TfrmCompra.pprBeforeExcluirDetail(ipId: Integer);
+var
+  vaIdExcluir: Integer;
+begin
+  inherited;
+  if dmEstoque.cdsCompra_ItemTIPO_ITEM.AsInteger = Ord(tiMuda) then
+    begin
+      vaIdExcluir := dmPrincipal.FuncoesViveiro.fpuBuscarLoteMuda(ipId);
+      if vaIdExcluir <> 0 then
+        begin
+          if not ModoSilencioso then
+            begin
+              if TMensagem.fpuPerguntar('Existe um lote de mudas vinculado a esta compra. Deseja excluí-lo também?', ppSimNao) = rpSim then
+                ppvExcluirLotesMuda([vaIdExcluir]);
+            end;
+
+        end;
+    end
+  else if dmEstoque.cdsCompra_ItemTIPO_ITEM.AsInteger = Ord(tiSemente) then
+    begin
+      vaIdExcluir := dmPrincipal.FuncoesViveiro.fpuBuscarLoteSemente(ipId);
+      if vaIdExcluir <> 0 then
+        begin
+          if not ModoSilencioso then
+            begin
+              if TMensagem.fpuPerguntar('Existe um lote de semente vinculado a esta compra. Deseja excluí-lo também?', ppSimNao) = rpSim then
+                ppvExcluirLotesSemente([vaIdExcluir]);
+            end;
+
+        end;
+    end
+  else
+    begin
+      vaIdExcluir := dmPrincipal.FuncoesEstoque.fpuBuscarItemEntrada(ipId);
+      if vaIdExcluir <> 0 then
+        begin
+          if not ModoSilencioso then
+            begin
+              if TMensagem.fpuPerguntar('Existe um item de uma entrada vinculado a esta compra. Deseja excluí-lo também?', ppSimNao) = rpSim then
+                ppvExcluirItensEntrada([vaIdExcluir]);
+            end;
+
+        end;
+    end;
+end;
+
 procedure TfrmCompra.pprBeforeSalvarDetail;
 begin
   inherited;
@@ -325,7 +512,7 @@ procedure TfrmCompra.pprExecutarSalvar;
 var
   vaRealizarEntradas: Boolean;
 begin
-  vaRealizarEntradas := False;
+  vaRealizarEntradas := false;
   if not VarIsNull(dmEstoque.cdsCompraSTATUS_ENTREGA.NewValue) then
     begin
       if dmEstoque.cdsCompraSTATUS_ENTREGA.NewValue = Ord(sepEntregue) then
@@ -378,7 +565,6 @@ begin
   try
     vaEntrada := TEntrada.Create; // vai ser destruido pelo frmEntrada
     vaEntrada.Data := dmEstoque.cdsCompraDATA.AsDateTime;
-    vaEntrada.IdCompra := dmEstoque.cdsCompraID.AsInteger;
 
     vaFrmEntrada.ppuConfigurarModoExecucao(meSomenteCadastro, vaEntrada);
     vaFrmEntrada.ppuIncluir;
@@ -391,6 +577,7 @@ begin
             vaItem := TItem.Create; // vai ser destruido pelo vafrmEntrada
             vaItem.IdItem := dmEstoque.cdsCompra_ItemID_ITEM.AsInteger;
             vaItem.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
+            vaItem.IdItemCompra := dmEstoque.cdsCompra_ItemID.AsInteger;
 
             vaFrmEntrada.Modelo := vaItem;
             vaFrmEntrada.ppuIncluirDetail;
@@ -419,7 +606,7 @@ begin
           begin
             vaLoteSemente := TLoteSemente.Create; // vai ser destruido pelo vaFrmLoteSemente
             vaLoteSemente.Data := dmEstoque.cdsCompraDATA.AsDateTime;
-            vaLoteSemente.IdCompra := dmEstoque.cdsCompraID.AsInteger;
+            vaLoteSemente.IdItemCompra := dmEstoque.cdsCompra_ItemID.AsInteger;
             vaLoteSemente.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
             vaLoteSemente.Nome := 'Compra de Semente';
             vaLoteSemente.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
@@ -452,7 +639,7 @@ begin
           begin
             vaLoteMuda := TLoteMuda.Create;
             vaLoteMuda.Data := dmEstoque.cdsCompraDATA.AsDateTime;
-            vaLoteMuda.IdCompra := dmEstoque.cdsCompraID.AsInteger;
+            vaLoteMuda.IdItemCompra := dmEstoque.cdsCompra_ItemID.AsInteger;
             vaLoteMuda.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
             vaLoteMuda.Nome := 'Compra de Muda';
             vaLoteMuda.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
@@ -470,8 +657,14 @@ begin
 end;
 
 procedure TfrmCompra.viewRegistrosSTATUS_ENTREGACustomDrawCell(
-  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
-  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+  Sender: TcxCustomGridTableView;
+  ACanvas:
+  TcxCanvas;
+  AViewInfo:
+  TcxGridTableDataCellViewInfo;
+  var
+  ADone:
+  Boolean);
 begin
   inherited;
   // if AViewInfo.GridRecord.Values[viewRegistrosDetailSTATUS.Index] = 1 then
@@ -494,17 +687,26 @@ end;
 
 { TCompra }
 
-procedure TCompra.SetData(const Value: TDateTime);
+procedure TCompra.SetData(
+  const
+  Value:
+  TDateTime);
 begin
   FData := Value;
 end;
 
-procedure TCompra.SetIdPessoaComprou(const Value: Integer);
+procedure TCompra.SetIdPessoaComprou(
+  const
+  Value:
+  Integer);
 begin
   FIdPessoaComprou := Value;
 end;
 
-procedure TCompra.SetIdSolicitacao(const Value: Integer);
+procedure TCompra.SetIdSolicitacao(
+  const
+  Value:
+  Integer);
 begin
   FIdSolicitacao := Value;
 end;

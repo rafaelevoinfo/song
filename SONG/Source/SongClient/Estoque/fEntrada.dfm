@@ -4,7 +4,6 @@ inherited frmEntrada: TfrmEntrada
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -99,16 +98,19 @@ inherited frmEntrada: TfrmEntrada
               Options.Editing = False
               Width = 38
             end
-            object viewRegistrosID_COMPRA: TcxGridDBColumn [1]
-              DataBinding.FieldName = 'ID_COMPRA'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosDATA: TcxGridDBColumn [2]
+            object viewRegistrosDATA: TcxGridDBColumn [1]
               DataBinding.FieldName = 'DATA'
               RepositoryItem = dmLookup.repDateDataPadrao
               Options.Editing = False
               Width = 96
+            end
+            object viewRegistrosPESSOA: TcxGridDBColumn [2]
+              DataBinding.FieldName = 'PESSOA'
+              Width = 159
+            end
+            object viewRegistrosID_PESSOA: TcxGridDBColumn
+              DataBinding.FieldName = 'ID_PESSOA'
+              Visible = False
             end
           end
         end
@@ -153,13 +155,6 @@ inherited frmEntrada: TfrmEntrada
           Caption = 'Data da Entrada'
           FocusControl = EditDataEntrada
         end
-        object lbl2: TLabel
-          Left = 215
-          Top = 2
-          Width = 37
-          Height = 13
-          Caption = 'Compra'
-        end
         object EditDataEntrada: TcxDBDateEdit
           Left = 5
           Top = 18
@@ -167,16 +162,6 @@ inherited frmEntrada: TfrmEntrada
           DataBinding.DataSource = dsMaster
           TabOrder = 0
           Width = 204
-        end
-        object cbCompra: TcxDBLookupComboBox
-          Left = 215
-          Top = 18
-          RepositoryItem = dmLookup.repLcbCompra
-          DataBinding.DataField = 'ID_COMPRA'
-          DataBinding.DataSource = dsMaster
-          Properties.ListColumns = <>
-          TabOrder = 1
-          Width = 330
         end
       end
     end

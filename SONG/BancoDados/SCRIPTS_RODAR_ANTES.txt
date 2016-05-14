@@ -1,0 +1,1 @@
+Apagar tudo que estiver nas tabelas entrada, lote_muda e lote_semente

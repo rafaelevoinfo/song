@@ -20,31 +20,25 @@ uses
   fBasicoCrudMasterDetail, cxSplitter, uUtils, System.Generics.Collections, System.Generics.Defaults;
 
 type
-  
 
   TEntrada = class(TModelo)
   private
     FItens: TObjectList<TItem>;
-    FIdCompra: Integer;
     FData: TDateTime;
     procedure SetData(const Value: TDateTime);
-    procedure SetIdCompra(const Value: Integer);
     procedure SetItens(const Value: TObjectList<TItem>);
   public
     property Data: TDateTime read FData write SetData;
-    property IdCompra: Integer read FIdCompra write SetIdCompra;
-    property Itens:TObjectList<TItem> read FItens write SetItens;
+    property Itens: TObjectList<TItem> read FItens write SetItens;
   end;
 
   TfrmEntrada = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
-    viewRegistrosID_COMPRA: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
     cbPesquisaTipoItem: TcxImageComboBox;
     cbPesquisaItem: TcxLookupComboBox;
     EditDataEntrada: TcxDBDateEdit;
     Label4: TLabel;
-    lbl2: TLabel;
     Label3: TLabel;
     cbItem: TcxDBLookupComboBox;
     Label5: TLabel;
@@ -54,7 +48,8 @@ type
     viewRegistrosDetailID_ITEM: TcxGridDBColumn;
     viewRegistrosDetailQTDE: TcxGridDBColumn;
     viewRegistrosDetailNOME_ITEM: TcxGridDBColumn;
-    cbCompra: TcxDBLookupComboBox;
+    viewRegistrosID_PESSOA: TcxGridDBColumn;
+    viewRegistrosPESSOA: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
   private
@@ -65,6 +60,8 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
+
+    procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
 
     procedure pprCarregarDadosModelo; override;
     procedure pprCarregarDadosModeloDetail; override;
@@ -111,8 +108,6 @@ begin
 
   dmLookup.cdslkItem.ppuDataRequest([TParametros.coTipo], [Ord(tiOutro)]); // sementes e mudas nao podem ser lançadas aqui
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
-  dmLookup.cdslkCompra.ppuDataRequest([TParametros.coStatusEntrega, TParametros.coData],
-    [Ord(sepEntregue), DateToStr(IncMonth(now, -3)) + ';' + DateToStr(now)]);
 end;
 
 function TfrmEntrada.fprConfigurarControlesPesquisa: TWinControl;
@@ -138,6 +133,16 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estEntrada));
 end;
 
+procedure TfrmEntrada.pprPreencherCamposPadroes(ipDataSet: TDataSet);
+begin
+  inherited;
+  if ipDataSet = dmEstoque.cdsEntrada then
+    begin
+      if dmEstoque.cdsEntradaID_PESSOA.IsNull then
+        dmEstoque.cdsEntradaID_PESSOA.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
+    end;
+end;
+
 procedure TfrmEntrada.pprCarregarDadosModelo;
 var
   vaEntrada: TEntrada;
@@ -158,7 +163,7 @@ begin
       vaEntrada := TEntrada(Modelo);
 
       plSetEdit(EditDataEntrada, vaEntrada.Data);
-      plSetEdit(cbCompra, vaEntrada.IdCompra);
+
     end;
 end;
 
@@ -175,6 +180,9 @@ begin
 
       EditQtde.EditValue := vaItem.Qtde;
       EditQtde.PostEditValue;
+
+      if vaItem.IdItemCompra <> 0 then
+        dmEstoque.cdsEntrada_ItemID_COMPRA_ITEM.AsInteger := vaItem.IdItemCompra;
     end;
 end;
 
@@ -204,11 +212,6 @@ end;
 procedure TEntrada.SetData(const Value: TDateTime);
 begin
   FData := Value;
-end;
-
-procedure TEntrada.SetIdCompra(const Value: Integer);
-begin
-  FIdCompra := Value;
 end;
 
 procedure TEntrada.SetItens(const Value: TObjectList<TItem>);

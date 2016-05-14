@@ -1,9 +1,8 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
-  ExplicitWidth = 320
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -14,7 +13,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -285,10 +284,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

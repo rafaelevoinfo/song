@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, uControleAcesso, System.TypInfo,
   dmuViveiro, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
   uTypes, uClientDataSet, System.DateUtils, cxCalc, cxDBEdit, cxSpinEdit,
-  cxMemo, fPessoa, dmuPrincipal;
+  cxMemo, fPessoa, dmuPrincipal, uUtils;
 
 type
   TLoteMuda = class(TLote)
@@ -69,11 +69,20 @@ type
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprEfetuarPesquisa; override;
+
+    procedure pprExecutarSalvar; override;
+    procedure pprExecutarSalvarDetail; override;
+
     procedure pprAfterSalvarDetail; override;
 
     procedure pprCarregarDadosModelo; override;
+    procedure pprBeforeIncluirDetail; override;
+
+    function fprHabilitarIncluirDetail: Boolean; override;
+
+    procedure pprExecutarExcluir(ipId: integer; ipAcao: TAcaoTela); override;
   public
-    function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
+    function fpuExcluirDetail(ipIds: TArray<integer>): Boolean; override;
   public const
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
   end;
@@ -124,6 +133,14 @@ begin
   dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(dmViveiro.cdsLote_MudaID.AsInteger)
 end;
 
+procedure TfrmLoteMuda.pprBeforeIncluirDetail;
+begin
+  if dmViveiro.cdsClassificacao.RecordCount > 0 then
+    raise Exception.Create('Só pode haver uma classificação por lote.');
+
+  inherited;
+end;
+
 procedure TfrmLoteMuda.pprCarregarDadosModelo;
 var
   vaLote: TLoteMuda;
@@ -152,6 +169,9 @@ begin
 
       if vaLote.IdEspecie <> 0 then
         plSetEdit(cbEspecie, vaLote.IdEspecie);
+
+      if vaLote.IdItemCompra <> 0 then
+        dmViveiro.cdsLote_MudaID_COMPRA_ITEM.AsInteger := vaLote.IdItemCompra;
     end;
 
 end;
@@ -170,16 +190,71 @@ begin
     dmViveiro.cdsClassificacaoPESSOA_CLASSIFICOU.FieldName);
 end;
 
+procedure TfrmLoteMuda.pprExecutarExcluir(ipId: integer; ipAcao: TAcaoTela);
+var
+  vaIdEspecie, vaQtdeDiminuir: integer;
+begin
+  // ja vai estar posicionado no registro certo
+  vaIdEspecie := dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger;
+  if dmViveiro.cdsClassificacao.RecordCount > 0 then
+    vaQtdeDiminuir := dmViveiro.cdsClassificacaoQTDE.AsInteger
+  else
+    vaQtdeDiminuir := dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger;
+
+  inherited;
+
+  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecie, vaQtdeDiminuir, 0);
+end;
+
+procedure TfrmLoteMuda.pprExecutarSalvar;
+var
+  vaQtdeAnterior: integer;
+begin
+  vaQtdeAnterior := StrToIntDef(VarToStrDef(dmViveiro.cdsLote_MudaQTDE_INICIAL.OldValue, '0'), 0);
+  inherited;
+  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger,
+    vaQtdeAnterior, dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger);
+end;
+
+procedure TfrmLoteMuda.pprExecutarSalvarDetail;
+var
+  vaQtdeAnterior: integer;
+  vaEditando: Boolean;
+begin
+  if dmViveiro.cdsClassificacao.State = dsEdit then
+    vaQtdeAnterior := StrToIntDef(VarToStrDef(dmViveiro.cdsClassificacaoQTDE.OldValue, '0'), 0)
+  else
+    vaQtdeAnterior := dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger;
+
+  inherited;
+
+  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger,
+    vaQtdeAnterior, dmViveiro.cdsClassificacaoQTDE.AsInteger);
+
+end;
+
 function TfrmLoteMuda.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLoteMuda));
 end;
 
-function TfrmLoteMuda.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+function TfrmLoteMuda.fprHabilitarIncluirDetail: Boolean;
 begin
+  Result := inherited and (dsDetail.DataSet.RecordCount = 0);
+end;
+
+function TfrmLoteMuda.fpuExcluirDetail(ipIds: TArray<integer>): Boolean;
+var
+  vaQtde: integer;
+begin
+  vaQtde := dmViveiro.cdsClassificacaoQTDE.AsInteger;
+
   Result := inherited;
   if Result then
     begin
+      dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger,
+        vaQtde, dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger);
+
       dmPrincipal.FuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(dmViveiro.cdsLote_MudaID.AsInteger);
       pprEfetuarPesquisa;
     end;

@@ -91,7 +91,6 @@ type
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
-    procedure pprRealizarPesquisaInicial; override;
     procedure pprExecutarSalvarDetail; override;
 
     function fprHabilitarAlterar: Boolean; override;
@@ -243,11 +242,6 @@ begin
     dmAdministrativo.cdsPessoa_Perfil.ApplyUpdates(0);
 end;
 
-procedure TfrmPessoa.pprRealizarPesquisaInicial;
-begin
-  inherited; // vai apenas abrir a tabela
-  // cbPesquisarPor.ItemIndex := Ord(tpNome);
-end;
 
 procedure TfrmPessoa.pprValidarDados;
 begin

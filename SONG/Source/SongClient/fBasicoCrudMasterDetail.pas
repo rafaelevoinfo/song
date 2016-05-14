@@ -72,7 +72,9 @@ type
     procedure pprBeforeAlterarDetail; virtual;
     procedure pprDefinirTabDetailCadastro; virtual;
     procedure pprEfetuarCancelarDetail; virtual;
-    procedure pprEfetuarExcluirDetail(ipId: Integer); virtual;
+
+    procedure pprBeforeExcluirDetail(ipId: Integer); virtual;
+    procedure pprExecutarExcluirDetail(ipId: Integer); virtual;
 
     procedure pprValidarDadosDetail; virtual;
     procedure pprCarregarDadosModeloDetail; virtual;
@@ -273,7 +275,7 @@ end;
 function TfrmBasicoCrudMasterDetail.fpuCancelarDetail: Boolean;
 begin
   Result := True;
-  if fprHabilitarSalvarDetail then
+  if (not ModoSilencioso) and fprHabilitarSalvarDetail then
     begin
       if TMensagem.fpuPerguntar('Desejar salvar?', ppSimNao) = rpSim then
         begin
@@ -304,10 +306,15 @@ begin
   TClientDataSet(dsDetail.DataSet).CancelUpdates;
 end;
 
-procedure TfrmBasicoCrudMasterDetail.pprEfetuarExcluirDetail(ipId: Integer);
+procedure TfrmBasicoCrudMasterDetail.pprExecutarExcluirDetail(ipId: Integer);
 begin
   if dsDetail.DataSet.Locate(TBancoDados.coId, ipId, []) then
     dsDetail.DataSet.Delete;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.pprBeforeExcluirDetail(ipId: Integer);
+begin
+  // implementar nas classes filhas que precisarem
 end;
 
 function TfrmBasicoCrudMasterDetail.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
@@ -318,12 +325,16 @@ begin
   if fprHabilitarExcluirDetail then
     begin
       pprValidarPermissao(atExcluir, Permissao);
-      if TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim then
+      if ModoSilencioso or (TMensagem.fpuPerguntar('Realmente deseja excluir?', ppSimNao) = rpSim) then
         begin
           try
             for vaId in ipIds do
               begin
-                pprEfetuarExcluirDetail(vaId);
+                if dsDetail.DataSet.Locate(TBancoDados.coId, vaId, []) then
+                  begin
+                    pprBeforeExcluirDetail(vaId);
+                    pprExecutarExcluirDetail(vaId);
+                  end;
               end;
 
             if (TClientDataSet(dsDetail.DataSet).ChangeCount > 0) then

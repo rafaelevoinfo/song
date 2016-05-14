@@ -34,12 +34,15 @@ type
     FIdItem: Integer;
     FQtde: Double;
     FIdEspecie: Integer;
+    FIdItemCompra: Integer;
     procedure SetIdItem(const Value: Integer);
     procedure SetQtde(const Value: Double);
     procedure SetIdEspecie(const Value: Integer);
+    procedure SetIdItemCompra(const Value: Integer);
   public
     property IdItem: Integer read FIdItem write SetIdItem;
-    property IdEspecie:Integer read FIdEspecie write SetIdEspecie;
+    property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
+    property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
     property Qtde: Double read FQtde write SetQtde;
   end;
 
@@ -49,18 +52,18 @@ type
     FNome: string;
     FData: TDateTime;
     FQtde: Double;
-    FIdCompra: Integer;
+    FIdItemCompra: Integer;
     procedure SetData(const Value: TDateTime);
     procedure SetIdEspecie(const Value: Integer);
     procedure SetNome(const Value: string);
     procedure SetQtde(const Value: Double);
-    procedure SetIdCompra(const Value: Integer);
+    procedure SetIdItemCompra(const Value: Integer);
   public
     property Nome: string read FNome write SetNome;
     property Data: TDateTime read FData write SetData;
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
     property Qtde: Double read FQtde write SetQtde;
-    property IdCompra: Integer read FIdCompra write SetIdCompra;
+    property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
   end;
 
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
@@ -96,7 +99,6 @@ type
   TOrigemRecurso = (orProjeto, orFundo, orFinanciamento);
   TOrigem = (oriProjeto, oriFundo);
 
-
   TTipoMovimentacao = (tmDespesa, tmReceita);
 
 const
@@ -126,9 +128,9 @@ begin
   FData := Value;
 end;
 
-procedure TLote.SetIdCompra(const Value: Integer);
+procedure TLote.SetIdItemCompra(const Value: Integer);
 begin
-  FIdCompra := Value;
+  FIdItemCompra := Value;
 end;
 
 procedure TLote.SetIdEspecie(const Value: Integer);
@@ -163,6 +165,11 @@ end;
 procedure TItem.SetIdItem(const Value: Integer);
 begin
   FIdItem := Value;
+end;
+
+procedure TItem.SetIdItemCompra(const Value: Integer);
+begin
+  FIdItemCompra := Value;
 end;
 
 procedure TItem.SetQtde(const Value: Double);

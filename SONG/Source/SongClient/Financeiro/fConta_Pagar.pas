@@ -223,7 +223,7 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     function fprHabilitarAlterarDetail: Boolean; override;
-    procedure pprBeforeExcluir(ipAcao: TAcaoTela); override;
+    procedure pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela); override;
 
     procedure pprCarregarDadosModelo; override;
   public
@@ -294,10 +294,10 @@ begin
     end;
 end;
 
-procedure TfrmContaPagar.pprBeforeExcluir(ipAcao: TAcaoTela);
+procedure TfrmContaPagar.pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela);
 begin
   inherited;
-  dmPrincipal.FuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar(dmFinanceiro.cdsConta_PagarID.AsInteger);
+  dmPrincipal.FuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar(ipId);
 end;
 
 procedure TfrmContaPagar.pprBeforeIncluir;

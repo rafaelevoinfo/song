@@ -80,8 +80,11 @@ type
     FModoExecucao: TModoExecucao;
     FIdEscolhido: Integer;
     FModelo: TModelo;
+    FModoSilencioso: Boolean;
     procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
     procedure SetModelo(const Value: TModelo);
+    procedure SetModoSilencioso(const Value: Boolean);
+
   protected
     FShowExecutado: Boolean;
     // CRUD
@@ -98,7 +101,8 @@ type
     procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
     procedure pprBeforeAlterar; virtual;
-    procedure pprBeforeExcluir(ipAcao:TAcaoTela);virtual;
+    procedure pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela); virtual;
+    procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); virtual;
     procedure pprCarregarDadosModelo; virtual;
     // PESQUISA
     procedure pprRealizarPesquisaInicial; virtual;
@@ -122,6 +126,7 @@ type
     property PesquisaPadrao: TTipoPesquisaPadrao read FPesquisaPadrao write SetPesquisaPadrao;
     property Permissao: string read fprGetPermissao;
     property ModoExecucao: TModoExecucao read FModoExecucao;
+    property ModoSilencioso: Boolean read FModoSilencioso write SetModoSilencioso;
     // objeto modelo para ser utilizado em caso da tela ser aberta somente para cadastros
     property Modelo: TModelo read FModelo write SetModelo;
     property IdEscolhido: Integer read FIdEscolhido;
@@ -135,6 +140,8 @@ type
     procedure ppuSalvar; virtual;
     function fpuCancelar: Boolean; virtual;
     // PESQUISA
+    //utilizado normalmente somente por telas exteriores que querem realizar uma pesquisa automatica
+    procedure ppuConfigurarPesquisa(ipPesquisarPor:Integer; ipValor:String);virtual;
     procedure ppuPesquisar; virtual;
     // MODO DE EXECUCAO DA TELA
     // ipModelo somente será utilizado quando ModoExeucacao for somentecadastro. Ele ira conter as informacoes que se deseja que já venha pre preenchidas
@@ -245,7 +252,7 @@ begin
 
   EditPesquisa.Properties.EditMask := '.*';
   if cbPesquisarPor.EditValue = Ord(tppId) then
-    EditPesquisa.Properties.EditMask := '\d+';
+    EditPesquisa.Properties.EditMask := '\d+(;\d+)*';
 
   vaControleFoco := fprConfigurarControlesPesquisa();
 
@@ -369,7 +376,8 @@ end;
 function TfrmBasicoCrud.fpuCancelar: Boolean;
 begin
   Result := True;
-  if fprHabilitarSalvar then
+  //se tiver no modo selecioso vou descartar qualquer mudanca nao salva
+  if (not ModoSilencioso) and fprHabilitarSalvar then
     begin
       if TMensagem.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
         begin
@@ -406,6 +414,16 @@ begin
         btnSalvarIncluir.Visible := False;
       end;
   end;
+end;
+
+procedure TfrmBasicoCrud.ppuConfigurarPesquisa(ipPesquisarPor: Integer;
+  ipValor: String);
+begin
+  cbPesquisarPor.EditValue := ipPesquisarPor;
+  cbPesquisarPor.PostEditValue;
+
+  EditPesquisa.EditValue := ipValor;
+  EditPesquisa.PostEditValue;
 end;
 
 procedure TfrmBasicoCrud.pprBeforeSalvar;
@@ -519,10 +537,46 @@ begin
       end;
     end;
 
-  if PesquisaPadrao in [tppData, tppTodos] then
+  if (PesquisaPadrao = tppData) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and (not VarIsNull(EditDataFinalPesquisa.EditValue)) then
     ppuPesquisar
+  else if (PesquisaPadrao = tppId) and Assigned(FModelo) and (FModelo.Id <> 0) then
+    begin
+      EditPesquisa.EditValue := FModelo.Id;
+      EditPesquisa.PostEditValue;
+
+      ppuPesquisar;
+    end
   else // vai apenas abrir o cds sem trazer nada
     pprEfetuarPesquisa;
+end;
+
+procedure TfrmBasicoCrud.pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela);
+begin
+  case ipAcao of
+    atExcluir:
+      begin
+        if dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []) then
+          dsMaster.DataSet.Delete;
+      end;
+    atAtivar:
+      begin
+        if dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []) then
+          begin
+            dsMaster.DataSet.Edit;
+            dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
+            dsMaster.DataSet.Post;
+          end;
+      end;
+    atInativar:
+      begin
+        if dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []) then
+          begin
+            dsMaster.DataSet.Edit;
+            dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
+            dsMaster.DataSet.Post;
+          end;
+      end;
+  end;
 end;
 
 function TfrmBasicoCrud.fpuExcluir(ipIds: TArray<Integer>): Boolean;
@@ -550,41 +604,19 @@ begin
 
       pprValidarPermissao(vaAcao, fprGetPermissao);
 
-      if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
+      if ModoSilencioso or (TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim) then
         begin
           viewRegistros.BeginUpdate(lsimImmediate);
           try
             try
               for vaId in ipIds do
                 begin
-                  pprBeforeExcluir(vaAcao);
-
-                  case vaAcao of
-                    atExcluir:
-                      begin
-                        if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                          dsMaster.DataSet.Delete;
-                      end;
-                    atAtivar:
-                      begin
-                        if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                          begin
-                            dsMaster.DataSet.Edit;
-                            dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroAtivo;
-                            dsMaster.DataSet.Post;
-                          end;
-                      end;
-                    atInativar:
-                      begin
-                        if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
-                          begin
-                            dsMaster.DataSet.Edit;
-                            dsMaster.DataSet.FieldByName(TBancoDados.coAtivo).AsInteger := coRegistroInativo;
-                            dsMaster.DataSet.Post;
-                          end;
-                      end;
-                  end;
-
+                  // nao posso dar disablecontrols aqui pq telas filhas podem precisar que o master-detail funcione
+                  if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
+                    begin
+                      pprBeforeExcluir(vaId,vaAcao);
+                      pprExecutarExcluir(vaId, vaAcao);
+                    end;
                 end;
 
               if (TClientDataSet(dsMaster.DataSet).ChangeCount > 0) then
@@ -615,7 +647,7 @@ begin
   pprValidarPermissao(atAlterar, fprGetPermissao);
 end;
 
-procedure TfrmBasicoCrud.pprBeforeExcluir(ipAcao: TAcaoTela);
+procedure TfrmBasicoCrud.pprBeforeExcluir(ipId:Integer;ipAcao: TAcaoTela);
 begin
   // TODO;implementar nas classes filhas
 end;
@@ -672,6 +704,11 @@ begin
     FreeAndNil(FModelo);
 
   FModelo := Value;
+end;
+
+procedure TfrmBasicoCrud.SetModoSilencioso(const Value: Boolean);
+begin
+  FModoSilencioso := Value;
 end;
 
 procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);

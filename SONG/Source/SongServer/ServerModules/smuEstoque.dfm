@@ -48,11 +48,16 @@ inherited smEstoque: TsmEstoque
   object qEntrada: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select distinct Entrada.Id,'
-      '       Entrada.Id_Compra,'
-      '       Entrada.Data'
+      'select distinct Entrada.Id,      '
+      '       Entrada.Data,'
+      '       Entrada.Id_Pessoa,'
+      '       Pessoa.nome as pessoa'
       'from Entrada '
+      'inner join pessoa on (pessoa.id = entrada.id_pessoa)'
       'left join entrada_item on (entrada_item.id_entrada = entrada.id)'
+      
+        'left join compra_item on (entrada_item.id_compra_item = compra_i' +
+        'tem.id)'
       'left join item on (item.id = entrada_item.id_item)'
       '&where')
     Left = 128
@@ -68,16 +73,24 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qEntradaID_COMPRA: TIntegerField
-      FieldName = 'ID_COMPRA'
-      Origin = 'ID_COMPRA'
-      ProviderFlags = [pfInUpdate]
-    end
     object qEntradaDATA: TSQLTimeStampField
       FieldName = 'DATA'
       Origin = '"DATA"'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qEntradaID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qEntradaPESSOA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PESSOA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qSolicitacao_Compra: TRFQuery
@@ -440,6 +453,7 @@ inherited smEstoque: TsmEstoque
       'select Entrada_Item.Id,'
       '       Entrada_Item.Id_Entrada,'
       '       Entrada_Item.Id_Item,'
+      '       Entrada_Item.Id_Compra_Item,'
       '       Entrada_Item.Qtde,'
       '       Item.nome as nome_item'
       'from Entrada_Item'
@@ -486,6 +500,11 @@ inherited smEstoque: TsmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qEntrada_ItemID_COMPRA_ITEM: TIntegerField
+      FieldName = 'ID_COMPRA_ITEM'
+      Origin = 'ID_COMPRA_ITEM'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

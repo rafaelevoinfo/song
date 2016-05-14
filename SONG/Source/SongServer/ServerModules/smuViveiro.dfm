@@ -15,7 +15,13 @@ inherited smViveiro: TsmViveiro
       '       Especie.Tempo_Germinacao,'
       '       ESPECIE.OBSERVACAO,'
       '       Especie.Inicio_Periodo_Coleta,'
-      '       Especie.Fim_Periodo_Coleta'
+      '       Especie.Fim_Periodo_Coleta,'
+      
+        '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
+        'estoque,'
+      
+        '       Coalesce(Especie.qtde_muda_estoque,0) as qtde_muda_estoqu' +
+        'e'
       'from ESPECIE  '
       '&WHERE')
     Left = 32
@@ -87,6 +93,18 @@ inherited smViveiro: TsmViveiro
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qEspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Origin = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qEspecieQTDE_MUDA_ESTOQUE: TIntegerField
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      Origin = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qMatriz: TRFQuery
@@ -174,6 +192,7 @@ inherited smViveiro: TsmViveiro
     SQL.Strings = (
       'select Lote_Semente.Id,'
       '       Lote_Semente.Id_Especie,'
+      '       Lote_Semente.Id_Compra_Item,'
       '       Lote_Semente.Id_Pessoa_Coletou,'
       '       Lote_Semente.Nome,'
       '       Lote_Semente.Data,'
@@ -289,6 +308,11 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = []
       Size = 100
     end
+    object qLote_SementeID_COMPRA_ITEM: TIntegerField
+      FieldName = 'ID_COMPRA_ITEM'
+      Origin = 'ID_COMPRA_ITEM'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object qLote_Semente_Matriz: TRFQuery
     Connection = dmPrincipal.conSong
@@ -298,8 +322,8 @@ inherited smViveiro: TsmViveiro
       '       LOTE_SEMENTE_MATRIZ.ID_MATRIZ'
       'from LOTE_SEMENTE_MATRIZ  '
       'where LOTE_SEMENTE_MATRIZ.ID_LOTE_SEMENTE = :ID_LOTE_SEMENTE')
-    Left = 320
-    Top = 16
+    Left = 440
+    Top = 32
     ParamData = <
       item
         Name = 'ID_LOTE_SEMENTE'
@@ -523,6 +547,7 @@ inherited smViveiro: TsmViveiro
     SQL.Strings = (
       'select Lote_Muda.Id,'
       '       Lote_Muda.Id_Especie,'
+      '       Lote_Muda.Id_Compra_Item,'
       '       Lote_Muda.Nome,'
       '       Lote_Muda.Qtde_Inicial,'
       '       (Select first 1 classificacao.qtde'
@@ -600,6 +625,11 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
+    end
+    object qLote_MudaID_COMPRA_ITEM: TIntegerField
+      FieldName = 'ID_COMPRA_ITEM'
+      Origin = 'ID_COMPRA_ITEM'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qClassificacao: TRFQuery

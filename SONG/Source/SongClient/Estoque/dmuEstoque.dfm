@@ -47,16 +47,23 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsEntradaID_COMPRA: TIntegerField
-      DisplayLabel = 'Id da Compra'
-      FieldName = 'ID_COMPRA'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsEntradaDATA: TSQLTimeStampField
       DisplayLabel = 'Data da Entrada'
       FieldName = 'DATA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsEntradaID_PESSOA: TIntegerField
+      DisplayLabel = 'Id da Pessoa'
+      FieldName = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsEntradaPESSOA: TStringField
+      DisplayLabel = 'Pessoa que Realizou a Entrada'
+      FieldName = 'PESSOA'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object cdsSolicitacao_Compra: TRFClientDataSet
@@ -380,6 +387,10 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'NOME_ITEM'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsEntrada_ItemID_COMPRA_ITEM: TIntegerField
+      FieldName = 'ID_COMPRA_ITEM'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object dsEntrada: TDataSource

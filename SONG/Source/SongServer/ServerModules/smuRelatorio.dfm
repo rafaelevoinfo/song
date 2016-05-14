@@ -98,4 +98,8 @@ inherited smRelatorio: TsmRelatorio
       Size = 2
     end
   end
+  object qSaldo_Semente_Muda: TRFQuery
+    Left = 200
+    Top = 48
+  end
 end

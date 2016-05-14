@@ -14,7 +14,6 @@ type
     cdsItemTIPO: TSmallintField;
     cdsEntrada: TRFClientDataSet;
     cdsEntradaID: TIntegerField;
-    cdsEntradaID_COMPRA: TIntegerField;
     cdsEntradaDATA: TSQLTimeStampField;
     cdsItemUNIDADE: TStringField;
     cdsSolicitacao_Compra: TRFClientDataSet;
@@ -67,6 +66,9 @@ type
     cdsEntrada_ItemNOME_ITEM: TStringField;
     cdsCompra_ItemTIPO_ITEM: TSmallintField;
     cdsCompraID_SOLICITACAO_COMPRA: TIntegerField;
+    cdsEntradaID_PESSOA: TIntegerField;
+    cdsEntradaPESSOA: TStringField;
+    cdsEntrada_ItemID_COMPRA_ITEM: TIntegerField;
   private
     { Private declarations }
   public

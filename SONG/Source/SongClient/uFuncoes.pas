@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 11/05/2016 23:31:25
+// 14/05/2016 01:04:59
 //
 
 unit uFuncoes;
@@ -101,13 +101,18 @@ type
     FfpuCalcularQuantidadeSementeCommand: TDBXCommand;
     FfpuCalcularTaxaGerminacaoLoteCommand: TDBXCommand;
     FppuAtualizarTaxaGerminacaoLoteCommand: TDBXCommand;
-    FppuAtualizarEstoqueLoteSementeCommand: TDBXCommand;
     FppuAtualizarTaxaClassificacaoMudaCommand: TDBXCommand;
     FfpuValidarNomeMatrizCommand: TDBXCommand;
     FfpuValidarNomeCanteiroCommand: TDBXCommand;
     FppuValidarSemeaduraCommand: TDBXCommand;
     FppuFinalizarEtapaGerminacaoLoteCommand: TDBXCommand;
     FppuReiniciarEtapaGerminacaoLoteCommand: TDBXCommand;
+    FppuAtualizarQtdeSementeEstoqueCommand: TDBXCommand;
+    FppuAtualizarQtdeMudaEstoqueCommand: TDBXCommand;
+    FfpuBuscarLotesMudasCommand: TDBXCommand;
+    FfpuBuscarLoteMudaCommand: TDBXCommand;
+    FfpuBuscarLotesSementesCommand: TDBXCommand;
+    FfpuBuscarLoteSementeCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -118,13 +123,18 @@ type
     function fpuCalcularQuantidadeSemente(ipIdEspecie: Integer; ipQtdeKg: Double): Integer;
     function fpuCalcularTaxaGerminacaoLote(ipIdLote: Integer): Double;
     procedure ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
-    procedure ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
     procedure ppuAtualizarTaxaClassificacaoMuda(ipIdLote: Integer);
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: string): Boolean;
     procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
     procedure ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
     procedure ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
+    procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeAnterior: Double; ipQtdeNova: Double);
+    procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipQtdeAnterior: Integer; ipQtdeNova: Integer);
+    function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
+    function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
+    function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
+    function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -180,8 +190,9 @@ type
   private
     FfpuValidarTipoItemCommand: TDBXCommand;
     FfpuVerificarComprasJaGeradaCommand: TDBXCommand;
-    FfpuVerificarEntradaJaGeradaCommand: TDBXCommand;
     FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
+    FfpuBuscarItensEntradaCommand: TDBXCommand;
+    FfpuBuscarItemEntradaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -191,8 +202,9 @@ type
     destructor Destroy; override;
     function fpuValidarTipoItem(ipId: Integer; ipTipo: Integer): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
-    function fpuVerificarEntradaJaGerada(ipIdCompra: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
+    function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
+    function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -219,7 +231,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteDespesaAberto: Boolean): OleVariant;
+    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant;
     function fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
@@ -747,19 +759,6 @@ begin
   FppuAtualizarTaxaGerminacaoLoteCommand.ExecuteUpdate;
 end;
 
-procedure TsmFuncoesViveiroClient.ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
-begin
-  if FppuAtualizarEstoqueLoteSementeCommand = nil then
-  begin
-    FppuAtualizarEstoqueLoteSementeCommand := FDBXConnection.CreateCommand;
-    FppuAtualizarEstoqueLoteSementeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FppuAtualizarEstoqueLoteSementeCommand.Text := 'TsmFuncoesViveiro.ppuAtualizarEstoqueLoteSemente';
-    FppuAtualizarEstoqueLoteSementeCommand.Prepare;
-  end;
-  FppuAtualizarEstoqueLoteSementeCommand.Parameters[0].Value.SetInt32(ipIdLote);
-  FppuAtualizarEstoqueLoteSementeCommand.ExecuteUpdate;
-end;
-
 procedure TsmFuncoesViveiroClient.ppuAtualizarTaxaClassificacaoMuda(ipIdLote: Integer);
 begin
   if FppuAtualizarTaxaClassificacaoMudaCommand = nil then
@@ -844,6 +843,93 @@ begin
   FppuReiniciarEtapaGerminacaoLoteCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesViveiroClient.ppuAtualizarQtdeSementeEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeAnterior: Double; ipQtdeNova: Double);
+begin
+  if FppuAtualizarQtdeSementeEstoqueCommand = nil then
+  begin
+    FppuAtualizarQtdeSementeEstoqueCommand := FDBXConnection.CreateCommand;
+    FppuAtualizarQtdeSementeEstoqueCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAtualizarQtdeSementeEstoqueCommand.Text := 'TsmFuncoesViveiro.ppuAtualizarQtdeSementeEstoque';
+    FppuAtualizarQtdeSementeEstoqueCommand.Prepare;
+  end;
+  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
+  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[1].Value.SetInt32(ipIdLote);
+  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[2].Value.SetDouble(ipQtdeAnterior);
+  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[3].Value.SetDouble(ipQtdeNova);
+  FppuAtualizarQtdeSementeEstoqueCommand.ExecuteUpdate;
+end;
+
+procedure TsmFuncoesViveiroClient.ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipQtdeAnterior: Integer; ipQtdeNova: Integer);
+begin
+  if FppuAtualizarQtdeMudaEstoqueCommand = nil then
+  begin
+    FppuAtualizarQtdeMudaEstoqueCommand := FDBXConnection.CreateCommand;
+    FppuAtualizarQtdeMudaEstoqueCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAtualizarQtdeMudaEstoqueCommand.Text := 'TsmFuncoesViveiro.ppuAtualizarQtdeMudaEstoque';
+    FppuAtualizarQtdeMudaEstoqueCommand.Prepare;
+  end;
+  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
+  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[1].Value.SetInt32(ipQtdeAnterior);
+  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[2].Value.SetInt32(ipQtdeNova);
+  FppuAtualizarQtdeMudaEstoqueCommand.ExecuteUpdate;
+end;
+
+function TsmFuncoesViveiroClient.fpuBuscarLotesMudas(ipIdCompra: Integer): string;
+begin
+  if FfpuBuscarLotesMudasCommand = nil then
+  begin
+    FfpuBuscarLotesMudasCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarLotesMudasCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarLotesMudasCommand.Text := 'TsmFuncoesViveiro.fpuBuscarLotesMudas';
+    FfpuBuscarLotesMudasCommand.Prepare;
+  end;
+  FfpuBuscarLotesMudasCommand.Parameters[0].Value.SetInt32(ipIdCompra);
+  FfpuBuscarLotesMudasCommand.ExecuteUpdate;
+  Result := FfpuBuscarLotesMudasCommand.Parameters[1].Value.GetWideString;
+end;
+
+function TsmFuncoesViveiroClient.fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
+begin
+  if FfpuBuscarLoteMudaCommand = nil then
+  begin
+    FfpuBuscarLoteMudaCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarLoteMudaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarLoteMudaCommand.Text := 'TsmFuncoesViveiro.fpuBuscarLoteMuda';
+    FfpuBuscarLoteMudaCommand.Prepare;
+  end;
+  FfpuBuscarLoteMudaCommand.Parameters[0].Value.SetInt32(ipIdCompraItem);
+  FfpuBuscarLoteMudaCommand.ExecuteUpdate;
+  Result := FfpuBuscarLoteMudaCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesViveiroClient.fpuBuscarLotesSementes(ipIdCompra: Integer): string;
+begin
+  if FfpuBuscarLotesSementesCommand = nil then
+  begin
+    FfpuBuscarLotesSementesCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarLotesSementesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarLotesSementesCommand.Text := 'TsmFuncoesViveiro.fpuBuscarLotesSementes';
+    FfpuBuscarLotesSementesCommand.Prepare;
+  end;
+  FfpuBuscarLotesSementesCommand.Parameters[0].Value.SetInt32(ipIdCompra);
+  FfpuBuscarLotesSementesCommand.ExecuteUpdate;
+  Result := FfpuBuscarLotesSementesCommand.Parameters[1].Value.GetWideString;
+end;
+
+function TsmFuncoesViveiroClient.fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
+begin
+  if FfpuBuscarLoteSementeCommand = nil then
+  begin
+    FfpuBuscarLoteSementeCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarLoteSementeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarLoteSementeCommand.Text := 'TsmFuncoesViveiro.fpuBuscarLoteSemente';
+    FfpuBuscarLoteSementeCommand.Prepare;
+  end;
+  FfpuBuscarLoteSementeCommand.Parameters[0].Value.SetInt32(ipIdCompraItem);
+  FfpuBuscarLoteSementeCommand.ExecuteUpdate;
+  Result := FfpuBuscarLoteSementeCommand.Parameters[1].Value.GetInt32;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -914,13 +1000,18 @@ begin
   FfpuCalcularQuantidadeSementeCommand.DisposeOf;
   FfpuCalcularTaxaGerminacaoLoteCommand.DisposeOf;
   FppuAtualizarTaxaGerminacaoLoteCommand.DisposeOf;
-  FppuAtualizarEstoqueLoteSementeCommand.DisposeOf;
   FppuAtualizarTaxaClassificacaoMudaCommand.DisposeOf;
   FfpuValidarNomeMatrizCommand.DisposeOf;
   FfpuValidarNomeCanteiroCommand.DisposeOf;
   FppuValidarSemeaduraCommand.DisposeOf;
   FppuFinalizarEtapaGerminacaoLoteCommand.DisposeOf;
   FppuReiniciarEtapaGerminacaoLoteCommand.DisposeOf;
+  FppuAtualizarQtdeSementeEstoqueCommand.DisposeOf;
+  FppuAtualizarQtdeMudaEstoqueCommand.DisposeOf;
+  FfpuBuscarLotesMudasCommand.DisposeOf;
+  FfpuBuscarLoteMudaCommand.DisposeOf;
+  FfpuBuscarLotesSementesCommand.DisposeOf;
+  FfpuBuscarLoteSementeCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
@@ -1233,20 +1324,6 @@ begin
   Result := FfpuVerificarComprasJaGeradaCommand.Parameters[1].Value.GetBoolean;
 end;
 
-function TsmFuncoesEstoqueClient.fpuVerificarEntradaJaGerada(ipIdCompra: Integer): Boolean;
-begin
-  if FfpuVerificarEntradaJaGeradaCommand = nil then
-  begin
-    FfpuVerificarEntradaJaGeradaCommand := FDBXConnection.CreateCommand;
-    FfpuVerificarEntradaJaGeradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuVerificarEntradaJaGeradaCommand.Text := 'TsmFuncoesEstoque.fpuVerificarEntradaJaGerada';
-    FfpuVerificarEntradaJaGeradaCommand.Prepare;
-  end;
-  FfpuVerificarEntradaJaGeradaCommand.Parameters[0].Value.SetInt32(ipIdCompra);
-  FfpuVerificarEntradaJaGeradaCommand.ExecuteUpdate;
-  Result := FfpuVerificarEntradaJaGeradaCommand.Parameters[1].Value.GetBoolean;
-end;
-
 function TsmFuncoesEstoqueClient.fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
 begin
   if FfpuVerificarContaPagarJaGeradaCommand = nil then
@@ -1259,6 +1336,34 @@ begin
   FfpuVerificarContaPagarJaGeradaCommand.Parameters[0].Value.SetInt32(ipIdCompra);
   FfpuVerificarContaPagarJaGeradaCommand.ExecuteUpdate;
   Result := FfpuVerificarContaPagarJaGeradaCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TsmFuncoesEstoqueClient.fpuBuscarItensEntrada(ipIdCompra: Integer): string;
+begin
+  if FfpuBuscarItensEntradaCommand = nil then
+  begin
+    FfpuBuscarItensEntradaCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarItensEntradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarItensEntradaCommand.Text := 'TsmFuncoesEstoque.fpuBuscarItensEntrada';
+    FfpuBuscarItensEntradaCommand.Prepare;
+  end;
+  FfpuBuscarItensEntradaCommand.Parameters[0].Value.SetInt32(ipIdCompra);
+  FfpuBuscarItensEntradaCommand.ExecuteUpdate;
+  Result := FfpuBuscarItensEntradaCommand.Parameters[1].Value.GetWideString;
+end;
+
+function TsmFuncoesEstoqueClient.fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
+begin
+  if FfpuBuscarItemEntradaCommand = nil then
+  begin
+    FfpuBuscarItemEntradaCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarItemEntradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarItemEntradaCommand.Text := 'TsmFuncoesEstoque.fpuBuscarItemEntrada';
+    FfpuBuscarItemEntradaCommand.Prepare;
+  end;
+  FfpuBuscarItemEntradaCommand.Parameters[0].Value.SetInt32(ipIdCompraItem);
+  FfpuBuscarItemEntradaCommand.ExecuteUpdate;
+  Result := FfpuBuscarItemEntradaCommand.Parameters[1].Value.GetInt32;
 end;
 
 function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
@@ -1330,8 +1435,9 @@ destructor TsmFuncoesEstoqueClient.Destroy;
 begin
   FfpuValidarTipoItemCommand.DisposeOf;
   FfpuVerificarComprasJaGeradaCommand.DisposeOf;
-  FfpuVerificarEntradaJaGeradaCommand.DisposeOf;
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
+  FfpuBuscarItensEntradaCommand.DisposeOf;
+  FfpuBuscarItemEntradaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
@@ -1382,7 +1488,7 @@ begin
   inherited;
 end;
 
-function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteDespesaAberto: Boolean): OleVariant;
+function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant;
 begin
   if FfpuMovimentacaoFinanceiraCommand = nil then
   begin
@@ -1398,7 +1504,7 @@ begin
   FfpuMovimentacaoFinanceiraCommand.Parameters[4].Value.SetWideString(ipDataFinal);
   FfpuMovimentacaoFinanceiraCommand.Parameters[5].Value.SetBoolean(ipReceitas);
   FfpuMovimentacaoFinanceiraCommand.Parameters[6].Value.SetBoolean(ipDespesas);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[7].Value.SetBoolean(ipSomenteDespesaAberto);
+  FfpuMovimentacaoFinanceiraCommand.Parameters[7].Value.SetBoolean(ipSomenteRegistroAberto);
   FfpuMovimentacaoFinanceiraCommand.ExecuteUpdate;
   Result := FfpuMovimentacaoFinanceiraCommand.Parameters[8].Value.AsVariant;
 end;

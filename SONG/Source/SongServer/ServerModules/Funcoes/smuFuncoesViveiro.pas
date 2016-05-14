@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, uTypes;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -19,7 +19,7 @@ type
     function fpuCalcularQuantidadeSemente(ipIdEspecie: Integer; ipQtdeKg: Double): Integer;
     function fpuCalcularTaxaGerminacaoLote(ipIdLote: Integer): Double;
     procedure ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
-    procedure ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
+
     procedure ppuAtualizarTaxaClassificacaoMuda(ipIdLote: Integer);
 
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: String): Boolean;
@@ -29,6 +29,15 @@ type
     procedure ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
 
     procedure ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
+
+    procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie, ipIdLote: Integer; ipQtdeAnterior, ipQtdeNova: Double);
+    procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipQtdeAnterior, ipQtdeNova: Integer);
+
+    function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
+    function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
+
+    function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
+    function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
   end;
 
 var
@@ -40,8 +49,108 @@ implementation
 
 { TsmBasico1 }
 
+function TsmFuncoesViveiro.fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
+var
+  vaId: Integer;
+begin
+  vaId := 0;
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select lote_Muda.id from lote_muda ' +
+        ' where lote_muda.id_compra_item = :ID_COMPRA_ITEM';
+      ipDataSet.ParamByName('ID_COMPRA_ITEM').AsInteger := ipIdCompraItem;
+      ipDataSet.Open();
+      if (not ipDataSet.Eof) then
+        vaId := ipDataSet.FieldByName('ID').AsInteger;
+    end);
+
+  Result := vaId;
+
+end;
+
+function TsmFuncoesViveiro.fpuBuscarLoteSemente(
+  ipIdCompraItem: Integer): Integer;
+var
+  vaId: Integer;
+begin
+  vaId := 0;
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select Lote_Semente.id from Lote_Semente ' +
+        ' where Lote_Semente.id_compra_item = :ID_COMPRA_ITEM';
+      ipDataSet.ParamByName('ID_COMPRA_ITEM').AsInteger := ipIdCompraItem;
+      ipDataSet.Open();
+      if (not ipDataSet.Eof) then
+        vaId := ipDataSet.FieldByName('ID').AsInteger;
+    end);
+
+  Result := vaId;
+
+end;
+
+function TsmFuncoesViveiro.fpuBuscarLotesMudas(ipIdCompra: Integer): string;
+var
+  vaIds: TStringList;
+begin
+  vaIds := TStringList.Create();
+  try
+    vaIds.Delimiter := coDelimitadorPadrao;
+    vaIds.StrictDelimiter := True;
+
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select lote_Muda.id from lote_muda ' +
+          ' where lote_muda.id_compra_item in (select compra_item.id from compra_item where compra_item.id_compra = :ID_COMPRA)';
+        ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
+        ipDataSet.Open();
+        while (not ipDataSet.Eof) do
+          begin
+            vaIds.Add(ipDataSet.FieldByName(TBancoDados.coId).AsString);
+            ipDataSet.Next;
+          end;
+      end);
+
+    Result := vaIds.DelimitedText;
+  finally
+    vaIds.Free;
+  end;
+end;
+
+function TsmFuncoesViveiro.fpuBuscarLotesSementes(ipIdCompra: Integer): string;
+var
+  vaIds: TStringList;
+begin
+  vaIds := TStringList.Create();
+  try
+    vaIds.Delimiter := coDelimitadorPadrao;
+    vaIds.StrictDelimiter := True;
+
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select lote_semente.id from lote_semente ' +
+          ' where lote_semente.id_compra_item in (select compra_item.id from compra_item where compra_item.id_compra = :ID_COMPRA)';
+        ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
+        ipDataSet.Open();
+        while (not ipDataSet.Eof) do
+          begin
+            vaIds.Add(ipDataSet.FieldByName(TBancoDados.coId).AsString);
+            ipDataSet.Next;
+          end;
+      end);
+
+    Result := vaIds.DelimitedText;
+  finally
+    vaIds.Free;
+  end;
+
+end;
+
 function TsmFuncoesViveiro.fpuCalcularQuantidadeSemente(ipIdEspecie: Integer;
-  ipQtdeKg: Double): Integer;
+ipQtdeKg: Double): Integer;
 var
   vaQtde: Integer;
 begin
@@ -151,20 +260,37 @@ begin
   Result := fprValidarCampoUnico('MATRIZ', 'NOME', ipId, ipNome);
 end;
 
-procedure TsmFuncoesViveiro.ppuAtualizarEstoqueLoteSemente(ipIdLote: Integer);
+procedure TsmFuncoesViveiro.ppuAtualizarQtdeMudaEstoque(ipIdEspecie,
+  ipQtdeAnterior, ipQtdeNova: Integer);
 begin
-  Connection.ExecSQL(
-    ' update Lote_Semente' +
-    '   set Lote_Semente.Qtde_Armazenada = case' +
-    '                                 when Lote_Semente.Qtde - (select coalesce(sum(Semeadura.Qtde_Semeada),0)' +
-    '                                                     from Semeadura' +
-    '                                                   where Semeadura.Id_Lote_Semente = :Id) >= 0 then Lote_Semente.Qtde - (select coalesce(sum(Semeadura.Qtde_Semeada),0)'
-    +
-    '                                                                                                           from Semeadura' +
-    '                                                                                                         where Semeadura.Id_Lote_Semente = :Id)' +
-    '                                 else 0' +
-    '                              end' +
-    ' where Lote_Semente.Id = :Id', [ipIdLote]);
+  Connection.ExecSQL('update especie ' +
+    ' set especie.qtde_muda_estoque = coalesce(especie.qtde_muda_estoque,0) - :qtde_anterior + :qtde_nova ' +
+    ' where especie.id = :id', [ipQtdeAnterior, ipQtdeNova, ipIdEspecie]);
+end;
+
+procedure TsmFuncoesViveiro.ppuAtualizarQtdeSementeEstoque(ipIdEspecie, ipIdLote: Integer;
+ipQtdeAnterior, ipQtdeNova: Double);
+begin
+  Connection.ExecSQL('update especie ' +
+    ' set especie.qtde_semente_estoque = coalesce(especie.qtde_semente_estoque,0) - :qtde_anterior + :qtde_nova ' +
+    ' where especie.id = :id', [ipQtdeAnterior, ipQtdeNova, ipIdEspecie]);
+
+  if ipIdLote <> 0 then
+    begin
+      Connection.ExecSQL(
+        ' update Lote_Semente' +
+        '   set Lote_Semente.Qtde_Armazenada = case' +
+        '                                 when Lote_Semente.Qtde - (select coalesce(sum(Semeadura.Qtde_Semeada),0)' +
+        '                                                     from Semeadura' +
+        '                                                   where Semeadura.Id_Lote_Semente = :Id) >= 0 then Lote_Semente.Qtde - (select coalesce(sum(Semeadura.Qtde_Semeada),0)'
+        +
+        '                                                                                                           from Semeadura' +
+        '                                                                                                         where Semeadura.Id_Lote_Semente = :Id)'
+        +
+        '                                 else 0' +
+        '                              end' +
+        ' where Lote_Semente.Id = :Id', [ipIdLote]);
+    end;
 end;
 
 procedure TsmFuncoesViveiro.ppuAtualizarTaxaClassificacaoMuda(
@@ -179,15 +305,15 @@ end;
 
 procedure TsmFuncoesViveiro.ppuAtualizarTaxaGerminacaoLote(ipIdLote: Integer);
 var
-  vaTaxaGerminacao,vaTaxaDescarte: Double;
+  vaTaxaGerminacao, vaTaxaDescarte: Double;
 begin
   vaTaxaGerminacao := fpuCalcularTaxaGerminacaoLote(ipIdLote);
-  vaTaxaDescarte := 100-vaTaxaGerminacao;
+  vaTaxaDescarte := 100 - vaTaxaGerminacao;
   if vaTaxaDescarte < 0 then
     vaTaxaDescarte := 0;
   // a taxa de descarte é um campo calculado no banco, entao nao preciso calcula-la
-  Connection.ExecSQL('update lote_Semente set lote_Semente.taxa_germinacao = :taxa, '+
-   ' lote_semente.taxa_descarte = :taxa_descarte where lote_Semente.id = :id', [vaTaxaGerminacao,vaTaxaDescarte, ipIdLote]);
+  Connection.ExecSQL('update lote_Semente set lote_Semente.taxa_germinacao = :taxa, ' +
+    ' lote_semente.taxa_descarte = :taxa_descarte where lote_Semente.id = :id', [vaTaxaGerminacao, vaTaxaDescarte, ipIdLote]);
 end;
 
 procedure TsmFuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
