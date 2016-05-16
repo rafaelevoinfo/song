@@ -102,6 +102,11 @@ type
     qlkProjetoID: TIntegerField;
     qlkProjetoNOME: TStringField;
     qlkFundoORGANIZACAO: TStringField;
+    qlkProjeto_Organizacao: TRFQuery;
+    qlkProjeto_OrganizacaoID: TIntegerField;
+    qlkProjeto_OrganizacaoNOME: TStringField;
+    qlkFundoID_ORGANIZACAO: TIntegerField;
+    qlkProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
   private
     { Private declarations }
   protected
@@ -208,6 +213,11 @@ begin
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS_ENTREGA', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
         Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1),vaOperador);
+    end
+  else if ipTabela = 'PROJETO_ORGANIZACAO' then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PROJETO', vaValor.ToInteger, vaOperador)
     end
 end;
 

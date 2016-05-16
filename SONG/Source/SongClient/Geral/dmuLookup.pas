@@ -171,6 +171,13 @@ type
     cdslkOrganizacaoCNPJ: TStringField;
     cdslkOrganizacaoLOGO: TBlobField;
     cdslkFundoORGANIZACAO: TStringField;
+    cdslkProjeto_Organizacao: TRFClientDataSet;
+    cdslkProjeto_OrganizacaoID: TIntegerField;
+    cdslkProjeto_OrganizacaoNOME: TStringField;
+    dslkProjeto_Organizcao: TDataSource;
+    repLcbProjetoOrganizacao: TcxEditRepositoryLookupComboBoxItem;
+    cdslkFundoID_ORGANIZACAO: TIntegerField;
+    cdslkProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

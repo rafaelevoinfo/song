@@ -653,6 +653,18 @@ inherited dmFinanceiro: TdmFinanceiro
       Precision = 18
       Size = 2
     end
+    object cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM: TIntegerField
+      DisplayLabel = 'Id da Organiza'#231#227'o de Origem'
+      FieldName = 'ID_ORGANIZACAO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField
+      DisplayLabel = 'Organiza'#231#227'o de Origem do Recurso'
+      FieldName = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsConta_Receber_Vinculo: TRFClientDataSet
     Aggregates = <>

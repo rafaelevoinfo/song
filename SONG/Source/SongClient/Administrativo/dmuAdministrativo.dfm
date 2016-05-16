@@ -603,7 +603,45 @@ inherited dmAdministrativo: TdmAdministrativo
   object cdsProjeto_Financiador_Pagto: TRFClientDataSet
     Aggregates = <>
     AggregatesActive = True
-    FieldDefs = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_PROJETO_FINANCIADOR'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_PROJETO_ORGANIZACAO'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'VALOR'
+        Attributes = [faRequired]
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'DATA'
+        Attributes = [faRequired]
+        DataType = ftDate
+      end
+      item
+        Name = 'PERCENTUAL'
+        Attributes = [faRequired]
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'NOME_ORGANIZACAO'
+        DataType = ftString
+        Size = 100
+      end>
     IndexDefs = <
       item
         Name = 'ORDER_BY_ID_PROJETO_FINANCIADOR'
@@ -656,6 +694,17 @@ inherited dmAdministrativo: TdmAdministrativo
       Required = True
       Precision = 18
       Size = 2
+    end
+    object cdsProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_PROJETO_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_Financiador_PagtoNOME_ORGANIZACAO: TStringField
+      DisplayLabel = 'Organiza'#231#227'o'
+      FieldName = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
     end
     object cdsProjeto_Financiador_PagtoTOTAL: TAggregateField
       DisplayLabel = 'Total Financiado'

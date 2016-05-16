@@ -700,6 +700,8 @@ inherited smFinanceiro: TsmFinanceiro
     SQL.Strings = (
       'select Conta_Pagar_Vinculo.Id,'
       '       Conta_Pagar_Vinculo.Id_Conta_Pagar,'
+      '       Conta_Pagar_Vinculo.Id_Organizacao_Origem,'
+      '       Organizacao.Nome as Nome_Organizacao,'
       '       Conta_Pagar_Vinculo.Id_Fundo,'
       '       Fundo.nome as Nome_fundo,'
       '       Conta_Pagar_Vinculo.Id_Projeto_Origem,'
@@ -725,6 +727,9 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Valor'
       ''
       'from Conta_Pagar_Vinculo  '
+      
+        'inner join organizacao on (organizacao.id = conta_pagar_vinculo.' +
+        'id_organizacao_origem)'
       'left join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)'
       
         'left join projeto projeto_origem on (projeto_origem.id = conta_p' +
@@ -889,6 +894,19 @@ inherited smFinanceiro: TsmFinanceiro
       Required = True
       Precision = 18
       Size = 2
+    end
+    object qConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM: TIntegerField
+      FieldName = 'ID_ORGANIZACAO_ORIGEM'
+      Origin = 'ID_ORGANIZACAO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qConta_Receber_Vinculo: TRFQuery

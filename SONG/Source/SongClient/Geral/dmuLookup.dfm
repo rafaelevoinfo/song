@@ -510,6 +510,18 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkFundo
     end
+    object repLcbProjetoOrganizacao: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID_ORGANIZACAO'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkProjeto_Organizcao
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1182,6 +1194,11 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Size = 100
     end
+    object cdslkFundoID_ORGANIZACAO: TIntegerField
+      DisplayLabel = 'Id da Organiza'#231#227'o'
+      FieldName = 'ID_ORGANIZACAO'
+      Required = True
+    end
   end
   object dslkFundo: TDataSource
     DataSet = cdslkFundo
@@ -1260,5 +1277,32 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Size = 100
     end
+  end
+  object cdslkProjeto_Organizacao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkProjeto_Organizacao'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 784
+    Top = 640
+    object cdslkProjeto_OrganizacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkProjeto_OrganizacaoNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object dslkProjeto_Organizcao: TDataSource
+    DataSet = cdslkProjeto_Organizacao
+    Left = 928
+    Top = 648
   end
 end

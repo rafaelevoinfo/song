@@ -17,7 +17,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabSaldoRubrica
+      Properties.ActivePage = tabMovimentacao
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
@@ -300,11 +300,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Precision = 18
       Size = 2
     end
-    object cdsMovimentacaoVALOR_REAL: TBCDField
-      FieldName = 'VALOR_REAL'
+    object cdsMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField
+      FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
       ProviderFlags = []
       DisplayFormat = 'R$ ,0.00'
-      Precision = 18
       Size = 2
     end
     object cdsMovimentacaoVALOR: TBCDField
@@ -439,8 +438,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Sortable = False
     end
     object DBPipeMovimentacaoppField12: TppField
-      FieldAlias = 'VALOR_REAL'
-      FieldName = 'VALOR_REAL'
+      FieldAlias = 'VALOR_TOTAL_PAGO_RECEBIDO'
+      FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -668,7 +667,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText21: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText21'
-        DataField = 'VALOR_REAL'
+        DataField = 'VALOR_PARCIAL'
         DataPipeline = DBPipeMovimentacao
         DisplayFormat = '$ ,0.00'
         Font.Charset = DEFAULT_CHARSET
@@ -851,6 +850,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Name = 'Arial'
           Font.Size = 11
           Font.Style = [fsBold]
+          TextAlignment = taCentered
           Transparent = True
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4763
@@ -866,40 +866,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Background.Brush.Style = bsClear
         HideWhenOneDetail = False
         mmBottomOffset = 0
-        mmHeight = 5292
+        mmHeight = 7938
         mmPrintPosition = 0
-        object ppShape2: TppShape
-          DesignLayer = ppDesignLayer3
-          UserName = 'Shape2'
-          Brush.Color = clGray
-          mmHeight = 4763
-          mmLeft = 139700
-          mmTop = 0
-          mmWidth = 57150
-          BandType = 5
-          GroupNo = 0
-          LayerName = BandLayer3
-        end
-        object ppLabel19: TppLabel
-          DesignLayer = ppDesignLayer3
-          UserName = 'Label19'
-          Caption = 'Saldo Geral'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 12
-          Font.Style = [fsBold]
-          FormField = False
-          TextAlignment = taCentered
-          Transparent = True
-          mmHeight = 5027
-          mmLeft = 141552
-          mmTop = 0
-          mmWidth = 23283
-          BandType = 5
-          GroupNo = 0
-          LayerName = BandLayer3
-        end
         object ppDBText20: TppDBText
           DesignLayer = ppDesignLayer3
           UserName = 'DBText20'
@@ -909,15 +877,33 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
+          Font.Size = 8
           Font.Style = [fsBold]
-          TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4763
-          mmLeft = 166688
-          mmTop = 530
-          mmWidth = 28046
+          mmLeft = 140228
+          mmTop = 3175
+          mmWidth = 29105
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppLabel3: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label3'
+          Caption = 'Saldo'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 130966
+          mmTop = 3440
+          mmWidth = 7937
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer3
@@ -940,20 +926,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppGroupHeaderBand4: TppGroupHeaderBand
         Background.Brush.Style = bsClear
         mmBottomOffset = 0
-        mmHeight = 9525
+        mmHeight = 13229
         mmPrintPosition = 0
-        object ShapeRecDesp: TppShape
-          DesignLayer = ppDesignLayer3
-          UserName = 'ShapeRecDesp'
-          Brush.Color = clMaroon
-          mmHeight = 9525
-          mmLeft = 4233
-          mmTop = 0
-          mmWidth = 192618
-          BandType = 3
-          GroupNo = 2
-          LayerName = BandLayer3
-        end
         object EditDescricaoTipo: TppDBText
           DesignLayer = ppDesignLayer3
           UserName = 'EditDescricaoTipo'
@@ -962,14 +936,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 9
+          Font.Size = 10
           Font.Style = [fsBold]
           Transparent = True
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4763
           mmLeft = 5289
-          mmTop = 794
-          mmWidth = 69056
+          mmTop = 1589
+          mmWidth = 191559
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3
@@ -988,7 +962,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           mmHeight = 3704
           mmLeft = 42333
-          mmTop = 5821
+          mmTop = 7941
           mmWidth = 14288
           BandType = 3
           GroupNo = 2
@@ -1004,11 +978,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Size = 8
           Font.Style = [fsBold]
           FormField = False
-          TextAlignment = taCentered
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 140757
-          mmTop = 5821
+          mmHeight = 3705
+          mmLeft = 140229
+          mmTop = 7938
           mmWidth = 15610
           BandType = 3
           GroupNo = 2
@@ -1027,8 +1000,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 3704
-          mmLeft = 103452
-          mmTop = 5821
+          mmLeft = 103187
+          mmTop = 7941
           mmWidth = 7673
           BandType = 3
           GroupNo = 2
@@ -1047,8 +1020,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 3704
-          mmLeft = 5556
-          mmTop = 5821
+          mmLeft = 4761
+          mmTop = 7941
           mmWidth = 20373
           BandType = 3
           GroupNo = 2
@@ -1067,9 +1040,33 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 3704
-          mmLeft = 171715
-          mmTop = 5821
+          mmLeft = 171450
+          mmTop = 7941
           mmWidth = 12965
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
+        object ppLine1: TppLine
+          DesignLayer = ppDesignLayer3
+          UserName = 'Line1'
+          Weight = 0.750000000000000000
+          mmHeight = 1058
+          mmLeft = 2117
+          mmTop = 7133
+          mmWidth = 194734
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
+        object ppLine2: TppLine
+          DesignLayer = ppDesignLayer3
+          UserName = 'Line2'
+          Weight = 0.750000000000000000
+          mmHeight = 1058
+          mmLeft = 1852
+          mmTop = 12170
+          mmWidth = 194998
           BandType = 3
           GroupNo = 1
           LayerName = BandLayer3
@@ -1079,28 +1076,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Background.Brush.Style = bsClear
         HideWhenOneDetail = False
         mmBottomOffset = 0
-        mmHeight = 5292
+        mmHeight = 4763
         mmPrintPosition = 0
-        object ppLabel18: TppLabel
-          DesignLayer = ppDesignLayer3
-          UserName = 'Label18'
-          Caption = 'Totais'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 8
-          Font.Style = [fsBold]
-          FormField = False
-          TextAlignment = taCentered
-          Transparent = True
-          mmHeight = 3704
-          mmLeft = 79903
-          mmTop = 794
-          mmWidth = 8996
-          BandType = 5
-          GroupNo = 2
-          LayerName = BandLayer3
-        end
         object ppDBCalc2: TppDBCalc
           DesignLayer = ppDesignLayer3
           UserName = 'DBCalc2'
@@ -1117,8 +1094,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           VerticalAlignment = avCenter
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4498
-          mmLeft = 140228
-          mmTop = 794
+          mmLeft = 140758
+          mmTop = 264
           mmWidth = 29104
           BandType = 5
           GroupNo = 2
@@ -1127,7 +1104,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc3: TppDBCalc
           DesignLayer = ppDesignLayer3
           UserName = 'DBCalc3'
-          DataField = 'VALOR_REAL'
+          DataField = 'VALOR_PARCIAL'
           DataPipeline = DBPipeMovimentacao
           DisplayFormat = '$ ,0.00'
           Font.Charset = DEFAULT_CHARSET
@@ -1141,7 +1118,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4498
           mmLeft = 103452
-          mmTop = 794
+          mmTop = 264
           mmWidth = 35454
           BandType = 5
           GroupNo = 2
@@ -1164,7 +1141,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4498
           mmLeft = 171715
-          mmTop = 794
+          mmTop = 264
           mmWidth = 24606
           BandType = 5
           GroupNo = 1
@@ -1174,29 +1151,18 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object raCodeModule1: TraCodeModule
       ProgramStream = {
-        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650613
-        5368617065526563446573704F6E5072696E740B50726F6772616D5479706507
-        0B747450726F63656475726506536F7572636506B770726F6365647572652053
-        68617065526563446573704F6E5072696E743B0D0A626567696E0D0A20202020
-        6966204442506970654D6F76696D656E746163616F5B275449504F275D203D20
-        30207468656E0D0A202020205368617065526563446573702E42727573682E43
-        6F6C6F72203A3D20636C4D61726F6F6E0D0A2020656C73650D0A202020205368
-        617065526563446573702E42727573682E436F6C6F72203A3D20636C47726565
-        6E3B20200D0A656E643B0D0A0D436F6D706F6E656E744E616D65060C53686170
-        6552656344657370094576656E744E616D6506074F6E5072696E74074576656E
-        7449440220084361726574506F7301022E0203000001060F5472614576656E74
-        48616E646C65720B50726F6772616D4E616D65061F4C6162656C56616C6F7250
-        61676F526563656269646F4F6E476574546578740B50726F6772616D54797065
-        070B747450726F63656475726506536F7572636506BB70726F63656475726520
-        4C6162656C56616C6F725061676F526563656269646F4F6E4765745465787428
-        76617220546578743A20537472696E67293B0D0A626567696E0D0A0D0A202069
-        66204442506970654D6F76696D656E746163616F5B275449504F275D203D2030
-        207468656E0D0A2020202054657874203A3D20202756616C6F72205061676F27
-        0D0A2020656C73650D0A2020202054657874203A3D202756616C6F7220526563
-        656269646F273B0D0A0D0A656E643B0D0A0D436F6D706F6E656E744E616D6506
-        164C6162656C56616C6F725061676F526563656269646F094576656E744E616D
-        6506094F6E47657454657874074576656E7449440235084361726574506F7301
-        02150207000000}
+        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D65061F
+        4C6162656C56616C6F725061676F526563656269646F4F6E476574546578740B
+        50726F6772616D54797065070B747450726F63656475726506536F7572636506
+        BB70726F636564757265204C6162656C56616C6F725061676F52656365626964
+        6F4F6E476574546578742876617220546578743A20537472696E67293B0D0A62
+        6567696E0D0A0D0A20206966204442506970654D6F76696D656E746163616F5B
+        275449504F275D203D2030207468656E0D0A2020202054657874203A3D202027
+        56616C6F72205061676F270D0A2020656C73650D0A2020202054657874203A3D
+        202756616C6F7220526563656269646F273B0D0A0D0A656E643B0D0A0D436F6D
+        706F6E656E744E616D6506164C6162656C56616C6F725061676F526563656269
+        646F094576656E744E616D6506094F6E47657454657874074576656E74494402
+        35084361726574506F730102150207000000}
     end
     object ppDesignLayers3: TppDesignLayers
       object ppDesignLayer3: TppDesignLayer
@@ -1516,6 +1482,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Name = 'Arial'
           Font.Size = 11
           Font.Style = [fsBold]
+          TextAlignment = taCentered
           Transparent = True
           DataPipelineName = 'DBPipeSaldo'
           mmHeight = 4763
@@ -1533,38 +1500,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmBottomOffset = 0
         mmHeight = 5292
         mmPrintPosition = 0
-        object ppShape4: TppShape
-          DesignLayer = ppDesignLayer4
-          UserName = 'Shape2'
-          Brush.Color = clGray
-          mmHeight = 4763
-          mmLeft = 139700
-          mmTop = 0
-          mmWidth = 57150
-          BandType = 5
-          GroupNo = 0
-          LayerName = BandLayer4
-        end
-        object ppLabel25: TppLabel
-          DesignLayer = ppDesignLayer4
-          UserName = 'Label19'
-          Caption = 'Saldo Geral'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 12
-          Font.Style = [fsBold]
-          FormField = False
-          TextAlignment = taCentered
-          Transparent = True
-          mmHeight = 5027
-          mmLeft = 141552
-          mmTop = 0
-          mmWidth = 23283
-          BandType = 5
-          GroupNo = 0
-          LayerName = BandLayer4
-        end
         object ppDBCalc4: TppDBCalc
           DesignLayer = ppDesignLayer4
           UserName = 'DBCalc4'
@@ -1581,9 +1516,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           DataPipelineName = 'DBPipeSaldo'
           mmHeight = 4498
-          mmLeft = 165894
+          mmLeft = 148696
           mmTop = 0
-          mmWidth = 29369
+          mmWidth = 46567
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer4
@@ -1701,6 +1636,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       DataType = dtNotKnown
       DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeSaldoppField7: TppField
+      FieldAlias = 'TIPO_ORIGEM'
+      FieldName = 'TIPO_ORIGEM'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
       Searchable = False
       Sortable = False
     end
@@ -2081,11 +2026,11 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmBottomOffset = 0
         mmHeight = 10054
         mmPrintPosition = 0
-        object ppShape5: TppShape
+        object ppShape2: TppShape
           DesignLayer = ppDesignLayer1
-          UserName = 'Shape1'
+          UserName = 'Shape2'
           Brush.Color = clGray
-          mmHeight = 9525
+          mmHeight = 4763
           mmLeft = 1852
           mmTop = 529
           mmWidth = 194998
@@ -2101,13 +2046,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 11
+          Font.Size = 10
           Font.Style = [fsBold]
+          TextAlignment = taCentered
           Transparent = True
           DataPipelineName = 'DBPipeRubrica'
           mmHeight = 4763
           mmLeft = 2117
-          mmTop = 529
+          mmTop = 794
           mmWidth = 193146
           BandType = 3
           GroupNo = 0

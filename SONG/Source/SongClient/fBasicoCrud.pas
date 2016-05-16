@@ -537,7 +537,7 @@ begin
       end;
     end;
 
-  if (PesquisaPadrao = tppData) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and (not VarIsNull(EditDataFinalPesquisa.EditValue)) then
+  if (PesquisaPadrao = tppTodos) or ((PesquisaPadrao = tppData) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and (not VarIsNull(EditDataFinalPesquisa.EditValue))) then
     ppuPesquisar
   else if (PesquisaPadrao = tppId) and Assigned(FModelo) and (FModelo.Id <> 0) then
     begin

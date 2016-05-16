@@ -2,17 +2,16 @@ inherited frmContaReceber: TfrmContaReceber
   ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
-  ExplicitWidth = 320
-  ExplicitHeight = 240
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 567
@@ -38,7 +37,6 @@ inherited frmContaReceber: TfrmContaReceber
             Left = 132
             TabOrder = 3
             ExplicitLeft = 132
-            ExplicitHeight = 21
           end
           inherited cbPesquisarPor: TcxImageComboBox [4]
             Left = 2
@@ -302,6 +300,10 @@ inherited frmContaReceber: TfrmContaReceber
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -463,16 +465,13 @@ inherited frmContaReceber: TfrmContaReceber
             Width = 76
           end
           object cxGrid1: TcxGrid
-            Left = 2
-            Top = 64
-            Width = 423
+            Left = 3
+            Top = 56
+            Width = 421
             Height = 138
             Align = alBottom
             TabOrder = 3
             TabStop = False
-            ExplicitLeft = 3
-            ExplicitTop = 56
-            ExplicitWidth = 421
             object viewParcelas: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsDetail
@@ -553,16 +552,13 @@ inherited frmContaReceber: TfrmContaReceber
             Caption = 'Valor'
           end
           object cxGrid2: TcxGrid
-            Left = 2
-            Top = 64
-            Width = 531
+            Left = 3
+            Top = 56
+            Width = 529
             Height = 138
             Align = alBottom
             TabOrder = 3
             TabStop = False
-            ExplicitLeft = 3
-            ExplicitTop = 56
-            ExplicitWidth = 529
             object viewVinculos: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dsVinculos
@@ -650,10 +646,10 @@ inherited frmContaReceber: TfrmContaReceber
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         TabOrder = 0
       end

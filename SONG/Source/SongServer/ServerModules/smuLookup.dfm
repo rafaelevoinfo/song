@@ -746,6 +746,7 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select Fundo.Id,'
       '       Fundo.Nome,'
+      '       Fundo.Id_Organizacao,'
       '       Organizacao.Nome as Organizacao,'
       '       Fundo.Saldo'
       'from Fundo  '
@@ -784,6 +785,47 @@ inherited smLookup: TsmLookup
     object qlkFundoORGANIZACAO: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'ORGANIZACAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkFundoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object qlkProjeto_Organizacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Projeto_Organizacao.Id,'
+      '       Projeto_Organizacao.Id_Organizacao ,'
+      '       Organizacao.Nome'
+      'from Projeto_Organizacao'
+      
+        'inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.' +
+        'Id_Organizacao)  '
+      '&WHERE')
+    Left = 584
+    Top = 24
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkProjeto_OrganizacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      Required = True
+    end
+    object qlkProjeto_OrganizacaoNOME: TStringField
+      FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

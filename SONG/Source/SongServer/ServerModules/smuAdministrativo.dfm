@@ -669,10 +669,18 @@ inherited smAdministrativo: TsmAdministrativo
     SQL.Strings = (
       'select PROJETO_FINANCIADOR_PAGTO.ID,'
       '       PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR,'
+      '       PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_ORGANIZACAO,'
+      '       Organizacao.nome as nome_organizacao,'
       '       PROJETO_FINANCIADOR_PAGTO.VALOR,'
       '       PROJETO_FINANCIADOR_PAGTO.DATA,'
       '       PROJETO_FINANCIADOR_PAGTO.PERCENTUAL       '
       'from PROJETO_FINANCIADOR_PAGTO'
+      
+        'inner join projeto_organizacao on (projeto_organizacao.id = proj' +
+        'eto_financiador_pagto.id_projeto_organizacao)'
+      
+        'inner join organizacao on (organizacao.id = projeto_organizacao.' +
+        'id_organizacao)'
       
         'where PROJETO_FINANCIADOR_PAGTO.ID_PROJETO_FINANCIADOR = :ID_PRO' +
         'JETO_FINANCIADOR  ')
@@ -696,6 +704,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'ID_PROJETO_FINANCIADOR'
       ProviderFlags = [pfInUpdate]
     end
+    object qProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_PROJETO_ORGANIZACAO'
+      Origin = 'ID_PROJETO_ORGANIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
     object qProjeto_Financiador_PagtoVALOR: TBCDField
       FieldName = 'VALOR'
       Origin = 'VALOR'
@@ -717,6 +731,13 @@ inherited smAdministrativo: TsmAdministrativo
       Required = True
       Precision = 18
       Size = 2
+    end
+    object qProjeto_Financiador_PagtoNOME_ORGANIZACAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qAtividade: TRFQuery

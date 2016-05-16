@@ -123,6 +123,8 @@ type
     qConta_Receber_VinculoID_FUNDO: TIntegerField;
     qConta_Receber_VinculoVALOR: TBCDField;
     qConta_Receber_VinculoFUNDO: TStringField;
+    qConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM: TIntegerField;
+    qConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField;
   private
     { Private declarations }
   protected

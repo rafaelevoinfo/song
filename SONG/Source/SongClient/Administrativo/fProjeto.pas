@@ -129,10 +129,7 @@ type
     EditValorPagamento: TcxCurrencyEdit;
     cxGrid5: TcxGrid;
     viewPagamentosCadastro: TcxGridDBTableView;
-    Column1: TcxGridDBColumn;
-    Column2: TcxGridDBColumn;
-    Column3: TcxGridDBColumn;
-    Column4: TcxGridDBColumn;
+    ViewPagamentosCadastroEXCLUIR: TcxGridDBColumn;
     level2: TcxGridLevel;
     pnCadastroDocumento: TPanel;
     Label15: TLabel;
@@ -200,6 +197,13 @@ type
     Label23: TLabel;
     EditValorFinanciar: TcxDBCurrencyEdit;
     viewProjetoFinanciadorVALOR_FINANCIADO: TcxGridDBColumn;
+    lb2: TLabel;
+    cbProjetoOrganizacao: TcxLookupComboBox;
+    viewPagamentosCadastroID: TcxGridDBColumn;
+    viewPagamentosCadastroDATA: TcxGridDBColumn;
+    viewPagamentosCadastroVALOR: TcxGridDBColumn;
+    viewPagamentosCadastroNOME_ORGANIZACAO: TcxGridDBColumn;
+    viewPagamentosNOME_ORGANIZACAO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -227,6 +231,7 @@ type
     procedure ppvCarregarFinanciadores;
     procedure ppvExcluirPagamento;
     procedure ppvAtualizarRubricas();
+    procedure ppvFiltrarProjetoOrganizacao;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -243,6 +248,7 @@ type
     procedure pprExecutarExcluirDetail(ipId: Integer); override;
 
     procedure pprBeforeIncluirDetail; override;
+    procedure pprBeforeAlterarDetail; override;
 
     procedure pprValidarDadosDetail; override;
   public
@@ -383,6 +389,9 @@ begin
   if VarIsNull(EditDataPagamento.EditValue) then
     raise TControlException.Create('Informe a data do pagamento.', EditDataPagamento);
 
+  if VarIsNull(cbProjetoOrganizacao.EditValue) then
+    raise TControlException.Create('Informe para qual organização o dinheiro será destinado.', cbProjetoOrganizacao);
+
   try
     if dmAdministrativo.cdsProjeto_FinanciadorID.IsNull then
       pprPreencherCamposPadroes(dmAdministrativo.cdsProjeto_Financiador);
@@ -393,6 +402,9 @@ begin
     dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat := EditValorPagamento.Value;
     dmAdministrativo.cdsProjeto_Financiador_PagtoDATA.AsDateTime := EditDataPagamento.Date;
     dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat := EditPercentualPagamento.Value;
+    dmAdministrativo.cdsProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO.AsInteger := cbProjetoOrganizacao.EditValue;
+    if dmLookup.cdslkProjeto_Organizacao.Locate(TBancoDados.coId,cbProjetoOrganizacao.EditValue,[]) then
+      dmAdministrativo.cdsProjeto_Financiador_PagtoNOME_ORGANIZACAO.AsString := dmLookup.cdslkProjeto_OrganizacaoNOME.AsString;
     dmAdministrativo.cdsProjeto_Financiador_Pagto.Post;
 
     ppvAtualizarRubricas();
@@ -587,10 +599,31 @@ begin
 
       if (dmAdministrativo.cdsProjeto_Financiador_Pagto.RecordCount > 0) then
         begin
-          if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat < StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0) then
+          if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat <
+            StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0) then
             raise Exception.Create('A soma de todas as parcelas não pode ser superior ao valor a financiar.');
         end;
     end;
+end;
+
+procedure TfrmProjeto.ppvFiltrarProjetoOrganizacao;
+begin
+  if (not dmLookup.cdslkProjeto_Organizacao.Active) or
+    (dmAdministrativo.cdsProjeto_FinanciadorID_PROJETO.AsInteger <> dmAdministrativo.cdsProjetoID.AsInteger) then
+    dmLookup.cdslkProjeto_Organizacao.ppuDataRequest([TParametros.coProjeto], [dmAdministrativo.cdsProjetoID.AsInteger], TOperadores.coAnd, true);
+
+  if dmLookup.cdslkProjeto_Organizacao.RecordCount = 1 then
+    cbProjetoOrganizacao.EditValue := dmLookup.cdslkProjeto_OrganizacaoID.AsInteger
+  else
+    cbProjetoOrganizacao.Clear;
+
+  cbProjetoOrganizacao.PostEditValue;
+end;
+
+procedure TfrmProjeto.pprBeforeAlterarDetail;
+begin
+  inherited;
+  ppvFiltrarProjetoOrganizacao;
 end;
 
 procedure TfrmProjeto.pprBeforeIncluirDetail;
@@ -601,6 +634,8 @@ begin
       if dmPrincipal.FuncoesAdm.fpuSomaOrcamentoRubrica(dmAdministrativo.cdsProjetoID.AsInteger) <> dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
         raise Exception.Create
           ('Não é possível incluir financiadores enquanto a soma dos orçamentos das rubricas não for igual ao orçamento do projeto.');
+
+      ppvFiltrarProjetoOrganizacao;
     end;
 end;
 

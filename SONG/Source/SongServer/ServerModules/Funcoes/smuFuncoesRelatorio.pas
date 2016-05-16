@@ -24,7 +24,6 @@ type
     qMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField;
     qMovimentacaoVALOR_TOTAL: TBCDField;
     qMovimentacaoVALOR_PARCIAL: TBCDField;
-    qMovimentacaoVALOR_REAL: TBCDField;
     qMovimentacaoID: TIntegerField;
     qMovimentacaoDATA: TDateField;
     cdsSaldo: TClientDataSet;
@@ -37,12 +36,13 @@ type
     qMovimentacaoID_IDENTIFICACAO_TABELA: TIntegerField;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
     qMovimentacaoTIPO_ORIGEM: TIntegerField;
+    qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
   private
     procedure ppvCalcularSaldoGeral(ipCds: TClientDataSet);
     { Private declarations }
   public
     function fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer;
-      ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto:Boolean): OleVariant;
+      ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto: Boolean): OleVariant;
     function fpuSaldo(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer): OleVariant;
   end;
 
@@ -64,77 +64,21 @@ implementation
 
 
 function TsmFuncoesRelatorio.fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo: Integer;
- ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto:Boolean):OleVariant;
+  ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto: Boolean): OleVariant;
 var
   vaCds: TRFClientDataSet;
-  vaRecNo, vaRecNoAux, vaIdOrganizacao, vaQtdeOrganizacoes: Integer;
-  vaValor, vaSoma, vaSomaPagtoRec, vaSaldoOrganizacao, vaValorPerc, vaValorPagoRec: Currency;
-  I, vaIdOrigem: Integer;
-  vaFiltro: string;
+  vaRecNo: Integer;
+  vaValorPerc, vaSomaValorPerc: Currency;
   vaDataInicial, vaDataFinal: TDateTime;
   vaPerc: Double;
 
-  procedure plProcessarRegistro(ipValorReal, ipValorPagoRecebido: Currency);
+  procedure plProcessarRegistro(ipValorPagoRecebido: Currency);
   begin
     vaCds.Edit;
     vaCds.FieldByName(coProcessado).AsBoolean := True;
-    vaCds.FieldByName(qMovimentacaoVALOR_REAL.FieldName).AsFloat := ipValorReal;
     vaCds.FieldByName(coValor).AsFloat := ipValorPagoRecebido;
-    vaCds.FieldByName(coValorRestante).AsFloat := ipValorReal - ipValorPagoRecebido;
+    vaCds.FieldByName(coValorRestante).AsFloat := vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat - ipValorPagoRecebido;
     vaCds.Post;
-  end;
-
-  procedure plCalcularValores;
-  var
-    j: Integer;
-  begin
-    // vamos voltar ao primeiro registro desse grupo
-    vaCds.RecNo := vaRecNo;
-    vaSoma := 0;
-    // ja sei quantas organizacoes diferentes temos, entao vamos ratir o valor para cada orgnizacao
-    vaValor := TUtils.fpuTruncTo(vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat / vaQtdeOrganizacoes, 2);
-    for j := vaRecNo to I - 1 do
-      begin
-        vaCds.RecNo := j;
-
-        if j = I - 1 then
-          begin
-            vaValor := vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat - vaSoma;
-
-            if j = vaCds.RecordCount then
-              vaValorPerc := vaValorPagoRec - vaSomaPagtoRec
-            else
-              begin
-                vaValorPerc := TUtils.fpuTruncTo(vaValor * vaPerc, 2);
-                vaSomaPagtoRec := vaSomaPagtoRec + vaValorPerc;
-              end;
-
-            plProcessarRegistro(vaValor, vaValorPerc);
-          end
-        else
-          begin
-            // ultimo registros dessa conta
-            if j = vaCds.RecordCount then
-              vaValorPerc := vaValorPagoRec - vaSomaPagtoRec
-            else
-              begin
-                vaValorPerc := TUtils.fpuTruncTo(vaValor * vaPerc, 2);
-                vaSomaPagtoRec := vaSomaPagtoRec + vaValorPerc;
-              end;
-
-            plProcessarRegistro(vaValor, vaValorPerc);
-          end;
-
-        vaSoma := vaSoma + vaValor;
-      end;
-    // voltando para a posicao correta
-    if I <= vaCds.RecordCount then
-      vaCds.RecNo := I;
-
-    vaQtdeOrganizacoes := 1;
-    vaIdOrigem := vaCds.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger;
-    vaIdOrganizacao := vaCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger;
-    vaRecNo := I;
   end;
 
 begin
@@ -168,62 +112,55 @@ begin
         qMovimentacao.Next;
       end;
 
-    //Nao remover esse IndeFieldNames pq senao ao fazer e desfazer o filter os registros irao mudar de posicao fazendo tudo ficar errado
-    vaCds.IndexFieldNames := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName+';'+ qMovimentacaoID_MOVIMENTACAO.FieldName + ';' + qMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
-      qMovimentacaoID.FieldName + ';' + qMovimentacaoID_ORGANIZACAO.FieldName;
+    // Nao remover esse IndeFieldNames pq senao ao fazer e desfazer o filter os registros irao mudar de posicao fazendo tudo ficar errado
+    vaCds.IndexFieldNames := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ';' +
+      qMovimentacaoID_MOVIMENTACAO.FieldName + ';' +
+      qMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
+      qMovimentacaoID.FieldName + ';' +
+      qMovimentacaoID_ORGANIZACAO.FieldName;
     // vamos percorrer todos os registros agora para entao calcular o valor de cada organizacao
     vaCds.First;
     while not vaCds.Eof do
       begin
         if not vaCds.FieldByName(coProcessado).AsBoolean then
           begin
-            vaRecNoAux := vaCds.RecNo;
-            vaCds.Filter := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName+' = ' +vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName).AsString+ ' and  '+
-             qMovimentacaoID_MOVIMENTACAO.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_MOVIMENTACAO.FieldName).AsString;
+            vaCds.Filter := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName)
+              .AsString + ' and  ' +
+              qMovimentacaoID_MOVIMENTACAO.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_MOVIMENTACAO.FieldName).AsString;
             vaCds.Filtered := True;
 
-            // possui mais de um vinculo ou o vinculo esta ligado a mais de uma organizacao
+            // possui mais de um vinculo
             if vaCds.RecordCount > 1 then
               begin
                 vaCds.First;
-                vaQtdeOrganizacoes := 1;
                 if vaCds.FieldByName(qMovimentacaoTIPO_ORIGEM_RECURSO.FieldName).AsInteger = Ord(orFinanciamento) then
                   vaPerc := 1 // 100%
                 else
-                  vaPerc := vaCds.FieldByName(qMovimentacaoVALOR_REAL.FieldName).AsFloat /
+                  vaPerc := vaCds.FieldByName(qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO.FieldName).AsFloat /
                     vaCds.FieldByName(qMovimentacaoVALOR_TOTAL.FieldName).AsFloat;
-                vaValorPagoRec := vaCds.FieldByName(qMovimentacaoVALOR_REAL.FieldName).AsFloat;
-                vaIdOrganizacao := vaCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger;
-                vaIdOrigem := vaCds.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger;
-                vaSomaPagtoRec := 0;
-                vaRecNo := 1;
-                I := 2;
-                while I <= vaCds.RecordCount do
+
+                vaSomaValorPerc := 0;
+                vaRecNo := vaCds.RecNo;
+                while vaRecNo <= vaCds.RecordCount do
                   begin
-                    vaCds.RecNo := I;
-                    if (vaCds.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger = vaIdOrigem) and
-                      (vaCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger <> vaIdOrganizacao) then
-                      begin
-                        Inc(vaQtdeOrganizacoes);
-                      end
+                    vaValorPerc := TUtils.fpuTruncTo(vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat * vaPerc,2);
+                    if vaRecNo = vaCds.RecordCount then//ultimo registro, entao vamos jogar os quebrados pra ele
+                      vaValorPerc := vaCds.FieldByName(qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO.FieldName).AsFloat - vaSomaValorPerc
                     else
-                      begin
-                        plCalcularValores;
-                      end;
+                      vaSomaValorPerc := vaSomaValorPerc + vaValorPerc;
 
-                    Inc(I);
+                    plProcessarRegistro(vaValorPerc);
+
+                    Inc(vaRecNo);
+                    vaCds.Next;
                   end;
-
-                plCalcularValores;
               end
             else
               begin
-                plProcessarRegistro(vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat,
-                  vaCds.FieldByName(qMovimentacaoVALOR_REAL.FieldName).AsFloat);
+                plProcessarRegistro(vaCds.FieldByName(qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO.FieldName).AsFloat);
               end;
 
             vaCds.Filtered := False;
-            vaCds.RecNo := vaRecNoAux;
           end;
 
         if ((ipIdOrganizacao <> 0) and (ipIdOrganizacao <> vaCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger)) or
@@ -272,15 +209,16 @@ begin
 
   vaCdsMovimentacao := TClientDataSet.Create(nil);
   try
-    vaCdsMovimentacao.Data := fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo, '', '',true,true,false);
+    vaCdsMovimentacao.Data := fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProjeto, ipIdFundo, '', '', True, True, False);
     // vamos ordenar por Organizacao, projeto/Fundo
     vaCdsMovimentacao.IndexFieldNames := qMovimentacaoID_ORGANIZACAO.FieldName + ';' + qMovimentacaoID_ORIGEM_RECURSO.FieldName;
 
     vaCdsMovimentacao.First;
     while not vaCdsMovimentacao.Eof do
       begin
-        if not cdsSaldo.Locate(cdsSaldoTIPO_ORIGEM.FieldName+';'+cdsSaldoID_ORGANIZACAO.FieldName+';'+cdsSaldoID_PROJETO_FUNDO.FieldName,
-          VarArrayOf([vaCdsMovimentacao.FieldByName(qMovimentacaoTIPO_ORIGEM.FieldName).AsInteger, vaCdsMovimentacao.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger,
+        if not cdsSaldo.Locate(cdsSaldoTIPO_ORIGEM.FieldName + ';' + cdsSaldoID_ORGANIZACAO.FieldName + ';' + cdsSaldoID_PROJETO_FUNDO.FieldName,
+          VarArrayOf([vaCdsMovimentacao.FieldByName(qMovimentacaoTIPO_ORIGEM.FieldName).AsInteger,
+          vaCdsMovimentacao.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger,
           vaCdsMovimentacao.FieldByName(qMovimentacaoID_ORIGEM_RECURSO.FieldName).AsInteger]), []) then
           begin
             cdsSaldo.Append;

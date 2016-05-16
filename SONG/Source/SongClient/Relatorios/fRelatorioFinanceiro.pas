@@ -42,7 +42,6 @@ type
     cdsMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField;
     cdsMovimentacaoVALOR_TOTAL: TBCDField;
     cdsMovimentacaoVALOR_PARCIAL: TBCDField;
-    cdsMovimentacaoVALOR_REAL: TBCDField;
     DBPipeMovimentacao: TppDBPipeline;
     dsMovimentacao: TDataSource;
     ppMovimentacao: TppReport;
@@ -69,7 +68,6 @@ type
     ppGroupHeaderBand2: TppGroupHeaderBand;
     ppDBText18: TppDBText;
     ppGroupFooterBand2: TppGroupFooterBand;
-    ppLabel19: TppLabel;
     ppDBText20: TppDBText;
     ppGroupTipo: TppGroup;
     ppGroupHeaderBand4: TppGroupHeaderBand;
@@ -77,17 +75,14 @@ type
     ppLabelDescricao: TppLabel;
     ppLabelValorPagoRecebido: TppLabel;
     ppGroupFooterBand4: TppGroupFooterBand;
-    ppLabel18: TppLabel;
     ppDBCalc2: TppDBCalc;
     ppDesignLayers3: TppDesignLayers;
     ppDesignLayer3: TppDesignLayer;
     ppLabel22: TppLabel;
     ppDBText21: TppDBText;
     ppShape1: TppShape;
-    ShapeRecDesp: TppShape;
     raCodeModule1: TraCodeModule;
     ppDBCalc3: TppDBCalc;
-    ppShape2: TppShape;
     ppSaldo: TppReport;
     ppHeaderBand4: TppHeaderBand;
     ppLabel23: TppLabel;
@@ -107,8 +102,6 @@ type
     ppShape3: TppShape;
     ppDBText30: TppDBText;
     ppGroupFooterBand5: TppGroupFooterBand;
-    ppShape4: TppShape;
-    ppLabel25: TppLabel;
     raCodeModule2: TraCodeModule;
     ppDesignLayers4: TppDesignLayers;
     ppDesignLayer4: TppDesignLayer;
@@ -169,7 +162,6 @@ type
     ppSystemVariable3: TppSystemVariable;
     ppGroup1: TppGroup;
     ppGroupHeaderBand1: TppGroupHeaderBand;
-    ppShape5: TppShape;
     ppDBText8: TppDBText;
     ppLabel4: TppLabel;
     ppLabel5: TppLabel;
@@ -181,6 +173,11 @@ type
     raCodeModule3: TraCodeModule;
     ppDesignLayers1: TppDesignLayers;
     ppDesignLayer1: TppDesignLayer;
+    cdsMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
+    ppLine1: TppLine;
+    ppLine2: TppLine;
+    ppLabel3: TppLabel;
+    ppShape2: TppShape;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure SaldoProjetoBindAssignedValue(Sender: TObject;

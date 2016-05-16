@@ -17,7 +17,7 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
       '       View_Movimentacao_Financeira.Data,'
       '       View_Movimentacao_Financeira.valor_total,'
       '       View_Movimentacao_Financeira.valor_parcial,'
-      '       View_Movimentacao_Financeira.Valor_Real'
+      '       View_Movimentacao_Financeira.Valor_Total_Pago_Recebido'
       'from View_Movimentacao_Financeira  '
       
         'where (View_Movimentacao_Financeira.Data between :data_inicial a' +
@@ -117,10 +117,9 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
       Precision = 18
       Size = 2
     end
-    object qMovimentacaoVALOR_REAL: TBCDField
-      FieldName = 'VALOR_REAL'
-      Origin = 'VALOR_REAL'
-      ProviderFlags = []
+    object qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField
+      FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
+      Origin = 'VALOR_TOTAL_PAGO_RECEBIDO'
       Precision = 18
       Size = 2
     end

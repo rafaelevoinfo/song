@@ -170,6 +170,8 @@ type
     qFundoSALDO: TBCDField;
     qFundoDESCRICAO: TStringField;
     qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
+    qProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO: TIntegerField;
+    qProjeto_Financiador_PagtoNOME_ORGANIZACAO: TStringField;
   private
     { Private declarations }
   protected
