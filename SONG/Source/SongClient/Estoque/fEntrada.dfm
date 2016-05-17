@@ -46,12 +46,8 @@ inherited frmEntrada: TfrmEntrada
                 Value = 5
               end
               item
-                Description = 'Tipo do Item'
-                Value = 6
-              end
-              item
                 Description = 'Id da Compra'
-                Value = 7
+                Value = 6
               end>
             TabOrder = 2
             ExplicitLeft = 2
@@ -64,24 +60,16 @@ inherited frmEntrada: TfrmEntrada
           inherited rgStatus: TcxRadioGroup
             Left = 3
             Top = 33
-            TabOrder = 6
+            TabOrder = 5
             ExplicitLeft = 3
             ExplicitTop = 33
-          end
-          object cbPesquisaTipoItem: TcxImageComboBox
-            Left = 136
-            Top = 20
-            RepositoryItem = dmLookup.repIcbTipoItem
-            Properties.Items = <>
-            TabOrder = 4
-            Width = 175
           end
           object cbPesquisaItem: TcxLookupComboBox
             Left = 137
             Top = 20
             RepositoryItem = dmLookup.repLcbItem
             Properties.ListColumns = <>
-            TabOrder = 5
+            TabOrder = 4
             Width = 175
           end
         end
@@ -146,6 +134,10 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 6
@@ -166,6 +158,10 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label3: TLabel
           Left = 5

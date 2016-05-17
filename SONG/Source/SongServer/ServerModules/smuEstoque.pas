@@ -70,6 +70,23 @@ type
     qEntradaID_PESSOA: TIntegerField;
     qEntradaPESSOA: TStringField;
     qEntrada_ItemID_COMPRA_ITEM: TIntegerField;
+    qSaida: TRFQuery;
+    qSaidaID: TIntegerField;
+    qSaidaID_VENDA: TIntegerField;
+    qSaidaDATA: TSQLTimeStampField;
+    qSaidaTIPO: TSmallintField;
+    qSaida_Item: TRFQuery;
+    qSaida_ItemID: TIntegerField;
+    qSaida_ItemID_SAIDA: TIntegerField;
+    qSaida_ItemID_ITEM: TIntegerField;
+    qSaida_ItemID_LOTE_SEMENTE: TIntegerField;
+    qSaida_ItemID_LOTE_MUDA: TIntegerField;
+    qSaida_ItemQTDE: TBCDField;
+    qSaida_ItemNOME_ITEM: TStringField;
+    qSaida_ItemLOTE_SEMENTE: TStringField;
+    qSaida_ItemLOTE_MUDA: TStringField;
+    qSaida_ItemID_ESPECIE: TIntegerField;
+    qSaida_ItemNOME_ESPECIE: TStringField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
@@ -136,6 +153,17 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'CODIGO_RASTREIO', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coFornecedor then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador)
+    end
+  else if (ipTabela = 'SAIDA') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
+      else if ipParam.Name = TParametros.coTipo then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coVenda then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_VENDA', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coItem then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'SAIDA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador);
 
     end;
 end;

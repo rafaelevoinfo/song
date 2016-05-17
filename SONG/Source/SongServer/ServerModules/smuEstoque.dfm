@@ -507,4 +507,145 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
+  object qSaida: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Saida.Id,'
+      '       Saida.Id_Venda,'
+      '       Saida.Data,'
+      '       Saida.Tipo'
+      'from Saida'
+      '&where')
+    Left = 296
+    Top = 168
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qSaidaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qSaidaID_VENDA: TIntegerField
+      FieldName = 'ID_VENDA'
+      Origin = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSaidaDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSaidaTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qSaida_Item: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Saida_Item.Id,'
+      '       Saida_Item.Id_Saida,'
+      '       Saida_Item.Id_Item,'
+      '       Item.nome as nome_item,'
+      '       Saida_item.id_especie,'
+      '       especie.nome as nome_especie,'
+      '       Saida_Item.Id_Lote_Semente,'
+      '       lote_semente.nome as lote_semente,'
+      '       Saida_Item.Id_Lote_Muda,'
+      '       lote_muda.nome as lote_muda, '
+      '       Saida_Item.Qtde'
+      'from Saida_Item'
+      'INNER join item on (item.id = saida_item.id_item)'
+      'left join especie on (especie.id = saida_item.id_especie)'
+      
+        'left join lote_semente on (lote_semente.id = saida_item.id_lote_' +
+        'semente)'
+      'left join lote_muda on (lote_muda.id = saida_item.id_lote_muda)'
+      'where Saida_Item.Id_Saida = :Id_Saida  ')
+    Left = 296
+    Top = 232
+    ParamData = <
+      item
+        Name = 'ID_SAIDA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qSaida_ItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qSaida_ItemID_SAIDA: TIntegerField
+      FieldName = 'ID_SAIDA'
+      Origin = 'ID_SAIDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSaida_ItemID_ITEM: TIntegerField
+      FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qSaida_ItemID_LOTE_SEMENTE: TIntegerField
+      FieldName = 'ID_LOTE_SEMENTE'
+      Origin = 'ID_LOTE_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSaida_ItemID_LOTE_MUDA: TIntegerField
+      FieldName = 'ID_LOTE_MUDA'
+      Origin = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSaida_ItemQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qSaida_ItemNOME_ITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ITEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaida_ItemLOTE_SEMENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'LOTE_SEMENTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 30
+    end
+    object qSaida_ItemLOTE_MUDA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'LOTE_MUDA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaida_ItemID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSaida_ItemNOME_ESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

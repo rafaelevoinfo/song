@@ -522,6 +522,55 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkProjeto_Organizcao
     end
+    object repIcbTipoSaida: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.Items = <
+        item
+          Description = 'Venda'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Consumo'
+          Value = 1
+        end
+        item
+          Description = 'Perda'
+          Value = 2
+        end
+        item
+          Description = 'Outro'
+          Value = 3
+        end>
+    end
+    object repLcbLoteSemente: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end
+        item
+          FieldName = 'QTDE_ARMAZENADA'
+        end>
+      Properties.ListSource = dslkLote_Semente
+    end
+    object repLcbLoteMuda: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end
+        item
+          FieldName = 'QTDE_MUDA_ESTOQUE'
+        end>
+      Properties.ListSource = dslkLote_Muda
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1304,5 +1353,66 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkProjeto_Organizacao
     Left = 928
     Top = 648
+  end
+  object cdslkLote_Semente: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkLote_Semente'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 392
+    Top = 698
+    object cdslkLote_SementeID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkLote_SementeNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 30
+    end
+    object cdslkLote_SementeQTDE_ARMAZENADA: TBCDField
+      DisplayLabel = 'Qtde. Em Estoque'
+      FieldName = 'QTDE_ARMAZENADA'
+      ProviderFlags = []
+      DisplayFormat = ',0.00 Kg'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object cdslkLote_Muda: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkLote_Muda'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 520
+    Top = 706
+    object cdslkLote_MudaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdslkLote_MudaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdslkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField
+      DisplayLabel = 'Qtde. Em Estoque'
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      DisplayFormat = '0 Und'
+    end
+  end
+  object dslkLote_Semente: TDataSource
+    DataSet = cdslkLote_Semente
+    Left = 488
+    Top = 360
+  end
+  object dslkLote_Muda: TDataSource
+    DataSet = cdslkLote_Muda
+    Left = 496
+    Top = 368
   end
 end

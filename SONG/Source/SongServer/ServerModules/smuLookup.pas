@@ -107,6 +107,16 @@ type
     qlkProjeto_OrganizacaoNOME: TStringField;
     qlkFundoID_ORGANIZACAO: TIntegerField;
     qlkProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
+    qlkLote_Semente: TRFQuery;
+    qlkLote_SementeID: TIntegerField;
+    qlkLote_SementeNOME: TStringField;
+    qlkLote_SementeQTDE_ARMAZENADA: TBCDField;
+    qlkEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
+    qlkEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
+    qlkLote_Muda: TRFQuery;
+    qlkLote_MudaID: TIntegerField;
+    qlkLote_MudaNOME: TStringField;
+    qlkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
   private
     { Private declarations }
   protected
@@ -195,29 +205,60 @@ begin
   else if ipTabela = 'RUBRICA_ATIVIDADE' then
     begin
       if ipParam.Name = TParametros.coAtividade then
-        Result := Result + ' ((atividade_projeto.id_atividade ='+vaValor+') or (atividade.id = '+vaValor+'))';
+        Result := Result + ' ((atividade_projeto.id_atividade =' + vaValor + ') or (atividade.id = ' + vaValor + '))';
     end
   else if ipTabela = 'PROJETO_AREA' then
     begin
       if ipParam.Name = TParametros.coProjeto then
-         Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_AREA', 'ID_PROJETO', vaValor.ToInteger, vaOperador);
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_AREA', 'ID_PROJETO', vaValor.ToInteger, vaOperador);
     end
   else if ipTabela = 'PROJETO_AREA_ATIVIDADE' then
     begin
       if ipParam.Name = TParametros.coAtividade then
-        Result := Result + ' ((atividade_projeto.id_atividade ='+vaValor+') or (atividade.id = '+vaValor+'))';
+        Result := Result + ' ((atividade_projeto.id_atividade =' + vaValor + ') or (atividade.id = ' + vaValor + '))';
     end
   else if ipTabela = 'COMPRA' then
     begin
       if ipParam.Name = TParametros.coStatusEntrega then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS_ENTREGA', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1),vaOperador);
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador);
     end
   else if ipTabela = 'PROJETO_ORGANIZACAO' then
     begin
       if ipParam.Name = TParametros.coProjeto then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PROJETO', vaValor.ToInteger, vaOperador)
+    end
+  else if (ipTabela = 'LOTE_SEMENTE') then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coPossuiEstoque then
+        begin
+          if StrToBool(vaValor) then
+            Result := Result+ ' (LOTE_SEMENTE.QTDE_ARMAZENADA > 0) '+vaOperador
+          else
+            Result := Result+ ' (LOTE_SEMENTE.QTDE_ARMAZENADA <= 0) '+vaOperador;
+        end
+      else if ipParam.Name = TParametros.coStatus then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador);
+    end
+  else if (ipTabela = 'LOTE_MUDA') then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coPossuiEstoque then
+        begin
+          if StrToBool(vaValor) then
+            Result := Result+ ' (coalesce((select first 1 Classificacao.Qtde '+
+            '                               from Classificacao '+
+            '                              where Classificacao.Id_Lote_Muda = Lote_Muda.Id), Lote_Muda.Qtde_Inicial) > 0) '+vaOperador
+          else
+            Result := Result+ ' (coalesce((select first 1 Classificacao.Qtde '+
+            '                               from Classificacao '+
+            '                              where Classificacao.Id_Lote_Muda = Lote_Muda.Id), Lote_Muda.Qtde_Inicial) <= 0) '+vaOperador;
+        end
     end
 end;
 

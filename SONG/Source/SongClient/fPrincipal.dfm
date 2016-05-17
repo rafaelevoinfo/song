@@ -47,6 +47,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Itens1: TMenuItem
         Action = Ac_Item
       end
+      object Sadas1: TMenuItem
+        Action = Ac_Saida
+      end
       object SolicitaodeCompra1: TMenuItem
         Action = Ac_Solicitacao_Compra
       end
@@ -249,6 +252,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Relat'#243'rios'
       OnExecute = Ac_Relatorio_FinanceiroExecute
+    end
+    object Ac_Saida: TAction
+      Category = 'Estoque'
+      Caption = 'Sa'#237'das'
+      OnExecute = Ac_SaidaExecute
     end
   end
   object dxSkinController1: TdxSkinController

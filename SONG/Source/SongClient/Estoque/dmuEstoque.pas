@@ -69,6 +69,24 @@ type
     cdsEntradaID_PESSOA: TIntegerField;
     cdsEntradaPESSOA: TStringField;
     cdsEntrada_ItemID_COMPRA_ITEM: TIntegerField;
+    cdsSaida: TRFClientDataSet;
+    cdsSaidaID: TIntegerField;
+    cdsSaidaID_VENDA: TIntegerField;
+    cdsSaidaDATA: TSQLTimeStampField;
+    cdsSaidaTIPO: TSmallintField;
+    cdsSaida_Item: TRFClientDataSet;
+    cdsSaida_ItemID: TIntegerField;
+    cdsSaida_ItemID_SAIDA: TIntegerField;
+    cdsSaida_ItemID_ITEM: TIntegerField;
+    cdsSaida_ItemID_LOTE_SEMENTE: TIntegerField;
+    cdsSaida_ItemID_LOTE_MUDA: TIntegerField;
+    cdsSaida_ItemQTDE: TBCDField;
+    cdsSaida_ItemNOME_ITEM: TStringField;
+    cdsSaida_ItemLOTE_SEMENTE: TStringField;
+    cdsSaida_ItemLOTE_MUDA: TStringField;
+    dsSaida: TDataSource;
+    cdsSaida_ItemID_ESPECIE: TIntegerField;
+    cdsSaida_ItemNOME_ESPECIE: TStringField;
   private
     { Private declarations }
   public

@@ -205,10 +205,6 @@ Visible=False
 [dmLookup.dslkPessoa]
 Coordinates=508,1013,126,33
 
-[cbPesquisaTipoItem]
-Coordinates=879,549,114,33
-Visible=False
-
 [dmLookup.dslkFin_For_Cli]
 Coordinates=1274,166,147,33
 
@@ -286,7 +282,7 @@ Coordinates=994,738,111,33
 Coordinates=268,417,116,33
 
 []
-Coordinates=361,427,40,33
+Coordinates=879,549,114,33
 LayerNames=
 ExplicitSubNodes=
 Visible=False

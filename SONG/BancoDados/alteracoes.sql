@@ -3530,3 +3530,56 @@ inner join Projeto_Organizacao on (Projeto_Organizacao.Id = projeto_financiador_
 inner join Organizacao on (Organizacao.Id = Projeto_Organizacao.Id_Organizacao)
 ;
 
+
+
+update RDB$RELATION_FIELDS set
+RDB$NULL_FLAG = 1
+where (RDB$FIELD_NAME = 'ID_ITEM') and
+(RDB$RELATION_NAME = 'SAIDA_ITEM')
+;
+
+
+
+ALTER TABLE SAIDA
+    ADD TIPO SMALLINT NOT NULL;
+
+COMMENT ON COLUMN SAIDA.TIPO IS
+'0 - Venda
+1 - Consumo
+2 - Perda
+3 - Outro';
+
+
+
+ALTER TABLE SAIDA_ITEM
+    ADD ID_ESPECIE INTEGER;
+
+alter table SAIDA_ITEM
+alter ID position 1;
+
+alter table SAIDA_ITEM
+alter ID_SAIDA position 2;
+
+alter table SAIDA_ITEM
+alter ID_ITEM position 3;
+
+alter table SAIDA_ITEM
+alter ID_ESPECIE position 4;
+
+alter table SAIDA_ITEM
+alter ID_LOTE_SEMENTE position 5;
+
+alter table SAIDA_ITEM
+alter ID_LOTE_MUDA position 6;
+
+alter table SAIDA_ITEM
+alter QTDE position 7;
+
+
+
+ALTER TABLE SAIDA_ITEM
+ADD CONSTRAINT FK_SAIDA_ITEM_5
+FOREIGN KEY (ID_ESPECIE)
+REFERENCES ESPECIE(ID)
+ON UPDATE CASCADE;
+

@@ -178,6 +178,19 @@ type
     repLcbProjetoOrganizacao: TcxEditRepositoryLookupComboBoxItem;
     cdslkFundoID_ORGANIZACAO: TIntegerField;
     cdslkProjeto_OrganizacaoID_ORGANIZACAO: TIntegerField;
+    repIcbTipoSaida: TcxEditRepositoryImageComboBoxItem;
+    cdslkLote_Semente: TRFClientDataSet;
+    cdslkLote_Muda: TRFClientDataSet;
+    cdslkLote_SementeID: TIntegerField;
+    cdslkLote_SementeNOME: TStringField;
+    cdslkLote_SementeQTDE_ARMAZENADA: TBCDField;
+    cdslkLote_MudaID: TIntegerField;
+    cdslkLote_MudaNOME: TStringField;
+    cdslkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
+    repLcbLoteSemente: TcxEditRepositoryLookupComboBoxItem;
+    dslkLote_Semente: TDataSource;
+    dslkLote_Muda: TDataSource;
+    repLcbLoteMuda: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

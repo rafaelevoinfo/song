@@ -101,6 +101,8 @@ type
 
   TTipoMovimentacao = (tmDespesa, tmReceita);
 
+  TTipoSaida = (tsVenda, tsConsumo, tsPerda,tsOutro);
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;

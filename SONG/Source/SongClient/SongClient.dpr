@@ -49,7 +49,8 @@ uses
   fSolicitacaoCompra in 'Estoque\fSolicitacaoCompra.pas' {frmSolicitacaoCompra},
   fRelatorioBasico in 'Relatorios\fRelatorioBasico.pas' {frmRelatorioBasico},
   fRelatorioFinanceiro in 'Relatorios\fRelatorioFinanceiro.pas' {frmRelatorioFinanceiro},
-  dmuRelatorio in 'Relatorios\dmuRelatorio.pas' {dmRelatorio: TDataModule};
+  dmuRelatorio in 'Relatorios\dmuRelatorio.pas' {dmRelatorio: TDataModule},
+  fSaida in 'Estoque\fSaida.pas' {frmSaida};
 
 {$R Localization.RES}
   {$R *.res}

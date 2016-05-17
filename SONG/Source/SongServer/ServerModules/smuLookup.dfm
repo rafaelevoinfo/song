@@ -324,7 +324,9 @@ inherited smLookup: TsmLookup
       '       Especie.nome,'
       '       Especie.Valor_Muda,'
       '       Especie.Valor_Kg_Semente,'
-      '       Especie.Tempo_Germinacao'
+      '       Especie.Tempo_Germinacao,'
+      '       Especie.Qtde_Semente_Estoque,'
+      '       Especie.Qtde_Muda_Estoque'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -365,6 +367,18 @@ inherited smLookup: TsmLookup
     object qlkEspecieTEMPO_GERMINACAO: TIntegerField
       FieldName = 'TEMPO_GERMINACAO'
       Origin = 'TEMPO_GERMINACAO'
+      ProviderFlags = []
+    end
+    object qlkEspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Origin = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qlkEspecieQTDE_MUDA_ESTOQUE: TIntegerField
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      Origin = 'QTDE_MUDA_ESTOQUE'
       ProviderFlags = []
     end
   end
@@ -829,6 +843,81 @@ inherited smLookup: TsmLookup
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+  end
+  object qlkLote_Semente: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Semente.Id,'
+      '       Lote_Semente.Nome,'
+      '       Lote_Semente.Qtde_Armazenada'
+      'from Lote_Semente'
+      '&where')
+    Left = 48
+    Top = 312
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkLote_SementeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qlkLote_SementeNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 30
+    end
+    object qlkLote_SementeQTDE_ARMAZENADA: TBCDField
+      FieldName = 'QTDE_ARMAZENADA'
+      Origin = 'QTDE_ARMAZENADA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+  end
+  object qlkLote_Muda: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Muda.Id,'
+      '       Lote_Muda.Nome,'
+      '       coalesce((select first 1 Classificacao.Qtde'
+      '                 from Classificacao'
+      
+        '                 where Classificacao.Id_Lote_Muda = Lote_Muda.Id' +
+        '), Lote_Muda.Qtde_Inicial) as Qtde_Muda_Estoque'
+      'from Lote_Muda  '
+      '&WHERE')
+    Left = 136
+    Top = 312
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkLote_MudaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkLote_MudaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qlkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      Origin = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = []
     end
   end
 end

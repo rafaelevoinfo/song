@@ -398,4 +398,118 @@ inherited dmEstoque: TdmEstoque
     Left = 128
     Top = 88
   end
+  object cdsSaida: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqSaida'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 352
+    Top = 264
+    object cdsSaidaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsSaidaID_VENDA: TIntegerField
+      DisplayLabel = 'ID da Venda'
+      FieldName = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsSaidaDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSaidaTIPO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Tipo de Sa'#237'da'
+      FieldName = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object cdsSaida_Item: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_SAIDA'
+    MasterFields = 'ID'
+    MasterSource = dsSaida
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_SAIDA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqSaida_Item'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 440
+    Top = 288
+    object cdsSaida_ItemID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsSaida_ItemID_SAIDA: TIntegerField
+      DisplayLabel = 'Id da Sa'#237'da'
+      FieldName = 'ID_SAIDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSaida_ItemID_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item'
+      FieldName = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsSaida_ItemID_LOTE_SEMENTE: TIntegerField
+      DisplayLabel = 'Id do Lote de Semente'
+      FieldName = 'ID_LOTE_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsSaida_ItemID_LOTE_MUDA: TIntegerField
+      DisplayLabel = 'Id do Lote de Muda'
+      FieldName = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsSaida_ItemQTDE: TBCDField
+      DisplayLabel = 'Qtde'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaida_ItemNOME_ITEM: TStringField
+      DisplayLabel = 'Nome do Item'
+      FieldName = 'NOME_ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaida_ItemLOTE_SEMENTE: TStringField
+      DisplayLabel = 'Nome do Lote de Semente'
+      FieldName = 'LOTE_SEMENTE'
+      ProviderFlags = []
+      Size = 30
+    end
+    object cdsSaida_ItemLOTE_MUDA: TStringField
+      DisplayLabel = 'Nome do Lote de Muda'
+      FieldName = 'LOTE_MUDA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaida_ItemID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+    end
+    object cdsSaida_ItemNOME_ESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'NOME_ESPECIE'
+      Size = 100
+    end
+  end
+  object dsSaida: TDataSource
+    DataSet = cdsSaida
+    Left = 344
+    Top = 328
+  end
 end

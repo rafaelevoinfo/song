@@ -35,7 +35,6 @@ type
   TfrmEntrada = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
-    cbPesquisaTipoItem: TcxImageComboBox;
     cbPesquisaItem: TcxLookupComboBox;
     EditDataEntrada: TcxDBDateEdit;
     Label4: TLabel;
@@ -69,8 +68,7 @@ type
     { Public declarations }
   public const
     coPesquisaItem = 5;
-    coPesquisaTipoItem = 6;
-    coPesquisaCompra = 7;
+    coPesquisaCompra = 6;
 
   end;
 
@@ -113,18 +111,15 @@ end;
 function TfrmEntrada.fprConfigurarControlesPesquisa: TWinControl;
 begin
   Result := inherited;
-  cbPesquisaTipoItem.Visible := cbPesquisarPor.EditValue = coPesquisaTipoItem;
   cbPesquisaItem.Visible := cbPesquisarPor.EditValue = coPesquisaItem;
   if cbPesquisarPor.EditValue = coPesquisaCompra then
     begin
       EditPesquisa.Properties.EditMask := '\d+';
     end;
 
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaTipoItem.Visible or cbPesquisaItem.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and (not cbPesquisaItem.Visible);
 
-  if cbPesquisaTipoItem.Visible then
-    Result := cbPesquisaTipoItem
-  else if cbPesquisaItem.Visible then
+  if cbPesquisaItem.Visible then
     Result := cbPesquisaItem;
 end;
 
@@ -189,9 +184,7 @@ end;
 procedure TfrmEntrada.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
-  if cbPesquisarPor.EditValue = coPesquisaTipoItem then
-    ipCds.ppuAddParametro(TParametros.coTipoItem, cbPesquisaTipoItem.EditValue)
-  else if cbPesquisarPor.EditValue = coPesquisaItem then
+  if cbPesquisarPor.EditValue = coPesquisaItem then
     ipCds.ppuAddParametro(TParametros.coItem, cbPesquisaItem.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCompra then
     ipCds.ppuAddParametro(TParametros.coCompra, EditPesquisa.Text)
@@ -200,9 +193,6 @@ end;
 procedure TfrmEntrada.pprValidarPesquisa;
 begin
   inherited;
-  if (cbPesquisarPor.EditValue = coPesquisaTipoItem) and (VarIsNull(cbPesquisaTipoItem.EditValue)) then
-    raise Exception.Create('Informe o tipo de item a ser pesquisado.');
-
   if (cbPesquisarPor.EditValue = coPesquisaItem) and (VarIsNull(cbPesquisaItem.EditValue)) then
     raise Exception.Create('Informe o item a ser pesquisado.');
 end;

@@ -41,8 +41,10 @@ type
     coTipoItem = 'TIPO_ITEM';
     coItem = 'ITEM';
     coCompra = 'COMPRA';
+    coVenda = 'VENDA';
     coCodigoRastreio = 'CODIGO_RASTREIO';
     coFundo = 'FUNDO';
+    coPossuiEstoque = 'POSSUI_ESTOQUE';
 
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 
