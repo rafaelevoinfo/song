@@ -116,7 +116,10 @@ type
     qlkLote_Muda: TRFQuery;
     qlkLote_MudaID: TIntegerField;
     qlkLote_MudaNOME: TStringField;
-    qlkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
+    qlkLote_MudaSALDO: TIntegerField;
+    qlkPessoaID: TIntegerField;
+    qlkPessoaNOME: TStringField;
+    qlkItemSALDO: TBCDField;
   private
     { Private declarations }
   protected
@@ -251,13 +254,9 @@ begin
       else if ipParam.Name = TParametros.coPossuiEstoque then
         begin
           if StrToBool(vaValor) then
-            Result := Result+ ' (coalesce((select first 1 Classificacao.Qtde '+
-            '                               from Classificacao '+
-            '                              where Classificacao.Id_Lote_Muda = Lote_Muda.Id), Lote_Muda.Qtde_Inicial) > 0) '+vaOperador
+            Result := Result+ ' LOTE_MUDA.SALDO > 0 '+vaOperador
           else
-            Result := Result+ ' (coalesce((select first 1 Classificacao.Qtde '+
-            '                               from Classificacao '+
-            '                              where Classificacao.Id_Lote_Muda = Lote_Muda.Id), Lote_Muda.Qtde_Inicial) <= 0) '+vaOperador;
+            Result := Result+ ' LOTE_MUDA.SALDO <= 0) '+vaOperador;
         end
     end
 end;

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 14/05/2016 01:04:59
+// 17/05/2016 23:55:33
 //
 
 unit uFuncoes;
@@ -129,8 +129,8 @@ type
     procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
     procedure ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
     procedure ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
-    procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeAnterior: Double; ipQtdeNova: Double);
-    procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipQtdeAnterior: Integer; ipQtdeNova: Integer);
+    procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
+    procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeSubtrair: Integer; ipQtdeSomar: Integer);
     function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
     function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
@@ -193,6 +193,7 @@ type
     FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
     FfpuBuscarItensEntradaCommand: TDBXCommand;
     FfpuBuscarItemEntradaCommand: TDBXCommand;
+    FppuAtualizarSaldoItemCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -205,6 +206,7 @@ type
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
     function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
+    procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -843,7 +845,7 @@ begin
   FppuReiniciarEtapaGerminacaoLoteCommand.ExecuteUpdate;
 end;
 
-procedure TsmFuncoesViveiroClient.ppuAtualizarQtdeSementeEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeAnterior: Double; ipQtdeNova: Double);
+procedure TsmFuncoesViveiroClient.ppuAtualizarQtdeSementeEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
 begin
   if FppuAtualizarQtdeSementeEstoqueCommand = nil then
   begin
@@ -854,12 +856,12 @@ begin
   end;
   FppuAtualizarQtdeSementeEstoqueCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
   FppuAtualizarQtdeSementeEstoqueCommand.Parameters[1].Value.SetInt32(ipIdLote);
-  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[2].Value.SetDouble(ipQtdeAnterior);
-  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[3].Value.SetDouble(ipQtdeNova);
+  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[2].Value.SetDouble(ipQtdeSubtrair);
+  FppuAtualizarQtdeSementeEstoqueCommand.Parameters[3].Value.SetDouble(ipQtdeSomar);
   FppuAtualizarQtdeSementeEstoqueCommand.ExecuteUpdate;
 end;
 
-procedure TsmFuncoesViveiroClient.ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipQtdeAnterior: Integer; ipQtdeNova: Integer);
+procedure TsmFuncoesViveiroClient.ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipIdLote: Integer; ipQtdeSubtrair: Integer; ipQtdeSomar: Integer);
 begin
   if FppuAtualizarQtdeMudaEstoqueCommand = nil then
   begin
@@ -869,8 +871,9 @@ begin
     FppuAtualizarQtdeMudaEstoqueCommand.Prepare;
   end;
   FppuAtualizarQtdeMudaEstoqueCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
-  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[1].Value.SetInt32(ipQtdeAnterior);
-  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[2].Value.SetInt32(ipQtdeNova);
+  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[1].Value.SetInt32(ipIdLote);
+  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[2].Value.SetInt32(ipQtdeSubtrair);
+  FppuAtualizarQtdeMudaEstoqueCommand.Parameters[3].Value.SetInt32(ipQtdeSomar);
   FppuAtualizarQtdeMudaEstoqueCommand.ExecuteUpdate;
 end;
 
@@ -1366,6 +1369,21 @@ begin
   Result := FfpuBuscarItemEntradaCommand.Parameters[1].Value.GetInt32;
 end;
 
+procedure TsmFuncoesEstoqueClient.ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
+begin
+  if FppuAtualizarSaldoItemCommand = nil then
+  begin
+    FppuAtualizarSaldoItemCommand := FDBXConnection.CreateCommand;
+    FppuAtualizarSaldoItemCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAtualizarSaldoItemCommand.Text := 'TsmFuncoesEstoque.ppuAtualizarSaldoItem';
+    FppuAtualizarSaldoItemCommand.Prepare;
+  end;
+  FppuAtualizarSaldoItemCommand.Parameters[0].Value.SetInt32(ipIdItem);
+  FppuAtualizarSaldoItemCommand.Parameters[1].Value.SetDouble(ipQtdeSubtrair);
+  FppuAtualizarSaldoItemCommand.Parameters[2].Value.SetDouble(ipQtdeSomar);
+  FppuAtualizarSaldoItemCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1438,6 +1456,7 @@ begin
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
   FfpuBuscarItensEntradaCommand.DisposeOf;
   FfpuBuscarItemEntradaCommand.DisposeOf;
+  FppuAtualizarSaldoItemCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

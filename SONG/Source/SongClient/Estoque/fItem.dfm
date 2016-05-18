@@ -1,8 +1,7 @@
 inherited frmItem: TfrmItem
   Caption = 'Itens'
   ExplicitTop = -140
-  ExplicitWidth = 320
-  ExplicitHeight = 240
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -35,19 +34,25 @@ inherited frmItem: TfrmItem
               DataBinding.FieldName = 'ID'
               Options.Editing = False
             end
-            object viewRegistrosNOME: TcxGridDBColumn [1]
-              DataBinding.FieldName = 'NOME'
-              Options.Editing = False
-              Width = 548
-            end
-            object viewRegistrosTIPO: TcxGridDBColumn [2]
+            object viewRegistrosTIPO: TcxGridDBColumn [1]
               DataBinding.FieldName = 'TIPO'
               RepositoryItem = dmLookup.repIcbTipoItem
               Options.Editing = False
               Width = 117
             end
-            object viewRegistrosUNIDADE: TcxGridDBColumn [3]
+            object viewRegistrosNOME: TcxGridDBColumn [2]
+              DataBinding.FieldName = 'NOME'
+              Options.Editing = False
+              Width = 434
+            end
+            object viewRegistrosCALC_SALDO: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'CALC_SALDO'
+              Options.Editing = False
+              Width = 132
+            end
+            object viewRegistrosUNIDADE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'UNIDADE'
+              Visible = False
               Options.Editing = False
             end
           end

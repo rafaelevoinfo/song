@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuEstoque, uTypes,
   System.DateUtils, System.TypInfo, uControleAcesso, dmuLookup, cxDBEdit,
   cxCalc, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uClientDataSet,
-  uExceptions, dmuPrincipal;
+  uExceptions, dmuPrincipal, uUtils, System.Generics.Collections;
 
 type
   TfrmSaida = class(TfrmBasicoCrudMasterDetail)
@@ -55,6 +55,8 @@ type
     pnEspecie: TPanel;
     cbEspecie: TcxDBLookupComboBox;
     lb2: TLabel;
+    viewRegistrosDetailID_ESPECIE: TcxGridDBColumn;
+    viewRegistrosDetailNOME_ESPECIE: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
@@ -67,7 +69,9 @@ type
     procedure pprValidarPesquisa; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
-    procedure pprBeforeSalvar; override;
+    procedure pprBeforeSalvarDetail; override;
+    procedure pprExecutarExcluirDetail(ipId: Integer); override;
+    procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
 
     function fprGetPermissao: string; override;
 
@@ -94,45 +98,161 @@ implementation
 {$R *.dfm}
 
 
+procedure TfrmSaida.pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela);
+var
+  vaIdsEspeciesSementes, vaIdsItem: TDictionary<Integer, Double>;
+  vaIdsEspeciesMudas:TDictionary<Integer, Integer>;
+  vaId: Integer;
+begin
+  vaIdsEspeciesSementes := TDictionary<Integer, Double>.Create;
+  vaIdsEspeciesMudas := TDictionary<Integer, Integer>.Create;
+  vaIdsItem := TDictionary<Integer, Double>.Create;
+  try
+    TUtils.ppuPercorrerCds(dmEstoque.cdsSaida_Item,
+      procedure
+      begin
+        if (dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0) then
+          begin
+            if not vaIdsEspeciesSementes.ContainsKey(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) then
+              vaIdsEspeciesSementes.Add(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger, 0);
+
+            vaIdsEspeciesSementes.Items[dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] := vaIdsEspeciesSementes.Items
+              [dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] + dmEstoque.cdsSaida_ItemQTDE.AsFloat;
+          end
+        else if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
+          begin
+            if not vaIdsEspeciesMudas.ContainsKey(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) then
+              vaIdsEspeciesMudas.Add(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger, 0);
+
+            vaIdsEspeciesMudas.Items[dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] := vaIdsEspeciesMudas.Items
+              [dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] + dmEstoque.cdsSaida_ItemQTDE.AsInteger;
+          end
+        else
+          begin
+            if not vaIdsItem.ContainsKey(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger) then
+              vaIdsItem.Add(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, 0);
+
+            vaIdsItem.Items[dmEstoque.cdsSaida_ItemID_ITEM.AsInteger] := vaIdsItem.Items
+              [dmEstoque.cdsSaida_ItemID_ITEM.AsInteger] + dmEstoque.cdsSaida_ItemQTDE.AsFloat;
+          end;
+      end);
+
+    inherited;
+
+    for vaId in vaIdsEspeciesSementes.Keys do
+      begin
+        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaId, 0, 0, vaIdsEspeciesSementes.Items[vaId]);
+      end;
+    for vaId in vaIdsEspeciesMudas.Keys do
+      begin
+        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaId, 0, 0, vaIdsEspeciesMudas.Items[vaId]);
+      end;
+    for vaId in vaIdsItem.Keys do
+      begin
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaId, 0, vaIdsItem.Items[vaId]);
+      end;
+  finally
+    vaIdsEspeciesSementes.Free;
+    vaIdsEspeciesMudas.Free;
+    vaIdsItem.Free;
+  end;
+end;
+
+procedure TfrmSaida.pprExecutarExcluirDetail(ipId: Integer);
+var
+  vaIdItem, vaIdEspecie, vaIdLoteSemente, vaIdLoteMuda: Integer;
+  vaQtde: Double;
+begin
+  vaIdItem := dmEstoque.cdsSaida_ItemID_ITEM.AsInteger;
+  vaIdEspecie := dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger;
+  vaIdLoteSemente := dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger;
+  vaIdLoteMuda := dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger;
+  vaQtde := dmEstoque.cdsSaida_ItemQTDE.AsFloat;
+  inherited;
+  if vaIdEspecie <> 0 then
+    begin
+      if vaIdLoteSemente <> 0 then
+        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecie, 0, 0, vaQtde)
+      else if vaIdLoteMuda <> 0 then
+        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecie, 0, 0, Trunc(vaQtde))
+    end
+  else
+    dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItem, 0, vaQtde);
+
+end;
+
 procedure TfrmSaida.pprExecutarSalvarDetail;
 var
   vaQtdeAnterior: Double;
-  vaIdEspecieAnterior, vaIdLoteSementeAnterior, vaIdLoteMudaAnterior: Integer;
+  vaIdItemAnterior, vaIdEspecieAnterior, vaIdLoteSementeAnterior, vaIdLoteMudaAnterior: Integer;
+  vaState: TDataSetState;
 begin
-  if pcPrincipal.ActivePage = tabCadastroDetail then
+
+  vaState := dmEstoque.cdsSaida_Item.State;
+  vaIdItemAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_ITEM.OldValue, '0'), 0);
+  vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmEstoque.cdsSaida_ItemQTDE.OldValue, '0'), 0);
+  vaIdEspecieAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_ESPECIE.OldValue, '0'), 0);
+  vaIdLoteSementeAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.OldValue, '0'), 0);
+  vaIdLoteMudaAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_LOTE_MUDA.OldValue, '0'), 0);
+  inherited;
+
+  if vaState = dsInsert then
     begin
-      vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmEstoque.cdsSaida_ItemQTDE.OldValue, '0'), 0);
-      vaIdEspecieAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_ESPECIE.OldValue, '0'), 0);
-      vaIdLoteSementeAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.OldValue, '0'), 0);
-      vaIdLoteMudaAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_LOTE_MUDA.OldValue, '0'), 0);
-      inherited;
-
-      if vaIdEspecieAnterior = 0 then
+      if dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0 then
         begin
-          if dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger <> 0 then
-            begin
-              if dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0 then
-                begin
-                  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-                    dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger,
-                    vaQtdeAnterior, dmEstoque.cdsSaida_ItemQTDE.AsFloat);
-                end
-              else if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
-                begin
-                //TODO:Repensar isso
-//                   dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-//                    vaQtdeAnterior, dmEstoque.cdsSaida_ItemQTDE.AsFloat);
-                end;
-            end;
-
-        end;
-
-      dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-        dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger,
-        vaQtdeAnterior, dmEstoque.cdsSaida_ItemQTDE.AsFloat);
+          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
+            dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
+        end
+      else if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
+        begin
+          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
+            dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsInteger, 0);
+        end
+      else
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
     end
-  else
-    inherited;
+  else if vaState = dsEdit then
+    begin
+      if vaIdLoteSementeAnterior <> 0 then
+        begin
+          if (vaIdEspecieAnterior <> dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) or
+            (vaIdLoteSementeAnterior <> dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger) then
+            begin
+              dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecieAnterior, vaIdLoteSementeAnterior, 0, vaQtdeAnterior);
+              if dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0 then
+                dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
+                  dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
+            end
+          else
+            dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
+              dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, vaQtdeAnterior);
+        end
+      else if vaIdLoteMudaAnterior <> 0 then
+        begin
+          if (vaIdEspecieAnterior <> dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) or
+            (vaIdLoteMudaAnterior <> dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger) then
+            begin
+              dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecieAnterior, vaIdLoteMudaAnterior, 0, Trunc(vaQtdeAnterior));
+              if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
+                dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
+                  dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsInteger, 0);
+            end
+          else
+            dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
+              dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsInteger, Trunc(vaQtdeAnterior));
+        end
+      else
+        begin
+          if vaIdItemAnterior <> dmEstoque.cdsSaida_ItemID_ITEM.AsInteger then
+            begin
+              dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItemAnterior, 0, vaQtdeAnterior);
+              dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
+            end
+          else
+            dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat,
+              vaQtdeAnterior);
+        end;
+    end;
 
 end;
 
@@ -182,7 +302,7 @@ begin
   dmEstoque.cdsSaidaTIPO.AsInteger := Ord(tsVenda);
 end;
 
-procedure TfrmSaida.pprBeforeSalvar;
+procedure TfrmSaida.pprBeforeSalvarDetail;
 begin
   inherited;
   if not pnEspecieLotes.Visible then
@@ -230,11 +350,20 @@ begin
             raise TControlException.Create('Informe de qual lote de mudas será feito a saída.', cbLoteMuda);
 
           dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, cbLoteMuda.EditValue, []);
-          if dmEstoque.cdsSaida_ItemQTDE.AsFloat > dmLookup.cdslkLote_MudaQTDE_MUDA_ESTOQUE.AsInteger then
+          if dmEstoque.cdsSaida_ItemQTDE.AsFloat > dmLookup.cdslkLote_MudaSALDO.AsInteger then
             raise Exception.Create('O lote informado não possui saldo suficiente de mudas.');
 
         end;
+    end
+  else
+    begin
+      if dmLookup.cdslkItem.Locate(TBancoDados.coId, dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, []) then
+        begin
+          if dmEstoque.cdsSaida_ItemQTDE.AsFloat > dmLookup.cdslkItemSALDO.AsFloat then
+            raise Exception.Create('O Item informado não possui saldo suficiente.');
+        end;
     end;
+
 end;
 
 procedure TfrmSaida.pprValidarPesquisa;

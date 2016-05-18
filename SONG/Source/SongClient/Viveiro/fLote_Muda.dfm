@@ -1,5 +1,6 @@
 inherited frmLoteMuda: TfrmLoteMuda
   Caption = 'Lotes de Mudas'
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -91,79 +92,86 @@ inherited frmLoteMuda: TfrmLoteMuda
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [2]
+            object viewRegistrosID_LOTE_SEMENTE: TcxGridDBColumn [2]
+              DataBinding.FieldName = 'ID_LOTE_SEMENTE'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosID_COMPRA_ITEM: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'ID_COMPRA_ITEM'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'NOME_ESPECIE'
               Options.Editing = False
               Width = 204
             end
-            object viewRegistrosNOME: TcxGridDBColumn [3]
+            object viewRegistrosNOME: TcxGridDBColumn [5]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
               Width = 125
             end
-            object viewRegistrosDATA: TcxGridDBColumn [4]
+            object viewRegistrosDATA: TcxGridDBColumn [6]
               DataBinding.FieldName = 'DATA'
               Options.Editing = False
               Width = 90
             end
-            object viewRegistrosQTDE_INICIAL: TcxGridDBColumn [5]
+            object viewRegistrosQTDE_INICIAL: TcxGridDBColumn [7]
               DataBinding.FieldName = 'QTDE_INICIAL'
               Options.Editing = False
-              Width = 98
+              Width = 88
             end
-            object viewRegistrosQTDE_ATUAL: TcxGridDBColumn [6]
-              DataBinding.FieldName = 'QTDE_ATUAL'
+            object viewRegistrosQTDE_CLASSIFICADA: TcxGridDBColumn [8]
+              DataBinding.FieldName = 'QTDE_CLASSIFICADA'
               Options.Editing = False
-              Width = 77
+              Width = 92
             end
-            object viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn [7]
+            object viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn [9]
               DataBinding.FieldName = 'TAXA_CLASSIFICACAO'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = ',0.00 %'
               Options.Editing = False
+              Width = 83
             end
-          end
-        end
-        inherited pnDetail: TPanel
-          inherited pcDetails: TcxPageControl
-            inherited tabDetail: TcxTabSheet
-              Caption = 'Classifica'#231#227'o'
-              inherited cxGridRegistrosDetail: TcxGrid
-                inherited viewRegistrosDetail: TcxGridDBTableView
-                  object viewRegistrosDetailID: TcxGridDBColumn [0]
-                    DataBinding.FieldName = 'ID'
-                    Options.Editing = False
-                  end
-                  object viewRegistrosDetailID_PESSOA_CLASSIFICOU: TcxGridDBColumn [1]
-                    DataBinding.FieldName = 'ID_PESSOA_CLASSIFICOU'
-                    Visible = False
-                    Options.Editing = False
-                  end
-                  object viewRegistrosDetailPESSOA_CLASSIFICOU: TcxGridDBColumn [2]
-                    DataBinding.FieldName = 'PESSOA_CLASSIFICOU'
-                    Options.Editing = False
-                    Width = 167
-                  end
-                  object viewRegistrosDetailDATA: TcxGridDBColumn [3]
-                    DataBinding.FieldName = 'DATA'
-                    Options.Editing = False
-                    SortIndex = 0
-                    SortOrder = soDescending
-                    Width = 107
-                  end
-                  object viewRegistrosDetailQTDE: TcxGridDBColumn [4]
-                    DataBinding.FieldName = 'QTDE'
-                    Options.Editing = False
-                    Width = 84
-                  end
-                end
-              end
+            object viewRegistrosSALDO: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'SALDO'
+              Options.Editing = False
+              Width = 105
+            end
+            object viewRegistrosDATA_CLASSIFICACAO: TcxGridDBColumn [11]
+              DataBinding.FieldName = 'DATA_CLASSIFICACAO'
+              Visible = False
+              Options.Editing = False
+              Width = 119
+            end
+            object viewRegistrosID_PESSOA_CLASSIFICOU: TcxGridDBColumn [12]
+              DataBinding.FieldName = 'ID_PESSOA_CLASSIFICOU'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosPESSOA_CLASSIFICOU: TcxGridDBColumn [13]
+              DataBinding.FieldName = 'PESSOA_CLASSIFICOU'
+              Visible = False
+              Options.Editing = False
+            end
+            inherited ColumnAlterar: TcxGridDBColumn
+              MinWidth = 44
+              Width = 44
+            end
+            inherited ColumnExcluir: TcxGridDBColumn
+              MinWidth = 44
+              Width = 44
             end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -252,106 +260,103 @@ inherited frmLoteMuda: TfrmLoteMuda
           TabOrder = 3
           Width = 115
         end
-      end
-    end
-    inherited tabCadastroDetail: TcxTabSheet
-      inherited pnBotoesCadastroDetail: TPanel
-        TabOrder = 0
-      end
-      inherited pnEditsCadastroDetail: TPanel
-        TabOrder = 1
-        object Label8: TLabel
-          Left = 6
-          Top = 8
-          Width = 131
-          Height = 13
-          Caption = 'Pessoa que Classificou (F2)'
-          FocusControl = cbPessoaClassificou
-        end
-        object Label9: TLabel
-          Left = 334
-          Top = 8
-          Width = 86
-          Height = 13
-          Caption = 'Quantidade (Und)'
-          FocusControl = EditQtdeClassificada
-        end
-        object Label10: TLabel
-          Left = 207
-          Top = 7
-          Width = 102
-          Height = 13
-          Caption = 'Data da Classifica'#231#227'o'
-          FocusControl = EditDataClassificacao
-        end
-        object Label11: TLabel
-          Left = 6
-          Top = 50
-          Width = 58
-          Height = 13
-          Caption = 'Observa'#231#227'o'
-          FocusControl = EditObservacaoClassificacao
-        end
-        object cbPessoaClassificou: TcxDBLookupComboBox
-          Left = 4
-          Top = 23
-          RepositoryItem = dmLookup.repLcbPessoa
-          DataBinding.DataField = 'ID_PESSOA_CLASSIFICOU'
-          DataBinding.DataSource = dsDetail
-          Properties.ListColumns = <>
-          TabOrder = 0
-          OnKeyDown = cbPessoaClassificouKeyDown
-          Width = 173
-        end
-        object btnPesquisar_Pessoa_Semeadura: TButton
-          Left = 179
-          Top = 23
-          Width = 22
-          Height = 21
-          Action = Ac_Pesquisar_Pessoa_Classificou
-          Images = dmPrincipal.imgIcons_16
-          TabOrder = 1
-          TabStop = False
-        end
-        object EditDataClassificacao: TcxDBDateEdit
-          Left = 207
-          Top = 23
-          DataBinding.DataField = 'DATA'
-          DataBinding.DataSource = dsDetail
-          TabOrder = 2
-          Width = 121
-        end
-        object EditObservacaoClassificacao: TcxDBMemo
-          Left = 4
-          Top = 66
-          DataBinding.DataField = 'OBSERVACAO'
-          DataBinding.DataSource = dsDetail
-          TabOrder = 4
-          Height = 63
-          Width = 445
-        end
-        object EditQtdeClassificada: TcxDBSpinEdit
-          Left = 334
-          Top = 23
-          DataBinding.DataField = 'QTDE'
-          DataBinding.DataSource = dsDetail
-          TabOrder = 3
-          Width = 115
+        object cxGroupBox1: TcxGroupBox
+          Left = 7
+          Top = 135
+          Caption = 'Classifica'#231#227'o'
+          TabOrder = 5
+          Height = 146
+          Width = 659
+          object Label8: TLabel
+            Left = 5
+            Top = 16
+            Width = 131
+            Height = 13
+            Caption = 'Pessoa que Classificou (F2)'
+            FocusControl = cbPessoaClassificou
+          end
+          object Label10: TLabel
+            Left = 209
+            Top = 15
+            Width = 102
+            Height = 13
+            Caption = 'Data da Classifica'#231#227'o'
+            FocusControl = EditDataClassificacao
+          end
+          object Label9: TLabel
+            Left = 335
+            Top = 16
+            Width = 86
+            Height = 13
+            Caption = 'Quantidade (Und)'
+            FocusControl = EditQtdeClassificada
+          end
+          object Label11: TLabel
+            Left = 5
+            Top = 58
+            Width = 58
+            Height = 13
+            Caption = 'Observa'#231#227'o'
+            FocusControl = EditObservacaoClassificacao
+          end
+          object cbPessoaClassificou: TcxDBLookupComboBox
+            Left = 3
+            Top = 31
+            RepositoryItem = dmLookup.repLcbPessoa
+            DataBinding.DataField = 'ID_PESSOA_CLASSIFICOU'
+            DataBinding.DataSource = dsMaster
+            Properties.ListColumns = <>
+            TabOrder = 0
+            OnKeyDown = cbPessoaClassificouKeyDown
+            Width = 173
+          end
+          object btnPesquisar_Pessoa_Semeadura: TButton
+            Left = 178
+            Top = 31
+            Width = 22
+            Height = 21
+            Action = Ac_Pesquisar_Pessoa_Classificou
+            Images = dmPrincipal.imgIcons_16
+            TabOrder = 1
+            TabStop = False
+          end
+          object EditDataClassificacao: TcxDBDateEdit
+            Left = 206
+            Top = 31
+            DataBinding.DataField = 'DATA_CLASSIFICACAO'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 2
+            Width = 121
+          end
+          object EditQtdeClassificada: TcxDBSpinEdit
+            Left = 333
+            Top = 31
+            DataBinding.DataField = 'QTDE_CLASSIFICADA'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 3
+            Width = 115
+          end
+          object EditObservacaoClassificacao: TcxDBMemo
+            Left = 3
+            Top = 74
+            DataBinding.DataField = 'OBSERVACAO_CLASSIFICACAO'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 4
+            Height = 63
+            Width = 654
+          end
         end
       end
     end
   end
   inherited ActionList1: TActionList
     object Ac_Pesquisar_Pessoa_Classificou: TAction
-      Category = 'Detail'
+      Category = 'Master'
       ImageIndex = 0
       OnExecute = Ac_Pesquisar_Pessoa_ClassificouExecute
     end
   end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsLote_Muda
-  end
-  inherited dsDetail: TDataSource
-    DataSet = dmViveiro.cdsClassificacao
   end
 end

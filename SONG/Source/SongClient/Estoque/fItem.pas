@@ -27,6 +27,7 @@ type
     lbl1: TLabel;
     EditUnidade: TcxDBTextEdit;
     viewRegistrosUNIDADE: TcxGridDBColumn;
+    viewRegistrosCALC_SALDO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbTipoPropertiesEditValueChanged(Sender: TObject);
   private

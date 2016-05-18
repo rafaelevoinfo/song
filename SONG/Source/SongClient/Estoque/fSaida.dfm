@@ -1,18 +1,15 @@
 inherited frmSaida: TfrmSaida
-  ActiveControl = cbItem
   Caption = 'Sa'#237'da'
+  ExplicitTop = -140
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
-        ExplicitLeft = -3
-        ExplicitTop = -5
         inherited pnEditsPesquisa: TPanel
           Left = 428
           Width = 547
-          ExplicitLeft = 430
+          ExplicitLeft = 428
           ExplicitWidth = 547
           inherited Label1: TLabel
             Left = 4
@@ -103,6 +100,7 @@ inherited frmSaida: TfrmSaida
         end
         inherited pnBotoes: TPanel
           Width = 427
+          ExplicitWidth = 427
         end
       end
       inherited pnGrid: TPanel
@@ -151,33 +149,47 @@ inherited frmSaida: TfrmSaida
                     Visible = False
                     Options.Editing = False
                   end
-                  object viewRegistrosDetailID_LOTE_SEMENTE: TcxGridDBColumn [3]
+                  object viewRegistrosDetailID_ESPECIE: TcxGridDBColumn [3]
+                    DataBinding.FieldName = 'ID_ESPECIE'
+                    Visible = False
+                  end
+                  object viewRegistrosDetailNOME_ITEM: TcxGridDBColumn [4]
+                    DataBinding.FieldName = 'NOME_ITEM'
+                    Options.Editing = False
+                    Width = 179
+                  end
+                  object viewRegistrosDetailNOME_ESPECIE: TcxGridDBColumn [5]
+                    DataBinding.FieldName = 'NOME_ESPECIE'
+                    Width = 183
+                  end
+                  object viewRegistrosDetailID_LOTE_SEMENTE: TcxGridDBColumn [6]
                     DataBinding.FieldName = 'ID_LOTE_SEMENTE'
                     Visible = False
                     Options.Editing = False
                   end
-                  object viewRegistrosDetailID_LOTE_MUDA: TcxGridDBColumn [4]
+                  object viewRegistrosDetailID_LOTE_MUDA: TcxGridDBColumn [7]
                     DataBinding.FieldName = 'ID_LOTE_MUDA'
                     Visible = False
                     Options.Editing = False
                   end
-                  object viewRegistrosDetailNOME_ITEM: TcxGridDBColumn [5]
-                    DataBinding.FieldName = 'NOME_ITEM'
-                    Options.Editing = False
-                    Width = 240
-                  end
-                  object viewRegistrosDetailLOTE_SEMENTE: TcxGridDBColumn [6]
+                  object viewRegistrosDetailLOTE_SEMENTE: TcxGridDBColumn [8]
                     DataBinding.FieldName = 'LOTE_SEMENTE'
                     Options.Editing = False
+                    Width = 150
                   end
-                  object viewRegistrosDetailLOTE_MUDA: TcxGridDBColumn [7]
+                  object viewRegistrosDetailLOTE_MUDA: TcxGridDBColumn [9]
                     DataBinding.FieldName = 'LOTE_MUDA'
                     Options.Editing = False
-                    Width = 225
+                    Width = 178
                   end
-                  object viewRegistrosDetailQTDE: TcxGridDBColumn [8]
+                  object viewRegistrosDetailQTDE: TcxGridDBColumn [10]
                     DataBinding.FieldName = 'QTDE'
                     Options.Editing = False
+                    Width = 88
+                  end
+                  inherited ColumnExcluirDetail: TcxGridDBColumn
+                    MinWidth = 54
+                    Width = 54
                   end
                 end
               end
@@ -187,10 +199,6 @@ inherited frmSaida: TfrmSaida
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 6
@@ -229,10 +237,6 @@ inherited frmSaida: TfrmSaida
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label5: TLabel
           Left = 7
@@ -275,7 +279,7 @@ inherited frmSaida: TfrmSaida
           RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE'
           DataBinding.DataSource = dsDetail
-          TabOrder = 1
+          TabOrder = 2
           Width = 204
         end
         object pnEspecieLotes: TPanel
@@ -284,7 +288,7 @@ inherited frmSaida: TfrmSaida
           Width = 572
           Height = 36
           BevelOuter = bvNone
-          TabOrder = 2
+          TabOrder = 1
           object pnLoteSemente: TPanel
             Left = 185
             Top = 0
@@ -293,10 +297,7 @@ inherited frmSaida: TfrmSaida
             Align = alLeft
             AutoSize = True
             BevelOuter = bvNone
-            TabOrder = 0
-            ExplicitLeft = 136
-            ExplicitTop = 24
-            ExplicitHeight = 41
+            TabOrder = 1
             object lb1: TLabel
               AlignWithMargins = True
               Left = 3
@@ -309,9 +310,7 @@ inherited frmSaida: TfrmSaida
               Align = alTop
               Caption = 'Lote de Semente'
               FocusControl = cbLoteSemente
-              ExplicitLeft = 0
-              ExplicitTop = -1
-              ExplicitWidth = 185
+              ExplicitWidth = 81
             end
             object cbLoteSemente: TcxDBLookupComboBox
               Left = 0
@@ -323,7 +322,6 @@ inherited frmSaida: TfrmSaida
               Properties.ListColumns = <>
               Properties.ListOptions.SyncMode = True
               TabOrder = 0
-              ExplicitTop = 14
               Width = 185
             end
           end
@@ -335,10 +333,7 @@ inherited frmSaida: TfrmSaida
             Align = alLeft
             AutoSize = True
             BevelOuter = bvNone
-            TabOrder = 1
-            ExplicitLeft = 297
-            ExplicitTop = 1
-            ExplicitHeight = 90
+            TabOrder = 2
             object Label7: TLabel
               AlignWithMargins = True
               Left = 3
@@ -351,8 +346,6 @@ inherited frmSaida: TfrmSaida
               Align = alTop
               Caption = 'Lote de Muda'
               FocusControl = cbLoteMuda
-              ExplicitLeft = 120
-              ExplicitTop = 2
               ExplicitWidth = 65
             end
             object cbLoteMuda: TcxDBLookupComboBox
@@ -365,9 +358,6 @@ inherited frmSaida: TfrmSaida
               Properties.ListColumns = <>
               Properties.ListOptions.SyncMode = True
               TabOrder = 0
-              ExplicitLeft = -20
-              ExplicitTop = 18
-              ExplicitWidth = 205
               Width = 185
             end
           end
@@ -378,9 +368,7 @@ inherited frmSaida: TfrmSaida
             Height = 36
             Align = alLeft
             BevelOuter = bvNone
-            TabOrder = 2
-            ExplicitLeft = -39
-            ExplicitTop = 3
+            TabOrder = 0
             object lb2: TLabel
               AlignWithMargins = True
               Left = 3
@@ -393,8 +381,7 @@ inherited frmSaida: TfrmSaida
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
-              ExplicitTop = -1
-              ExplicitWidth = 185
+              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0
@@ -407,8 +394,6 @@ inherited frmSaida: TfrmSaida
               Properties.ListOptions.SyncMode = True
               Properties.OnEditValueChanged = cbEspeciePropertiesEditValueChanged
               TabOrder = 0
-              ExplicitLeft = -20
-              ExplicitWidth = 205
               Width = 185
             end
           end

@@ -547,19 +547,25 @@ inherited smViveiro: TsmViveiro
     SQL.Strings = (
       'select Lote_Muda.Id,'
       '       Lote_Muda.Id_Especie,'
+      '       Especie.nome as nome_especie,'
+      '       Lote_Muda.Id_Lote_Semente,'
       '       Lote_Muda.Id_Compra_Item,'
       '       Lote_Muda.Nome,'
       '       Lote_Muda.Qtde_Inicial,'
-      '       (Select first 1 classificacao.qtde'
-      '         from classificacao '
-      '        where classificacao.id_lote_muda = lote_muda.id'
-      '        order by classificacao.data desc) as qtde_atual,'
       '       Lote_Muda.Data,'
       '       Lote_Muda.Observacao,'
-      '       Lote_Muda.taxa_classificacao,'
-      '       especie.nome as nome_especie'
-      'from Lote_Muda'
+      '       Lote_Muda.Data_Classificacao,'
+      '       Lote_Muda.Qtde_Classificada,'
+      '       Lote_Muda.Id_Pessoa_Classificou,'
+      '       pessoa.nome as pessoa_classificou,'
+      '       Lote_Muda.Observacao_Classificacao,'
+      '       Lote_Muda.Taxa_Classificacao,'
+      '       Lote_Muda.Saldo'
+      'from Lote_Muda  '
       'inner join Especie on (Especie.Id = Lote_Muda.Id_Especie)'
+      
+        'left join pessoa on (pessoa.id = lote_muda.id_pessoa_classificou' +
+        ')'
       '&where')
     Left = 320
     Top = 96
@@ -580,6 +586,16 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qLote_MudaID_LOTE_SEMENTE: TIntegerField
+      FieldName = 'ID_LOTE_SEMENTE'
+      Origin = 'ID_LOTE_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qLote_MudaID_COMPRA_ITEM: TIntegerField
+      FieldName = 'ID_COMPRA_ITEM'
+      Origin = 'ID_COMPRA_ITEM'
+      ProviderFlags = [pfInUpdate]
+    end
     object qLote_MudaNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
@@ -593,19 +609,11 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qLote_MudaQTDE_ATUAL: TIntegerField
-      AutoGenerateValue = arDefault
-      DisplayLabel = 'Qtde. Atual'
-      FieldName = 'QTDE_ATUAL'
-      Origin = 'QTDE_ATUAL'
-      ProviderFlags = []
-    end
-    object qLote_MudaNOME_ESPECIE: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'NOME_ESPECIE'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 100
+    object qLote_MudaDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
     object qLote_MudaOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
@@ -613,11 +621,39 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
-    object qLote_MudaDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
+    object qLote_MudaDATA_CLASSIFICACAO: TDateField
+      FieldName = 'DATA_CLASSIFICACAO'
+      Origin = 'DATA_CLASSIFICACAO'
       ProviderFlags = [pfInUpdate]
-      Required = True
+    end
+    object qLote_MudaQTDE_CLASSIFICADA: TIntegerField
+      FieldName = 'QTDE_CLASSIFICADA'
+      Origin = 'QTDE_CLASSIFICADA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField
+      FieldName = 'ID_PESSOA_CLASSIFICOU'
+      Origin = 'ID_PESSOA_CLASSIFICOU'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField
+      FieldName = 'OBSERVACAO_CLASSIFICACAO'
+      Origin = 'OBSERVACAO_CLASSIFICACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object qLote_MudaSALDO: TIntegerField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qLote_MudaPESSOA_CLASSIFICOU: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PESSOA_CLASSIFICOU'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
     end
     object qLote_MudaTAXA_CLASSIFICACAO: TBCDField
       FieldName = 'TAXA_CLASSIFICACAO'
@@ -626,78 +662,12 @@ inherited smViveiro: TsmViveiro
       Precision = 18
       Size = 2
     end
-    object qLote_MudaID_COMPRA_ITEM: TIntegerField
-      FieldName = 'ID_COMPRA_ITEM'
-      Origin = 'ID_COMPRA_ITEM'
-      ProviderFlags = [pfInUpdate]
-    end
-  end
-  object qClassificacao: TRFQuery
-    Connection = dmPrincipal.conSong
-    SQL.Strings = (
-      'select Classificacao.Id,'
-      '       Classificacao.Id_Lote_Muda,'
-      '       Classificacao.Id_Pessoa_Classificou,'
-      '       Classificacao.Data,'
-      '       Classificacao.Qtde,'
-      '       Classificacao.Observacao,'
-      '       Pessoa.nome as Pessoa_Classificou'
-      'from Classificacao'
-      
-        'inner join pessoa on (pessoa.id = classificacao.id_pessoa_classi' +
-        'ficou)'
-      'where Classificacao.id_lote_Muda = :id_lote_muda')
-    Left = 408
-    Top = 104
-    ParamData = <
-      item
-        Name = 'ID_LOTE_MUDA'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qClassificacaoID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qClassificacaoID_LOTE_MUDA: TIntegerField
-      FieldName = 'ID_LOTE_MUDA'
-      Origin = 'ID_LOTE_MUDA'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField
-      FieldName = 'ID_PESSOA_CLASSIFICOU'
-      Origin = 'ID_PESSOA_CLASSIFICOU'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qClassificacaoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qClassificacaoQTDE: TIntegerField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qClassificacaoPESSOA_CLASSIFICOU: TStringField
+    object qLote_MudaNOME_ESPECIE: TStringField
       AutoGenerateValue = arDefault
-      FieldName = 'PESSOA_CLASSIFICOU'
+      FieldName = 'NOME_ESPECIE'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
-    end
-    object qClassificacaoOBSERVACAO: TStringField
-      FieldName = 'OBSERVACAO'
-      Origin = 'OBSERVACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 1000
     end
   end
 end

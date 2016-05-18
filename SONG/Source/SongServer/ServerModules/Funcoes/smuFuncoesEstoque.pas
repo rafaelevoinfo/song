@@ -21,6 +21,8 @@ type
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
     function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
 
+    procedure ppuAtualizarSaldoItem(ipIdItem:Integer; ipQtdeSubtrair, ipQtdeSomar:Double);
+
   end;
 
 var
@@ -149,6 +151,14 @@ begin
 
   Result := vaResult;
 
+end;
+
+procedure TsmFuncoesEstoque.ppuAtualizarSaldoItem(ipIdItem: Integer;
+  ipQtdeSubtrair, ipQtdeSomar: Double);
+begin
+  Connection.ExecSQL('update item ' +
+    ' set item.saldo = coalesce(item.saldo,0) - :qtde_substrair + :qtde_somar ' +
+    ' where item.id = :id', [ipQtdeSubtrair, ipQtdeSomar, ipIdItem]);
 end;
 
 end.

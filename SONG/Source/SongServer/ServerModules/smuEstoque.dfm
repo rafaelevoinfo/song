@@ -8,7 +8,8 @@ inherited smEstoque: TsmEstoque
       'Select item.id,'
       '       item.nome,'
       '       item.tipo,'
-      '       item.unidade'
+      '       item.unidade,'
+      '       item.Saldo'
       'from item'
       '&where')
     Left = 48
@@ -44,6 +45,13 @@ inherited smEstoque: TsmEstoque
       Required = True
       Size = 10
     end
+    object qItemSALDO: TBCDField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
   end
   object qEntrada: TRFQuery
     Connection = dmPrincipal.conSong
@@ -59,7 +67,7 @@ inherited smEstoque: TsmEstoque
         'left join compra_item on (entrada_item.id_compra_item = compra_i' +
         'tem.id)'
       'left join item on (item.id = entrada_item.id_item)'
-      '&where')
+      '&WHERE')
     Left = 128
     Top = 16
     MacroData = <

@@ -30,8 +30,8 @@ type
 
     procedure ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
 
-    procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie, ipIdLote: Integer; ipQtdeAnterior, ipQtdeNova: Double);
-    procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie: Integer; ipQtdeAnterior, ipQtdeNova: Integer);
+    procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie, ipIdLote: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
+    procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie, ipIdLote: Integer; ipQtdeSubtrair, ipQtdeSomar: Integer);
 
     function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
@@ -183,10 +183,7 @@ begin
     procedure(ipDataSet: TRFQuery)
     begin
       ipDataSet.SQL.Text := ' select Lote_Muda.Qtde_Inicial,' +
-        '       (select first 1 Classificacao.Qtde' +
-        '        from Classificacao' +
-        '        where Classificacao.Id_Lote_Muda = Lote_Muda.Id' +
-        '        order by Classificacao.Data desc) as Qtde_Atual' +
+        '                            Lote_Muda.Qtde_Classificada' +
         ' from Lote_Muda' +
         ' where Lote_Muda.Id = :Id';
 
@@ -196,7 +193,7 @@ begin
       if not ipDataSet.Eof then
         begin
           try
-            vaTaxaClassificacao := (ipDataSet.FieldByName('QTDE_ATUAL').AsFloat * 100) / ipDataSet.FieldByName('QTDE_INICIAL').AsFloat;
+            vaTaxaClassificacao := (ipDataSet.FieldByName('QTDE_CLASSIFICADA').AsFloat * 100) / ipDataSet.FieldByName('QTDE_INICIAL').AsFloat;
           except
             vaTaxaClassificacao := 0;
           end;
@@ -260,20 +257,29 @@ begin
   Result := fprValidarCampoUnico('MATRIZ', 'NOME', ipId, ipNome);
 end;
 
-procedure TsmFuncoesViveiro.ppuAtualizarQtdeMudaEstoque(ipIdEspecie,
-  ipQtdeAnterior, ipQtdeNova: Integer);
+procedure TsmFuncoesViveiro.ppuAtualizarQtdeMudaEstoque(ipIdEspecie, ipIdLote,
+  ipQtdeSubtrair, ipQtdeSomar: Integer);
 begin
   Connection.ExecSQL('update especie ' +
     ' set especie.qtde_muda_estoque = coalesce(especie.qtde_muda_estoque,0) - :qtde_anterior + :qtde_nova ' +
-    ' where especie.id = :id', [ipQtdeAnterior, ipQtdeNova, ipIdEspecie]);
+    ' where especie.id = :id', [ipQtdeSubtrair, ipQtdeSomar, ipIdEspecie]);
+
+  if ipIdLote <> 0 then
+    begin
+      Connection.ExecSQL('update lote_muda ' +
+        ' set lote_muda.saldo = coalesce(lote_muda.saldo,0) - :qtde_anterior + :qtde_nova ' +
+        ' where lote_muda.id = :id', [ipQtdeSubtrair, ipQtdeSomar, ipIdLote]);
+
+      ppuAtualizarTaxaClassificacaoMuda(ipIdLote);
+    end;
 end;
 
 procedure TsmFuncoesViveiro.ppuAtualizarQtdeSementeEstoque(ipIdEspecie, ipIdLote: Integer;
-ipQtdeAnterior, ipQtdeNova: Double);
+ipQtdeSubtrair, ipQtdeSomar: Double);
 begin
   Connection.ExecSQL('update especie ' +
     ' set especie.qtde_semente_estoque = coalesce(especie.qtde_semente_estoque,0) - :qtde_anterior + :qtde_nova ' +
-    ' where especie.id = :id', [ipQtdeAnterior, ipQtdeNova, ipIdEspecie]);
+    ' where especie.id = :id', [ipQtdeSubtrair, ipQtdeSomar, ipIdEspecie]);
 
   if ipIdLote <> 0 then
     begin

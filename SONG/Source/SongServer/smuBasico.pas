@@ -137,10 +137,10 @@ begin
         begin
           vaDataSet := TDataSetProvider(ipSender).DataSet as TFDQuery;
           vaMacroWhere := vaDataSet.FindMacro(TBancoDados.coMacroWhere);
-          if Assigned(vaMacroWhere) and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
+          if Assigned(vaMacroWhere) then//and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
             begin
               vaNomeMacro := vaMacroWhere.Name;
-              vaDataSet.SQL.Text := vaScript;
+            //  vaDataSet.SQL.Text := vaScript;
               vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
               vaWhere := fpvMontarWhere(vaTabela, vaParams);
 

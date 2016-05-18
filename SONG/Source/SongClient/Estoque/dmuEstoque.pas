@@ -87,6 +87,9 @@ type
     dsSaida: TDataSource;
     cdsSaida_ItemID_ESPECIE: TIntegerField;
     cdsSaida_ItemNOME_ESPECIE: TStringField;
+    cdsItemSALDO: TBCDField;
+    cdsItemCALC_SALDO: TStringField;
+    procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -98,8 +101,15 @@ var
 
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
+
+
+procedure TdmEstoque.cdsItemCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  cdsItemCALC_SALDO.AsString := FormatFloat(',0.00', cdsItemSALDO.AsFloat) + ' ' + cdsItemUNIDADE.AsString;
+end;
 
 end.

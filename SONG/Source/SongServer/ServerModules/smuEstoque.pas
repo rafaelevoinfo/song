@@ -87,6 +87,7 @@ type
     qSaida_ItemLOTE_MUDA: TStringField;
     qSaida_ItemID_ESPECIE: TIntegerField;
     qSaida_ItemNOME_ESPECIE: TStringField;
+    qItemSALDO: TBCDField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;

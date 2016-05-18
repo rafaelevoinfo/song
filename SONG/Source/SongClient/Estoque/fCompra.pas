@@ -643,6 +643,7 @@ begin
             vaLoteMuda.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
             vaLoteMuda.Nome := 'Compra de Muda';
             vaLoteMuda.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
+            vaLoteMuda.QtdeClassificada := dmEstoque.cdsCompra_ItemQTDE.AsInteger;
 
             vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
             vaFrmLoteMuda.ppuIncluir;

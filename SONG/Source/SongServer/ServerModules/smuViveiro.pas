@@ -72,33 +72,31 @@ type
     qSemeaduraID_LOTE_SEMENTE: TIntegerField;
     qSemeaduraQTDE_TUBETE: TIntegerField;
     qLote_Muda: TRFQuery;
-    qLote_MudaID: TIntegerField;
-    qLote_MudaID_ESPECIE: TIntegerField;
-    qLote_MudaNOME: TStringField;
-    qLote_MudaQTDE_INICIAL: TIntegerField;
-    qLote_MudaNOME_ESPECIE: TStringField;
     qLote_SementePESSOA_COLETOU: TStringField;
-    qClassificacao: TRFQuery;
-    qClassificacaoID: TIntegerField;
-    qClassificacaoID_LOTE_MUDA: TIntegerField;
-    qClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
-    qClassificacaoDATA: TDateField;
-    qClassificacaoQTDE: TIntegerField;
-    qClassificacaoPESSOA_CLASSIFICOU: TStringField;
-    qLote_MudaOBSERVACAO: TStringField;
     qCanteiroDESCRICAO: TStringField;
-    qClassificacaoOBSERVACAO: TStringField;
     qEspecieOBSERVACAO: TStringField;
     qMatrizDESCRICAO: TStringField;
     qSemeaduraOBSERVACAO: TStringField;
-    qLote_MudaQTDE_ATUAL: TIntegerField;
     qGerminacaoDATA: TDateField;
-    qLote_MudaDATA: TDateField;
-    qLote_MudaTAXA_CLASSIFICACAO: TBCDField;
     qEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
     qEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
     qLote_SementeID_COMPRA_ITEM: TIntegerField;
+    qLote_MudaID: TIntegerField;
+    qLote_MudaID_ESPECIE: TIntegerField;
+    qLote_MudaID_LOTE_SEMENTE: TIntegerField;
     qLote_MudaID_COMPRA_ITEM: TIntegerField;
+    qLote_MudaNOME: TStringField;
+    qLote_MudaQTDE_INICIAL: TIntegerField;
+    qLote_MudaDATA: TDateField;
+    qLote_MudaOBSERVACAO: TStringField;
+    qLote_MudaDATA_CLASSIFICACAO: TDateField;
+    qLote_MudaQTDE_CLASSIFICADA: TIntegerField;
+    qLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField;
+    qLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField;
+    qLote_MudaSALDO: TIntegerField;
+    qLote_MudaPESSOA_CLASSIFICOU: TStringField;
+    qLote_MudaTAXA_CLASSIFICACAO: TBCDField;
+    qLote_MudaNOME_ESPECIE: TStringField;
   private
     { Private declarations }
   protected

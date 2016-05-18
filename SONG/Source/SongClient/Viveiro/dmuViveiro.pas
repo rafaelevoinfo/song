@@ -73,21 +73,12 @@ type
     cdsLote_MudaQTDE_INICIAL: TIntegerField;
     cdsLote_SementePESSOA_COLETOU: TStringField;
     cdsLote_MudaNOME_ESPECIE: TStringField;
-    cdsClassificacao: TRFClientDataSet;
     dsLote_Muda: TDataSource;
-    cdsClassificacaoID: TIntegerField;
-    cdsClassificacaoID_LOTE_MUDA: TIntegerField;
-    cdsClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
-    cdsClassificacaoDATA: TDateField;
-    cdsClassificacaoQTDE: TIntegerField;
-    cdsClassificacaoPESSOA_CLASSIFICOU: TStringField;
     cdsSemeaduraOBSERVACAO: TStringField;
     cdsCanteiroDESCRICAO: TStringField;
-    cdsClassificacaoOBSERVACAO: TStringField;
     cdsMatrizDESCRICAO: TStringField;
     cdsEspecieOBSERVACAO: TStringField;
     cdsLote_MudaOBSERVACAO: TStringField;
-    cdsLote_MudaQTDE_ATUAL: TIntegerField;
     cdsGerminacaoDATA: TDateField;
     cdsLote_MudaDATA: TDateField;
     cdsLote_MudaTAXA_CLASSIFICACAO: TBCDField;
@@ -95,6 +86,13 @@ type
     cdsEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
     cdsLote_SementeID_COMPRA_ITEM: TIntegerField;
     cdsLote_MudaID_COMPRA_ITEM: TIntegerField;
+    cdsLote_MudaID_LOTE_SEMENTE: TIntegerField;
+    cdsLote_MudaDATA_CLASSIFICACAO: TDateField;
+    cdsLote_MudaQTDE_CLASSIFICADA: TIntegerField;
+    cdsLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField;
+    cdsLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField;
+    cdsLote_MudaSALDO: TIntegerField;
+    cdsLote_MudaPESSOA_CLASSIFICOU: TStringField;
   private
     { Private declarations }
   public

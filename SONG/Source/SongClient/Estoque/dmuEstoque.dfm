@@ -7,16 +7,19 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqItem'
     RemoteServer = dmPrincipal.ProviderEstoque
+    OnCalcFields = cdsItemCalcFields
     Left = 48
     Top = 24
     object cdsItemID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsItemNOME: TStringField
       DisplayLabel = 'Nome do Item'
       FieldName = 'NOME'
+      Origin = 'NOME'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
@@ -25,14 +28,32 @@ inherited dmEstoque: TdmEstoque
       Alignment = taLeftJustify
       DisplayLabel = 'Tipo'
       FieldName = 'TIPO'
+      Origin = 'TIPO'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsItemUNIDADE: TStringField
       DisplayLabel = 'Unidade'
       FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 10
+    end
+    object cdsItemSALDO: TBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = ',0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsItemCALC_SALDO: TStringField
+      DisplayLabel = 'Saldo'
+      FieldKind = fkCalculated
+      FieldName = 'CALC_SALDO'
+      Size = 60
+      Calculated = True
     end
   end
   object cdsEntrada: TRFClientDataSet

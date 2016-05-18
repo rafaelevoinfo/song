@@ -416,6 +416,9 @@ inherited dmLookup: TdmLookup
       Properties.ListColumns = <
         item
           FieldName = 'NOME'
+        end
+        item
+          FieldName = 'SALDO'
         end>
       Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkItem
@@ -564,10 +567,12 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 200
           FieldName = 'NOME'
         end
         item
-          FieldName = 'QTDE_MUDA_ESTOQUE'
+          Width = 120
+          FieldName = 'SALDO'
         end>
       Properties.ListSource = dslkLote_Muda
     end
@@ -587,12 +592,12 @@ inherited dmLookup: TdmLookup
     Top = 448
     object cdslkPessoaID: TIntegerField
       FieldName = 'ID'
-      Required = True
+      ProviderFlags = []
     end
     object cdslkPessoaNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
-      Required = True
+      ProviderFlags = []
       Size = 100
     end
   end
@@ -1085,6 +1090,12 @@ inherited dmLookup: TdmLookup
       Required = True
       Size = 10
     end
+    object cdslkItemSALDO: TBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO'
+      Precision = 18
+      Size = 2
+    end
   end
   object dslkItem: TDataSource
     DataSet = cdslkItem
@@ -1399,20 +1410,19 @@ inherited dmLookup: TdmLookup
       Required = True
       Size = 100
     end
-    object cdslkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField
+    object cdslkLote_MudaSALDO: TIntegerField
       DisplayLabel = 'Qtde. Em Estoque'
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      DisplayFormat = '0 Und'
+      FieldName = 'SALDO'
     end
   end
   object dslkLote_Semente: TDataSource
     DataSet = cdslkLote_Semente
-    Left = 488
-    Top = 360
+    Left = 776
+    Top = 704
   end
   object dslkLote_Muda: TDataSource
     DataSet = cdslkLote_Muda
-    Left = 496
-    Top = 368
+    Left = 664
+    Top = 704
   end
 end

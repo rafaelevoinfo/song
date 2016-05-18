@@ -447,6 +447,7 @@ inherited dmViveiro: TdmViveiro
     Top = 132
     object cdsLote_MudaID: TIntegerField
       FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsLote_MudaID_ESPECIE: TIntegerField
@@ -467,11 +468,12 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'QTDE_INICIAL'
       ProviderFlags = [pfInUpdate]
       Required = True
+      DisplayFormat = '0 Und'
     end
     object cdsLote_MudaNOME_ESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'NOME_ESPECIE'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = []
       Size = 100
     end
     object cdsLote_MudaOBSERVACAO: TStringField
@@ -479,11 +481,6 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
-    end
-    object cdsLote_MudaQTDE_ATUAL: TIntegerField
-      DisplayLabel = 'Qtde. Atual'
-      FieldName = 'QTDE_ATUAL'
-      ProviderFlags = []
     end
     object cdsLote_MudaDATA: TDateField
       DisplayLabel = 'Data da Inclus'#227'o'
@@ -494,6 +491,7 @@ inherited dmViveiro: TdmViveiro
     object cdsLote_MudaTAXA_CLASSIFICACAO: TBCDField
       DisplayLabel = '% Classifica'#231#227'o'
       FieldName = 'TAXA_CLASSIFICACAO'
+      ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
     end
@@ -502,62 +500,44 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'ID_COMPRA_ITEM'
       ProviderFlags = [pfInUpdate]
     end
-  end
-  object cdsClassificacao: TRFClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_LOTE_MUDA'
-    MasterFields = 'ID'
-    MasterSource = dsLote_Muda
-    PacketRecords = 0
-    Params = <
-      item
-        DataType = ftUnknown
-        Name = 'ID_LOTE_MUDA'
-        ParamType = ptInput
-      end>
-    ProviderName = 'dspqClassificacao'
-    RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 448
-    Top = 24
-    object cdsClassificacaoID: TIntegerField
-      FieldName = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cdsClassificacaoID_LOTE_MUDA: TIntegerField
-      DisplayLabel = 'Id do Lote de Mudas'
-      FieldName = 'ID_LOTE_MUDA'
+    object cdsLote_MudaID_LOTE_SEMENTE: TIntegerField
+      DisplayLabel = 'Id do Lote de Semente'
+      FieldName = 'ID_LOTE_SEMENTE'
       ProviderFlags = [pfInUpdate]
-      Required = True
     end
-    object cdsClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField
+    object cdsLote_MudaDATA_CLASSIFICACAO: TDateField
+      DisplayLabel = 'Data da Classifica'#231#227'o'
+      FieldName = 'DATA_CLASSIFICACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsLote_MudaQTDE_CLASSIFICADA: TIntegerField
+      DisplayLabel = 'Qtde. Classificada'
+      FieldName = 'QTDE_CLASSIFICADA'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = '0 Und'
+    end
+    object cdsLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField
       DisplayLabel = 'Id da Pessoa que Classificou'
       FieldName = 'ID_PESSOA_CLASSIFICOU'
       ProviderFlags = [pfInUpdate]
-      Required = True
     end
-    object cdsClassificacaoDATA: TDateField
-      DisplayLabel = 'Data de Classifica'#231#227'o'
-      FieldName = 'DATA'
+    object cdsLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o da Classifica'#231#227'o'
+      FieldName = 'OBSERVACAO_CLASSIFICACAO'
       ProviderFlags = [pfInUpdate]
-      Required = True
+      Size = 1000
     end
-    object cdsClassificacaoQTDE: TIntegerField
-      DisplayLabel = 'Quantidade'
-      FieldName = 'QTDE'
+    object cdsLote_MudaSALDO: TIntegerField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO'
       ProviderFlags = [pfInUpdate]
-      Required = True
+      DisplayFormat = '0 Und'
     end
-    object cdsClassificacaoPESSOA_CLASSIFICOU: TStringField
+    object cdsLote_MudaPESSOA_CLASSIFICOU: TStringField
       DisplayLabel = 'Pessoa que Classificou'
       FieldName = 'PESSOA_CLASSIFICOU'
+      ProviderFlags = []
       Size = 100
-    end
-    object cdsClassificacaoOBSERVACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o'
-      FieldName = 'OBSERVACAO'
-      ProviderFlags = [pfInWhere]
-      Size = 1000
     end
   end
   object dsLote_Muda: TDataSource

@@ -186,11 +186,12 @@ type
     cdslkLote_SementeQTDE_ARMAZENADA: TBCDField;
     cdslkLote_MudaID: TIntegerField;
     cdslkLote_MudaNOME: TStringField;
-    cdslkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
     repLcbLoteSemente: TcxEditRepositoryLookupComboBoxItem;
     dslkLote_Semente: TDataSource;
     dslkLote_Muda: TDataSource;
     repLcbLoteMuda: TcxEditRepositoryLookupComboBoxItem;
+    cdslkLote_MudaSALDO: TIntegerField;
+    cdslkItemSALDO: TBCDField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private
@@ -279,7 +280,7 @@ begin
     TUtils.ppuPercorrerCds(ipCds,
       procedure
       begin
-        if not cdslkPessoa.Locate(cdslkPessoaID.FieldName, ipCds.FieldByName(ipFieldIdPessoa).AsInteger, []) then
+        if (not ipCds.FieldByName(ipFieldIdPessoa).IsNull) and (not cdslkPessoa.Locate(cdslkPessoaID.FieldName, ipCds.FieldByName(ipFieldIdPessoa).AsInteger, [])) then
           begin
             cdslkPessoa.Append;
             cdslkPessoaID.AsInteger := ipCds.FieldByName(ipFieldIdPessoa).AsInteger;

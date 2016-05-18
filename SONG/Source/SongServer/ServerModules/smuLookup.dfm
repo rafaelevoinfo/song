@@ -23,6 +23,7 @@ inherited smLookup: TsmLookup
     end
   end
   object qlkPessoa: TRFQuery
+    Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select PESSOA.ID,'
       '       PESSOA.NOME'
@@ -35,6 +36,17 @@ inherited smLookup: TsmLookup
         Value = Null
         Name = 'WHERE'
       end>
+    object qlkPessoaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkPessoaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object qlkOrganizacao: TRFQuery
     Connection = dmPrincipal.conSong
@@ -564,7 +576,8 @@ inherited smLookup: TsmLookup
       'Select item.id,'
       '       item.nome,'
       '       item.tipo,'
-      '       item.unidade'
+      '       item.unidade,'
+      '       item.saldo'
       'from item'
       '&where')
     Left = 472
@@ -596,6 +609,13 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
       Size = 10
+    end
+    object qlkItemSALDO: TBCDField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
     end
   end
   object qlkRubrica_Atividade: TRFQuery
@@ -886,11 +906,7 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select Lote_Muda.Id,'
       '       Lote_Muda.Nome,'
-      '       coalesce((select first 1 Classificacao.Qtde'
-      '                 from Classificacao'
-      
-        '                 where Classificacao.Id_Lote_Muda = Lote_Muda.Id' +
-        '), Lote_Muda.Qtde_Inicial) as Qtde_Muda_Estoque'
+      '       Lote_Muda.Saldo'
       'from Lote_Muda  '
       '&WHERE')
     Left = 136
@@ -913,10 +929,9 @@ inherited smLookup: TsmLookup
       Required = True
       Size = 100
     end
-    object qlkLote_MudaQTDE_MUDA_ESTOQUE: TIntegerField
-      AutoGenerateValue = arDefault
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      Origin = 'QTDE_MUDA_ESTOQUE'
+    object qlkLote_MudaSALDO: TIntegerField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
       ProviderFlags = []
     end
   end

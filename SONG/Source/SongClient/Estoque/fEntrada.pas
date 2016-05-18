@@ -61,6 +61,9 @@ type
     procedure pprValidarPesquisa; override;
 
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
+    procedure pprExecutarSalvarDetail; override;
+    procedure pprExecutarExcluirDetail(ipId: Integer); override;
+    procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
 
     procedure pprCarregarDadosModelo; override;
     procedure pprCarregarDadosModeloDetail; override;
@@ -188,6 +191,73 @@ begin
     ipCds.ppuAddParametro(TParametros.coItem, cbPesquisaItem.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCompra then
     ipCds.ppuAddParametro(TParametros.coCompra, EditPesquisa.Text)
+end;
+
+procedure TfrmEntrada.pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela);
+var
+  vaIdsItem: TDictionary<Integer, Double>;
+  vaId: Integer;
+begin
+  vaIdsItem := TDictionary<Integer, Double>.Create;
+  try
+    TUtils.ppuPercorrerCds(dmEstoque.cdsEntrada_Item,
+      procedure
+      begin
+
+        if not vaIdsItem.ContainsKey(dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger) then
+          vaIdsItem.Add(dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger, 0);
+
+        vaIdsItem.Items[dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger] := vaIdsItem.Items[dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger] +
+          dmEstoque.cdsEntrada_ItemQTDE.AsFloat;
+
+      end);
+
+    inherited;
+
+    for vaId in vaIdsItem.Keys do
+      begin
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaId, vaIdsItem.Items[vaId],0);
+      end;
+  finally
+    vaIdsItem.Free;
+  end;
+end;
+
+procedure TfrmEntrada.pprExecutarExcluirDetail(ipId: Integer);
+var
+  vaIdItem: Integer;
+  vaQtde: Double;
+begin
+  vaIdItem := dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger;
+  inherited;
+  dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItem, vaQtde,0);
+end;
+
+procedure TfrmEntrada.pprExecutarSalvarDetail;
+var
+  vaState: TDataSetState;
+  vaIdItemAnterior: Integer;
+  vaQtdeAnterior: Double;
+begin
+  vaState := dmEstoque.cdsEntrada_Item.State;
+  vaIdItemAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsEntrada_ItemID_ITEM.OldValue, '0'), 0);
+  vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmEstoque.cdsEntrada_ItemQTDE.OldValue, '0'), 0);
+  inherited;
+
+  if vaState = dsInsert then
+    begin
+      dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger, 0, dmEstoque.cdsEntrada_ItemQTDE.AsFloat);
+    end
+  else if vaState = dsEdit then
+    begin
+      if vaIdItemAnterior <> dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger then
+        begin
+          dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItemAnterior, vaQtdeAnterior, 0);
+          dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger, 0, dmEstoque.cdsEntrada_ItemQTDE.AsFloat);
+        end
+      else
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger, vaQtdeAnterior, dmEstoque.cdsEntrada_ItemQTDE.AsFloat);
+    end;
 end;
 
 procedure TfrmEntrada.pprValidarPesquisa;

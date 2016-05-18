@@ -377,10 +377,6 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7

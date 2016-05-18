@@ -63,6 +63,7 @@ type
     property Data: TDateTime read FData write SetData;
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
     property Qtde: Double read FQtde write SetQtde;
+
     property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
   end;
 

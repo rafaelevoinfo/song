@@ -1,3 +1,4 @@
 Apagar tudo que estiver nas tabelas entrada, lote_muda e lote_semente
 Apagar toda a tabela de conta_pagar_vinculo
 Limpar tabela projeto_financiador_pagto
+Limpar tabela CLASSIFICACAO
