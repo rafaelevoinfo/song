@@ -331,7 +331,9 @@ inherited smFinanceiro: TsmFinanceiro
       '       plano_contas.nome as plano_contas,'
       
         '       (banco.nome || '#39' - '#39'|| banco_conta_corrente.agencia||'#39'/'#39'|' +
-        '|banco_conta_corrente.conta) as conta_corrente'
+        '|banco_conta_corrente.conta) as conta_corrente,'
+      '       Conta_pagar.id_responsavel,'
+      '       responsavel.nome as nome_responsavel'
       'from Conta_Pagar'
       
         'inner join fin_for_cli on (fin_for_cli.id = conta_pagar.id_forne' +
@@ -349,6 +351,9 @@ inherited smFinanceiro: TsmFinanceiro
       
         'left join conta_pagar_vinculo on (conta_pagar_vinculo.id_conta_p' +
         'agar = conta_pagar.id)'
+      
+        'left join pessoa responsavel on (responsavel.id = conta_pagar.id' +
+        '_responsavel)'
       '&where')
     Left = 408
     Top = 8
@@ -437,6 +442,19 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'ID_COMPRA'
       Origin = 'ID_COMPRA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qConta_PagarID_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_PagarNOME_RESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qConta_Pagar_Parcela: TRFQuery

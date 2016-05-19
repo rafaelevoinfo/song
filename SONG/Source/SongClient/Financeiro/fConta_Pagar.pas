@@ -24,13 +24,16 @@ type
     FIdFornecedor: Integer;
     FValorTotal: Double;
     FIdCompra: Integer;
+    FIdResponsavel: Integer;
     procedure SetIdFornecedor(const Value: Integer);
     procedure SetValorTotal(const Value: Double);
     procedure SetIdCompra(const Value: Integer);
+    procedure SetIdResponsavel(const Value: Integer);
   public
     property IdCompra: Integer read FIdCompra write SetIdCompra;
     property IdFornecedor: Integer read FIdFornecedor write SetIdFornecedor;
     property ValorTotal: Double read FValorTotal write SetValorTotal;
+    property IdResponsavel:Integer read FIdResponsavel write SetIdResponsavel;
   end;
 
   TfrmContaPagar = class(TfrmBasicoCrudMasterDetail)
@@ -189,6 +192,8 @@ type
     viewVinculosNOME_ORGANIZACAO: TcxGridDBColumn;
     cxGridDBTableView1ID_ORGANIZACAO_ORIGEM: TcxGridDBColumn;
     cxGridDBTableView1NOME_ORGANIZACAO: TcxGridDBColumn;
+    lbl1: TLabel;
+    cbResponsavel: TcxDBLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -340,6 +345,9 @@ begin
 
       if vaContaPagar.IdCompra <> 0 then
         dmFinanceiro.cdsConta_PagarID_COMPRA.AsInteger := vaContaPagar.IdCompra;
+
+      if vaContaPagar.IdResponsavel <> 0 then
+        dmFinanceiro.cdsConta_PagarID_RESPONSAVEL.AsInteger := vaContaPagar.IdResponsavel;
     end;
 end;
 
@@ -890,6 +898,7 @@ begin
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
+  dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
   dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
@@ -948,6 +957,11 @@ end;
 procedure TContaPagar.SetIdFornecedor(const Value: Integer);
 begin
   FIdFornecedor := Value;
+end;
+
+procedure TContaPagar.SetIdResponsavel(const Value: Integer);
+begin
+  FIdResponsavel := Value;
 end;
 
 procedure TContaPagar.SetValorTotal(const Value: Double);

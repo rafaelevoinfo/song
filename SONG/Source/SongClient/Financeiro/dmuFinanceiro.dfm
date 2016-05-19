@@ -320,6 +320,18 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'ID_COMPRA'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsConta_PagarID_RESPONSAVEL: TIntegerField
+      DisplayLabel = 'Id do Respons'#225'vel'
+      FieldName = 'ID_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsConta_PagarNOME_RESPONSAVEL: TStringField
+      DisplayLabel = 'Nome do Respons'#225'vel'
+      FieldName = 'NOME_RESPONSAVEL'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsConta_Pagar_Parcela: TRFClientDataSet
     Aggregates = <>

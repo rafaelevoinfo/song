@@ -636,7 +636,9 @@ inherited smAdministrativo: TsmAdministrativo
     ParamData = <
       item
         Name = 'ID_PROJETO'
+        DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object qProjeto_PessoaID: TIntegerField
       FieldName = 'ID'

@@ -17,6 +17,8 @@ inherited frmContaPagar: TfrmContaPagar
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -216,7 +218,10 @@ inherited frmContaPagar: TfrmContaPagar
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
               ExplicitWidth = 975
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -437,7 +442,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabVinculo
+          Properties.ActivePage = tabInfoGeral
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -455,7 +460,7 @@ inherited frmContaPagar: TfrmContaPagar
               FocusControl = EditDescricao
             end
             object Label8: TLabel
-              Left = 7
+              Left = 656
               Top = 42
               Width = 51
               Height = 13
@@ -510,6 +515,14 @@ inherited frmContaPagar: TfrmContaPagar
               Caption = 'Observa'#231#227'o'
               FocusControl = EditObservacao
             end
+            object lbl1: TLabel
+              Left = 6
+              Top = 42
+              Width = 127
+              Height = 13
+              Caption = 'Respons'#225'vel pela despesa'
+              FocusControl = cbResponsavel
+            end
             object EditDescricao: TcxDBTextEdit
               Left = 4
               Top = 18
@@ -519,13 +532,13 @@ inherited frmContaPagar: TfrmContaPagar
               Width = 205
             end
             object EditValorTotal: TcxDBCurrencyEdit
-              Left = 5
+              Left = 655
               Top = 58
               RepositoryItem = dmLookup.repCurPadrao
               DataBinding.DataField = 'VALOR_TOTAL'
               DataBinding.DataSource = dsMaster
               TabOrder = 4
-              Width = 204
+              Width = 205
             end
             object cbFormaPagamento: TcxDBImageComboBox
               Left = 211
@@ -696,6 +709,16 @@ inherited frmContaPagar: TfrmContaPagar
               TabOrder = 8
               Height = 54
               Width = 857
+            end
+            object cbResponsavel: TcxDBLookupComboBox
+              Left = 5
+              Top = 58
+              RepositoryItem = dmLookup.repLcbPessoa
+              DataBinding.DataField = 'ID_RESPONSAVEL'
+              DataBinding.DataSource = dsMaster
+              Properties.ListColumns = <>
+              TabOrder = 9
+              Width = 204
             end
           end
           object tabVinculo: TcxTabSheet

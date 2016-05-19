@@ -124,6 +124,8 @@ type
     cdsConta_Receber_VinculoFUNDO: TStringField;
     cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM: TIntegerField;
     cdsConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField;
+    cdsConta_PagarID_RESPONSAVEL: TIntegerField;
+    cdsConta_PagarNOME_RESPONSAVEL: TStringField;
   private
     { Private declarations }
   public

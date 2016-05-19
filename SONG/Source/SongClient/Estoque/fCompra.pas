@@ -162,12 +162,13 @@ begin
         vaContaPagar.IdFornecedor := dmEstoque.cdsCompraID_FORNECEDOR.AsInteger;
         vaContaPagar.IdCompra := dmEstoque.cdsCompraID.AsInteger;
         vaContaPagar.ValorTotal := dmEstoque.cdsCompraVALOR_TOTAL.AsFloat;
+        vaContaPagar.IdResponsavel := dmEstoque.cdsCompraID_PESSOA_COMPROU.AsInteger;
 
         vaFrmContaPagar.ppuConfigurarModoExecucao(meSomenteCadastro, vaContaPagar);
         vaFrmContaPagar.ShowModal;
 
         if vaFrmContaPagar.IdEscolhido <> 0 then
-          TMensagem.ppuShowMessage('Conta a Pagar realizada com sucesso.');
+          TMensagem.ppuShowMessage('Conta a Pagar gerada com sucesso.');
       finally
         vaFrmContaPagar.Free;
       end;

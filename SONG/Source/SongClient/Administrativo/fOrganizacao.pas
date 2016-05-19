@@ -183,8 +183,11 @@ end;
 procedure TfrmOrganizacao.pprPreencherCamposPadroes(ipDataSet: TDataSet);
 begin
   inherited;
-  if dmAdministrativo.cdsFundoSALDO.IsNull then
-    dmAdministrativo.cdsFundoSALDO.AsFloat := 0;
+  if ipDataSet = dmAdministrativo.cdsFundo then
+    begin
+      if dmAdministrativo.cdsFundoSALDO.IsNull then
+        dmAdministrativo.cdsFundoSALDO.AsFloat := 0;
+    end;
 end;
 
 procedure TfrmOrganizacao.ppuRetornar;

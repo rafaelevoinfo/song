@@ -1,0 +1,17 @@
+* Criando o contato de fornecedor padrao
+
+	insert into Pessoa (Pessoa.Id, Pessoa.Nome, Pessoa.Tipo, Pessoa.Email)
+	values (next value for pessoa, 'Contato de Fornecedor Padrão',3,'contato@email.com');
+
+* Pegar maior Id da tabela Pessoa
+	select max(pessoa.id) from pessoa;
+* Alterar a planilha de contatos de fornecedores e alterar os codigos de acordo com o valor que foi pego.
+* Importar pessoas (contato_fornecedor.csv)
+* Atualizar generator
+	ALTER SEQUENCE GEN_PESSOA RESTART WITH 100;
+
+* Pegar maior Id da tabela fin_for_cli
+* Alterar a planilha de fornecedores e alterar a coluna Id para comecar com o maior ID da fin_for_cli +1 e depois a coluna
+ID do contato para o id gerado quando se cadastrou o fornecedor padrao.
+* Importar os fornecedores (fornecedores.csv)
+

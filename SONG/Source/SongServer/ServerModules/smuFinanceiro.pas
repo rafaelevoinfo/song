@@ -125,6 +125,8 @@ type
     qConta_Receber_VinculoFUNDO: TStringField;
     qConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM: TIntegerField;
     qConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField;
+    qConta_PagarID_RESPONSAVEL: TIntegerField;
+    qConta_PagarNOME_RESPONSAVEL: TStringField;
   private
     { Private declarations }
   protected
