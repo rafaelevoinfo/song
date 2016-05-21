@@ -147,6 +147,7 @@ begin
               vaWhere := fprAjustarWhere(vaWhere);
               // estou usando o MacroByName para tentar evitar o bug do AV
               vaDataSet.MacroByName(vaNomeMacro).AsRaw := vaWhere;
+              vaDataSet.Prepare;
             end;
         end;
     except

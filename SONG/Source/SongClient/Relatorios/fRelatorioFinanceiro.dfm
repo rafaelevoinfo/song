@@ -816,7 +816,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
       OutlineSettings.CreateNode = True
-      ReprintOnSubsequentPage = False
       StartOnOddPage = False
       UserName = 'GroupOrganizacao'
       mmNewColumnThreshold = 0
@@ -916,7 +915,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
       OutlineSettings.CreateNode = True
-      ReprintOnSubsequentPage = False
       StartOnOddPage = False
       UserName = 'GroupTipo'
       mmNewColumnThreshold = 0
@@ -1448,7 +1446,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
       OutlineSettings.CreateNode = True
-      ReprintOnSubsequentPage = False
       StartOnOddPage = False
       UserName = 'GroupOrganizacao'
       mmNewColumnThreshold = 0
@@ -2014,7 +2011,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
       OutlineSettings.CreateNode = True
-      ReprintOnSubsequentPage = False
       StartOnOddPage = False
       UserName = 'GroupOrganizacao'
       mmNewColumnThreshold = 0

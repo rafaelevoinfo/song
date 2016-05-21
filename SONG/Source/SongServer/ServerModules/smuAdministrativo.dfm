@@ -1168,9 +1168,9 @@ inherited smAdministrativo: TsmAdministrativo
         '_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_' +
         'Projeto_Origem = Projeto_Rubrica.Id_Projeto)'
       
-        'left join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proje' +
-        'to = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rubr' +
-        'ica = Projeto_Rubrica.Id_Rubrica)'
+        'inner join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proj' +
+        'eto = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rub' +
+        'rica = Projeto_Rubrica.Id_Rubrica)'
       'where Projeto_Rubrica.Id_Projeto = :Id_Projeto   ')
     Left = 224
     Top = 288

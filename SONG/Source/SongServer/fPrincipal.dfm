@@ -1122,6 +1122,8 @@ object frmPrincipal: TfrmPrincipal
         object EditSenha: TcxTextEdit
           Left = 260
           Top = 32
+          Properties.EchoMode = eemPassword
+          Properties.PasswordChar = '*'
           Style.BorderColor = clWindowFrame
           Style.BorderStyle = ebs3D
           Style.HotTrack = False
@@ -1190,10 +1192,6 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25

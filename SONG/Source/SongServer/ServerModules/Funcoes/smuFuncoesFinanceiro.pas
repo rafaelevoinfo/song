@@ -226,7 +226,7 @@ begin;
     if ipQuitar then
       begin
         if fpvVerificarStatusParcela(ipIdParcela, False, 1) then
-          Exit; //ja quitou
+          Exit; // ja quitou
 
         vaUpdate := 'update conta_pagar_parcela ' +
           '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
@@ -281,9 +281,8 @@ begin;
               '                                  Fundo.Nome as nome_fundo, ' +
               '                                  Conta_Pagar_vinculo.valor ' +
               ' from Conta_Pagar_vinculo ' +
-              ' left join fundo on (fundo.id = conta_pagar_vinculo.id_fundo) ' +
-              ' where Conta_Pagar_vinculo.id_Conta_Pagar = :ID_Conta_Pagar and ' +
-              '       Conta_Pagar_Vinculo.id_fundo is not null';
+              ' inner join fundo on (fundo.id = conta_pagar_vinculo.id_fundo) ' +
+              ' where Conta_Pagar_vinculo.id_Conta_Pagar = :ID_Conta_Pagar';
             ipDataSetVinculo.ParamByName('ID_Conta_Pagar').AsInteger := ipDataSet.FieldByName('ID_Conta_Pagar').AsInteger;
             ipDataSetVinculo.Open();
 
@@ -304,11 +303,12 @@ procedure TsmFuncoesFinanceiro.ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDa
 ipIncrementar, ipContaReceber: Boolean);
 var
   vaValorPercentual, vaPercentual, vaSomaPercentuais, vaSomaParcelas: Double;
-  vaUpdate: string;
   I, j: Integer;
   vaDataSet: TRFQuery;
 
   procedure plAtualizarSaldoFundo(ipValor: Double);
+  var
+    vaUpdate: string;
   begin
     vaDataSet.Close;
     vaDataSet.ParamByName('ID_FUNDO').AsInteger := ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger;
@@ -323,6 +323,11 @@ var
           raise Exception.Create('Não é possível reabrir esta parcela pois o fundo ' + ipDataSetVinculo.FieldByName('NOME_FUNDO').AsString +
             ' não possui saldo suficiente.');
       end;
+
+    if ipIncrementar then
+      vaUpdate := 'update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO'
+    else
+      vaUpdate := 'update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO';
 
     Connection.ExecSQL(vaUpdate, [ipValor, ipDataSetVinculo.FieldByName('ID_FUNDO').AsInteger]);
   end;
@@ -339,10 +344,6 @@ begin
   pprCriarDataSet(vaDataSet);
   try
     vaDataSet.SQL.Text := 'Select fundo.saldo from fundo where fundo.id = :ID_FUNDO';
-    if ipIncrementar then
-      vaUpdate := 'update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO'
-    else
-      vaUpdate := 'update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO';
 
     if ipDataSetParcela.RecordCount = 1 then
       begin

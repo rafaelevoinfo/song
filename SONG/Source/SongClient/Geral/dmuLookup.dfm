@@ -218,6 +218,7 @@ inherited dmLookup: TdmLookup
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkProjeto
     end
     object repLcbAtividade: TcxEditRepositoryLookupComboBoxItem
@@ -230,6 +231,7 @@ inherited dmLookup: TdmLookup
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkAtividade
     end
     object repLcbEspecie: TcxEditRepositoryLookupComboBoxItem
@@ -453,6 +455,7 @@ inherited dmLookup: TdmLookup
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkProjeto_Area_Atividade
     end
     object repIcbStatusSolicitacaoCompra: TcxEditRepositoryImageComboBoxItem
@@ -523,6 +526,7 @@ inherited dmLookup: TdmLookup
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkProjeto_Organizcao
     end
     object repIcbTipoSaida: TcxEditRepositoryImageComboBoxItem

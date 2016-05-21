@@ -147,34 +147,35 @@ inherited frmContaPagar: TfrmContaPagar
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_RUBRICA: TcxGridDBColumn [2]
-              DataBinding.FieldName = 'ID_RUBRICA'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn [3]
+            object viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn [2]
               DataBinding.FieldName = 'ID_PLANO_CONTAS'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn [4]
+            object viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn [3]
               DataBinding.FieldName = 'ID_CONTA_CORRENTE'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosDESCRICAO: TcxGridDBColumn [5]
+            object viewRegistrosDESCRICAO: TcxGridDBColumn [4]
               DataBinding.FieldName = 'DESCRICAO'
               Options.Editing = False
               Width = 218
             end
-            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [6]
+            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [5]
               DataBinding.FieldName = 'VALOR_TOTAL'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
+            object viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'NOME_RESPONSAVEL'
+              Options.Editing = False
+              Width = 168
+            end
             object viewRegistrosFORMA_PAGTO: TcxGridDBColumn [7]
               DataBinding.FieldName = 'FORMA_PAGTO'
               RepositoryItem = dmLookup.repIcbFormaPagamento
+              Visible = False
               Options.Editing = False
               Width = 107
             end
@@ -198,6 +199,16 @@ inherited frmContaPagar: TfrmContaPagar
               Visible = False
               Options.Editing = False
             end
+            object viewRegistrosID_COMPRA: TcxGridDBColumn [12]
+              DataBinding.FieldName = 'ID_COMPRA'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosID_RESPONSAVEL: TcxGridDBColumn [13]
+              DataBinding.FieldName = 'ID_RESPONSAVEL'
+              Visible = False
+              Options.Editing = False
+            end
           end
         end
         inherited cxSplitter1: TcxSplitter
@@ -213,7 +224,6 @@ inherited frmContaPagar: TfrmContaPagar
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
-            Properties.ActivePage = tabVinculoPesquisa
             ExplicitWidth = 982
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
@@ -442,7 +452,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabInfoGeral
+          Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -537,7 +547,7 @@ inherited frmContaPagar: TfrmContaPagar
               RepositoryItem = dmLookup.repCurPadrao
               DataBinding.DataField = 'VALOR_TOTAL'
               DataBinding.DataSource = dsMaster
-              TabOrder = 4
+              TabOrder = 7
               Width = 205
             end
             object cbFormaPagamento: TcxDBImageComboBox
@@ -601,7 +611,7 @@ inherited frmContaPagar: TfrmContaPagar
               Style.TextColor = clRed
               Style.TextStyle = []
               Style.IsFontAssigned = True
-              TabOrder = 7
+              TabOrder = 8
               Height = 220
               Width = 857
               object cxGrid1: TcxGrid
@@ -706,7 +716,7 @@ inherited frmContaPagar: TfrmContaPagar
               Top = 324
               DataBinding.DataField = 'OBSERVACAO'
               DataBinding.DataSource = dsMaster
-              TabOrder = 8
+              TabOrder = 9
               Height = 54
               Width = 857
             end
@@ -717,7 +727,7 @@ inherited frmContaPagar: TfrmContaPagar
               DataBinding.DataField = 'ID_RESPONSAVEL'
               DataBinding.DataSource = dsMaster
               Properties.ListColumns = <>
-              TabOrder = 9
+              TabOrder = 4
               Width = 204
             end
           end
@@ -983,6 +993,7 @@ inherited frmContaPagar: TfrmContaPagar
                   item
                     FieldName = 'NOME'
                   end>
+                Properties.ListOptions.SyncMode = True
                 Properties.ListSource = dsAtividadeAlocada
                 Properties.OnEditValueChanged = cbAtividadeAlocadaPropertiesEditValueChanged
                 TabOrder = 1
@@ -999,6 +1010,7 @@ inherited frmContaPagar: TfrmContaPagar
                   item
                     FieldName = 'NOME'
                   end>
+                Properties.ListOptions.SyncMode = True
                 Properties.ListSource = dsRubricaAlocada
                 TabOrder = 2
                 Width = 333
@@ -1014,6 +1026,7 @@ inherited frmContaPagar: TfrmContaPagar
                   item
                     FieldName = 'NOME'
                   end>
+                Properties.ListOptions.SyncMode = True
                 Properties.ListSource = dsAreaAlocada
                 TabOrder = 3
                 Width = 151

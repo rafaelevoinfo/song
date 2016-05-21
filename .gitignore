@@ -29,3 +29,4 @@ SONG/BancoDados/modelagem.grc
 SONG/Source/SongServer/SONGServer.stat
 SONG/Source/SongClient/SongClient.stat
 *.vlb
+*.FDB

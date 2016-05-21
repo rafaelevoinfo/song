@@ -35,7 +35,6 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     Left = 192
     Top = 40
@@ -45,12 +44,14 @@ object dmPrincipal: TdmPrincipal
     Top = 64
   end
   object FDManager1: TFDManager
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     FormatOptions.AssignedValues = [fvDefaultParamDataType, fvDataSnapCompatibility]
     FormatOptions.DefaultParamDataType = ftInteger
     FormatOptions.DataSnapCompatibility = True
     Active = True
-    Left = 192
-    Top = 120
+    Left = 200
+    Top = 144
   end
   object Authentication: TDSAuthenticationManager
     OnUserAuthenticate = AuthenticationUserAuthenticate

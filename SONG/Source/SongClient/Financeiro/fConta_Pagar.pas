@@ -33,13 +33,12 @@ type
     property IdCompra: Integer read FIdCompra write SetIdCompra;
     property IdFornecedor: Integer read FIdFornecedor write SetIdFornecedor;
     property ValorTotal: Double read FValorTotal write SetValorTotal;
-    property IdResponsavel:Integer read FIdResponsavel write SetIdResponsavel;
+    property IdResponsavel: Integer read FIdResponsavel write SetIdResponsavel;
   end;
 
   TfrmContaPagar = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_FORNECEDOR: TcxGridDBColumn;
-    viewRegistrosID_RUBRICA: TcxGridDBColumn;
     viewRegistrosID_PLANO_CONTAS: TcxGridDBColumn;
     viewRegistrosID_CONTA_CORRENTE: TcxGridDBColumn;
     viewRegistrosDESCRICAO: TcxGridDBColumn;
@@ -194,6 +193,9 @@ type
     cxGridDBTableView1NOME_ORGANIZACAO: TcxGridDBColumn;
     lbl1: TLabel;
     cbResponsavel: TcxDBLookupComboBox;
+    viewRegistrosID_COMPRA: TcxGridDBColumn;
+    viewRegistrosID_RESPONSAVEL: TcxGridDBColumn;
+    viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -220,7 +222,7 @@ type
       ipValor: Double);
     procedure ppvQuitarParcela;
     procedure ppvReabrirParcela;
-    procedure ppvValidarSaldos;
+    // procedure ppvValidarSaldos;
   protected
     function fprGetPermissao: string; override;
     procedure pprExecutarSalvar; override;
@@ -469,8 +471,9 @@ procedure TfrmContaPagar.ppvAddVinculo();
     dmFinanceiro.cdsConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO.AsInteger := cbAreaAtuacaoAlocada.EditValue;
     dmFinanceiro.cdsConta_Pagar_VinculoAREA_ATUACAO_ALOCADA.AsString := cbAreaAtuacaoAlocada.Text;
   end;
+
 var
-  vaIdOrganizacao:Integer;
+  vaIdOrganizacao: Integer;
 
 begin
   dmFinanceiro.cdsConta_Pagar_Vinculo.Append;
@@ -542,10 +545,10 @@ begin
       end;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM.AsInteger := vaIdOrganizacao;
-    if dmLookup.cdslkProjeto_Organizacao.Locate(dmLookup.cdslkProjeto_OrganizacaoID_ORGANIZACAO.FieldName,vaIdOrganizacao,[]) then
+    if dmLookup.cdslkProjeto_Organizacao.Locate(dmLookup.cdslkProjeto_OrganizacaoID_ORGANIZACAO.FieldName, vaIdOrganizacao, []) then
       dmFinanceiro.cdsConta_Pagar_VinculoNOME_ORGANIZACAO.AsString := dmLookup.cdslkProjeto_OrganizacaoNOME.AsString;
 
-    ppvValidarSaldos;
+    // ppvValidarSaldos;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_VINCULO');
     dmFinanceiro.cdsConta_Pagar_VinculoVALOR.AsFloat := EditValorVinculo.EditValue;
@@ -556,50 +559,50 @@ begin
   end;
 end;
 
-procedure TfrmContaPagar.ppvValidarSaldos;
-begin
-  if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
-    begin
-      if rgRecursoAlocado.EditValue = coSim then
-        begin
-          if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue, cbRubricaProjetoOrigem.EditValue) < EditValorVinculo.EditValue
-          then
-            begin
-              if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
-                'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
-                begin
-                  raise TPararExecucaoException.Create('');
-                end;
-            end;
-        end
-      else
-        begin
-          if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue, cbRubricaAtividadeOrigem.EditValue) < EditValorVinculo.EditValue
-          then
-            begin
-              if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
-                'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
-                begin
-                  raise TPararExecucaoException.Create('');
-                end;
-            end;
-        end;
-
-    end
-  else if dmLookup.cdslkFundo.Locate(TBancoDados.coId, cbFundoOrigem.EditValue, []) then
-    begin
-      if dmLookup.cdslkFundoSALDO.AsFloat < EditValorVinculo.EditValue then
-        begin
-          if TMensagem.fpuPerguntar('O fundo selecionado não possui saldo suficiente para quitar esse valor. ' +
-            'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
-            begin
-              raise TPararExecucaoException.Create('');
-            end;
-        end;
-    end
-  else
-    raise TControlException.Create('Fundo de origem do recurso não encontrado.', cbFundoOrigem);
-end;
+// procedure TfrmContaPagar.ppvValidarSaldos;
+// begin
+// if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
+// begin
+// if rgRecursoAlocado.EditValue = coSim then
+// begin
+// if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue, cbRubricaProjetoOrigem.EditValue) < EditValorVinculo.EditValue
+// then
+// begin
+// if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
+// 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
+// begin
+// raise TPararExecucaoException.Create('');
+// end;
+// end;
+// end
+// else
+// begin
+// if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue, cbRubricaAtividadeOrigem.EditValue) < EditValorVinculo.EditValue
+// then
+// begin
+// if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
+// 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
+// begin
+// raise TPararExecucaoException.Create('');
+// end;
+// end;
+// end;
+//
+// end
+// else if dmLookup.cdslkFundo.Locate(TBancoDados.coId, cbFundoOrigem.EditValue, []) then
+// begin
+// if dmLookup.cdslkFundoSALDO.AsFloat < EditValorVinculo.EditValue then
+// begin
+// if TMensagem.fpuPerguntar('O fundo selecionado não possui saldo suficiente para quitar esse valor. ' +
+// 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
+// begin
+// raise TPararExecucaoException.Create('');
+// end;
+// end;
+// end
+// else
+// raise TControlException.Create('Fundo de origem do recurso não encontrado.', cbFundoOrigem);
+// end;
 
 procedure TfrmContaPagar.Ac_Excluir_VinculoExecute(Sender: TObject);
 begin
@@ -802,6 +805,20 @@ begin
       dmLookup.cdslkRubrica_Atividade_Alocada.Close;
       dmLookup.cdslkProjeto_Area_Atividade_Alocada.Close;
     end;
+
+  if (not dmLookup.cdslkRubrica_Atividade_Alocada.Active) or
+    ((not VarIsNull(cbRubricaAtividadeAlocada.EditValue)) and (not dmLookup.cdslkRubrica_Atividade_Alocada.Locate(TBancoDados.coId,
+    cbRubricaAtividadeAlocada.EditValue, []))) then
+    begin
+      cbRubricaAtividadeAlocada.Clear;
+    end;
+
+  if (not dmLookup.cdslkProjeto_Area_Atividade_Alocada.Active) or
+    ((not VarIsNull(cbAreaAtuacaoAlocada.EditValue)) and (not dmLookup.cdslkProjeto_Area_Atividade_Alocada.Locate(TBancoDados.coId,
+    cbAreaAtuacaoAlocada.EditValue, []))) then
+    begin
+      cbAreaAtuacaoAlocada.Clear;
+    end;
 end;
 
 procedure TfrmContaPagar.cbAtividadePropertiesEditValueChanged(Sender: TObject);
@@ -818,6 +835,17 @@ begin
       dmLookup.cdslkProjeto_Area_Atividade.Close;
     end;
 
+  if (not dmLookup.cdslkRubrica_Atividade.Active) or ((not VarIsNull(cbRubricaAtividadeOrigem.EditValue)) and
+    (not dmLookup.cdslkRubrica_Atividade.Locate(TBancoDados.coId, cbRubricaAtividadeOrigem.EditValue, []))) then
+    begin
+      cbRubricaAtividadeOrigem.Clear;
+    end;
+
+  if (not dmLookup.cdslkProjeto_Area_Atividade.Active) or ((not VarIsNull(cbAreaAtuacaoOrigem.EditValue)) and
+    (not dmLookup.cdslkProjeto_Area_Atividade.Locate(TBancoDados.coId, cbAreaAtuacaoOrigem.EditValue, []))) then
+    begin
+      cbAreaAtuacaoOrigem.Clear;
+    end;
 end;
 
 procedure TfrmContaPagar.cbProjetoAlocadoPropertiesEditValueChanged(
@@ -840,11 +868,20 @@ begin
       // dmLookup.cdslkRubrica_Atividade_Alocada.Close;
       // dmLookup.cdslkProjeto_Area_Atividade_Alocada.Close;
     end;
+
+  if (not dmLookup.cdslkAtividade_Alocada.Active) or
+    ((not VarIsNull(cbAtividadeAlocada.EditValue)) and
+    (not dmLookup.cdslkAtividade_Alocada.Locate(TBancoDados.coId, cbAtividadeAlocada.EditValue, [])))
+  then
+    begin
+      cbAtividadeAlocada.Clear;
+    end;
 end;
 
 procedure TfrmContaPagar.cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
+
   if not VarIsNull(cbProjetoOrigem.EditValue) then
     begin
       dmLookup.cdslkAtividade.ppuLimparParametros;
@@ -865,11 +902,24 @@ begin
 
   cbOrganizacaoOrigem.Enabled := dmLookup.cdslkProjeto_Organizacao.Active and (dmLookup.cdslkProjeto_Organizacao.RecordCount > 1);
   if dmLookup.cdslkProjeto_Organizacao.Active and (dmLookup.cdslkProjeto_Organizacao.RecordCount = 1) then
-    cbOrganizacaoOrigem.EditValue := dmLookup.cdslkProjeto_OrganizacaoID.AsInteger
+    cbOrganizacaoOrigem.EditValue := dmLookup.cdslkProjeto_OrganizacaoID_ORGANIZACAO.AsInteger
   else
     cbOrganizacaoOrigem.Clear;
 
   cbOrganizacaoOrigem.PostEditValue;
+
+  if (not dmLookup.cdslkAtividade.Active) or ((not VarIsNull(cbAtividadeOrigem.EditValue)) and
+    (not dmLookup.cdslkAtividade.Locate(TBancoDados.coId, cbAtividadeOrigem.EditValue, []))) then
+    begin
+      cbAtividadeOrigem.Clear;
+    end;
+
+  if (not dmLookup.cdslkRubrica.Active) or ((not VarIsNull(cbRubricaProjetoOrigem.EditValue)) and
+    (not dmLookup.cdslkRubrica.Locate(TBancoDados.coId, cbRubricaProjetoOrigem.EditValue, []))) then
+    begin
+      cbRubricaProjetoOrigem.Clear;
+    end;
+
 end;
 
 procedure TfrmContaPagar.FormCreate(Sender: TObject);
