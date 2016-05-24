@@ -127,6 +127,7 @@ type
     qConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField;
     qConta_PagarID_RESPONSAVEL: TIntegerField;
     qConta_PagarNOME_RESPONSAVEL: TStringField;
+    qFin_For_CliCEP: TStringField;
   private
     { Private declarations }
   protected
@@ -214,6 +215,9 @@ begin
                 Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ORIGEM', vaValor.ToInteger, vaOperador)
               else if ipParam.Name = TParametros.coProjetoAlocado then
                 Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ALOCADO', vaValor.ToInteger, vaOperador)
+              else if ipParam.name = TParametros.coRubricaOrigemRecurso then
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_RUBRICA_ORIGEM', vaValor.ToInteger, vaOperador)
+
             end
           else if ipTabela = 'CONTA_RECEBER' then
             if ipParam.Name = TParametros.coFundo then

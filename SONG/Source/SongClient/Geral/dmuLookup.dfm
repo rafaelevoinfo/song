@@ -611,6 +611,7 @@ inherited dmLookup: TdmLookup
     Top = 124
   end
   object cdslkOrganizacao: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkOrganizacao'
@@ -620,22 +621,28 @@ inherited dmLookup: TdmLookup
     Top = 448
     object cdslkOrganizacaoID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
       Required = True
     end
     object cdslkOrganizacaoNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
       Required = True
       Size = 100
     end
     object cdslkOrganizacaoCNPJ: TStringField
       FieldName = 'CNPJ'
+      Origin = 'CNPJ'
       ProviderFlags = []
       Size = 14
     end
     object cdslkOrganizacaoLOGO: TBlobField
       DisplayLabel = 'Logo'
       FieldName = 'LOGO'
+      Origin = 'LOGO'
       ProviderFlags = []
     end
   end

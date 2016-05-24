@@ -14,6 +14,7 @@ inherited smAdministrativo: TsmAdministrativo
       '       PESSOA.CPF,'
       '       PESSOA.ENDERECO,'
       '       PESSOA.BAIRRO,'
+      '       PESSOA.CEP,'
       '       PESSOA.COMPLEMENTO,'
       '       PESSOA.ID_CIDADE,'
       '       PESSOA.LOGIN,'
@@ -89,7 +90,6 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'EMAIL'
       Origin = 'EMAIL'
       ProviderFlags = [pfInUpdate]
-      Required = True
       Size = 100
     end
     object qPessoaCELULAR: TStringField
@@ -134,6 +134,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qPessoaCEP: TStringField
+      FieldName = 'CEP'
+      Origin = 'CEP'
+      ProviderFlags = [pfInUpdate]
+      Size = 60
     end
   end
   object qPerfil: TRFQuery
@@ -675,6 +681,7 @@ inherited smAdministrativo: TsmAdministrativo
       '       Organizacao.nome as nome_organizacao,'
       '       PROJETO_FINANCIADOR_PAGTO.VALOR,'
       '       PROJETO_FINANCIADOR_PAGTO.DATA,'
+      '       PROJETO_FINANCIADOR_PAGTO.FORMA_PAGTO,'
       '       PROJETO_FINANCIADOR_PAGTO.PERCENTUAL       '
       'from PROJETO_FINANCIADOR_PAGTO'
       
@@ -740,6 +747,12 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField
+      FieldName = 'FORMA_PAGTO'
+      Origin = 'FORMA_PAGTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
   object qAtividade: TRFQuery
@@ -1283,7 +1296,10 @@ inherited smAdministrativo: TsmAdministrativo
       '       Fundo.id_organizacao,'
       '       Fundo.Nome,'
       '       Fundo.Saldo,'
-      '       Fundo.Descricao'
+      '       Fundo.Descricao,'
+      
+        '       Coalesce(Fundo.Requer_Autorizacao,0) as Requer_Autorizaca' +
+        'o'
       'from Fundo  '
       'where Fundo.id_organizacao = :id_organizacao')
     Left = 488
@@ -1327,6 +1343,11 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qFundoREQUER_AUTORIZACAO: TSmallintField
+      FieldName = 'REQUER_AUTORIZACAO'
+      Origin = 'REQUER_AUTORIZACAO'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

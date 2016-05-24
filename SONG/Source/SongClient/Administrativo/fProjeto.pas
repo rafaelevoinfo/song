@@ -204,6 +204,8 @@ type
     viewPagamentosCadastroVALOR: TcxGridDBColumn;
     viewPagamentosCadastroNOME_ORGANIZACAO: TcxGridDBColumn;
     viewPagamentosNOME_ORGANIZACAO: TcxGridDBColumn;
+    lb1: TLabel;
+    cbFormaPagamento: TcxImageComboBox;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -230,7 +232,6 @@ type
     procedure ppvAdicionarFinanciador;
     procedure ppvCarregarFinanciadores;
     procedure ppvExcluirPagamento;
-    procedure ppvAtualizarRubricas();
     procedure ppvFiltrarProjetoOrganizacao;
     { Private declarations }
   protected
@@ -362,15 +363,8 @@ begin
   ppuBaixarArquivo(dmAdministrativo.cdsProjeto_DocumentoID.AsInteger);
 end;
 
-procedure TfrmProjeto.ppvAtualizarRubricas();
-begin
-  if dmAdministrativo.cdsProjeto_Rubrica.Active then
-    dmAdministrativo.cdsProjeto_Rubrica.ppuDataRequest();
-end;
-
 procedure TfrmProjeto.ppvExcluirPagamento();
 begin
-  ppvAtualizarRubricas();
   dmAdministrativo.cdsProjeto_Financiador_Pagto.Delete;
 end;
 
@@ -383,14 +377,17 @@ end;
 procedure TfrmProjeto.Ac_Incluir_PagamentoExecute(Sender: TObject);
 begin
   inherited;
+  if VarIsNull(cbProjetoOrganizacao.EditValue) then
+    raise TControlException.Create('Informe para qual organização o dinheiro será destinado.', cbProjetoOrganizacao);
+
+  if VarIsNull(cbFormaPagamento.EditValue) then
+    raise TControlException.Create('Informe a forma de pagamento.', cbFormaPagamento);
+
   if VarIsNull(EditValorPagamento.EditValue) then
     raise TControlException.Create('Informe o valor do pagamento.', EditValorPagamento);
 
   if VarIsNull(EditDataPagamento.EditValue) then
     raise TControlException.Create('Informe a data do pagamento.', EditDataPagamento);
-
-  if VarIsNull(cbProjetoOrganizacao.EditValue) then
-    raise TControlException.Create('Informe para qual organização o dinheiro será destinado.', cbProjetoOrganizacao);
 
   try
     if dmAdministrativo.cdsProjeto_FinanciadorID.IsNull then
@@ -401,13 +398,13 @@ begin
 
     dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat := EditValorPagamento.Value;
     dmAdministrativo.cdsProjeto_Financiador_PagtoDATA.AsDateTime := EditDataPagamento.Date;
+    dmAdministrativo.cdsProjeto_Financiador_PagtoFORMA_PAGTO.AsInteger := cbFormaPagamento.EditValue;
     dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat := EditPercentualPagamento.Value;
     dmAdministrativo.cdsProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO.AsInteger := cbProjetoOrganizacao.EditValue;
     if dmLookup.cdslkProjeto_Organizacao.Locate(TBancoDados.coId,cbProjetoOrganizacao.EditValue,[]) then
       dmAdministrativo.cdsProjeto_Financiador_PagtoNOME_ORGANIZACAO.AsString := dmLookup.cdslkProjeto_OrganizacaoNOME.AsString;
     dmAdministrativo.cdsProjeto_Financiador_Pagto.Post;
 
-    ppvAtualizarRubricas();
   except
     dmAdministrativo.cdsProjeto_Financiador_Pagto.Cancel;
     raise;

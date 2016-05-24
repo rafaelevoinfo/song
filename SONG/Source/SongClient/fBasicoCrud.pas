@@ -324,6 +324,7 @@ begin
   pcPrincipal.ActivePage := tabPesquisa;
 
   pprConfigurarLabelsCamposObrigatorios;
+  cbPesquisarPor.Properties.DropDownRows := cbPesquisarPor.Properties.Items.Count;
   // pprVerificarExisteStatus;
 end;
 

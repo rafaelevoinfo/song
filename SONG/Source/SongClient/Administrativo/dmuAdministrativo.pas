@@ -177,6 +177,9 @@ type
     cdsProjeto_Financiador_PagtoTOTAL: TAggregateField;
     cdsProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO: TIntegerField;
     cdsProjeto_Financiador_PagtoNOME_ORGANIZACAO: TStringField;
+    cdsProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField;
+    cdsPessoaCEP: TStringField;
+    cdsFundoREQUER_AUTORIZACAO: TSmallintField;
     procedure cdsProjeto_RubricaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

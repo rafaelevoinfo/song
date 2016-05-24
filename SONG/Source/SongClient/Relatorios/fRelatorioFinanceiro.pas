@@ -52,7 +52,7 @@ type
     cbProjetoMovimentacao: TcxLookupComboBox;
     chkTodosProjetosMovimentacao: TcxCheckBox;
     ppHeaderBand3: TppHeaderBand;
-    ppLabel15: TppLabel;
+    ppLbTituloMovimentacaoFinanceira: TppLabel;
     ppDBImage3: TppDBImage;
     ppSystemVariable7: TppSystemVariable;
     ppSystemVariable8: TppSystemVariable;
@@ -178,6 +178,12 @@ type
     ppLine2: TppLine;
     ppLabel3: TppLabel;
     ppShape2: TppShape;
+    cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppDBText10: TppDBText;
+    ppDBText11: TppDBText;
+    cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure SaldoProjetoBindAssignedValue(Sender: TObject;
@@ -246,6 +252,12 @@ begin
       ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
       ppLabelProjetoFundo.Visible := ppDetailBandMovimentacao.Visible;
       ppLabelDescricao.Visible := ppDetailBandMovimentacao.Visible;
+
+      if cgbData.CheckBox.Checked then
+        ppLbTituloMovimentacaoFinanceira.Caption := 'Movimentação Financeira - '+FormatDateTime('dd/mm/yyyy',EditDataInicial.Date)+ ' a '+FormatDateTime('dd/mm/yyyy',EditDataFinal.Date)
+      else
+        ppLbTituloMovimentacaoFinanceira.Caption := 'Movimentação Financeira';
+
 
       ppMovimentacao.PrintReport;
     end

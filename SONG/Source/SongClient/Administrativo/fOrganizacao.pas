@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
-  dmuPrincipal, uMensagem, cxImage;
+  dmuPrincipal, uMensagem, cxImage, cxCheckBox;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)
@@ -83,6 +83,8 @@ type
     EditNomeFundo: TcxDBTextEdit;
     Label15: TLabel;
     EditDescricaoFundo: TcxDBMemo;
+    chkRequerAutorizacao: TcxDBCheckBox;
+    viewFundoREQUER_AUTORIZACAO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_CarregarImagemExecute(Sender: TObject);
     procedure Ac_LimparExecute(Sender: TObject);

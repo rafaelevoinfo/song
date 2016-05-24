@@ -2,13 +2,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
   PixelsPerInch = 96
   TextHeight = 13
-  inherited pnBotoes: TPanel
-    ExplicitTop = 54
-    ExplicitHeight = 627
-  end
   inherited pnConfiguracoes: TPanel
-    ExplicitTop = 54
-    ExplicitHeight = 627
     object pcPrincipal: TcxPageControl
       Left = 0
       Top = 0
@@ -225,12 +219,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
   end
-  inherited pnOrganizacao: TPanel
-    ExplicitWidth = 981
-    inherited chkTodasOrganizacoes: TcxCheckBox
-      ExplicitHeight = 19
-    end
-  end
   inherited ActionList: TActionList
     Left = 504
     Top = 192
@@ -320,6 +308,13 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object cdsMovimentacaoVALOR_RESTANTE: TBCDField
       FieldName = 'VALOR_RESTANTE'
       Size = 2
+    end
+    object cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+    end
+    object cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField
+      FieldName = 'DESCRICAO_FORMA_PAGAMENTO'
+      Size = 60
     end
   end
   object DBPipeMovimentacao: TppDBPipeline
@@ -477,6 +472,26 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Searchable = False
       Sortable = False
     end
+    object DBPipeMovimentacaoppField16: TppField
+      FieldAlias = 'DESCRICAO_FORMA_PAGAMENTO'
+      FieldName = 'DESCRICAO_FORMA_PAGAMENTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 15
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeMovimentacaoppField17: TppField
+      FieldAlias = 'DATA_PAGAMENTO_RECEBIMENTO'
+      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 16
+      Searchable = False
+      Sortable = False
+    end
   end
   object dsMovimentacao: TDataSource
     DataSet = cdsMovimentacao
@@ -545,9 +560,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       mmBottomOffset = 0
       mmHeight = 23813
       mmPrintPosition = 0
-      object ppLabel15: TppLabel
+      object ppLbTituloMovimentacaoFinanceira: TppLabel
         DesignLayer = ppDesignLayer3
-        UserName = 'Label1'
+        UserName = 'TituloMovimentacaoFinanceira'
         Caption = 'Movimenta'#231#227'o Financeira'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -623,7 +638,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 5821
+      mmHeight = 3704
       mmPrintPosition = 0
       object ppDBText19: TppDBText
         DesignLayer = ppDesignLayer3
@@ -634,14 +649,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 6
         Font.Style = []
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
-        mmLeft = 140758
+        mmHeight = 3175
+        mmLeft = 145516
         mmTop = 0
-        mmWidth = 28575
+        mmWidth = 25000
         BandType = 4
         LayerName = BandLayer3
       end
@@ -653,14 +668,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 6
         Font.Style = []
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
-        mmLeft = 42333
+        mmHeight = 3175
+        mmLeft = 29368
         mmTop = 0
-        mmWidth = 60061
+        mmWidth = 43391
         BandType = 4
         LayerName = BandLayer3
       end
@@ -673,14 +688,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 6
         Font.Style = []
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
-        mmLeft = 103452
+        mmHeight = 3175
+        mmLeft = 119589
         mmTop = 0
-        mmWidth = 35454
+        mmWidth = 25000
         BandType = 4
         LayerName = BandLayer3
       end
@@ -692,14 +707,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 6
         Font.Style = []
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
+        mmHeight = 3175
         mmLeft = 5024
         mmTop = 0
-        mmWidth = 35986
+        mmWidth = 23019
         BandType = 4
         LayerName = BandLayer3
       end
@@ -712,15 +727,53 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 6
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 4763
-        mmLeft = 171715
+        mmHeight = 3175
+        mmLeft = 171446
         mmTop = 0
-        mmWidth = 24606
+        mmWidth = 25000
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText10'
+        DataField = 'DATA_PAGAMENTO_RECEBIMENTO'
+        DataPipeline = DBPipeMovimentacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 6
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 3175
+        mmLeft = 73820
+        mmTop = 0
+        mmWidth = 15875
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText11'
+        DataField = 'DESCRICAO_FORMA_PAGAMENTO'
+        DataPipeline = DBPipeMovimentacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 6
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 3175
+        mmLeft = 91812
+        mmTop = 0
+        mmWidth = 25665
         BandType = 4
         LayerName = BandLayer3
       end
@@ -881,9 +934,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4763
-          mmLeft = 140228
+          mmLeft = 145512
           mmTop = 3175
-          mmWidth = 29105
+          mmWidth = 25000
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer3
@@ -900,7 +953,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 130966
+          mmLeft = 136250
           mmTop = 3440
           mmWidth = 7937
           BandType = 5
@@ -953,15 +1006,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           FormField = False
           TextAlignment = taCentered
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 42333
-          mmTop = 7941
-          mmWidth = 14288
+          mmHeight = 2645
+          mmLeft = 29369
+          mmTop = 8468
+          mmWidth = 9525
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3
@@ -973,14 +1026,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3705
-          mmLeft = 140229
-          mmTop = 7938
-          mmWidth = 15610
+          mmHeight = 2645
+          mmLeft = 145517
+          mmTop = 8468
+          mmWidth = 10584
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3
@@ -992,15 +1045,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           FormField = False
           TextAlignment = taCentered
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 103187
-          mmTop = 7941
-          mmWidth = 7673
+          mmHeight = 2645
+          mmLeft = 119588
+          mmTop = 8468
+          mmWidth = 5027
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3
@@ -1012,15 +1065,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           FormField = False
           TextAlignment = taCentered
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 4761
-          mmTop = 7941
-          mmWidth = 20373
+          mmHeight = 2645
+          mmLeft = 5023
+          mmTop = 8468
+          mmWidth = 14552
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3
@@ -1032,15 +1085,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           FormField = False
           TextAlignment = taCentered
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 171450
-          mmTop = 7941
-          mmWidth = 12965
+          mmHeight = 2645
+          mmLeft = 171447
+          mmTop = 8468
+          mmWidth = 8731
           BandType = 3
           GroupNo = 1
           LayerName = BandLayer3
@@ -1069,6 +1122,45 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           GroupNo = 1
           LayerName = BandLayer3
         end
+        object ppLabel10: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'LabelDescricao1'
+          Caption = 'Data Pgto/Receb'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 6
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 2646
+          mmLeft = 73819
+          mmTop = 8467
+          mmWidth = 16404
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
+        object ppLabel11: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label11'
+          Caption = 'Forma de Pagamento'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 6
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taCentered
+          Transparent = True
+          mmHeight = 2645
+          mmLeft = 91812
+          mmTop = 8468
+          mmWidth = 20902
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
       end
       object ppGroupFooterBand4: TppGroupFooterBand
         Background.Brush.Style = bsClear
@@ -1085,16 +1177,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           ResetGroup = ppGroupTipo
           Transparent = True
           VerticalAlignment = avCenter
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4498
-          mmLeft = 140758
+          mmLeft = 145516
           mmTop = 264
-          mmWidth = 29104
+          mmWidth = 25000
           BandType = 5
           GroupNo = 2
           LayerName = BandLayer3
@@ -1108,16 +1200,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           ResetGroup = ppGroupTipo
           Transparent = True
           VerticalAlignment = avCenter
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4498
-          mmLeft = 103452
+          mmLeft = 119593
           mmTop = 264
-          mmWidth = 35454
+          mmWidth = 25000
           BandType = 5
           GroupNo = 2
           LayerName = BandLayer3
@@ -1131,16 +1223,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 6
           Font.Style = [fsBold]
           ResetGroup = ppGroupTipo
           Transparent = True
           VerticalAlignment = avCenter
           DataPipelineName = 'DBPipeMovimentacao'
           mmHeight = 4498
-          mmLeft = 171715
+          mmLeft = 171451
           mmTop = 264
-          mmWidth = 24606
+          mmWidth = 25000
           BandType = 5
           GroupNo = 1
           LayerName = BandLayer3
@@ -2285,7 +2377,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField

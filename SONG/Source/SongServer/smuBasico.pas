@@ -35,6 +35,8 @@ type
     procedure pprEncapsularConsulta(ipProc: TProc<TRFQuery>);
 
     function fprValidarCampoUnico(ipTabela, ipCampo: string; ipIdIgnorar: integer; ipValor: String): Boolean;
+    function fprValidarCamposUnicos(ipTabela:String; ipCampos,ipValores: TArray<String>; ipIdIgnorar: integer): Boolean;
+
   public
     property Connection: TFDConnection read GetConnection write SetConnection;
   end;
@@ -124,7 +126,7 @@ function TsmBasico.fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): Ole
 var
   vaParams: TParams;
   vaDataSet: TFDQuery;
-  vaScript, vaWhere, vaTabela, vaNomeMacro: string;
+  vaWhere, vaTabela, vaNomeMacro: string;
   vaMacroWhere: TFDMacro;
 begin
   vaParams := TParams.Create;
@@ -137,10 +139,10 @@ begin
         begin
           vaDataSet := TDataSetProvider(ipSender).DataSet as TFDQuery;
           vaMacroWhere := vaDataSet.FindMacro(TBancoDados.coMacroWhere);
-          if Assigned(vaMacroWhere) then//and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
+          if Assigned(vaMacroWhere) then // and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
             begin
               vaNomeMacro := vaMacroWhere.Name;
-            //  vaDataSet.SQL.Text := vaScript;
+              // vaDataSet.SQL.Text := vaScript;
               vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
               vaWhere := fpvMontarWhere(vaTabela, vaParams);
 
@@ -189,7 +191,7 @@ var
   vaValor, vaOperador: string;
   vaIdsString: TArray<string>;
   vaIds: TArray<integer>;
-  I: Integer;
+  I: integer;
 begin
   Result := ipWhere;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -201,7 +203,7 @@ begin
         begin
           SetLength(vaIds, Length(vaIdsString));
           for I := 0 to High(vaIdsString) do
-            vaIds[i] := vaIdsString[i].ToInteger();
+            vaIds[I] := vaIdsString[I].ToInteger();
 
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaIds, vaOperador)
         end
@@ -224,8 +226,38 @@ begin
     end;
 end;
 
+function TsmBasico.fprValidarCamposUnicos(ipTabela:String; ipCampos,ipValores: TArray<String>;
+  ipIdIgnorar: integer): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+
+    var
+      I: integer;
+    begin
+      ipDataSet.SQL.Text := 'select ID ' +
+        ' from  ' + ipTabela +
+        ' where ID <> :ID ';
+        
+      for I := 0 to High(ipCampos) do
+        begin
+          ipDataSet.SQL.Text := ipDataSet.SQL.Text + ' and ' + ipCampos[I] + ' = ' + QuotedStr(ipValores[I]);
+        end;
+
+      ipDataSet.ParamByName('ID').AsInteger := ipIdIgnorar;
+      ipDataSet.Open();
+
+      vaResult := ipDataSet.Eof;
+    end);
+
+  Result := vaResult;
+
+end;
+
 function TsmBasico.fprValidarCampoUnico(ipTabela, ipCampo: string;
-  ipIdIgnorar: integer; ipValor: String): Boolean;
+ipIdIgnorar: integer; ipValor: String): Boolean;
 var
   vaResult: Boolean;
 begin

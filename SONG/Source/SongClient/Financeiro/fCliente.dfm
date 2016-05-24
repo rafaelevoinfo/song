@@ -6,18 +6,24 @@ inherited frmCliente: TfrmCliente
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Height = 500
+    ExplicitHeight = 500
     ClientRectBottom = 496
     inherited tabPesquisa: TcxTabSheet
+      ExplicitHeight = 472
       inherited pnGrid: TPanel
         Height = 428
+        ExplicitHeight = 428
         inherited cxGridRegistros: TcxGrid
           Height = 426
+          ExplicitHeight = 426
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitHeight = 472
       inherited pnEditsCadastro: TPanel
         Height = 422
+        ExplicitHeight = 422
         inherited lbNome: TLabel
           Top = 49
           ExplicitTop = 49

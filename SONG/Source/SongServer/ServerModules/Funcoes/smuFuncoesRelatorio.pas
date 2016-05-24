@@ -25,7 +25,6 @@ type
     qMovimentacaoVALOR_TOTAL: TBCDField;
     qMovimentacaoVALOR_PARCIAL: TBCDField;
     qMovimentacaoID: TIntegerField;
-    qMovimentacaoDATA: TDateField;
     cdsSaldo: TClientDataSet;
     cdsSaldoID_ORGANIZACAO: TIntegerField;
     cdsSaldoNOME_ORGANIZACAO: TStringField;
@@ -37,6 +36,9 @@ type
     cdsSaldoTIPO_ORIGEM: TIntegerField;
     qMovimentacaoTIPO_ORIGEM: TIntegerField;
     qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
+    qMovimentacaoDATA: TDateField;
+    qMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField;
+    qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO: TSmallintField;
   private
     procedure ppvCalcularSaldoGeral(ipCds: TClientDataSet);
     { Private declarations }
@@ -54,6 +56,7 @@ const
   coValor = 'VALOR';
   coValorRestante = 'VALOR_RESTANTE';
   coSaldoGeral = 'SALDO_GERAL';
+  coDescricaoFormaPagamento = 'DESCRICAO_FORMA_PAGAMENTO';
 
   coDespesa = 0;
   coReceita = 1;
@@ -101,12 +104,14 @@ begin
     vaCds.FieldDefs.Add(coValor, ftBCD, 2);
     vaCds.FieldDefs.Add(coValorRestante, ftBCD, 2);
     vaCds.FieldDefs.Add(coSaldoGeral, ftBCD, 2);
+    vaCds.FieldDefs.Add(coDescricaoFormaPagamento, ftString, 60);
     vaCds.CreateDataSet;
 
     while not qMovimentacao.Eof do
       begin
         vaCds.ppuCopiarRegistro(qMovimentacao);
         vaCds.FieldByName(coProcessado).AsBoolean := False;
+        vaCds.FieldByName(coDescricaoFormaPagamento).AsString := FormaPagamennto[TFormaPagamento(qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO.AsInteger)];
         vaCds.Post;
 
         qMovimentacao.Next;

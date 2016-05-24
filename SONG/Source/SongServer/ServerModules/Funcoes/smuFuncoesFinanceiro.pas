@@ -15,11 +15,12 @@ type
   private
     function fpvGerarIdentificador(ipDataSet: TRFQuery; ipIdentificadorPai: String): string;
     function fpvVerificarDependenciasPorIdentificador(ipIdentificador, ipNomeTabela: string): Boolean;
-    procedure ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
+    procedure ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean; ipDataPagamento:TDateTime);
     procedure ppvReceberReabrirParcela(ipIdParcela: Integer; ipReceber: Boolean);
     procedure ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar, ipContaReceber: Boolean);
     function fpvVerificarStatusParcela(ipIdParcela: Integer;
       ipContaReceber: Boolean; ipStatus: Integer): Boolean;
+    function fpvVerificarContaPagarVinculadaProjeto(ipIdParcela:Integer): Boolean;
   public
     function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
@@ -27,7 +28,7 @@ type
     function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
 
-    procedure ppuQuitarParcela(ipIdParcela: Integer);
+    procedure ppuQuitarParcela(ipIdParcela: Integer;ipDataPagamento:String);
     procedure ppuReabrirParcela(ipIdParcela: Integer);
     procedure ppuReabrirTodasParcelasContaPagar(ipIdContaPagar: Integer);
 
@@ -172,7 +173,28 @@ begin
   Result := vaSaldo;
 end;
 
-procedure TsmFuncoesFinanceiro.ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean);
+function TsmFuncoesFinanceiro.fpvVerificarContaPagarVinculadaProjeto(ipIdParcela:Integer):Boolean;
+var
+  vaDataSet:TRFQuery;
+begin
+  Result := False;
+  pprCriarDataSet(vaDataSet);
+  try
+    vaDataSet.SQl.Text := 'Select count(*) AS QTDE from conta_pagar_parcela '+
+    ' inner join conta_pagar on (conta_pagar.id = conta_pagar_parcela.id_conta_pagar)'+
+    ' inner join conta_pagar_vinculo on (conta_pagar.id = conta_pagar_vinculo.id_conta_pagar)'+
+    ' where conta_pagar_parcela.id = :ID_PARCELA and '+
+    '       conta_pagar_vinculo.id_projeto_origem is not null';
+    vaDataSet.ParamByName('ID_PARCELA').AsInteger := ipIdParcela;
+    vaDataSet.Open();
+    Result := vaDataSet.FieldByName('QTDE').AsInteger > 0;
+
+  finally
+    vaDataSet.Free;
+  end;
+end;
+
+procedure TsmFuncoesFinanceiro.ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean; ipDataPagamento:TDateTime);
 var
   vaUpdate: string;
 
@@ -229,7 +251,7 @@ begin;
           Exit; // ja quitou
 
         vaUpdate := 'update conta_pagar_parcela ' +
-          '  set conta_pagar_parcela.data_pagamento = current_timestamp,  ' +
+          '  set conta_pagar_parcela.data_pagamento = '+QuotedStr(FormatDateTime('dd.mm.yyyy',ipDataPagamento))+',  ' +
           '      conta_pagar_parcela.status = 1 ' +
           '  where conta_pagar_parcela.id = :ID_PARCELA';
       end
@@ -246,7 +268,7 @@ begin;
     if Connection.ExecSQL(vaUpdate, [ipIdParcela]) < 1 then
       raise Exception.Create('Parcela não encontrada.');
 
-    if ipQuitar then
+    if ipQuitar and fpvVerificarContaPagarVinculadaProjeto(ipIdParcela) then
       begin
         // para facilitar, vou realizar o pagamento primeiro e depois vou verificar o saldo, caso seja negativo faço um rollback
         plValidarSaldoRubricas;
@@ -302,7 +324,7 @@ end;
 procedure TsmFuncoesFinanceiro.ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery;
 ipIncrementar, ipContaReceber: Boolean);
 var
-  vaValorPercentual, vaPercentual, vaSomaPercentuais, vaSomaParcelas: Double;
+  vaValorPercentual, vaSomaPercentuais, vaSomaParcelas: Double;
   I, j: Integer;
   vaDataSet: TRFQuery;
 
@@ -412,6 +434,7 @@ begin
             if not ipDataSetParcela.Locate(TBancoDados.coId, ipIdParcela, []) then
               raise Exception.Create('Erro ao atualizar o saldo do Fundo. Detalhes: Parcela de id ' + ipIdParcela.ToString + ' não encontrada.');
 
+            vaSomaPercentuais := 0;
             ipDataSetVinculo.First;
             for I := 1 to ipDataSetVinculo.RecordCount do
               begin
@@ -562,14 +585,19 @@ begin
     end);
 end;
 
-procedure TsmFuncoesFinanceiro.ppuQuitarParcela(ipIdParcela: Integer);
+procedure TsmFuncoesFinanceiro.ppuQuitarParcela(ipIdParcela: Integer; ipDataPagamento:String);
+var
+  vaDataPagamento:TDateTime;
 begin
-  ppvQuitarReabrirParcela(ipIdParcela, True);
+  if TryStrToDate(ipDataPagamento,vaDataPagamento) then
+    ppvQuitarReabrirParcela(ipIdParcela, True,vaDataPagamento)
+  else
+    raise Exception.Create('Data de Pagamento Inválida.');
 end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirParcela(ipIdParcela: Integer);
 begin
-  ppvQuitarReabrirParcela(ipIdParcela, False);
+  ppvQuitarReabrirParcela(ipIdParcela, False,0);
 end;
 
 procedure TsmFuncoesFinanceiro.ppuReabrirTodasParcelasContaPagar(

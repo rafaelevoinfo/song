@@ -83,7 +83,7 @@ inherited frmOrganizacao: TfrmOrganizacao
             Properties.ActivePage = tabDetailFundo
             OnChange = pcDetailsChange
             object tabDetailFundo: TcxTabSheet [0]
-              Caption = 'Fundos'
+              Caption = 'Contas'
               ImageIndex = 1
               object pnBotoesDetailFundo: TPanel
                 Left = 0
@@ -114,6 +114,8 @@ inherited frmOrganizacao: TfrmOrganizacao
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitLeft = 1
+                ExplicitTop = 30
                 object viewFundo: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -138,12 +140,18 @@ inherited frmOrganizacao: TfrmOrganizacao
                   object viewFundoNOME: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME'
                     Options.Editing = False
-                    Width = 525
+                    Width = 475
                   end
                   object viewFundoSALDO: TcxGridDBColumn
                     DataBinding.FieldName = 'SALDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                  end
+                  object viewFundoREQUER_AUTORIZACAO: TcxGridDBColumn
+                    DataBinding.FieldName = 'REQUER_AUTORIZACAO'
+                    RepositoryItem = dmLookup.RepIcbNaoSim
+                    Options.Editing = False
+                    Width = 161
                   end
                   object ColumnAlterarFundo: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -555,6 +563,18 @@ inherited frmOrganizacao: TfrmOrganizacao
           TabOrder = 1
           Height = 89
           Width = 964
+        end
+        object chkRequerAutorizacao: TcxDBCheckBox
+          Left = 303
+          Top = 19
+          Caption = 'Requer autoriza'#231#227'o especial para uso'
+          DataBinding.DataField = 'REQUER_AUTORIZACAO'
+          DataBinding.DataSource = dsDetailFundo
+          Properties.NullStyle = nssUnchecked
+          Properties.ValueChecked = 1
+          Properties.ValueUnchecked = 0
+          TabOrder = 2
+          Width = 202
         end
       end
     end

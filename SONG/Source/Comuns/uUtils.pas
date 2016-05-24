@@ -6,7 +6,8 @@ uses
   System.SysUtils, Vcl.Dialogs, cxPC, Vcl.Forms, Vcl.Controls,
   Datasnap.DBClient, IdHashSHA, System.RegularExpressions,
   System.Types, Winapi.Windows, uTypes, System.Classes, Data.DB,
-  System.Generics.Collections, cxCheckComboBox, System.Variants, System.Math;
+  System.Generics.Collections, cxCheckComboBox, System.Variants, System.Math,
+  Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
   TUtils = class
@@ -44,6 +45,8 @@ type
     class function fpuValidarCnpj(ipCnpj: string): Boolean;
 
     class function fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer):Double;
+
+    class function fpuEncapsularPanelForm(ipCaption:string; ipPanel:TPanel):TForm;
   end;
 
 const
@@ -328,6 +331,26 @@ begin
   ipPageControl.ActivePage := vaTab;
   opForm.show;
 
+end;
+
+class function TUtils.fpuEncapsularPanelForm(ipCaption:string;ipPanel: TPanel): TForm;
+begin
+  Result := TForm.Create(nil);
+  Result.Caption := ipCaption;
+  Result.KeyPreview := True;
+  ipPanel.Parent := Result;
+  ipPanel.Visible := True;
+  ipPanel.Top := 0;
+  ipPanel.Left := 0;
+  ipPanel.bevelOuter := bvNone;
+
+  Result.Width := ipPanel.Width + 10;
+  Result.Height := ipPanel.Height + 35;
+
+  Result.BorderIcons := [];
+  Result.BorderStyle := bsSingle;
+
+  Result.position := poMainFormCenter;
 end;
 
 class function TUtils.fpuExtrairData(ipDateString: string;

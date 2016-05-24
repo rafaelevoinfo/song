@@ -1,6 +1,7 @@
 inherited frmLoteSemente: TfrmLoteSemente
   ActiveControl = btnSalvarDetail
   Caption = 'Lotes de Sementes'
+  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -184,10 +185,6 @@ inherited frmLoteSemente: TfrmLoteSemente
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -352,6 +349,10 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnMatrizes: TPanel
           Left = 1

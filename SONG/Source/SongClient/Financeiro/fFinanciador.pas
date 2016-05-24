@@ -69,6 +69,8 @@ type
     lbl1: TLabel;
     EditCargoContato: TcxDBTextEdit;
     EditCpfCnpj: TcxDBMaskEdit;
+    EditCep: TcxDBMaskEdit;
+    lb1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Pesquisar_PessoaExecute(Sender: TObject);
     procedure cbContatoKeyDown(Sender: TObject; var Key: Word;

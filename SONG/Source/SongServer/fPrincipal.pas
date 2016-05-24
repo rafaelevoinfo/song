@@ -14,7 +14,7 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, Datasnap.DBClient,
   cxGridLevel, cxGridCustomView, cxGrid, dxSkinscxPCPainter, System.IOUtils,
-  uMensagem, fAtualizacao;
+  uMensagem, fAtualizacao, uUtils, uTypes;
 
 type
   TfrmPrincipal = class(TForm)
@@ -138,6 +138,8 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  inherited;
+  Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
   store.RestoreFrom;
 
   ppvIniciarFinalizarServidor(true);

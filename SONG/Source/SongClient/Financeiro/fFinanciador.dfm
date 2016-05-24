@@ -1,10 +1,11 @@
 inherited frmFinanciador: TfrmFinanciador
   ActiveControl = EditNomeFantasia
   Caption = 'Financiadores'
-  ExplicitHeight = 240
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -110,6 +111,10 @@ inherited frmFinanciador: TfrmFinanciador
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbNome: TLabel
           Left = 5
@@ -268,6 +273,13 @@ inherited frmFinanciador: TfrmFinanciador
             Caption = 'Cargo do Contato'
             FocusControl = EditCargoContato
           end
+          object lb1: TLabel
+            Left = 284
+            Top = 135
+            Width = 19
+            Height = 13
+            Caption = 'CEP'
+          end
           object EditEmail: TcxDBTextEdit
             Left = 5
             Top = 70
@@ -290,7 +302,7 @@ inherited frmFinanciador: TfrmFinanciador
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
             TabOrder = 8
-            Width = 397
+            Width = 273
           end
           object EditCelular: TcxDBMaskEdit
             Left = 405
@@ -335,7 +347,7 @@ inherited frmFinanciador: TfrmFinanciador
               item
                 FieldName = 'NOME'
               end>
-            TabOrder = 9
+            TabOrder = 10
             Width = 244
           end
           object EditSite: TcxDBTextEdit
@@ -343,7 +355,7 @@ inherited frmFinanciador: TfrmFinanciador
             Top = 189
             DataBinding.DataField = 'SITE'
             DataBinding.DataSource = dsMaster
-            TabOrder = 10
+            TabOrder = 11
             Width = 644
           end
           object cbContato: TcxDBLookupComboBox
@@ -374,6 +386,16 @@ inherited frmFinanciador: TfrmFinanciador
             DataBinding.DataSource = dsMaster
             TabOrder = 2
             Width = 221
+          end
+          object EditCep: TcxDBMaskEdit
+            Left = 281
+            Top = 150
+            DataBinding.DataField = 'CEP'
+            DataBinding.DataSource = dsMaster
+            Properties.MaskKind = emkRegExprEx
+            Properties.EditMask = '\d{5}-\d{3}'
+            TabOrder = 9
+            Width = 121
           end
         end
         object EditInscricaoEstadual: TcxDBTextEdit

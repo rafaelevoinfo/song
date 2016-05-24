@@ -317,8 +317,6 @@ end;
 procedure TfrmCompra.ppvExcluirItensEntrada(ipIds: TArray<Integer>);
 var
   vaFrmEntrada: TfrmEntrada;
-  vaIds: TStringList;
-  I: Integer;
 begin
   vaFrmEntrada := TfrmEntrada.Create(nil);
   try

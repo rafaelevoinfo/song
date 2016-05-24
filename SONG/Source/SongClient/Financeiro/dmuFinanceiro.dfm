@@ -82,83 +82,100 @@ inherited dmFinanceiro: TdmFinanceiro
     object cdsFin_For_CliID_CONTATO: TIntegerField
       DisplayLabel = 'Contato'
       FieldName = 'ID_CONTATO'
-      Required = True
+      ProviderFlags = [pfInUpdate]
     end
     object cdsFin_For_CliID_CIDADE: TIntegerField
       DisplayLabel = 'Cidade'
       FieldName = 'ID_CIDADE'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsFin_For_CliNOME_FANTASIA: TStringField
       DisplayLabel = 'Nome Fantasia'
       FieldName = 'NOME_FANTASIA'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
     object cdsFin_For_CliRAZAO_SOCIAL: TStringField
       DisplayLabel = 'Raz'#227'o Social'
       FieldName = 'RAZAO_SOCIAL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 100
     end
     object cdsFin_For_CliENDERECO: TStringField
       DisplayLabel = 'Endere'#231'o'
       FieldName = 'ENDERECO'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsFin_For_CliBAIRRO: TStringField
       DisplayLabel = 'Bairro'
       FieldName = 'BAIRRO'
+      ProviderFlags = [pfInUpdate]
       Size = 30
     end
     object cdsFin_For_CliCOMPLEMENTO: TStringField
       DisplayLabel = 'Complemento'
       FieldName = 'COMPLEMENTO'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsFin_For_CliTIPO: TIntegerField
       DisplayLabel = 'Tipo'
       FieldName = 'TIPO'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsFin_For_CliTELEFONE: TStringField
       DisplayLabel = 'Telefone'
       FieldName = 'TELEFONE'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsFin_For_CliCELULAR: TStringField
       DisplayLabel = 'Celular'
       FieldName = 'CELULAR'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsFin_For_CliEMAIL: TStringField
       DisplayLabel = 'E-Mail'
       FieldName = 'EMAIL'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsFin_For_CliSITE: TStringField
       DisplayLabel = 'Site'
       FieldName = 'SITE'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object cdsFin_For_CliCPF_CNPJ: TStringField
       DisplayLabel = 'CPF/CNPJ'
       FieldName = 'CPF_CNPJ'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 18
     end
     object cdsFin_For_CliINSCRICAO_ESTADUAL: TStringField
       DisplayLabel = 'Inscri'#231#227'o Estadual'
       FieldName = 'INSCRICAO_ESTADUAL'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsFin_For_CliINSCRICAO_MUNICIPAL: TStringField
       DisplayLabel = 'Inscri'#231#227'o Municipal'
       FieldName = 'INSCRICAO_MUNICIPAL'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsFin_For_CliRAMO_ATIVIDADE: TStringField
       DisplayLabel = 'Ramo de Atividade'
       FieldName = 'RAMO_ATIVIDADE'
+      ProviderFlags = [pfInUpdate]
       Size = 50
     end
     object cdsFin_For_CliOBSERVACAO: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
       Size = 1000
     end
     object cdsFin_For_CliCARGO_CONTATO: TStringField
@@ -166,6 +183,11 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'CARGO_CONTATO'
       ProviderFlags = [pfInUpdate]
       Size = 100
+    end
+    object cdsFin_For_CliCEP: TStringField
+      FieldName = 'CEP'
+      ProviderFlags = [pfInUpdate]
+      Size = 60
     end
   end
   object cdsPlano_Contas: TRFClientDataSet
@@ -264,6 +286,7 @@ inherited dmFinanceiro: TdmFinanceiro
       DisplayLabel = 'Id da Conta Corrente'
       FieldName = 'ID_CONTA_CORRENTE'
       ProviderFlags = [pfInUpdate]
+      Required = True
     end
     object cdsConta_PagarDESCRICAO: TStringField
       DisplayLabel = 'Descri'#231#227'o'

@@ -126,6 +126,7 @@ type
     cdsConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField;
     cdsConta_PagarID_RESPONSAVEL: TIntegerField;
     cdsConta_PagarNOME_RESPONSAVEL: TStringField;
+    cdsFin_For_CliCEP: TStringField;
   private
     { Private declarations }
   public

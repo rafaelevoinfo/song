@@ -172,6 +172,9 @@ type
     qProjeto_FinanciadorVALOR_FINANCIADO: TBCDField;
     qProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO: TIntegerField;
     qProjeto_Financiador_PagtoNOME_ORGANIZACAO: TStringField;
+    qProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField;
+    qPessoaCEP: TStringField;
+    qFundoREQUER_AUTORIZACAO: TSmallintField;
   private
     { Private declarations }
   protected

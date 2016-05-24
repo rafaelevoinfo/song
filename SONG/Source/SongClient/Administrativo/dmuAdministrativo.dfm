@@ -161,7 +161,6 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'E-Mail'
       FieldName = 'EMAIL'
       ProviderFlags = [pfInUpdate]
-      Required = True
       Size = 100
     end
     object cdsPessoaCELULAR: TStringField
@@ -207,6 +206,11 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object cdsPessoaCEP: TStringField
+      FieldName = 'CEP'
+      ProviderFlags = [pfInUpdate]
+      Size = 60
     end
   end
   object cdsPessoa_Perfil: TRFClientDataSet
@@ -641,6 +645,11 @@ inherited dmAdministrativo: TdmAdministrativo
         Name = 'NOME_ORGANIZACAO'
         DataType = ftString
         Size = 100
+      end
+      item
+        Name = 'FORMA_PAGTO'
+        Attributes = [faRequired]
+        DataType = ftSmallint
       end>
     IndexDefs = <
       item
@@ -705,6 +714,12 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'NOME_ORGANIZACAO'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField
+      DisplayLabel = 'Forma de Pagamento'
+      FieldName = 'FORMA_PAGTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
     object cdsProjeto_Financiador_PagtoTOTAL: TAggregateField
       DisplayLabel = 'Total Financiado'
@@ -1275,6 +1290,12 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object cdsFundoREQUER_AUTORIZACAO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Autoriza'#231#227'o Especial para Uso'
+      FieldName = 'REQUER_AUTORIZACAO'
+      ProviderFlags = [pfInUpdate]
     end
   end
 end

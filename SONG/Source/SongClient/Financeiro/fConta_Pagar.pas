@@ -196,6 +196,15 @@ type
     viewRegistrosID_COMPRA: TcxGridDBColumn;
     viewRegistrosID_RESPONSAVEL: TcxGridDBColumn;
     viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn;
+    pnDataPagamento: TPanel;
+    EditDataPagamento: TcxDateEdit;
+    btnCancelarQuitacao: TButton;
+    btnQuitar: TButton;
+    cbPesquisaRubricas: TcxLookupComboBox;
+    cdsLocalRubricas: TClientDataSet;
+    dsLocalRubricas: TDataSource;
+    cdsLocalRubricasID: TIntegerField;
+    cdsLocalRubricasNOME: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -236,6 +245,7 @@ type
     function fprConfigurarControlesPesquisa: TWinControl; override;
     function fprHabilitarAlterarDetail: Boolean; override;
     procedure pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
+    procedure pprValidarPesquisa; override;
 
     procedure pprCarregarDadosModelo; override;
   public
@@ -255,6 +265,7 @@ type
     coPesquisaPlanoConta = 7;
     coPesquisaProjetoOrigemRecurso = 8;
     coPesquisaProjetoAlocado = 9;
+    coPesquisaRubricaOrigemRecurso = 10;
 
   end;
 
@@ -366,6 +377,8 @@ begin
     ipCds.ppuAddParametro(TParametros.coProjeto, cbPesquisaProjeto.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaProjetoAlocado then
     ipCds.ppuAddParametro(TParametros.coProjetoAlocado, cbPesquisaProjeto.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso then
+    ipCds.ppuAddParametro(TParametros.coRubricaOrigemRecurso, cbPesquisaRubricas.EditValue)
 
 end;
 
@@ -436,6 +449,16 @@ begin
     end
   else
     raise Exception.Create('É necessário gerar pelo menos uma parcela.');
+end;
+
+procedure TfrmContaPagar.pprValidarPesquisa;
+begin
+  inherited;
+  if cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso then
+    begin
+      if VarIsNull(cbPesquisaRubricas.EditValue) then
+        raise Exception.Create('Informe a rubrica para pesquisa.');
+    end;
 end;
 
 procedure TfrmContaPagar.ppuIncluir;
@@ -692,17 +715,31 @@ begin
 end;
 
 procedure TfrmContaPagar.ppvQuitarParcela;
+var
+  vaForm: TForm;
 begin
-  // ja alterar a tabela conta_pagar_parcel tbm
-  dmPrincipal.FuncoesFinanceiro.ppuQuitarParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger);
-  // pra nao precisar fazer um refresh vou alterar manualmente
-  dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
-  dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.AsDateTime := Now;
-  dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 1;
-  dmFinanceiro.cdsConta_Pagar_Parcela.Post;
+  vaForm := TUtils.fpuEncapsularPanelForm('Data do Pagamento', pnDataPagamento);
+  try
+    EditDataPagamento.Date := Now;
+    if vaForm.ShowModal = mrOk then
+      begin
+        // ja alterar a tabela conta_pagar_parcel tbm
+        dmPrincipal.FuncoesFinanceiro.ppuQuitarParcela(dmFinanceiro.cdsConta_Pagar_ParcelaID.AsInteger, DateToStr(EditDataPagamento.Date));
+        // pra nao precisar fazer um refresh vou alterar manualmente
+        dmFinanceiro.cdsConta_Pagar_Parcela.Edit;
+        dmFinanceiro.cdsConta_Pagar_ParcelaDATA_PAGAMENTO.AsDateTime := EditDataPagamento.Date;
+        dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.AsInteger := 1;
+        dmFinanceiro.cdsConta_Pagar_Parcela.Post;
 
-  // faz o cds achar q nada aconteceu
-  dmFinanceiro.cdsConta_Pagar_Parcela.MergeChangeLog;
+        // faz o cds achar q nada aconteceu
+        dmFinanceiro.cdsConta_Pagar_Parcela.MergeChangeLog;
+      end;
+  finally
+    pnDataPagamento.Visible := False;
+    pnDataPagamento.Parent := Self;
+
+    vaForm.Free;
+  end;
 end;
 
 procedure TfrmContaPagar.ppvReabrirParcela;
@@ -952,6 +989,9 @@ begin
   dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+  dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);;
+  //preciso de um cds pq o lkRubrica vai ser utilizado para outras coisas mais pra frente
+  cdsLocalRubricas.Data := dmLookup.cdslkRubrica.Data;
 
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
@@ -970,14 +1010,17 @@ begin
   cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
   cbPesquisaProjeto.Visible := (cbPesquisarPor.EditValue = coPesquisaProjetoOrigemRecurso) or (cbPesquisarPor.EditValue = coPesquisaProjetoAlocado);
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaProjeto.Visible));
+  cbPesquisaRubricas.Visible := (cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso);
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible));
 
   if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor
   else if cbPesquisaPlanoConta.Visible then
     Result := cbPesquisaPlanoConta
   else if cbPesquisaProjeto.Visible then
-    Result := cbPesquisaProjeto;
+    Result := cbPesquisaProjeto
+  else if cbPesquisaRubricas.Visible then
+    Result := cbPesquisaRubricas;
 end;
 
 function TfrmContaPagar.fprGetPermissao: string;

@@ -75,6 +75,8 @@ type
     Label16: TLabel;
     cbTipoVinculoPesquisa: TcxCheckComboBox;
     CustomizeDlg1: TCustomizeDlg;
+    EditCep: TcxDBMaskEdit;
+    lb1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ColumnExcluirCustomDrawHeader(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
@@ -242,7 +244,6 @@ begin
     dmAdministrativo.cdsPessoa_Perfil.ApplyUpdates(0);
 end;
 
-
 procedure TfrmPessoa.pprValidarDados;
 begin
   inherited;
@@ -260,6 +261,10 @@ begin
   if not dmPrincipal.FuncoesAdm.fpuValidarLogin(dmAdministrativo.cdsPessoaID.AsInteger,
     dmAdministrativo.cdsPessoaNOME.AsString) then
     raise TControlException.Create('O login informado já foi cadastrado. Por favor, informe outro.', EditLogin);
+
+  if not dmPrincipal.FuncoesAdm.fpuValidarNomeCpfPessoa(dmAdministrativo.cdsPessoaID.AsInteger, dmAdministrativo.cdsPessoaNOME.AsString.Trim,
+    dmAdministrativo.cdsPessoaCPF.AsString.Trim) then
+    raise TControlException.Create('Já existe uma pessoa cadastrada com esse nome e CPF.', EditNome);
 end;
 
 procedure TfrmPessoa.ppuAlterar(ipId: Integer);

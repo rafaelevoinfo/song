@@ -104,6 +104,8 @@ type
 
   TTipoSaida = (tsVenda, tsConsumo, tsPerda,tsOutro);
 
+  TFormaPagamento = (fpTransferencia, fpDebitoConta, fpCartaoCredito,fpCartaoDebito,fpCheque,fpDinheiro,fpOutro);
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;
@@ -121,6 +123,8 @@ const
   AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar', 'Inativar');
   TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário', 'Membro da Diretoria', 'Cliente', 'Fornecedor',
     'Financiador', 'Parceiro', 'Estagiário', 'Voluntário', 'Outro');
+  FormaPagamennto: array [TFormaPagamento] of string = ('Transferência Bancária', 'Débito em Conta', 'Cartão de Crédito', 'Cartão de Débito',
+    'Cheque', 'Dinheiro', 'Outro');
 
 implementation
 

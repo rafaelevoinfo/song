@@ -1,6 +1,7 @@
 inherited frmEntrada: TfrmEntrada
   ActiveControl = nil
   Caption = 'Entradas'
+  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl

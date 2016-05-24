@@ -15,6 +15,8 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
       '       View_Movimentacao_Financeira.Descricao_Tipo,'
       '       View_Movimentacao_Financeira.Descricao_Movimentacao,'
       '       View_Movimentacao_Financeira.Data,'
+      '       View_Movimentacao_Financeira.Data_Pagamento_Recebimento,'
+      '       View_Movimentacao_Financeira.Forma_Pagamento_Recebimento,'
       '       View_Movimentacao_Financeira.valor_total,'
       '       View_Movimentacao_Financeira.valor_parcial,'
       '       View_Movimentacao_Financeira.Valor_Total_Pago_Recebido'
@@ -127,14 +129,22 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
       FieldName = 'ID'
       Origin = 'ID'
     end
-    object qMovimentacaoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-    end
     object qMovimentacaoTIPO_ORIGEM: TIntegerField
       FieldName = 'TIPO_ORIGEM'
       Origin = 'TIPO_ORIGEM'
       ProviderFlags = [pfInUpdate]
+    end
+    object qMovimentacaoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+    end
+    object qMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+      Origin = 'DATA_PAGAMENTO_RECEBIMENTO'
+    end
+    object qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO: TSmallintField
+      FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
+      Origin = 'FORMA_PAGAMENTO_RECEBIMENTO'
     end
   end
   object cdsSaldo: TClientDataSet

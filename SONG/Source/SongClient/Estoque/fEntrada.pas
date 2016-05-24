@@ -229,6 +229,7 @@ var
   vaQtde: Double;
 begin
   vaIdItem := dmEstoque.cdsEntrada_ItemID_ITEM.AsInteger;
+  vaQtde := dmEstoque.cdsEntrada_ItemQTDE.AsFloat;
   inherited;
   dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItem, vaQtde,0);
 end;

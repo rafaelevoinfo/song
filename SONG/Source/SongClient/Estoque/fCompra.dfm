@@ -1,5 +1,6 @@
 inherited frmCompra: TfrmCompra
   Caption = 'Compras'
+  ExplicitWidth = 320
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13

@@ -31,6 +31,7 @@ type
     coDescricao = 'DESCRICAO';
     coFornecedor = 'FORNECEDOR';
     coRubrica = 'RUBRICA';
+    coRubricaOrigemRecurso = 'RUBRICA_ORIGEM_RECURSO';
     coPlanoConta = 'PLANO_CONTA';
     coClienteFinanciador = 'CLIENTE_FINANCIADOR';
     coSolicitante = 'PESSOA_SOLICITANTE';
@@ -45,6 +46,7 @@ type
     coCodigoRastreio = 'CODIGO_RASTREIO';
     coFundo = 'FUNDO';
     coPossuiEstoque = 'POSSUI_ESTOQUE';
+
 
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 

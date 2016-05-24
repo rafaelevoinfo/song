@@ -19,9 +19,10 @@ type
     function fpuValidarNomeAreaProjeto(ipIdProjeto, ipIdAreaProjeto: integer; ipNome: String): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
+    function fpuValidarNomeCpfPessoa(ipIdPessoa: integer; ipNome, ipCpf: String): Boolean;
 
-    function fpuSomaOrcamentoRubrica(ipIdProjeto: integer):Double;
-    function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: integer):Double;
+    function fpuSomaOrcamentoRubrica(ipIdProjeto: integer): Double;
+    function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: integer): Double;
 
   end;
 
@@ -174,15 +175,40 @@ begin
   Result := vaResult;
 end;
 
+function TsmFuncoesAdministrativo.fpuValidarNomeCpfPessoa(ipIdPessoa: integer;
+ipNome, ipCpf: String): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'Select ID from pessoa ' +
+        '                      where pessoa.id <> :ID and' +
+        '                            pessoa.nome = :NOME and ' +
+        '                            (pessoa.cpf = :CPF or :CPF is null)';
+      ipDataSet.ParamByName('ID').AsInteger := ipIdPessoa;
+      ipDataSet.ParamByName('NOME').AsString := ipNome;
+      if ipCpf = '' then
+        ipDataSet.ParamByName('CPF').Clear
+      else
+        ipDataSet.ParamByName('CPF').AsString := ipCpf;
+      ipDataSet.Open;
+
+      vaResult := ipDataSet.Eof;
+    end);
+  Result := vaResult;
+end;
+
 function TsmFuncoesAdministrativo.fpuValidarNomeProjeto(ipIdProjeto: integer;
 ipNome: String): Boolean;
 begin
   Result := fprValidarCampoUnico('PROJETO', 'NOME', ipIdProjeto, ipNome);
 end;
 
-function TsmFuncoesAdministrativo.fpuSomaOrcamentoRubrica(ipIdProjeto: integer):Double;
+function TsmFuncoesAdministrativo.fpuSomaOrcamentoRubrica(ipIdProjeto: integer): Double;
 var
-  vaSaldo:Double;
+  vaSaldo: Double;
 begin
   pprEncapsularConsulta(
     procedure(ipDataSet: TRFQuery)
@@ -204,7 +230,7 @@ end;
 function TsmFuncoesAdministrativo.fpuSomaPagametosFinanciador(
   ipIdProjetoFinanciador: integer): Double;
 var
-  vaSaldo:Double;
+  vaSaldo: Double;
 begin
   pprEncapsularConsulta(
     procedure(ipDataSet: TRFQuery)

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 17/05/2016 23:55:33
+// 23/05/2016 23:33:06
 //
 
 unit uFuncoes;
@@ -57,6 +57,7 @@ type
     FfpuValidarNomeAreaProjetoCommand: TDBXCommand;
     FfpuInfoPessoaCommand: TDBXCommand;
     FppuValidarFinalizarAtividadeCommand: TDBXCommand;
+    FfpuValidarNomeCpfPessoaCommand: TDBXCommand;
     FfpuSomaOrcamentoRubricaCommand: TDBXCommand;
     FfpuSomaPagametosFinanciadorCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -71,6 +72,7 @@ type
     function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
+    function fpuValidarNomeCpfPessoa(ipIdPessoa: Integer; ipNome: string; ipCpf: string): Boolean;
     function fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
     function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: Integer): Double;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -164,7 +166,7 @@ type
     function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
     function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
     function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
-    procedure ppuQuitarParcela(ipIdParcela: Integer);
+    procedure ppuQuitarParcela(ipIdParcela: Integer; ipDataPagamento: string);
     procedure ppuReabrirParcela(ipIdParcela: Integer);
     procedure ppuReabrirTodasParcelasContaPagar(ipIdContaPagar: Integer);
     procedure ppuReceberParcela(ipIdParcela: Integer);
@@ -550,6 +552,22 @@ begin
   FppuValidarFinalizarAtividadeCommand.ExecuteUpdate;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuValidarNomeCpfPessoa(ipIdPessoa: Integer; ipNome: string; ipCpf: string): Boolean;
+begin
+  if FfpuValidarNomeCpfPessoaCommand = nil then
+  begin
+    FfpuValidarNomeCpfPessoaCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeCpfPessoaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeCpfPessoaCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeCpfPessoa';
+    FfpuValidarNomeCpfPessoaCommand.Prepare;
+  end;
+  FfpuValidarNomeCpfPessoaCommand.Parameters[0].Value.SetInt32(ipIdPessoa);
+  FfpuValidarNomeCpfPessoaCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeCpfPessoaCommand.Parameters[2].Value.SetWideString(ipCpf);
+  FfpuValidarNomeCpfPessoaCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeCpfPessoaCommand.Parameters[3].Value.GetBoolean;
+end;
+
 function TsmFuncoesAdministrativoClient.fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
 begin
   if FfpuSomaOrcamentoRubricaCommand = nil then
@@ -625,6 +643,7 @@ begin
   FfpuValidarNomeAreaProjetoCommand.DisposeOf;
   FfpuInfoPessoaCommand.DisposeOf;
   FppuValidarFinalizarAtividadeCommand.DisposeOf;
+  FfpuValidarNomeCpfPessoaCommand.DisposeOf;
   FfpuSomaOrcamentoRubricaCommand.DisposeOf;
   FfpuSomaPagametosFinanciadorCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
@@ -1077,7 +1096,7 @@ begin
   Result := FfpuGerarIdentificadorRubricaCommand.Parameters[1].Value.GetWideString;
 end;
 
-procedure TsmFuncoesFinanceiroClient.ppuQuitarParcela(ipIdParcela: Integer);
+procedure TsmFuncoesFinanceiroClient.ppuQuitarParcela(ipIdParcela: Integer; ipDataPagamento: string);
 begin
   if FppuQuitarParcelaCommand = nil then
   begin
@@ -1087,6 +1106,7 @@ begin
     FppuQuitarParcelaCommand.Prepare;
   end;
   FppuQuitarParcelaCommand.Parameters[0].Value.SetInt32(ipIdParcela);
+  FppuQuitarParcelaCommand.Parameters[1].Value.SetWideString(ipDataPagamento);
   FppuQuitarParcelaCommand.ExecuteUpdate;
 end;
 

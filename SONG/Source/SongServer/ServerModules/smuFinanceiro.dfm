@@ -101,7 +101,8 @@ inherited smFinanceiro: TsmFinanceiro
       '       FIN_FOR_CLI.INSCRICAO_ESTADUAL,'
       '       FIN_FOR_CLI.INSCRICAO_MUNICIPAL,'
       '       FIN_FOR_CLI.RAMO_ATIVIDADE,'
-      '       FIN_FOR_CLI.OBSERVACAO'
+      '       FIN_FOR_CLI.OBSERVACAO,'
+      '       FIN_FOR_CLI.CEP'
       'from FIN_FOR_CLI  '
       '&WHERE')
     Left = 32
@@ -121,7 +122,6 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'ID_CONTATO'
       Origin = 'ID_CONTATO'
       ProviderFlags = [pfInUpdate]
-      Required = True
     end
     object qFin_For_CliID_CIDADE: TIntegerField
       FieldName = 'ID_CIDADE'
@@ -221,6 +221,12 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'CARGO_CONTATO'
       ProviderFlags = [pfInUpdate]
       Size = 100
+    end
+    object qFin_For_CliCEP: TStringField
+      FieldName = 'CEP'
+      Origin = 'CEP'
+      ProviderFlags = [pfInUpdate]
+      Size = 60
     end
   end
   object qPlano_Contas: TRFQuery

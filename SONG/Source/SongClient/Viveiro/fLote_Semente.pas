@@ -397,10 +397,8 @@ end;
 
 procedure TfrmLoteSemente.pprExecutarSalvar;
 var
-  vaEditando: Boolean;
   vaQtdeAnterior: Double;
 begin
-  vaEditando := dmViveiro.cdsLote_Semente.State = dsEdit;
   vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmViveiro.cdsLote_SementeQTDE.OldValue, '0'), 0);
 
   inherited;

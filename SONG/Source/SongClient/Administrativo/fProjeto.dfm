@@ -5,7 +5,6 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailRubrica
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -139,12 +138,15 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailRubrica
+            Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -175,10 +177,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -408,13 +406,13 @@ inherited frmProjeto: TfrmProjeto
                     DataBinding.FieldName = 'CALC_SALDO_REAL'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 91
+                    Width = 116
                   end
                   object ColumnRubricasCALC_SALDO_PREVISTO: TcxGridDBColumn
                     DataBinding.FieldName = 'CALC_SALDO_PREVISTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 110
+                    Width = 119
                   end
                   object cxGridDBColumn6: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -659,10 +657,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailArea: TcxTabSheet
               Caption = #193'reas de Atua'#231#227'o'
               ImageIndex = 5
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -756,10 +750,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -1254,6 +1244,7 @@ inherited frmProjeto: TfrmProjeto
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitTop = 9
             object Label14: TLabel
               Left = 298
               Top = 4
@@ -1277,10 +1268,17 @@ inherited frmProjeto: TfrmProjeto
             end
             object lb2: TLabel
               Left = 1
-              Top = 6
+              Top = 4
               Width = 60
               Height = 13
               Caption = 'Organiza'#231#227'o'
+            end
+            object lb1: TLabel
+              Left = 152
+              Top = 4
+              Width = 102
+              Height = 13
+              Caption = 'Forma de Pagamento'
             end
             object btnSalvarPagamento: TButton
               Left = 683
@@ -1328,7 +1326,15 @@ inherited frmProjeto: TfrmProjeto
                 end>
               Properties.ListSource = dmLookup.dslkProjeto_Organizcao
               TabOrder = 0
-              Width = 292
+              Width = 145
+            end
+            object cbFormaPagamento: TcxImageComboBox
+              Left = 150
+              Top = 20
+              RepositoryItem = dmLookup.repIcbFormaPagamento
+              Properties.Items = <>
+              TabOrder = 5
+              Width = 142
             end
           end
           object cxGrid5: TcxGrid
@@ -1617,10 +1623,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailArea: TcxTabSheet
       Caption = 'tabCadastroDetailArea'
       ImageIndex = 7
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel9: TPanel
         Left = 0
         Top = 0
