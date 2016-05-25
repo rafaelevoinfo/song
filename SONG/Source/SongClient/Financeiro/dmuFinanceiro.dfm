@@ -93,7 +93,6 @@ inherited dmFinanceiro: TdmFinanceiro
       DisplayLabel = 'Nome Fantasia'
       FieldName = 'NOME_FANTASIA'
       ProviderFlags = [pfInUpdate]
-      Required = True
       Size = 100
     end
     object cdsFin_For_CliRAZAO_SOCIAL: TStringField
@@ -582,12 +581,12 @@ inherited dmFinanceiro: TdmFinanceiro
       Required = True
     end
     object cdsConta_Pagar_VinculoID_FUNDO: TIntegerField
-      DisplayLabel = 'Id do Fundo'
+      DisplayLabel = 'Id da Conta'
       FieldName = 'ID_FUNDO'
       ProviderFlags = [pfInUpdate]
     end
     object cdsConta_Pagar_VinculoNOME_FUNDO: TStringField
-      DisplayLabel = 'Nome do Fundo'
+      DisplayLabel = 'Nome da Conta'
       FieldName = 'NOME_FUNDO'
       ProviderFlags = [pfInUpdate]
       Size = 100
@@ -728,7 +727,7 @@ inherited dmFinanceiro: TdmFinanceiro
       Required = True
     end
     object cdsConta_Receber_VinculoID_FUNDO: TIntegerField
-      DisplayLabel = 'Id do Fundo'
+      DisplayLabel = 'Id da Conta'
       FieldName = 'ID_FUNDO'
       Required = True
     end
@@ -740,10 +739,80 @@ inherited dmFinanceiro: TdmFinanceiro
       Size = 2
     end
     object cdsConta_Receber_VinculoFUNDO: TStringField
-      DisplayLabel = 'Fundo'
+      DisplayLabel = 'Conta'
       FieldName = 'FUNDO'
       ProviderFlags = []
       Size = 100
+    end
+  end
+  object cdsTransferencia_Financeira: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqTransferencia_Financeira'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 408
+    Top = 240
+    object cdsTransferencia_FinanceiraID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsTransferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField
+      FieldName = 'ID_FUNDO_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsTransferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField
+      FieldName = 'ID_FUNDO_DESTINO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsTransferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsTransferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA_DESTINO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsTransferencia_FinanceiraVALOR: TBCDField
+      DisplayLabel = 'Valor Transferido'
+      FieldName = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsTransferencia_FinanceiraFUNDO_ORIGEM: TStringField
+      FieldName = 'FUNDO_ORIGEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTransferencia_FinanceiraFUNDO_DESTINO: TStringField
+      FieldName = 'FUNDO_DESTINO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTransferencia_FinanceiraRUBRICA_ORIGEM: TStringField
+      FieldName = 'RUBRICA_ORIGEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTransferencia_FinanceiraRUBRICA_DESTINO: TStringField
+      FieldName = 'RUBRICA_DESTINO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTransferencia_FinanceiraORIGEM: TStringField
+      DisplayLabel = 'Origem'
+      FieldName = 'ORIGEM'
+      ProviderFlags = []
+      Size = 203
+    end
+    object cdsTransferencia_FinanceiraDESTINO: TStringField
+      DisplayLabel = 'Destino'
+      FieldName = 'DESTINO'
+      ProviderFlags = []
+      Size = 203
     end
   end
 end

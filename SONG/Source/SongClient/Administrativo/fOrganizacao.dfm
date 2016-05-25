@@ -1,5 +1,6 @@
 inherited frmOrganizacao: TfrmOrganizacao
   Caption = 'Organiza'#231#245'es'
+  ExplicitWidth = 320
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -85,6 +86,10 @@ inherited frmOrganizacao: TfrmOrganizacao
             object tabDetailFundo: TcxTabSheet [0]
               Caption = 'Contas'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesDetailFundo: TPanel
                 Left = 0
                 Top = 0
@@ -482,6 +487,10 @@ inherited frmOrganizacao: TfrmOrganizacao
     object tabCadastroFundo: TcxTabSheet
       Caption = 'tabCadastroFundo'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroFundo: TPanel
         Left = 0
         Top = 0

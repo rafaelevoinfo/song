@@ -1166,24 +1166,24 @@ inherited smAdministrativo: TsmAdministrativo
       '                Projeto_Rubrica.Id_Projeto,'
       '                Projeto_Rubrica.Id_Rubrica,'
       '                Projeto_Rubrica.Orcamento,'
-      '                view_rubrica_projeto.valor_gasto as Gasto,'
-      '                view_rubrica_projeto.valor_recebido as Recebido,'
       
-        '                view_rubrica_projeto.valor_aprovisionado as Apro' +
-        'visionado,'
+        '                coalesce(view_rubrica_projeto.valor_gasto,0) as ' +
+        'Gasto,'
+      
+        '                coalesce(view_rubrica_projeto.valor_recebido,0) ' +
+        'as Recebido,'
+      
+        '                coalesce(view_rubrica_projeto.valor_aprovisionad' +
+        'o,0) as Aprovisionado,'
       
         '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
         's Nome_Rubrica'
       'from Projeto_Rubrica'
       'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       
-        'left join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Rubrica' +
-        '_Origem = Projeto_Rubrica.Id_Rubrica and Conta_Pagar_Vinculo.Id_' +
-        'Projeto_Origem = Projeto_Rubrica.Id_Projeto)'
-      
-        'inner join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proj' +
-        'eto = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rub' +
-        'rica = Projeto_Rubrica.Id_Rubrica)'
+        'left join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proje' +
+        'to = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rubr' +
+        'ica = Projeto_Rubrica.Id_Rubrica)'
       'where Projeto_Rubrica.Id_Projeto = :Id_Projeto   ')
     Left = 224
     Top = 288

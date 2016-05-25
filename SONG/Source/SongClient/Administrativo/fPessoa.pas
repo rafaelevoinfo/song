@@ -159,7 +159,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PesquisaPadrao := tppNome;
+  PesquisaPadrao := Ord(tppNome);
 
   dmLookup.cdslkPerfil.Open;
   ppvCarregarTipos;

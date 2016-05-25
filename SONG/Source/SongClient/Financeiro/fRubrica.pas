@@ -81,7 +81,7 @@ begin
   dmLookup.Name := '';
 
   inherited;
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppTodos);
 
   ppvAtualizarLookupRubrica;
 end;

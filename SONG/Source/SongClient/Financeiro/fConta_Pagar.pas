@@ -16,7 +16,8 @@ uses
   System.TypInfo, uTypes, dmuLookup, cxMemo, cxDBEdit, dmuPrincipal,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.Math, System.DateUtils, uMensagem, System.Generics.Collections;
+  System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
+  cxCheckBox;
 
 type
   TContaPagar = class(TModelo)
@@ -205,6 +206,7 @@ type
     dsLocalRubricas: TDataSource;
     cdsLocalRubricasID: TIntegerField;
     cdsLocalRubricasNOME: TStringField;
+    chkSemVinculo: TcxCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -221,6 +223,7 @@ type
     procedure cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
     procedure cbAtividadeAlocadaPropertiesEditValueChanged(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure chkSemVinculoPropertiesEditValueChanged(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -231,6 +234,7 @@ type
       ipValor: Double);
     procedure ppvQuitarParcela;
     procedure ppvReabrirParcela;
+    procedure ppvConfigurarControles;
     // procedure ppvValidarSaldos;
   protected
     function fprGetPermissao: string; override;
@@ -551,7 +555,7 @@ begin
     else // Fundo
       begin
         if VarIsNull(cbFundoOrigem.EditValue) then
-          raise TControlException.Create('Informe o fundo de origem do recurso.', cbFundoOrigem);
+          raise TControlException.Create('Informe a conta de origem do recurso.', cbFundoOrigem);
 
         if dmLookup.cdslkFundo.Locate(TBancoDados.coId, cbFundoOrigem.EditValue, []) then
           begin
@@ -561,17 +565,17 @@ begin
           end
         else
           begin
-            raise Exception.Create('Fundo não encontrado.');
+            raise Exception.Create('Conta não encontrada.');
           end;
 
-        plValidarInformacoesAlocado;
+        if not chkSemVinculo.Checked then
+          plValidarInformacoesAlocado;
       end;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM.AsInteger := vaIdOrganizacao;
     if dmLookup.cdslkProjeto_Organizacao.Locate(dmLookup.cdslkProjeto_OrganizacaoID_ORGANIZACAO.FieldName, vaIdOrganizacao, []) then
       dmFinanceiro.cdsConta_Pagar_VinculoNOME_ORGANIZACAO.AsString := dmLookup.cdslkProjeto_OrganizacaoNOME.AsString;
 
-    // ppvValidarSaldos;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_VINCULO');
     dmFinanceiro.cdsConta_Pagar_VinculoVALOR.AsFloat := EditValorVinculo.EditValue;
@@ -581,51 +585,6 @@ begin
     raise;
   end;
 end;
-
-// procedure TfrmContaPagar.ppvValidarSaldos;
-// begin
-// if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
-// begin
-// if rgRecursoAlocado.EditValue = coSim then
-// begin
-// if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue, cbRubricaProjetoOrigem.EditValue) < EditValorVinculo.EditValue
-// then
-// begin
-// if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
-// 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
-// begin
-// raise TPararExecucaoException.Create('');
-// end;
-// end;
-// end
-// else
-// begin
-// if dmPrincipal.FuncoesFinanceiro.fpuSaldoRealRubrica(cbProjetoOrigem.EditValue, cbRubricaAtividadeOrigem.EditValue) < EditValorVinculo.EditValue
-// then
-// begin
-// if TMensagem.fpuPerguntar('A rubrica de origem selecionada não possui saldo suficiente para quitar esse valor. ' +
-// 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
-// begin
-// raise TPararExecucaoException.Create('');
-// end;
-// end;
-// end;
-//
-// end
-// else if dmLookup.cdslkFundo.Locate(TBancoDados.coId, cbFundoOrigem.EditValue, []) then
-// begin
-// if dmLookup.cdslkFundoSALDO.AsFloat < EditValorVinculo.EditValue then
-// begin
-// if TMensagem.fpuPerguntar('O fundo selecionado não possui saldo suficiente para quitar esse valor. ' +
-// 'Se continuar não será possível quitar todas as parcelas geradas. Deseja continuar assim mesmo?', ppSimNao) = rpNao then
-// begin
-// raise TPararExecucaoException.Create('');
-// end;
-// end;
-// end
-// else
-// raise TControlException.Create('Fundo de origem do recurso não encontrado.', cbFundoOrigem);
-// end;
 
 procedure TfrmContaPagar.Ac_Excluir_VinculoExecute(Sender: TObject);
 begin
@@ -759,31 +718,14 @@ procedure TfrmContaPagar.rgRecursoAlocadoPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  if rgRecursoAlocado.EditValue = coSim then
-    pcRecursoAlocado.ActivePage := tabSim
-  else
-    pcRecursoAlocado.ActivePage := tabNao;
-
-  gbAlocado.Visible := (rgTipoOrigemRecurso.EditValue = coOrigemFundo) or (rgRecursoAlocado.EditValue = coSim);
-  gbAlocado.Top := gbAlocado.Top + 5;
-
-  pnValor.Top := gbAlocado.Top + 5;
+  ppvConfigurarControles;
 end;
 
 procedure TfrmContaPagar.rgTipoOrigemRecursoPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
-  if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
-    pcOrigemRecurso.ActivePage := tabProjeto
-  else
-    pcOrigemRecurso.ActivePage := tabFundo;
-
-  gbOrigem.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
-  gbOrigem.Top := pnVinculoTop.Top + 5;
-
-  rgRecursoAlocadoPropertiesEditValueChanged(rgRecursoAlocado);
+  ppvConfigurarControles;
 end;
 
 procedure TfrmContaPagar.viewRegistrosDetailCustomDrawCell(
@@ -959,6 +901,36 @@ begin
 
 end;
 
+procedure TfrmContaPagar.chkSemVinculoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  ppvConfigurarControles;
+end;
+
+procedure TfrmContaPagar.ppvConfigurarControles;
+begin
+  rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+
+  if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
+    pcOrigemRecurso.ActivePage := tabProjeto
+  else
+    pcOrigemRecurso.ActivePage := tabFundo;
+
+  gbOrigem.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+  gbAlocado.Visible := ((rgTipoOrigemRecurso.EditValue = coOrigemFundo) and (not chkSemVinculo.Checked)) or
+    ((rgTipoOrigemRecurso.EditValue = coOrigemProjeto) and (rgRecursoAlocado.EditValue = coSim));
+
+  if rgRecursoAlocado.EditValue = coSim then
+    pcRecursoAlocado.ActivePage := tabSim
+  else
+    pcRecursoAlocado.ActivePage := tabNao;
+
+  gbOrigem.Top := pnVinculoTop.Top + 5;
+  gbAlocado.Top := gbOrigem.Top + 5;
+  pnValor.Top := gbAlocado.Top + 5;
+end;
+
 procedure TfrmContaPagar.FormCreate(Sender: TObject);
 begin
   dmFinanceiro := TdmFinanceiro.Create(Self);
@@ -980,7 +952,7 @@ begin
   pcOrigemRecurso.ActivePage := tabProjeto;
   pcEditsCadastro.ActivePage := tabInfoGeral;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
 
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
@@ -990,7 +962,7 @@ begin
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);;
-  //preciso de um cds pq o lkRubrica vai ser utilizado para outras coisas mais pra frente
+  // preciso de um cds pq o lkRubrica vai ser utilizado para outras coisas mais pra frente
   cdsLocalRubricas.Data := dmLookup.cdslkRubrica.Data;
 
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
@@ -1011,7 +983,8 @@ begin
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
   cbPesquisaProjeto.Visible := (cbPesquisarPor.EditValue = coPesquisaProjetoOrigemRecurso) or (cbPesquisarPor.EditValue = coPesquisaProjetoAlocado);
   cbPesquisaRubricas.Visible := (cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso);
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and
+    (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible));
 
   if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor

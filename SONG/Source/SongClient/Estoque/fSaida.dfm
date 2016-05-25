@@ -1,6 +1,7 @@
 inherited frmSaida: TfrmSaida
   Caption = 'Sa'#237'da'
   ExplicitTop = -140
+  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -302,7 +303,7 @@ inherited frmSaida: TfrmSaida
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 81
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -310,7 +311,6 @@ inherited frmSaida: TfrmSaida
               Align = alTop
               Caption = 'Lote de Semente'
               FocusControl = cbLoteSemente
-              ExplicitWidth = 81
             end
             object cbLoteSemente: TcxDBLookupComboBox
               Left = 0
@@ -338,7 +338,7 @@ inherited frmSaida: TfrmSaida
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 65
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -346,7 +346,6 @@ inherited frmSaida: TfrmSaida
               Align = alTop
               Caption = 'Lote de Muda'
               FocusControl = cbLoteMuda
-              ExplicitWidth = 65
             end
             object cbLoteMuda: TcxDBLookupComboBox
               Left = 0
@@ -373,7 +372,7 @@ inherited frmSaida: TfrmSaida
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 36
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -381,7 +380,6 @@ inherited frmSaida: TfrmSaida
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
-              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0

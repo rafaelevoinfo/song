@@ -84,7 +84,7 @@ begin
 
   inherited;
 
-  PesquisaPadrao := tppNome;
+  PesquisaPadrao := Ord(tppNome);
 end;
 
 function TfrmEspecie.fprGetPermissao: String;

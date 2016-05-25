@@ -1,7 +1,6 @@
 inherited frmMatriz: TfrmMatriz
   ActiveControl = nil
   Caption = 'Matrizes'
-  ExplicitWidth = 320
   ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13

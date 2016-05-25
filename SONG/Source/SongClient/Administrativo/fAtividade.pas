@@ -374,7 +374,7 @@ begin
   dmLookup.Name := '';
   inherited;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
   EditDataInicialPesquisa.Date := IncDay(Now, -7);;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 

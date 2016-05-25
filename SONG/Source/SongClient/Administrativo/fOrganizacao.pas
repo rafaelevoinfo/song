@@ -150,7 +150,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppTodos);
 
   dmLookup.cdslkPessoa.Open;
   // Essa tela tela é um caso especial, por isso precisei fazer isso

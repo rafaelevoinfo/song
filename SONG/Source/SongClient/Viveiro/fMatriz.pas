@@ -104,7 +104,7 @@ begin
   dmViveiro.Name := '';
 
   inherited;
-  PesquisaPadrao := tppNome;
+  PesquisaPadrao := Ord(tppNome);
 
   dmLookup.cdslkEspecie.Open;
 end;

@@ -493,7 +493,7 @@ begin
 
   FIdsParcelasCancelar := TList<Integer>.Create;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
 
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);

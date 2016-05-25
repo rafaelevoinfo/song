@@ -76,12 +76,12 @@ type
     procedure Ac_AlterarUpdate(Sender: TObject);
     procedure Ac_ExcluirUpdate(Sender: TObject);
   private
-    FPesquisaPadrao: TTipoPesquisaPadrao;
+    FPesquisaPadrao: Integer;
     FModoExecucao: TModoExecucao;
     FIdEscolhido: Integer;
     FModelo: TModelo;
     FModoSilencioso: Boolean;
-    procedure SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
+    procedure SetPesquisaPadrao(const Value: Integer);
     procedure SetModelo(const Value: TModelo);
     procedure SetModoSilencioso(const Value: Boolean);
 
@@ -101,7 +101,7 @@ type
     procedure ppuRetornar(ipAtualizar: Boolean); overload; virtual;
     procedure pprBeforeIncluir; virtual;
     procedure pprBeforeAlterar; virtual;
-    procedure pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela); virtual;
+    procedure pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela); virtual;
     procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); virtual;
     procedure pprCarregarDadosModelo; virtual;
     // PESQUISA
@@ -123,7 +123,7 @@ type
     procedure pprExecutarCancelar; virtual;
 
   public
-    property PesquisaPadrao: TTipoPesquisaPadrao read FPesquisaPadrao write SetPesquisaPadrao;
+    property PesquisaPadrao: Integer read FPesquisaPadrao write SetPesquisaPadrao;
     property Permissao: string read fprGetPermissao;
     property ModoExecucao: TModoExecucao read FModoExecucao;
     property ModoSilencioso: Boolean read FModoSilencioso write SetModoSilencioso;
@@ -140,8 +140,8 @@ type
     procedure ppuSalvar; virtual;
     function fpuCancelar: Boolean; virtual;
     // PESQUISA
-    //utilizado normalmente somente por telas exteriores que querem realizar uma pesquisa automatica
-    procedure ppuConfigurarPesquisa(ipPesquisarPor:Integer; ipValor:String);virtual;
+    // utilizado normalmente somente por telas exteriores que querem realizar uma pesquisa automatica
+    procedure ppuConfigurarPesquisa(ipPesquisarPor: Integer; ipValor: String); virtual;
     procedure ppuPesquisar; virtual;
     // MODO DE EXECUCAO DA TELA
     // ipModelo somente será utilizado quando ModoExeucacao for somentecadastro. Ele ira conter as informacoes que se deseja que já venha pre preenchidas
@@ -295,7 +295,7 @@ end;
 constructor TfrmBasicoCrud.Create(AOwner: TComponent);
 begin
   inherited;
-  FPesquisaPadrao := tppActive;
+  FPesquisaPadrao := Ord(tppActive);
   pprValidarPermissao(atVisualizar, fprGetPermissao);
 end;
 
@@ -377,7 +377,7 @@ end;
 function TfrmBasicoCrud.fpuCancelar: Boolean;
 begin
   Result := True;
-  //se tiver no modo selecioso vou descartar qualquer mudanca nao salva
+  // se tiver no modo selecioso vou descartar qualquer mudanca nao salva
   if (not ModoSilencioso) and fprHabilitarSalvar then
     begin
       if TMensagem.fpuPerguntar('Desejar salvar o registro?', ppSimNao) = rpSim then
@@ -525,11 +525,11 @@ end;
 
 procedure TfrmBasicoCrud.pprRealizarPesquisaInicial;
 begin
-  if PesquisaPadrao <> tppActive then
+  if PesquisaPadrao <> Ord(tppActive) then
     begin
       cbPesquisarPor.LockChangeEvents(True);
       try
-        cbPesquisarPor.EditValue := Ord(PesquisaPadrao);
+        cbPesquisarPor.EditValue := PesquisaPadrao;
         cbPesquisarPor.PostEditValue;
 
         cbPesquisarPorPropertiesEditValueChanged(cbPesquisarPor);
@@ -538,9 +538,10 @@ begin
       end;
     end;
 
-  if (PesquisaPadrao = tppTodos) or ((PesquisaPadrao = tppData) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and (not VarIsNull(EditDataFinalPesquisa.EditValue))) then
+  if (PesquisaPadrao = Ord(tppTodos)) or ((PesquisaPadrao = Ord(tppData)) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and
+    (not VarIsNull(EditDataFinalPesquisa.EditValue))) then
     ppuPesquisar
-  else if (PesquisaPadrao = tppId) and Assigned(FModelo) and (FModelo.Id <> 0) then
+  else if (PesquisaPadrao = Ord(tppId)) and Assigned(FModelo) and (FModelo.Id <> 0) then
     begin
       EditPesquisa.EditValue := FModelo.Id;
       EditPesquisa.PostEditValue;
@@ -615,7 +616,7 @@ begin
                   // nao posso dar disablecontrols aqui pq telas filhas podem precisar que o master-detail funcione
                   if dsMaster.DataSet.Locate(TBancoDados.coID, vaId, []) then
                     begin
-                      pprBeforeExcluir(vaId,vaAcao);
+                      pprBeforeExcluir(vaId, vaAcao);
                       pprExecutarExcluir(vaId, vaAcao);
                     end;
                 end;
@@ -648,7 +649,7 @@ begin
   pprValidarPermissao(atAlterar, fprGetPermissao);
 end;
 
-procedure TfrmBasicoCrud.pprBeforeExcluir(ipId:Integer;ipAcao: TAcaoTela);
+procedure TfrmBasicoCrud.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
 begin
   // TODO;implementar nas classes filhas
 end;
@@ -712,7 +713,7 @@ begin
   FModoSilencioso := Value;
 end;
 
-procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: TTipoPesquisaPadrao);
+procedure TfrmBasicoCrud.SetPesquisaPadrao(const Value: Integer);
 begin
   FPesquisaPadrao := Value;
 end;

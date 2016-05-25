@@ -173,8 +173,13 @@ inherited frmContaReceber: TfrmContaReceber
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabVinculos
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -242,10 +247,6 @@ inherited frmContaReceber: TfrmContaReceber
             object tabVinculos: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -540,9 +541,9 @@ inherited frmContaReceber: TfrmContaReceber
           object Label10: TLabel
             Left = 6
             Top = 18
-            Width = 30
+            Width = 29
             Height = 13
-            Caption = 'Fundo'
+            Caption = 'Conta'
           end
           object Label21: TLabel
             Left = 176

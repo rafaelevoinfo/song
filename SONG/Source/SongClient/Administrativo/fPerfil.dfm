@@ -1,7 +1,6 @@
 inherited frmPerfil: TfrmPerfil
   ActiveControl = EditNome
   Caption = 'Perfis de Usu'#225'rio'
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -59,11 +58,6 @@ inherited frmPerfil: TfrmPerfil
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 156
-              inherited pnBotoesDetail: TPanel
-                inherited btnIncluirDetail: TButton
-                  ExplicitLeft = 1
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]

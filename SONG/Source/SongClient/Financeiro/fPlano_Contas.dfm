@@ -87,10 +87,6 @@ inherited frmPlanoContas: TfrmPlanoContas
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object lblNome: TLabel
           Left = 4

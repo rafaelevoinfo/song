@@ -13,12 +13,14 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls,
-  cxPC, System.TypInfo, uControleAcesso, uTypes, uUtils, uExceptions;
+  cxPC, System.TypInfo, uControleAcesso, uTypes, uUtils, uExceptions,
+  dmuPrincipal;
 
 type
   TfrmFornecedor = class(TfrmFinanciador)
     rgTipoFornecedor: TcxRadioGroup;
     procedure rgTipoFornecedorPropertiesEditValueChanged(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -27,6 +29,7 @@ type
     function fprGetPermissao: string; override;
     procedure pprBeforeSalvar; override;
     procedure pprValidarCPFCNPJ; override;
+    procedure pprValidarCampoUnico; override;
 
   public
     procedure ppuAlterar(ipId: Integer); override;
@@ -48,6 +51,12 @@ implementation
 
 { TfrmFornecedor }
 
+procedure TfrmFornecedor.FormCreate(Sender: TObject);
+begin
+  inherited;
+  PesquisaPadrao := coRazaoSocial;
+end;
+
 function TfrmFornecedor.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finFinanciador));
@@ -67,13 +76,26 @@ procedure TfrmFornecedor.pprBeforeSalvar;
 begin
   inherited;
   if rgTipoFornecedor.ItemIndex = coPessoaFisica then
-    dmFinanceiro.cdsFin_For_CliRAZAO_SOCIAL.Clear;
+    dmFinanceiro.cdsFin_For_CliNOME_FANTASIA.Clear;
 
+end;
+
+procedure TfrmFornecedor.pprValidarCampoUnico;
+begin
+  // nao chamar o inherited
+  if not dmPrincipal.FuncoesAdm.fpuValidarFinanciadorFornecedorCliente(dmFinanceiro.cdsFin_For_CliID.AsInteger,
+    Ord(fprGetTipo), dmFinanceiro.cdsFin_For_CliRAZAO_SOCIAL.AsString, dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
+    begin
+      if rgTipoFornecedor.ItemIndex = coPessoaJuridica then
+        raise TControlException.Create('Já existe um fornecedor cadastrado com esta razão social e este CNPJ', EditRazaoSocial)
+      else
+        raise TControlException.Create('Já existe um fornecedor cadastrado com este nome e CPF', EditRazaoSocial);
+    end;
 end;
 
 procedure TfrmFornecedor.pprValidarCPFCNPJ;
 begin
-  //nao chamar o inherited
+  // nao chamar o inherited
   if rgTipoFornecedor.ItemIndex = coPessoaJuridica then
     begin
       if not TUtils.fpuValidarCnpj(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
@@ -81,7 +103,7 @@ begin
     end
   else
     begin
-       if not TUtils.fpuValidarCpf(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
+      if not TUtils.fpuValidarCpf(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
         raise TControlException.Create('CPF inválido.', EditCpfCnpj);
     end;
 end;
@@ -109,16 +131,17 @@ begin
   if rgTipoFornecedor.ItemIndex = coPessoaJuridica then
     begin
       EditCpfCnpj.Properties.EditMask := coRegexCNPJ;
-      lbNome.Caption := 'Nome Fantasia';
+      lbRazaoSocial.Caption := 'Razão Social';
       lbCpfCnpj.Caption := 'CNPJ';
     end
   else
     begin
       EditCpfCnpj.Properties.EditMask := coRegexCPF;
-      lbNome.Caption := 'Nome do Fornecedor';
+      lbRazaoSocial.Caption := 'Nome do Fornecedor';
       lbCpfCnpj.Caption := 'CPF';
     end;
-  EditRazaoSocial.Enabled := rgTipoFornecedor.ItemIndex = coPessoaJuridica;
+
+  EditNomeFantasia.Enabled := rgTipoFornecedor.ItemIndex = coPessoaJuridica;
 end;
 
 end.

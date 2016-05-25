@@ -209,7 +209,7 @@ var
           '       View_Rubrica_Projeto.Saldo_Real' +
           ' from Conta_Pagar_Parcela' +
           '   inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar_Parcela.Id_Conta_Pagar)' +
-          '   inner join View_Rubrica_Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = View_Rubrica_Projeto.Id_Projeto and Conta_Pagar_Vinculo.Id_Rubrica_Origem = View_Rubrica_Projeto.Id_Rubrica)'
+          '   left join View_Rubrica_Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = View_Rubrica_Projeto.Id_Projeto and Conta_Pagar_Vinculo.Id_Rubrica_Origem = View_Rubrica_Projeto.Id_Rubrica)'
           +
           '   inner join Rubrica on (Rubrica.Id = View_Rubrica_Projeto.Id_Rubrica)' +
           ' where Conta_Pagar_Parcela.Id = :ID_PARCELA';

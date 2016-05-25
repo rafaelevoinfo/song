@@ -12,9 +12,10 @@ uses
 type
   TsmFuncoesEstoque = class(TsmFuncoesBasico)
   private
+    function fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
     { Private declarations }
   public
-    function fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
+    function fpuValidarNomeItem(ipIdItem: Integer; ipNome:String): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
 
@@ -83,6 +84,12 @@ begin
     vaIds.Free;
   end;
 
+end;
+
+function TsmFuncoesEstoque.fpuValidarNomeItem(ipIdItem: Integer;
+  ipNome: String): Boolean;
+begin
+  Result := fprValidarCampoUnico('ITEM','NOME',ipIdItem,ipNome.trim);
 end;
 
 function TsmFuncoesEstoque.fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;

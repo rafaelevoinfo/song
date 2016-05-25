@@ -4,7 +4,6 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -190,33 +189,28 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_COMPRA: TcxGridDBColumn [3]
-              DataBinding.FieldName = 'ID_COMPRA'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosDATA: TcxGridDBColumn [4]
+            object viewRegistrosDATA: TcxGridDBColumn [3]
               DataBinding.FieldName = 'DATA'
               Options.Editing = False
               Width = 102
             end
-            object viewRegistrosSOLICITANTE: TcxGridDBColumn [5]
+            object viewRegistrosSOLICITANTE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'SOLICITANTE'
               Options.Editing = False
               Width = 154
             end
-            object viewRegistrosSTATUS: TcxGridDBColumn [6]
+            object viewRegistrosSTATUS: TcxGridDBColumn [5]
               DataBinding.FieldName = 'STATUS'
               RepositoryItem = dmLookup.repIcbStatusSolicitacaoCompra
               Options.Editing = False
               Width = 119
             end
-            object viewRegistrosRESPONSAVEL_ANALISE: TcxGridDBColumn [7]
+            object viewRegistrosRESPONSAVEL_ANALISE: TcxGridDBColumn [6]
               DataBinding.FieldName = 'RESPONSAVEL_ANALISE'
               Options.Editing = False
               Width = 154
             end
-            object viewRegistrosDATA_ANALISE: TcxGridDBColumn [8]
+            object viewRegistrosDATA_ANALISE: TcxGridDBColumn [7]
               DataBinding.FieldName = 'DATA_ANALISE'
               Visible = False
               Options.Editing = False
@@ -228,10 +222,6 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -274,6 +264,10 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 7
@@ -347,6 +341,10 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object lbl1: TLabel
           Left = 7

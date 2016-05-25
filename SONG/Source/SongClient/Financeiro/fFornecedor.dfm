@@ -28,7 +28,7 @@ inherited frmFornecedor: TfrmFornecedor
           Top = 48
           ExplicitTop = 48
         end
-        inherited Label5: TLabel
+        inherited lbRazaoSocial: TLabel
           Top = 48
           ExplicitTop = 48
         end

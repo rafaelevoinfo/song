@@ -79,7 +79,7 @@ type
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
-    finContaPagar, finContaReceber, finCliente);
+    finContaPagar, finContaReceber, finCliente, finTransferencia);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra, estSaida, estVenda);
 
@@ -144,6 +144,7 @@ begin
   plAddFinanceiro(finFornecedor, 'Fornecedores');
   plAddFinanceiro(finRubrica, 'Rubricas');
   plAddFinanceiro(finPlanoConta, 'Plano de Contas');
+  plAddFinanceiro(finTransferencia, 'Transferência Financeira');
   FItems.Add('Financeiro', vaPermissoes);
   // Viveiro
   vaPermissoes := TList<TPermissao>.Create;

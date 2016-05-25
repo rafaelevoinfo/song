@@ -1,5 +1,6 @@
 inherited frmBanco: TfrmBanco
   Caption = 'Bancos'
+  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl

@@ -486,7 +486,7 @@ begin
   dmLookup.Name := '';
 
   inherited;
-  PesquisaPadrao := tppNome;
+  PesquisaPadrao := Ord(tppNome);
 
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coAtivo], [coRegistroAtivo]);
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);

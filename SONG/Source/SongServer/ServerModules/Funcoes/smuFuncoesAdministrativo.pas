@@ -13,7 +13,7 @@ type
   public
     function fpuPermissoesUsuario(ipLogin: String): OleVariant;
 
-    function fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer; ipRazaoSocial, ipNomeFantasia, ipCpfCnpj: String): String;
+    function fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer; ipRazaoSocial, ipCpfCnpj: String): Boolean;
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: integer; ipNome: String): Boolean;
     function fpuValidarNomeAreaProjeto(ipIdProjeto, ipIdAreaProjeto: integer; ipNome: String): Boolean;
@@ -92,64 +92,9 @@ begin
   Result := fprValidarCampoUnico('PESSOA', 'LOGIN', ipId, ipLogin);
 end;
 
-function TsmFuncoesAdministrativo.fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer;
-ipRazaoSocial, ipNomeFantasia, ipCpfCnpj: String): string;
-var
-  vaResult: TStringList;
+function TsmFuncoesAdministrativo.fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer; ipRazaoSocial, ipCpfCnpj: String): Boolean;
 begin
-  vaResult := TStringList.Create;
-  try
-    vaResult.StrictDelimiter := True;
-    vaResult.Delimiter := TParametros.coDelimitador;
-
-    pprEncapsularConsulta(
-      procedure(ipDataSet: TRFQuery)
-      begin
-        ipDataSet.SQL.Text := Format('select ID ' +
-          ' from %s ' +
-          ' where ID <> :ID and ' +
-          '       (%s = :NOME or ' +
-          '        %s = :RAZAO or ' +
-          '        %s = :CPF_CNPJ) and ' +
-          '        %s = :TIPO', ['FIN_FOR_CLI', 'NOME_FANTASIA', 'RAZAO_SOCIAL', 'CPF_CNPJ', 'TIPO']);
-
-        ipDataSet.ParamByName('ID').AsInteger := ipId;
-        ipDataSet.ParamByName('NOME').AsString := ipNomeFantasia;
-        ipDataSet.ParamByName('RAZAO').AsString := '';
-        ipDataSet.ParamByName('CPF_CNPJ').AsString := '';
-        ipDataSet.ParamByName('TIPO').AsInteger := ipTipo;
-        ipDataSet.Open();
-
-        if not ipDataSet.Eof then
-          vaResult.Add('NOME_FANTASIA');
-
-        ipDataSet.Close;
-        ipDataSet.ParamByName('ID').AsInteger := ipId;
-        ipDataSet.ParamByName('NOME').AsString := '';
-        ipDataSet.ParamByName('RAZAO').AsString := ipRazaoSocial;
-        ipDataSet.ParamByName('CPF_CNPJ').AsString := '';
-        ipDataSet.ParamByName('TIPO').AsInteger := ipTipo;
-        ipDataSet.Open();
-
-        if not ipDataSet.Eof then
-          vaResult.Add('RAZAO_SOCIAL');
-
-        ipDataSet.Close;
-        ipDataSet.ParamByName('ID').AsInteger := ipId;
-        ipDataSet.ParamByName('NOME').AsString := '';
-        ipDataSet.ParamByName('RAZAO').AsString := '';
-        ipDataSet.ParamByName('CPF_CNPJ').AsString := ipCpfCnpj;
-        ipDataSet.ParamByName('TIPO').AsInteger := ipTipo;
-        ipDataSet.Open();
-
-        if not ipDataSet.Eof then
-          vaResult.Add('CPF_CNPJ');
-      end);
-    Result := vaResult.DelimitedText;
-  finally
-    vaResult.Free;
-  end;
-
+  Result := fprValidarCamposUnicos('FIN_FOR_CLI',['RAZAO_SOCIAL', 'CPF_CNPJ', 'TIPO'],[ipRazaoSocial,ipCpfCnpj,ipTipo.ToString], ipId);
 end;
 
 function TsmFuncoesAdministrativo.fpuValidarNomeAreaProjeto(

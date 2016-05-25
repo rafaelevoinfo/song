@@ -46,7 +46,7 @@ begin
   dmViveiro.Name := '';
 
   inherited;
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppTodos);
 end;
 
 function TfrmCanteiro.fprGetPermissao: String;

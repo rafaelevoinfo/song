@@ -50,7 +50,8 @@ uses
   fRelatorioBasico in 'Relatorios\fRelatorioBasico.pas' {frmRelatorioBasico},
   fRelatorioFinanceiro in 'Relatorios\fRelatorioFinanceiro.pas' {frmRelatorioFinanceiro},
   dmuRelatorio in 'Relatorios\dmuRelatorio.pas' {dmRelatorio: TDataModule},
-  fSaida in 'Estoque\fSaida.pas' {frmSaida};
+  fSaida in 'Estoque\fSaida.pas' {frmSaida},
+  fTransferenciaFinanceira in 'Financeiro\fTransferenciaFinanceira.pas' {frmTransferenciaFinanceira};
 
 {$R Localization.RES}
   {$R *.res}

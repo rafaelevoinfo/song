@@ -127,6 +127,19 @@ type
     cdsConta_PagarID_RESPONSAVEL: TIntegerField;
     cdsConta_PagarNOME_RESPONSAVEL: TStringField;
     cdsFin_For_CliCEP: TStringField;
+    cdsTransferencia_Financeira: TRFClientDataSet;
+    cdsTransferencia_FinanceiraID: TIntegerField;
+    cdsTransferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField;
+    cdsTransferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField;
+    cdsTransferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField;
+    cdsTransferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField;
+    cdsTransferencia_FinanceiraVALOR: TBCDField;
+    cdsTransferencia_FinanceiraFUNDO_ORIGEM: TStringField;
+    cdsTransferencia_FinanceiraFUNDO_DESTINO: TStringField;
+    cdsTransferencia_FinanceiraRUBRICA_ORIGEM: TStringField;
+    cdsTransferencia_FinanceiraRUBRICA_DESTINO: TStringField;
+    cdsTransferencia_FinanceiraORIGEM: TStringField;
+    cdsTransferencia_FinanceiraDESTINO: TStringField;
   private
     { Private declarations }
   public

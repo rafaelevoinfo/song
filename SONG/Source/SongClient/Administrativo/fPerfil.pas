@@ -97,7 +97,7 @@ begin
   dmLookup.Name := '';
 
   inherited;
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppTodos);
 
   // vamos alimentar o cds dos modulos
   ppvCarregarModulos;

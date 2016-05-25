@@ -401,7 +401,7 @@ begin
 
   inherited;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
 
   EditDataInicialPesquisa.Date := IncDay(Now, -7);
   EditDataFinalPesquisa.Date := Now;

@@ -51,7 +51,7 @@ begin
   dmFinanceiro.Name := '';
 
   inherited;
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppTodos);
 end;
 
 function TfrmBanco.fprGetPermissao: string;

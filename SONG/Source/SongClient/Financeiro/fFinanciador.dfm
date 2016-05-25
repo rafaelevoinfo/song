@@ -124,7 +124,7 @@ inherited frmFinanciador: TfrmFinanciador
           Caption = 'Nome Fantasia'
           FocusControl = EditNomeFantasia
         end
-        object Label5: TLabel
+        object lbRazaoSocial: TLabel
           Left = 259
           Top = 6
           Width = 60

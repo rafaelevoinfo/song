@@ -119,7 +119,7 @@ begin
   dmLookup.Name := '';
   inherited;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
 
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);

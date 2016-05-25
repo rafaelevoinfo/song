@@ -36,7 +36,6 @@ type
   TfrmCompra = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_FORNECEDOR: TcxGridDBColumn;
-    viewRegistrosID_CONTA_PAGAR: TcxGridDBColumn;
     viewRegistrosID_PESSOA_COMPROU: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
     viewRegistrosSTATUS_ENTREGA: TcxGridDBColumn;
@@ -230,7 +229,7 @@ begin
 
   inherited;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
   EditDataInicialPesquisa.Date := IncDay(Now, -7);;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 

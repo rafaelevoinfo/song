@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 23/05/2016 23:33:06
+// 24/05/2016 22:56:55
 //
 
 unit uFuncoes;
@@ -66,7 +66,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuPermissoesUsuario(ipLogin: string): OleVariant;
-    function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipNomeFantasia: string; ipCpfCnpj: string): string;
+    function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipCpfCnpj: string): Boolean;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
     function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
@@ -190,7 +190,7 @@ type
 
   TsmFuncoesEstoqueClient = class(TDSAdminClient)
   private
-    FfpuValidarTipoItemCommand: TDBXCommand;
+    FfpuValidarNomeItemCommand: TDBXCommand;
     FfpuVerificarComprasJaGeradaCommand: TDBXCommand;
     FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
     FfpuBuscarItensEntradaCommand: TDBXCommand;
@@ -203,7 +203,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuValidarTipoItem(ipId: Integer; ipTipo: Integer): Boolean;
+    function fpuValidarNomeItem(ipIdItem: Integer; ipNome: string): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
@@ -449,7 +449,7 @@ begin
   Result := FfpuPermissoesUsuarioCommand.Parameters[1].Value.AsVariant;
 end;
 
-function TsmFuncoesAdministrativoClient.fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipNomeFantasia: string; ipCpfCnpj: string): string;
+function TsmFuncoesAdministrativoClient.fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipCpfCnpj: string): Boolean;
 begin
   if FfpuValidarFinanciadorFornecedorClienteCommand = nil then
   begin
@@ -461,10 +461,9 @@ begin
   FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[0].Value.SetInt32(ipId);
   FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[1].Value.SetInt32(ipTipo);
   FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[2].Value.SetWideString(ipRazaoSocial);
-  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[3].Value.SetWideString(ipNomeFantasia);
-  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[4].Value.SetWideString(ipCpfCnpj);
+  FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[3].Value.SetWideString(ipCpfCnpj);
   FfpuValidarFinanciadorFornecedorClienteCommand.ExecuteUpdate;
-  Result := FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[5].Value.GetWideString;
+  Result := FfpuValidarFinanciadorFornecedorClienteCommand.Parameters[4].Value.GetBoolean;
 end;
 
 function TsmFuncoesAdministrativoClient.fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
@@ -1318,19 +1317,19 @@ begin
   inherited;
 end;
 
-function TsmFuncoesEstoqueClient.fpuValidarTipoItem(ipId: Integer; ipTipo: Integer): Boolean;
+function TsmFuncoesEstoqueClient.fpuValidarNomeItem(ipIdItem: Integer; ipNome: string): Boolean;
 begin
-  if FfpuValidarTipoItemCommand = nil then
+  if FfpuValidarNomeItemCommand = nil then
   begin
-    FfpuValidarTipoItemCommand := FDBXConnection.CreateCommand;
-    FfpuValidarTipoItemCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuValidarTipoItemCommand.Text := 'TsmFuncoesEstoque.fpuValidarTipoItem';
-    FfpuValidarTipoItemCommand.Prepare;
+    FfpuValidarNomeItemCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeItemCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeItemCommand.Text := 'TsmFuncoesEstoque.fpuValidarNomeItem';
+    FfpuValidarNomeItemCommand.Prepare;
   end;
-  FfpuValidarTipoItemCommand.Parameters[0].Value.SetInt32(ipId);
-  FfpuValidarTipoItemCommand.Parameters[1].Value.SetInt32(ipTipo);
-  FfpuValidarTipoItemCommand.ExecuteUpdate;
-  Result := FfpuValidarTipoItemCommand.Parameters[2].Value.GetBoolean;
+  FfpuValidarNomeItemCommand.Parameters[0].Value.SetInt32(ipIdItem);
+  FfpuValidarNomeItemCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeItemCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeItemCommand.Parameters[2].Value.GetBoolean;
 end;
 
 function TsmFuncoesEstoqueClient.fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
@@ -1471,7 +1470,7 @@ end;
 
 destructor TsmFuncoesEstoqueClient.Destroy;
 begin
-  FfpuValidarTipoItemCommand.DisposeOf;
+  FfpuValidarNomeItemCommand.DisposeOf;
   FfpuVerificarComprasJaGeradaCommand.DisposeOf;
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
   FfpuBuscarItensEntradaCommand.DisposeOf;

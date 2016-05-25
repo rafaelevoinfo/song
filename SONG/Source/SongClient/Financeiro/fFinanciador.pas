@@ -34,7 +34,7 @@ type
     viewRegistrosINSCRICAO_MUNICIPAL: TcxGridDBColumn;
     viewRegistrosRAMO_ATIVIDADE: TcxGridDBColumn;
     viewRegistrosID_CIDADE: TcxGridDBColumn;
-    Label5: TLabel;
+    lbRazaoSocial: TLabel;
     EditRazaoSocial: TcxDBTextEdit;
     rgInfoContato: TcxGroupBox;
     Label6: TLabel;
@@ -88,7 +88,8 @@ type
     procedure pprPesquisarPessoa(); virtual;
     procedure pprCarregarPessoas(ipIdEspecifico: Integer = 0); virtual;
     function fprGetTipoPessoa: TTipoRelacionamentoPessoa; virtual;
-    procedure pprValidarCPFCNPJ;virtual;
+    procedure pprValidarCPFCNPJ; virtual;
+    procedure pprValidarCampoUnico; virtual;
 
     function fprGetTipo: TTipoFinForCli; virtual;
   public
@@ -162,7 +163,7 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
   inherited;
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppTodos);
 
   pprCarregarPessoas();
 end;
@@ -221,53 +222,25 @@ end;
 
 procedure TfrmFinanciador.pprValidarCPFCNPJ;
 begin
-   if not TUtils.fpuValidarCnpj(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
+  if not TUtils.fpuValidarCnpj(dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
     raise TControlException.Create('CNPJ inválido.', EditCpfCnpj);
 end;
 
-procedure TfrmFinanciador.pprValidarDados;
-var
-  vaErros, vaResult: string;
-  vaDuplicados: TArray<String>;
-  I: Integer;
-  vaEdit: TWinControl;
+procedure TfrmFinanciador.pprValidarCampoUnico;
 begin
-  inherited;
-  vaEdit := nil;
-  pprValidarCPFCNPJ;
-
-  vaResult := dmPrincipal.FuncoesAdm.fpuValidarFinanciadorFornecedorCliente(dmFinanceiro.cdsFin_For_CliID.AsInteger,
-    Ord(fprGetTipo),
-    dmFinanceiro.cdsFin_For_CliRAZAO_SOCIAL.AsString, dmFinanceiro.cdsFin_For_CliNOME_FANTASIA.AsString,
-    dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString);
-
-  if vaResult <> '' then
+  if not dmPrincipal.FuncoesAdm.fpuValidarFinanciadorFornecedorCliente(dmFinanceiro.cdsFin_For_CliID.AsInteger,
+    Ord(fprGetTipo), dmFinanceiro.cdsFin_For_CliRAZAO_SOCIAL.AsString, dmFinanceiro.cdsFin_For_CliCPF_CNPJ.AsString) then
     begin
-      vaDuplicados := TRegex.Split(vaResult, TParametros.coDelimitador);
-      vaErros := 'O(s) seguinte(s) campo(s) deve(m) ser único(s):';
-      for I := 0 to High(vaDuplicados) do
-        begin
-          if vaDuplicados[I] = 'NOME_FANTASIA' then
-            begin
-              vaEdit := EditNomeFantasia;
-              vaErros := vaErros + slineBreak + 'Nome Fantasia';
-            end
-          else if vaDuplicados[I] = 'RAZAO_SOCIAL' then
-            begin
-              vaEdit := EditRazaoSocial;
-              vaErros := vaErros + slineBreak + 'Razão Social';
-            end
-          else if vaDuplicados[I] = 'CPF_CNPJ' then
-            begin
-              vaEdit := EditCpfCnpj;
-              vaErros := vaErros + slineBreak + 'CPF/CNPJ';
-            end
-        end;
-
-      raise TControlException.Create(vaErros, vaEdit);
-
+      raise TControlException.Create('Já existe um cliente cadastrado com esta razão social e este CNPJ', EditRazaoSocial)
     end;
 
+end;
+
+procedure TfrmFinanciador.pprValidarDados;
+begin
+  inherited;
+  pprValidarCPFCNPJ;
+  pprValidarCampoUnico;
 end;
 
 end.

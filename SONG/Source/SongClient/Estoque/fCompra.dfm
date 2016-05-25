@@ -1,6 +1,5 @@
 inherited frmCompra: TfrmCompra
   Caption = 'Compras'
-  ExplicitWidth = 320
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -160,51 +159,46 @@ inherited frmCompra: TfrmCompra
               Options.Editing = False
               Width = 192
             end
-            object viewRegistrosID_CONTA_PAGAR: TcxGridDBColumn [3]
-              DataBinding.FieldName = 'ID_CONTA_PAGAR'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosID_PESSOA_COMPROU: TcxGridDBColumn [4]
+            object viewRegistrosID_PESSOA_COMPROU: TcxGridDBColumn [3]
               DataBinding.FieldName = 'ID_PESSOA_COMPROU'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosPESSOA_COMPROU: TcxGridDBColumn [5]
+            object viewRegistrosPESSOA_COMPROU: TcxGridDBColumn [4]
               DataBinding.FieldName = 'PESSOA_COMPROU'
               Options.Editing = False
               Width = 183
             end
-            object viewRegistrosDATA: TcxGridDBColumn [6]
+            object viewRegistrosDATA: TcxGridDBColumn [5]
               DataBinding.FieldName = 'DATA'
               RepositoryItem = dmLookup.repDateDataPadrao
               Options.Editing = False
               Width = 83
             end
-            object viewRegistrosSTATUS_ENTREGA: TcxGridDBColumn [7]
+            object viewRegistrosSTATUS_ENTREGA: TcxGridDBColumn [6]
               DataBinding.FieldName = 'STATUS_ENTREGA'
               RepositoryItem = dmLookup.repIcbStatusEntrega
               OnCustomDrawCell = viewRegistrosSTATUS_ENTREGACustomDrawCell
               Options.Editing = False
               Width = 92
             end
-            object viewRegistrosVALOR_FRETE: TcxGridDBColumn [8]
+            object viewRegistrosVALOR_FRETE: TcxGridDBColumn [7]
               DataBinding.FieldName = 'VALOR_FRETE'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
               Width = 85
             end
-            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [9]
+            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [8]
               DataBinding.FieldName = 'VALOR_TOTAL'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosCODIGO_RASTREIO: TcxGridDBColumn [10]
+            object viewRegistrosCODIGO_RASTREIO: TcxGridDBColumn [9]
               DataBinding.FieldName = 'CODIGO_RASTREIO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosDESCRICAO: TcxGridDBColumn [11]
+            object viewRegistrosDESCRICAO: TcxGridDBColumn [10]
               DataBinding.FieldName = 'DESCRICAO'
               Visible = False
               Options.Editing = False
@@ -391,6 +385,10 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -409,7 +407,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = cbEspecie
         end
         object Label7: TLabel
-          Left = 434
+          Left = 555
           Top = 8
           Width = 56
           Height = 13
@@ -417,14 +415,14 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditQtde
         end
         object lbUnidade: TLabel
-          Left = 555
+          Left = 676
           Top = 31
           Width = 19
           Height = 13
           Caption = 'Und'
         end
         object lbl6: TLabel
-          Left = 578
+          Left = 431
           Top = 8
           Width = 79
           Height = 13
@@ -432,7 +430,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditDataCompra
         end
         object cbItem: TcxDBLookupComboBox
-          Left = 7
+          Left = 4
           Top = 24
           RepositoryItem = dmLookup.repLcbItem
           DataBinding.DataField = 'ID_ITEM'
@@ -440,7 +438,7 @@ inherited frmCompra: TfrmCompra
           Properties.ListColumns = <>
           Properties.OnEditValueChanged = cbItemPropertiesEditValueChanged
           TabOrder = 0
-          Width = 209
+          Width = 212
         end
         object cbEspecie: TcxDBLookupComboBox
           Left = 219
@@ -454,21 +452,21 @@ inherited frmCompra: TfrmCompra
           Width = 209
         end
         object EditQtde: TcxDBCalcEdit
-          Left = 432
+          Left = 553
           Top = 24
           RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE'
           DataBinding.DataSource = dsDetail
-          TabOrder = 2
+          TabOrder = 3
           Width = 121
         end
         object EditValorUnitario: TcxDBCurrencyEdit
-          Left = 577
+          Left = 430
           Top = 24
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_UNITARIO'
           DataBinding.DataSource = dsDetail
-          TabOrder = 3
+          TabOrder = 2
           Width = 121
         end
       end

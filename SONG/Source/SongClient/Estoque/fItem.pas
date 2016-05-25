@@ -22,20 +22,20 @@ type
     viewRegistrosTIPO: TcxGridDBColumn;
     EditNome: TcxDBTextEdit;
     Label3: TLabel;
-    cbTipo: TcxDBImageComboBox;
-    Label4: TLabel;
     lbl1: TLabel;
     EditUnidade: TcxDBTextEdit;
     viewRegistrosUNIDADE: TcxGridDBColumn;
     viewRegistrosCALC_SALDO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
-    procedure cbTipoPropertiesEditValueChanged(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
   protected
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
+    procedure ppuIncluir;override;
+    procedure pprBeforeExcluir(ipId:Integer;ipAcao: TAcaoTela);override;
+    procedure pprBeforeAlterar;override;
     { Public declarations }
   end;
 
@@ -47,27 +47,6 @@ implementation
 {$R *.dfm}
 
 
-procedure TfrmItem.cbTipoPropertiesEditValueChanged(Sender: TObject);
-begin
-  inherited;
-  cbTipo.PostEditValue;
-
-  EditUnidade.Enabled := dmEstoque.cdsItemTIPO.AsInteger = Ord(tiOutro);
-  if pcPrincipal.ActivePage = tabCadastro then
-    begin
-      if dmEstoque.cdsItemTIPO.AsInteger = Ord(tiSemente) then
-        begin
-          EditUnidade.EditValue := 'Kg';
-          EditUnidade.PostEditValue;
-        end
-      else if dmEstoque.cdsItemTIPO.AsInteger = Ord(tiMuda) then
-        begin
-          EditUnidade.EditValue := 'Und';
-          EditUnidade.PostEditValue;
-        end;
-    end;
-end;
-
 procedure TfrmItem.FormCreate(Sender: TObject);
 begin
   dmEstoque := TdmEstoque.Create(Self);
@@ -78,7 +57,7 @@ begin
 
   inherited;
 
-  PesquisaPadrao := tppTodos;
+  PesquisaPadrao := Ord(tppNome);
 
 end;
 
@@ -87,12 +66,34 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estItem));
 end;
 
+procedure TfrmItem.ppuIncluir;
+begin
+  inherited;
+  //o item de tipo SEMENTE e MUDA já deve existe no banco no momento da implantação.
+  dmEstoque.cdsItemTIPO.AsInteger := Ord(tiOutro);
+end;
+
+procedure TfrmItem.pprBeforeAlterar;
+begin
+  inherited;
+  if dmEstoque.cdsItemTIPO.AsInteger in [Ord(tiSemente),Ord(tiMuda)] then
+    raise Exception.Create('Não é possível editar um item do tipo Semente ou Muda');
+end;
+
+procedure TfrmItem.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
+begin
+  inherited;
+  //ja esta posicionado no registro correto
+  if dmEstoque.cdsItemTIPO.AsInteger in [Ord(tiSemente),Ord(tiMuda)] then
+    raise Exception.Create('Não é possível excluir um item do tipo Semente ou Muda');
+
+end;
+
 procedure TfrmItem.pprValidarDados;
 begin
   inherited;
-  if not dmPrincipal.FuncoesEstoque.fpuValidarTipoItem(dmEstoque.cdsItemID.AsInteger, dmEstoque.cdsItemTIPO.AsInteger) then
-    raise Exception.Create
-      ('Para os tipos de item Semente e Muda só pode existir um único item, o qual já foi cadastrado. Por favor, informe outro tipo de item.');
+  if not dmPrincipal.FuncoesEstoque.fpuValidarNomeItem(dmEstoque.cdsItemID.AsInteger,dmEstoque.cdsItemNOME.AsString) then
+    raise Exception.Create('Já existe um item cadastrado com esse nome.');
 
 end;
 

@@ -1,4 +1,5 @@
 inherited frmCliente: TfrmCliente
+  ActiveControl = btnIncluir
   Caption = 'Clientes'
   ClientHeight = 500
   ExplicitHeight = 539
@@ -6,6 +7,7 @@ inherited frmCliente: TfrmCliente
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Height = 500
+    Properties.ActivePage = tabPesquisa
     ExplicitHeight = 500
     ClientRectBottom = 496
     inherited tabPesquisa: TcxTabSheet
@@ -28,7 +30,7 @@ inherited frmCliente: TfrmCliente
           Top = 49
           ExplicitTop = 49
         end
-        inherited Label5: TLabel
+        inherited lbRazaoSocial: TLabel
           Top = 49
           ExplicitTop = 49
         end

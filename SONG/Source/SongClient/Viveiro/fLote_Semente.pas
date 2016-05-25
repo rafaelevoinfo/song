@@ -446,6 +446,7 @@ begin
   inherited;
   ppvCarregarMatrizes;
   pprPreencherCamposPadroes(dmViveiro.cdsLote_Semente);
+  dmViveiro.cdsLote_SementeSTATUS.AsInteger := 0;
 end;
 
 procedure TfrmLoteSemente.ppvCarregarMatrizes;
@@ -536,7 +537,7 @@ begin
 
   inherited;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
 
   dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);

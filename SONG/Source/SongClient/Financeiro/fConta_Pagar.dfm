@@ -26,7 +26,7 @@ inherited frmContaPagar: TfrmContaPagar
         inherited pnEditsPesquisa: TPanel
           Left = 553
           Width = 432
-          ExplicitLeft = 551
+          ExplicitLeft = 553
           ExplicitWidth = 432
           inherited Label1: TLabel
             Left = 4
@@ -142,7 +142,7 @@ inherited frmContaPagar: TfrmContaPagar
         end
         inherited pnBotoes: TPanel
           Width = 552
-          ExplicitWidth = 576
+          ExplicitWidth = 552
         end
       end
       inherited pnGrid: TPanel
@@ -450,6 +450,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -469,7 +471,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabInfoGeral
+          Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -771,7 +773,7 @@ inherited frmContaPagar: TfrmContaPagar
                     Value = 0
                   end
                   item
-                    Caption = 'Fundo'
+                    Caption = 'Conta'
                     Value = 1
                   end>
                 Properties.OnEditValueChanged = rgTipoOrigemRecursoPropertiesEditValueChanged
@@ -786,7 +788,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Width = 407
                 Height = 73
                 TabOrder = 1
-                Properties.ActivePage = tabProjeto
+                Properties.ActivePage = tabFundo
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 68
                 ClientRectLeft = 2
@@ -834,9 +836,9 @@ inherited frmContaPagar: TfrmContaPagar
                   object Label15: TLabel
                     Left = 4
                     Top = 3
-                    Width = 30
+                    Width = 29
                     Height = 13
-                    Caption = 'Fundo'
+                    Caption = 'Conta'
                   end
                   object cbFundoOrigem: TcxLookupComboBox
                     Left = 3
@@ -846,6 +848,14 @@ inherited frmContaPagar: TfrmContaPagar
                     Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
                     TabOrder = 0
                     Width = 218
+                  end
+                  object chkSemVinculo: TcxCheckBox
+                    Left = 223
+                    Top = 21
+                    Caption = 'Sem V'#237'nculo com Projeto'
+                    Properties.OnEditValueChanged = chkSemVinculoPropertiesEditValueChanged
+                    TabOrder = 1
+                    Width = 143
                   end
                 end
               end
@@ -1267,7 +1277,7 @@ inherited frmContaPagar: TfrmContaPagar
     end
   end
   object pnDataPagamento: TPanel [1]
-    Left = 90
+    Left = 666
     Top = 176
     Width = 206
     Height = 71
@@ -1378,7 +1388,7 @@ inherited frmContaPagar: TfrmContaPagar
     Aggregates = <>
     Params = <>
     Left = 432
-    Top = 144
+    Top = 40
     object cdsLocalRubricasID: TIntegerField
       FieldName = 'ID'
     end

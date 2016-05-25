@@ -23,7 +23,6 @@ type
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_PESSOA_SOLICITOU: TcxGridDBColumn;
     viewRegistrosID_PESSOA_ANALISOU: TcxGridDBColumn;
-    viewRegistrosID_COMPRA: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
     viewRegistrosDATA_ANALISE: TcxGridDBColumn;
     viewRegistrosSTATUS: TcxGridDBColumn;
@@ -87,12 +86,14 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
+    procedure pprBeforeAlterar; override;
 
-    function fprHabilitarIncluirDetail: Boolean; override;
-    function fprHabilitarAlterarDetail: Boolean; override;
-    function fprHabilitarAlterar: Boolean; override;
+    procedure pprBeforeIncluirDetail; override;
+    procedure pprBeforeAlterarDetail; override;
+    procedure pprBeforeExcluirDetail(ipId:Integer);override;
+
   public
-     procedure ppuIncluir; override;
+    procedure ppuIncluir; override;
   public const
     coPesquisaItem = 5;
     coPesquisaSolicitante = 6;
@@ -119,7 +120,7 @@ end;
 procedure TfrmSolicitacaoCompra.Ac_AprovarUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := fprHabilitarAlterar;
+  TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger <> Ord(sscAprovada));
 end;
 
 procedure TfrmSolicitacaoCompra.Ac_Gerar_ComprasExecute(Sender: TObject);
@@ -131,7 +132,8 @@ end;
 procedure TfrmSolicitacaoCompra.Ac_Gerar_ComprasUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dmEstoque.cdsSolicitacao_Compra.Active and (dmEstoque.cdsSolicitacao_Compra.RecordCount > 0) and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada));
+  TAction(Sender).Enabled := dmEstoque.cdsSolicitacao_Compra.Active and (dmEstoque.cdsSolicitacao_Compra.RecordCount > 0) and
+    (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada));
 end;
 
 procedure TfrmSolicitacaoCompra.Ac_NegarExecute(Sender: TObject);
@@ -177,8 +179,8 @@ var
   vaCompra: TCompra;
   vaItem: TItem;
   vaIdCompra: Integer;
-  vaPergunta:string;
-  vaCompraJaGerada:Boolean;
+  vaPergunta: string;
+  vaCompraJaGerada: Boolean;
 begin
   vaCompraJaGerada := dmPrincipal.FuncoesEstoque.fpuVerificarComprasJaGerada(dmEstoque.cdsSolicitacao_CompraID.AsInteger);
   if vaCompraJaGerada then
@@ -256,7 +258,7 @@ begin
 
   inherited;
 
-  PesquisaPadrao := tppData;
+  PesquisaPadrao := Ord(tppData);
   EditDataInicialPesquisa.Date := IncDay(Now, -7);;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
@@ -285,21 +287,6 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estSolicitacaoCompra));
 end;
 
-function TfrmSolicitacaoCompra.fprHabilitarAlterar: Boolean;
-begin
-  Result := inherited and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger <> Ord(sscAprovada));
-end;
-
-function TfrmSolicitacaoCompra.fprHabilitarAlterarDetail: Boolean;
-begin
-  Result := inherited and fprHabilitarAlterar;
-end;
-
-function TfrmSolicitacaoCompra.fprHabilitarIncluirDetail: Boolean;
-begin
-  Result := inherited and fprHabilitarAlterar;
-end;
-
 procedure TfrmSolicitacaoCompra.pprAfterSalvar;
 begin
   inherited;
@@ -307,6 +294,34 @@ begin
     begin
       ppvGerarRegistroCompras;
     end;
+end;
+
+procedure TfrmSolicitacaoCompra.pprBeforeAlterar;
+begin
+  inherited;
+  if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
+    raise Exception.Create('Não é possível editar uma solicitação já aprovada.');
+end;
+
+procedure TfrmSolicitacaoCompra.pprBeforeAlterarDetail;
+begin
+  inherited;
+  if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
+    raise Exception.Create('Não é possível editar um item de uma solicitação já aprovada.');
+end;
+
+procedure TfrmSolicitacaoCompra.pprBeforeExcluirDetail(ipId: Integer);
+begin
+  inherited;
+  if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
+    raise Exception.Create('Não é possível excluir um item de uma solicitação já aprovada.');
+end;
+
+procedure TfrmSolicitacaoCompra.pprBeforeIncluirDetail;
+begin
+  inherited;
+  if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
+    raise Exception.Create('Não é possível incluir um item de uma solicitação já aprovada.');
 end;
 
 procedure TfrmSolicitacaoCompra.pprBeforeSalvar;

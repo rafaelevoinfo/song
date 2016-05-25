@@ -1,6 +1,5 @@
 inherited frmItem: TfrmItem
   Caption = 'Itens'
-  ExplicitTop = -140
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
@@ -60,6 +59,10 @@ inherited frmItem: TfrmItem
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -69,16 +72,8 @@ inherited frmItem: TfrmItem
           Caption = 'Nome do Item'
           FocusControl = EditNome
         end
-        object Label4: TLabel
-          Left = 305
-          Top = 1
-          Width = 20
-          Height = 13
-          Caption = 'Tipo'
-          FocusControl = cbTipo
-        end
         object lbl1: TLabel
-          Left = 471
+          Left = 304
           Top = 1
           Width = 134
           Height = 13
@@ -93,23 +88,12 @@ inherited frmItem: TfrmItem
           TabOrder = 0
           Width = 296
         end
-        object cbTipo: TcxDBImageComboBox
-          Left = 304
-          Top = 16
-          RepositoryItem = dmLookup.repIcbTipoItem
-          DataBinding.DataField = 'TIPO'
-          DataBinding.DataSource = dsMaster
-          Properties.Items = <>
-          Properties.OnEditValueChanged = cbTipoPropertiesEditValueChanged
-          TabOrder = 1
-          Width = 161
-        end
         object EditUnidade: TcxDBTextEdit
-          Left = 468
+          Left = 302
           Top = 16
           DataBinding.DataField = 'UNIDADE'
           DataBinding.DataSource = dsMaster
-          TabOrder = 2
+          TabOrder = 1
           Width = 137
         end
       end

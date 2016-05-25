@@ -1,6 +1,7 @@
 inherited frmPessoa: TfrmPessoa
   ActiveControl = EditNome
   Caption = 'Pessoas'
+  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -364,7 +365,7 @@ inherited frmPessoa: TfrmPessoa
           object lb1: TLabel
             Left = 285
             Top = 95
-            Width = 22
+            Width = 19
             Height = 13
             Caption = 'CEP'
           end
@@ -536,7 +537,6 @@ inherited frmPessoa: TfrmPessoa
             end
             inherited pnBotoes: TPanel
               Left = 458
-              Width = 48
               Height = 377
               ExplicitLeft = 458
               ExplicitWidth = 48
@@ -592,14 +592,14 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
-                Height = 15
+                Height = 13
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 91
-                Height = 15
+                Height = 13
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 91
