@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, dmuPrincipal,
-  Datasnap.Provider, uUtils, uClientDataSet, uSQLGenerator;
+  Datasnap.Provider, uUtils, uClientDataSet, uSQLGenerator, uTypes,
+  Datasnap.DBClient;
 
 type
   TsmFinanceiro = class(TsmBasico)
@@ -141,6 +142,13 @@ type
     qTransferencia_FinanceiraRUBRICA_DESTINO: TStringField;
     qTransferencia_FinanceiraORIGEM: TStringField;
     qTransferencia_FinanceiraDESTINO: TStringField;
+    qTransferencia_FinanceiraID_PESSOA: TIntegerField;
+    qTransferencia_FinanceiraRESPONSAVEL: TStringField;
+    qTransferencia_FinanceiraDATA: TSQLTimeStampField;
+    dspqTransferencia_Financeira: TDataSetProvider;
+    procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
   private
     { Private declarations }
   protected
@@ -157,6 +165,23 @@ implementation
 {$R *.dfm}
 
 { TsmFinanceiro }
+
+procedure TsmFinanceiro.dspqTransferencia_FinanceiraAfterUpdateRecord(
+  Sender: TObject; SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+  UpdateKind: TUpdateKind);
+begin
+  inherited;
+  if UpdateKind = ukInsert then
+    begin
+      if Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue) then
+        Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO',
+          [DeltaDS.FieldByName('VALOR').NewValue, DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue]);
+
+      if Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue) then
+        Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
+          [DeltaDS.FieldByName('VALOR').NewValue, DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue]);
+    end;
+end;
 
 function TsmFinanceiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
@@ -228,15 +253,34 @@ begin
                 Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ORIGEM', vaValor.ToInteger, vaOperador)
               else if ipParam.Name = TParametros.coProjetoAlocado then
                 Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_PROJETO_ALOCADO', vaValor.ToInteger, vaOperador)
-              else if ipParam.name = TParametros.coRubricaOrigemRecurso then
+              else if ipParam.Name = TParametros.coRubricaOrigemRecurso then
                 Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_RUBRICA_ORIGEM', vaValor.ToInteger, vaOperador)
-
+              else if ipParam.Name = TParametros.coResponsavelDespesa then
+                Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_RESPONSAVEL', vaValor.ToInteger, vaOperador)
             end
           else if ipTabela = 'CONTA_RECEBER' then
             if ipParam.Name = TParametros.coFundo then
               Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_RECEBER_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador)
         end;
-    end;
+    end
+  else if ipTabela = 'TRANSFERENCIA_FINANCEIRA' then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
+        begin
+          Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_ORIGEM', 'ID', vaValor.ToInteger, TOperadores.coOR);
+          Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_DESTINO', 'ID', vaValor.ToInteger, vaOperador);
+        end
+      else if ipParam.Name = TParametros.coFundo then
+        begin
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FUNDO_ORIGEM', vaValor.ToInteger, TOperadores.coOR);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FUNDO_DESTINO', vaValor.ToInteger,vaOperador);
+        end
+      else if ipParam.Name = TParametros.coData then
+        begin
+          Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor, 0),
+          TUtils.fpuExtrairData(vaValor, 1), vaOperador);
+        end
+    end
 
 end;
 

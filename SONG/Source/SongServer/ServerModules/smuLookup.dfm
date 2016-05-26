@@ -935,4 +935,61 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
     end
   end
+  object qlkProjeto_Rubrica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Projeto_Rubrica.Id,               '
+      '                Projeto_Rubrica.Orcamento,'
+      
+        '                coalesce(view_rubrica_projeto.saldo_real,0) as S' +
+        'aldo_Real,'
+      
+        '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
+        's Nome_Rubrica'
+      'from Projeto_Rubrica'
+      'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
+      
+        'left join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proje' +
+        'to = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rubr' +
+        'ica = Projeto_Rubrica.Id_Rubrica)'
+      '&WHERE ')
+    Left = 744
+    Top = 304
+    MacroData = <
+      item
+        Value = 'where Projeto_Rubrica.Id = 0'
+        Name = 'WHERE'
+      end>
+    object qlkProjeto_RubricaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkProjeto_RubricaORCAMENTO: TBCDField
+      FieldName = 'ORCAMENTO'
+      Origin = 'ORCAMENTO'
+      ProviderFlags = []
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qlkProjeto_RubricaSALDO_REAL: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_REAL'
+      Origin = 'SALDO_REAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object qlkProjeto_RubricaNOME_RUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_RUBRICA'
+      Origin = 'NOME_RUBRICA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 123
+    end
+  end
 end

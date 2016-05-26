@@ -68,6 +68,9 @@ inherited frmPrincipal: TfrmPrincipal
       object ContasaReceber1: TMenuItem
         Action = Ac_Conta_Receber
       end
+      object ransfernciadeRecursos1: TMenuItem
+        Action = Ac_Transferencia
+      end
       object Financiadores2: TMenuItem
         Action = Ac_Financiador
       end
@@ -257,6 +260,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Estoque'
       Caption = 'Sa'#237'das'
       OnExecute = Ac_SaidaExecute
+    end
+    object Ac_Transferencia: TAction
+      Category = 'Financeiro'
+      Caption = 'Transfer'#234'ncia de Recursos'
+      OnExecute = Ac_TransferenciaExecute
     end
   end
   object dxSkinController1: TdxSkinController

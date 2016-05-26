@@ -37,6 +37,7 @@ type
     coSolicitante = 'PESSOA_SOLICITANTE';
     coResponsavelAnalise = 'PESSOA_ANALISOU';
     coComprador = 'PESSOA_COMPROU';
+    coResponsavelDespesa = 'RESPONSAVEL_DESPESA';
 
     coTipo = 'TIPO';
     coTipoItem = 'TIPO_ITEM';

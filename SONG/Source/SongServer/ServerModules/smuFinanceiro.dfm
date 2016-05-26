@@ -991,6 +991,9 @@ inherited smFinanceiro: TsmFinanceiro
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Transferencia_Financeira.Id,'
+      '       Transferencia_Financeira.Id_pessoa,'
+      '       Pessoa.nome as Responsavel,'
+      '       Transferencia_Financeira.Data,'
       '       Transferencia_Financeira.Id_Fundo_Origem,'
       '       Fundo_Origem.Nome as Fundo_Origem,'
       '       Transferencia_Financeira.Id_Fundo_Destino,'
@@ -1008,6 +1011,10 @@ inherited smFinanceiro: TsmFinanceiro
         #39'||rubrica_Destino.nome) as Destino'
       'from Transferencia_Financeira'
       
+        'inner join pessoa on (pessoa.id = transferencia_financeira.id_pe' +
+        'ssoa)'
+      ''
+      
         'left join Fundo Fundo_Origem on (Fundo_Origem.Id = Transferencia' +
         '_Financeira.Id_Fundo_Origem)'
       
@@ -1016,8 +1023,8 @@ inherited smFinanceiro: TsmFinanceiro
       ''
       
         'left join Projeto_Rubrica Projeto_Rubrica_Origem on (Projeto_Rub' +
-        'rica_Origem.Id_Rubrica = Transferencia_Financeira.Id_Projeto_Rub' +
-        'rica_Origem)'
+        'rica_Origem.Id = Transferencia_Financeira.Id_Projeto_Rubrica_Ori' +
+        'gem)'
       
         'left join Projeto Projeto_Origem on (Projeto_Origem.Id = Projeto' +
         '_Rubrica_Origem.Id_Projeto)'
@@ -1027,8 +1034,8 @@ inherited smFinanceiro: TsmFinanceiro
       ''
       
         'left join Projeto_Rubrica Projeto_Rubrica_Destino on (Projeto_Ru' +
-        'brica_Destino.Id_Rubrica = Transferencia_Financeira.Id_Projeto_R' +
-        'ubrica_Destino)'
+        'brica_Destino.Id = Transferencia_Financeira.Id_Projeto_Rubrica_D' +
+        'estino)'
       
         'left join Rubrica Rubrica_Destino on (Rubrica_Destino.Id = Proje' +
         'to_Rubrica_Destino.Id_Rubrica)'
@@ -1119,5 +1126,30 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = []
       Size = 203
     end
+    object qTransferencia_FinanceiraID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qTransferencia_FinanceiraRESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qTransferencia_FinanceiraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object dspqTransferencia_Financeira: TDataSetProvider
+    DataSet = qTransferencia_Financeira
+    AfterUpdateRecord = dspqTransferencia_FinanceiraAfterUpdateRecord
+    Left = 416
+    Top = 256
   end
 end

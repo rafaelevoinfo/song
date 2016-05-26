@@ -248,12 +248,6 @@ var
   vaControleFoco: TWinControl;
 begin
   inherited;
-  EditPesquisa.Clear;
-
-  EditPesquisa.Properties.EditMask := '.*';
-  if cbPesquisarPor.EditValue = Ord(tppId) then
-    EditPesquisa.Properties.EditMask := '\d+(;\d+)*';
-
   vaControleFoco := fprConfigurarControlesPesquisa();
 
   TUtils.fpuFocar(vaControleFoco);
@@ -261,6 +255,12 @@ end;
 
 function TfrmBasicoCrud.fprConfigurarControlesPesquisa(): TWinControl;
 begin
+  EditPesquisa.Clear;
+
+  EditPesquisa.Properties.EditMask := '.*';
+  if cbPesquisarPor.EditValue = Ord(tppId) then
+    EditPesquisa.Properties.EditMask := '\d+(;\d+)*';
+
   pnData.Visible := cbPesquisarPor.EditValue = Ord(tppData);
   EditPesquisa.Visible := not pnData.Visible;
   EditPesquisa.Enabled := cbPesquisarPor.EditValue <> Ord(tppTodos);
@@ -531,12 +531,12 @@ begin
       try
         cbPesquisarPor.EditValue := PesquisaPadrao;
         cbPesquisarPor.PostEditValue;
-
-        cbPesquisarPorPropertiesEditValueChanged(cbPesquisarPor);
       finally
         cbPesquisarPor.LockChangeEvents(False, False);
       end;
     end;
+
+  fprConfigurarControlesPesquisa;
 
   if (PesquisaPadrao = Ord(tppTodos)) or ((PesquisaPadrao = Ord(tppData)) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and
     (not VarIsNull(EditDataFinalPesquisa.EditValue))) then

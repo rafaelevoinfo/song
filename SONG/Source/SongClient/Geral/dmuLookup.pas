@@ -192,6 +192,11 @@ type
     repLcbLoteMuda: TcxEditRepositoryLookupComboBoxItem;
     cdslkLote_MudaSALDO: TIntegerField;
     cdslkItemSALDO: TBCDField;
+    cdslkProjeto_Rubrica: TRFClientDataSet;
+    cdslkProjeto_RubricaID: TIntegerField;
+    cdslkProjeto_RubricaORCAMENTO: TBCDField;
+    cdslkProjeto_RubricaSALDO_REAL: TFMTBCDField;
+    cdslkProjeto_RubricaNOME_RUBRICA: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

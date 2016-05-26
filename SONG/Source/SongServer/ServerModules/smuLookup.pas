@@ -120,6 +120,11 @@ type
     qlkPessoaID: TIntegerField;
     qlkPessoaNOME: TStringField;
     qlkItemSALDO: TBCDField;
+    qlkProjeto_Rubrica: TRFQuery;
+    qlkProjeto_RubricaID: TIntegerField;
+    qlkProjeto_RubricaORCAMENTO: TBCDField;
+    qlkProjeto_RubricaSALDO_REAL: TFMTBCDField;
+    qlkProjeto_RubricaNOME_RUBRICA: TStringField;
   private
     { Private declarations }
   protected
@@ -258,6 +263,11 @@ begin
           else
             Result := Result+ ' LOTE_MUDA.SALDO <= 0) '+vaOperador;
         end
+    end
+  else if (ipTabela = 'PROJETO_RUBRICA') then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PROJETO', vaValor.ToInteger, vaOperador)
     end
 end;
 

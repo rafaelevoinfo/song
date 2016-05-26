@@ -164,8 +164,6 @@ type
     cdsProjeto_RubricaRECEBIDO: TBCDField;
     cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField;
     cdsProjeto_RubricaAGG_SOMA_ORCAMENTO: TAggregateField;
-    cdsProjeto_RubricaCALC_SALDO_REAL: TBCDField;
-    cdsProjeto_RubricaCALC_SALDO_PREVISTO: TBCDField;
     cdsOrganizacaoLOGO: TBlobField;
     cdsFundo: TRFClientDataSet;
     cdsFundoID: TIntegerField;
@@ -180,7 +178,8 @@ type
     cdsProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField;
     cdsPessoaCEP: TStringField;
     cdsFundoREQUER_AUTORIZACAO: TSmallintField;
-    procedure cdsProjeto_RubricaCalcFields(DataSet: TDataSet);
+    cdsProjeto_RubricaSALDO_REAL: TFMTBCDField;
+    cdsProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
   private
     { Private declarations }
   public
@@ -196,12 +195,5 @@ implementation
 
 {$R *.dfm}
 
-
-procedure TdmAdministrativo.cdsProjeto_RubricaCalcFields(DataSet: TDataSet);
-begin
-  inherited;
-  cdsProjeto_RubricaCALC_SALDO_REAL.AsFloat := cdsProjeto_RubricaRECEBIDO.AsFloat - cdsProjeto_RubricaGASTO.AsFloat;
-  cdsProjeto_RubricaCALC_SALDO_PREVISTO.AsFloat := cdsProjeto_RubricaORCAMENTO.AsFloat - cdsProjeto_RubricaGASTO.AsFloat;
-end;
 
 end.

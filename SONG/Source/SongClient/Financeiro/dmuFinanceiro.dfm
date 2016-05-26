@@ -363,7 +363,7 @@ inherited dmFinanceiro: TdmFinanceiro
     PacketRecords = 0
     Params = <
       item
-        DataType = ftUnknown
+        DataType = ftInteger
         Name = 'ID_CONTA_PAGAR'
         ParamType = ptInput
       end>
@@ -499,7 +499,12 @@ inherited dmFinanceiro: TdmFinanceiro
     MasterFields = 'ID'
     MasterSource = dsConta_Receber
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_CONTA_RECEBER'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqConta_Receber_Parcela'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     RFApplyAutomatico = False
@@ -567,8 +572,8 @@ inherited dmFinanceiro: TdmFinanceiro
     ProviderName = 'dspqConta_Pagar_Vinculo'
     RemoteServer = dmPrincipal.ProviderFinanceiro
     RFApplyAutomatico = False
-    Left = 528
-    Top = 160
+    Left = 72
+    Top = 88
     object cdsConta_Pagar_VinculoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -758,18 +763,22 @@ inherited dmFinanceiro: TdmFinanceiro
       Required = True
     end
     object cdsTransferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField
+      DisplayLabel = 'Id do Fundo de Origem'
       FieldName = 'ID_FUNDO_ORIGEM'
       ProviderFlags = [pfInUpdate]
     end
     object cdsTransferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField
+      DisplayLabel = 'Id do Fundo de Destino'
       FieldName = 'ID_FUNDO_DESTINO'
       ProviderFlags = [pfInUpdate]
     end
     object cdsTransferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField
+      DisplayLabel = 'Id do Rubrica no Projeto de Origem'
       FieldName = 'ID_PROJETO_RUBRICA_ORIGEM'
       ProviderFlags = [pfInUpdate]
     end
     object cdsTransferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField
+      DisplayLabel = 'Id do Rubrica no Projeto de Destino'
       FieldName = 'ID_PROJETO_RUBRICA_DESTINO'
       ProviderFlags = [pfInUpdate]
     end
@@ -783,21 +792,25 @@ inherited dmFinanceiro: TdmFinanceiro
       Size = 2
     end
     object cdsTransferencia_FinanceiraFUNDO_ORIGEM: TStringField
+      DisplayLabel = 'Fundo de Origem'
       FieldName = 'FUNDO_ORIGEM'
       ProviderFlags = []
       Size = 100
     end
     object cdsTransferencia_FinanceiraFUNDO_DESTINO: TStringField
+      DisplayLabel = 'Fundo de Destino'
       FieldName = 'FUNDO_DESTINO'
       ProviderFlags = []
       Size = 100
     end
     object cdsTransferencia_FinanceiraRUBRICA_ORIGEM: TStringField
+      DisplayLabel = 'Rubrica de Origem'
       FieldName = 'RUBRICA_ORIGEM'
       ProviderFlags = []
       Size = 100
     end
     object cdsTransferencia_FinanceiraRUBRICA_DESTINO: TStringField
+      DisplayLabel = 'Rubrica de Destino'
       FieldName = 'RUBRICA_DESTINO'
       ProviderFlags = []
       Size = 100
@@ -813,6 +826,21 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'DESTINO'
       ProviderFlags = []
       Size = 203
+    end
+    object cdsTransferencia_FinanceiraID_PESSOA: TIntegerField
+      DisplayLabel = 'Id do Respons'#225'vel pela Transfer'#234'ncia'
+      FieldName = 'ID_PESSOA'
+      Required = True
+    end
+    object cdsTransferencia_FinanceiraRESPONSAVEL: TStringField
+      DisplayLabel = 'Respons'#225'vel pela Transfer'#234'ncia'
+      FieldName = 'RESPONSAVEL'
+      Size = 100
+    end
+    object cdsTransferencia_FinanceiraDATA: TSQLTimeStampField
+      DisplayLabel = 'Data e Hora da Transfer'#234'ncia'
+      FieldName = 'DATA'
+      Required = True
     end
   end
 end

@@ -207,6 +207,7 @@ type
     cdsLocalRubricasID: TIntegerField;
     cdsLocalRubricasNOME: TStringField;
     chkSemVinculo: TcxCheckBox;
+    cbPesquisaResponsavel: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -270,6 +271,7 @@ type
     coPesquisaProjetoOrigemRecurso = 8;
     coPesquisaProjetoAlocado = 9;
     coPesquisaRubricaOrigemRecurso = 10;
+    coPesquisaResponsavelDespesa = 11;
 
   end;
 
@@ -383,6 +385,8 @@ begin
     ipCds.ppuAddParametro(TParametros.coProjetoAlocado, cbPesquisaProjeto.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso then
     ipCds.ppuAddParametro(TParametros.coRubricaOrigemRecurso, cbPesquisaRubricas.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa then
+    ipCds.ppuAddParametro(TParametros.coResponsavelDespesa, cbPesquisaResponsavel.EditValue)
 
 end;
 
@@ -573,9 +577,8 @@ begin
       end;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM.AsInteger := vaIdOrganizacao;
-    if dmLookup.cdslkProjeto_Organizacao.Locate(dmLookup.cdslkProjeto_OrganizacaoID_ORGANIZACAO.FieldName, vaIdOrganizacao, []) then
-      dmFinanceiro.cdsConta_Pagar_VinculoNOME_ORGANIZACAO.AsString := dmLookup.cdslkProjeto_OrganizacaoNOME.AsString;
-
+    if dmLookup.cdslkOrganizacao.Locate(TBancoDados.coId, vaIdOrganizacao, []) then
+      dmFinanceiro.cdsConta_Pagar_VinculoNOME_ORGANIZACAO.AsString := dmLookup.cdslkOrganizacaoNOME.AsString;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_VINCULO');
     dmFinanceiro.cdsConta_Pagar_VinculoVALOR.AsFloat := EditValorVinculo.EditValue;
@@ -962,6 +965,7 @@ begin
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);;
+  dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   // preciso de um cds pq o lkRubrica vai ser utilizado para outras coisas mais pra frente
   cdsLocalRubricas.Data := dmLookup.cdslkRubrica.Data;
 
@@ -982,9 +986,11 @@ begin
   cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
   cbPesquisaProjeto.Visible := (cbPesquisarPor.EditValue = coPesquisaProjetoOrigemRecurso) or (cbPesquisarPor.EditValue = coPesquisaProjetoAlocado);
-  cbPesquisaRubricas.Visible := (cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso);
+  cbPesquisaRubricas.Visible := cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso;
+  cbPesquisaResponsavel.Visible := cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa;
   EditPesquisa.Visible := EditPesquisa.Visible and
-    (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible));
+    (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or
+    cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible or cbPesquisaResponsavel.Visible));
 
   if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor
@@ -993,7 +999,9 @@ begin
   else if cbPesquisaProjeto.Visible then
     Result := cbPesquisaProjeto
   else if cbPesquisaRubricas.Visible then
-    Result := cbPesquisaRubricas;
+    Result := cbPesquisaRubricas
+  else if cbPesquisaResponsavel.Visible then
+    Result := cbPesquisaResponsavel;
 end;
 
 function TfrmContaPagar.fprGetPermissao: string;

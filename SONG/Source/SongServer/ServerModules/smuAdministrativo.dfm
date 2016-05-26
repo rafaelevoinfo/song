@@ -1176,6 +1176,12 @@ inherited smAdministrativo: TsmAdministrativo
         '                coalesce(view_rubrica_projeto.valor_aprovisionad' +
         'o,0) as Aprovisionado,'
       
+        '                coalesce(view_rubrica_projeto.saldo_real,0) as S' +
+        'aldo_Real,'
+      
+        '                coalesce(view_rubrica_projeto.saldo_previsto,0) ' +
+        'as Saldo_Previsto,'
+      
         '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
         's Nome_Rubrica'
       'from Projeto_Rubrica'
@@ -1247,6 +1253,22 @@ inherited smAdministrativo: TsmAdministrativo
       AutoGenerateValue = arDefault
       FieldName = 'APROVISIONADO'
       Origin = 'APROVISIONADO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+    end
+    object qProjeto_RubricaSALDO_REAL: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_REAL'
+      Origin = 'SALDO_REAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+    end
+    object qProjeto_RubricaSALDO_PREVISTO: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_PREVISTO'
+      Origin = 'SALDO_PREVISTO'
       ProviderFlags = []
       Precision = 18
       Size = 6

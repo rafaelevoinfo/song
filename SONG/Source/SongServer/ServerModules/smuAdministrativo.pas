@@ -175,6 +175,8 @@ type
     qProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField;
     qPessoaCEP: TStringField;
     qFundoREQUER_AUTORIZACAO: TSmallintField;
+    qProjeto_RubricaSALDO_REAL: TFMTBCDField;
+    qProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
   private
     { Private declarations }
   protected

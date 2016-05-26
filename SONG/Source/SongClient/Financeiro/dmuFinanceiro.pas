@@ -140,6 +140,9 @@ type
     cdsTransferencia_FinanceiraRUBRICA_DESTINO: TStringField;
     cdsTransferencia_FinanceiraORIGEM: TStringField;
     cdsTransferencia_FinanceiraDESTINO: TStringField;
+    cdsTransferencia_FinanceiraID_PESSOA: TIntegerField;
+    cdsTransferencia_FinanceiraRESPONSAVEL: TStringField;
+    cdsTransferencia_FinanceiraDATA: TSQLTimeStampField;
   private
     { Private declarations }
   public

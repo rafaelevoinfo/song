@@ -1116,6 +1116,18 @@ inherited dmAdministrativo: TdmAdministrativo
         DataType = ftFMTBcd
         Precision = 18
         Size = 6
+      end
+      item
+        Name = 'SALDO_REAL'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 6
+      end
+      item
+        Name = 'SALDO_PREVISTO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 6
       end>
     IndexDefs = <
       item
@@ -1131,7 +1143,6 @@ inherited dmAdministrativo: TdmAdministrativo
     ProviderName = 'dspqProjeto_Rubrica'
     RemoteServer = dmPrincipal.ProviderAdministrativo
     StoreDefs = True
-    OnCalcFields = cdsProjeto_RubricaCalcFields
     RFApplyAutomatico = False
     Left = 480
     Top = 344
@@ -1177,6 +1188,7 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'GASTO'
       Origin = 'GASTO'
       ProviderFlags = []
+      currency = True
       Precision = 18
       Size = 6
     end
@@ -1185,6 +1197,7 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'RECEBIDO'
       Origin = 'RECEBIDO'
       ProviderFlags = []
+      currency = True
       Precision = 18
     end
     object cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField
@@ -1192,21 +1205,25 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'APROVISIONADO'
       Origin = 'APROVISIONADO'
       ProviderFlags = []
+      currency = True
       Precision = 18
       Size = 6
     end
-    object cdsProjeto_RubricaCALC_SALDO_REAL: TBCDField
+    object cdsProjeto_RubricaSALDO_REAL: TFMTBCDField
       DisplayLabel = 'Saldo Real'
-      FieldKind = fkCalculated
-      FieldName = 'CALC_SALDO_REAL'
-      Size = 0
-      Calculated = True
+      FieldName = 'SALDO_REAL'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 6
     end
-    object cdsProjeto_RubricaCALC_SALDO_PREVISTO: TBCDField
+    object cdsProjeto_RubricaSALDO_PREVISTO: TFMTBCDField
       DisplayLabel = 'Saldo Previsto'
-      FieldKind = fkCalculated
-      FieldName = 'CALC_SALDO_PREVISTO'
-      Calculated = True
+      FieldName = 'SALDO_PREVISTO'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 6
     end
     object cdsProjeto_RubricaAGG_SOMA_ORCAMENTO: TAggregateField
       DisplayLabel = 'Soma dos or'#231'amentos'

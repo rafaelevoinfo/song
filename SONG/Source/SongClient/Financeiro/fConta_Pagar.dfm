@@ -11,13 +11,12 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
+    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -32,23 +31,71 @@ inherited frmContaPagar: TfrmContaPagar
             Left = 4
             ExplicitLeft = 4
           end
-          inherited rgStatus: TcxRadioGroup [1]
+          object cbPesquisaFornecedor: TcxLookupComboBox [1]
+            Left = 157
+            Top = 20
+            RepositoryItem = dmLookup.repLcbFornecedor
+            Properties.ListColumns = <>
+            TabOrder = 5
+            Width = 176
+          end
+          object cbPesquisaPlanoConta: TcxLookupComboBox [2]
+            Left = 157
+            Top = 20
+            RepositoryItem = dmLookup.repLcbPlano_Contas
+            Properties.ListColumns = <>
+            TabOrder = 4
+            Width = 176
+          end
+          object cbPesquisaProjeto: TcxLookupComboBox [3]
+            Left = 157
+            Top = 20
+            RepositoryItem = dmLookup.repLcbProjeto
+            Properties.ListColumns = <>
+            TabOrder = 7
+            Visible = False
+            Width = 176
+          end
+          object cbPesquisaRubricas: TcxLookupComboBox [4]
+            Left = 155
+            Top = 20
+            Properties.DropDownListStyle = lsFixedList
+            Properties.DropDownSizeable = True
+            Properties.KeyFieldNames = 'ID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'NOME'
+              end>
+            Properties.ListSource = dsLocalRubricas
+            TabOrder = 8
+            Visible = False
+            Width = 176
+          end
+          object cbPesquisaResponsavel: TcxLookupComboBox [5]
+            Left = 156
+            Top = 20
+            RepositoryItem = dmLookup.repLcbPessoa
+            Properties.ListColumns = <>
+            TabOrder = 9
+            Width = 177
+          end
+          inherited rgStatus: TcxRadioGroup [6]
             Left = 291
             Top = 27
             TabOrder = 6
             ExplicitLeft = 291
             ExplicitTop = 27
           end
-          inherited pnData: TPanel [2]
+          inherited pnData: TPanel [7]
             Left = 204
             ExplicitLeft = 204
           end
-          inherited EditPesquisa: TcxButtonEdit [3]
+          inherited EditPesquisa: TcxButtonEdit [8]
             Left = 156
             TabOrder = 3
             ExplicitLeft = 156
           end
-          inherited cbPesquisarPor: TcxImageComboBox [4]
+          inherited cbPesquisarPor: TcxImageComboBox [9]
             Left = 2
             Properties.Items = <
               item
@@ -88,56 +135,20 @@ inherited frmContaPagar: TfrmContaPagar
               item
                 Description = 'Rubrica de Origem do Recurso'
                 Value = 10
+              end
+              item
+                Description = 'Respons'#225'vel pela Despesa'
+                Value = 11
               end>
             TabOrder = 2
             ExplicitLeft = 2
             ExplicitWidth = 153
             Width = 153
           end
-          inherited btnPesquisar: TButton [5]
+          inherited btnPesquisar: TButton [10]
             Left = 332
             TabOrder = 1
             ExplicitLeft = 332
-          end
-          object cbPesquisaFornecedor: TcxLookupComboBox
-            Left = 157
-            Top = 20
-            RepositoryItem = dmLookup.repLcbFornecedor
-            Properties.ListColumns = <>
-            TabOrder = 5
-            Width = 176
-          end
-          object cbPesquisaPlanoConta: TcxLookupComboBox
-            Left = 157
-            Top = 20
-            RepositoryItem = dmLookup.repLcbPlano_Contas
-            Properties.ListColumns = <>
-            TabOrder = 4
-            Width = 176
-          end
-          object cbPesquisaProjeto: TcxLookupComboBox
-            Left = 157
-            Top = 20
-            RepositoryItem = dmLookup.repLcbProjeto
-            Properties.ListColumns = <>
-            TabOrder = 7
-            Visible = False
-            Width = 176
-          end
-          object cbPesquisaRubricas: TcxLookupComboBox
-            Left = 155
-            Top = 20
-            Properties.DropDownListStyle = lsFixedList
-            Properties.DropDownSizeable = True
-            Properties.KeyFieldNames = 'ID'
-            Properties.ListColumns = <
-              item
-                FieldName = 'NOME'
-              end>
-            Properties.ListSource = dsLocalRubricas
-            TabOrder = 8
-            Visible = False
-            Width = 176
           end
         end
         inherited pnBotoes: TPanel
@@ -247,10 +258,7 @@ inherited frmContaPagar: TfrmContaPagar
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
               ExplicitWidth = 975
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -450,8 +458,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -471,7 +477,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabVinculo
+          Properties.ActivePage = tabInfoGeral
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -1401,6 +1407,6 @@ inherited frmContaPagar: TfrmContaPagar
   object dsLocalRubricas: TDataSource
     DataSet = cdsLocalRubricas
     Left = 488
-    Top = 248
+    Top = 216
   end
 end

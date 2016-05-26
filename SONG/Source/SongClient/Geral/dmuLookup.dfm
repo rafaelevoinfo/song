@@ -507,8 +507,12 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          Width = 200
+          Width = 250
           FieldName = 'NOME'
+        end
+        item
+          Width = 200
+          FieldName = 'SALDO'
         end
         item
           Width = 200
@@ -1256,6 +1260,7 @@ inherited dmLookup: TdmLookup
       FieldName = 'SALDO'
       ProviderFlags = []
       Required = True
+      currency = True
       Precision = 18
       Size = 2
     end
@@ -1435,5 +1440,39 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkLote_Muda
     Left = 664
     Top = 704
+  end
+  object cdslkProjeto_Rubrica: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkProjeto_Rubrica'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 912
+    Top = 704
+    object cdslkProjeto_RubricaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkProjeto_RubricaORCAMENTO: TBCDField
+      DisplayLabel = 'Or'#231'amento'
+      FieldName = 'ORCAMENTO'
+      ProviderFlags = []
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdslkProjeto_RubricaSALDO_REAL: TFMTBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO_REAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+    end
+    object cdslkProjeto_RubricaNOME_RUBRICA: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME_RUBRICA'
+      ProviderFlags = []
+      Size = 123
+    end
   end
 end
