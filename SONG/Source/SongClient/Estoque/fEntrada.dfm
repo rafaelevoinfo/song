@@ -1,12 +1,16 @@
 inherited frmEntrada: TfrmEntrada
   ActiveControl = nil
   Caption = 'Entradas'
-  ExplicitWidth = 320
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -160,6 +164,10 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label3: TLabel
           Left = 5

@@ -519,7 +519,6 @@ inherited smEstoque: TsmEstoque
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Saida.Id,'
-      '       Saida.Id_Venda,'
       '       Saida.Data,'
       '       Saida.Tipo'
       'from Saida'
@@ -536,11 +535,6 @@ inherited smEstoque: TsmEstoque
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
-    end
-    object qSaidaID_VENDA: TIntegerField
-      FieldName = 'ID_VENDA'
-      Origin = 'ID_VENDA'
-      ProviderFlags = [pfInUpdate]
     end
     object qSaidaDATA: TSQLTimeStampField
       FieldName = 'DATA'
@@ -568,7 +562,8 @@ inherited smEstoque: TsmEstoque
       '       lote_semente.nome as lote_semente,'
       '       Saida_Item.Id_Lote_Muda,'
       '       lote_muda.nome as lote_muda, '
-      '       Saida_Item.Qtde'
+      '       Saida_Item.Qtde,'
+      '       Saida_item.id_venda_item'
       'from Saida_Item'
       'INNER join item on (item.id = saida_item.id_item)'
       'left join especie on (especie.id = saida_item.id_especie)'
@@ -655,6 +650,11 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = []
       Size = 100
     end
+    object qSaida_ItemID_VENDA_ITEM: TIntegerField
+      FieldName = 'ID_VENDA_ITEM'
+      Origin = 'ID_VENDA_ITEM'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object qVenda: TRFQuery
     Connection = dmPrincipal.conSong
@@ -665,7 +665,13 @@ inherited smEstoque: TsmEstoque
       '       Venda.Id_Pessoa_Vendeu,'
       '       Pessoa.Nome as Vendedor,'
       '       Venda.Data,'
-      '       Venda.Descricao'
+      '       Venda.Descricao,'
+      
+        '       (Select Coalesce(Sum(venda_item.valor_unitario*venda_item' +
+        '.qtde),0) from'
+      
+        '       venda_item where venda_item.id_venda = venda.id) as Valor' +
+        '_Total'
       'from Venda '
       'inner join fin_for_cli on (fin_for_cli.id = Venda.id_cliente)'
       'inner join pessoa on (pessoa.id = venda.id_pessoa_vendeu)'
@@ -720,6 +726,13 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = []
       Size = 100
     end
+    object qVendaVALOR_TOTAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = []
+      Precision = 18
+    end
   end
   object qVenda_Item: TRFQuery
     Connection = dmPrincipal.conSong
@@ -731,10 +744,18 @@ inherited smEstoque: TsmEstoque
       '       Venda_Item.Id_Especie,'
       '       Especie.nome as Especie,'
       '       Venda_Item.Qtde,'
-      '       Venda_Item.Valor_Unitario'
+      '       Venda_Item.Valor_Unitario,'
+      '       Venda_item.Id_Lote_Semente,'
+      '       Lote_Semente.Nome as Lote_Semente,'
+      '       Venda_Item.Id_Lote_Muda,'
+      '       Lote_Muda.nome as Lote_Muda'
       'from Venda_Item'
       'inner join item on (item.id = venda_item.id_item)'
       'left join especie on (especie.id = venda_item.id_especie)'
+      
+        'left join lote_semente on (lote_semente.id = venda_item.id_lote_' +
+        'semente)'
+      'left join lote_muda on (lote_muda.id = Venda_Item.id_lote_muda)'
       'where Venda_Item.Id_Venda = :ID_VENDA')
     Left = 392
     Top = 232
@@ -794,6 +815,30 @@ inherited smEstoque: TsmEstoque
     object qVenda_ItemESPECIE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qVenda_ItemID_LOTE_SEMENTE: TIntegerField
+      FieldName = 'ID_LOTE_SEMENTE'
+      Origin = 'ID_LOTE_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qVenda_ItemLOTE_SEMENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'LOTE_SEMENTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 30
+    end
+    object qVenda_ItemID_LOTE_MUDA: TIntegerField
+      FieldName = 'ID_LOTE_MUDA'
+      Origin = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qVenda_ItemLOTE_MUDA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'LOTE_MUDA'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

@@ -1,15 +1,15 @@
 inherited dmEstoque: TdmEstoque
   OldCreateOrder = True
-  Height = 418
-  Width = 753
+  Height = 392
+  Width = 996
   object cdsItem: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqItem'
     RemoteServer = dmPrincipal.ProviderEstoque
     OnCalcFields = cdsItemCalcFields
-    Left = 48
-    Top = 24
+    Left = 928
+    Top = 16
     object cdsItemID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -61,8 +61,8 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqEntrada'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 136
-    Top = 24
+    Left = 336
+    Top = 124
     object cdsEntradaID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -92,8 +92,8 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqSolicitacao_Compra'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 240
-    Top = 32
+    Left = 40
+    Top = 232
     object cdsSolicitacao_CompraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -155,8 +155,8 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqSolicitacao_Compra_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 248
-    Top = 104
+    Left = 632
+    Top = 124
     object cdsSolicitacao_Compra_ItemID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -202,16 +202,16 @@ inherited dmEstoque: TdmEstoque
   end
   object dsSolicitacao_Compra: TDataSource
     DataSet = cdsSolicitacao_Compra
-    Left = 448
-    Top = 112
+    Left = 188
+    Top = 16
   end
   object cdsCompra: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqCompra'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 400
-    Top = 32
+    Left = 484
+    Top = 124
     object cdsCompraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -298,8 +298,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqCompra_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 472
-    Top = 192
+    Left = 780
+    Top = 124
     object cdsCompra_ItemID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -359,8 +359,8 @@ inherited dmEstoque: TdmEstoque
   end
   object dsCompra: TDataSource
     DataSet = cdsCompra
-    Left = 360
-    Top = 192
+    Left = 40
+    Top = 16
   end
   object cdsEntrada_Item: TRFClientDataSet
     Aggregates = <>
@@ -376,8 +376,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqEntrada_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 128
-    Top = 200
+    Left = 928
+    Top = 124
     object cdsEntrada_ItemID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -416,25 +416,20 @@ inherited dmEstoque: TdmEstoque
   end
   object dsEntrada: TDataSource
     DataSet = cdsEntrada
-    Left = 128
-    Top = 88
+    Left = 484
+    Top = 16
   end
   object cdsSaida: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqSaida'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 352
-    Top = 264
+    Left = 780
+    Top = 16
     object cdsSaidaID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
-    end
-    object cdsSaidaID_VENDA: TIntegerField
-      DisplayLabel = 'ID da Venda'
-      FieldName = 'ID_VENDA'
-      ProviderFlags = [pfInUpdate]
     end
     object cdsSaidaDATA: TSQLTimeStampField
       DisplayLabel = 'Data'
@@ -464,8 +459,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqSaida_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 440
-    Top = 288
+    Left = 632
+    Top = 16
     object cdsSaida_ItemID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -527,19 +522,24 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'NOME_ESPECIE'
       Size = 100
     end
+    object cdsSaida_ItemID_VENDA_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item da Venda'
+      FieldName = 'ID_VENDA_ITEM'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object dsSaida: TDataSource
     DataSet = cdsSaida
-    Left = 344
-    Top = 328
+    Left = 336
+    Top = 16
   end
   object cdsVenda: TRFClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqVenda'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 632
-    Top = 64
+    Left = 188
+    Top = 124
     object cdsVendaID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -580,6 +580,12 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = []
       Size = 100
     end
+    object cdsVendaVALOR_TOTAL: TBCDField
+      DisplayLabel = 'Valor Total'
+      FieldName = 'VALOR_TOTAL'
+      currency = True
+      Precision = 18
+    end
   end
   object cdsVenda_Item: TRFClientDataSet
     Aggregates = <>
@@ -591,8 +597,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqVenda_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 640
-    Top = 136
+    Left = 40
+    Top = 124
     object cdsVenda_ItemID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -628,6 +634,7 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'VALOR_UNITARIO'
       ProviderFlags = [pfInUpdate]
       Required = True
+      currency = True
       Precision = 18
       Size = 2
     end
@@ -641,6 +648,24 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ESPECIE'
       ProviderFlags = []
+      Size = 100
+    end
+    object cdsVenda_ItemID_LOTE_SEMENTE: TIntegerField
+      DisplayLabel = 'Id do Lote de Semente'
+      FieldName = 'ID_LOTE_SEMENTE'
+    end
+    object cdsVenda_ItemLOTE_SEMENTE: TStringField
+      DisplayLabel = 'Lote de Semente'
+      FieldName = 'LOTE_SEMENTE'
+      Size = 30
+    end
+    object cdsVenda_ItemID_LOTE_MUDA: TIntegerField
+      DisplayLabel = 'Id do Lote de Muda'
+      FieldName = 'ID_LOTE_MUDA'
+    end
+    object cdsVenda_ItemLOTE_MUDA: TStringField
+      DisplayLabel = 'Lote de Muda'
+      FieldName = 'LOTE_MUDA'
       Size = 100
     end
   end

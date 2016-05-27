@@ -1408,6 +1408,11 @@ inherited dmLookup: TdmLookup
       Precision = 18
       Size = 2
     end
+    object cdslkLote_SementeID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
   end
   object cdslkLote_Muda: TRFClientDataSet
     Aggregates = <>
@@ -1429,6 +1434,11 @@ inherited dmLookup: TdmLookup
     object cdslkLote_MudaSALDO: TIntegerField
       DisplayLabel = 'Qtde. Em Estoque'
       FieldName = 'SALDO'
+    end
+    object cdslkLote_MudaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
     end
   end
   object dslkLote_Semente: TDataSource

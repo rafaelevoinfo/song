@@ -72,7 +72,6 @@ type
     qEntrada_ItemID_COMPRA_ITEM: TIntegerField;
     qSaida: TRFQuery;
     qSaidaID: TIntegerField;
-    qSaidaID_VENDA: TIntegerField;
     qSaidaDATA: TSQLTimeStampField;
     qSaidaTIPO: TSmallintField;
     qSaida_Item: TRFQuery;
@@ -105,6 +104,12 @@ type
     qVendaVENDEDOR: TStringField;
     qVenda_ItemITEM: TStringField;
     qVenda_ItemESPECIE: TStringField;
+    qVendaVALOR_TOTAL: TBCDField;
+    qSaida_ItemID_VENDA_ITEM: TIntegerField;
+    qVenda_ItemID_LOTE_SEMENTE: TIntegerField;
+    qVenda_ItemLOTE_SEMENTE: TStringField;
+    qVenda_ItemID_LOTE_MUDA: TIntegerField;
+    qVenda_ItemLOTE_MUDA: TStringField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;

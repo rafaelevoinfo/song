@@ -197,6 +197,8 @@ type
     cdslkProjeto_RubricaORCAMENTO: TBCDField;
     cdslkProjeto_RubricaSALDO_REAL: TFMTBCDField;
     cdslkProjeto_RubricaNOME_RUBRICA: TStringField;
+    cdslkLote_SementeID_ESPECIE: TIntegerField;
+    cdslkLote_MudaID_ESPECIE: TIntegerField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

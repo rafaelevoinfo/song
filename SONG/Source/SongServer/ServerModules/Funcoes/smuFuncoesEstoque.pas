@@ -21,6 +21,8 @@ type
 
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
     function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
+    function fpuBuscarItensSaida(ipIdVenda: Integer): string;
+    function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
 
     procedure ppuAtualizarSaldoItem(ipIdItem:Integer; ipQtdeSubtrair, ipQtdeSomar:Double);
 
@@ -56,6 +58,26 @@ begin
 
 end;
 
+function TsmFuncoesEstoque.fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
+var
+  vaId: Integer;
+begin
+  vaId := 0;
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select Saida_Item.id from Saida_Item ' +
+        ' where Saida_Item.id_venda_item = :ID_VENDA_ITEM';
+      ipDataSet.ParamByName('ID_VENDA_ITEM').AsInteger := ipIdVendaItem;
+      ipDataSet.Open();
+      if (not ipDataSet.Eof) then
+        vaId := ipDataSet.FieldByName('ID').AsInteger;
+    end);
+
+  Result := vaId;
+
+end;
+
 function TsmFuncoesEstoque.fpuBuscarItensEntrada(ipIdCompra: Integer): string;
 var
   vaIds: TStringList;
@@ -71,6 +93,36 @@ begin
         ipDataSet.SQL.Text := 'select Entrada_Item.id from Entrada_Item ' +
           ' where Entrada_Item.id_compra_item in (select compra_item.id from compra_item where compra_item.id_compra = :ID_COMPRA)';
         ipDataSet.ParamByName('ID_COMPRA').AsInteger := ipIdCompra;
+        ipDataSet.Open();
+        while (not ipDataSet.Eof) do
+          begin
+            vaIds.Add(ipDataSet.FieldByName(TBancoDados.coId).AsString);
+            ipDataSet.Next;
+          end;
+      end);
+
+    Result := vaIds.DelimitedText;
+  finally
+    vaIds.Free;
+  end;
+
+end;
+
+function TsmFuncoesEstoque.fpuBuscarItensSaida(ipIdVenda: Integer): string;
+var
+  vaIds: TStringList;
+begin
+  vaIds := TStringList.Create();
+  try
+    vaIds.Delimiter := coDelimitadorPadrao;
+    vaIds.StrictDelimiter := True;
+
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := 'select Venda_Item.id from Venda_Item ' +
+          ' where Venda_Item.id_venda_item in (select venda_item.id from venda_item where venda_item.id_venda = :ID_VENDA)';
+        ipDataSet.ParamByName('ID_VENDA').AsInteger := ipIdVenda;
         ipDataSet.Open();
         while (not ipDataSet.Eof) do
           begin

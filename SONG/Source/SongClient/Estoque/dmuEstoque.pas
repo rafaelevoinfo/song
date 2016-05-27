@@ -71,7 +71,6 @@ type
     cdsEntrada_ItemID_COMPRA_ITEM: TIntegerField;
     cdsSaida: TRFClientDataSet;
     cdsSaidaID: TIntegerField;
-    cdsSaidaID_VENDA: TIntegerField;
     cdsSaidaDATA: TSQLTimeStampField;
     cdsSaidaTIPO: TSmallintField;
     cdsSaida_Item: TRFClientDataSet;
@@ -106,6 +105,12 @@ type
     cdsVenda_ItemVALOR_UNITARIO: TBCDField;
     cdsVenda_ItemITEM: TStringField;
     cdsVenda_ItemESPECIE: TStringField;
+    cdsVendaVALOR_TOTAL: TBCDField;
+    cdsSaida_ItemID_VENDA_ITEM: TIntegerField;
+    cdsVenda_ItemID_LOTE_SEMENTE: TIntegerField;
+    cdsVenda_ItemLOTE_SEMENTE: TStringField;
+    cdsVenda_ItemID_LOTE_MUDA: TIntegerField;
+    cdsVenda_ItemLOTE_MUDA: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

@@ -173,14 +173,14 @@ begin
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
     begin
       vaItem := TItem(Modelo);
-      cbItem.EditValue := vaItem.IdItem;
+      cbItem.EditValue := vaItem.Id;
       cbItem.PostEditValue;
 
       EditQtde.EditValue := vaItem.Qtde;
       EditQtde.PostEditValue;
 
-      if vaItem.IdItemCompra <> 0 then
-        dmEstoque.cdsEntrada_ItemID_COMPRA_ITEM.AsInteger := vaItem.IdItemCompra;
+      if vaItem.IdItemCompraVenda <> 0 then
+        dmEstoque.cdsEntrada_ItemID_COMPRA_ITEM.AsInteger := vaItem.IdItemCompraVenda;
     end;
 end;
 

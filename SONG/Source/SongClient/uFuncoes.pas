@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 24/05/2016 22:56:55
+// 27/05/2016 19:41:34
 //
 
 unit uFuncoes;
@@ -195,6 +195,8 @@ type
     FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
     FfpuBuscarItensEntradaCommand: TDBXCommand;
     FfpuBuscarItemEntradaCommand: TDBXCommand;
+    FfpuBuscarItensSaidaCommand: TDBXCommand;
+    FfpuBuscarItemSaidaCommand: TDBXCommand;
     FppuAtualizarSaldoItemCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
@@ -208,6 +210,8 @@ type
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
     function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
+    function fpuBuscarItensSaida(ipIdVenda: Integer): string;
+    function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
@@ -1388,6 +1392,34 @@ begin
   Result := FfpuBuscarItemEntradaCommand.Parameters[1].Value.GetInt32;
 end;
 
+function TsmFuncoesEstoqueClient.fpuBuscarItensSaida(ipIdVenda: Integer): string;
+begin
+  if FfpuBuscarItensSaidaCommand = nil then
+  begin
+    FfpuBuscarItensSaidaCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarItensSaidaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarItensSaidaCommand.Text := 'TsmFuncoesEstoque.fpuBuscarItensSaida';
+    FfpuBuscarItensSaidaCommand.Prepare;
+  end;
+  FfpuBuscarItensSaidaCommand.Parameters[0].Value.SetInt32(ipIdVenda);
+  FfpuBuscarItensSaidaCommand.ExecuteUpdate;
+  Result := FfpuBuscarItensSaidaCommand.Parameters[1].Value.GetWideString;
+end;
+
+function TsmFuncoesEstoqueClient.fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
+begin
+  if FfpuBuscarItemSaidaCommand = nil then
+  begin
+    FfpuBuscarItemSaidaCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarItemSaidaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarItemSaidaCommand.Text := 'TsmFuncoesEstoque.fpuBuscarItemSaida';
+    FfpuBuscarItemSaidaCommand.Prepare;
+  end;
+  FfpuBuscarItemSaidaCommand.Parameters[0].Value.SetInt32(ipIdVendaItem);
+  FfpuBuscarItemSaidaCommand.ExecuteUpdate;
+  Result := FfpuBuscarItemSaidaCommand.Parameters[1].Value.GetInt32;
+end;
+
 procedure TsmFuncoesEstoqueClient.ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
 begin
   if FppuAtualizarSaldoItemCommand = nil then
@@ -1475,6 +1507,8 @@ begin
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
   FfpuBuscarItensEntradaCommand.DisposeOf;
   FfpuBuscarItemEntradaCommand.DisposeOf;
+  FfpuBuscarItensSaidaCommand.DisposeOf;
+  FfpuBuscarItemSaidaCommand.DisposeOf;
   FppuAtualizarSaldoItemCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;

@@ -125,6 +125,8 @@ type
     qlkProjeto_RubricaORCAMENTO: TBCDField;
     qlkProjeto_RubricaSALDO_REAL: TFMTBCDField;
     qlkProjeto_RubricaNOME_RUBRICA: TStringField;
+    qlkLote_MudaID_ESPECIE: TIntegerField;
+    qlkLote_SementeID_ESPECIE: TIntegerField;
   private
     { Private declarations }
   protected

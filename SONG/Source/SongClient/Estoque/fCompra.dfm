@@ -19,6 +19,33 @@ inherited frmCompra: TfrmCompra
             Left = 4
             ExplicitLeft = 4
           end
+          object cbPesquisaPessoa: TcxLookupComboBox [1]
+            Left = 138
+            Top = 20
+            RepositoryItem = dmLookup.repLcbPessoa
+            Properties.ListColumns = <>
+            TabOrder = 5
+            Visible = False
+            Width = 174
+          end
+          object cbItemPesquisa: TcxLookupComboBox [2]
+            Left = 137
+            Top = 20
+            RepositoryItem = dmLookup.repLcbItem
+            Properties.ListColumns = <>
+            TabOrder = 6
+            Visible = False
+            Width = 175
+          end
+          object cbPesquisaFornecedor: TcxLookupComboBox [3]
+            Left = 136
+            Top = 20
+            RepositoryItem = dmLookup.repLcbFornecedor
+            Properties.ListColumns = <>
+            TabOrder = 7
+            Visible = False
+            Width = 176
+          end
           inherited pnData: TPanel
             Left = 183
             ExplicitLeft = 183
@@ -71,33 +98,6 @@ inherited frmCompra: TfrmCompra
             Top = 33
             ExplicitLeft = 6
             ExplicitTop = 33
-          end
-          object cbPesquisaPessoa: TcxLookupComboBox
-            Left = 138
-            Top = 20
-            RepositoryItem = dmLookup.repLcbPessoa
-            Properties.ListColumns = <>
-            TabOrder = 5
-            Visible = False
-            Width = 174
-          end
-          object cbItemPesquisa: TcxLookupComboBox
-            Left = 137
-            Top = 20
-            RepositoryItem = dmLookup.repLcbItem
-            Properties.ListColumns = <>
-            TabOrder = 6
-            Visible = False
-            Width = 175
-          end
-          object cbPesquisaFornecedor: TcxLookupComboBox
-            Left = 136
-            Top = 20
-            RepositoryItem = dmLookup.repLcbFornecedor
-            Properties.ListColumns = <>
-            TabOrder = 7
-            Visible = False
-            Width = 176
           end
         end
         inherited pnBotoes: TPanel
@@ -424,10 +424,10 @@ inherited frmCompra: TfrmCompra
         object lbl6: TLabel
           Left = 431
           Top = 8
-          Width = 79
+          Width = 64
           Height = 13
-          Caption = 'Valor do Unit'#225'rio'
-          FocusControl = EditDataCompra
+          Caption = 'Valor Unit'#225'rio'
+          FocusControl = EditValorUnitario
         end
         object cbItem: TcxDBLookupComboBox
           Left = 4

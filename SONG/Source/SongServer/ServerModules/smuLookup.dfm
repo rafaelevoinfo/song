@@ -869,6 +869,7 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Semente.Id,'
+      '       Lote_Semente.Id_Especie,'
       '       Lote_Semente.Nome,'
       '       Lote_Semente.Qtde_Armazenada'
       'from Lote_Semente'
@@ -900,11 +901,18 @@ inherited smLookup: TsmLookup
       Precision = 18
       Size = 2
     end
+    object qlkLote_SementeID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
   end
   object qlkLote_Muda: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Muda.Id,'
+      '       Lote_Muda.Id_Especie,'
       '       Lote_Muda.Nome,'
       '       Lote_Muda.Saldo'
       'from Lote_Muda  '
@@ -933,6 +941,12 @@ inherited smLookup: TsmLookup
       FieldName = 'SALDO'
       Origin = 'SALDO'
       ProviderFlags = []
+    end
+    object qlkLote_MudaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
     end
   end
   object qlkProjeto_Rubrica: TRFQuery

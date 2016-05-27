@@ -575,7 +575,7 @@ begin
             vaItem := TItem.Create; // vai ser destruido pelo vafrmEntrada
             vaItem.IdItem := dmEstoque.cdsCompra_ItemID_ITEM.AsInteger;
             vaItem.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
-            vaItem.IdItemCompra := dmEstoque.cdsCompra_ItemID.AsInteger;
+            vaItem.IdItemCompraVenda := dmEstoque.cdsCompra_ItemID.AsInteger;
 
             vaFrmEntrada.Modelo := vaItem;
             vaFrmEntrada.ppuIncluirDetail;

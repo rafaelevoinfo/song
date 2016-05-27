@@ -31,18 +31,21 @@ type
 
   TItem = class(TModelo)
   private
-    FIdItem: Integer;
     FQtde: Double;
     FIdEspecie: Integer;
-    FIdItemCompra: Integer;
-    procedure SetIdItem(const Value: Integer);
+    FIdItemCompraVenda: Integer;
+    FIdLoteSemente: Integer;
+    FIdLoteMuda: Integer;
     procedure SetQtde(const Value: Double);
     procedure SetIdEspecie(const Value: Integer);
-    procedure SetIdItemCompra(const Value: Integer);
+    procedure SetIdItemCompraVenda(const Value: Integer);
+    procedure SetIdLoteMuda(const Value: Integer);
+    procedure SetIdLoteSemente(const Value: Integer);
   public
-    property IdItem: Integer read FIdItem write SetIdItem;
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
-    property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
+    property IdItemCompraVenda: Integer read FIdItemCompraVenda write SetIdItemCompraVenda;
+    property IdLoteMuda:Integer read FIdLoteMuda write SetIdLoteMuda;
+    property IdLoteSemente:Integer read FIdLoteSemente write SetIdLoteSemente;
     property Qtde: Double read FQtde write SetQtde;
   end;
 
@@ -169,14 +172,19 @@ begin
   FIdEspecie := Value;
 end;
 
-procedure TItem.SetIdItem(const Value: Integer);
+procedure TItem.SetIdItemCompraVenda(const Value: Integer);
 begin
-  FIdItem := Value;
+  FIdItemCompraVenda := Value;
 end;
 
-procedure TItem.SetIdItemCompra(const Value: Integer);
+procedure TItem.SetIdLoteMuda(const Value: Integer);
 begin
-  FIdItemCompra := Value;
+  FIdLoteMuda := Value;
+end;
+
+procedure TItem.SetIdLoteSemente(const Value: Integer);
+begin
+  FIdLoteSemente := Value;
 end;
 
 procedure TItem.SetQtde(const Value: Double);

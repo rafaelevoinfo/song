@@ -18,9 +18,22 @@ uses
   uExceptions, dmuPrincipal, uUtils, System.Generics.Collections;
 
 type
+  TSaida = class(TModelo)
+  private
+    FItens: TObjectList<TItem>;
+    FData: TDateTime;
+    FTipo: TTipoSaida;
+    procedure SetData(const Value: TDateTime);
+    procedure SetItens(const Value: TObjectList<TItem>);
+    procedure SetTipo(const Value: TTipoSaida);
+  public
+    property Data: TDateTime read FData write SetData;
+    property Tipo: TTipoSaida read FTipo write SetTipo;
+    property Itens: TObjectList<TItem> read FItens write SetItens;
+  end;
+
   TfrmSaida = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
-    viewRegistrosID_VENDA: TcxGridDBColumn;
     viewRegistrosDATA: TcxGridDBColumn;
     viewRegistrosTIPO: TcxGridDBColumn;
     viewRegistrosDetailID: TcxGridDBColumn;
@@ -57,6 +70,7 @@ type
     lb2: TLabel;
     viewRegistrosDetailID_ESPECIE: TcxGridDBColumn;
     viewRegistrosDetailNOME_ESPECIE: TcxGridDBColumn;
+    viewRegistrosDetailID_VENDA_ITEM: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
@@ -65,6 +79,7 @@ type
     dmLookup: TdmLookup;
     procedure ppvConfigurarEdits;
     procedure ppvCarregarLotes;
+
   protected
     procedure pprValidarPesquisa; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -72,6 +87,8 @@ type
     procedure pprBeforeSalvarDetail; override;
     procedure pprExecutarExcluirDetail(ipId: Integer); override;
     procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
+    procedure pprCarregarDadosModelo; override;
+    procedure pprCarregarDadosModeloDetail; override;
 
     function fprGetPermissao: string; override;
 
@@ -101,7 +118,7 @@ implementation
 procedure TfrmSaida.pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela);
 var
   vaIdsEspeciesSementes, vaIdsItem: TDictionary<Integer, Double>;
-  vaIdsEspeciesMudas:TDictionary<Integer, Integer>;
+  vaIdsEspeciesMudas: TDictionary<Integer, Integer>;
   vaId: Integer;
 begin
   vaIdsEspeciesSementes := TDictionary<Integer, Double>.Create;
@@ -256,6 +273,65 @@ begin
 
 end;
 
+procedure TfrmSaida.pprCarregarDadosModeloDetail;
+var
+  vaItem: TItem;
+
+  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
+  begin
+    if not VarIsNull(ipValor) then
+      begin
+        ipEdit.EditValue := ipValor;
+        ipEdit.PostEditValue;
+      end;
+  end;
+
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
+    begin
+      vaItem := TItem(Modelo);
+      plSetEdit(cbItem,vaItem.Id);
+      plSetEdit(EditQtde,vaItem.Qtde);
+
+      if vaItem.IdEspecie <> 0 then
+        plSetEdit(cbEspecie,vaItem.IdEspecie);
+
+      if vaItem.IdLoteMuda <> 0 then
+        plSetEdit(cbLoteMuda,vaItem.IdLoteMuda);
+
+      if vaItem.IdLoteSemente <> 0 then
+        plSetEdit(cbLoteSemente,vaItem.IdLoteSemente);
+
+      if vaItem.IdItemCompraVenda <> 0 then
+        dmEstoque.cdsSaida_ItemID_VENDA_ITEM.AsInteger := vaItem.IdItemCompraVenda;
+    end;
+end;
+
+procedure TfrmSaida.pprCarregarDadosModelo;
+var
+  vaSaida: TSaida;
+
+  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
+  begin
+    if not VarIsNull(ipValor) then
+      begin
+        ipEdit.EditValue := ipValor;
+        ipEdit.PostEditValue;
+      end;
+  end;
+
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TSaida) then
+    begin
+      vaSaida := TSaida(Modelo);
+
+      plSetEdit(EditDataSaida, vaSaida.Data);
+      plSetEdit(cbTipoSaida, Ord(vaSaida.Tipo));
+    end;
+end;
+
 procedure TfrmSaida.cbEspeciePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
@@ -269,10 +345,22 @@ const
 begin
   if (not VarIsNull(cbEspecie.EditValue)) and dmLookup.cdslkEspecie.Locate(TBancoDados.coId, cbEspecie.EditValue, []) then
     begin
-      dmLookup.cdslkLote_Semente.ppuDataRequest([TParametros.coEspecie, TParametros.coStatus, TParametros.coPossuiEstoque],
-        [cbEspecie.EditValue, coAberto, true], TOperadores.coAnd, true);
-      dmLookup.cdslkLote_Muda.ppuDataRequest([TParametros.coEspecie, TParametros.coPossuiEstoque],
-        [cbEspecie.EditValue, true], TOperadores.coAnd, true);
+      if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
+        begin
+          if (not dmLookup.cdslkLote_Semente.Active) or (dmLookup.cdslkLote_SementeID_ESPECIE.AsInteger <> cbEspecie.EditValue) then
+            begin
+              dmLookup.cdslkLote_Semente.ppuDataRequest([TParametros.coEspecie, TParametros.coStatus, TParametros.coPossuiEstoque],
+                [cbEspecie.EditValue, coAberto, true], TOperadores.coAnd, true);
+            end;
+        end
+      else if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda) then
+        begin
+          if (not dmLookup.cdslkLote_Muda.Active) or (dmLookup.cdslkLote_MudaID_ESPECIE.AsInteger <> cbEspecie.EditValue) then
+            begin
+              dmLookup.cdslkLote_Muda.ppuDataRequest([TParametros.coEspecie, TParametros.coPossuiEstoque],
+                [cbEspecie.EditValue, true], TOperadores.coAnd, true);
+            end;
+        end;
     end
   else
     begin
@@ -377,18 +465,21 @@ begin
 end;
 
 procedure TfrmSaida.ppvConfigurarEdits;
+var
+  vaVisivel: Boolean;
 begin
-  pnEspecieLotes.Visible := (not VarIsNull(cbItem.EditValue)) and dmLookup.cdslkItem.Locate(TBancoDados.coId, cbItem.EditValue, []) and
-    (dmLookup.cdslkItemTIPO.AsInteger in [Ord(tiSemente), Ord(tiMuda)]);
-
-  if pnEspecieLotes.Visible then
+  vaVisivel := (not VarIsNull(cbItem.EditValue));
+  if vaVisivel then
     begin
+      vaVisivel := dmLookup.cdslkItem.Locate(TBancoDados.coId, cbItem.EditValue, []) and
+        (dmLookup.cdslkItemTIPO.AsInteger in [Ord(tiSemente), Ord(tiMuda)]);
+
       pnLoteSemente.Visible := dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente);
       pnLoteMuda.Visible := dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda);
+      pnEspecieLotes.Visible := vaVisivel;
+
       lbUnidade.Caption := dmLookup.cdslkItemUNIDADE.AsString;
-    end
-  else
-    lbUnidade.Caption := '';
+    end;
 end;
 
 procedure TfrmSaida.FormCreate(Sender: TObject);
@@ -445,6 +536,23 @@ end;
 function TfrmSaida.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estSaida));
+end;
+
+{ TSaida }
+
+procedure TSaida.SetData(const Value: TDateTime);
+begin
+  FData := Value;
+end;
+
+procedure TSaida.SetItens(const Value: TObjectList<TItem>);
+begin
+  FItens := Value;
+end;
+
+procedure TSaida.SetTipo(const Value: TTipoSaida);
+begin
+  FTipo := Value;
 end;
 
 end.
