@@ -656,4 +656,147 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
+  object qVenda: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Venda.Id,'
+      '       Venda.Id_Cliente,'
+      '       Fin_For_Cli.razao_social as Cliente,'
+      '       Venda.Id_Pessoa_Vendeu,'
+      '       Pessoa.Nome as Vendedor,'
+      '       Venda.Data,'
+      '       Venda.Descricao'
+      'from Venda '
+      'inner join fin_for_cli on (fin_for_cli.id = Venda.id_cliente)'
+      'inner join pessoa on (pessoa.id = venda.id_pessoa_vendeu)'
+      '&WHERE')
+    Left = 392
+    Top = 168
+    MacroData = <
+      item
+        Value = 'WHERE VENDA.ID = 0'
+        Name = 'WHERE'
+      end>
+    object qVendaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qVendaID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qVendaID_PESSOA_VENDEU: TIntegerField
+      FieldName = 'ID_PESSOA_VENDEU'
+      Origin = 'ID_PESSOA_VENDEU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qVendaDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qVendaDESCRICAO: TIntegerField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qVendaCLIENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CLIENTE'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qVendaVENDEDOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'VENDEDOR'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object qVenda_Item: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Venda_Item.Id,'
+      '       Venda_Item.Id_Venda,'
+      '       Venda_Item.Id_Item,'
+      '       Item.nome as Item,'
+      '       Venda_Item.Id_Especie,'
+      '       Especie.nome as Especie,'
+      '       Venda_Item.Qtde,'
+      '       Venda_Item.Valor_Unitario'
+      'from Venda_Item'
+      'inner join item on (item.id = venda_item.id_item)'
+      'left join especie on (especie.id = venda_item.id_especie)'
+      'where Venda_Item.Id_Venda = :ID_VENDA')
+    Left = 392
+    Top = 232
+    ParamData = <
+      item
+        Name = 'ID_VENDA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qVenda_ItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qVenda_ItemID_VENDA: TIntegerField
+      FieldName = 'ID_VENDA'
+      Origin = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qVenda_ItemID_ITEM: TIntegerField
+      FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qVenda_ItemID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qVenda_ItemQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qVenda_ItemVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qVenda_ItemITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ITEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qVenda_ItemESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

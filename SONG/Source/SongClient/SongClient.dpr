@@ -51,7 +51,8 @@ uses
   fRelatorioFinanceiro in 'Relatorios\fRelatorioFinanceiro.pas' {frmRelatorioFinanceiro},
   dmuRelatorio in 'Relatorios\dmuRelatorio.pas' {dmRelatorio: TDataModule},
   fSaida in 'Estoque\fSaida.pas' {frmSaida},
-  fTransferenciaFinanceira in 'Financeiro\fTransferenciaFinanceira.pas' {frmTransferenciaFinanceira};
+  fTransferenciaFinanceira in 'Financeiro\fTransferenciaFinanceira.pas' {frmTransferenciaFinanceira},
+  fVenda in 'Estoque\fVenda.pas' {frmVenda};
 
 {$R Localization.RES}
   {$R *.res}

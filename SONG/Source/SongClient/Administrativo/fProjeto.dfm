@@ -1,10 +1,16 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetailRubrica
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -459,6 +465,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailFinanciador: TcxTabSheet
               Caption = 'Financiadores'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -1139,6 +1149,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailFinanciador: TcxTabSheet
       Caption = 'tabCadastroDetailFinanciador'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -1542,10 +1556,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailRubrica: TcxTabSheet
       Caption = 'tabCadastroDetailRubrica'
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0

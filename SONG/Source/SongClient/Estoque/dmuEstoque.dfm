@@ -533,4 +533,115 @@ inherited dmEstoque: TdmEstoque
     Left = 344
     Top = 328
   end
+  object cdsVenda: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqVenda'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 632
+    Top = 64
+    object cdsVendaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsVendaID_CLIENTE: TIntegerField
+      DisplayLabel = 'Id do Cliente'
+      FieldName = 'ID_CLIENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsVendaID_PESSOA_VENDEU: TIntegerField
+      DisplayLabel = 'Id da Pessoa que Vendeu'
+      FieldName = 'ID_PESSOA_VENDEU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsVendaDATA: TSQLTimeStampField
+      DisplayLabel = 'Data da Venda'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsVendaDESCRICAO: TIntegerField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsVendaCLIENTE: TStringField
+      DisplayLabel = 'Cliente'
+      FieldName = 'CLIENTE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsVendaVENDEDOR: TStringField
+      DisplayLabel = 'Vendedor'
+      FieldName = 'VENDEDOR'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdsVenda_Item: TRFClientDataSet
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_VENDA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqVenda_Item'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 640
+    Top = 136
+    object cdsVenda_ItemID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsVenda_ItemID_VENDA: TIntegerField
+      DisplayLabel = 'Id da Venda'
+      FieldName = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsVenda_ItemID_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item'
+      FieldName = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsVenda_ItemID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsVenda_ItemQTDE: TBCDField
+      DisplayLabel = 'Qtde'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsVenda_ItemVALOR_UNITARIO: TBCDField
+      DisplayLabel = 'Valor Unit'#225'rio'
+      FieldName = 'VALOR_UNITARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsVenda_ItemITEM: TStringField
+      DisplayLabel = 'Item'
+      FieldName = 'ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsVenda_ItemESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

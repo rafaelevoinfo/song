@@ -88,6 +88,23 @@ type
     qSaida_ItemID_ESPECIE: TIntegerField;
     qSaida_ItemNOME_ESPECIE: TStringField;
     qItemSALDO: TBCDField;
+    qVenda: TRFQuery;
+    qVenda_Item: TRFQuery;
+    qVendaID: TIntegerField;
+    qVendaID_CLIENTE: TIntegerField;
+    qVendaID_PESSOA_VENDEU: TIntegerField;
+    qVendaDATA: TSQLTimeStampField;
+    qVendaDESCRICAO: TIntegerField;
+    qVenda_ItemID: TIntegerField;
+    qVenda_ItemID_VENDA: TIntegerField;
+    qVenda_ItemID_ITEM: TIntegerField;
+    qVenda_ItemID_ESPECIE: TIntegerField;
+    qVenda_ItemQTDE: TBCDField;
+    qVenda_ItemVALOR_UNITARIO: TBCDField;
+    qVendaCLIENTE: TStringField;
+    qVendaVENDEDOR: TStringField;
+    qVenda_ItemITEM: TStringField;
+    qVenda_ItemESPECIE: TStringField;
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;

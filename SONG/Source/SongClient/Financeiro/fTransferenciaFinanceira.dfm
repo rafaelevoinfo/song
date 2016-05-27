@@ -11,7 +11,7 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
-          ExplicitLeft = 563
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -175,8 +175,6 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
     end
     inherited tabCadastro: TcxTabSheet
       inherited pnEditsCadastro: TPanel
-        ExplicitLeft = 3
-        ExplicitTop = 52
         object Label8: TLabel
           Left = 834
           Top = 69
@@ -229,7 +227,6 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             AutoSize = True
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 439
             object Label4: TLabel
               Left = 3
               Top = 0
@@ -335,9 +332,6 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             BevelOuter = bvNone
             TabOrder = 0
             Visible = False
-            ExplicitLeft = 2
-            ExplicitTop = -2
-            ExplicitWidth = 406
             object lb3: TLabel
               Left = 3
               Top = 0
@@ -396,9 +390,6 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             AutoSize = True
             BevelOuter = bvNone
             TabOrder = 1
-            ExplicitLeft = 2
-            ExplicitTop = 35
-            ExplicitWidth = 406
             object Label3: TLabel
               Left = 3
               Top = 0

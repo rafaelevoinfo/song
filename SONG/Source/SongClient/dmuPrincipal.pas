@@ -51,7 +51,7 @@ type
 
     { Private declarations }
   public
-    procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
+    procedure ppuConfigurarConexao( ipUsuario, ipSenha: String);
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;

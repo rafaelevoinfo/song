@@ -27,7 +27,7 @@ inherited frmSplash: TfrmSplash
     Top = 194
     Width = 263
     Height = 13
-    Caption = 'Licensiado para Or'#233'ades N'#250'cleo de Geoprocessamento'
+    Caption = 'Licenciado para Or'#233'ades N'#250'cleo de Geoprocessamento'
   end
   object cxImage1: TcxImage
     Left = 0

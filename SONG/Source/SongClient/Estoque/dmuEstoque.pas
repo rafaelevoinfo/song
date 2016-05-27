@@ -89,6 +89,23 @@ type
     cdsSaida_ItemNOME_ESPECIE: TStringField;
     cdsItemSALDO: TBCDField;
     cdsItemCALC_SALDO: TStringField;
+    cdsVenda: TRFClientDataSet;
+    cdsVendaID: TIntegerField;
+    cdsVendaID_CLIENTE: TIntegerField;
+    cdsVendaID_PESSOA_VENDEU: TIntegerField;
+    cdsVendaDATA: TSQLTimeStampField;
+    cdsVendaDESCRICAO: TIntegerField;
+    cdsVendaCLIENTE: TStringField;
+    cdsVendaVENDEDOR: TStringField;
+    cdsVenda_Item: TRFClientDataSet;
+    cdsVenda_ItemID: TIntegerField;
+    cdsVenda_ItemID_VENDA: TIntegerField;
+    cdsVenda_ItemID_ITEM: TIntegerField;
+    cdsVenda_ItemID_ESPECIE: TIntegerField;
+    cdsVenda_ItemQTDE: TBCDField;
+    cdsVenda_ItemVALOR_UNITARIO: TBCDField;
+    cdsVenda_ItemITEM: TStringField;
+    cdsVenda_ItemESPECIE: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

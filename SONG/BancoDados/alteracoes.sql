@@ -614,3 +614,8 @@ inner join Projeto on (Projeto.Id = Projeto_Rubrica.Id_Projeto)
 left join View_Valores_Rubrica_Projeto on (View_Valores_Rubrica_Projeto.Id_Projeto = Projeto_Rubrica.Id_Projeto and View_Valores_Rubrica_Projeto.Id_Rubrica = Projeto_Rubrica.Id_Rubrica)
 ;
 
+
+
+ALTER TABLE VENDA_ITEM
+    ADD VALOR_UNITARIO NUMERIC(15,2) NOT NULL;
+
