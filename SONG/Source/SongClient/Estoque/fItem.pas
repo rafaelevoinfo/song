@@ -33,9 +33,11 @@ type
   protected
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
-    procedure ppuIncluir;override;
+
     procedure pprBeforeExcluir(ipId:Integer;ipAcao: TAcaoTela);override;
     procedure pprBeforeAlterar;override;
+  public
+    procedure ppuIncluir;override;
     { Public declarations }
   end;
 

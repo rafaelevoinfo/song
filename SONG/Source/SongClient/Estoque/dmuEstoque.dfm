@@ -589,6 +589,10 @@ inherited dmEstoque: TdmEstoque
   end
   object cdsVenda_Item: TRFClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'ID_VENDA'
+    MasterFields = 'ID'
+    MasterSource = dsVenda
+    PacketRecords = 0
     Params = <
       item
         DataType = ftInteger
@@ -668,5 +672,10 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'LOTE_MUDA'
       Size = 100
     end
+  end
+  object dsVenda: TDataSource
+    DataSet = cdsVenda
+    Left = 480
+    Top = 184
   end
 end

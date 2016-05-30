@@ -17,7 +17,8 @@ uses
   cxDBLookupComboBox, cxDBEdit, cxCalc, Data.Bind.EngExt, Vcl.Bind.DBEngExt,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.Components,
   Data.Bind.DBScope, fLote_Semente, fLote_Muda, dmuPrincipal, System.DateUtils,
-  fBasicoCrudMasterDetail, cxSplitter, uUtils, System.Generics.Collections, System.Generics.Defaults;
+  fBasicoCrudMasterDetail, cxSplitter, uUtils, System.Generics.Collections, System.Generics.Defaults,
+  uMensagem;
 
 type
 
@@ -69,6 +70,8 @@ type
     procedure pprCarregarDadosModeloDetail; override;
 
     { Public declarations }
+  public
+    function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
   public const
     coPesquisaItem = 5;
     coPesquisaCompra = 6;
@@ -129,6 +132,22 @@ end;
 function TfrmEntrada.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estEntrada));
+end;
+
+function TfrmEntrada.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+begin
+  Result := inherited;
+  if Result then
+    begin
+      if (dmEstoque.cdsEntrada.RecordCount = 0) then
+        begin
+          if ModoSilencioso or
+            (TMensagem.fpuPerguntar('Todos os itens desta entrada foram excluídos. Deseja excluir a entrada também?', ppSimNao) = rpSim) then
+            begin
+              Result := fpuExcluir([dmEstoque.cdsEntradaID.AsInteger]);
+            end;
+        end;
+    end;
 end;
 
 procedure TfrmEntrada.pprPreencherCamposPadroes(ipDataSet: TDataSet);

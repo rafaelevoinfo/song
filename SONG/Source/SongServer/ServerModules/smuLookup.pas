@@ -64,13 +64,10 @@ type
     qlkRubricaID: TIntegerField;
     qlkRubricaID_RUBRICA_PAI: TIntegerField;
     qlkRubricaNOME: TStringField;
-    qlkFinanciadorNOME: TStringField;
     qlkFornecedor: TRFQuery;
     qlkFornecedorID: TIntegerField;
-    qlkFornecedorNOME: TStringField;
     qlkFin_For_Cli: TRFQuery;
     qlkFin_For_CliID: TIntegerField;
-    qlkFin_For_CliNOME: TStringField;
     qlkItem: TRFQuery;
     qlkItemID: TIntegerField;
     qlkItemNOME: TStringField;
@@ -127,6 +124,12 @@ type
     qlkProjeto_RubricaNOME_RUBRICA: TStringField;
     qlkLote_MudaID_ESPECIE: TIntegerField;
     qlkLote_SementeID_ESPECIE: TIntegerField;
+    qlkFornecedorNOME_FANTASIA: TStringField;
+    qlkFornecedorRAZAO_SOCIAL: TStringField;
+    qlkFinanciadorNOME_FANTASIA: TStringField;
+    qlkFinanciadorRAZAO_SOCIAL: TStringField;
+    qlkFin_For_CliNOME_FANTASIA: TStringField;
+    qlkFin_For_CliRAZAO_SOCIAL: TStringField;
   private
     { Private declarations }
   protected

@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuEstoque, uTypes,
   System.DateUtils, System.TypInfo, uControleAcesso, dmuLookup, cxDBEdit,
   cxCalc, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uClientDataSet,
-  uExceptions, dmuPrincipal, uUtils, System.Generics.Collections;
+  uExceptions, dmuPrincipal, uUtils, System.Generics.Collections, uMensagem;
 
 type
   TSaida = class(TModelo)
@@ -98,6 +98,7 @@ type
     procedure ppuIncluirDetail; override;
     procedure ppuIncluir; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
+    function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
 
   public const
     coPesquisaItem = 5;
@@ -117,61 +118,48 @@ implementation
 
 procedure TfrmSaida.pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela);
 var
-  vaIdsEspeciesSementes, vaIdsItem: TDictionary<Integer, Double>;
-  vaIdsEspeciesMudas: TDictionary<Integer, Integer>;
-  vaId: Integer;
+  vaItens: TObjectList<TItem>;
+  vaItem: TItem;
 begin
-  vaIdsEspeciesSementes := TDictionary<Integer, Double>.Create;
-  vaIdsEspeciesMudas := TDictionary<Integer, Integer>.Create;
-  vaIdsItem := TDictionary<Integer, Double>.Create;
+  vaItens := TObjectList<TItem>.Create;
   try
     TUtils.ppuPercorrerCds(dmEstoque.cdsSaida_Item,
       procedure
       begin
+        vaItem := TItem.Create;
         if (dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0) then
           begin
-            if not vaIdsEspeciesSementes.ContainsKey(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) then
-              vaIdsEspeciesSementes.Add(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger, 0);
-
-            vaIdsEspeciesSementes.Items[dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] := vaIdsEspeciesSementes.Items
-              [dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] + dmEstoque.cdsSaida_ItemQTDE.AsFloat;
+            vaItem.IdEspecie := dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger;
+            vaItem.IdLoteSemente := dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger;
+            vaItem.Qtde := dmEstoque.cdsSaida_ItemQTDE.AsFloat;
           end
         else if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
           begin
-            if not vaIdsEspeciesMudas.ContainsKey(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) then
-              vaIdsEspeciesMudas.Add(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger, 0);
-
-            vaIdsEspeciesMudas.Items[dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] := vaIdsEspeciesMudas.Items
-              [dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger] + dmEstoque.cdsSaida_ItemQTDE.AsInteger;
+            vaItem.IdEspecie := dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger;
+            vaItem.IdLoteMuda := dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger;
+            vaItem.Qtde := dmEstoque.cdsSaida_ItemQTDE.AsInteger;
           end
         else
           begin
-            if not vaIdsItem.ContainsKey(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger) then
-              vaIdsItem.Add(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, 0);
-
-            vaIdsItem.Items[dmEstoque.cdsSaida_ItemID_ITEM.AsInteger] := vaIdsItem.Items
-              [dmEstoque.cdsSaida_ItemID_ITEM.AsInteger] + dmEstoque.cdsSaida_ItemQTDE.AsFloat;
+            vaItem.Id := dmEstoque.cdsSaida_ItemID_ITEM.AsInteger;
+            vaItem.Qtde := dmEstoque.cdsSaida_ItemQTDE.AsFloat;
           end;
+        vaItens.Add(vaItem)
       end);
 
     inherited;
 
-    for vaId in vaIdsEspeciesSementes.Keys do
+    for vaItem in vaItens do
       begin
-        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaId, 0, 0, vaIdsEspeciesSementes.Items[vaId]);
-      end;
-    for vaId in vaIdsEspeciesMudas.Keys do
-      begin
-        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaId, 0, 0, vaIdsEspeciesMudas.Items[vaId]);
-      end;
-    for vaId in vaIdsItem.Keys do
-      begin
-        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaId, 0, vaIdsItem.Items[vaId]);
+        if vaItem.IdLoteSemente <> 0 then
+          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaItem.IdEspecie, vaItem.IdLoteSemente, 0, vaItem.Qtde)
+        else if vaItem.IdLoteMuda <> 0 then
+          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaItem.IdEspecie, vaItem.IdLoteMuda, 0, Trunc(vaItem.Qtde))
+        else
+         dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaItem.Id, 0, vaItem.Qtde);
       end;
   finally
-    vaIdsEspeciesSementes.Free;
-    vaIdsEspeciesMudas.Free;
-    vaIdsItem.Free;
+    vaItens.Free;
   end;
 end;
 
@@ -189,9 +177,9 @@ begin
   if vaIdEspecie <> 0 then
     begin
       if vaIdLoteSemente <> 0 then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecie, 0, 0, vaQtde)
+        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecie, vaIdLoteSemente, 0, vaQtde)
       else if vaIdLoteMuda <> 0 then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecie, 0, 0, Trunc(vaQtde))
+        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecie, vaIdLoteMuda, 0, Trunc(vaQtde))
     end
   else
     dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItem, 0, vaQtde);
@@ -291,17 +279,17 @@ begin
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
     begin
       vaItem := TItem(Modelo);
-      plSetEdit(cbItem,vaItem.Id);
-      plSetEdit(EditQtde,vaItem.Qtde);
+      plSetEdit(cbItem, vaItem.Id);
+      plSetEdit(EditQtde, vaItem.Qtde);
 
       if vaItem.IdEspecie <> 0 then
-        plSetEdit(cbEspecie,vaItem.IdEspecie);
+        plSetEdit(cbEspecie, vaItem.IdEspecie);
 
       if vaItem.IdLoteMuda <> 0 then
-        plSetEdit(cbLoteMuda,vaItem.IdLoteMuda);
+        plSetEdit(cbLoteMuda, vaItem.IdLoteMuda);
 
       if vaItem.IdLoteSemente <> 0 then
-        plSetEdit(cbLoteSemente,vaItem.IdLoteSemente);
+        plSetEdit(cbLoteSemente, vaItem.IdLoteSemente);
 
       if vaItem.IdItemCompraVenda <> 0 then
         dmEstoque.cdsSaida_ItemID_VENDA_ITEM.AsInteger := vaItem.IdItemCompraVenda;
@@ -536,6 +524,22 @@ end;
 function TfrmSaida.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estSaida));
+end;
+
+function TfrmSaida.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;
+begin
+  Result := inherited;
+  if Result then
+    begin
+      if (dmEstoque.cdsSaida_Item.RecordCount = 0) then
+        begin
+          if ModoSilencioso or
+            (TMensagem.fpuPerguntar('Todos os itens desta saída foram excluídos. Deseja excluir a saída também?', ppSimNao) = rpSim) then
+            begin
+              Result := fpuExcluir([dmEstoque.cdsSaidaID.AsInteger]);
+            end;
+        end;
+    end;
 end;
 
 { TSaida }

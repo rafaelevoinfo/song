@@ -111,6 +111,7 @@ type
     cdsVenda_ItemLOTE_SEMENTE: TStringField;
     cdsVenda_ItemID_LOTE_MUDA: TIntegerField;
     cdsVenda_ItemLOTE_MUDA: TStringField;
+    dsVenda: TDataSource;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

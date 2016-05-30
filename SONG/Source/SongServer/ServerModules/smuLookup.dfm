@@ -93,7 +93,8 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select FIN_FOR_CLI.ID,'
-      '       FIN_FOR_CLI.NOME_FANTASIA as NOME'
+      '       FIN_FOR_CLI.NOME_FANTASIA as NOME_FANTASIA,'
+      '       FIN_FOR_CLI.RAZAO_SOCIAL as RAZAO_SOCIAL'
       'from FIN_FOR_CLI'
       'where FIN_FOR_CLI.Tipo = 1'
       '&where')
@@ -110,10 +111,17 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
     end
-    object qlkFinanciadorNOME: TStringField
-      FieldName = 'NOME'
+    object qlkFinanciadorNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
       Origin = 'NOME_FANTASIA'
       ProviderFlags = []
+      Size = 100
+    end
+    object qlkFinanciadorRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Required = True
       Size = 100
     end
   end
@@ -519,7 +527,8 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select FIN_FOR_CLI.ID,'
-      '       FIN_FOR_CLI.NOME_FANTASIA as NOME'
+      '       FIN_FOR_CLI.NOME_FANTASIA as NOME_FANTASIA,'
+      '       FIN_FOR_CLI.RAZAO_SOCIAL as RAZAO_SOCIAL'
       'from FIN_FOR_CLI'
       'where FIN_FOR_CLI.Tipo = 2'
       '&where')
@@ -536,9 +545,15 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
     end
-    object qlkFornecedorNOME: TStringField
-      FieldName = 'NOME'
+    object qlkFornecedorNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
       Origin = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkFornecedorRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
       ProviderFlags = []
       Required = True
       Size = 100
@@ -548,7 +563,8 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select FIN_FOR_CLI.ID,'
-      '       FIN_FOR_CLI.NOME_FANTASIA as NOME'
+      '       FIN_FOR_CLI.NOME_FANTASIA as NOME_FANTASIA,'
+      '       FIN_FOR_CLI.RAZAO_SOCIAL as RAZAO_SOCIAL'
       'from FIN_FOR_CLI'
       '&where')
     Left = 328
@@ -563,10 +579,17 @@ inherited smLookup: TsmLookup
       Origin = 'ID'
       ProviderFlags = []
     end
-    object qlkFin_For_CliNOME: TStringField
-      FieldName = 'NOME'
+    object qlkFin_For_CliNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
       Origin = 'NOME_FANTASIA'
       ProviderFlags = []
+      Size = 100
+    end
+    object qlkFin_For_CliRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Required = True
       Size = 100
     end
   end

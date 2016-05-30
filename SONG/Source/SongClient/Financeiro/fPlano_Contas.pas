@@ -41,7 +41,7 @@ type
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
-    procedure pprAfterSalvar; override;
+    procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); override;
 
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
   public
@@ -135,7 +135,7 @@ begin
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
 end;
 
-procedure TfrmPlanoContas.pprAfterSalvar;
+procedure TfrmPlanoContas.pprAfterSalvar(ipAcaoExecutada: TDataSetState);
 begin
   inherited;
   // incluindo apenas localmente

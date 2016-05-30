@@ -285,17 +285,8 @@ begin
     begin
       Connection.ExecSQL(
         ' update Lote_Semente' +
-        '   set Lote_Semente.Qtde_Armazenada = case' +
-        '                                 when Lote_Semente.Qtde - (select coalesce(sum(Semeadura.Qtde_Semeada),0)' +
-        '                                                     from Semeadura' +
-        '                                                   where Semeadura.Id_Lote_Semente = :Id) >= 0 then Lote_Semente.Qtde - (select coalesce(sum(Semeadura.Qtde_Semeada),0)'
-        +
-        '                                                                                                           from Semeadura' +
-        '                                                                                                         where Semeadura.Id_Lote_Semente = :Id)'
-        +
-        '                                 else 0' +
-        '                              end' +
-        ' where Lote_Semente.Id = :Id', [ipIdLote]);
+        '   set Lote_Semente.Qtde_Armazenada = Lote_Semente.Qtde_Armazenada - :qtde_subtrair + :qtde_somar '+
+        ' where Lote_Semente.Id = :Id', [ipQtdeSubtrair, ipQtdeSomar, ipIdLote]);
     end;
 end;
 

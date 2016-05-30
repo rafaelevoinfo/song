@@ -1,6 +1,7 @@
 inherited frmItem: TfrmItem
   Caption = 'Itens'
   ExplicitWidth = 1000
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl

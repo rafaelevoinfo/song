@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 27/05/2016 19:41:34
+// 29/05/2016 22:20:14
 //
 
 unit uFuncoes;
@@ -193,6 +193,7 @@ type
     FfpuValidarNomeItemCommand: TDBXCommand;
     FfpuVerificarComprasJaGeradaCommand: TDBXCommand;
     FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
+    FfpuVerificarContaReceberJaGeradaCommand: TDBXCommand;
     FfpuBuscarItensEntradaCommand: TDBXCommand;
     FfpuBuscarItemEntradaCommand: TDBXCommand;
     FfpuBuscarItensSaidaCommand: TDBXCommand;
@@ -208,6 +209,7 @@ type
     function fpuValidarNomeItem(ipIdItem: Integer; ipNome: string): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
+    function fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
     function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
     function fpuBuscarItensSaida(ipIdVenda: Integer): string;
@@ -1364,6 +1366,20 @@ begin
   Result := FfpuVerificarContaPagarJaGeradaCommand.Parameters[1].Value.GetBoolean;
 end;
 
+function TsmFuncoesEstoqueClient.fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
+begin
+  if FfpuVerificarContaReceberJaGeradaCommand = nil then
+  begin
+    FfpuVerificarContaReceberJaGeradaCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarContaReceberJaGeradaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarContaReceberJaGeradaCommand.Text := 'TsmFuncoesEstoque.fpuVerificarContaReceberJaGerada';
+    FfpuVerificarContaReceberJaGeradaCommand.Prepare;
+  end;
+  FfpuVerificarContaReceberJaGeradaCommand.Parameters[0].Value.SetInt32(ipIdVenda);
+  FfpuVerificarContaReceberJaGeradaCommand.ExecuteUpdate;
+  Result := FfpuVerificarContaReceberJaGeradaCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TsmFuncoesEstoqueClient.fpuBuscarItensEntrada(ipIdCompra: Integer): string;
 begin
   if FfpuBuscarItensEntradaCommand = nil then
@@ -1505,6 +1521,7 @@ begin
   FfpuValidarNomeItemCommand.DisposeOf;
   FfpuVerificarComprasJaGeradaCommand.DisposeOf;
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
+  FfpuVerificarContaReceberJaGeradaCommand.DisposeOf;
   FfpuBuscarItensEntradaCommand.DisposeOf;
   FfpuBuscarItemEntradaCommand.DisposeOf;
   FfpuBuscarItensSaidaCommand.DisposeOf;

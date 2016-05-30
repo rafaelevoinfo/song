@@ -103,9 +103,6 @@ Coordinates=267,10,155,123
 [cdslkFornecedor]
 Coordinates=10,294,97,87
 
-[cdslkFinanciadorNOME]
-Coordinates=380,840,129,33
-
 [cdslkPlano_ContasTIPO]
 Coordinates=241,840,133,33
 
@@ -123,9 +120,6 @@ Coordinates=1006,209,152,33
 
 [cdslkEspecieID]
 Coordinates=53,840,89,33
-
-[cdslkFornecedorNOME]
-Coordinates=1006,261,128,33
 
 [cdslkPlano_ContasID]
 Coordinates=1006,313,119,33
@@ -189,9 +183,6 @@ Coordinates=560,911,87,33
 
 [dslkProjeto]
 Coordinates=11,500,70,33
-
-[cdslkFin_For_CliNOME]
-Coordinates=431,911,128,33
 
 [cdslkMatrizID_ESPECIE]
 Coordinates=292,911,131,33
@@ -339,4 +330,7 @@ Coordinates=195,982,85,33
 
 [repLcbItem]
 Coordinates=116,982,69,33
+
+[]
+Coordinates=380,840,129,33
 

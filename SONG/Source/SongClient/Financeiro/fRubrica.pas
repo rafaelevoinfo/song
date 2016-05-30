@@ -39,7 +39,7 @@ type
   protected
     function fprGetPermissao: string; override;
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); override;
-    procedure pprAfterSalvar; override;
+    procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
   public
     function fpuExcluir(ipIds: TArray<Integer>): Boolean; override;
@@ -124,7 +124,7 @@ begin
 
 end;
 
-procedure TfrmRubrica.pprAfterSalvar;
+procedure TfrmRubrica.pprAfterSalvar(ipAcaoExecutada: TDataSetState);
 begin
   inherited;
   // incluindo apenas localmente

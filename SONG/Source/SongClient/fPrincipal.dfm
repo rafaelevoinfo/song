@@ -38,29 +38,29 @@ inherited frmPrincipal: TfrmPrincipal
     Top = 272
     object Estoque1: TMenuItem
       Caption = 'Estoque'
+      object SolicitaodeCompra1: TMenuItem
+        Action = Ac_Solicitacao_Compra
+      end
       object Compras1: TMenuItem
         Action = Ac_Compra
+      end
+      object Vendas1: TMenuItem
+        Action = Ac_Venda
       end
       object Entradas1: TMenuItem
         Action = Ac_Entrada
       end
-      object Itens1: TMenuItem
-        Action = Ac_Item
-      end
       object Sadas1: TMenuItem
         Action = Ac_Saida
       end
-      object SolicitaodeCompra1: TMenuItem
-        Action = Ac_Solicitacao_Compra
+      object Itens1: TMenuItem
+        Action = Ac_Item
       end
     end
     object miFinanceiro: TMenuItem
       Caption = 'Financeiro'
       object Bancos1: TMenuItem
         Action = Ac_Banco
-      end
-      object Clientes1: TMenuItem
-        Action = Ac_Cliente
       end
       object ContasaPagar1: TMenuItem
         Action = Ac_Conta_Pagar
@@ -70,6 +70,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object ransfernciadeRecursos1: TMenuItem
         Action = Ac_Transferencia
+      end
+      object Clientes1: TMenuItem
+        Action = Ac_Cliente
       end
       object Financiadores2: TMenuItem
         Action = Ac_Financiador
@@ -265,6 +268,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Financeiro'
       Caption = 'Transfer'#234'ncia de Recursos'
       OnExecute = Ac_TransferenciaExecute
+    end
+    object Ac_Venda: TAction
+      Category = 'Estoque'
+      Caption = 'Vendas'
+      OnExecute = Ac_VendaExecute
     end
   end
   object dxSkinController1: TdxSkinController

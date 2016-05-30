@@ -479,7 +479,7 @@ begin
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
     begin
       vaItem := TItem(Modelo);
-      cbItem.EditValue := vaItem.IdItem;
+      cbItem.EditValue := vaItem.Id;
       cbItem.PostEditValue;
 
       if vaItem.IdEspecie <> 0 then
@@ -573,7 +573,7 @@ begin
         if dmEstoque.cdsCompra_ItemTIPO_ITEM.AsInteger = Ord(tiOutro) then
           begin
             vaItem := TItem.Create; // vai ser destruido pelo vafrmEntrada
-            vaItem.IdItem := dmEstoque.cdsCompra_ItemID_ITEM.AsInteger;
+            vaItem.Id := dmEstoque.cdsCompra_ItemID_ITEM.AsInteger;
             vaItem.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
             vaItem.IdItemCompraVenda := dmEstoque.cdsCompra_ItemID.AsInteger;
 

@@ -30,7 +30,6 @@ type
     cdslkOrganizacaoID: TIntegerField;
     cdslkOrganizacaoNOME: TStringField;
     cdslkFinanciadorID: TIntegerField;
-    cdslkFinanciadorNOME: TStringField;
     cdslkBanco: TRFClientDataSet;
     cdslkBanco_Conta_Corrente: TRFClientDataSet;
     cdslkBancoID: TIntegerField;
@@ -106,13 +105,11 @@ type
     cdslkFornecedor: TRFClientDataSet;
     dslkFornecedor: TDataSource;
     cdslkFornecedorID: TIntegerField;
-    cdslkFornecedorNOME: TStringField;
     repIcbStatusContaPagar: TcxEditRepositoryImageComboBoxItem;
     repIcbStatusContaReceber: TcxEditRepositoryImageComboBoxItem;
     repDateDataPadrao: TcxEditRepositoryDateItem;
     cdslkFin_For_Cli: TRFClientDataSet;
     cdslkFin_For_CliID: TIntegerField;
-    cdslkFin_For_CliNOME: TStringField;
     repLcbFinForCli: TcxEditRepositoryLookupComboBoxItem;
     dslkFin_For_Cli: TDataSource;
     repIcbTipoItem: TcxEditRepositoryImageComboBoxItem;
@@ -199,6 +196,12 @@ type
     cdslkProjeto_RubricaNOME_RUBRICA: TStringField;
     cdslkLote_SementeID_ESPECIE: TIntegerField;
     cdslkLote_MudaID_ESPECIE: TIntegerField;
+    cdslkFornecedorNOME_FANTASIA: TStringField;
+    cdslkFornecedorRAZAO_SOCIAL: TStringField;
+    cdslkFin_For_CliNOME_FANTASIA: TStringField;
+    cdslkFin_For_CliRAZAO_SOCIAL: TStringField;
+    cdslkFinanciadorNOME_FANTASIA: TStringField;
+    cdslkFinanciadorRAZAO_SOCIAL: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

@@ -19,6 +19,21 @@ uses
   System.Math, System.DateUtils, uMensagem, System.Generics.Collections;
 
 type
+  TContaReceber = class(TModelo)
+  private
+    FValorTotal: Double;
+    FIdVenda: Integer;
+    FIdCliente: Integer;
+    procedure SetIdCliente(const Value: Integer);
+    procedure SetIdVenda(const Value: Integer);
+    procedure SetValorTotal(const Value: Double);
+
+  public
+    property IdVenda: Integer read FIdVenda write SetIdVenda;
+    property IdCliente: Integer read FIdCliente write SetIdCliente;
+    property ValorTotal: Double read FValorTotal write SetValorTotal;
+  end;
+
   TfrmContaReceber = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosDetailID: TcxGridDBColumn;
     viewRegistrosDetailVENCIMENTO: TcxGridDBColumn;
@@ -545,6 +560,23 @@ function TfrmContaReceber.fprHabilitarSalvar: Boolean;
 begin
   Result := inherited or fprHabilitarSalvarDetail or
     (dmFinanceiro.cdsConta_Receber_Vinculo.Active and (dmFinanceiro.cdsConta_Receber_Vinculo.ChangeCount > 0));
+end;
+
+{ TContaReceber }
+
+procedure TContaReceber.SetIdCliente(const Value: Integer);
+begin
+  FIdCliente := Value;
+end;
+
+procedure TContaReceber.SetIdVenda(const Value: Integer);
+begin
+  FIdVenda := Value;
+end;
+
+procedure TContaReceber.SetValorTotal(const Value: Double);
+begin
+  FValorTotal := Value;
 end;
 
 end.

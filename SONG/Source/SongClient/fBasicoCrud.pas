@@ -93,7 +93,7 @@ type
     procedure pprValidarCamposObrigatorios(ipDataSet: TDataSet); virtual;
     procedure pprBeforeSalvar; virtual;
     procedure pprExecutarSalvar; virtual;
-    procedure pprAfterSalvar; virtual;
+    procedure pprAfterSalvar(ipAcaoExecutada:TDataSetState); virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
     function fprHabilitarAlterar: Boolean; virtual;
     function fprHabilitarExcluir: Boolean; virtual;
@@ -343,7 +343,7 @@ begin
   FShowExecutado := True;
 end;
 
-procedure TfrmBasicoCrud.pprAfterSalvar;
+procedure TfrmBasicoCrud.pprAfterSalvar(ipAcaoExecutada:TDataSetState);
 begin
   if FModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     FIdEscolhido := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
@@ -726,10 +726,13 @@ begin
 end;
 
 procedure TfrmBasicoCrud.ppuSalvar;
+var
+  vaState:TDataSetState;
 begin
   pprBeforeSalvar;
+  vaState := dsMaster.DataSet.State;
   pprExecutarSalvar;
-  pprAfterSalvar;
+  pprAfterSalvar(vaState);
 end;
 
 procedure TfrmBasicoCrud.pprConfigurarLabelsCamposObrigatorios();

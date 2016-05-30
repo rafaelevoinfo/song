@@ -103,7 +103,10 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          FieldName = 'NOME'
+          FieldName = 'RAZAO_SOCIAL'
+        end
+        item
+          FieldName = 'NOME_FANTASIA'
         end>
       Properties.ListSource = dslkFinanciador
     end
@@ -345,10 +348,14 @@ inherited dmLookup: TdmLookup
     object repLcbFornecedor: TcxEditRepositoryLookupComboBoxItem
       Properties.ClearKey = 46
       Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          FieldName = 'NOME'
+          FieldName = 'RAZAO_SOCIAL'
+        end
+        item
+          FieldName = 'NOME_FANTASIA'
         end>
       Properties.ListSource = dslkFornecedor
     end
@@ -389,7 +396,10 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          FieldName = 'NOME'
+          FieldName = 'RAZAO_SOCIAL'
+        end
+        item
+          FieldName = 'NOME_FANTASIA'
         end>
       Properties.ListSource = dslkFin_For_Cli
     end
@@ -615,7 +625,6 @@ inherited dmLookup: TdmLookup
     Top = 124
   end
   object cdslkOrganizacao: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkOrganizacao'
@@ -662,9 +671,14 @@ inherited dmLookup: TdmLookup
       FieldName = 'ID'
       Required = True
     end
-    object cdslkFinanciadorNOME: TStringField
-      DisplayLabel = 'Nome'
-      FieldName = 'NOME'
+    object cdslkFinanciadorNOME_FANTASIA: TStringField
+      DisplayLabel = 'Nome Fantasia'
+      FieldName = 'NOME_FANTASIA'
+      Size = 100
+    end
+    object cdslkFinanciadorRAZAO_SOCIAL: TStringField
+      DisplayLabel = 'Raz'#227'o Social'
+      FieldName = 'RAZAO_SOCIAL'
       Required = True
       Size = 100
     end
@@ -1041,9 +1055,16 @@ inherited dmLookup: TdmLookup
       FieldName = 'ID'
       Required = True
     end
-    object cdslkFornecedorNOME: TStringField
-      DisplayLabel = 'Nome'
-      FieldName = 'NOME'
+    object cdslkFornecedorNOME_FANTASIA: TStringField
+      DisplayLabel = 'Nome Fantasia'
+      FieldName = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkFornecedorRAZAO_SOCIAL: TStringField
+      DisplayLabel = 'Raz'#227'o Social'
+      FieldName = 'RAZAO_SOCIAL'
+      ProviderFlags = []
       Required = True
       Size = 100
     end
@@ -1063,9 +1084,17 @@ inherited dmLookup: TdmLookup
     object cdslkFin_For_CliID: TIntegerField
       FieldName = 'ID'
     end
-    object cdslkFin_For_CliNOME: TStringField
-      DisplayLabel = 'Nome'
-      FieldName = 'NOME'
+    object cdslkFin_For_CliNOME_FANTASIA: TStringField
+      DisplayLabel = 'Nome Fantasia'
+      FieldName = 'NOME_FANTASIA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkFin_For_CliRAZAO_SOCIAL: TStringField
+      DisplayLabel = 'Raz'#227'o Social'
+      FieldName = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Required = True
       Size = 100
     end
   end

@@ -82,7 +82,7 @@ type
     procedure pprBeforeSalvarDetail; override;
     procedure pprValidarDados; override;
 
-    procedure pprAfterSalvar; override;
+    procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
@@ -206,7 +206,7 @@ begin
             while not dmEstoque.cdsSolicitacao_Compra_Item.Eof do
               begin
                 vaItem := TItem.Create;
-                vaItem.IdItem := dmEstoque.cdsSolicitacao_Compra_ItemID_ITEM.AsInteger;
+                vaItem.Id := dmEstoque.cdsSolicitacao_Compra_ItemID_ITEM.AsInteger;
                 vaItem.IdEspecie := dmEstoque.cdsSolicitacao_Compra_ItemID_ESPECIE.AsInteger;
                 vaItem.Qtde := dmEstoque.cdsSolicitacao_Compra_ItemQTDE.AsFloat;
 
@@ -287,7 +287,7 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estSolicitacaoCompra));
 end;
 
-procedure TfrmSolicitacaoCompra.pprAfterSalvar;
+procedure TfrmSolicitacaoCompra.pprAfterSalvar(ipAcaoExecutada: TDataSetState);
 begin
   inherited;
   if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then

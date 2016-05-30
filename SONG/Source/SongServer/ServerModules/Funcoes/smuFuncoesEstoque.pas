@@ -12,19 +12,19 @@ uses
 type
   TsmFuncoesEstoque = class(TsmFuncoesBasico)
   private
-    function fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
     { Private declarations }
   public
-    function fpuValidarNomeItem(ipIdItem: Integer; ipNome:String): Boolean;
+    function fpuValidarNomeItem(ipIdItem: Integer; ipNome: String): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
+    function fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
 
     function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
     function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
     function fpuBuscarItensSaida(ipIdVenda: Integer): string;
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
 
-    procedure ppuAtualizarSaldoItem(ipIdItem:Integer; ipQtdeSubtrair, ipQtdeSomar:Double);
+    procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
 
   end;
 
@@ -139,34 +139,9 @@ begin
 end;
 
 function TsmFuncoesEstoque.fpuValidarNomeItem(ipIdItem: Integer;
-  ipNome: String): Boolean;
+ipNome: String): Boolean;
 begin
-  Result := fprValidarCampoUnico('ITEM','NOME',ipIdItem,ipNome.trim);
-end;
-
-function TsmFuncoesEstoque.fpuValidarTipoItem(ipId, ipTipo: Integer): Boolean;
-var
-  vaResult: Boolean;
-begin
-  pprEncapsularConsulta(
-    procedure(ipDataSet: TRFQuery)
-    begin
-      vaResult := True;
-      if TTipoItem(ipTipo) in [tiSemente, tiMuda] then
-        begin
-          ipDataSet.SQL.Text := 'Select count(*) as QTDE from ' +
-            '                     item ' +
-            '                    where item.tipo = :tipo and ' +
-            '                          item.id <> :id';
-          ipDataSet.ParamByName('ID').AsInteger := ipId;
-          ipDataSet.ParamByName('TIPO').AsInteger := ipTipo;
-          ipDataSet.Open();
-
-          vaResult := ipDataSet.FieldByName('QTDE').AsInteger = 0;
-        end;
-    end);
-
-  Result := vaResult;
+  Result := fprValidarCampoUnico('ITEM', 'NOME', ipIdItem, ipNome.trim);
 end;
 
 function TsmFuncoesEstoque.fpuVerificarComprasJaGerada(
@@ -212,8 +187,30 @@ begin
 
 end;
 
+function TsmFuncoesEstoque.fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
+var
+  vaResult: Boolean;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select count(*) as Qtde ' +
+        '   from conta_receber ' +
+        ' where conta_receber.Id_Venda = :ID_VENDA ';
+
+      ipDataSet.ParamByName('ID_VENDA').AsInteger := ipIdVenda;
+      ipDataSet.Open();
+
+      vaResult := (ipDataSet.FieldByName('QTDE').AsInteger > 0);
+
+    end);
+
+  Result := vaResult;
+
+end;
+
 procedure TsmFuncoesEstoque.ppuAtualizarSaldoItem(ipIdItem: Integer;
-  ipQtdeSubtrair, ipQtdeSomar: Double);
+ipQtdeSubtrair, ipQtdeSomar: Double);
 begin
   Connection.ExecSQL('update item ' +
     ' set item.saldo = coalesce(item.saldo,0) - :qtde_substrair + :qtde_somar ' +

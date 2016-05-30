@@ -13,7 +13,7 @@ uses
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
   uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
-  fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira;
+  fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -80,6 +80,8 @@ type
     Sadas1: TMenuItem;
     Ac_Transferencia: TAction;
     ransfernciadeRecursos1: TMenuItem;
+    Ac_Venda: TAction;
+    Vendas1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -108,6 +110,7 @@ type
     procedure Ac_Relatorio_FinanceiroExecute(Sender: TObject);
     procedure Ac_SaidaExecute(Sender: TObject);
     procedure Ac_TransferenciaExecute(Sender: TObject);
+    procedure Ac_VendaExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -317,6 +320,12 @@ procedure TfrmPrincipal.Ac_TransferenciaExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmTransferenciaFinanceira>(pcPrincipal, TfrmTransferenciaFinanceira, frmTransferenciaFinanceira);
+end;
+
+procedure TfrmPrincipal.Ac_VendaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmVenda>(pcPrincipal, TfrmVenda, frmVenda);
 end;
 
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);

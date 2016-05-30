@@ -1,14 +1,10 @@
 inherited frmSaida: TfrmSaida
   Caption = 'Sa'#237'da'
-  ExplicitHeight = 515
+  ExplicitTop = -160
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 428
@@ -131,10 +127,6 @@ inherited frmSaida: TfrmSaida
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -155,6 +147,7 @@ inherited frmSaida: TfrmSaida
                   object viewRegistrosDetailID_ESPECIE: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'ID_ESPECIE'
                     Visible = False
+                    Options.Editing = False
                   end
                   object viewRegistrosDetailNOME_ITEM: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'NOME_ITEM'
@@ -163,6 +156,7 @@ inherited frmSaida: TfrmSaida
                   end
                   object viewRegistrosDetailNOME_ESPECIE: TcxGridDBColumn [5]
                     DataBinding.FieldName = 'NOME_ESPECIE'
+                    Options.Editing = False
                     Width = 183
                   end
                   object viewRegistrosDetailID_LOTE_SEMENTE: TcxGridDBColumn [6]
