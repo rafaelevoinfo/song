@@ -534,6 +534,7 @@ inherited smFinanceiro: TsmFinanceiro
       '                Conta_Receber.Id_Cliente_Financiador,'
       '                Conta_Receber.Id_Plano_Contas,'
       '                Conta_Receber.Id_Conta_Corrente,'
+      '                Conta_Receber.Id_Venda,'
       '                Conta_Receber.Descricao,'
       '                Conta_Receber.Valor_Total,'
       '                Conta_Receber.Forma_Pagto,'
@@ -651,6 +652,11 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'NUMERO_DOCUMENTO'
       ProviderFlags = [pfInUpdate]
       Size = 30
+    end
+    object qConta_ReceberID_VENDA: TIntegerField
+      FieldName = 'ID_VENDA'
+      Origin = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qConta_Receber_Parcela: TRFQuery

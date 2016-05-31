@@ -1,11 +1,11 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitTop = -9
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailRubrica
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -145,10 +145,17 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitHeight = 218
+              ExplicitLeft = 4
+              ExplicitTop = 24
+              ExplicitWidth = 964
+              ExplicitHeight = 220
+              inherited pnBotoesDetail: TPanel
+                ExplicitWidth = 964
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
-                ExplicitHeight = 193
+                ExplicitWidth = 964
+                ExplicitHeight = 195
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -283,6 +290,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailRubrica: TcxTabSheet
               Caption = 'Rubricas'
               ImageIndex = 4
+              ExplicitLeft = 4
+              ExplicitTop = 24
+              ExplicitWidth = 964
+              ExplicitHeight = 220
               object Panel7: TPanel
                 Left = 0
                 Top = 0
@@ -290,6 +301,7 @@ inherited frmProjeto: TfrmProjeto
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 964
                 object btnIncluirRubrica: TButton
                   Left = 0
                   Top = 1
@@ -311,6 +323,8 @@ inherited frmProjeto: TfrmProjeto
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 964
+                ExplicitHeight = 195
                 object viewRubricas: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -384,37 +398,37 @@ inherited frmProjeto: TfrmProjeto
                     DataBinding.FieldName = 'ORCAMENTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 96
+                    Width = 128
                   end
                   object viewRubricasRECEBIDO: TcxGridDBColumn
                     DataBinding.FieldName = 'RECEBIDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 101
+                    Width = 128
                   end
                   object viewRubricasGASTO: TcxGridDBColumn
                     DataBinding.FieldName = 'GASTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 101
+                    Width = 128
                   end
                   object viewRubricasAPROVISIONADO: TcxGridDBColumn
                     DataBinding.FieldName = 'APROVISIONADO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 106
+                    Width = 128
                   end
                   object ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn
                     DataBinding.FieldName = 'SALDO_REAL'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 116
+                    Width = 128
                   end
                   object ColumnRubricasCALC_SALDO_PREVISTO: TcxGridDBColumn
                     DataBinding.FieldName = 'SALDO_PREVISTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 119
+                    Width = 128
                   end
                   object cxGridDBColumn6: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -892,6 +906,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1149,10 +1167,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailFinanciador: TcxTabSheet
       Caption = 'tabCadastroDetailFinanciador'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0

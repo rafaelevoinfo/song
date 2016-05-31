@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 29/05/2016 22:20:14
+// 31/05/2016 00:31:16
 //
 
 unit uFuncoes;
@@ -180,11 +180,15 @@ type
 
   TsmEstoqueClient = class(TDSAdminClient)
   private
+    FqSaida_ItemCalcFieldsCommand: TDBXCommand;
+    FqVenda_ItemCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    procedure qSaida_ItemCalcFields(DataSet: TDataSet);
+    procedure qVenda_ItemCalcFields(DataSet: TDataSet);
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -199,6 +203,7 @@ type
     FfpuBuscarItensSaidaCommand: TDBXCommand;
     FfpuBuscarItemSaidaCommand: TDBXCommand;
     FppuAtualizarSaldoItemCommand: TDBXCommand;
+    FppuAjustarSaldoEspecieCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -215,6 +220,7 @@ type
     function fpuBuscarItensSaida(ipIdVenda: Integer): string;
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
+    procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -1279,6 +1285,32 @@ begin
   inherited;
 end;
 
+procedure TsmEstoqueClient.qSaida_ItemCalcFields(DataSet: TDataSet);
+begin
+  if FqSaida_ItemCalcFieldsCommand = nil then
+  begin
+    FqSaida_ItemCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqSaida_ItemCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqSaida_ItemCalcFieldsCommand.Text := 'TsmEstoque.qSaida_ItemCalcFields';
+    FqSaida_ItemCalcFieldsCommand.Prepare;
+  end;
+  FqSaida_ItemCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqSaida_ItemCalcFieldsCommand.ExecuteUpdate;
+end;
+
+procedure TsmEstoqueClient.qVenda_ItemCalcFields(DataSet: TDataSet);
+begin
+  if FqVenda_ItemCalcFieldsCommand = nil then
+  begin
+    FqVenda_ItemCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqVenda_ItemCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqVenda_ItemCalcFieldsCommand.Text := 'TsmEstoque.qVenda_ItemCalcFields';
+    FqVenda_ItemCalcFieldsCommand.Prepare;
+  end;
+  FqVenda_ItemCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqVenda_ItemCalcFieldsCommand.ExecuteUpdate;
+end;
+
 procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1319,6 +1351,8 @@ end;
 
 destructor TsmEstoqueClient.Destroy;
 begin
+  FqSaida_ItemCalcFieldsCommand.DisposeOf;
+  FqVenda_ItemCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1451,6 +1485,19 @@ begin
   FppuAtualizarSaldoItemCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesEstoqueClient.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
+begin
+  if FppuAjustarSaldoEspecieCommand = nil then
+  begin
+    FppuAjustarSaldoEspecieCommand := FDBXConnection.CreateCommand;
+    FppuAjustarSaldoEspecieCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAjustarSaldoEspecieCommand.Text := 'TsmFuncoesEstoque.ppuAjustarSaldoEspecie';
+    FppuAjustarSaldoEspecieCommand.Prepare;
+  end;
+  FppuAjustarSaldoEspecieCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
+  FppuAjustarSaldoEspecieCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1527,6 +1574,7 @@ begin
   FfpuBuscarItensSaidaCommand.DisposeOf;
   FfpuBuscarItemSaidaCommand.DisposeOf;
   FppuAtualizarSaldoItemCommand.DisposeOf;
+  FppuAjustarSaldoEspecieCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

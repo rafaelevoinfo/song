@@ -7,10 +7,12 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuFuncoesBasico, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, uTypes;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, uTypes,
+  dmuPrincipal;
 
 type
   TsmFuncoesEstoque = class(TsmFuncoesBasico)
+    qAjusta_Saldo_Especie: TRFQuery;
   private
     { Private declarations }
   public
@@ -25,6 +27,8 @@ type
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
 
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
+
+    procedure ppuAjustarSaldoEspecie(ipIdEspecie:Integer);
 
   end;
 
@@ -120,8 +124,8 @@ begin
     pprEncapsularConsulta(
       procedure(ipDataSet: TRFQuery)
       begin
-        ipDataSet.SQL.Text := 'select Venda_Item.id from Venda_Item ' +
-          ' where Venda_Item.id_venda_item in (select venda_item.id from venda_item where venda_item.id_venda = :ID_VENDA)';
+        ipDataSet.SQL.Text := 'select Saida_Item.id from Saida_Item ' +
+          ' where Saida_Item.id_venda_item in (select venda_item.id from venda_item where venda_item.id_venda = :ID_VENDA)';
         ipDataSet.ParamByName('ID_VENDA').AsInteger := ipIdVenda;
         ipDataSet.Open();
         while (not ipDataSet.Eof) do
@@ -207,6 +211,16 @@ begin
 
   Result := vaResult;
 
+end;
+
+procedure TsmFuncoesEstoque.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
+begin
+  if ipIdEspecie <> 0 then
+    qAjusta_Saldo_Especie.ParamByName('ID_ESPECIE').AsInteger := ipIdEspecie
+  else
+    qAjusta_Saldo_Especie.ParamByName('ID_ESPECIE').Clear();
+
+  qAjusta_Saldo_Especie.ExecSQL;
 end;
 
 procedure TsmFuncoesEstoque.ppuAtualizarSaldoItem(ipIdItem: Integer;

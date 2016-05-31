@@ -146,6 +146,7 @@ type
     qTransferencia_FinanceiraRESPONSAVEL: TStringField;
     qTransferencia_FinanceiraDATA: TSQLTimeStampField;
     dspqTransferencia_Financeira: TDataSetProvider;
+    qConta_ReceberID_VENDA: TIntegerField;
     procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -257,10 +258,14 @@ begin
                 Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_RUBRICA_ORIGEM', vaValor.ToInteger, vaOperador)
               else if ipParam.Name = TParametros.coResponsavelDespesa then
                 Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_RESPONSAVEL', vaValor.ToInteger, vaOperador)
+              else if ipParam.Name = TParametros.coFundo then
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador);
             end
           else if ipTabela = 'CONTA_RECEBER' then
-            if ipParam.Name = TParametros.coFundo then
-              Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_RECEBER_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador)
+            begin
+              if ipParam.Name = TParametros.coFundo then
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_RECEBER_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador);
+            end;
         end;
     end
   else if ipTabela = 'TRANSFERENCIA_FINANCEIRA' then
@@ -273,12 +278,12 @@ begin
       else if ipParam.Name = TParametros.coFundo then
         begin
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FUNDO_ORIGEM', vaValor.ToInteger, TOperadores.coOR);
-          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FUNDO_DESTINO', vaValor.ToInteger,vaOperador);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FUNDO_DESTINO', vaValor.ToInteger, vaOperador);
         end
       else if ipParam.Name = TParametros.coData then
         begin
-          Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor, 0),
-          TUtils.fpuExtrairData(vaValor, 1), vaOperador);
+          Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0),
+            TUtils.fpuExtrairData(vaValor, 1), vaOperador);
         end
     end
 

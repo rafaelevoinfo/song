@@ -99,7 +99,53 @@ inherited smRelatorio: TsmRelatorio
     end
   end
   object qSaldo_Semente_Muda: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Especie.Nome,'
+      '       Especie.Nome_Cientifico,'
+      '       Especie.Familia_Botanica,'
+      '       Especie.Qtde_Semente_Estoque,'
+      '       Especie.Qtde_Muda_Estoque'
+      'from Especie'
+      'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL')
     Left = 200
     Top = 48
+    ParamData = <
+      item
+        Name = 'ID_ESPECIE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qSaldo_Semente_MudaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaldo_Semente_MudaNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaldo_Semente_MudaFAMILIA_BOTANICA: TStringField
+      FieldName = 'FAMILIA_BOTANICA'
+      Origin = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Origin = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      Origin = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = []
+    end
   end
 end

@@ -110,6 +110,12 @@ type
     qVenda_ItemLOTE_SEMENTE: TStringField;
     qVenda_ItemID_LOTE_MUDA: TIntegerField;
     qVenda_ItemLOTE_MUDA: TStringField;
+    qSaida_ItemUNIDADE: TStringField;
+    qVenda_ItemUNIDADE: TStringField;
+    qSaida_ItemCALC_QTDE: TStringField;
+    qVenda_ItemCALC_QTDE: TStringField;
+    procedure qSaida_ItemCalcFields(DataSet: TDataSet);
+    procedure qVenda_ItemCalcFields(DataSet: TDataSet);
   private
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
@@ -184,11 +190,23 @@ begin
       else if ipParam.Name = TParametros.coTipo then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coVenda then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_VENDA', vaValor.ToInteger, vaOperador)
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'VENDA_ITEM', 'ID_VENDA', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coItem then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'SAIDA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador);
 
     end;
+end;
+
+procedure TsmEstoque.qSaida_ItemCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  qSaida_ItemCALC_QTDE.AsString := FormatFloat(',0.00',qSaida_ItemQTDE.AsFloat)+' '+qSaida_ItemUNIDADE.AsString;
+end;
+
+procedure TsmEstoque.qVenda_ItemCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+    qVenda_ItemCALC_QTDE.AsString := FormatFloat(',0.00',qVenda_ItemQTDE.AsFloat)+' '+qVenda_ItemUNIDADE.AsString;
 end;
 
 end.

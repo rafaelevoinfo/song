@@ -71,6 +71,8 @@ type
     viewRegistrosDetailID_ESPECIE: TcxGridDBColumn;
     viewRegistrosDetailNOME_ESPECIE: TcxGridDBColumn;
     viewRegistrosDetailID_VENDA_ITEM: TcxGridDBColumn;
+    viewRegistrosDetailUNIDADE: TcxGridDBColumn;
+    viewRegistrosDetailCALC_QTDE: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);

@@ -68,6 +68,12 @@ type
     btnGerarSaida: TButton;
     Ac_Gerar_Conta_Receber: TAction;
     Ac_Gerar_Saida: TAction;
+    viewRegistrosDetailID_LOTE_SEMENTE: TcxGridDBColumn;
+    viewRegistrosDetailLOTE_SEMENTE: TcxGridDBColumn;
+    viewRegistrosDetailID_LOTE_MUDA: TcxGridDBColumn;
+    viewRegistrosDetailLOTE_MUDA: TcxGridDBColumn;
+    viewRegistrosDetailUNIDADE: TcxGridDBColumn;
+    viewRegistrosDetailCALC_QTDE: TcxGridDBColumn;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
@@ -133,7 +139,7 @@ begin
   inherited;
   if dmLookup.cdslkItem.Locate(TBancoDados.coId, cbItem.EditValue, []) then
     begin
-      if VarIsNull(cbEspecie.EditValue) then
+      if (dmLookup.cdslkItemTIPO.AsInteger in [Ord(tiSemente), Ord(tiMuda)]) and VarIsNull(cbEspecie.EditValue) then
         raise Exception.Create('Informe a espécie.');
 
       if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then

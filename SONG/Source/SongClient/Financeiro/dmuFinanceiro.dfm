@@ -492,6 +492,11 @@ inherited dmFinanceiro: TdmFinanceiro
       FieldName = 'NUMERO_DOCUMENTO'
       Size = 30
     end
+    object cdsConta_ReceberID_VENDA: TIntegerField
+      DisplayLabel = 'Id da Venda'
+      FieldName = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsConta_Receber_Parcela: TRFClientDataSet
     Aggregates = <>

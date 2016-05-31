@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuEstoque, cxDBEdit, dmuLookup, uControleAcesso,
-  System.TypInfo, dmuPrincipal, uTypes;
+  System.TypInfo, dmuPrincipal, uTypes, uClientDataSet;
 
 type
   TfrmItem = class(TfrmBasicoCrud)
@@ -36,6 +36,7 @@ type
 
     procedure pprBeforeExcluir(ipId:Integer;ipAcao: TAcaoTela);override;
     procedure pprBeforeAlterar;override;
+    procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
   public
     procedure ppuIncluir;override;
     { Public declarations }
@@ -89,6 +90,13 @@ begin
   if dmEstoque.cdsItemTIPO.AsInteger in [Ord(tiSemente),Ord(tiMuda)] then
     raise Exception.Create('Não é possível excluir um item do tipo Semente ou Muda');
 
+end;
+
+procedure TfrmItem.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+begin
+  inherited;
+  //nao faz sentido mostrar na pesquisa itens de outros tipos pois nao posso alterar e nem exclui-los
+  ipCds.ppuAddParametro(TParametros.coTipo,Ord(tiOutro));
 end;
 
 procedure TfrmItem.pprValidarDados;

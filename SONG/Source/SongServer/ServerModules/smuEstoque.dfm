@@ -518,10 +518,14 @@ inherited smEstoque: TsmEstoque
   object qSaida: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Saida.Id,'
+      'select distinct Saida.Id,'
       '       Saida.Data,'
       '       Saida.Tipo'
       'from Saida'
+      'left join saida_Item on (saida_item.id_saida = saida.id)'
+      
+        'left join venda_item on (saida_item.id_venda_item = venda_item.i' +
+        'd)'
       '&where')
     Left = 296
     Top = 168
@@ -550,6 +554,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qSaida_Item: TRFQuery
+    OnCalcFields = qSaida_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Saida_Item.Id,'
@@ -563,6 +568,7 @@ inherited smEstoque: TsmEstoque
       '       Saida_Item.Id_Lote_Muda,'
       '       lote_muda.nome as lote_muda, '
       '       Saida_Item.Qtde,'
+      '       Item.Unidade,'
       '       Saida_item.id_venda_item'
       'from Saida_Item'
       'INNER join item on (item.id = saida_item.id_item)'
@@ -655,6 +661,19 @@ inherited smEstoque: TsmEstoque
       Origin = 'ID_VENDA_ITEM'
       ProviderFlags = [pfInUpdate]
     end
+    object qSaida_ItemUNIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      Size = 10
+    end
+    object qSaida_ItemCALC_QTDE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE'
+      Size = 60
+      Calculated = True
+    end
   end
   object qVenda: TRFQuery
     Connection = dmPrincipal.conSong
@@ -735,6 +754,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qVenda_Item: TRFQuery
+    OnCalcFields = qVenda_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Venda_Item.Id,'
@@ -748,7 +768,8 @@ inherited smEstoque: TsmEstoque
       '       Venda_item.Id_Lote_Semente,'
       '       Lote_Semente.Nome as Lote_Semente,'
       '       Venda_Item.Id_Lote_Muda,'
-      '       Lote_Muda.nome as Lote_Muda'
+      '       Lote_Muda.nome as Lote_Muda,'
+      '       Item.Unidade'
       'from Venda_Item'
       'inner join item on (item.id = venda_item.id_item)'
       'left join especie on (especie.id = venda_item.id_especie)'
@@ -842,6 +863,19 @@ inherited smEstoque: TsmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qVenda_ItemUNIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      Size = 10
+    end
+    object qVenda_ItemCALC_QTDE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE'
+      Size = 60
+      Calculated = True
     end
   end
 end

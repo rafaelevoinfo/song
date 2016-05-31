@@ -1,10 +1,16 @@
 inherited frmSaida: TfrmSaida
+  ActiveControl = cbItem
   Caption = 'Sa'#237'da'
-  ExplicitTop = -160
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 428
@@ -127,6 +133,10 @@ inherited frmSaida: TfrmSaida
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -177,14 +187,25 @@ inherited frmSaida: TfrmSaida
                   object viewRegistrosDetailLOTE_MUDA: TcxGridDBColumn [9]
                     DataBinding.FieldName = 'LOTE_MUDA'
                     Options.Editing = False
-                    Width = 178
+                    Width = 144
                   end
                   object viewRegistrosDetailQTDE: TcxGridDBColumn [10]
                     DataBinding.FieldName = 'QTDE'
+                    Visible = False
                     Options.Editing = False
                     Width = 88
                   end
-                  object viewRegistrosDetailID_VENDA_ITEM: TcxGridDBColumn [11]
+                  object viewRegistrosDetailCALC_QTDE: TcxGridDBColumn [11]
+                    DataBinding.FieldName = 'CALC_QTDE'
+                    Options.Editing = False
+                    Width = 130
+                  end
+                  object viewRegistrosDetailUNIDADE: TcxGridDBColumn [12]
+                    DataBinding.FieldName = 'UNIDADE'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailID_VENDA_ITEM: TcxGridDBColumn [13]
                     DataBinding.FieldName = 'ID_VENDA_ITEM'
                     Visible = False
                     Options.Editing = False
@@ -299,6 +320,7 @@ inherited frmSaida: TfrmSaida
           Height = 36
           BevelOuter = bvNone
           TabOrder = 1
+          Visible = False
           object pnLoteSemente: TPanel
             Left = 185
             Top = 0

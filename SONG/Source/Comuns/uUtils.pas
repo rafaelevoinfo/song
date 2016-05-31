@@ -322,6 +322,7 @@ begin
 
   vaTab := TcxTabSheet.Create(ipPageControl);
   vaTab.Caption := opForm.Caption;
+  vaTab.TabStop := false;
   vaTab.Parent := ipPageControl;
 
   opForm.Align := alClient;

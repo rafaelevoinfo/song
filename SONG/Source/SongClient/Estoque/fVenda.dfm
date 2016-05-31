@@ -1,11 +1,15 @@
 inherited frmVenda: TfrmVenda
-  ActiveControl = cbItem
   Caption = 'Vendas'
+  ExplicitTop = -33
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -183,6 +187,10 @@ inherited frmVenda: TfrmVenda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -214,13 +222,49 @@ inherited frmVenda: TfrmVenda
                     Options.Editing = False
                     Width = 150
                   end
-                  object viewRegistrosDetailQTDE: TcxGridDBColumn [6]
+                  object viewRegistrosDetailCALC_QTDE: TcxGridDBColumn [6]
+                    DataBinding.FieldName = 'CALC_QTDE'
+                    Options.Editing = False
+                    Width = 116
+                  end
+                  object viewRegistrosDetailQTDE: TcxGridDBColumn [7]
                     DataBinding.FieldName = 'QTDE'
+                    Visible = False
                     Options.Editing = False
                   end
-                  object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [7]
+                  object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [8]
                     DataBinding.FieldName = 'VALOR_UNITARIO'
                     Options.Editing = False
+                    Width = 141
+                  end
+                  object viewRegistrosDetailID_LOTE_SEMENTE: TcxGridDBColumn [9]
+                    DataBinding.FieldName = 'ID_LOTE_SEMENTE'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailLOTE_SEMENTE: TcxGridDBColumn [10]
+                    DataBinding.FieldName = 'LOTE_SEMENTE'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailID_LOTE_MUDA: TcxGridDBColumn [11]
+                    DataBinding.FieldName = 'ID_LOTE_MUDA'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailLOTE_MUDA: TcxGridDBColumn [12]
+                    DataBinding.FieldName = 'LOTE_MUDA'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailUNIDADE: TcxGridDBColumn [13]
+                    DataBinding.FieldName = 'UNIDADE'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  inherited ColumnExcluirDetail: TcxGridDBColumn
+                    MinWidth = 40
+                    Width = 40
                   end
                 end
               end
@@ -473,7 +517,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
-              ExplicitTop = -3
+              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0

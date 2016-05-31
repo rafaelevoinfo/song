@@ -23,9 +23,15 @@ type
     qSaldo_RubricaSALDO_REAL: TFMTBCDField;
     qSaldo_RubricaORCAMENTO: TBCDField;
     qSaldo_Semente_Muda: TRFQuery;
+    qSaldo_Semente_MudaNOME: TStringField;
+    qSaldo_Semente_MudaNOME_CIENTIFICO: TStringField;
+    qSaldo_Semente_MudaFAMILIA_BOTANICA: TStringField;
+    qSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE: TBCDField;
+    qSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
   private
     { Private declarations }
-  public
+  protected
+
     
   end;
 
@@ -41,6 +47,8 @@ uses
 
 {$R *.dfm}
 
-{ TsmRelatorio }
+
+
+
 
 end.

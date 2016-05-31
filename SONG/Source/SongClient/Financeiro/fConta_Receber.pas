@@ -149,6 +149,7 @@ type
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprExecutarCancelar; override;
     procedure pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela); override;
+    procedure pprCarregarDadosModelo;override;
   public
     procedure ppuIncluir; override;
   public const
@@ -224,6 +225,27 @@ begin
   rgVinculos.Enabled := True;
   viewParcelasVALOR.Options.Editing := True;
   FParcelasBaixadas := False;
+end;
+
+procedure TfrmContaReceber.pprCarregarDadosModelo;
+var
+  vaContaReceber:TContaReceber;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TContaReceber) then
+    begin
+      vaContaReceber := TContaReceber(Modelo);
+
+      cbCliente.EditValue := vaContaReceber.IdCliente;
+      cbCliente.PostEditValue;
+
+      EditValorTotal.EditValue := vaContaReceber.ValorTotal;
+      EditValorTotal.PostEditValue;
+
+      if vaContaReceber.IdVenda <> 0 then
+        dmFinanceiro.cdsConta_ReceberID_VENDA.AsInteger := vaContaReceber.IdVenda;
+    end;
+
 end;
 
 procedure TfrmContaReceber.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);

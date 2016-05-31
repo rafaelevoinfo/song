@@ -459,8 +459,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqSaida_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 632
-    Top = 16
+    Left = 688
+    Top = 272
     object cdsSaida_ItemID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -526,6 +526,18 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Id do Item da Venda'
       FieldName = 'ID_VENDA_ITEM'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsSaida_ItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
+      FieldName = 'UNIDADE'
+      ProviderFlags = []
+      Size = 10
+    end
+    object cdsSaida_ItemCALC_QTDE: TStringField
+      DisplayLabel = 'Qtde'
+      FieldName = 'CALC_QTDE'
+      ReadOnly = True
+      Size = 60
     end
   end
   object dsSaida: TDataSource
@@ -601,8 +613,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqVenda_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 40
-    Top = 124
+    Left = 536
+    Top = 276
     object cdsVenda_ItemID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -671,6 +683,17 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Lote de Muda'
       FieldName = 'LOTE_MUDA'
       Size = 100
+    end
+    object cdsVenda_ItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
+      FieldName = 'UNIDADE'
+      Size = 10
+    end
+    object cdsVenda_ItemCALC_QTDE: TStringField
+      DisplayLabel = 'Qtde'
+      FieldName = 'CALC_QTDE'
+      ReadOnly = True
+      Size = 60
     end
   end
   object dsVenda: TDataSource

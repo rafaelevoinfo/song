@@ -38,6 +38,7 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 150
           FieldName = 'NOME'
         end>
       Properties.ListSource = dslkPessoa
@@ -391,14 +392,17 @@ inherited dmLookup: TdmLookup
     end
     object repLcbFinForCli: TcxEditRepositoryLookupComboBoxItem
       Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 150
           FieldName = 'RAZAO_SOCIAL'
         end
         item
+          Width = 150
           FieldName = 'NOME_FANTASIA'
         end>
       Properties.ListSource = dslkFin_For_Cli

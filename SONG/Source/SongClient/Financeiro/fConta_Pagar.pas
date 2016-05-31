@@ -208,6 +208,7 @@ type
     cdsLocalRubricasNOME: TStringField;
     chkSemVinculo: TcxCheckBox;
     cbPesquisaResponsavel: TcxLookupComboBox;
+    cbPesquisaFundo: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -272,6 +273,7 @@ type
     coPesquisaProjetoAlocado = 9;
     coPesquisaRubricaOrigemRecurso = 10;
     coPesquisaResponsavelDespesa = 11;
+    coPesquisaFundo = 12;
 
   end;
 
@@ -387,6 +389,8 @@ begin
     ipCds.ppuAddParametro(TParametros.coRubricaOrigemRecurso, cbPesquisaRubricas.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa then
     ipCds.ppuAddParametro(TParametros.coResponsavelDespesa, cbPesquisaResponsavel.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaFundo then
+    ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue);
 
 end;
 
@@ -988,9 +992,10 @@ begin
   cbPesquisaProjeto.Visible := (cbPesquisarPor.EditValue = coPesquisaProjetoOrigemRecurso) or (cbPesquisarPor.EditValue = coPesquisaProjetoAlocado);
   cbPesquisaRubricas.Visible := cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso;
   cbPesquisaResponsavel.Visible := cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa;
+  cbPesquisaFundo.Visible := cbPesquisarPor.EditValue = coPesquisaFundo;
   EditPesquisa.Visible := EditPesquisa.Visible and
     (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or
-    cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible or cbPesquisaResponsavel.Visible));
+    cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible or cbPesquisaResponsavel.Visible or cbPesquisaFundo.Visible));
 
   if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor
@@ -1001,7 +1006,9 @@ begin
   else if cbPesquisaRubricas.Visible then
     Result := cbPesquisaRubricas
   else if cbPesquisaResponsavel.Visible then
-    Result := cbPesquisaResponsavel;
+    Result := cbPesquisaResponsavel
+  else if cbPesquisaFundo.Visible then
+    Result := cbPesquisaFundo;
 end;
 
 function TfrmContaPagar.fprGetPermissao: string;

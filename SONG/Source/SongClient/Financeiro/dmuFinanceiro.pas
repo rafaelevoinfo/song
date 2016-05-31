@@ -143,6 +143,7 @@ type
     cdsTransferencia_FinanceiraID_PESSOA: TIntegerField;
     cdsTransferencia_FinanceiraRESPONSAVEL: TStringField;
     cdsTransferencia_FinanceiraDATA: TSQLTimeStampField;
+    cdsConta_ReceberID_VENDA: TIntegerField;
   private
     { Private declarations }
   public

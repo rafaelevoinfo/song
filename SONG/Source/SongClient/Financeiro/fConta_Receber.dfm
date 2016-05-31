@@ -7,6 +7,10 @@ inherited frmContaReceber: TfrmContaReceber
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 567
@@ -238,6 +242,10 @@ inherited frmContaReceber: TfrmContaReceber
             object tabVinculos: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
