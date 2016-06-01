@@ -107,7 +107,8 @@ inherited smRelatorio: TsmRelatorio
       '       Especie.Qtde_Semente_Estoque,'
       '       Especie.Qtde_Muda_Estoque'
       'from Especie'
-      'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL')
+      'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL'
+      'order by Especie.Nome')
     Left = 200
     Top = 48
     ParamData = <

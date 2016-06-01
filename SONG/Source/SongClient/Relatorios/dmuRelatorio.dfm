@@ -74,7 +74,69 @@ inherited dmRelatorio: TdmRelatorio
   end
   object dsSaldo_Rubrica: TDataSource
     DataSet = cdsSaldo_Rubrica
-    Left = 176
+    Left = 56
     Top = 96
+  end
+  object cdsSaldo_Semente_Muda: TRFClientDataSet
+    Active = True
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_ESPECIE'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqSaldo_Semente_Muda'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    OnCalcFields = cdsSaldo_Semente_MudaCalcFields
+    Left = 240
+    Top = 32
+    object cdsSaldo_Semente_MudaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldo_Semente_MudaNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldo_Semente_MudaFAMILIA_BOTANICA: TStringField
+      FieldName = 'FAMILIA_BOTANICA'
+      Origin = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Origin = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField
+      FieldName = 'QTDE_MUDA_ESTOQUE'
+      Origin = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = []
+    end
+    object cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE_SEMENTE'
+      Size = 60
+      Calculated = True
+    end
+    object cdsSaldo_Semente_MudaCALC_QTDE_MUDA: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE_MUDA'
+      Size = 60
+      Calculated = True
+    end
+  end
+  object dsSaldo_Semente_Muda: TDataSource
+    DataSet = cdsSaldo_Semente_Muda
+    Left = 240
+    Top = 104
   end
 end

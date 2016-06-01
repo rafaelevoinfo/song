@@ -1,7 +1,7 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
   OnCreate = DataModuleCreate
-  Height = 755
+  Height = 905
   Width = 1015
   object Repositorio: TcxEditRepository
     Left = 48
@@ -549,6 +549,7 @@ inherited dmLookup: TdmLookup
     end
     object repIcbTipoSaida: TcxEditRepositoryImageComboBoxItem
       Properties.ClearKey = 46
+      Properties.ImmediatePost = True
       Properties.Items = <
         item
           Description = 'Venda'
@@ -598,6 +599,17 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkLote_Muda
     end
+    object repLcbLocalUso: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          Width = 150
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkLocal_Uso
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -629,6 +641,7 @@ inherited dmLookup: TdmLookup
     Top = 124
   end
   object cdslkOrganizacao: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkOrganizacao'
@@ -1517,5 +1530,30 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Size = 123
     end
+  end
+  object cdslkLocal_Uso: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkLocal_Uso'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 88
+    Top = 776
+    object cdslkLocal_UsoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdslkLocal_UsoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkLocal_Uso: TDataSource
+    DataSet = cdslkLocal_Uso
+    Left = 192
+    Top = 784
   end
 end

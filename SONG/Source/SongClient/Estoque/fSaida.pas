@@ -73,9 +73,15 @@ type
     viewRegistrosDetailID_VENDA_ITEM: TcxGridDBColumn;
     viewRegistrosDetailUNIDADE: TcxGridDBColumn;
     viewRegistrosDetailCALC_QTDE: TcxGridDBColumn;
+    pnLocalUso: TPanel;
+    Label9: TLabel;
+    cbLocalUso: TcxDBLookupComboBox;
+    viewRegistrosID_LOCAL_USO: TcxGridDBColumn;
+    viewRegistrosLOCAL_USO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
+    procedure cbTipoSaidaPropertiesEditValueChanged(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -86,6 +92,7 @@ type
     procedure pprValidarPesquisa; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+    procedure pprBeforeSalvar;override;
     procedure pprBeforeSalvarDetail; override;
     procedure pprExecutarExcluirDetail(ipId: Integer); override;
     procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
@@ -158,7 +165,7 @@ begin
         else if vaItem.IdLoteMuda <> 0 then
           dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaItem.IdEspecie, vaItem.IdLoteMuda, 0, Trunc(vaItem.Qtde))
         else
-         dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaItem.Id, 0, vaItem.Qtde);
+          dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaItem.Id, 0, vaItem.Qtde);
       end;
   finally
     vaItens.Free;
@@ -301,24 +308,15 @@ end;
 procedure TfrmSaida.pprCarregarDadosModelo;
 var
   vaSaida: TSaida;
-
-  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
-  begin
-    if not VarIsNull(ipValor) then
-      begin
-        ipEdit.EditValue := ipValor;
-        ipEdit.PostEditValue;
-      end;
-  end;
-
 begin
   inherited;
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TSaida) then
     begin
       vaSaida := TSaida(Modelo);
+      if vaSaida.Data <> 0 then
+        dmEstoque.cdsSaidaDATA.AsDateTime := vaSaida.Data;
 
-      plSetEdit(EditDataSaida, vaSaida.Data);
-      plSetEdit(cbTipoSaida, Ord(vaSaida.Tipo));
+      dmEstoque.cdsSaidaTIPO.AsInteger := Ord(vaSaida.Tipo);
     end;
 end;
 
@@ -366,6 +364,14 @@ begin
     ppvConfigurarEdits;
 end;
 
+procedure TfrmSaida.cbTipoSaidaPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  // nao faz sentido existir um local de saida se foi uma saida do tipo venda
+  if not VarIsNull(cbTipoSaida.EditValue) then
+    pnLocalUso.Visible := cbTipoSaida.EditValue <> Ord(tsVenda);
+end;
+
 procedure TfrmSaida.ppuAlterarDetail(ipId: Integer);
 begin
   inherited;
@@ -376,8 +382,18 @@ end;
 procedure TfrmSaida.ppuIncluir;
 begin
   inherited;
-  dmEstoque.cdsSaidaDATA.AsDateTime := Now;
-  dmEstoque.cdsSaidaTIPO.AsInteger := Ord(tsVenda);
+  if dmEstoque.cdsSaidaDATA.IsNull then
+    dmEstoque.cdsSaidaDATA.AsDateTime := Now;
+
+  if dmEstoque.cdsSaidaTIPO.IsNull then
+    dmEstoque.cdsSaidaTIPO.AsInteger := Ord(tsConsumo);
+end;
+
+procedure TfrmSaida.pprBeforeSalvar;
+begin
+  inherited;
+  if dmEstoque.cdsSaidaTIPO.AsInteger = Ord(tsVenda) then
+    dmEstoque.cdsSaidaID_LOCAL_USO.Clear;
 end;
 
 procedure TfrmSaida.pprBeforeSalvarDetail;
@@ -489,6 +505,7 @@ begin
 
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
   dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  dmLookup.cdslkLocal_Uso.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
 end;
 
 procedure TfrmSaida.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);

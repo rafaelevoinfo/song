@@ -186,8 +186,6 @@ type
     cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
-    procedure SaldoProjetoBindAssignedValue(Sender: TObject;
-      AssignValueRec: TBindingAssignValueRec; const Value: TValue);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
     procedure chkSaldoTodosProjetoPropertiesEditValueChanged(Sender: TObject);
     procedure chkSaldoTodosFundoPropertiesEditValueChanged(Sender: TObject);
@@ -197,8 +195,6 @@ type
       Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
-    function fpvExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox;
-      ipMsgErro: string): Integer;
   public
     { Public declarations }
   end;
@@ -211,17 +207,7 @@ implementation
 {$R *.dfm}
 
 
-function TfrmRelatorioFinanceiro.fpvExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
-begin
-  Result := 0;
-  if not ipChkTodos.Checked then
-    begin
-      if VarIsNull(ipLookup.EditValue) then
-        raise Exception.Create(ipMsgErro);
 
-      Result := ipLookup.EditValue;
-    end;
-end;
 
 procedure TfrmRelatorioFinanceiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
@@ -229,12 +215,12 @@ var
   vaSomenteRegistrosAberto: Boolean;
 begin
   inherited;
-  vaIdOrganizacao := fpvExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
+  vaIdOrganizacao := fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
 
   if pcPrincipal.ActivePage = tabMovimentacao then
     begin
-      vaIdProjeto := fpvExtrairValor(chkTodosProjetosMovimentacao, cbProjetoMovimentacao, 'Informe o projeto, ou marque o todos.');
-      vaIdFundo := fpvExtrairValor(chkTodosFundoMovimentacao, cbFundoMovimentacao, 'Informe o fundo, ou marque o todos.');
+      vaIdProjeto := fprExtrairValor(chkTodosProjetosMovimentacao, cbProjetoMovimentacao, 'Informe o projeto, ou marque o todos.');
+      vaIdFundo := fprExtrairValor(chkTodosFundoMovimentacao, cbFundoMovimentacao, 'Informe o fundo, ou marque o todos.');
 
       vaSomenteRegistrosAberto := chkSomenteRegistrosAbertos.Enabled and chkSomenteRegistrosAbertos.Checked;
 
@@ -264,8 +250,8 @@ begin
   else
     if pcPrincipal.ActivePage = tabSaldos then
     begin
-      vaIdProjeto := fpvExtrairValor(chkTodosProjetosSaldo, cbProjetoSaldo, 'Informe o projeto, ou marque o todos.');
-      vaIdFundo := fpvExtrairValor(chkTodosFundoSaldos, cbFundoSaldo, 'Informe o fundo, ou marque o todos.');
+      vaIdProjeto := fprExtrairValor(chkTodosProjetosSaldo, cbProjetoSaldo, 'Informe o projeto, ou marque o todos.');
+      vaIdFundo := fprExtrairValor(chkTodosFundoSaldos, cbFundoSaldo, 'Informe o fundo, ou marque o todos.');
 
       cdsSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(vaIdOrganizacao, vaIdProjeto, vaIdFundo);
 
@@ -273,7 +259,7 @@ begin
     end
   else if pcPrincipal.ActivePage = tabSaldoRubrica then
     begin
-      vaIdProjeto := fpvExtrairValor(chkTodosProjetosRubricas, cbProjetoRubrica, 'Informe o projeto, ou marque o todos.');
+      vaIdProjeto := fprExtrairValor(chkTodosProjetosRubricas, cbProjetoRubrica, 'Informe o projeto, ou marque o todos.');
 
       dmRelatorio.cdsSaldo_Rubrica.Close;
       if vaIdProjeto <> 0 then
@@ -285,13 +271,6 @@ begin
 
       ppSaldoRubrica.PrintReport;
     end;
-end;
-
-procedure TfrmRelatorioFinanceiro.SaldoProjetoBindAssignedValue(Sender: TObject;
-  AssignValueRec: TBindingAssignValueRec; const Value: TValue);
-begin
-  inherited;
-  CodeSite.Send('teste');
 end;
 
 procedure TfrmRelatorioFinanceiro.chkSaldoTodosFundoPropertiesEditValueChanged(

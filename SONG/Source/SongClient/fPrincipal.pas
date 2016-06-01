@@ -13,7 +13,8 @@ uses
   fLote_Semente, fLote_Muda, fPlano_Contas, fRubrica, fConta_Pagar, Vcl.ExtCtrls,
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
   uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
-  fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda;
+  fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda,
+  fRelatorioViveiro, fLocalUso;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -82,6 +83,10 @@ type
     ransfernciadeRecursos1: TMenuItem;
     Ac_Venda: TAction;
     Vendas1: TMenuItem;
+    Ac_Relatorio_Viveiro: TAction;
+    Relatrios2: TMenuItem;
+    Ac_Local_Uso: TAction;
+    LocaisdeUso1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -111,6 +116,8 @@ type
     procedure Ac_SaidaExecute(Sender: TObject);
     procedure Ac_TransferenciaExecute(Sender: TObject);
     procedure Ac_VendaExecute(Sender: TObject);
+    procedure Ac_Relatorio_ViveiroExecute(Sender: TObject);
+    procedure Ac_Local_UsoExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -201,6 +208,12 @@ procedure TfrmPrincipal.Ac_ItemExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmItem>(pcPrincipal, TfrmItem, frmItem);
+end;
+
+procedure TfrmPrincipal.Ac_Local_UsoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmLocalUso>(pcPrincipal, TfrmLocalUso, frmLocalUso);
 end;
 
 procedure TfrmPrincipal.Ac_Lote_MudaExecute(Sender: TObject);
@@ -296,6 +309,12 @@ procedure TfrmPrincipal.Ac_Relatorio_FinanceiroExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmRelatorioFinanceiro>(pcPrincipal, TfrmRelatorioFinanceiro, frmRelatorioFinanceiro);
+end;
+
+procedure TfrmPrincipal.Ac_Relatorio_ViveiroExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmRelatorioViveiro>(pcPrincipal, TfrmRelatorioViveiro, frmRelatorioViveiro);
 end;
 
 procedure TfrmPrincipal.Ac_RubricasExecute(Sender: TObject);

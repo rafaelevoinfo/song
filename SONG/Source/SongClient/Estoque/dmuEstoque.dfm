@@ -8,8 +8,8 @@ inherited dmEstoque: TdmEstoque
     ProviderName = 'dspqItem'
     RemoteServer = dmPrincipal.ProviderEstoque
     OnCalcFields = cdsItemCalcFields
-    Left = 928
-    Top = 16
+    Left = 756
+    Top = 124
     object cdsItemID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -61,7 +61,7 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqEntrada'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 336
+    Left = 608
     Top = 124
     object cdsEntradaID: TIntegerField
       FieldName = 'ID'
@@ -92,8 +92,8 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqSolicitacao_Compra'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 40
-    Top = 232
+    Left = 460
+    Top = 124
     object cdsSolicitacao_CompraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -155,7 +155,7 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqSolicitacao_Compra_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 632
+    Left = 904
     Top = 124
     object cdsSolicitacao_Compra_ItemID: TIntegerField
       FieldName = 'ID'
@@ -202,7 +202,7 @@ inherited dmEstoque: TdmEstoque
   end
   object dsSolicitacao_Compra: TDataSource
     DataSet = cdsSolicitacao_Compra
-    Left = 188
+    Left = 164
     Top = 16
   end
   object cdsCompra: TRFClientDataSet
@@ -210,8 +210,8 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqCompra'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 484
-    Top = 124
+    Left = 312
+    Top = 232
     object cdsCompraID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -298,8 +298,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqCompra_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 780
-    Top = 124
+    Left = 164
+    Top = 232
     object cdsCompra_ItemID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -359,7 +359,7 @@ inherited dmEstoque: TdmEstoque
   end
   object dsCompra: TDataSource
     DataSet = cdsCompra
-    Left = 40
+    Left = 460
     Top = 16
   end
   object cdsEntrada_Item: TRFClientDataSet
@@ -376,8 +376,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqEntrada_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 928
-    Top = 124
+    Left = 16
+    Top = 232
     object cdsEntrada_ItemID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -416,7 +416,7 @@ inherited dmEstoque: TdmEstoque
   end
   object dsEntrada: TDataSource
     DataSet = cdsEntrada
-    Left = 484
+    Left = 312
     Top = 16
   end
   object cdsSaida: TRFClientDataSet
@@ -424,7 +424,7 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqSaida'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 780
+    Left = 756
     Top = 16
     object cdsSaidaID: TIntegerField
       FieldName = 'ID'
@@ -444,6 +444,15 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsSaidaID_LOCAL_USO: TIntegerField
+      DisplayLabel = 'Id do Local de Uso'
+      FieldName = 'ID_LOCAL_USO'
+    end
+    object cdsSaidaLOCAL_USO: TStringField
+      DisplayLabel = 'Local de Uso'
+      FieldName = 'LOCAL_USO'
+      Size = 100
+    end
   end
   object cdsSaida_Item: TRFClientDataSet
     Aggregates = <>
@@ -459,8 +468,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqSaida_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 688
-    Top = 272
+    Left = 312
+    Top = 124
     object cdsSaida_ItemID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -542,7 +551,7 @@ inherited dmEstoque: TdmEstoque
   end
   object dsSaida: TDataSource
     DataSet = cdsSaida
-    Left = 336
+    Left = 16
     Top = 16
   end
   object cdsVenda: TRFClientDataSet
@@ -550,7 +559,7 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqVenda'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 188
+    Left = 16
     Top = 124
     object cdsVendaID: TIntegerField
       FieldName = 'ID'
@@ -613,8 +622,8 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqVenda_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 536
-    Top = 276
+    Left = 164
+    Top = 124
     object cdsVenda_ItemID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -698,7 +707,27 @@ inherited dmEstoque: TdmEstoque
   end
   object dsVenda: TDataSource
     DataSet = cdsVenda
-    Left = 480
-    Top = 184
+    Left = 608
+    Top = 16
+  end
+  object cdsLocal_Uso: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLocal_Uso'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 904
+    Top = 16
+    object cdsLocal_UsoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsLocal_UsoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
   end
 end

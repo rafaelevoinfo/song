@@ -81,7 +81,8 @@ type
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
     finContaPagar, finContaReceber, finCliente, finTransferencia);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda);
-  TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra, estSaida, estVenda);
+  TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
+  estSaida, estVenda, estLocalUso);
 
 implementation
 
@@ -163,6 +164,7 @@ begin
   plAddEstoque(estAnalizarSolicitacaoCompra, 'Solicitação de Compras - Aprovar/Negar');
   plAddEstoque(estCompra, 'Compras');
   plAddEstoque(estVenda, 'Vendas');
+  plAddEstoque(estLocalUso, 'Locais de Uso');
   FItems.Add('Estoque', vaPermissoes);
 
 end;

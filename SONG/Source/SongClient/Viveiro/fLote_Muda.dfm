@@ -1,7 +1,6 @@
 inherited frmLoteMuda: TfrmLoteMuda
   Caption = 'Lotes de Mudas'
   ExplicitWidth = 1000
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -258,6 +257,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           Top = 15
           DataBinding.DataField = 'QTDE_INICIAL'
           DataBinding.DataSource = dsMaster
+          Properties.DisplayFormat = ',0'
           TabOrder = 3
           Width = 115
         end

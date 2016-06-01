@@ -130,6 +130,9 @@ type
     qlkFinanciadorRAZAO_SOCIAL: TStringField;
     qlkFin_For_CliNOME_FANTASIA: TStringField;
     qlkFin_For_CliRAZAO_SOCIAL: TStringField;
+    qlkLocal_Uso: TRFQuery;
+    qlkLocal_UsoID: TIntegerField;
+    qlkLocal_UsoNOME: TStringField;
   private
     { Private declarations }
   protected

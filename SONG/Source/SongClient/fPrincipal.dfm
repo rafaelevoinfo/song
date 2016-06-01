@@ -56,6 +56,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Itens1: TMenuItem
         Action = Ac_Item
       end
+      object LocaisdeUso1: TMenuItem
+        Action = Ac_Local_Uso
+      end
     end
     object miFinanceiro: TMenuItem
       Caption = 'Financeiro'
@@ -127,6 +130,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object Lotes1: TMenuItem
         Action = Ac_Lote_Semente
+      end
+      object Relatrios2: TMenuItem
+        Action = Ac_Relatorio_Viveiro
       end
     end
     object Sistema1: TMenuItem
@@ -273,6 +279,16 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Estoque'
       Caption = 'Vendas'
       OnExecute = Ac_VendaExecute
+    end
+    object Ac_Relatorio_Viveiro: TAction
+      Category = 'Viveiro'
+      Caption = 'Relat'#243'rios'
+      OnExecute = Ac_Relatorio_ViveiroExecute
+    end
+    object Ac_Local_Uso: TAction
+      Category = 'Estoque'
+      Caption = 'Locais de Uso'
+      OnExecute = Ac_Local_UsoExecute
     end
   end
   object dxSkinController1: TdxSkinController

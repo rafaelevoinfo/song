@@ -197,6 +197,7 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Qtde. Coletada/Comprada (kg)'
       FieldName = 'QTDE'
       Required = True
+      DisplayFormat = ',0.00'
       Precision = 18
       Size = 2
     end
@@ -204,6 +205,7 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Qtde. Armazenada (Kg)'
       FieldName = 'QTDE_ARMAZENADA'
       ProviderFlags = [pfInUpdate]
+      DisplayFormat = ',0.00'
       Precision = 18
       Size = 2
     end
@@ -229,6 +231,7 @@ inherited dmViveiro: TdmViveiro
     object cdsLote_SementeQTDE_SEMEADA: TBCDField
       DisplayLabel = 'Qtde. Semeada (kg)'
       FieldName = 'QTDE_SEMEADA'
+      DisplayFormat = ',0.00'
       Precision = 18
       Size = 2
     end
@@ -464,11 +467,11 @@ inherited dmViveiro: TdmViveiro
       Size = 100
     end
     object cdsLote_MudaQTDE_INICIAL: TIntegerField
-      DisplayLabel = 'Qtde. Inicial'
+      DisplayLabel = 'Qtde. Inicial (Und)'
       FieldName = 'QTDE_INICIAL'
       ProviderFlags = [pfInUpdate]
       Required = True
-      DisplayFormat = '0 Und'
+      DisplayFormat = ',0'
     end
     object cdsLote_MudaNOME_ESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
@@ -511,10 +514,10 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
     end
     object cdsLote_MudaQTDE_CLASSIFICADA: TIntegerField
-      DisplayLabel = 'Qtde. Classificada'
+      DisplayLabel = 'Qtde. Classificada (Und)'
       FieldName = 'QTDE_CLASSIFICADA'
       ProviderFlags = [pfInUpdate]
-      DisplayFormat = '0 Und'
+      DisplayFormat = ',0'
     end
     object cdsLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField
       DisplayLabel = 'Id da Pessoa que Classificou'
@@ -528,10 +531,10 @@ inherited dmViveiro: TdmViveiro
       Size = 1000
     end
     object cdsLote_MudaSALDO: TIntegerField
-      DisplayLabel = 'Saldo'
+      DisplayLabel = 'Saldo (Und)'
       FieldName = 'SALDO'
       ProviderFlags = [pfInUpdate]
-      DisplayFormat = '0 Und'
+      DisplayFormat = ',0'
     end
     object cdsLote_MudaPESSOA_CLASSIFICOU: TStringField
       DisplayLabel = 'Pessoa que Classificou'

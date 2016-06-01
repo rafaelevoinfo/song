@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 31/05/2016 00:31:16
+// 31/05/2016 23:56:39
 //
 
 unit uFuncoes;
@@ -115,6 +115,7 @@ type
     FfpuBuscarLoteMudaCommand: TDBXCommand;
     FfpuBuscarLotesSementesCommand: TDBXCommand;
     FfpuBuscarLoteSementeCommand: TDBXCommand;
+    FppuAjustarSaldoEspecieCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -137,6 +138,7 @@ type
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
     function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
     function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
+    procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -195,6 +197,7 @@ type
   TsmFuncoesEstoqueClient = class(TDSAdminClient)
   private
     FfpuValidarNomeItemCommand: TDBXCommand;
+    FfpuValidarNomeLocalUsoCommand: TDBXCommand;
     FfpuVerificarComprasJaGeradaCommand: TDBXCommand;
     FfpuVerificarContaPagarJaGeradaCommand: TDBXCommand;
     FfpuVerificarContaReceberJaGeradaCommand: TDBXCommand;
@@ -203,7 +206,6 @@ type
     FfpuBuscarItensSaidaCommand: TDBXCommand;
     FfpuBuscarItemSaidaCommand: TDBXCommand;
     FppuAtualizarSaldoItemCommand: TDBXCommand;
-    FppuAjustarSaldoEspecieCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -212,6 +214,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuValidarNomeItem(ipIdItem: Integer; ipNome: string): Boolean;
+    function fpuValidarNomeLocalUso(ipIdLocalUso: Integer; ipNome: string): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
@@ -220,7 +223,6 @@ type
     function fpuBuscarItensSaida(ipIdVenda: Integer): string;
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
-    procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -963,6 +965,19 @@ begin
   Result := FfpuBuscarLoteSementeCommand.Parameters[1].Value.GetInt32;
 end;
 
+procedure TsmFuncoesViveiroClient.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
+begin
+  if FppuAjustarSaldoEspecieCommand = nil then
+  begin
+    FppuAjustarSaldoEspecieCommand := FDBXConnection.CreateCommand;
+    FppuAjustarSaldoEspecieCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuAjustarSaldoEspecieCommand.Text := 'TsmFuncoesViveiro.ppuAjustarSaldoEspecie';
+    FppuAjustarSaldoEspecieCommand.Prepare;
+  end;
+  FppuAjustarSaldoEspecieCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
+  FppuAjustarSaldoEspecieCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1045,6 +1060,7 @@ begin
   FfpuBuscarLoteMudaCommand.DisposeOf;
   FfpuBuscarLotesSementesCommand.DisposeOf;
   FfpuBuscarLoteSementeCommand.DisposeOf;
+  FppuAjustarSaldoEspecieCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
@@ -1372,6 +1388,21 @@ begin
   Result := FfpuValidarNomeItemCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesEstoqueClient.fpuValidarNomeLocalUso(ipIdLocalUso: Integer; ipNome: string): Boolean;
+begin
+  if FfpuValidarNomeLocalUsoCommand = nil then
+  begin
+    FfpuValidarNomeLocalUsoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeLocalUsoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeLocalUsoCommand.Text := 'TsmFuncoesEstoque.fpuValidarNomeLocalUso';
+    FfpuValidarNomeLocalUsoCommand.Prepare;
+  end;
+  FfpuValidarNomeLocalUsoCommand.Parameters[0].Value.SetInt32(ipIdLocalUso);
+  FfpuValidarNomeLocalUsoCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeLocalUsoCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeLocalUsoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TsmFuncoesEstoqueClient.fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
 begin
   if FfpuVerificarComprasJaGeradaCommand = nil then
@@ -1485,19 +1516,6 @@ begin
   FppuAtualizarSaldoItemCommand.ExecuteUpdate;
 end;
 
-procedure TsmFuncoesEstoqueClient.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
-begin
-  if FppuAjustarSaldoEspecieCommand = nil then
-  begin
-    FppuAjustarSaldoEspecieCommand := FDBXConnection.CreateCommand;
-    FppuAjustarSaldoEspecieCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FppuAjustarSaldoEspecieCommand.Text := 'TsmFuncoesEstoque.ppuAjustarSaldoEspecie';
-    FppuAjustarSaldoEspecieCommand.Prepare;
-  end;
-  FppuAjustarSaldoEspecieCommand.Parameters[0].Value.SetInt32(ipIdEspecie);
-  FppuAjustarSaldoEspecieCommand.ExecuteUpdate;
-end;
-
 function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1566,6 +1584,7 @@ end;
 destructor TsmFuncoesEstoqueClient.Destroy;
 begin
   FfpuValidarNomeItemCommand.DisposeOf;
+  FfpuValidarNomeLocalUsoCommand.DisposeOf;
   FfpuVerificarComprasJaGeradaCommand.DisposeOf;
   FfpuVerificarContaPagarJaGeradaCommand.DisposeOf;
   FfpuVerificarContaReceberJaGeradaCommand.DisposeOf;
@@ -1574,7 +1593,6 @@ begin
   FfpuBuscarItensSaidaCommand.DisposeOf;
   FfpuBuscarItemSaidaCommand.DisposeOf;
   FppuAtualizarSaldoItemCommand.DisposeOf;
-  FppuAjustarSaldoEspecieCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

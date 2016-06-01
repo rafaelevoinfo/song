@@ -12,6 +12,7 @@ uses
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
+    qAjusta_Saldo_Especie: TRFQuery;
   private
     function fpvCalcularTaxaClassificaoMuda(ipIdLote: Integer): Double;
     { Private declarations }
@@ -38,6 +39,8 @@ type
 
     function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
     function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
+
+    procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
   end;
 
 var
@@ -257,6 +260,17 @@ begin
   Result := fprValidarCampoUnico('MATRIZ', 'NOME', ipId, ipNome);
 end;
 
+procedure TsmFuncoesViveiro.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
+begin
+  if ipIdEspecie <> 0 then
+    qAjusta_Saldo_Especie.ParamByName('ID_ESPECIE').AsInteger := ipIdEspecie
+  else
+    qAjusta_Saldo_Especie.ParamByName('ID_ESPECIE').Clear();
+
+  qAjusta_Saldo_Especie.ExecSQL;
+  qAjusta_Saldo_Especie.Connection.Commit;
+end;
+
 procedure TsmFuncoesViveiro.ppuAtualizarQtdeMudaEstoque(ipIdEspecie, ipIdLote,
   ipQtdeSubtrair, ipQtdeSomar: Integer);
 begin
@@ -285,7 +299,7 @@ begin
     begin
       Connection.ExecSQL(
         ' update Lote_Semente' +
-        '   set Lote_Semente.Qtde_Armazenada = Lote_Semente.Qtde_Armazenada - :qtde_subtrair + :qtde_somar '+
+        '   set Lote_Semente.Qtde_Armazenada = Lote_Semente.Qtde_Armazenada - :qtde_subtrair + :qtde_somar ' +
         ' where Lote_Semente.Id = :Id', [ipQtdeSubtrair, ipQtdeSomar, ipIdLote]);
     end;
 end;

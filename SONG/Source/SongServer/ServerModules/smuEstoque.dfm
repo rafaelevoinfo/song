@@ -520,8 +520,11 @@ inherited smEstoque: TsmEstoque
     SQL.Strings = (
       'select distinct Saida.Id,'
       '       Saida.Data,'
-      '       Saida.Tipo'
+      '       Saida.Tipo,'
+      '       Saida.Id_Local_uso,'
+      '       Local_Uso.Nome as Local_Uso'
       'from Saida'
+      'left join local_uso on (local_uso.id = saida.id_local_uso)'
       'left join saida_Item on (saida_item.id_saida = saida.id)'
       
         'left join venda_item on (saida_item.id_venda_item = venda_item.i' +
@@ -551,6 +554,18 @@ inherited smEstoque: TsmEstoque
       Origin = 'TIPO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qSaidaID_LOCAL_USO: TIntegerField
+      FieldName = 'ID_LOCAL_USO'
+      Origin = 'ID_LOCAL_USO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qSaidaLOCAL_USO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'LOCAL_USO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qSaida_Item: TRFQuery
@@ -876,6 +891,34 @@ inherited smEstoque: TsmEstoque
       FieldName = 'CALC_QTDE'
       Size = 60
       Calculated = True
+    end
+  end
+  object qLocal_Uso: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Local_Uso.Id,'
+      '       Local_Uso.Nome'
+      'from Local_uso'
+      '&WHERE')
+    Left = 488
+    Top = 32
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qLocal_UsoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLocal_UsoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
     end
   end
 end

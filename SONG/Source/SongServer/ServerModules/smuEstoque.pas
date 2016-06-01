@@ -114,6 +114,11 @@ type
     qVenda_ItemUNIDADE: TStringField;
     qSaida_ItemCALC_QTDE: TStringField;
     qVenda_ItemCALC_QTDE: TStringField;
+    qLocal_Uso: TRFQuery;
+    qLocal_UsoID: TIntegerField;
+    qLocal_UsoNOME: TStringField;
+    qSaidaID_LOCAL_USO: TIntegerField;
+    qSaidaLOCAL_USO: TStringField;
     procedure qSaida_ItemCalcFields(DataSet: TDataSet);
     procedure qVenda_ItemCalcFields(DataSet: TDataSet);
   private

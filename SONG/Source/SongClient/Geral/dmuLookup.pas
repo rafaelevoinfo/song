@@ -202,6 +202,11 @@ type
     cdslkFin_For_CliRAZAO_SOCIAL: TStringField;
     cdslkFinanciadorNOME_FANTASIA: TStringField;
     cdslkFinanciadorRAZAO_SOCIAL: TStringField;
+    cdslkLocal_Uso: TRFClientDataSet;
+    cdslkLocal_UsoID: TIntegerField;
+    cdslkLocal_UsoNOME: TStringField;
+    dslkLocal_Uso: TDataSource;
+    repLcbLocalUso: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

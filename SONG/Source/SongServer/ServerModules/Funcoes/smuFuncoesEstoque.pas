@@ -12,11 +12,11 @@ uses
 
 type
   TsmFuncoesEstoque = class(TsmFuncoesBasico)
-    qAjusta_Saldo_Especie: TRFQuery;
   private
     { Private declarations }
   public
     function fpuValidarNomeItem(ipIdItem: Integer; ipNome: String): Boolean;
+    function fpuValidarNomeLocalUso(ipIdLocalUso:Integer; ipNome: String): Boolean;
     function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
     function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
     function fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
@@ -28,7 +28,7 @@ type
 
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
 
-    procedure ppuAjustarSaldoEspecie(ipIdEspecie:Integer);
+
 
   end;
 
@@ -148,6 +148,11 @@ begin
   Result := fprValidarCampoUnico('ITEM', 'NOME', ipIdItem, ipNome.trim);
 end;
 
+function TsmFuncoesEstoque.fpuValidarNomeLocalUso(ipIdLocalUso:Integer;ipNome: String): Boolean;
+begin
+  Result := fprValidarCampoUnico('LOCAL_USO','NOME',ipIdLocalUso,ipNome);
+end;
+
 function TsmFuncoesEstoque.fpuVerificarComprasJaGerada(
   ipIdSolicitacao: Integer): Boolean;
 var
@@ -211,16 +216,6 @@ begin
 
   Result := vaResult;
 
-end;
-
-procedure TsmFuncoesEstoque.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
-begin
-  if ipIdEspecie <> 0 then
-    qAjusta_Saldo_Especie.ParamByName('ID_ESPECIE').AsInteger := ipIdEspecie
-  else
-    qAjusta_Saldo_Especie.ParamByName('ID_ESPECIE').Clear();
-
-  qAjusta_Saldo_Especie.ExecSQL;
 end;
 
 procedure TsmFuncoesEstoque.ppuAtualizarSaldoItem(ipIdItem: Integer;

@@ -53,7 +53,8 @@ uses
   fSaida in 'Estoque\fSaida.pas' {frmSaida},
   fTransferenciaFinanceira in 'Financeiro\fTransferenciaFinanceira.pas' {frmTransferenciaFinanceira},
   fVenda in 'Estoque\fVenda.pas' {frmVenda},
-  fRelatorioViveiro in 'Viveiro\fRelatorioViveiro.pas' {frmRelatorioViveiro};
+  fRelatorioViveiro in 'Viveiro\fRelatorioViveiro.pas' {frmRelatorioViveiro},
+  fLocalUso in 'Estoque\fLocalUso.pas' {frmLocalUso};
 
 {$R Localization.RES}
   {$R *.res}

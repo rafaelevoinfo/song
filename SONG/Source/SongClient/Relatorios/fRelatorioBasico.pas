@@ -30,6 +30,7 @@ type
 
   protected
     dmLookup: TdmLookup;
+    function fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
   end;
 
 var
@@ -40,13 +41,25 @@ implementation
 {$R *.dfm}
 
 
+function TfrmRelatorioBasico.fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
+begin
+  Result := 0;
+  if not ipChkTodos.Checked then
+    begin
+      if VarIsNull(ipLookup.EditValue) then
+        raise Exception.Create(ipMsgErro);
+
+      Result := ipLookup.EditValue;
+    end;
+end;
+
 procedure TfrmRelatorioBasico.Ac_GerarRelatorioExecute(Sender: TObject);
 begin
   inherited;
   if VarIsNull(cbOrganizacao.EditValue) then
     raise Exception.Create('Informe para qual organização o relatório está sendo gerado.');
 
-  dmLookup.cdslkOrganizacao.Locate(TBancoDados.coId, cbOrganizacao.EditValue,[]);
+  dmLookup.cdslkOrganizacao.Locate(TBancoDados.coId, cbOrganizacao.EditValue, []);
 end;
 
 procedure TfrmRelatorioBasico.chkTodasOrganizacoesPropertiesEditValueChanged(

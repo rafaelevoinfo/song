@@ -1,11 +1,16 @@
 inherited frmLoteSemente: TfrmLoteSemente
   ActiveControl = btnSalvarDetail
   Caption = 'Lotes de Sementes'
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 291
@@ -184,6 +189,10 @@ inherited frmLoteSemente: TfrmLoteSemente
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -682,6 +691,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         object EditQtdeSemeada: TcxDBCalcEdit
           Left = 394
           Top = 23
+          RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE_SEMEADA'
           DataBinding.DataSource = dsDetail
           TabOrder = 3

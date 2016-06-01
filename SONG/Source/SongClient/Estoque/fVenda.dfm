@@ -1,6 +1,5 @@
 inherited frmVenda: TfrmVenda
   Caption = 'Vendas'
-  ExplicitTop = -33
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -274,10 +273,6 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9

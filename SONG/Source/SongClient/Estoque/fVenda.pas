@@ -305,7 +305,8 @@ end;
 
 procedure TfrmVenda.Ac_Gerar_SaidaExecute(Sender: TObject);
 begin
-  ppvGerarSaida;
+  if TMensagem.fpuPerguntar('Tem certeza que deseja gerar uma saída para esta venda?', ppSimNao) = rpSim then
+    ppvGerarSaida;
 end;
 
 procedure TfrmVenda.ppvGerarSaida;

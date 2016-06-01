@@ -13,8 +13,6 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 681
     object btnGerarRelatorio: TButton
       AlignWithMargins = True
       Left = 3
@@ -36,8 +34,6 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 0
-    ExplicitHeight = 681
   end
   object pnOrganizacao: TPanel
     AlignWithMargins = True
@@ -49,7 +45,6 @@ inherited frmRelatorioBasico: TfrmRelatorioBasico
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 852
     object lb2: TLabel
       Left = 4
       Top = 11

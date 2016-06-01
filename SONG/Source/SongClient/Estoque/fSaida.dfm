@@ -1,11 +1,11 @@
 inherited frmSaida: TfrmSaida
-  ActiveControl = cbItem
+  ActiveControl = EditDataSaida
   Caption = 'Sa'#237'da'
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -127,6 +127,16 @@ inherited frmSaida: TfrmSaida
               Options.Editing = False
               Width = 122
             end
+            object viewRegistrosID_LOCAL_USO: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'ID_LOCAL_USO'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosLOCAL_USO: TcxGridDBColumn [4]
+              DataBinding.FieldName = 'LOCAL_USO'
+              Options.Editing = False
+              Width = 423
+            end
           end
         end
         inherited pnDetail: TPanel
@@ -222,10 +232,6 @@ inherited frmSaida: TfrmSaida
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 6
@@ -258,8 +264,36 @@ inherited frmSaida: TfrmSaida
           DataBinding.DataField = 'TIPO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
+          Properties.OnEditValueChanged = cbTipoSaidaPropertiesEditValueChanged
           TabOrder = 1
           Width = 179
+        end
+        object pnLocalUso: TPanel
+          Left = 399
+          Top = 2
+          Width = 145
+          Height = 37
+          AutoSize = True
+          BevelOuter = bvNone
+          TabOrder = 2
+          object Label9: TLabel
+            Left = 2
+            Top = 0
+            Width = 60
+            Height = 13
+            Caption = 'Local de Uso'
+            FocusControl = cbLocalUso
+          end
+          object cbLocalUso: TcxDBLookupComboBox
+            Left = 0
+            Top = 16
+            RepositoryItem = dmLookup.repLcbLocalUso
+            DataBinding.DataField = 'ID_LOCAL_USO'
+            DataBinding.DataSource = dsMaster
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 145
+          end
         end
       end
     end

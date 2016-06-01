@@ -1029,4 +1029,32 @@ inherited smLookup: TsmLookup
       Size = 123
     end
   end
+  object qlkLocal_Uso: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Local_Uso.Id,'
+      '       Local_Uso.Nome'
+      'from Local_uso'
+      '&WHERE')
+    Left = 880
+    Top = 304
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkLocal_UsoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkLocal_UsoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

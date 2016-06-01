@@ -219,6 +219,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
   end
+  inherited pnOrganizacao: TPanel
+    ExplicitLeft = 5
+  end
   inherited ActionList: TActionList
     Left = 504
     Top = 192

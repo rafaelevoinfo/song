@@ -116,6 +116,11 @@ type
     cdsVenda_ItemUNIDADE: TStringField;
     cdsVenda_ItemCALC_QTDE: TStringField;
     cdsSaida_ItemCALC_QTDE: TStringField;
+    cdsLocal_Uso: TRFClientDataSet;
+    cdsLocal_UsoID: TIntegerField;
+    cdsLocal_UsoNOME: TStringField;
+    cdsSaidaID_LOCAL_USO: TIntegerField;
+    cdsSaidaLOCAL_USO: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

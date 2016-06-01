@@ -672,7 +672,6 @@ begin
   pprBeforeIncluir;
   dsMaster.DataSet.Append;
   pcPrincipal.ActivePage := tabCadastro;
-
   pprCarregarDadosModelo;
 end;
 
