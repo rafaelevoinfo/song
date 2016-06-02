@@ -1,12 +1,15 @@
 inherited frmPessoa: TfrmPessoa
-  ActiveControl = EditNome
   Caption = 'Pessoas'
-  ExplicitWidth = 320
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 321
@@ -537,26 +540,23 @@ inherited frmPessoa: TfrmPessoa
             end
             inherited pnBotoes: TPanel
               Left = 458
+              Width = 48
               Height = 377
               ExplicitLeft = 458
               ExplicitWidth = 48
               ExplicitHeight = 377
               inherited btnAdd: TButton
-                Width = 48
                 ExplicitWidth = 48
               end
               inherited btnAddTodos: TButton
-                Width = 48
                 OnClick = frameGridsbtnAddTodosClick
                 ExplicitWidth = 48
               end
               inherited btnRemover: TButton
-                Width = 48
                 OnClick = frameGridsbtnRemoverClick
                 ExplicitWidth = 48
               end
               inherited btnRemoverTodos: TButton
-                Width = 48
                 ExplicitWidth = 48
               end
             end
@@ -592,14 +592,12 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
-                Height = 13
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 91
-                Height = 13
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 91
@@ -614,7 +612,7 @@ inherited frmPessoa: TfrmPessoa
             Left = 728
             Top = 232
           end
-          inherited ActionList1: TActionList
+          inherited ActionListFrame: TActionList
             Left = 168
             Top = 224
           end

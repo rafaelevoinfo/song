@@ -22,22 +22,30 @@ inherited frmLoteMuda: TfrmLoteMuda
             Height = 13
             Caption = 'Esp'#233'cie'
           end
-          inherited rgStatus: TcxRadioGroup [2]
+          object cbPesquisaStatusMuda: TcxImageComboBox [2]
+            Left = 274
+            Top = 20
+            RepositoryItem = dmLookup.repIcbStatusMudas
+            Properties.Items = <>
+            TabOrder = 6
+            Width = 176
+          end
+          inherited rgStatus: TcxRadioGroup [3]
             Left = 3
             Top = 31
             TabOrder = 5
             ExplicitLeft = 3
             ExplicitTop = 31
           end
-          inherited pnData: TPanel [3]
+          inherited pnData: TPanel [4]
             Left = 321
             ExplicitLeft = 321
           end
-          inherited EditPesquisa: TcxButtonEdit [4]
+          inherited EditPesquisa: TcxButtonEdit [5]
             Left = 273
             ExplicitLeft = 273
           end
-          inherited cbPesquisarPor: TcxImageComboBox [5]
+          inherited cbPesquisarPor: TcxImageComboBox [6]
             Left = 140
             Properties.Items = <
               item
@@ -57,10 +65,14 @@ inherited frmLoteMuda: TfrmLoteMuda
               item
                 Description = 'Data'
                 Value = 4
+              end
+              item
+                Description = 'Status'
+                Value = 5
               end>
             ExplicitLeft = 140
           end
-          inherited btnPesquisar: TButton [6]
+          inherited btnPesquisar: TButton [7]
             Left = 457
             TabOrder = 1
             ExplicitLeft = 457
@@ -84,6 +96,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
+              Visible = False
               Options.Editing = False
               Width = 33
             end
@@ -110,17 +123,18 @@ inherited frmLoteMuda: TfrmLoteMuda
             object viewRegistrosNOME: TcxGridDBColumn [5]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
-              Width = 125
+              Width = 156
             end
             object viewRegistrosDATA: TcxGridDBColumn [6]
               DataBinding.FieldName = 'DATA'
+              Visible = False
               Options.Editing = False
               Width = 90
             end
             object viewRegistrosQTDE_INICIAL: TcxGridDBColumn [7]
               DataBinding.FieldName = 'QTDE_INICIAL'
               Options.Editing = False
-              Width = 88
+              Width = 94
             end
             object viewRegistrosQTDE_CLASSIFICADA: TcxGridDBColumn [8]
               DataBinding.FieldName = 'QTDE_CLASSIFICADA'
@@ -154,6 +168,12 @@ inherited frmLoteMuda: TfrmLoteMuda
               DataBinding.FieldName = 'PESSOA_CLASSIFICOU'
               Visible = False
               Options.Editing = False
+            end
+            object viewRegistrosSTATUS: TcxGridDBColumn [14]
+              DataBinding.FieldName = 'STATUS'
+              RepositoryItem = dmLookup.repIcbStatusMudas
+              Options.Editing = False
+              Width = 128
             end
             inherited ColumnAlterar: TcxGridDBColumn
               MinWidth = 44
@@ -213,6 +233,14 @@ inherited frmLoteMuda: TfrmLoteMuda
           Caption = 'Quantidade Inicial (Und)'
           FocusControl = EditQtdeInicial
         end
+        object Label6: TLabel
+          Left = 674
+          Top = 0
+          Width = 85
+          Height = 13
+          Caption = 'Status das Mudas'
+          FocusControl = cbStatusMuda
+        end
         object EditNome: TcxDBTextEdit
           Left = 5
           Top = 15
@@ -233,7 +261,7 @@ inherited frmLoteMuda: TfrmLoteMuda
         end
         object EditData: TcxDBDateEdit
           Left = 424
-          Top = 16
+          Top = 15
           DataBinding.DataField = 'DATA'
           DataBinding.DataSource = dsMaster
           Properties.ClearKey = 46
@@ -248,7 +276,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           Top = 58
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 4
+          TabOrder = 5
           Height = 71
           Width = 661
         end
@@ -265,7 +293,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           Left = 7
           Top = 135
           Caption = 'Classifica'#231#227'o'
-          TabOrder = 5
+          TabOrder = 6
           Height = 146
           Width = 659
           object Label8: TLabel
@@ -346,6 +374,16 @@ inherited frmLoteMuda: TfrmLoteMuda
             Height = 63
             Width = 654
           end
+        end
+        object cbStatusMuda: TcxDBImageComboBox
+          Left = 671
+          Top = 15
+          RepositoryItem = dmLookup.repIcbStatusMudas
+          DataBinding.DataField = 'STATUS'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 4
+          Width = 153
         end
       end
     end

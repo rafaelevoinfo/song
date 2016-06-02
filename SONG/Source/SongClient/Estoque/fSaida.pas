@@ -92,7 +92,7 @@ type
     procedure pprValidarPesquisa; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
-    procedure pprBeforeSalvar;override;
+    procedure pprBeforeSalvar; override;
     procedure pprBeforeSalvarDetail; override;
     procedure pprExecutarExcluirDetail(ipId: Integer); override;
     procedure pprExecutarExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
@@ -101,6 +101,7 @@ type
 
     function fprGetPermissao: string; override;
 
+    procedure pprValidarDados; override;
     procedure pprValidarDadosDetail; override;
     procedure pprExecutarSalvarDetail; override;
   public
@@ -419,9 +420,41 @@ begin
   ppvCarregarLotes;
 end;
 
+procedure TfrmSaida.pprValidarDados;
+begin
+  inherited;
+  if dmEstoque.cdsSaida.State = dsEdit then
+    begin
+      if dmEstoque.cdsSaidaTIPO.AsInteger = Ord(tsPlantio) then
+        begin
+          dmLookup.cdslkItem.DisableControls;
+          try
+            TUtils.ppuPercorrerCds(dmEstoque.cdsSaida_Item,
+              procedure
+              begin
+                if dmLookup.cdslkItem.Locate(TBancoDados.coId, dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, []) then
+                  begin
+                    if dmLookup.cdslkItemTIPO.AsInteger <> Ord(tiMuda) then
+                      raise Exception.Create('Para uma saída do tipo Plantio é permitido somente o cadastro do item muda.');
+                  end;
+              end);
+          finally
+            dmLookup.cdslkItem.EnableControls;
+          end;
+        end;
+    end;
+end;
+
 procedure TfrmSaida.pprValidarDadosDetail;
 begin
   inherited;
+  if dmEstoque.cdsSaidaTIPO.AsInteger = Ord(tsPlantio) then
+    begin
+      if dmLookup.cdslkItemTIPO.AsInteger <> Ord(tiMuda) then
+        raise Exception.Create('Somente o item muda pode ser cadastrado para uma saída do tipo Plantio');
+
+    end;
+
   if pnEspecieLotes.Visible then
     begin
       if VarIsNull(cbEspecie.EditValue) then

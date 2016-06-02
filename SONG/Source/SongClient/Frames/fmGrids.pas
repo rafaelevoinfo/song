@@ -32,7 +32,7 @@ type
     btnRemoverTodos: TButton;
     dsEsquerda: TDataSource;
     dsDireita: TDataSource;
-    ActionList1: TActionList;
+    ActionListFrame: TActionList;
     Ac_Add: TAction;
     Ac_AddTodos: TAction;
     Ac_Remover: TAction;

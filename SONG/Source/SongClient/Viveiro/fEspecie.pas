@@ -50,6 +50,9 @@ type
     viewRegistrosFIM_PERIODO_COLETA: TcxGridDBColumn;
     viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn;
     viewRegistrosQTDE_MUDA_ESTOQUE: TcxGridDBColumn;
+    Label12: TLabel;
+    EditTempoDesenvolvimento: TcxDBSpinEdit;
+    viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
   private
     dmViveiro: TdmViveiro;

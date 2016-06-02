@@ -212,3 +212,26 @@ FOREIGN KEY (ID_LOCAL_USO)
 REFERENCES LOCAL_USO(ID)
 ON UPDATE CASCADE;
 
+
+update saida set saida.tipo = 4 where saida.tipo = 3;
+
+ALTER TABLE LOTE_MUDA
+    ADD STATUS SMALLINT NOT NULL;
+
+COMMENT ON COLUMN LOTE_MUDA.STATUS IS
+'0 - Em desenvolvimento
+1 - Prontas para plantio';
+
+
+
+UPDATE LOTE_MUDA
+SET STATUS = 0;
+
+
+
+ALTER TABLE ESPECIE
+    ADD TEMPO_DESENVOLVIMENTO INTEGER;
+
+COMMENT ON COLUMN ESPECIE.TEMPO_DESENVOLVIMENTO IS
+'Tempo medio em dias que as mudas desta especie levam desde a germinacao ate estarem prontas para plantio.';
+

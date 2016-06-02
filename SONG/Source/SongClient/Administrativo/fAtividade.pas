@@ -16,7 +16,7 @@ uses
   cxCheckBox, cxCheckComboBox, uTypes, System.TypInfo, uControleAcesso, cxDBEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuPrincipal, cxMemo,
   uClientDataSet, System.IOUtils, Vcl.ExtDlgs, uUtils,
-  System.RegularExpressions, System.DateUtils, cxLocalization;
+  System.RegularExpressions, System.DateUtils, cxLocalization, System.Types;
 
 type
   TfrmAtividade = class(TfrmBasicoCrudMasterDetail)
@@ -182,6 +182,9 @@ type
     procedure cbPessoaEnvolvidaKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_Pessoa_EnvolvidaExecute(Sender: TObject);
+    procedure viewRegistrosCustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
   private
     dmLookup: TdmLookup;
     dmAdministrativo: TdmAdministrativo;
@@ -561,6 +564,42 @@ begin
   inherited;
   dmAdministrativo.cdsAtividadeSTATUS.AsInteger := 0; // programada
   dmAdministrativo.cdsAtividadeID_SOLICITANTE.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
+end;
+
+procedure TfrmAtividade.viewRegistrosCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+var
+  vaDataFinal: TDateTime;
+begin
+  inherited;
+  if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]) then
+    begin
+      if not (VarToStr(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]).ToInteger in [Ord(saFinalizada), Ord(saCancelada)]) then
+        begin
+          if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index]) then
+            begin
+              vaDataFinal := AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index];
+              // atividade vencida
+              if CompareDateTime(Now, vaDataFinal) = GreaterThanValue then
+                begin
+                  ACanvas.Font.Color := clWhite;
+                  if AViewInfo.GridRecord.Selected then
+                    ACanvas.Brush.Color := clMaroon
+                  else
+                    ACanvas.Brush.Color := clRed;
+                end
+              else if DaysBetween(vaDataFinal, Now) < 3 then // atividade quase vencendo
+                begin
+                  ACanvas.Font.Color := clBlack;
+                  if AViewInfo.GridRecord.Selected then
+                    ACanvas.Brush.Color := $0039D5C9
+                  else
+                    ACanvas.Brush.Color := clYellow;
+                end;
+            end;
+        end;
+    end;
 end;
 
 procedure TfrmAtividade.viewRegistrosFocusedRecordChanged(

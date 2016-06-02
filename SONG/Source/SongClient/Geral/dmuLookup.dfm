@@ -565,8 +565,12 @@ inherited dmLookup: TdmLookup
           Value = 2
         end
         item
-          Description = 'Outro'
+          Description = 'Plantio'
           Value = 3
+        end
+        item
+          Description = 'Outro'
+          Value = 4
         end>
     end
     object repLcbLoteSemente: TcxEditRepositoryLookupComboBoxItem
@@ -610,6 +614,19 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkLocal_Uso
     end
+    object repIcbStatusMudas: TcxEditRepositoryImageComboBoxItem
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Em Desenvolvimento'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Prontas para Plantio'
+          Value = 1
+        end>
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -641,7 +658,6 @@ inherited dmLookup: TdmLookup
     Top = 124
   end
   object cdslkOrganizacao: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqlkOrganizacao'

@@ -65,6 +65,10 @@ type
     viewRegistrosID_PESSOA_CLASSIFICOU: TcxGridDBColumn;
     viewRegistrosSALDO: TcxGridDBColumn;
     viewRegistrosPESSOA_CLASSIFICOU: TcxGridDBColumn;
+    cbStatusMuda: TcxDBImageComboBox;
+    Label6: TLabel;
+    viewRegistrosSTATUS: TcxGridDBColumn;
+    cbPesquisaStatusMuda: TcxImageComboBox;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -77,15 +81,18 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprEfetuarPesquisa; override;
     procedure pprValidarDados; override;
+    procedure pprValidarPesquisa;override;
+    function fprConfigurarControlesPesquisa: TWinControl; override;
 
     procedure pprExecutarSalvar; override;
 
     procedure pprCarregarDadosModelo; override;
     procedure pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
   public
-
+    procedure ppuIncluir; override;
   public const
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
+    coPesquisaStatus = 5;
   end;
 
 var
@@ -171,6 +178,10 @@ begin
   inherited;
   if not VarIsNull(cbEspeciePesquisa.EditValue) then
     ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
+
+  if cbPesquisarPor.EditValue = coPesquisaStatus then
+    ipCds.ppuAddParametro(TParametros.coStatus, cbPesquisaStatusMuda.EditValue);
+
 end;
 
 procedure TfrmLoteMuda.pprEfetuarPesquisa;
@@ -204,6 +215,30 @@ begin
   inherited;
   if dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger > dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger then
     raise TControlException.Create('A quantidade classificada não pode ser superior a quantidade inicial.', EditQtdeClassificada);
+end;
+
+procedure TfrmLoteMuda.pprValidarPesquisa;
+begin
+  inherited;
+  if cbPesquisaStatusMuda.visible and VarIsNull(cbPesquisaStatusMuda.EditValue) then
+    raise TControlException.Create('Informe o status a ser pesquisado.',cbPesquisaStatusMuda);
+
+end;
+
+procedure TfrmLoteMuda.ppuIncluir;
+begin
+  inherited;
+  dmViveiro.cdsLote_MudaSTATUS.AsInteger := Ord(smDesenvolvimento);
+end;
+
+function TfrmLoteMuda.fprConfigurarControlesPesquisa: TWinControl;
+begin
+  Result := inherited;
+  cbPesquisaStatusMuda.Visible := cbPesquisarPor.EditValue = coPesquisaStatus;
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaStatusMuda.Visible));
+
+  if cbPesquisaStatusMuda.Visible then
+    Result := cbPesquisaStatusMuda;
 end;
 
 function TfrmLoteMuda.fprGetPermissao: String;

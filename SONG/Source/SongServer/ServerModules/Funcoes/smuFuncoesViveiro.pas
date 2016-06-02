@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, uTypes;
+  FireDAC.Comp.Client, uTypes, Datasnap.DBClient;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -41,6 +41,8 @@ type
     function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
 
     procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
+
+    function fpuCalcularMediaTaxaGerminacaoClassificao(): OleVariant;
   end;
 
 var
@@ -148,6 +150,25 @@ begin
     Result := vaIds.DelimitedText;
   finally
     vaIds.Free;
+  end;
+
+end;
+
+function TsmFuncoesViveiro.fpuCalcularMediaTaxaGerminacaoClassificao: OleVariant;
+var
+  vaCds: TClientDataSet;
+begin
+  vaCds := TClientDataSet.Create(nil);
+  try
+    pprEncapsularConsulta(
+      procedure(ipDataSet: TRFQuery)
+      begin
+        ipDataSet.SQL.Text := '';
+      end);
+
+    Result := vaCds.Data;
+  finally
+    vaCds.Free;
   end;
 
 end;
@@ -329,6 +350,7 @@ end;
 
 procedure TsmFuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
 begin
+//TODO:Remover essa funcao e fazer o processo no cliente
   if Connection.ExecSQL('update lote_Semente set lote_Semente.status = 1 where lote_Semente.id = :id', [ipIdLote]) < 1 then
     raise Exception.Create('Lote de sementes não encontrado.');
 
@@ -361,7 +383,7 @@ begin
         '       Lote_Muda.Nome,' +
         '       Lote_Muda.Qtde_Inicial,' +
         '       Lote_Muda.Data,' +
-        '       Lote_Muda.Observacao ' +
+        '       Lote_Muda.Observacao, ' +
         ' from lote_muda ' +
         ' where lote_muda.id_lote_semente = :ID_LOTE_SEMENTE';
       ipDataSet.ParamByName('ID_LOTE_SEMENTE').AsInteger := ipIdLote;

@@ -77,38 +77,42 @@ object frameGrids: TframeGrids
       object btnAdd: TButton
         Left = 0
         Top = 0
-        Width = 41
+        Width = 48
         Height = 33
         Action = Ac_Add
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 41
       end
       object btnAddTodos: TButton
         Left = 0
         Top = 33
-        Width = 41
+        Width = 48
         Height = 33
         Action = Ac_AddTodos
         Align = alTop
         TabOrder = 1
+        ExplicitWidth = 41
       end
       object btnRemover: TButton
         Left = 0
         Top = 66
-        Width = 41
+        Width = 48
         Height = 33
         Action = Ac_Remover
         Align = alTop
         TabOrder = 2
+        ExplicitWidth = 41
       end
       object btnRemoverTodos: TButton
         Left = 0
         Top = 99
-        Width = 41
+        Width = 48
         Height = 33
         Action = Ac_RemoverTodos
         Align = alTop
         TabOrder = 3
+        ExplicitWidth = 41
       end
     end
     object cxGrid2: TcxGrid
@@ -204,7 +208,7 @@ object frameGrids: TframeGrids
     Left = 560
     Top = 264
   end
-  object ActionList1: TActionList
+  object ActionListFrame: TActionList
     Left = 216
     Top = 72
     object Ac_Add: TAction

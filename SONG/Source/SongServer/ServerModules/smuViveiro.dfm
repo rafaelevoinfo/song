@@ -13,6 +13,7 @@ inherited smViveiro: TsmViveiro
       '       Especie.Valor_Muda,'
       '       Especie.Valor_Kg_Semente,'
       '       Especie.Tempo_Germinacao,'
+      '       Especie.Tempo_Desenvolvimento,'
       '       ESPECIE.OBSERVACAO,'
       '       Especie.Inicio_Periodo_Coleta,'
       '       Especie.Fim_Periodo_Coleta,'
@@ -104,6 +105,11 @@ inherited smViveiro: TsmViveiro
     object qEspecieQTDE_MUDA_ESTOQUE: TIntegerField
       FieldName = 'QTDE_MUDA_ESTOQUE'
       Origin = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieTEMPO_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'TEMPO_DESENVOLVIMENTO'
+      Origin = 'TEMPO_DESENVOLVIMENTO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -560,7 +566,8 @@ inherited smViveiro: TsmViveiro
       '       pessoa.nome as pessoa_classificou,'
       '       Lote_Muda.Observacao_Classificacao,'
       '       Lote_Muda.Taxa_Classificacao,'
-      '       Lote_Muda.Saldo'
+      '       Lote_Muda.Saldo,'
+      '       Lote_Muda.Status'
       'from Lote_Muda  '
       'inner join Especie on (Especie.Id = Lote_Muda.Id_Especie)'
       
@@ -668,6 +675,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qLote_MudaSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
 end

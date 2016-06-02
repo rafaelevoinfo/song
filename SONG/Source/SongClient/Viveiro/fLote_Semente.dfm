@@ -1,11 +1,9 @@
 inherited frmLoteSemente: TfrmLoteSemente
-  ActiveControl = btnSalvarDetail
   Caption = 'Lotes de Sementes'
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -186,6 +184,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabDetailGerminacao
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
@@ -411,19 +410,15 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 48
                 ExplicitHeight = 299
                 inherited btnAdd: TButton
-                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnAddTodos: TButton
-                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnRemover: TButton
-                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnRemoverTodos: TButton
-                  Width = 48
                   ExplicitWidth = 48
                 end
               end
@@ -455,14 +450,12 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 110
-                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
                   Left = 503
                   Width = 92
-                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 503
                   ExplicitWidth = 92

@@ -12,7 +12,8 @@ uses
   dxBarBuiltInMenu, cxPC, dmuRelatorio, ppDB, ppDBPipe, ppParameter,
   ppDesignLayer, ppModule, raCodMod, ppCtrls, ppBands, ppClass, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, uClientDataSet, uTypes,
-  dmuPrincipal;
+  dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
+  cxCalendar, uMensagem;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -50,9 +51,24 @@ type
     ppDesignLayers4: TppDesignLayers;
     ppDesignLayer4: TppDesignLayer;
     DBPipeOrganizacao: TppDBPipeline;
+    tabPrevisaoProducao: TcxTabSheet;
+    frameEspecies: TframeGrids;
+    pnConfiguracoesPrevisao: TPanel;
+    cdsLocalEspecie: TClientDataSet;
+    cdsEspecieSelecionada: TClientDataSet;
+    cdsLocalEspecieID: TIntegerField;
+    cdsEspecieSelecionadaID_ESPECIE: TIntegerField;
+    cdsEspecieSelecionadaTAXA_GERMINACAO: TBCDField;
+    cdsEspecieSelecionadaTAXA_CLASSIFICACAO: TBCDField;
+    btnInformacao: TButton;
+    Ac_Informacao_Previsao_Producao: TAction;
+    EditDataPrevisao: TcxDateEdit;
+    Label1: TLabel;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Informacao_Previsao_ProducaoExecute(Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
   public
@@ -69,14 +85,14 @@ implementation
 
 procedure TfrmRelatorioViveiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
-  vaIdOrganizacao:Integer;
-  vaIdEspecie:Integer;
+  vaIdOrganizacao: Integer;
+  vaIdEspecie: Integer;
 begin
   inherited;
   vaIdOrganizacao := fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
-  vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies,cbSaldoEspecie,'Informe a espécie ou marque todas');
+  vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies, cbSaldoEspecie, 'Informe a espécie ou marque todas');
 
-  //vamos garantir que o saldo esteja correto, para isso vamos chamar a função de ajustar os saldos
+  // vamos garantir que o saldo esteja correto, para isso vamos chamar a função de ajustar os saldos
   dmPrincipal.FuncoesViveiro.ppuAjustarSaldoEspecie(vaIdEspecie);
 
   dmRelatorio.cdsSaldo_Semente_Muda.Close;
@@ -88,7 +104,16 @@ begin
   dmRelatorio.cdsSaldo_Semente_Muda.Open;
   ppSaldoEspecie.PrintReport;
 
+end;
 
+procedure TfrmRelatorioViveiro.Ac_Informacao_Previsao_ProducaoExecute(
+  Sender: TObject);
+begin
+  inherited;
+  TMensagem.ppuShowMessage('Este relatório exibe a quantidade prevista de mudas prontas para ' +
+    'plantio que existirão na data selecionada. Para isso, leva-se em consideração a quantidade atual ' +
+    'de sementes em estoque, a média da taxa de germinação, a média da taxa de classificação ' +
+    ' e o tempos de germinação e desenvolvimento da muda.');
 end;
 
 procedure TfrmRelatorioViveiro.chkSaldoTodasEspeciesPropertiesEditValueChanged(
@@ -104,7 +129,7 @@ begin
   dmRelatorio.Name := '';
   inherited;
 
-  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'],TOperadores.coAnd,true);
+  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
 end;
 
 end.

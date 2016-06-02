@@ -54,7 +54,7 @@ inherited dmViveiro: TdmViveiro
       Size = 2
     end
     object cdsEspecieTEMPO_GERMINACAO: TIntegerField
-      DisplayLabel = 'Tempo M'#233'dio para Germina'#231#227'o'
+      DisplayLabel = 'Tempo M'#233'dio para Germina'#231#227'o (Dias)'
       FieldName = 'TEMPO_GERMINACAO'
       ProviderFlags = [pfInUpdate]
     end
@@ -84,6 +84,11 @@ inherited dmViveiro: TdmViveiro
     object cdsEspecieQTDE_MUDA_ESTOQUE: TIntegerField
       DisplayLabel = 'Qtde. de Muda em Estoque'
       FieldName = 'QTDE_MUDA_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsEspecieTEMPO_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Tempo M'#233'dio para Desenvolvimento da Muda (Dias)'
+      FieldName = 'TEMPO_DESENVOLVIMENTO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -286,7 +291,7 @@ inherited dmViveiro: TdmViveiro
   end
   object cdsGerminacao: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID_LOTE_SEMENTE'
+    IndexFieldNames = 'ID_LOTE_SEMENTE;ID'
     MasterFields = 'ID'
     MasterSource = dsLote_Semente
     PacketRecords = 0
@@ -541,6 +546,12 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'PESSOA_CLASSIFICOU'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsLote_MudaSTATUS: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
+      Required = True
     end
   end
   object dsLote_Muda: TDataSource

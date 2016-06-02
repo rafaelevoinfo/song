@@ -97,6 +97,8 @@ type
     qLote_MudaPESSOA_CLASSIFICOU: TStringField;
     qLote_MudaTAXA_CLASSIFICACAO: TBCDField;
     qLote_MudaNOME_ESPECIE: TStringField;
+    qLote_MudaSTATUS: TSmallintField;
+    qEspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
   private
     { Private declarations }
   protected
@@ -156,6 +158,8 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coStatus then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
         Result := Result + ' (lote_Muda.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
           QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;

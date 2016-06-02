@@ -87,6 +87,7 @@ type
     procedure ppvExcluirItensSaida(ipIds: TArray<Integer>);
     procedure ppvGerarContaReceber;
     procedure ppvGerarSaida;
+    procedure ppvCarregarPrecoPadrao;
 
   protected
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -140,12 +141,12 @@ begin
   if dmLookup.cdslkItem.Locate(TBancoDados.coId, cbItem.EditValue, []) then
     begin
       if (dmLookup.cdslkItemTIPO.AsInteger in [Ord(tiSemente), Ord(tiMuda)]) and VarIsNull(cbEspecie.EditValue) then
-        raise Exception.Create('Informe a espécie.');
+        raise TControlException.Create('Informe a espécie.',cbEspecie);
 
       if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
         begin
           if VarIsNull(cbLoteSemente.EditValue) then
-            raise Exception.Create('Informe o lote de semente.');
+            raise TControlException.Create('Informe o lote de semente.',cbLoteSemente);
 
           if dmLookup.cdslkLote_Semente.Locate(TBancoDados.coId, cbLoteSemente.EditValue, []) then
             begin
@@ -158,7 +159,7 @@ begin
       if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda) then
         begin
           if VarIsNull(cbLoteMuda.EditValue) then
-            raise Exception.Create('Informe o lote de muda.');
+            raise TControlException.Create('Informe o lote de muda.',cbLoteMuda);
 
           if dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, cbLoteMuda.EditValue, []) then
             begin
@@ -359,14 +360,32 @@ end;
 procedure TfrmVenda.cbEspeciePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
-  ppvCarregarLotes;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    begin
+      ppvCarregarLotes;
+      ppvCarregarPrecoPadrao;
+    end;
+end;
+
+procedure TfrmVenda.ppvCarregarPrecoPadrao;
+begin
+  if dmEstoque.cdsVenda_Item.State in [dsEdit, dsInsert] then
+    begin
+      if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
+        dmEstoque.cdsVenda_ItemVALOR_UNITARIO.AsFloat := dmLookup.cdslkEspecieVALOR_KG_SEMENTE.AsFloat
+      else if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda) then
+        dmEstoque.cdsVenda_ItemVALOR_UNITARIO.AsFloat := dmLookup.cdslkEspecieVALOR_MUDA.AsFloat;
+    end;
 end;
 
 procedure TfrmVenda.cbItemPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastroDetail then
-    ppvConfigurarEdits;
+    begin
+      ppvConfigurarEdits;
+      ppvCarregarPrecoPadrao;
+    end;
 end;
 
 procedure TfrmVenda.ppvCarregarLotes;

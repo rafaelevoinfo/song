@@ -1,25 +1,33 @@
 inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   Caption = 'Relat'#243'rios do Viveiro'
+  ClientHeight = 480
+  ExplicitHeight = 519
   PixelsPerInch = 96
   TextHeight = 13
+  inherited pnBotoes: TPanel
+    Height = 426
+  end
   inherited pnConfiguracoes: TPanel
+    Height = 426
     object pcPrincipal: TcxPageControl
       Left = 0
       Top = 0
       Width = 855
-      Height = 627
+      Height = 426
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabSaldos
+      Properties.ActivePage = tabPrevisaoProducao
       Properties.CustomButtons.Buttons = <>
-      ClientRectBottom = 622
+      ExplicitHeight = 627
+      ClientRectBottom = 421
       ClientRectLeft = 2
       ClientRectRight = 850
       ClientRectTop = 25
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos Por Esp'#233'cie'
         ImageIndex = 0
+        ExplicitHeight = 597
         object Label2: TLabel
           Left = 7
           Top = 3
@@ -45,11 +53,164 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           Width = 69
         end
       end
+      object tabPrevisaoProducao: TcxTabSheet
+        Caption = 'Previs'#227'o de Produ'#231#227'o'
+        ImageIndex = 1
+        ExplicitHeight = 597
+        inline frameEspecies: TframeGrids
+          Left = 0
+          Top = 57
+          Width = 848
+          Height = 339
+          Align = alClient
+          TabOrder = 0
+          ExplicitLeft = 8
+          ExplicitTop = 8
+          inherited gpGrids: TGridPanel
+            Width = 848
+            Height = 320
+            ControlCollection = <
+              item
+                Column = 0
+                Control = frameEspecies.cxGrid1
+                Row = 0
+              end
+              item
+                Column = 1
+                Control = frameEspecies.pnBotoes
+                Row = 0
+              end
+              item
+                Column = 2
+                Control = frameEspecies.cxGrid2
+                Row = 0
+              end>
+            inherited cxGrid1: TcxGrid
+              Width = 397
+              Height = 318
+              ExplicitLeft = -4
+            end
+            inherited pnBotoes: TPanel
+              Left = 398
+              Width = 42
+              Height = 318
+              inherited btnAdd: TButton
+                Width = 42
+              end
+              inherited btnAddTodos: TButton
+                Width = 42
+              end
+              inherited btnRemover: TButton
+                Width = 42
+              end
+              inherited btnRemoverTodos: TButton
+                Width = 42
+              end
+            end
+            inherited cxGrid2: TcxGrid
+              Left = 440
+              Width = 407
+              Height = 318
+            end
+          end
+          inherited pnLabels: TPanel
+            Width = 848
+            inherited gpLabels: TGridPanel
+              Width = 846
+              ControlCollection = <
+                item
+                  Column = 0
+                  Control = frameEspecies.lbInfoGridEsquerda
+                  Row = 0
+                end
+                item
+                  Column = 2
+                  Control = frameEspecies.lbInfoGridDireita
+                  Row = 0
+                end>
+              inherited lbInfoGridEsquerda: TLabel
+                Width = 41
+                Caption = 'Esp'#233'cies'
+                ExplicitWidth = 41
+              end
+              inherited lbInfoGridDireita: TLabel
+                Left = 439
+                Width = 105
+                Caption = 'Esp'#233'cies selecionadas'
+                ExplicitWidth = 105
+              end
+            end
+          end
+          inherited dsEsquerda: TDataSource
+            DataSet = dmLookup.cdslkEspecie
+          end
+          inherited dsDireita: TDataSource
+            DataSet = cdsLocalEspecie
+          end
+        end
+        object pnConfiguracoesPrevisao: TPanel
+          Left = 0
+          Top = 0
+          Width = 848
+          Height = 57
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Label1: TLabel
+            Left = 4
+            Top = 3
+            Width = 152
+            Height = 13
+            Caption = 'Visualizar Previs'#227'o para a Data:'
+          end
+          object Label3: TLabel
+            Left = 4
+            Top = 42
+            Width = 578
+            Height = 13
+            Caption = 
+              'Somente ser'#225' exibido na lista as esp'#233'cies que estiverem com os t' +
+              'empos de germina'#231#227'o e desenvolvimento configurados.'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clRed
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object btnInformacao: TButton
+            Left = 724
+            Top = 0
+            Width = 123
+            Height = 25
+            Action = Ac_Informacao_Previsao_Producao
+            Images = dmPrincipal.imgIcons_16
+            TabOrder = 0
+            WordWrap = True
+          end
+          object EditDataPrevisao: TcxDateEdit
+            Left = 4
+            Top = 19
+            TabOrder = 1
+            Width = 152
+          end
+        end
+      end
+    end
+  end
+  inherited pnOrganizacao: TPanel
+    inherited chkTodasOrganizacoes: TcxCheckBox
+      ExplicitHeight = 19
     end
   end
   inherited ActionList: TActionList
-    Left = 400
-    Top = 256
+    Left = 352
+    Top = 80
+    object Ac_Informacao_Previsao_Producao: TAction
+      Caption = 'Sobre este Relat'#243'rio'
+      ImageIndex = 16
+      OnExecute = Ac_Informacao_Previsao_ProducaoExecute
+    end
   end
   inherited dsOrganizacao: TDataSource
     Left = 376
@@ -592,6 +753,32 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Position = 3
       Searchable = False
       Sortable = False
+    end
+  end
+  object cdsLocalEspecie: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 192
+    Top = 216
+    object cdsLocalEspecieID: TIntegerField
+      FieldName = 'ID'
+    end
+  end
+  object cdsEspecieSelecionada: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 720
+    Top = 232
+    object cdsEspecieSelecionadaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+    end
+    object cdsEspecieSelecionadaTAXA_GERMINACAO: TBCDField
+      DisplayLabel = '% Germina'#231#227'o'
+      FieldName = 'TAXA_GERMINACAO'
+    end
+    object cdsEspecieSelecionadaTAXA_CLASSIFICACAO: TBCDField
+      DisplayLabel = '% Classifica'#231#227'o'
+      FieldName = 'TAXA_CLASSIFICACAO'
     end
   end
 end

@@ -93,6 +93,8 @@ type
     cdsLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField;
     cdsLote_MudaSALDO: TIntegerField;
     cdsLote_MudaPESSOA_CLASSIFICOU: TStringField;
+    cdsLote_MudaSTATUS: TSmallintField;
+    cdsEspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
   private
     { Private declarations }
   public

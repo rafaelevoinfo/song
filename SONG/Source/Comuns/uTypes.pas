@@ -105,9 +105,11 @@ type
 
   TTipoMovimentacao = (tmDespesa, tmReceita);
 
-  TTipoSaida = (tsVenda, tsConsumo, tsPerda,tsOutro);
+  TTipoSaida = (tsVenda, tsConsumo, tsPerda, tsPlantio, tsOutro);
 
   TFormaPagamento = (fpTransferencia, fpDebitoConta, fpCartaoCredito,fpCartaoDebito,fpCheque,fpDinheiro,fpOutro);
+
+  TStatusMuda = (smDesenvolvimento,smProntaPlantio);
 
 const
   // mensagens customizadas do windows

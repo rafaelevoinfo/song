@@ -207,6 +207,7 @@ type
     cdslkLocal_UsoNOME: TStringField;
     dslkLocal_Uso: TDataSource;
     repLcbLocalUso: TcxEditRepositoryLookupComboBoxItem;
+    repIcbStatusMudas: TcxEditRepositoryImageComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

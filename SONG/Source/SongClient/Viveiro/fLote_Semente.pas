@@ -141,6 +141,7 @@ type
     procedure ppvRemoverMatrizesOutrasEspecie;
 
     function fpvGerminacaoEmAndamento: Boolean;
+    procedure ppvGerarLoteMudas;
   protected
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterar; override;
@@ -182,6 +183,9 @@ var
 
 implementation
 
+uses
+  fLote_Muda;
+
 {$R *.dfm}
 
 
@@ -189,11 +193,45 @@ procedure TfrmLoteSemente.Ac_Finalizar_Etapa_GerminacaoExecute(Sender: TObject);
 begin
   inherited;
   if TMensagem.fpuPerguntar('Confirma a finalização da etapa de germinação desse lote. ' +
-    'Após essa ação nenhuma outra operação será permitida para este lote.', ppSimNao) = rpSim then
+    'Após essa ação um lote de mudas será gerado automaticamente.', ppSimNao) = rpSim then
     begin
-      dmPrincipal.FuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
-      pprEfetuarPesquisa;
+      dmViveiro.cdsLote_Semente.Edit;
+      dmViveiro.cdsLote_SementeSTATUS.AsInteger := coLoteFechado;
+      dmViveiro.cdsLote_Semente.Post;
+      if dmViveiro.cdsLote_Semente.ChangeCount > 0 then
+        dmViveiro.cdsLote_Semente.ApplyUpdates(0);
+
+      ppvGerarLoteMudas;
+      // dmPrincipal.FuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
+      // pprEfetuarPesquisa;
     end;
+end;
+
+procedure TfrmLoteSemente.ppvGerarLoteMudas;
+var
+  vaFrmLoteMuda: TfrmLoteMuda;
+  vaLoteMuda: TLoteMuda;
+begin
+  // realizando a entrada de muda
+  vaFrmLoteMuda := TfrmLoteMuda.Create(nil);
+  try
+    dmViveiro.cdsGerminacao.Last; // ultimo registro cadastrado
+
+    vaLoteMuda := TLoteMuda.Create;
+    vaLoteMuda.Data := dmViveiro.cdsGerminacaoDATA.AsDateTime;
+    vaLoteMuda.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
+    vaLoteMuda.Nome := dmViveiro.cdsLote_SementeNOME.AsString;
+    vaLoteMuda.Qtde := dmViveiro.cdsGerminacaoQTDE_GERMINADA.AsInteger;
+    vaLoteMuda.QtdeClassificada := 0;
+
+    vaFrmLoteMuda.ppuConfigurarPesquisa();
+    vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
+    vaFrmLoteMuda.ppuIncluir;
+    vaFrmLoteMuda.ppuSalvar;
+
+  finally
+    vaFrmLoteMuda.Free;
+  end;
 end;
 
 procedure TfrmLoteSemente.Ac_Finalizar_Etapa_GerminacaoUpdate(Sender: TObject);
