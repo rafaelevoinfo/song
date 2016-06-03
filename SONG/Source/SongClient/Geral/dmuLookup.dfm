@@ -594,12 +594,14 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          Width = 200
           FieldName = 'NOME'
         end
         item
-          Width = 120
           FieldName = 'SALDO'
+        end
+        item
+          RepositoryItem = repIcbStatusMudas
+          FieldName = 'STATUS'
         end>
       Properties.ListSource = dslkLote_Muda
     end
@@ -935,6 +937,20 @@ inherited dmLookup: TdmLookup
     object cdslkEspecieTEMPO_GERMINACAO: TIntegerField
       FieldName = 'TEMPO_GERMINACAO'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdslkEspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      DisplayLabel = 'Qtde. de Semente em Estoque'
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+    object cdslkEspecieQTDE_MUDA_PRONTA: TIntegerField
+      DisplayLabel = 'Qtde. de Mudas Prontas'
+      FieldName = 'QTDE_MUDA_PRONTA'
+    end
+    object cdslkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Qtde. de Mudas em Desenvolvimento'
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
     end
   end
   object dslkEspecie: TDataSource
@@ -1499,6 +1515,12 @@ inherited dmLookup: TdmLookup
     end
     object cdslkLote_MudaID_ESPECIE: TIntegerField
       FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkLote_MudaSTATUS: TSmallintField
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
       ProviderFlags = []
       Required = True
     end

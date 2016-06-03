@@ -25,9 +25,20 @@ type
     cdsSaldo_Semente_MudaNOME_CIENTIFICO: TStringField;
     cdsSaldo_Semente_MudaFAMILIA_BOTANICA: TStringField;
     cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE: TBCDField;
-    cdsSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
     cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE: TStringField;
-    cdsSaldo_Semente_MudaCALC_QTDE_MUDA: TStringField;
+    cdsTaxas_Especie: TRFClientDataSet;
+    cdsTaxas_EspecieID: TIntegerField;
+    cdsTaxas_EspecieNOME: TStringField;
+    cdsTaxas_EspecieNOME_CIENTIFICO: TStringField;
+    cdsTaxas_EspecieFAMILIA_BOTANICA: TStringField;
+    cdsTaxas_EspecieTEMPO_GERMINACAO: TIntegerField;
+    cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
+    cdsTaxas_EspecieTAXA_CLASSIFICACAO: TBCDField;
+    cdsTaxas_EspecieTAXA_GERMINACAO: TBCDField;
+    cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField;
+    cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA: TStringField;
+    cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -48,7 +59,8 @@ procedure TdmRelatorio.cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
 begin
   inherited;
   cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE.AsString := FormatFloat(',0.00',cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE.AsFloat);
-  cdsSaldo_Semente_MudaCALC_QTDE_MUDA.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_ESTOQUE.AsInteger);
+  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO.AsInteger);
+  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger);
 end;
 
 end.

@@ -105,7 +105,8 @@ inherited smRelatorio: TsmRelatorio
       '       Especie.Nome_Cientifico,'
       '       Especie.Familia_Botanica,'
       '       Especie.Qtde_Semente_Estoque,'
-      '       Especie.Qtde_Muda_Estoque'
+      '       Especie.Qtde_Muda_Pronta,'
+      '       Especie.Qtde_Muda_Desenvolvimento'
       'from Especie'
       'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL'
       'order by Especie.Nome')
@@ -143,10 +144,94 @@ inherited smRelatorio: TsmRelatorio
       Precision = 18
       Size = 2
     end
-    object qSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      Origin = 'QTDE_MUDA_ESTOQUE'
+    object qSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
       ProviderFlags = []
+    end
+    object qSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+  end
+  object qTaxas_Especie: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Especie.Id,'
+      '       Especie.Nome,'
+      '       Especie.Nome_Cientifico,'
+      '       Especie.Familia_Botanica,'
+      '       Especie.Tempo_Germinacao,'
+      '       Especie.Tempo_Desenvolvimento,'
+      
+        '       sum(Lote_Muda.Taxa_Classificacao) / count(Lote_Muda.Id) a' +
+        's Taxa_Classificacao,'
+      
+        '       sum(Lote_Semente.Taxa_Germinacao) / count(Lote_Semente.Id' +
+        ') as Taxa_Germinacao'
+      'from Especie'
+      'left join Lote_Muda on (Lote_Muda.Id_Especie = Especie.Id)'
+      'left join Lote_Semente on (Lote_Semente.Id_Especie = Especie.Id)'
+      'where Especie.Tempo_Germinacao is not null and'
+      '      Especie.Tempo_Desenvolvimento is not null and'
+      
+        '      Lote_Muda.Id_Compra_Item is null and --desconsiderando mud' +
+        'as compradas'
+      
+        '      Lote_Muda.Id_Lote_Semente is not null --desconsiderando mu' +
+        'das compradas'
+      'group by 1,2,3,4,5,6')
+    Left = 344
+    Top = 48
+    object qTaxas_EspecieID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qTaxas_EspecieNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qTaxas_EspecieNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qTaxas_EspecieFAMILIA_BOTANICA: TStringField
+      FieldName = 'FAMILIA_BOTANICA'
+      Origin = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qTaxas_EspecieTEMPO_GERMINACAO: TIntegerField
+      FieldName = 'TEMPO_GERMINACAO'
+      Origin = 'TEMPO_GERMINACAO'
+      ProviderFlags = []
+    end
+    object qTaxas_EspecieTEMPO_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'TEMPO_DESENVOLVIMENTO'
+      Origin = 'TEMPO_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object qTaxas_EspecieTAXA_CLASSIFICACAO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TAXA_CLASSIFICACAO'
+      Origin = 'TAXA_CLASSIFICACAO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qTaxas_EspecieTAXA_GERMINACAO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TAXA_GERMINACAO'
+      Origin = 'TAXA_GERMINACAO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
     end
   end
 end

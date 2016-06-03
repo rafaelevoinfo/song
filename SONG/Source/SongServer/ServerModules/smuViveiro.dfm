@@ -20,9 +20,10 @@ inherited smViveiro: TsmViveiro
       
         '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
         'estoque,'
+      '       Coalesce(Especie.qtde_muda_pronta,0) as qtde_muda_pronta,'
       
-        '       Coalesce(Especie.qtde_muda_estoque,0) as qtde_muda_estoqu' +
-        'e'
+        '       Coalesce(Especie.qtde_muda_desenvolvimento,0) as qtde_mud' +
+        'a_desenvolvimento'
       'from ESPECIE  '
       '&WHERE')
     Left = 32
@@ -102,15 +103,23 @@ inherited smViveiro: TsmViveiro
       Precision = 18
       Size = 2
     end
-    object qEspecieQTDE_MUDA_ESTOQUE: TIntegerField
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      Origin = 'QTDE_MUDA_ESTOQUE'
-      ProviderFlags = [pfInUpdate]
-    end
     object qEspecieTEMPO_DESENVOLVIMENTO: TIntegerField
       FieldName = 'TEMPO_DESENVOLVIMENTO'
       Origin = 'TEMPO_DESENVOLVIMENTO'
       ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieQTDE_MUDA_PRONTA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = True
     end
   end
   object qMatriz: TRFQuery

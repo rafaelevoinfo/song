@@ -109,7 +109,6 @@ type
     qlkLote_SementeNOME: TStringField;
     qlkLote_SementeQTDE_ARMAZENADA: TBCDField;
     qlkEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
-    qlkEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
     qlkLote_Muda: TRFQuery;
     qlkLote_MudaID: TIntegerField;
     qlkLote_MudaNOME: TStringField;
@@ -133,6 +132,9 @@ type
     qlkLocal_Uso: TRFQuery;
     qlkLocal_UsoID: TIntegerField;
     qlkLocal_UsoNOME: TStringField;
+    qlkLote_MudaSTATUS: TSmallintField;
+    qlkEspecieQTDE_MUDA_PRONTA: TIntegerField;
+    qlkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
   private
     { Private declarations }
   protected
@@ -264,6 +266,8 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coStatus then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coPossuiEstoque then
         begin
           if StrToBool(vaValor) then

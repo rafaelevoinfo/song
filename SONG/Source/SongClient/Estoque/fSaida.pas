@@ -477,6 +477,9 @@ begin
             raise TControlException.Create('Informe de qual lote de mudas será feito a saída.', cbLoteMuda);
 
           dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, cbLoteMuda.EditValue, []);
+          if (dmEstoque.cdsSaidaTIPO.AsInteger = Ord(tsPlantio)) and (dmLookup.cdslkLote_MudaSTATUS.AsInteger = Ord(smDesenvolvimento)) then
+            raise TControlException.Create('O lote de mudas informado não esta pronto para plantio ainda.',cbLoteMuda);
+
           if dmEstoque.cdsSaida_ItemQTDE.AsFloat > dmLookup.cdslkLote_MudaSALDO.AsInteger then
             raise Exception.Create('O lote informado não possui saldo suficiente de mudas.');
 
@@ -490,6 +493,8 @@ begin
             raise Exception.Create('O Item informado não possui saldo suficiente.');
         end;
     end;
+
+
 
 end;
 

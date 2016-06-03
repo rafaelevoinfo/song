@@ -27,10 +27,6 @@ type
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: String): Boolean;
     procedure ppuValidarSemeadura(ipIdLote, ipIdSemeadura: Integer; ipQtdeSemeada: Double);
 
-    procedure ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
-
-    procedure ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
-
     procedure ppuAtualizarQtdeSementeEstoque(ipIdEspecie, ipIdLote: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
     procedure ppuAtualizarQtdeMudaEstoque(ipIdEspecie, ipIdLote: Integer; ipQtdeSubtrair, ipQtdeSomar: Integer);
 
@@ -346,69 +342,6 @@ begin
   // a taxa de descarte é um campo calculado no banco, entao nao preciso calcula-la
   Connection.ExecSQL('update lote_Semente set lote_Semente.taxa_germinacao = :taxa, ' +
     ' lote_semente.taxa_descarte = :taxa_descarte where lote_Semente.id = :id', [vaTaxaGerminacao, vaTaxaDescarte, ipIdLote]);
-end;
-
-procedure TsmFuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(ipIdLote: Integer);
-begin
-//TODO:Remover essa funcao e fazer o processo no cliente
-  if Connection.ExecSQL('update lote_Semente set lote_Semente.status = 1 where lote_Semente.id = :id', [ipIdLote]) < 1 then
-    raise Exception.Create('Lote de sementes não encontrado.');
-
-  // Vamos gerar um novo lote de mudas
-  pprEncapsularConsulta(
-    procedure(ipDataSet: TRFQuery)
-    var
-      vaNomeLote: string;
-      vaQtdeGerminada, vaIdEspecie: Integer;
-    begin
-      ipDataSet.SQL.Text := 'select Lote_Semente.Nome,' +
-        '                           Lote_Semente.ID_ESPECIE, ' +
-        '       (select first 1 Germinacao.Qtde_Germinada' +
-        '        from Germinacao' +
-        '        where Germinacao.Id_Lote_Semente = Lote_Semente.Id' +
-        '        order by Germinacao.Data desc) as Qtde_Germinada' +
-        ' from Lote_Semente ' +
-        ' where Lote_Semente.Id = :Id';
-      ipDataSet.ParamByName('ID').AsInteger := ipIdLote;
-      ipDataSet.Open();
-
-      vaNomeLote := ipDataSet.FieldByName('NOME').AsString;
-      vaQtdeGerminada := ipDataSet.FieldByName('QTDE_GERMINADA').AsInteger;
-      vaIdEspecie := ipDataSet.FieldByName('ID_ESPECIE').AsInteger;
-
-      ipDataSet.Close;
-      ipDataSet.SQL.Text := ' select Lote_Muda.Id,' +
-        '       Lote_Muda.Id_Especie,' +
-        '       Lote_Muda.Id_Lote_Semente,' +
-        '       Lote_Muda.Nome,' +
-        '       Lote_Muda.Qtde_Inicial,' +
-        '       Lote_Muda.Data,' +
-        '       Lote_Muda.Observacao, ' +
-        ' from lote_muda ' +
-        ' where lote_muda.id_lote_semente = :ID_LOTE_SEMENTE';
-      ipDataSet.ParamByName('ID_LOTE_SEMENTE').AsInteger := ipIdLote;
-      ipDataSet.Open();
-      if ipDataSet.Eof then
-        begin
-          ipDataSet.Append;
-          ipDataSet.FieldByName('ID').AsInteger := fpuGetId('LOTE_MUDA');
-        end
-      else
-        ipDataSet.Edit;
-
-      ipDataSet.FieldByName('ID_LOTE_SEMENTE').AsInteger := ipIdLote;
-      ipDataSet.FieldByName('ID_ESPECIE').AsInteger := vaIdEspecie;
-      ipDataSet.FieldByName('NOME').AsString := vaNomeLote;
-      ipDataSet.FieldByName('QTDE_INICIAL').AsInteger := vaQtdeGerminada;
-      ipDataSet.FieldByName('DATA').AsDateTime := Now;
-      ipDataSet.FieldByName('OBSERVACAO').AsString := 'Lote gerado através de germinação.';
-      ipDataSet.Post;
-    end);
-end;
-
-procedure TsmFuncoesViveiro.ppuReiniciarEtapaGerminacaoLote(ipId: Integer);
-begin
-  Connection.ExecSQL('update lote_Semente set lote_Semente.status = 0 where lote_Semente.id = :id', [ipId]);
 end;
 
 procedure TsmFuncoesViveiro.ppuValidarSemeadura(ipIdLote, ipIdSemeadura: Integer;

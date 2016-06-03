@@ -235,3 +235,236 @@ ALTER TABLE ESPECIE
 COMMENT ON COLUMN ESPECIE.TEMPO_DESENVOLVIMENTO IS
 'Tempo medio em dias que as mudas desta especie levam desde a germinacao ate estarem prontas para plantio.';
 
+
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure Sp_Ajusta_Saldo_Especie (
+    Id_Especie integer)
+as
+declare variable Va_Id_Especie integer;
+declare variable Va_Qtde_Total_Sementes numeric(15,2);
+declare variable Va_Qtde_Total_Mudas numeric(15,2);
+declare variable Va_Qtde numeric(15,2);
+declare variable Va_Todos smallint;
+declare variable Va_Id integer;
+begin
+  Va_Todos = 1;
+  if (Id_Especie <> 0) then
+  begin
+    Va_Todos = 0;
+  end
+
+  for select Especie.Id
+      from Especie
+      where Especie.Id = :Id_Especie or (:Va_Todos = 1)
+      into :Va_Id_Especie
+  do
+  begin
+    Va_Qtde_Total_Sementes = 0;
+    Va_Qtde_Total_Mudas = 0;
+
+--LOTES DE SEMENTE
+    for select Lote_Semente.Id
+        from Lote_Semente
+        where Lote_Semente.Id_Especie = :Va_Id_Especie
+        into :Va_Id
+    do
+    begin
+
+      select Lote_Semente.Qtde - (coalesce((select sum(Saida_Item.Qtde)
+                                            from Saida_Item
+                                            where Saida_Item.Id_Lote_Semente = :Va_Id), 0) + coalesce((select sum(semeadura.qtde_semeada)
+                                                                                                       from semeadura
+                                                                                                       where semeadura.id_lote_semente = :Va_Id), 0))
+      from Lote_Semente
+      where Lote_Semente.Id = :Va_Id
+      into :Va_Qtde;
+--Somando para ser utilizado no final
+      Va_Qtde_Total_Sementes = Va_Qtde_Total_Sementes + Va_Qtde;
+
+      update Lote_Semente
+      set Lote_Semente.Qtde_Armazenada = :Va_Qtde
+      where Lote_Semente.Id = :Va_Id;
+
+    end
+
+--LOTES DE MUDAS
+    for select Lote_Muda.Id
+        from Lote_Muda
+        where Lote_Muda.Id_Especie = :Va_Id_Especie
+        into :Va_Id
+    do
+    begin
+
+      select coalesce(Lote_Muda.Qtde_Classificada, 0) - (coalesce((select sum(Saida_Item.Qtde)
+                                                                   from Saida_Item
+                                                                   where Saida_Item.Id_Lote_Muda = :Va_Id), 0))
+      from Lote_Muda
+      where Lote_Muda.Id = :Va_Id
+      into :Va_Qtde;
+--Somando para ser utilizado no final
+      Va_Qtde_Total_Mudas = Va_Qtde_Total_Mudas + Va_Qtde;
+
+      update Lote_Muda
+      set Lote_Muda.Saldo = :Va_Qtde
+      where Lote_Muda.Id = :Va_Id;
+
+    end
+
+    update Especie
+    set Especie.Qtde_Muda_Estoque = :Va_Qtde_Total_Mudas,
+        Especie.Qtde_Semente_Estoque = :Va_Qtde_Total_Sementes
+    where Especie.Id = :Va_Id_Especie;
+
+  end
+  suspend;
+end^
+
+SET TERM ; ^
+
+
+
+ALTER TABLE ESPECIE
+    ADD QTDE_MUDA_DESENVOLVIMENTO INTEGER;
+
+
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure Sp_Ajusta_Saldo_Especie (
+    Id_Especie integer)
+as
+declare variable Va_Id_Especie integer;
+declare variable Va_Qtde_Total_Sementes numeric(15,2);
+declare variable Va_Qtde_Total_Mudas numeric(15,2);
+declare variable Va_Qtde numeric(15,2);
+declare variable Va_Todos smallint;
+declare variable Va_Id integer;
+begin
+  /*Va_Todos = 1;
+  if (Id_Especie <> 0) then
+  begin
+    Va_Todos = 0;
+  end
+
+  for select Especie.Id
+      from Especie
+      where Especie.Id = :Id_Especie or (:Va_Todos = 1)
+      into :Va_Id_Especie
+  do
+  begin
+    Va_Qtde_Total_Sementes = 0;
+    Va_Qtde_Total_Mudas = 0;
+
+--LOTES DE SEMENTE
+    for select Lote_Semente.Id
+        from Lote_Semente
+        where Lote_Semente.Id_Especie = :Va_Id_Especie
+        into :Va_Id
+    do
+    begin
+
+      select Lote_Semente.Qtde - (coalesce((select sum(Saida_Item.Qtde)
+                                            from Saida_Item
+                                            where Saida_Item.Id_Lote_Semente = :Va_Id), 0) + coalesce((select sum(semeadura.qtde_semeada)
+                                                                                                       from semeadura
+                                                                                                       where semeadura.id_lote_semente = :Va_Id), 0))
+      from Lote_Semente
+      where Lote_Semente.Id = :Va_Id
+      into :Va_Qtde;
+--Somando para ser utilizado no final
+      Va_Qtde_Total_Sementes = Va_Qtde_Total_Sementes + Va_Qtde;
+
+      update Lote_Semente
+      set Lote_Semente.Qtde_Armazenada = :Va_Qtde
+      where Lote_Semente.Id = :Va_Id;
+
+    end
+
+--LOTES DE MUDAS
+    for select Lote_Muda.Id
+        from Lote_Muda
+        where Lote_Muda.Id_Especie = :Va_Id_Especie
+        into :Va_Id
+    do
+    begin
+
+      select coalesce(Lote_Muda.Qtde_Classificada, 0) - (coalesce((select sum(Saida_Item.Qtde)
+                                                                   from Saida_Item
+                                                                   where Saida_Item.Id_Lote_Muda = :Va_Id), 0))
+      from Lote_Muda
+      where Lote_Muda.Id = :Va_Id
+      into :Va_Qtde;
+--Somando para ser utilizado no final
+      Va_Qtde_Total_Mudas = Va_Qtde_Total_Mudas + Va_Qtde;
+
+      update Lote_Muda
+      set Lote_Muda.Saldo = :Va_Qtde
+      where Lote_Muda.Id = :Va_Id;
+
+    end
+
+    update Especie
+    set Especie.Qtde_Muda_Estoque = :Va_Qtde_Total_Mudas,
+        Especie.Qtde_Semente_Estoque = :Va_Qtde_Total_Sementes
+    where Especie.Id = :Va_Id_Especie;
+
+  end   */
+  suspend;
+end^
+
+SET TERM ; ^
+
+
+
+ALTER TABLE ESPECIE
+    ALTER QTDE_MUDA_ESTOQUE TO QTDE_MUDA_PRONTA;
+
+
+
+alter table ESPECIE
+alter ID position 1;
+
+alter table ESPECIE
+alter NOME position 2;
+
+alter table ESPECIE
+alter NOME_CIENTIFICO position 3;
+
+alter table ESPECIE
+alter FAMILIA_BOTANICA position 4;
+
+alter table ESPECIE
+alter VALOR_MUDA position 5;
+
+alter table ESPECIE
+alter VALOR_KG_SEMENTE position 6;
+
+alter table ESPECIE
+alter TEMPO_GERMINACAO position 7;
+
+alter table ESPECIE
+alter QTDE_SEMENTE_KILO position 8;
+
+alter table ESPECIE
+alter QTDE_SEMENTE_ESTOQUE position 9;
+
+alter table ESPECIE
+alter QTDE_MUDA_PRONTA position 10;
+
+alter table ESPECIE
+alter QTDE_MUDA_DESENVOLVIMENTO position 11;
+
+alter table ESPECIE
+alter TEMPO_DESENVOLVIMENTO position 12;
+
+alter table ESPECIE
+alter INICIO_PERIODO_COLETA position 13;
+
+alter table ESPECIE
+alter FIM_PERIODO_COLETA position 14;
+
+alter table ESPECIE
+alter OBSERVACAO position 15;
+

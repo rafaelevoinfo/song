@@ -346,7 +346,8 @@ inherited smLookup: TsmLookup
       '       Especie.Valor_Kg_Semente,'
       '       Especie.Tempo_Germinacao,'
       '       Especie.Qtde_Semente_Estoque,'
-      '       Especie.Qtde_Muda_Estoque'
+      '       Especie.Qtde_Muda_Pronta,'
+      '       Especie.Qtde_Muda_Desenvolvimento'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -396,9 +397,14 @@ inherited smLookup: TsmLookup
       Precision = 18
       Size = 2
     end
-    object qlkEspecieQTDE_MUDA_ESTOQUE: TIntegerField
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      Origin = 'QTDE_MUDA_ESTOQUE'
+    object qlkEspecieQTDE_MUDA_PRONTA: TIntegerField
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+    end
+    object qlkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = []
     end
   end
@@ -937,6 +943,7 @@ inherited smLookup: TsmLookup
       'select Lote_Muda.Id,'
       '       Lote_Muda.Id_Especie,'
       '       Lote_Muda.Nome,'
+      '       Lote_Muda.Status,'
       '       Lote_Muda.Saldo'
       'from Lote_Muda  '
       '&WHERE')
@@ -968,6 +975,12 @@ inherited smLookup: TsmLookup
     object qlkLote_MudaID_ESPECIE: TIntegerField
       FieldName = 'ID_ESPECIE'
       Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkLote_MudaSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
       ProviderFlags = []
       Required = True
     end

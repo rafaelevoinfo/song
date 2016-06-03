@@ -77,7 +77,7 @@ object frameGrids: TframeGrids
       object btnAdd: TButton
         Left = 0
         Top = 0
-        Width = 48
+        Width = 42
         Height = 33
         Action = Ac_Add
         Align = alTop
@@ -87,7 +87,7 @@ object frameGrids: TframeGrids
       object btnAddTodos: TButton
         Left = 0
         Top = 33
-        Width = 48
+        Width = 42
         Height = 33
         Action = Ac_AddTodos
         Align = alTop
@@ -97,7 +97,7 @@ object frameGrids: TframeGrids
       object btnRemover: TButton
         Left = 0
         Top = 66
-        Width = 48
+        Width = 42
         Height = 33
         Action = Ac_Remover
         Align = alTop
@@ -107,7 +107,7 @@ object frameGrids: TframeGrids
       object btnRemoverTodos: TButton
         Left = 0
         Top = 99
-        Width = 48
+        Width = 42
         Height = 33
         Action = Ac_RemoverTodos
         Align = alTop

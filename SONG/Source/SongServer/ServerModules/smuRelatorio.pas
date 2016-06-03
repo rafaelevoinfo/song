@@ -27,7 +27,17 @@ type
     qSaldo_Semente_MudaNOME_CIENTIFICO: TStringField;
     qSaldo_Semente_MudaFAMILIA_BOTANICA: TStringField;
     qSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE: TBCDField;
-    qSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField;
+    qTaxas_Especie: TRFQuery;
+    qTaxas_EspecieID: TIntegerField;
+    qTaxas_EspecieNOME: TStringField;
+    qTaxas_EspecieNOME_CIENTIFICO: TStringField;
+    qTaxas_EspecieFAMILIA_BOTANICA: TStringField;
+    qTaxas_EspecieTEMPO_GERMINACAO: TIntegerField;
+    qTaxas_EspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
+    qTaxas_EspecieTAXA_CLASSIFICACAO: TBCDField;
+    qTaxas_EspecieTAXA_GERMINACAO: TBCDField;
+    qSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField;
+    qSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
   private
     { Private declarations }
   protected

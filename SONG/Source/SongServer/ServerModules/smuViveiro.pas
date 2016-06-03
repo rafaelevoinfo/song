@@ -79,7 +79,6 @@ type
     qSemeaduraOBSERVACAO: TStringField;
     qGerminacaoDATA: TDateField;
     qEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
-    qEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
     qLote_SementeID_COMPRA_ITEM: TIntegerField;
     qLote_MudaID: TIntegerField;
     qLote_MudaID_ESPECIE: TIntegerField;
@@ -99,6 +98,8 @@ type
     qLote_MudaNOME_ESPECIE: TStringField;
     qLote_MudaSTATUS: TSmallintField;
     qEspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
+    qEspecieQTDE_MUDA_PRONTA: TIntegerField;
+    qEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
   private
     { Private declarations }
   protected
@@ -158,6 +159,8 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coLoteSemente then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_LOTE_SEMENTE', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coStatus then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then

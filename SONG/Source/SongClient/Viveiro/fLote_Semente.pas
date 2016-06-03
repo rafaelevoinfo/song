@@ -198,12 +198,10 @@ begin
       dmViveiro.cdsLote_Semente.Edit;
       dmViveiro.cdsLote_SementeSTATUS.AsInteger := coLoteFechado;
       dmViveiro.cdsLote_Semente.Post;
-      if dmViveiro.cdsLote_Semente.ChangeCount > 0 then
-        dmViveiro.cdsLote_Semente.ApplyUpdates(0);
 
       ppvGerarLoteMudas;
       // dmPrincipal.FuncoesViveiro.ppuFinalizarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
-      // pprEfetuarPesquisa;
+      pprEfetuarPesquisa;
     end;
 end;
 
@@ -218,16 +216,38 @@ begin
     dmViveiro.cdsGerminacao.Last; // ultimo registro cadastrado
 
     vaLoteMuda := TLoteMuda.Create;
-    vaLoteMuda.Data := dmViveiro.cdsGerminacaoDATA.AsDateTime;
-    vaLoteMuda.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
-    vaLoteMuda.Nome := dmViveiro.cdsLote_SementeNOME.AsString;
+    vaLoteMuda.IdLoteSemente := dmViveiro.cdsLote_SementeID.AsInteger;
     vaLoteMuda.Qtde := dmViveiro.cdsGerminacaoQTDE_GERMINADA.AsInteger;
-    vaLoteMuda.QtdeClassificada := 0;
 
-    vaFrmLoteMuda.ppuConfigurarPesquisa();
-    vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
-    vaFrmLoteMuda.ppuIncluir;
-    vaFrmLoteMuda.ppuSalvar;
+    vaFrmLoteMuda.ppuConfigurarPesquisa(vaFrmLoteMuda.coPesquisaLoteSemente, dmViveiro.cdsLote_SementeID.AsString);
+    vaFrmLoteMuda.ppuPesquisar;
+    if vaFrmLoteMuda.dsMaster.DataSet.RecordCount > 0 then
+      begin
+        try
+          vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteEdicao, vaLoteMuda);
+          vaFrmLoteMuda.ppuAlterar(vaFrmLoteMuda.dsMaster.DataSet.FieldByName(TBancoDados.coId).AsInteger);
+          vaFrmLoteMuda.ppuSalvar;
+        except
+          on e: Exception do
+            TMensagem.ppuShowException('Não foi possível alterar o lote de muda vinculado a este lote de semente. ' +
+              'Será necessário alterá-lo manualmente.', e);
+        end;
+      end
+    else
+      begin
+        vaLoteMuda.Data := dmViveiro.cdsGerminacaoDATA.AsDateTime;
+        vaLoteMuda.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
+        vaLoteMuda.Nome := dmViveiro.cdsLote_SementeNOME.AsString;
+
+        try
+          vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
+          vaFrmLoteMuda.ppuIncluir;
+          vaFrmLoteMuda.ppuSalvar;
+        except
+          on e: Exception do
+            TMensagem.ppuShowException('Não foi possível incluir o lote de muda.', e);
+        end;
+      end;
 
   finally
     vaFrmLoteMuda.Free;
@@ -263,7 +283,10 @@ begin
   inherited;
   if TMensagem.fpuPerguntar('Confirma a reinicialização do estado de germinação do lote?', ppSimNao) = rpSim then
     begin
-      dmPrincipal.FuncoesViveiro.ppuReiniciarEtapaGerminacaoLote(dmViveiro.cdsLote_SementeID.AsInteger);
+      dmViveiro.cdsLote_Semente.Edit;
+      dmViveiro.cdsLote_SementeSTATUS.AsInteger := coLoteAberto;
+      dmViveiro.cdsLote_Semente.Post;
+
       pprEfetuarPesquisa;
     end;
 end;
@@ -398,7 +421,8 @@ begin
   ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.ItemIndex);
 
   if not VarIsNull(cbEspeciePesquisa.EditValue) then
-    ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
+    ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue)
+
 end;
 
 procedure TfrmLoteSemente.pprDefinirTabDetailCadastro;
@@ -553,7 +577,7 @@ begin
     begin
       if not VarIsNull(EditDataSemeadura.EditValue) then
         begin
-          if dmLookup.cdslkEspecie.Locate(TBancoDados.coID, dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, []) then
+          if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, []) then
             begin
               if not(dmViveiro.cdsSemeadura.State in [dsEdit, dsInsert]) then
                 dmViveiro.cdsSemeadura.Edit;

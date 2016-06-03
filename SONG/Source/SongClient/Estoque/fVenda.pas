@@ -141,12 +141,12 @@ begin
   if dmLookup.cdslkItem.Locate(TBancoDados.coId, cbItem.EditValue, []) then
     begin
       if (dmLookup.cdslkItemTIPO.AsInteger in [Ord(tiSemente), Ord(tiMuda)]) and VarIsNull(cbEspecie.EditValue) then
-        raise TControlException.Create('Informe a espécie.',cbEspecie);
+        raise TControlException.Create('Informe a espécie.', cbEspecie);
 
       if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
         begin
           if VarIsNull(cbLoteSemente.EditValue) then
-            raise TControlException.Create('Informe o lote de semente.',cbLoteSemente);
+            raise TControlException.Create('Informe o lote de semente.', cbLoteSemente);
 
           if dmLookup.cdslkLote_Semente.Locate(TBancoDados.coId, cbLoteSemente.EditValue, []) then
             begin
@@ -159,7 +159,7 @@ begin
       if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda) then
         begin
           if VarIsNull(cbLoteMuda.EditValue) then
-            raise TControlException.Create('Informe o lote de muda.',cbLoteMuda);
+            raise TControlException.Create('Informe o lote de muda.', cbLoteMuda);
 
           if dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, cbLoteMuda.EditValue, []) then
             begin
@@ -321,31 +321,48 @@ begin
     begin
       vaFrmSaida := TfrmSaida.Create(nil);
       try
-        vaFrmSaida.ModoSilencioso := True;
-        vaSaida := TSaida.Create;
-        vaSaida.Data := dmEstoque.cdsVendaDATA.AsDateTime;
-        vaSaida.Tipo := tsVenda;
+        try
+          vaFrmSaida.ModoSilencioso := True;
+          vaSaida := TSaida.Create;
+          vaSaida.Data := dmEstoque.cdsVendaDATA.AsDateTime;
+          vaSaida.Tipo := tsVenda;
 
-        vaFrmSaida.ppuConfigurarModoExecucao(meSomenteCadastro, vaSaida);
-        vaFrmSaida.ppuIncluir;
-        vaFrmSaida.ppuSalvar;
-        dmEstoque.cdsVenda_Item.First;
-        while not dmEstoque.cdsVenda_Item.eof do
-          begin
-            vaItem := TItem.Create;
-            vaItem.Id := dmEstoque.cdsVenda_ItemID_ITEM.AsInteger;
-            vaItem.IdEspecie := dmEstoque.cdsVenda_ItemID_ESPECIE.AsInteger;
-            vaItem.IdLoteMuda := dmEstoque.cdsVenda_ItemID_LOTE_MUDA.AsInteger;
-            vaItem.IdLoteSemente := dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.AsInteger;
-            vaItem.IdItemCompraVenda := dmEstoque.cdsVenda_ItemID.AsInteger;
-            vaItem.Qtde := dmEstoque.cdsVenda_ItemQTDE.AsFloat;
+          vaFrmSaida.ppuConfigurarModoExecucao(meSomenteCadastro, vaSaida);
+          vaFrmSaida.ppuIncluir;
+          vaFrmSaida.ppuSalvar;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Não foi possível gerar a saída desta venda.', e);
+              Exit;
+            end;
+        end;
 
-            vaFrmSaida.Modelo := vaItem;
-            vaFrmSaida.ppuIncluirDetail;
-            vaFrmSaida.ppuSalvarDetail;
+        try
+          dmEstoque.cdsVenda_Item.First;
+          while not dmEstoque.cdsVenda_Item.eof do
+            begin
+              vaItem := TItem.Create;
+              vaItem.Id := dmEstoque.cdsVenda_ItemID_ITEM.AsInteger;
+              vaItem.IdEspecie := dmEstoque.cdsVenda_ItemID_ESPECIE.AsInteger;
+              vaItem.IdLoteMuda := dmEstoque.cdsVenda_ItemID_LOTE_MUDA.AsInteger;
+              vaItem.IdLoteSemente := dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.AsInteger;
+              vaItem.IdItemCompraVenda := dmEstoque.cdsVenda_ItemID.AsInteger;
+              vaItem.Qtde := dmEstoque.cdsVenda_ItemQTDE.AsFloat;
 
-            dmEstoque.cdsVenda_Item.Next;
-          end;
+              vaFrmSaida.Modelo := vaItem;
+              vaFrmSaida.ppuIncluirDetail;
+              vaFrmSaida.ppuSalvarDetail;
+
+              dmEstoque.cdsVenda_Item.Next;
+            end;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+              Exit;
+            end;
+        end;
 
         TMensagem.ppuShowMessage('Saída gerada com sucesso.');
       finally

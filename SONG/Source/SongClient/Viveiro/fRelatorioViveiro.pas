@@ -13,7 +13,7 @@ uses
   ppDesignLayer, ppModule, raCodMod, ppCtrls, ppBands, ppClass, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, uClientDataSet, uTypes,
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
-  cxCalendar, uMensagem;
+  cxCalendar, uMensagem, uExceptions;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -32,7 +32,6 @@ type
     ppSystemVariable11: TppSystemVariable;
     ppLabel1: TppLabel;
     ppLabel2: TppLabel;
-    ppLabel3: TppLabel;
     ppLabel4: TppLabel;
     ppLabel5: TppLabel;
     ppLine1: TppLine;
@@ -41,7 +40,6 @@ type
     ppDBText26: TppDBText;
     ppDBText1: TppDBText;
     ppDBText2: TppDBText;
-    ppDBText3: TppDBText;
     ppFooterBand4: TppFooterBand;
     ppLabel24: TppLabel;
     ppDBText28: TppDBText;
@@ -54,23 +52,64 @@ type
     tabPrevisaoProducao: TcxTabSheet;
     frameEspecies: TframeGrids;
     pnConfiguracoesPrevisao: TPanel;
-    cdsLocalEspecie: TClientDataSet;
-    cdsEspecieSelecionada: TClientDataSet;
-    cdsLocalEspecieID: TIntegerField;
-    cdsEspecieSelecionadaID_ESPECIE: TIntegerField;
-    cdsEspecieSelecionadaTAXA_GERMINACAO: TBCDField;
-    cdsEspecieSelecionadaTAXA_CLASSIFICACAO: TBCDField;
     btnInformacao: TButton;
     Ac_Informacao_Previsao_Producao: TAction;
     EditDataPrevisao: TcxDateEdit;
     Label1: TLabel;
     Label3: TLabel;
+    cdsEspecieSelecionada: TRFClientDataSet;
+    cdsEspecieSelecionadaID: TIntegerField;
+    cdsEspecieSelecionadaNOME: TStringField;
+    cdsEspecieSelecionadaNOME_CIENTIFICO: TStringField;
+    cdsEspecieSelecionadaFAMILIA_BOTANICA: TStringField;
+    cdsEspecieSelecionadaTEMPO_GERMINACAO: TIntegerField;
+    cdsEspecieSelecionadaTEMPO_DESENVOLVIMENTO: TIntegerField;
+    cdsEspecieSelecionadaTAXA_CLASSIFICACAO: TBCDField;
+    cdsEspecieSelecionadaTAXA_GERMINACAO: TBCDField;
+    cdsEspecieSelecionadaQTDE_MUDA_PRONTA: TIntegerField;
+    cdsEspecieSelecionadaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    ppPrevisaoProducao: TppReport;
+    ppHeaderBand1: TppHeaderBand;
+    ppLabel6: TppLabel;
+    ppDBImage1: TppDBImage;
+    ppSystemVariable1: TppSystemVariable;
+    ppSystemVariable2: TppSystemVariable;
+    ppLabel7: TppLabel;
+    ppLabel8: TppLabel;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppLine2: TppLine;
+    ppDetailBand1: TppDetailBand;
+    ppDBText4: TppDBText;
+    ppDBText5: TppDBText;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppFooterBand1: TppFooterBand;
+    ppLabel12: TppLabel;
+    ppDBText9: TppDBText;
+    ppDBText10: TppDBText;
+    ppSystemVariable3: TppSystemVariable;
+    raCodeModule1: TraCodeModule;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppParameterList1: TppParameterList;
+    cdsParametros: TClientDataSet;
+    DBPipePrevisaoProducao: TppDBPipeline;
+    cdsParametrosDATA_PREVISAO: TDateField;
+    DBPipeParametros: TppDBPipeline;
+    dsParametros: TDataSource;
+    ppDBText8: TppDBText;
+    ppLabel3: TppLabel;
+    ppDBText3: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Informacao_Previsao_ProducaoExecute(Sender: TObject);
+    procedure tabPrevisaoProducaoShow(Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
+    procedure ppvConfigurarGrids;
+    procedure ppvGerarPrevisao;
   public
     { Public declarations }
   end;
@@ -90,30 +129,65 @@ var
 begin
   inherited;
   vaIdOrganizacao := fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
-  vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies, cbSaldoEspecie, 'Informe a espécie ou marque todas');
+  if pcPrincipal.ActivePage = tabSaldos then
+    begin
+      vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies, cbSaldoEspecie, 'Informe a espécie ou marque todas');
 
-  // vamos garantir que o saldo esteja correto, para isso vamos chamar a função de ajustar os saldos
-  dmPrincipal.FuncoesViveiro.ppuAjustarSaldoEspecie(vaIdEspecie);
+      // vamos garantir que o saldo esteja correto, para isso vamos chamar a função de ajustar os saldos
+      dmPrincipal.FuncoesViveiro.ppuAjustarSaldoEspecie(vaIdEspecie);
 
-  dmRelatorio.cdsSaldo_Semente_Muda.Close;
-  if vaIdEspecie <> 0 then
-    dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').AsInteger := vaIdEspecie
-  else
-    dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').Clear;
+      dmRelatorio.cdsSaldo_Semente_Muda.Close;
+      if vaIdEspecie <> 0 then
+        dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').AsInteger := vaIdEspecie
+      else
+        dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').Clear;
 
-  dmRelatorio.cdsSaldo_Semente_Muda.Open;
-  ppSaldoEspecie.PrintReport;
+      dmRelatorio.cdsSaldo_Semente_Muda.Open;
+      ppSaldoEspecie.PrintReport;
+    end
+  else if pcPrincipal.ActivePage = tabPrevisaoProducao then
+    begin
+      if VarIsNull(EditDataPrevisao.EditValue) then
+        raise TControlException.Create('Informe a data para qual deseja saber a previsão de produção.',EditDataPrevisao);
 
+      if cdsParametros.Active then
+        cdsParametros.EmptyDataSet
+      else
+        cdsParametros.CreateDataSet;
+
+      cdsParametros.Append;
+      cdsParametrosDATA_PREVISAO.AsDateTime := EditDataPrevisao.Date;
+      cdsParametros.Post;
+
+      ppvGerarPrevisao;
+
+      ppPrevisaoProducao.PrintReport;
+    end;
+end;
+
+procedure TfrmRelatorioViveiro.ppvGerarPrevisao;
+begin
+  cdsEspecieSelecionada.DisableControls;
+  try
+    cdsEspecieSelecionada.First;
+    while cdsEspecieSelecionada.Eof do
+      begin
+
+        cdsEspecieSelecionada.Next;
+      end;
+  finally
+    cdsEspecieSelecionada.EnableControls;
+  end;
 end;
 
 procedure TfrmRelatorioViveiro.Ac_Informacao_Previsao_ProducaoExecute(
   Sender: TObject);
 begin
   inherited;
-  TMensagem.ppuShowMessage('Este relatório exibe a quantidade prevista de mudas prontas para ' +
+  TMensagem.ppuShowMessage('Este relatório exibe a quantidade prevista de mudas em desenvolvimento e prontas para ' +
     'plantio que existirão na data selecionada. Para isso, leva-se em consideração a quantidade atual ' +
     'de sementes em estoque, a média da taxa de germinação, a média da taxa de classificação ' +
-    ' e o tempos de germinação e desenvolvimento da muda.');
+    ' e o tempos de germinação e desenvolvimento da espécie.');
 end;
 
 procedure TfrmRelatorioViveiro.chkSaldoTodasEspeciesPropertiesEditValueChanged(
@@ -129,7 +203,44 @@ begin
   dmRelatorio.Name := '';
   inherited;
 
+  pcPrincipal.ActivePageIndex := 0;
+
+  ppvConfigurarGrids;
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  cdsEspecieSelecionada.CreateDataSet;
+end;
+
+procedure TfrmRelatorioViveiro.ppvConfigurarGrids;
+begin
+  // Esquerda
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, TBancoDados.coId);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieNOME.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieNOME_CIENTIFICO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieFAMILIA_BOTANICA.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTEMPO_GERMINACAO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName, false);
+
+  // Direita
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME_CIENTIFICO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieFAMILIA_BOTANICA.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_GERMINACAO.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName);
+  // mapeando todos os campos do dataset
+  frameEspecies.ppuMapearFields('*', '*');
+end;
+
+procedure TfrmRelatorioViveiro.tabPrevisaoProducaoShow(Sender: TObject);
+begin
+  inherited;
+  if not dmRelatorio.cdsTaxas_Especie.Active then
+    dmRelatorio.cdsTaxas_Especie.Open;
+
 end;
 
 end.

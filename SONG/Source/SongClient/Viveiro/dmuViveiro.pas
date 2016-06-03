@@ -83,7 +83,6 @@ type
     cdsLote_MudaDATA: TDateField;
     cdsLote_MudaTAXA_CLASSIFICACAO: TBCDField;
     cdsEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
-    cdsEspecieQTDE_MUDA_ESTOQUE: TIntegerField;
     cdsLote_SementeID_COMPRA_ITEM: TIntegerField;
     cdsLote_MudaID_COMPRA_ITEM: TIntegerField;
     cdsLote_MudaID_LOTE_SEMENTE: TIntegerField;
@@ -95,6 +94,8 @@ type
     cdsLote_MudaPESSOA_CLASSIFICOU: TStringField;
     cdsLote_MudaSTATUS: TSmallintField;
     cdsEspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
+    cdsEspecieQTDE_MUDA_PRONTA: TIntegerField;
+    cdsEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
   private
     { Private declarations }
   public

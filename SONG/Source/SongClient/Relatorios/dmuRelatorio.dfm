@@ -1,7 +1,7 @@
 inherited dmRelatorio: TdmRelatorio
   OldCreateOrder = True
-  Height = 220
-  Width = 386
+  Height = 253
+  Width = 711
   object cdsSaldo_Rubrica: TRFClientDataSet
     Aggregates = <>
     Params = <
@@ -116,20 +116,31 @@ inherited dmRelatorio: TdmRelatorio
       Precision = 18
       Size = 2
     end
-    object cdsSaldo_Semente_MudaQTDE_MUDA_ESTOQUE: TIntegerField
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      Origin = 'QTDE_MUDA_ESTOQUE'
-      ProviderFlags = []
-    end
     object cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE: TStringField
       FieldKind = fkCalculated
       FieldName = 'CALC_QTDE_SEMENTE'
       Size = 60
       Calculated = True
     end
-    object cdsSaldo_Semente_MudaCALC_QTDE_MUDA: TStringField
+    object cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+    end
+    object cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA: TStringField
       FieldKind = fkCalculated
-      FieldName = 'CALC_QTDE_MUDA'
+      FieldName = 'CALC_QTDE_MUDA_PRONTA'
+      Size = 60
+      Calculated = True
+    end
+    object cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE_MUDA_DESENVOLVIMENTO'
       Size = 60
       Calculated = True
     end
@@ -138,5 +149,53 @@ inherited dmRelatorio: TdmRelatorio
     DataSet = cdsSaldo_Semente_Muda
     Left = 240
     Top = 104
+  end
+  object cdsTaxas_Especie: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqTaxas_Especie'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    RFApplyAutomatico = False
+    Left = 408
+    Top = 40
+    object cdsTaxas_EspecieID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsTaxas_EspecieNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTaxas_EspecieNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTaxas_EspecieFAMILIA_BOTANICA: TStringField
+      FieldName = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsTaxas_EspecieTEMPO_GERMINACAO: TIntegerField
+      FieldName = 'TEMPO_GERMINACAO'
+      ProviderFlags = []
+    end
+    object cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'TEMPO_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object cdsTaxas_EspecieTAXA_CLASSIFICACAO: TBCDField
+      FieldName = 'TAXA_CLASSIFICACAO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsTaxas_EspecieTAXA_GERMINACAO: TBCDField
+      FieldName = 'TAXA_GERMINACAO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
   end
 end

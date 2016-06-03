@@ -208,6 +208,10 @@ type
     dslkLocal_Uso: TDataSource;
     repLcbLocalUso: TcxEditRepositoryLookupComboBoxItem;
     repIcbStatusMudas: TcxEditRepositoryImageComboBoxItem;
+    cdslkLote_MudaSTATUS: TSmallintField;
+    cdslkEspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
+    cdslkEspecieQTDE_MUDA_PRONTA: TIntegerField;
+    cdslkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

@@ -93,7 +93,7 @@ type
     procedure pprValidarCamposObrigatorios(ipDataSet: TDataSet); virtual;
     procedure pprBeforeSalvar; virtual;
     procedure pprExecutarSalvar; virtual;
-    procedure pprAfterSalvar(ipAcaoExecutada:TDataSetState); virtual;
+    procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); virtual;
     function fprHabilitarSalvar(): Boolean; virtual;
     function fprHabilitarAlterar: Boolean; virtual;
     function fprHabilitarExcluir: Boolean; virtual;
@@ -343,7 +343,7 @@ begin
   FShowExecutado := True;
 end;
 
-procedure TfrmBasicoCrud.pprAfterSalvar(ipAcaoExecutada:TDataSetState);
+procedure TfrmBasicoCrud.pprAfterSalvar(ipAcaoExecutada: TDataSetState);
 begin
   if FModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     FIdEscolhido := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
@@ -351,16 +351,16 @@ end;
 
 procedure TfrmBasicoCrud.ppuAlterar(ipId: Integer);
 begin
-  if (ModoExecucao = meSomenteEdicao) and ((not fprHabilitarAlterar) or (not dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []))) then
-    begin
-      cbPesquisarPor.EditValue := Ord(tppId);
-      cbPesquisarPor.PostEditValue;
-
-      EditPesquisa.EditValue := FModelo.Id;
-      EditPesquisa.PostEditValue;
-
-      ppuPesquisar;
-    end;
+  // if (ModoExecucao = meSomenteEdicao) and ((not fprHabilitarAlterar) or (not dsMaster.DataSet.Locate(TBancoDados.coID, ipId, []))) then
+  // begin
+  // cbPesquisarPor.EditValue := Ord(tppId);
+  // cbPesquisarPor.PostEditValue;
+  //
+  // EditPesquisa.EditValue := FModelo.Id;
+  // EditPesquisa.PostEditValue;
+  //
+  // ppuPesquisar;
+  // end;
 
   if fprHabilitarAlterar then
     begin
@@ -420,8 +420,15 @@ end;
 procedure TfrmBasicoCrud.ppuConfigurarPesquisa(ipPesquisarPor: Integer;
   ipValor: String);
 begin
-  cbPesquisarPor.EditValue := ipPesquisarPor;
-  cbPesquisarPor.PostEditValue;
+  cbPesquisarPor.LockChangeEvents(True);
+  try
+    cbPesquisarPor.EditValue := ipPesquisarPor;
+    cbPesquisarPor.PostEditValue;
+
+    fprConfigurarControlesPesquisa();
+  finally
+    cbPesquisarPor.LockChangeEvents(False, False);
+  end;
 
   EditPesquisa.EditValue := ipValor;
   EditPesquisa.PostEditValue;
@@ -726,7 +733,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuSalvar;
 var
-  vaState:TDataSetState;
+  vaState: TDataSetState;
 begin
   pprBeforeSalvar;
   vaState := dsMaster.DataSet.State;

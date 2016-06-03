@@ -22,9 +22,12 @@ type
   TLoteMuda = class(TLote)
   private
     FQtdeClassificada: Integer;
+    FIdLoteSemente: Integer;
     procedure SetQtdeClassificada(const Value: Integer);
+    procedure SetIdLoteSemente(const Value: Integer);
   public
     property QtdeClassificada: Integer read FQtdeClassificada write SetQtdeClassificada;
+    property IdLoteSemente:Integer read FIdLoteSemente write SetIdLoteSemente;
   end;
 
   TfrmLoteMuda = class(TfrmBasicoCrud)
@@ -93,6 +96,7 @@ type
   public const
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
     coPesquisaStatus = 5;
+    coPesquisaLoteSemente = 6;
   end;
 
 var
@@ -138,37 +142,33 @@ end;
 procedure TfrmLoteMuda.pprCarregarDadosModelo;
 var
   vaLote: TLoteMuda;
-
-  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
-  begin
-    if not VarIsNull(ipValor) then
-      begin
-        ipEdit.EditValue := ipValor;
-        ipEdit.PostEditValue;
-      end;
-  end;
-
 begin
   inherited;
-  if (ModoExecucao = meSomenteCadastro) and Assigned(Modelo) and (Modelo is TLoteMuda) then
+  if (ModoExecucao in [meSomenteCadastro,meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TLoteMuda) then
     begin
       vaLote := TLoteMuda(Modelo);
+      dmViveiro.cdsLote_Muda.Edit;
 
-      plSetEdit(EditNome, vaLote.Nome);
-      if vaLote.Data <> 0 then
-        plSetEdit(EditData, vaLote.Data);
+      if (vaLote.Nome <> '') and (dmViveiro.cdsLote_MudaNOME.AsString <> vaLote.Nome) then
+        dmViveiro.cdsLote_MudaNOME.AsString := vaLote.Nome;
 
-      if vaLote.Qtde <> 0 then
-        plSetEdit(EditQtdeInicial, vaLote.Qtde);
+      if (vaLote.Data <> 0) and (dmViveiro.cdsLote_MudaDATA.AsDateTime <> vaLote.Data) then
+        dmViveiro.cdsLote_MudaDATA.AsDateTime := vaLote.Data;
 
-      if vaLote.IdEspecie <> 0 then
-        plSetEdit(cbEspecie, vaLote.IdEspecie);
+      if (vaLote.Qtde <> 0) and (dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger <> vaLote.Qtde) then
+        dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger := Trunc(vaLote.Qtde);
 
-      if vaLote.IdItemCompra <> 0 then
+      if (vaLote.IdEspecie <> 0) and (dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger <> vaLote.IdEspecie) then
+        dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger := vaLote.IdEspecie;
+
+      if (vaLote.IdItemCompra <> 0) and (dmViveiro.cdsLote_MudaID_COMPRA_ITEM.AsInteger <> vaLote.IdItemCompra) then
         dmViveiro.cdsLote_MudaID_COMPRA_ITEM.AsInteger := vaLote.IdItemCompra;
 
-      if vaLote.QtdeClassificada > 0 then
+      if (vaLote.QtdeClassificada <> 0) and (dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger <> vaLote.QtdeClassificada) then
         dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger := vaLote.QtdeClassificada;
+
+      if (vaLote.IdLoteSemente <> 0) and (dmViveiro.cdsLote_MudaID_LOTE_SEMENTE.AsInteger <> vaLote.IdLoteSemente) then
+        dmViveiro.cdsLote_MudaID_LOTE_SEMENTE.AsInteger := vaLote.IdLoteSemente;
     end;
 
 end;
@@ -180,8 +180,9 @@ begin
     ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
 
   if cbPesquisarPor.EditValue = coPesquisaStatus then
-    ipCds.ppuAddParametro(TParametros.coStatus, cbPesquisaStatusMuda.EditValue);
-
+    ipCds.ppuAddParametro(TParametros.coStatus, cbPesquisaStatusMuda.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaLoteSemente then
+    ipCds.ppuAddParametro(TParametros.coLoteSemente, EditPesquisa.Text);
 end;
 
 procedure TfrmLoteMuda.pprEfetuarPesquisa;
@@ -194,6 +195,7 @@ end;
 procedure TfrmLoteMuda.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
 begin
   // ja vai estar posicionado no registro certo
+  //TODO:Pensar se nao é melhor colocar esse codigo apos a exclusao
   dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger,
     dmViveiro.cdsLote_MudaID.AsInteger, dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger, 0);
 
@@ -236,6 +238,8 @@ begin
   Result := inherited;
   cbPesquisaStatusMuda.Visible := cbPesquisarPor.EditValue = coPesquisaStatus;
   EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaStatusMuda.Visible));
+  if cbPesquisarPor.EditValue = coPesquisaLoteSemente then
+    EditPesquisa.Properties.EditMask := '\d+(;\d+)*';
 
   if cbPesquisaStatusMuda.Visible then
     Result := cbPesquisaStatusMuda;
@@ -247,6 +251,11 @@ begin
 end;
 
 { TLoteMuda }
+
+procedure TLoteMuda.SetIdLoteSemente(const Value: Integer);
+begin
+  FIdLoteSemente := Value;
+end;
 
 procedure TLoteMuda.SetQtdeClassificada(const Value: Integer);
 begin

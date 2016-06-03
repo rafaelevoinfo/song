@@ -81,15 +81,23 @@ inherited dmViveiro: TdmViveiro
       Precision = 18
       Size = 2
     end
-    object cdsEspecieQTDE_MUDA_ESTOQUE: TIntegerField
-      DisplayLabel = 'Qtde. de Muda em Estoque'
-      FieldName = 'QTDE_MUDA_ESTOQUE'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsEspecieTEMPO_DESENVOLVIMENTO: TIntegerField
       DisplayLabel = 'Tempo M'#233'dio para Desenvolvimento da Muda (Dias)'
       FieldName = 'TEMPO_DESENVOLVIMENTO'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsEspecieQTDE_MUDA_PRONTA: TIntegerField
+      DisplayLabel = 'Qtde. de Muda Pronta'
+      FieldName = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = ',0 Und'
+    end
+    object cdsEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Qtde. de Mudas em Desenvolvimento'
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = True
+      DisplayFormat = ',0 Und'
     end
   end
   object cdsMatriz: TRFClientDataSet
