@@ -1,8 +1,9 @@
 inherited smEstoque: TsmEstoque
   OldCreateOrder = True
+  OnDestroy = DSServerModuleDestroy
   Height = 374
   Width = 628
-  object qItem: TRFQuery
+  object qItem: TRFQuery [0]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'Select item.id,'
@@ -53,7 +54,7 @@ inherited smEstoque: TsmEstoque
       Size = 2
     end
   end
-  object qEntrada: TRFQuery
+  object qEntrada: TRFQuery [1]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Entrada.Id,      '
@@ -101,7 +102,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object qSolicitacao_Compra: TRFQuery
+  object qSolicitacao_Compra: TRFQuery [2]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Solicitacao_Compra.Id,'
@@ -186,7 +187,7 @@ inherited smEstoque: TsmEstoque
       Size = 1000
     end
   end
-  object qSolicitacao_Compra_Item: TRFQuery
+  object qSolicitacao_Compra_Item: TRFQuery [3]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Solicitacao_Compra_Item.Id,'
@@ -259,7 +260,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object qCompra: TRFQuery
+  object qCompra: TRFQuery [4]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Compra.Id,'
@@ -370,7 +371,7 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qCompra_Item: TRFQuery
+  object qCompra_Item: TRFQuery [5]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Compra_Item.Id,'
@@ -455,7 +456,7 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = []
     end
   end
-  object qEntrada_Item: TRFQuery
+  object qEntrada_Item: TRFQuery [6]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Entrada_Item.Id,'
@@ -515,7 +516,7 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qSaida: TRFQuery
+  object qSaida: TRFQuery [7]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Saida.Id,'
@@ -568,7 +569,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object qSaida_Item: TRFQuery
+  object qSaida_Item: TRFQuery [8]
     OnCalcFields = qSaida_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -690,7 +691,7 @@ inherited smEstoque: TsmEstoque
       Calculated = True
     end
   end
-  object qVenda: TRFQuery
+  object qVenda: TRFQuery [9]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Venda.Id,'
@@ -710,7 +711,7 @@ inherited smEstoque: TsmEstoque
       'inner join fin_for_cli on (fin_for_cli.id = Venda.id_cliente)'
       'inner join pessoa on (pessoa.id = venda.id_pessoa_vendeu)'
       '&WHERE')
-    Left = 392
+    Left = 544
     Top = 168
     MacroData = <
       item
@@ -768,7 +769,7 @@ inherited smEstoque: TsmEstoque
       Precision = 18
     end
   end
-  object qVenda_Item: TRFQuery
+  object qVenda_Item: TRFQuery [10]
     OnCalcFields = qVenda_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -793,7 +794,7 @@ inherited smEstoque: TsmEstoque
         'semente)'
       'left join lote_muda on (lote_muda.id = Venda_Item.id_lote_muda)'
       'where Venda_Item.Id_Venda = :ID_VENDA')
-    Left = 392
+    Left = 544
     Top = 232
     ParamData = <
       item
@@ -893,7 +894,7 @@ inherited smEstoque: TsmEstoque
       Calculated = True
     end
   end
-  object qLocal_Uso: TRFQuery
+  object qLocal_Uso: TRFQuery [11]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'Select Local_Uso.Id,'
@@ -920,5 +921,22 @@ inherited smEstoque: TsmEstoque
       Required = True
       Size = 100
     end
+  end
+  object dspqSaida: TDataSetProvider [12]
+    DataSet = qSaida
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqSaidaAfterUpdateRecord
+    BeforeUpdateRecord = dspqSaidaBeforeUpdateRecord
+    Left = 376
+    Top = 168
+  end
+  object dspqSaida_Item: TDataSetProvider [13]
+    DataSet = qSaida_Item
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqSaida_ItemAfterUpdateRecord
+    Left = 376
+    Top = 232
   end
 end

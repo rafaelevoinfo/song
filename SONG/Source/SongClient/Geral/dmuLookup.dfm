@@ -588,19 +588,21 @@ inherited dmLookup: TdmLookup
       Properties.ListSource = dslkLote_Semente
     end
     object repLcbLoteMuda: TcxEditRepositoryLookupComboBoxItem
-      Properties.DropDownAutoSize = True
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 150
           FieldName = 'NOME'
         end
         item
+          Width = 100
           FieldName = 'SALDO'
         end
         item
           RepositoryItem = repIcbStatusMudas
+          Width = 150
           FieldName = 'STATUS'
         end>
       Properties.ListSource = dslkLote_Muda

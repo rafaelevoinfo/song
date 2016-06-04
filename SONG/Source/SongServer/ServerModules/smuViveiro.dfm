@@ -2,7 +2,7 @@ inherited smViveiro: TsmViveiro
   OldCreateOrder = True
   Height = 289
   Width = 787
-  object qEspecie: TRFQuery
+  object qEspecie: TRFQuery [0]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select ESPECIE.ID,'
@@ -122,7 +122,7 @@ inherited smViveiro: TsmViveiro
       ReadOnly = True
     end
   end
-  object qMatriz: TRFQuery
+  object qMatriz: TRFQuery [1]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select MATRIZ.ID,'
@@ -202,7 +202,7 @@ inherited smViveiro: TsmViveiro
       Size = 1000
     end
   end
-  object qLote_Semente: TRFQuery
+  object qLote_Semente: TRFQuery [2]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Semente.Id,'
@@ -229,8 +229,8 @@ inherited smViveiro: TsmViveiro
         'inner join pessoa on (pessoa.id = lote_semente.id_pessoa_coletou' +
         ')'
       '&WHERE')
-    Left = 168
-    Top = 16
+    Left = 376
+    Top = 144
     MacroData = <
       item
         Value = Null
@@ -329,7 +329,7 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qLote_Semente_Matriz: TRFQuery
+  object qLote_Semente_Matriz: TRFQuery [3]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select LOTE_SEMENTE_MATRIZ.ID,'
@@ -365,7 +365,7 @@ inherited smViveiro: TsmViveiro
       Required = True
     end
   end
-  object qGerminacao: TRFQuery
+  object qGerminacao: TRFQuery [4]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Germinacao.Id,'
@@ -379,8 +379,8 @@ inherited smViveiro: TsmViveiro
         'inner join pessoa on (pessoa.id = germinacao.id_pessoa_verificou' +
         ')'
       'where Germinacao.Id_Lote_Semente = :Id_Lote_Semente  ')
-    Left = 112
-    Top = 96
+    Left = 248
+    Top = 144
     ParamData = <
       item
         Name = 'ID_LOTE_SEMENTE'
@@ -426,7 +426,7 @@ inherited smViveiro: TsmViveiro
       Required = True
     end
   end
-  object qSemeadura: TRFQuery
+  object qSemeadura: TRFQuery [5]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Semeadura.Id,'
@@ -444,8 +444,8 @@ inherited smViveiro: TsmViveiro
       'inner join pessoa on (pessoa.id = semeadura.id_pessoa_semeou)'
       'inner join Canteiro on (canteiro.id = semeadura.id_canteiro)'
       'where Semeadura.Id_Lote_Semente = :Id_Lote_Semente   ')
-    Left = 200
-    Top = 96
+    Left = 600
+    Top = 152
     ParamData = <
       item
         Name = 'ID_LOTE_SEMENTE'
@@ -523,7 +523,7 @@ inherited smViveiro: TsmViveiro
       Size = 1000
     end
   end
-  object qCanteiro: TRFQuery
+  object qCanteiro: TRFQuery [6]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Canteiro.Id,'
@@ -557,7 +557,7 @@ inherited smViveiro: TsmViveiro
       Size = 1000
     end
   end
-  object qLote_Muda: TRFQuery
+  object qLote_Muda: TRFQuery [7]
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Muda.Id,'
@@ -583,8 +583,8 @@ inherited smViveiro: TsmViveiro
         'left join pessoa on (pessoa.id = lote_muda.id_pessoa_classificou' +
         ')'
       '&where')
-    Left = 320
-    Top = 96
+    Left = 488
+    Top = 144
     MacroData = <
       item
         Value = Null
@@ -691,5 +691,37 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+  end
+  object dspqLote_Muda: TDataSetProvider [8]
+    DataSet = qLote_Muda
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqLote_MudaAfterUpdateRecord
+    Left = 488
+    Top = 208
+  end
+  object dspqLote_Semente: TDataSetProvider [9]
+    DataSet = qLote_Semente
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqLote_SementeAfterUpdateRecord
+    Left = 376
+    Top = 200
+  end
+  object dspqSemeadura: TDataSetProvider [10]
+    DataSet = qSemeadura
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqSemeaduraAfterUpdateRecord
+    Left = 600
+    Top = 208
+  end
+  object dspqGerminacao: TDataSetProvider [11]
+    DataSet = qGerminacao
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqGerminacaoAfterUpdateRecord
+    Left = 248
+    Top = 216
   end
 end

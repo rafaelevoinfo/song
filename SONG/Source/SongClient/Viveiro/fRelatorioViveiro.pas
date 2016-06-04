@@ -13,7 +13,7 @@ uses
   ppDesignLayer, ppModule, raCodMod, ppCtrls, ppBands, ppClass, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, uClientDataSet, uTypes,
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
-  cxCalendar, uMensagem, uExceptions;
+  cxCalendar, uMensagem, uExceptions, System.DateUtils;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -101,6 +101,8 @@ type
     ppDBText8: TppDBText;
     ppLabel3: TppLabel;
     ppDBText3: TppDBText;
+    cdsEspecieSelecionadaQTDE_SEMENTE_ESTOQUE: TBCDField;
+    cdsEspecieSelecionadaQTDE_SEMENTE_KILO: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
@@ -162,17 +164,38 @@ begin
       ppvGerarPrevisao;
 
       ppPrevisaoProducao.PrintReport;
+      //TODO:Repensar isso aqui, talvez seja melhor criar dois campos a mais pra guardar as quantidades do que ter q limpar toda vez q gerar o relatorio
+      dmRelatorio.cdsTaxas_Especie.Close;
+      dmRelatorio.cdsTaxas_Especie.Open;
+
+      cdsEspecieSelecionada.Clear;
     end;
 end;
 
 procedure TfrmRelatorioViveiro.ppvGerarPrevisao;
+var
+  vaQtdeMudasGerminadas,vaQtdeSementeEstoque:Integer;
+  vaDataGerminacao:TDateTime;
 begin
   cdsEspecieSelecionada.DisableControls;
   try
     cdsEspecieSelecionada.First;
     while cdsEspecieSelecionada.Eof do
       begin
+        cdsEspecieSelecionada.Edit;
+        vaQtdeSementeEstoque := Trunc(cdsEspecieSelecionadaQTDE_SEMENTE_ESTOQUE.AsFloat * cdsEspecieSelecionadaQTDE_SEMENTE_KILO.AsInteger);
+        vaQtdeMudasGerminadas := Trunc(vaQtdeSementeEstoque *  (cdsEspecieSelecionadaTAXA_GERMINACAO.AsFloat/100));
+        vaDataGerminacao := now;
+        IncDay(vaDataGerminacao,cdsEspecieSelecionadaTEMPO_GERMINACAO.AsInteger);
+        if vaDataGerminacao <= EditDataPrevisao.Date then
+          begin
+            Repensar isso aqui, pois preciso levar em consideracao as mudas que estao em desenvolvimento, ou seja
+            preciso percorrer todos os lotes de mudas e ver quando as mudas estarao prontas para plantio
 
+
+          end;
+
+        cdsEspecieSelecionada.Post;
         cdsEspecieSelecionada.Next;
       end;
   finally
@@ -221,6 +244,10 @@ begin
   frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName, false);
   frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName, false);
   frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_PRONTA.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_KILO.FieldName, false);
 
   // Direita
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId);
@@ -231,6 +258,10 @@ begin
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_PRONTA.FieldName, false);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_KILO.FieldName, false);
   // mapeando todos os campos do dataset
   frameEspecies.ppuMapearFields('*', '*');
 end;

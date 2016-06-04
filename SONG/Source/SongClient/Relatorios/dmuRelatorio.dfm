@@ -78,7 +78,6 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <
       item
@@ -196,6 +195,25 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
       Precision = 18
       Size = 2
+    end
+    object cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object cdsTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField
+      FieldName = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+    end
+    object cdsTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField
+      FieldName = 'QTDE_SEMENTE_KILO'
+      ProviderFlags = []
+      Required = True
     end
   end
 end

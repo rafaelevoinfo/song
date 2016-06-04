@@ -14,6 +14,7 @@ uses
 
 type
   TsmBasico = class(TDSServerModule)
+    qAux: TRFQuery;
     procedure DSServerModuleCreate(Sender: TObject);
   private
     FScriptsOriginais: TDictionary<String, String>;

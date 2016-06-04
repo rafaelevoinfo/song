@@ -87,12 +87,11 @@ type
     procedure pprValidarPesquisa;override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
 
-    procedure pprExecutarSalvar; override;
-
     procedure pprCarregarDadosModelo; override;
-    procedure pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
+
   public
     procedure ppuIncluir; override;
+
   public const
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
     coPesquisaStatus = 5;
@@ -192,25 +191,6 @@ begin
     dmViveiro.cdsLote_MudaPESSOA_CLASSIFICOU.FieldName);
 end;
 
-procedure TfrmLoteMuda.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
-begin
-  // ja vai estar posicionado no registro certo
-  //TODO:Pensar se nao é melhor colocar esse codigo apos a exclusao
-  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger,
-    dmViveiro.cdsLote_MudaID.AsInteger, dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger, 0);
-
-  inherited;
-end;
-
-procedure TfrmLoteMuda.pprExecutarSalvar;
-var
-  vaQtdeClassificadaAnterior: Integer;
-begin
-  vaQtdeClassificadaAnterior := StrToIntDef(VarToStrDef(dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.OldValue, '0'), 0);
-  inherited;
-  dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmViveiro.cdsLote_MudaID_ESPECIE.AsInteger, dmViveiro.cdsLote_MudaID.AsInteger,
-    vaQtdeClassificadaAnterior, dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger);
-end;
 
 procedure TfrmLoteMuda.pprValidarDados;
 begin

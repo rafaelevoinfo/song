@@ -137,19 +137,7 @@ begin
       procedure
       begin
         vaItem := TItem.Create;
-        if (dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0) then
-          begin
-            vaItem.IdEspecie := dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger;
-            vaItem.IdLoteSemente := dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger;
-            vaItem.Qtde := dmEstoque.cdsSaida_ItemQTDE.AsFloat;
-          end
-        else if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
-          begin
-            vaItem.IdEspecie := dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger;
-            vaItem.IdLoteMuda := dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger;
-            vaItem.Qtde := dmEstoque.cdsSaida_ItemQTDE.AsInteger;
-          end
-        else
+        if (dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger = 0) and (dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger = 0) then
           begin
             vaItem.Id := dmEstoque.cdsSaida_ItemID_ITEM.AsInteger;
             vaItem.Qtde := dmEstoque.cdsSaida_ItemQTDE.AsFloat;
@@ -161,12 +149,7 @@ begin
 
     for vaItem in vaItens do
       begin
-        if vaItem.IdLoteSemente <> 0 then
-          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaItem.IdEspecie, vaItem.IdLoteSemente, 0, vaItem.Qtde)
-        else if vaItem.IdLoteMuda <> 0 then
-          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaItem.IdEspecie, vaItem.IdLoteMuda, 0, Trunc(vaItem.Qtde))
-        else
-          dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaItem.Id, 0, vaItem.Qtde);
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaItem.Id, 0, vaItem.Qtde);
       end;
   finally
     vaItens.Free;
@@ -175,23 +158,15 @@ end;
 
 procedure TfrmSaida.pprExecutarExcluirDetail(ipId: Integer);
 var
-  vaIdItem, vaIdEspecie, vaIdLoteSemente, vaIdLoteMuda: Integer;
+  vaIdItem, vaIdEspecie: Integer;
   vaQtde: Double;
 begin
   vaIdItem := dmEstoque.cdsSaida_ItemID_ITEM.AsInteger;
   vaIdEspecie := dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger;
-  vaIdLoteSemente := dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger;
-  vaIdLoteMuda := dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger;
   vaQtde := dmEstoque.cdsSaida_ItemQTDE.AsFloat;
+
   inherited;
-  if vaIdEspecie <> 0 then
-    begin
-      if vaIdLoteSemente <> 0 then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecie, vaIdLoteSemente, 0, vaQtde)
-      else if vaIdLoteMuda <> 0 then
-        dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecie, vaIdLoteMuda, 0, Trunc(vaQtde))
-    end
-  else
+  if vaIdEspecie = 0 then
     dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItem, 0, vaQtde);
 
 end;
@@ -199,74 +174,30 @@ end;
 procedure TfrmSaida.pprExecutarSalvarDetail;
 var
   vaQtdeAnterior: Double;
-  vaIdItemAnterior, vaIdEspecieAnterior, vaIdLoteSementeAnterior, vaIdLoteMudaAnterior: Integer;
+  vaIdItemAnterior: Integer;
   vaState: TDataSetState;
 begin
-
   vaState := dmEstoque.cdsSaida_Item.State;
   vaIdItemAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_ITEM.OldValue, '0'), 0);
   vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmEstoque.cdsSaida_ItemQTDE.OldValue, '0'), 0);
-  vaIdEspecieAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_ESPECIE.OldValue, '0'), 0);
-  vaIdLoteSementeAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.OldValue, '0'), 0);
-  vaIdLoteMudaAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_LOTE_MUDA.OldValue, '0'), 0);
+ 
   inherited;
 
   if vaState = dsInsert then
     begin
-      if dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0 then
-        begin
-          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-            dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
-        end
-      else if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
-        begin
-          dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-            dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsInteger, 0);
-        end
-      else
+      if (dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger = 0) then
         dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
     end
   else if vaState = dsEdit then
     begin
-      if vaIdLoteSementeAnterior <> 0 then
+      if vaIdItemAnterior <> dmEstoque.cdsSaida_ItemID_ITEM.AsInteger then
         begin
-          if (vaIdEspecieAnterior <> dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) or
-            (vaIdLoteSementeAnterior <> dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger) then
-            begin
-              dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(vaIdEspecieAnterior, vaIdLoteSementeAnterior, 0, vaQtdeAnterior);
-              if dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger <> 0 then
-                dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-                  dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
-            end
-          else
-            dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeSementeEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-              dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, vaQtdeAnterior);
-        end
-      else if vaIdLoteMudaAnterior <> 0 then
-        begin
-          if (vaIdEspecieAnterior <> dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger) or
-            (vaIdLoteMudaAnterior <> dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger) then
-            begin
-              dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(vaIdEspecieAnterior, vaIdLoteMudaAnterior, 0, Trunc(vaQtdeAnterior));
-              if dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger <> 0 then
-                dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-                  dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsInteger, 0);
-            end
-          else
-            dmPrincipal.FuncoesViveiro.ppuAtualizarQtdeMudaEstoque(dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger,
-              dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsInteger, Trunc(vaQtdeAnterior));
+          dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItemAnterior, 0, vaQtdeAnterior);
+          dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
         end
       else
-        begin
-          if vaIdItemAnterior <> dmEstoque.cdsSaida_ItemID_ITEM.AsInteger then
-            begin
-              dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(vaIdItemAnterior, 0, vaQtdeAnterior);
-              dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
-            end
-          else
-            dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat,
-              vaQtdeAnterior);
-        end;
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat,vaQtdeAnterior);
+
     end;
 
 end;
@@ -478,7 +409,7 @@ begin
 
           dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, cbLoteMuda.EditValue, []);
           if (dmEstoque.cdsSaidaTIPO.AsInteger = Ord(tsPlantio)) and (dmLookup.cdslkLote_MudaSTATUS.AsInteger = Ord(smDesenvolvimento)) then
-            raise TControlException.Create('O lote de mudas informado não esta pronto para plantio ainda.',cbLoteMuda);
+            raise TControlException.Create('O lote de mudas informado não esta pronto para plantio ainda.', cbLoteMuda);
 
           if dmEstoque.cdsSaida_ItemQTDE.AsFloat > dmLookup.cdslkLote_MudaSALDO.AsInteger then
             raise Exception.Create('O lote informado não possui saldo suficiente de mudas.');
@@ -493,8 +424,6 @@ begin
             raise Exception.Create('O Item informado não possui saldo suficiente.');
         end;
     end;
-
-
 
 end;
 

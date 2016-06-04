@@ -100,6 +100,22 @@ type
     qEspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
     qEspecieQTDE_MUDA_PRONTA: TIntegerField;
     qEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    dspqLote_Muda: TDataSetProvider;
+    dspqLote_Semente: TDataSetProvider;
+    dspqSemeadura: TDataSetProvider;
+    dspqGerminacao: TDataSetProvider;
+    procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
+    procedure dspqLote_SementeAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
+    procedure dspqSemeaduraAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
+    procedure dspqGerminacaoAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
   private
     { Private declarations }
   protected
@@ -116,6 +132,92 @@ implementation
 
 {$R *.dfm}
 { TsmViveiro }
+
+procedure TsmViveiro.dspqGerminacaoAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  inherited;
+  qAux.Close;
+  qAux.SQL.Text := 'select Lote_Semente.Id_Especie ' +
+    ' from Germinacao ' +
+    ' inner join Lote_Semente on (Lote_Semente.Id = Germinacao.Id_Lote_Semente)' +
+    ' where Germinacao.Id = :Id';
+  qAux.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID').OldValue;
+  qAux.Open;
+
+  dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+    VarToStr(qAux.FieldByName('ID_ESPECIE').AsInteger) + ',0,1)');
+
+  dmPrincipal.Connection.Commit;
+end;
+
+procedure TsmViveiro.dspqLote_MudaAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  inherited;
+  { OBSERVACOES SOBRE O DeltaDS
+    * Ao incluir tanto o OldValue quanto o NewValue possuem o mesmo valor
+    * Ao Alterar se houver modificacoes OldValue contera o valor antigo e NewValue o novo, caso nao haja modificacoes
+    OldValue conterá o valor antigo e newValue contera Unassigned
+    * Ao excluir ambos possuem o mesmo valor
+  }
+  if (UpdateKind = ukModify) and (Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').NewValue)) and
+    (DeltaDS.FieldByName('ID_ESPECIE').NewValue <> Unassigned) then
+    begin
+      dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+        VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',1,0)');
+      dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+        VarToStr(DeltaDS.FieldByName('ID_ESPECIE').NewValue) + ',1,0)');
+    end
+  else
+    dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+      VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',1,0)');
+
+  dmPrincipal.Connection.Commit;
+end;
+
+procedure TsmViveiro.dspqLote_SementeAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  inherited;
+  { OBSERVACOES SOBRE O DeltaDS
+    * Ao incluir tanto o OldValue quanto o NewValue possuem o mesmo valor
+    * Ao Alterar se houver modificacoes OldValue contera o valor antigo e NewValue o novo, caso nao haja modificacoes
+    OldValue conterá o valor antigo e newValue contera Unassigned
+    * Ao excluir ambos possuem o mesmo valor
+  }
+  if (UpdateKind = ukModify) and (Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').NewValue)) and
+    (DeltaDS.FieldByName('ID_ESPECIE').NewValue <> Unassigned) then
+    begin
+      dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+        VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',0,1)');
+      dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+        VarToStr(DeltaDS.FieldByName('ID_ESPECIE').NewValue) + ',0,1)');
+    end
+  else
+    dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+      VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',0,1)');
+
+  dmPrincipal.Connection.Commit;
+end;
+
+procedure TsmViveiro.dspqSemeaduraAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  inherited;
+  qAux.Close;
+  qAux.SQL.Text := 'select Lote_Semente.Id_Especie ' +
+    ' from Semeadura ' +
+    ' inner join Lote_Semente on (Lote_Semente.Id = Semeadura.Id_Lote_Semente)' +
+    ' where Semeadura.Id = :Id';
+  qAux.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID').OldValue;
+  qAux.Open;
+
+  dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+    VarToStr(qAux.FieldByName('ID_ESPECIE').AsInteger) + ',0,1)');
+
+  dmPrincipal.Connection.Commit;
+end;
 
 function TsmViveiro.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;

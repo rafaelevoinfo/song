@@ -39,6 +39,10 @@ type
     cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA: TStringField;
     cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO: TStringField;
+    cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
+    cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    cdsTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField;
+    cdsTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

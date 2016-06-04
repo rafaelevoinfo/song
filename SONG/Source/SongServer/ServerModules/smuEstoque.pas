@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, uQuery, uUtils, uClientDataSet, uSQLGenerator;
+  FireDAC.Comp.Client, uQuery, uUtils, uClientDataSet, uSQLGenerator,
+  Datasnap.Provider, System.Generics.Collections, Datasnap.DBClient;
 
 type
   TsmEstoque = class(TsmBasico)
@@ -119,9 +120,21 @@ type
     qLocal_UsoNOME: TStringField;
     qSaidaID_LOCAL_USO: TIntegerField;
     qSaidaLOCAL_USO: TStringField;
+    dspqSaida: TDataSetProvider;
+    dspqSaida_Item: TDataSetProvider;
     procedure qSaida_ItemCalcFields(DataSet: TDataSet);
     procedure qVenda_ItemCalcFields(DataSet: TDataSet);
+    procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+    procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind;
+      var Applied: Boolean);
+    procedure DSServerModuleDestroy(Sender: TObject);
+    procedure dspqSaida_ItemAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
   private
+    FIdsEspecies: TList<Integer>;
   protected
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
     { Public declarations }
@@ -135,6 +148,90 @@ implementation
 {$R *.dfm}
 
 { TsmEstoque }
+
+procedure TsmEstoque.dspqSaidaAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+var
+  vaIdEspecie: Integer;
+begin
+  inherited;
+  if UpdateKind = ukDelete then
+    begin
+      if Assigned(FIdsEspecies) and (FIdsEspecies.Count > 0) then
+        begin
+          for vaIdEspecie in FIdsEspecies do
+            begin
+              dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+                vaIdEspecie.ToString + ',1,1)');
+            end;
+
+          FIdsEspecies.Clear;
+
+          dmPrincipal.Connection.Commit;
+        end;
+    end;
+
+end;
+
+procedure TsmEstoque.dspqSaidaBeforeUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind;
+  var Applied: Boolean);
+begin
+  inherited;
+  if UpdateKind = ukDelete then
+    begin
+      if not Assigned(FIdsEspecies) then
+        FIdsEspecies := TList<Integer>.Create
+      else
+        FIdsEspecies.Clear;
+
+      qAux.Close;
+      qAux.sql.Text := 'Select saida_item.id_especie ' +
+        ' from saida_item ' +
+        ' where saida_item.id_especie is not null and ' +
+        '       saida_item.id_saida =' + VarToStr(DeltaDS.FieldByName('ID').OldValue);
+      qAux.Open;
+      while not qAux.Eof do
+        begin
+          FIdsEspecies.Add(qAux.FieldByName('ID_ESPECIE').AsInteger);
+          qAux.Next;
+        end;
+    end;
+end;
+
+procedure TsmEstoque.dspqSaida_ItemAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  inherited;
+  if ((Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').NewValue)) and (DeltaDS.FieldByName('ID_ESPECIE').NewValue <> Unassigned)) or
+     ((Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').OldValue)) and (DeltaDS.FieldByName('ID_ESPECIE').OldValue <> Unassigned)) 
+  then
+    begin
+      if (UpdateKind = ukModify) and (Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').NewValue)) and
+        (DeltaDS.FieldByName('ID_ESPECIE').NewValue <> Unassigned) then
+        begin
+          if (Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').OldValue)) and (DeltaDS.FieldByName('ID_ESPECIE').OldValue <> Unassigned) then
+            begin
+              dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+                VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',1,1)');
+            end;
+          dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+            VarToStr(DeltaDS.FieldByName('ID_ESPECIE').NewValue) + ',1,1)');
+        end
+      else
+        dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+          VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',1,1)');
+
+      dmPrincipal.Connection.Commit;
+    end;
+end;
+
+procedure TsmEstoque.DSServerModuleDestroy(Sender: TObject);
+begin
+  inherited;
+  if Assigned(FIdsEspecies) then
+    FreeAndNil(FIdsEspecies);
+end;
 
 function TsmEstoque.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
@@ -156,7 +253,8 @@ begin
       else if ipParam.Name = TParametros.coTipoItem then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ITEM', 'TIPO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result,ipTabela,'DATA',TUtils.fpuExtrairData(vaValor, 0),TUtils.fpuExtrairData(vaValor, 1),vaOperador);
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador);
     end
   else if (ipTabela = 'SOLICITACAO_COMPRA') then
     begin
@@ -191,7 +289,8 @@ begin
   else if (ipTabela = 'SAIDA') then
     begin
       if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador)
       else if ipParam.Name = TParametros.coTipo then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coVenda then
@@ -205,13 +304,13 @@ end;
 procedure TsmEstoque.qSaida_ItemCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  qSaida_ItemCALC_QTDE.AsString := FormatFloat(',0.00',qSaida_ItemQTDE.AsFloat)+' '+qSaida_ItemUNIDADE.AsString;
+  qSaida_ItemCALC_QTDE.AsString := FormatFloat(',0.00', qSaida_ItemQTDE.AsFloat) + ' ' + qSaida_ItemUNIDADE.AsString;
 end;
 
 procedure TsmEstoque.qVenda_ItemCalcFields(DataSet: TDataSet);
 begin
   inherited;
-    qVenda_ItemCALC_QTDE.AsString := FormatFloat(',0.00',qVenda_ItemQTDE.AsFloat)+' '+qVenda_ItemUNIDADE.AsString;
+  qVenda_ItemCALC_QTDE.AsString := FormatFloat(',0.00', qVenda_ItemQTDE.AsFloat) + ' ' + qVenda_ItemUNIDADE.AsString;
 end;
 
 end.

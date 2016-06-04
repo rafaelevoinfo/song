@@ -4,7 +4,7 @@ inherited smFuncoesViveiro: TsmFuncoesViveiro
   object qAjusta_Saldo_Especie: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'execute procedure sp_ajusta_saldo_especie(:ID_ESPECIE);')
+      'execute procedure sp_ajusta_saldo_especie(:ID_ESPECIE,1,1);')
     Left = 248
     Top = 168
     ParamData = <

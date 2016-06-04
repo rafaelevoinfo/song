@@ -38,6 +38,10 @@ type
     qTaxas_EspecieTAXA_GERMINACAO: TBCDField;
     qSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField;
     qSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    qTaxas_EspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
+    qTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    qTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField;
+    qTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField;
   private
     { Private declarations }
   protected

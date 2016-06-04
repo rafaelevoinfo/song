@@ -27,9 +27,6 @@ type
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
 
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
-
-
-
   end;
 
 var

@@ -149,12 +149,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 41
+                Height = 15
                 Caption = 'Esp'#233'cies'
                 ExplicitWidth = 41
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 439
                 Width = 105
+                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 439
                 ExplicitWidth = 105
@@ -218,9 +220,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       end
     end
   end
+  inherited pnOrganizacao: TPanel
+    inherited chkTodasOrganizacoes: TcxCheckBox
+      ExplicitHeight = 19
+    end
+  end
   inherited ActionList: TActionList
-    Left = 352
-    Top = 80
+    Left = 448
+    Top = 48
     object Ac_Informacao_Previsao_Producao: TAction
       Caption = 'Sobre este Relat'#243'rio'
       ImageIndex = 16
@@ -838,6 +845,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object cdsEspecieSelecionadaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = []
+    end
+    object cdsEspecieSelecionadaQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+    object cdsEspecieSelecionadaQTDE_SEMENTE_KILO: TIntegerField
+      FieldName = 'QTDE_SEMENTE_KILO'
     end
   end
   object ppPrevisaoProducao: TppReport

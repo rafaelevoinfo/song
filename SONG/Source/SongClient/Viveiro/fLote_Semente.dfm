@@ -343,6 +343,10 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnMatrizes: TPanel
           Left = 1
@@ -437,14 +441,12 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 110
-                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
                   Left = 503
                   Width = 92
-                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 503
                   ExplicitWidth = 92
@@ -719,6 +721,10 @@ inherited frmLoteSemente: TfrmLoteSemente
     object tabCadastroGerminacao: TcxTabSheet
       Caption = 'tabCadastroGerminacao'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroGerminacao: TPanel
         Left = 0
         Top = 0

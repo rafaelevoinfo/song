@@ -164,6 +164,10 @@ inherited smRelatorio: TsmRelatorio
       '       Especie.Familia_Botanica,'
       '       Especie.Tempo_Germinacao,'
       '       Especie.Tempo_Desenvolvimento,'
+      '       Especie.Qtde_Semente_kilo,'
+      '       Especie.Qtde_Semente_Estoque,'
+      '       Especie.Qtde_Muda_Desenvolvimento,'
+      '       Especie.Qtde_Muda_Pronta,'
       
         '       sum(Lote_Muda.Taxa_Classificacao) / count(Lote_Muda.Id) a' +
         's Taxa_Classificacao,'
@@ -181,7 +185,7 @@ inherited smRelatorio: TsmRelatorio
       
         '      Lote_Muda.Id_Lote_Semente is not null --desconsiderando mu' +
         'das compradas'
-      'group by 1,2,3,4,5,6')
+      'group by 1,2,3,4,5,6,7,8,9,10')
     Left = 344
     Top = 48
     object qTaxas_EspecieID: TIntegerField
@@ -232,6 +236,29 @@ inherited smRelatorio: TsmRelatorio
       ProviderFlags = []
       Precision = 18
       Size = 2
+    end
+    object qTaxas_EspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Origin = 'QTDE_SEMENTE_ESTOQUE'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object qTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+    end
+    object qTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField
+      FieldName = 'QTDE_SEMENTE_KILO'
+      Origin = 'QTDE_SEMENTE_KILO'
+      ProviderFlags = []
+      Required = True
     end
   end
 end
