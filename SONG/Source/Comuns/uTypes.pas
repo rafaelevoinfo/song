@@ -29,6 +29,23 @@ type
     property Id: Integer read FId write SetId;
   end;
 
+  TEspecie = class(TModelo)
+  private
+    FTaxaClassificacao: Double;
+    FTempoGerminacao: Integer;
+    FTempoDesenvolvimento: Integer;
+    FTaxaGerminacao: Double;
+    procedure SetTaxaClassificacao(const Value: Double);
+    procedure SetTaxaGerminacao(const Value: Double);
+    procedure SetTempoDesenvolvimento(const Value: Integer);
+    procedure SetTempoGerminacao(const Value: Integer);
+  public
+    property TaxaGerminacao: Double read FTaxaGerminacao write SetTaxaGerminacao;
+    property TaxaClassificacao: Double read FTaxaClassificacao write SetTaxaClassificacao;
+    property TempoDesenvolvimento: Integer read FTempoDesenvolvimento write SetTempoDesenvolvimento;
+    property TempoGerminacao: Integer read FTempoGerminacao write SetTempoGerminacao;
+  end;
+
   TItem = class(TModelo)
   private
     FQtde: Double;
@@ -44,8 +61,8 @@ type
   public
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
     property IdItemCompraVenda: Integer read FIdItemCompraVenda write SetIdItemCompraVenda;
-    property IdLoteMuda:Integer read FIdLoteMuda write SetIdLoteMuda;
-    property IdLoteSemente:Integer read FIdLoteSemente write SetIdLoteSemente;
+    property IdLoteMuda: Integer read FIdLoteMuda write SetIdLoteMuda;
+    property IdLoteSemente: Integer read FIdLoteSemente write SetIdLoteSemente;
     property Qtde: Double read FQtde write SetQtde;
   end;
 
@@ -107,9 +124,9 @@ type
 
   TTipoSaida = (tsVenda, tsConsumo, tsPerda, tsPlantio, tsOutro);
 
-  TFormaPagamento = (fpTransferencia, fpDebitoConta, fpCartaoCredito,fpCartaoDebito,fpCheque,fpDinheiro,fpOutro);
+  TFormaPagamento = (fpTransferencia, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro, fpOutro);
 
-  TStatusMuda = (smDesenvolvimento,smProntaPlantio);
+  TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
 const
   // mensagens customizadas do windows
@@ -192,6 +209,28 @@ end;
 procedure TItem.SetQtde(const Value: Double);
 begin
   FQtde := Value;
+end;
+
+{ TEspecie }
+
+procedure TEspecie.SetTaxaClassificacao(const Value: Double);
+begin
+  FTaxaClassificacao := Value;
+end;
+
+procedure TEspecie.SetTaxaGerminacao(const Value: Double);
+begin
+  FTaxaGerminacao := Value;
+end;
+
+procedure TEspecie.SetTempoDesenvolvimento(const Value: Integer);
+begin
+  FTempoDesenvolvimento := Value;
+end;
+
+procedure TEspecie.SetTempoGerminacao(const Value: Integer);
+begin
+  FTempoGerminacao := Value;
 end;
 
 end.

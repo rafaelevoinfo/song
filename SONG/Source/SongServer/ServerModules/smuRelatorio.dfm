@@ -175,16 +175,13 @@ inherited smRelatorio: TsmRelatorio
         '       sum(Lote_Semente.Taxa_Germinacao) / count(Lote_Semente.Id' +
         ') as Taxa_Germinacao'
       'from Especie'
-      'left join Lote_Muda on (Lote_Muda.Id_Especie = Especie.Id)'
+      
+        'left join Lote_Muda on (Lote_Muda.Id_Especie = Especie.Id and Lo' +
+        'te_Muda.Id_Compra_Item is null and Lote_Muda.Id_Lote_Semente is ' +
+        'not null)'
       'left join Lote_Semente on (Lote_Semente.Id_Especie = Especie.Id)'
       'where Especie.Tempo_Germinacao is not null and'
-      '      Especie.Tempo_Desenvolvimento is not null and'
-      
-        '      Lote_Muda.Id_Compra_Item is null and --desconsiderando mud' +
-        'as compradas'
-      
-        '      Lote_Muda.Id_Lote_Semente is not null --desconsiderando mu' +
-        'das compradas'
+      '      Especie.Tempo_Desenvolvimento is not null'
       'group by 1,2,3,4,5,6,7,8,9,10')
     Left = 344
     Top = 48
@@ -258,7 +255,6 @@ inherited smRelatorio: TsmRelatorio
       FieldName = 'QTDE_SEMENTE_KILO'
       Origin = 'QTDE_SEMENTE_KILO'
       ProviderFlags = []
-      Required = True
     end
   end
 end

@@ -26,7 +26,8 @@ uses
   smuEstoque in 'ServerModules\smuEstoque.pas' {smEstoque: TDSServerModule},
   smuFuncoesEstoque in 'ServerModules\Funcoes\smuFuncoesEstoque.pas' {smFuncoesEstoque: TDSServerModule},
   smuRelatorio in 'ServerModules\smuRelatorio.pas' {smRelatorio: TDSServerModule},
-  smuFuncoesRelatorio in 'ServerModules\Funcoes\smuFuncoesRelatorio.pas' {smFuncoesRelatorio: TDSServerModule};
+  smuFuncoesRelatorio in 'ServerModules\Funcoes\smuFuncoesRelatorio.pas' {smFuncoesRelatorio: TDSServerModule},
+  aduna_ds_list in '..\Comuns\aduna_ds_list.pas';
 
 {$R *.res}
 

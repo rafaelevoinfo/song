@@ -13,7 +13,8 @@ uses
   ppDesignLayer, ppModule, raCodMod, ppCtrls, ppBands, ppClass, ppVar, ppPrnabl,
   ppCache, ppComm, ppRelatv, ppProd, ppReport, uClientDataSet, uTypes,
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
-  cxCalendar, uMensagem, uExceptions, System.DateUtils;
+  cxCalendar, uMensagem, uExceptions, System.DateUtils,
+  System.Generics.Collections, uUtils, aduna_ds_list;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -103,6 +104,16 @@ type
     ppDBText3: TppDBText;
     cdsEspecieSelecionadaQTDE_SEMENTE_ESTOQUE: TBCDField;
     cdsEspecieSelecionadaQTDE_SEMENTE_KILO: TIntegerField;
+    cdsPrevisaoProducao: TRFClientDataSet;
+    cdsPrevisaoProducaoID: TIntegerField;
+    cdsPrevisaoProducaoNOME: TStringField;
+    cdsPrevisaoProducaoNOME_CIENTIFICO: TStringField;
+    cdsPrevisaoProducaoFAMILIA_BOTANICA: TStringField;
+    cdsPrevisaoProducaoQTDE_MUDA_PRONTA: TIntegerField;
+    cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    cdsPrevisaoProducaoQTDE_SEMENTE_ESTOQUE: TBCDField;
+    cdsPrevisaoProducaoQTDE_SEMENTE_KILO: TIntegerField;
+    dsPrevisaoProducao: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
@@ -124,10 +135,34 @@ implementation
 {$R *.dfm}
 
 
+procedure TfrmRelatorioViveiro.ppvGerarPrevisao;
+var
+  vaEspecies: TadsObjectlist<TEspecie>;
+  vaEspecie: TEspecie;
+begin
+  vaEspecies := TadsObjectlist<TEspecie>.Create;
+  TUtils.ppuPercorrerCds(cdsEspecieSelecionada,
+    procedure
+    begin
+      vaEspecie := TEspecie.Create;
+      vaEspecie.Id := cdsEspecieSelecionadaID.AsInteger;
+      vaEspecie.TaxaGerminacao := cdsEspecieSelecionadaTAXA_GERMINACAO.AsFloat;
+      vaEspecie.TaxaClassificacao := cdsEspecieSelecionadaTAXA_CLASSIFICACAO.AsFloat;
+      vaEspecie.TempoDesenvolvimento := cdsEspecieSelecionadaTEMPO_DESENVOLVIMENTO.AsInteger;
+      vaEspecie.TempoGerminacao := cdsEspecieSelecionadaTEMPO_GERMINACAO.AsInteger;
+
+      vaEspecies.Add(vaEspecie);
+    end);
+
+  cdsPrevisaoProducao.Data := dmPrincipal.FuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(vaEspecies,DateToStr(EditDataPrevisao.Date));
+end;
+
 procedure TfrmRelatorioViveiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
   vaIdOrganizacao: Integer;
   vaIdEspecie: Integer;
+  vaEspecies: TList<TEspecie>;
+  vaEspecie: TEspecie;
 begin
   inherited;
   vaIdOrganizacao := fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
@@ -150,7 +185,7 @@ begin
   else if pcPrincipal.ActivePage = tabPrevisaoProducao then
     begin
       if VarIsNull(EditDataPrevisao.EditValue) then
-        raise TControlException.Create('Informe a data para qual deseja saber a previsão de produção.',EditDataPrevisao);
+        raise TControlException.Create('Informe a data para qual deseja saber a previsão de produção.', EditDataPrevisao);
 
       if cdsParametros.Active then
         cdsParametros.EmptyDataSet
@@ -164,43 +199,12 @@ begin
       ppvGerarPrevisao;
 
       ppPrevisaoProducao.PrintReport;
-      //TODO:Repensar isso aqui, talvez seja melhor criar dois campos a mais pra guardar as quantidades do que ter q limpar toda vez q gerar o relatorio
-      dmRelatorio.cdsTaxas_Especie.Close;
-      dmRelatorio.cdsTaxas_Especie.Open;
-
-      cdsEspecieSelecionada.Clear;
+      // TODO:Repensar isso aqui, talvez seja melhor criar dois campos a mais pra guardar as quantidades do que ter q limpar toda vez q gerar o relatorio
+      // dmRelatorio.cdsTaxas_Especie.Close;
+      // dmRelatorio.cdsTaxas_Especie.Open;
+      //
+      // cdsEspecieSelecionada.Clear;
     end;
-end;
-
-procedure TfrmRelatorioViveiro.ppvGerarPrevisao;
-var
-  vaQtdeMudasGerminadas,vaQtdeSementeEstoque:Integer;
-  vaDataGerminacao:TDateTime;
-begin
-  cdsEspecieSelecionada.DisableControls;
-  try
-    cdsEspecieSelecionada.First;
-    while cdsEspecieSelecionada.Eof do
-      begin
-        cdsEspecieSelecionada.Edit;
-        vaQtdeSementeEstoque := Trunc(cdsEspecieSelecionadaQTDE_SEMENTE_ESTOQUE.AsFloat * cdsEspecieSelecionadaQTDE_SEMENTE_KILO.AsInteger);
-        vaQtdeMudasGerminadas := Trunc(vaQtdeSementeEstoque *  (cdsEspecieSelecionadaTAXA_GERMINACAO.AsFloat/100));
-        vaDataGerminacao := now;
-        IncDay(vaDataGerminacao,cdsEspecieSelecionadaTEMPO_GERMINACAO.AsInteger);
-        if vaDataGerminacao <= EditDataPrevisao.Date then
-          begin
-            Repensar isso aqui, pois preciso levar em consideracao as mudas que estao em desenvolvimento, ou seja
-            preciso percorrer todos os lotes de mudas e ver quando as mudas estarao prontas para plantio
-
-
-          end;
-
-        cdsEspecieSelecionada.Post;
-        cdsEspecieSelecionada.Next;
-      end;
-  finally
-    cdsEspecieSelecionada.EnableControls;
-  end;
 end;
 
 procedure TfrmRelatorioViveiro.Ac_Informacao_Previsao_ProducaoExecute(

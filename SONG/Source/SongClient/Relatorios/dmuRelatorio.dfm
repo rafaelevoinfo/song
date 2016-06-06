@@ -213,7 +213,6 @@ inherited dmRelatorio: TdmRelatorio
     object cdsTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField
       FieldName = 'QTDE_SEMENTE_KILO'
       ProviderFlags = []
-      Required = True
     end
   end
 end

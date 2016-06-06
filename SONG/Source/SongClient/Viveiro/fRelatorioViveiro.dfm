@@ -92,7 +92,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               Width = 397
               Height = 318
               ExplicitWidth = 397
-              ExplicitHeight = 318
               inherited viewEsquerda: TcxGridDBTableView
                 OptionsCustomize.ColumnsQuickCustomization = True
               end
@@ -123,7 +122,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               Height = 318
               ExplicitLeft = 440
               ExplicitWidth = 407
-              ExplicitHeight = 318
               inherited viewDireita: TcxGridDBTableView
                 OptionsCustomize.ColumnsQuickCustomization = True
                 OptionsData.Editing = True
@@ -149,16 +147,13 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 41
-                Height = 15
                 Caption = 'Esp'#233'cies'
                 ExplicitWidth = 41
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 439
                 Width = 105
-                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
-                ExplicitLeft = 439
                 ExplicitWidth = 105
               end
             end
@@ -687,8 +682,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object DBPipeSaldoEspecieppField1: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeSaldoEspecieppField2: TppField
@@ -1291,7 +1286,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     end
   end
   object DBPipePrevisaoProducao: TppDBPipeline
-    DataSource = frameEspecies.dsDireita
+    DataSource = dsPrevisaoProducao
     UserName = 'DBPipePrevisaoProducao'
     Left = 616
     Top = 264
@@ -1336,8 +1331,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipePrevisaoProducaoppField5: TppField
-      FieldAlias = 'TEMPO_GERMINACAO'
-      FieldName = 'TEMPO_GERMINACAO'
+      FieldAlias = 'QTDE_MUDA_PRONTA'
+      FieldName = 'QTDE_MUDA_PRONTA'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -1346,8 +1341,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipePrevisaoProducaoppField6: TppField
-      FieldAlias = 'TEMPO_DESENVOLVIMENTO'
-      FieldName = 'TEMPO_DESENVOLVIMENTO'
+      FieldAlias = 'QTDE_MUDA_DESENVOLVIMENTO'
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -1356,8 +1351,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipePrevisaoProducaoppField7: TppField
-      FieldAlias = 'TAXA_CLASSIFICACAO'
-      FieldName = 'TAXA_CLASSIFICACAO'
+      FieldAlias = 'QTDE_SEMENTE_ESTOQUE'
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -1366,32 +1361,12 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipePrevisaoProducaoppField8: TppField
-      FieldAlias = 'TAXA_GERMINACAO'
-      FieldName = 'TAXA_GERMINACAO'
+      FieldAlias = 'QTDE_SEMENTE_KILO'
+      FieldName = 'QTDE_SEMENTE_KILO'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
       Position = 7
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipePrevisaoProducaoppField9: TppField
-      FieldAlias = 'QTDE_MUDA_PRONTA'
-      FieldName = 'QTDE_MUDA_PRONTA'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 8
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipePrevisaoProducaoppField10: TppField
-      FieldAlias = 'QTDE_MUDA_DESENVOLVIMENTO'
-      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 9
       Searchable = False
       Sortable = False
     end
@@ -1416,5 +1391,52 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     DataSet = cdsParametros
     Left = 584
     Top = 24
+  end
+  object cdsPrevisaoProducao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    RFApplyAutomatico = False
+    Left = 824
+    Top = 200
+    object cdsPrevisaoProducaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsPrevisaoProducaoNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsPrevisaoProducaoNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsPrevisaoProducaoFAMILIA_BOTANICA: TStringField
+      FieldName = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsPrevisaoProducaoQTDE_MUDA_PRONTA: TIntegerField
+      FieldName = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+    end
+    object cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object cdsPrevisaoProducaoQTDE_SEMENTE_ESTOQUE: TBCDField
+      FieldName = 'QTDE_SEMENTE_ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+    object cdsPrevisaoProducaoQTDE_SEMENTE_KILO: TIntegerField
+      FieldName = 'QTDE_SEMENTE_KILO'
+    end
+  end
+  object dsPrevisaoProducao: TDataSource
+    DataSet = cdsPrevisaoProducao
+    Left = 440
+    Top = 184
   end
 end

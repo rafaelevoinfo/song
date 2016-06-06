@@ -1,13 +1,14 @@
 //
 // Created by the DataSnap proxy generator.
-// 03/06/2016 23:38:07
+// 05/06/2016 21:00:02
 //
 
 unit uFuncoes;
 
 interface
 
-uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uControleAcesso, Data.DBXJSONReflect;
+uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, uControleAcesso, aduna_ds_list, Data.DBXJSONReflect,
+  uTypes;
 
 type
   TsmAdministrativoClient = class(TDSAdminClient)
@@ -108,7 +109,7 @@ type
     FfpuBuscarLotesSementesCommand: TDBXCommand;
     FfpuBuscarLoteSementeCommand: TDBXCommand;
     FppuAjustarSaldoEspecieCommand: TDBXCommand;
-    FfpuCalcularMediaTaxaGerminacaoClassificaoCommand: TDBXCommand;
+    FfpuCalcularPrevisaoProducaoMudaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -124,7 +125,7 @@ type
     function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
     function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
     procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
-    function fpuCalcularMediaTaxaGerminacaoClassificao: OleVariant;
+    function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -170,6 +171,7 @@ type
   private
     FqSaida_ItemCalcFieldsCommand: TDBXCommand;
     FqVenda_ItemCalcFieldsCommand: TDBXCommand;
+    FDSServerModuleDestroyCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -177,6 +179,7 @@ type
     destructor Destroy; override;
     procedure qSaida_ItemCalcFields(DataSet: TDataSet);
     procedure qVenda_ItemCalcFields(DataSet: TDataSet);
+    procedure DSServerModuleDestroy(Sender: TObject);
     procedure DSServerModuleCreate(Sender: TObject);
   end;
 
@@ -851,17 +854,31 @@ begin
   FppuAjustarSaldoEspecieCommand.ExecuteUpdate;
 end;
 
-function TsmFuncoesViveiroClient.fpuCalcularMediaTaxaGerminacaoClassificao: OleVariant;
+function TsmFuncoesViveiroClient.fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant;
 begin
-  if FfpuCalcularMediaTaxaGerminacaoClassificaoCommand = nil then
+  if FfpuCalcularPrevisaoProducaoMudaCommand = nil then
   begin
-    FfpuCalcularMediaTaxaGerminacaoClassificaoCommand := FDBXConnection.CreateCommand;
-    FfpuCalcularMediaTaxaGerminacaoClassificaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuCalcularMediaTaxaGerminacaoClassificaoCommand.Text := 'TsmFuncoesViveiro.fpuCalcularMediaTaxaGerminacaoClassificao';
-    FfpuCalcularMediaTaxaGerminacaoClassificaoCommand.Prepare;
+    FfpuCalcularPrevisaoProducaoMudaCommand := FDBXConnection.CreateCommand;
+    FfpuCalcularPrevisaoProducaoMudaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuCalcularPrevisaoProducaoMudaCommand.Text := 'TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda';
+    FfpuCalcularPrevisaoProducaoMudaCommand.Prepare;
   end;
-  FfpuCalcularMediaTaxaGerminacaoClassificaoCommand.ExecuteUpdate;
-  Result := FfpuCalcularMediaTaxaGerminacaoClassificaoCommand.Parameters[0].Value.AsVariant;
+  if not Assigned(ipEspecies) then
+    FfpuCalcularPrevisaoProducaoMudaCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FfpuCalcularPrevisaoProducaoMudaCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FfpuCalcularPrevisaoProducaoMudaCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(ipEspecies), True);
+      if FInstanceOwner then
+        ipEspecies.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FfpuCalcularPrevisaoProducaoMudaCommand.Parameters[1].Value.SetWideString(ipDataPrevisao);
+  FfpuCalcularPrevisaoProducaoMudaCommand.ExecuteUpdate;
+  Result := FfpuCalcularPrevisaoProducaoMudaCommand.Parameters[2].Value.AsVariant;
 end;
 
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
@@ -939,7 +956,7 @@ begin
   FfpuBuscarLotesSementesCommand.DisposeOf;
   FfpuBuscarLoteSementeCommand.DisposeOf;
   FppuAjustarSaldoEspecieCommand.DisposeOf;
-  FfpuCalcularMediaTaxaGerminacaoClassificaoCommand.DisposeOf;
+  FfpuCalcularPrevisaoProducaoMudaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
@@ -1206,6 +1223,31 @@ begin
   FqVenda_ItemCalcFieldsCommand.ExecuteUpdate;
 end;
 
+procedure TsmEstoqueClient.DSServerModuleDestroy(Sender: TObject);
+begin
+  if FDSServerModuleDestroyCommand = nil then
+  begin
+    FDSServerModuleDestroyCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleDestroyCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleDestroyCommand.Text := 'TsmEstoque.DSServerModuleDestroy';
+    FDSServerModuleDestroyCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleDestroyCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleDestroyCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleDestroyCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleDestroyCommand.ExecuteUpdate;
+end;
+
 procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1248,6 +1290,7 @@ destructor TsmEstoqueClient.Destroy;
 begin
   FqSaida_ItemCalcFieldsCommand.DisposeOf;
   FqVenda_ItemCalcFieldsCommand.DisposeOf;
+  FDSServerModuleDestroyCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

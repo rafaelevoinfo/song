@@ -131,7 +131,7 @@ begin
   vaField := ipDataSet.FindField(TBancoDados.coID);
   if Assigned(vaField) then
     begin
-      if vaField.IsNull then
+      if vaField.IsNull and vaField.Required then
         begin
           if ipDataSet.State in [dsEdit, dsInsert] then
             begin
@@ -158,14 +158,26 @@ var
   vaFieldName: string;
 begin
   dsEsquerda.DataSet.Append;
-  for vaFieldName in FMapaFields.Keys do
+  if FMapaFields.ContainsKey('*') then // vamos copiar todos os campos
     begin
-      vaField := dsEsquerda.DataSet.FindField(vaFieldName);
-      if Assigned(vaField) then
+      for vaField in dsDireita.DataSet.Fields do
         begin
-          vaFieldDestino := dsDireita.DataSet.FindField(FMapaFields.Items[vaFieldName]);
+          vaFieldDestino := dsEsquerda.DataSet.FindField(vaField.FieldName);
           if Assigned(vaFieldDestino) then
-            vaField.Assign(vaFieldDestino);
+            vaFieldDestino.Assign(vaField);
+        end;
+    end
+  else
+    begin
+      for vaFieldName in FMapaFields.Keys do
+        begin
+          vaFieldDestino := dsEsquerda.DataSet.FindField(vaFieldName);
+          if Assigned(vaFieldDestino) then
+            begin
+              vaField := dsDireita.DataSet.FindField(FMapaFields.Items[vaFieldName]);
+              if Assigned(vaField) then
+                vaFieldDestino.Assign(vaField);
+            end;
         end;
     end;
   // for vaField in dsDireita.DataSet.Fields do

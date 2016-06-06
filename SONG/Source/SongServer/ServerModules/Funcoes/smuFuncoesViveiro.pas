@@ -8,12 +8,23 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, uTypes, Datasnap.DBClient;
+  FireDAC.Comp.Client, uTypes, Datasnap.DBClient, System.Generics.Collections,
+  uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
     qAjusta_Saldo_Especie: TRFQuery;
+    cdsPrevisaoProducao: TRFClientDataSet;
+    cdsPrevisaoProducaoID: TIntegerField;
+    cdsPrevisaoProducaoNOME: TStringField;
+    cdsPrevisaoProducaoNOME_CIENTIFICO: TStringField;
+    cdsPrevisaoProducaoFAMILIA_BOTANICA: TStringField;
+    cdsPrevisaoProducaoQTDE_MUDA_PRONTA: TIntegerField;
+    cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    cdsPrevisaoProducaoQTDE_SEMENTE_ESTOQUE: TBCDField;
+    cdsPrevisaoProducaoQTDE_SEMENTE_KILO: TIntegerField;
   private
+
     { Private declarations }
   public
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: String): Boolean;
@@ -28,7 +39,7 @@ type
 
     procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
 
-    function fpuCalcularMediaTaxaGerminacaoClassificao(): OleVariant;
+    function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
   end;
 
 var
@@ -140,27 +151,197 @@ begin
 
 end;
 
-function TsmFuncoesViveiro.fpuCalcularMediaTaxaGerminacaoClassificao: OleVariant;
+function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(
+  ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
 var
-  vaCds: TClientDataSet;
-begin
-  vaCds := TClientDataSet.Create(nil);
-  try
-    pprEncapsularConsulta(
-      procedure(ipDataSet: TRFQuery)
-      begin
-        ipDataSet.SQL.Text := '';
-      end);
+  vaEspecies: String;
+  vaEspecie: TEspecie;
+  vaDataSet: TRFQuery;
+  vaDataAtual, vaDataPrevisao, vaDataMudaPronta, vaDataMudaGerminada: TDateTime;
+  vaQtdeMudaPronta, vaQtdeMudaGerminada, vaQtdeMuda: Integer;
 
-    Result := vaCds.Data;
-  finally
-    vaCds.Free;
+  function flGetEspecie(ipId: Integer): TEspecie;
+  var
+    vaEsp: TEspecie;
+  begin
+    for vaEsp in ipEspecies do
+      begin
+        if vaEsp.Id = ipId then
+          Exit(vaEsp);
+      end;
+    Exit(nil);
   end;
 
+begin
+  if not TryStrToDate(ipDataPrevisao, vaDataPrevisao) then
+    raise Exception.Create('Data inválida.');
+
+  vaDataAtual := Date;
+  for vaEspecie in ipEspecies do
+    begin
+      if vaEspecies = '' then
+        vaEspecies := vaEspecie.Id.ToString()
+      else
+        vaEspecies := vaEspecies + ',' + vaEspecie.Id.ToString();
+    end;
+
+  pprCriarDataSet(vaDataSet);
+  try
+
+    if cdsPrevisaoProducao.Active then
+      cdsPrevisaoProducao.EmptyDataSet
+    else
+      cdsPrevisaoProducao.CreateDataSet;
+    // ********************CONTABILIZANDO AS MUDAS QUE SERAO GERADAS A PARTIR DAS SEMENTES QUE SERAO SEMADAS***********
+    vaDataSet.SQL.Text := 'select Especie.Id,' +
+      '       Especie.Nome,' +
+      '       Especie.Nome_Cientifico,' +
+      '       Especie.Familia_Botanica,' +
+      '       Especie.Qtde_Semente_Kilo,' +
+      '       Especie.Qtde_Semente_Estoque,' +
+      '       Especie.Qtde_Muda_Pronta,' +
+      '       Especie.Qtde_Muda_Desenvolvimento' +
+      ' from Especie' +
+      ' where especie.id in (' + vaEspecies + ')';
+    vaDataSet.Open;
+    while not vaDataSet.Eof do
+      begin
+        cdsPrevisaoProducao.Append;
+        cdsPrevisaoProducaoID.AsInteger := vaDataSet.FieldByName('ID').AsInteger;
+        cdsPrevisaoProducaoNOME.AsString := vaDataSet.FieldByName('NOME').AsString;
+        cdsPrevisaoProducaoNOME_CIENTIFICO.AsString := vaDataSet.FieldByName('NOME_CIENTIFICO').AsString;
+        cdsPrevisaoProducaoFAMILIA_BOTANICA.AsString := vaDataSet.FieldByName('FAMILIA_BOTANICA').AsString;
+        cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger := vaDataSet.FieldByName('QTDE_MUDA_PRONTA').AsInteger;
+        cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := vaDataSet.FieldByName('QTDE_MUDA_DESENVOLVIMENTO').AsInteger;
+        cdsPrevisaoProducaoQTDE_SEMENTE_ESTOQUE.AsFloat := vaDataSet.FieldByName('QTDE_SEMENTE_ESTOQUE').AsInteger;
+        cdsPrevisaoProducaoQTDE_SEMENTE_KILO.AsInteger := vaDataSet.FieldByName('QTDE_SEMENTE_KILO').AsInteger;
+
+        vaEspecie := flGetEspecie(vaDataSet.FieldByName('ID').AsInteger);
+        vaDataMudaGerminada := IncDay(vaDataAtual, vaEspecie.TempoGerminacao);
+        vaQtdeMudaGerminada := Trunc(vaDataSet.FieldByName('QTDE_SEMENTE_ESTOQUE').AsFloat * vaDataSet.FieldByName('QTDE_SEMENTE_KILO').AsInteger);
+        vaQtdeMudaGerminada := Trunc(vaQtdeMudaGerminada * (vaEspecie.TaxaGerminacao / 100));
+        if vaDataMudaGerminada <= vaDataPrevisao then
+          begin
+            vaDataMudaPronta := IncDay(vaDataMudaGerminada, vaEspecie.TempoDesenvolvimento);
+            if vaDataMudaPronta <= vaDataPrevisao then
+              begin
+                vaQtdeMudaPronta := Trunc(vaQtdeMudaGerminada * (vaEspecie.TaxaClassificacao / 100));
+                cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger + vaQtdeMudaPronta;
+              end
+            else
+              cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger + vaQtdeMudaGerminada;
+          end;
+
+        cdsPrevisaoProducao.Post;
+
+        vaDataSet.Next;
+      end;
+    // ******************CONTABILIZANDO AS MUDAS QUE SERAO GERADAS A PARTIR DAS SEMENTES JA SEMEADAS***************
+    vaDataSet.Close;
+    vaDataSet.SQL.Text := 'with Germinadas' +
+      ' as (select max(Germinacao.Data) as data,' +
+      '           Germinacao.Id_Lote_Semente,' +
+      '           Germinacao.Qtde_Germinada' +
+      '    from Germinacao' +
+      '    group by Germinacao.Id_Lote_Semente, Germinacao.Qtde_Germinada)' +
+      ' ' +
+      'select Lote_Semente.Id_Especie,' +
+      '       Semeadura.Data,' +
+      '       Semeadura.Qtde_Semeada,' +
+      '       germinadas.Qtde_Germinada,' +
+      '       Germinadas.Data as Data_Germinacao ' +
+      ' from Lote_Semente' +
+      ' inner join Semeadura on (Semeadura.Id_Lote_Semente = Lote_Semente.Id)' +
+      ' left join Germinadas on (Germinadas.Id_Lote_Semente = Lote_Semente.Id)' +
+      ' where Lote_Semente.Id_Especie in (' + vaEspecies + ') and' +
+      '      (Germinadas.id_lote_semente is null or ((select count(*)' +
+      '                                  from Lote_Muda' +
+      '                                  where Lote_Muda.Id_Lote_Semente = Lote_Semente.Id) = 0))';
+    vaDataSet.Open;
+    while not vaDataSet.Eof do
+      begin
+        vaEspecie := flGetEspecie(vaDataSet.FieldByName('ID_ESPECIE').AsInteger);
+        if cdsPrevisaoProducao.Locate(cdsPrevisaoProducaoID.FieldName, vaEspecie.Id, []) then
+          begin
+            cdsPrevisaoProducao.Edit;
+            if not vaDataSet.FieldByName('DATA_GERMINACAO').IsNull then
+              vaDataMudaGerminada := vaDataSet.FieldByName('DATA_GERMINACAO').AsDateTime
+            else
+              vaDataMudaGerminada := IncDay(vaDataSet.FieldByName('DATA').AsDateTime, vaEspecie.TempoGerminacao);
+            // se ja germinou nao vou fazer conta alguma
+            if vaDataSet.FieldByName('QTDE_GERMINADA').AsInteger > 0 then
+              vaQtdeMudaGerminada := vaDataSet.FieldByName('QTDE_GERMINADA').AsInteger
+            else
+              vaQtdeMudaGerminada := Trunc((cdsPrevisaoProducaoQTDE_SEMENTE_KILO.AsInteger * vaDataSet.FieldByName('QTDE_SEMEADA').AsFloat) *
+                (vaEspecie.TaxaGerminacao / 100));
+
+            vaDataMudaPronta := IncDay(vaDataMudaGerminada, vaEspecie.TempoDesenvolvimento);
+            if vaDataMudaPronta <= vaDataPrevisao then
+              begin
+                vaQtdeMudaPronta := Trunc(vaQtdeMudaGerminada * (vaEspecie.TaxaClassificacao / 100));
+                cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger + vaQtdeMudaPronta;
+              end
+            else
+              cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger + vaQtdeMudaGerminada;
+
+            cdsPrevisaoProducao.Post;
+          end;
+
+        vaDataSet.Next;
+      end;
+
+    // ******************POR FIM VAMOS CONTABILIZAR AS MUDAS JA EM DESENVOLVIMENTO********
+
+    vaDataSet.Close;
+    vaDataSet.SQL.Text := 'select Lote_Muda.Id_Especie,' +
+      '       Lote_Muda.Qtde_Classificada, ' +
+      '       (Lote_Muda.Qtde_Inicial - (select sum(Saida_Item.Qtde)' +
+      '                                  from Saida_Item' +
+      '                                  where Saida_Item.Id_Lote_Muda = Lote_Muda.Id)) as Saldo,' +
+      '       Lote_Muda.Data' +
+      ' from Lote_Muda' +
+      ' where Lote_Muda.Id_Especie in (' + vaEspecies + ') and' +
+      '       Lote_Muda.Status = 0';
+
+    vaDataSet.Open;
+    while not vaDataSet.Eof do
+      begin
+        // se o saldo ja for maior do que a quant classificada significa que a
+        // if vaDataSet.FieldByName('Saldo').AsInteger > vaDataSet.FieldByName('Qtde_Classificada').AsInteger then
+        vaEspecie := flGetEspecie(vaDataSet.FieldByName('ID_ESPECIE').AsInteger);
+        if cdsPrevisaoProducao.Locate(cdsPrevisaoProducaoID.FieldName, vaEspecie.Id, []) then
+          begin
+            cdsPrevisaoProducao.Edit;
+            vaQtdeMudaPronta := Trunc(vaDataSet.FieldByName('SALDO').AsInteger * (vaEspecie.TaxaClassificacao / 100));
+            // Se apos o calculo a qtde de muda pronta ainda for maior do que a quant já classificada então significa q
+            // a taxa de classificacao nao funcionou, porntato vou pegar o valor da qtde_classficada
+            if vaQtdeMudaPronta > vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger then
+              vaQtdeMudaPronta := vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger;
+
+            vaDataMudaPronta := IncDay(vaDataSet.FieldByName('DATA').AsDateTime, vaEspecie.TempoDesenvolvimento);
+            if vaDataMudaPronta <= vaDataPrevisao then
+              cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger + vaQtdeMudaPronta
+            else // nao vai da tempo de ficarem prontas, entao vou pegar a quantidade ja classificada ate o momento
+              begin
+                if vaDataSet.FieldByName('QTDE_CLASSIFICADA').IsNull then
+                  cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger +
+                    vaDataSet.FieldByName('SALDO').AsInteger
+                else
+                  cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger +
+                    vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger;
+              end;
+
+            cdsPrevisaoProducao.Post;
+          end;
+
+        vaDataSet.Next;
+      end;
+     Result := cdsPrevisaoProducao.Data;
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+  end;
 end;
-
-
-
 
 function TsmFuncoesViveiro.fpuValidarNomeCanteiro(ipId: Integer;
 ipNome: String): Boolean;
