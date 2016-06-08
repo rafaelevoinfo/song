@@ -128,51 +128,30 @@ inherited frmLoteMuda: TfrmLoteMuda
               Options.Editing = False
               Width = 156
             end
-            object viewRegistrosDATA: TcxGridDBColumn [6]
-              DataBinding.FieldName = 'DATA'
-              Visible = False
-              Options.Editing = False
-              Width = 90
-            end
-            object viewRegistrosQTDE_INICIAL: TcxGridDBColumn [7]
+            object viewRegistrosQTDE_INICIAL: TcxGridDBColumn [6]
               DataBinding.FieldName = 'QTDE_INICIAL'
+              RepositoryItem = dmLookup.repCalcInteiro
               Options.Editing = False
               Width = 94
             end
-            object viewRegistrosQTDE_CLASSIFICADA: TcxGridDBColumn [8]
-              DataBinding.FieldName = 'QTDE_CLASSIFICADA'
-              Options.Editing = False
-              Width = 92
-            end
-            object viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn [9]
+            object viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn [7]
               DataBinding.FieldName = 'TAXA_CLASSIFICACAO'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = ',0.00 %'
               Options.Editing = False
               Width = 83
             end
-            object viewRegistrosSALDO: TcxGridDBColumn [10]
+            object viewRegistrosSALDO: TcxGridDBColumn [8]
               DataBinding.FieldName = 'SALDO'
               Options.Editing = False
               Width = 105
             end
-            object viewRegistrosDATA_CLASSIFICACAO: TcxGridDBColumn [11]
-              DataBinding.FieldName = 'DATA_CLASSIFICACAO'
-              Visible = False
+            object viewRegistrosDATA: TcxGridDBColumn [9]
+              DataBinding.FieldName = 'DATA'
               Options.Editing = False
-              Width = 119
+              Width = 90
             end
-            object viewRegistrosID_PESSOA_CLASSIFICOU: TcxGridDBColumn [12]
-              DataBinding.FieldName = 'ID_PESSOA_CLASSIFICOU'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosPESSOA_CLASSIFICOU: TcxGridDBColumn [13]
-              DataBinding.FieldName = 'PESSOA_CLASSIFICOU'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosSTATUS: TcxGridDBColumn [14]
+            object viewRegistrosSTATUS: TcxGridDBColumn [10]
               DataBinding.FieldName = 'STATUS'
               RepositoryItem = dmLookup.repIcbStatusMudas
               Options.Editing = False
@@ -185,6 +164,153 @@ inherited frmLoteMuda: TfrmLoteMuda
             inherited ColumnExcluir: TcxGridDBColumn
               MinWidth = 44
               Width = 44
+            end
+          end
+        end
+        inherited pnDetail: TPanel
+          inherited pcDetails: TcxPageControl
+            OnChange = pcDetailsChange
+            inherited tabDetail: TcxTabSheet
+              Caption = 'Classifica'#231#245'es'
+              inherited cxGridRegistrosDetail: TcxGrid
+                inherited viewRegistrosDetail: TcxGridDBTableView
+                  object viewRegistrosDetailID: TcxGridDBColumn [0]
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                    Width = 41
+                  end
+                  object viewRegistrosDetailID_PESSOA_CLASSIFICOU: TcxGridDBColumn [1]
+                    DataBinding.FieldName = 'ID_PESSOA_CLASSIFICOU'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailDATA: TcxGridDBColumn [2]
+                    DataBinding.FieldName = 'DATA'
+                    Options.Editing = False
+                    SortIndex = 0
+                    SortOrder = soDescending
+                    Width = 139
+                  end
+                  object viewRegistrosDetailQTDE: TcxGridDBColumn [3]
+                    DataBinding.FieldName = 'QTDE'
+                    RepositoryItem = dmLookup.repCalcInteiro
+                    Options.Editing = False
+                    Width = 131
+                  end
+                  object viewRegistrosDetailPESSOA_CLASSIFICOU: TcxGridDBColumn [4]
+                    DataBinding.FieldName = 'PESSOA_CLASSIFICOU'
+                    Options.Editing = False
+                    Width = 535
+                  end
+                end
+              end
+            end
+            object tabDetailCanteiros: TcxTabSheet
+              Caption = 'Canteiros'
+              ImageIndex = 1
+              object pnBotoesCanteiro: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = 8
+                object btnIncluirCanteiro: TButton
+                  Left = 1
+                  Top = 1
+                  Width = 81
+                  Height = 23
+                  Action = Ac_Incluir_Detail
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGrid1: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 131
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object viewCanteiros: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsLote_Muda_Canteiro
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewCanteirosID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewCanteirosID_CANTEIRO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_CANTEIRO'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewCanteirosNOME_CANTEIRO: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_CANTEIRO'
+                    Options.Editing = False
+                  end
+                  object ColumnAlterarCanteiro: TcxGridDBColumn
+                    Caption = 'Alterar'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Alterar_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                  object ColumnExcluirCanteiro: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Detail
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                  end
+                end
+                object level1: TcxGridLevel
+                  GridView = viewCanteiros
+                end
+              end
             end
           end
         end
@@ -299,84 +425,6 @@ inherited frmLoteMuda: TfrmLoteMuda
           TabOrder = 6
           Height = 146
           Width = 659
-          object Label8: TLabel
-            Left = 5
-            Top = 16
-            Width = 131
-            Height = 13
-            Caption = 'Pessoa que Classificou (F2)'
-            FocusControl = cbPessoaClassificou
-          end
-          object Label10: TLabel
-            Left = 209
-            Top = 15
-            Width = 102
-            Height = 13
-            Caption = 'Data da Classifica'#231#227'o'
-            FocusControl = EditDataClassificacao
-          end
-          object Label9: TLabel
-            Left = 335
-            Top = 16
-            Width = 86
-            Height = 13
-            Caption = 'Quantidade (Und)'
-            FocusControl = EditQtdeClassificada
-          end
-          object Label11: TLabel
-            Left = 5
-            Top = 58
-            Width = 58
-            Height = 13
-            Caption = 'Observa'#231#227'o'
-            FocusControl = EditObservacaoClassificacao
-          end
-          object cbPessoaClassificou: TcxDBLookupComboBox
-            Left = 3
-            Top = 31
-            RepositoryItem = dmLookup.repLcbPessoa
-            DataBinding.DataField = 'ID_PESSOA_CLASSIFICOU'
-            DataBinding.DataSource = dsMaster
-            Properties.ListColumns = <>
-            TabOrder = 0
-            OnKeyDown = cbPessoaClassificouKeyDown
-            Width = 173
-          end
-          object btnPesquisar_Pessoa_Semeadura: TButton
-            Left = 178
-            Top = 31
-            Width = 22
-            Height = 21
-            Action = Ac_Pesquisar_Pessoa_Classificou
-            Images = dmPrincipal.imgIcons_16
-            TabOrder = 1
-            TabStop = False
-          end
-          object EditDataClassificacao: TcxDBDateEdit
-            Left = 206
-            Top = 31
-            DataBinding.DataField = 'DATA_CLASSIFICACAO'
-            DataBinding.DataSource = dsMaster
-            TabOrder = 2
-            Width = 121
-          end
-          object EditQtdeClassificada: TcxDBSpinEdit
-            Left = 333
-            Top = 31
-            DataBinding.DataField = 'QTDE_CLASSIFICADA'
-            DataBinding.DataSource = dsMaster
-            TabOrder = 3
-            Width = 115
-          end
-          object EditObservacaoClassificacao: TcxDBMemo
-            Left = 3
-            Top = 74
-            DataBinding.DataField = 'OBSERVACAO_CLASSIFICACAO'
-            DataBinding.DataSource = dsMaster
-            TabOrder = 4
-            Height = 63
-            Width = 654
-          end
         end
         object cbStatusMuda: TcxDBImageComboBox
           Left = 671
@@ -390,6 +438,156 @@ inherited frmLoteMuda: TfrmLoteMuda
         end
       end
     end
+    inherited tabCadastroDetail: TcxTabSheet
+      inherited pnEditsCadastroDetail: TPanel
+        ExplicitLeft = 4
+        ExplicitTop = 52
+        object Label8: TLabel
+          Left = 5
+          Top = 8
+          Width = 131
+          Height = 13
+          Caption = 'Pessoa que Classificou (F2)'
+          FocusControl = cbPessoaClassificou
+        end
+        object Label10: TLabel
+          Left = 209
+          Top = 7
+          Width = 102
+          Height = 13
+          Caption = 'Data da Classifica'#231#227'o'
+          FocusControl = EditDataClassificacao
+        end
+        object Label9: TLabel
+          Left = 335
+          Top = 8
+          Width = 86
+          Height = 13
+          Caption = 'Quantidade (Und)'
+          FocusControl = EditQtdeClassificada
+        end
+        object Label11: TLabel
+          Left = 5
+          Top = 50
+          Width = 58
+          Height = 13
+          Caption = 'Observa'#231#227'o'
+          FocusControl = EditObservacaoClassificacao
+        end
+        object cbPessoaClassificou: TcxDBLookupComboBox
+          Left = 3
+          Top = 23
+          RepositoryItem = dmLookup.repLcbPessoa
+          DataBinding.DataField = 'ID_PESSOA_CLASSIFICOU'
+          DataBinding.DataSource = dsDetail
+          Properties.ListColumns = <>
+          TabOrder = 0
+          OnKeyDown = cbPessoaClassificouKeyDown
+          Width = 173
+        end
+        object btnPesquisar_Pessoa_Semeadura: TButton
+          Left = 178
+          Top = 23
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Pessoa_Classificou
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 1
+          TabStop = False
+        end
+        object EditDataClassificacao: TcxDBDateEdit
+          Left = 206
+          Top = 23
+          DataBinding.DataField = 'DATA'
+          DataBinding.DataSource = dsDetail
+          TabOrder = 2
+          Width = 121
+        end
+        object EditQtdeClassificada: TcxDBSpinEdit
+          Left = 333
+          Top = 23
+          DataBinding.DataField = 'QTDE'
+          DataBinding.DataSource = dsDetail
+          Properties.DisplayFormat = ',0'
+          TabOrder = 3
+          Width = 115
+        end
+        object EditObservacaoClassificacao: TcxDBMemo
+          Left = 3
+          Top = 66
+          DataBinding.DataField = 'OBSERVACAO'
+          DataBinding.DataSource = dsDetail
+          TabOrder = 4
+          Height = 63
+          Width = 445
+        end
+      end
+    end
+    object tabCadastroCanteiro: TcxTabSheet
+      Caption = 'tabCadastroCanteiro'
+      ImageIndex = 3
+      object lb1: TLabel
+        Left = 5
+        Top = 56
+        Width = 41
+        Height = 13
+        Caption = 'Canteiro'
+        FocusControl = cbCanteiro
+      end
+      object pnBotoesCadastrarCanteiro: TPanel
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 50
+        Align = alTop
+        TabOrder = 1
+        ExplicitTop = 8
+        object btnSalvarCanteiro: TButton
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Salvar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 0
+        end
+        object btnCancelarCanteiro: TButton
+          AlignWithMargins = True
+          Left = 215
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Cancelar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 2
+        end
+        object btnSalvarIncluirCanteiro: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 114
+          Height = 42
+          Action = Ac_Salvar_Incluir_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 1
+        end
+      end
+      object cbCanteiro: TcxDBLookupComboBox
+        Left = 3
+        Top = 71
+        RepositoryItem = dmLookup.repLcbCanteiro
+        DataBinding.DataField = 'ID_CANTEIRO'
+        DataBinding.DataSource = dsLote_Muda_Canteiro
+        Properties.ListColumns = <>
+        TabOrder = 0
+        OnKeyDown = cbPessoaClassificouKeyDown
+        Width = 173
+      end
+    end
   end
   inherited ActionList1: TActionList
     object Ac_Pesquisar_Pessoa_Classificou: TAction
@@ -400,5 +598,13 @@ inherited frmLoteMuda: TfrmLoteMuda
   end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsLote_Muda
+  end
+  inherited dsDetail: TDataSource
+    DataSet = dmViveiro.cdsClassificacao
+  end
+  object dsLote_Muda_Canteiro: TDataSource
+    DataSet = dmViveiro.cdsLote_Muda_Canteiro
+    Left = 488
+    Top = 240
   end
 end

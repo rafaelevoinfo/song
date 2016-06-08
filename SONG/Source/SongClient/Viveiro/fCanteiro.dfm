@@ -1,7 +1,6 @@
 inherited frmCanteiro: TfrmCanteiro
   ActiveControl = btnSalvar
   Caption = 'Canteiros'
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl

@@ -347,15 +347,19 @@ inherited dmLookup: TdmLookup
         end>
     end
     object repLcbFornecedor: TcxEditRepositoryLookupComboBoxItem
+      Properties.CaseSensitiveSearch = True
       Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 150
           FieldName = 'RAZAO_SOCIAL'
         end
         item
+          Width = 150
           FieldName = 'NOME_FANTASIA'
         end>
       Properties.ListSource = dslkFornecedor
@@ -630,6 +634,9 @@ inherited dmLookup: TdmLookup
           Description = 'Prontas para Plantio'
           Value = 1
         end>
+    end
+    object repCalcInteiro: TcxEditRepositoryCalcItem
+      Properties.DisplayFormat = ',0'
     end
   end
   object dslkPerfil: TDataSource

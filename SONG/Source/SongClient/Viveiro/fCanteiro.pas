@@ -16,6 +16,14 @@ uses
   System.TypInfo, uControleAcesso, dmuPrincipal, uTypes;
 
 type
+    TCanteiro = class(TModelo)
+  private
+    FNome: String;
+    procedure SetNome(const Value: String);
+  published
+      property Nome:String read FNome write SetNome;
+  end;
+
   TfrmCanteiro = class(TfrmBasicoCrud)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosNOME: TcxGridDBColumn;
@@ -59,6 +67,13 @@ begin
   inherited;
   if not dmPrincipal.FuncoesViveiro.fpuValidarNomeCanteiro(dmViveiro.cdsMatrizID.AsInteger, dmViveiro.cdsMatrizNOME.AsString) then
     raise Exception.Create('Já existe um canteiro com este nome. Por favor, informe outro nome.');
+end;
+
+{ TCanteiro }
+
+procedure TCanteiro.SetNome(const Value: String);
+begin
+  FNome := Value;
 end;
 
 end.

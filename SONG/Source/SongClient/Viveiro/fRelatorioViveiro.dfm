@@ -92,6 +92,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               Width = 397
               Height = 318
               ExplicitWidth = 397
+              ExplicitHeight = 318
               inherited viewEsquerda: TcxGridDBTableView
                 OptionsCustomize.ColumnsQuickCustomization = True
               end
@@ -122,9 +123,11 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               Height = 318
               ExplicitLeft = 440
               ExplicitWidth = 407
+              ExplicitHeight = 318
               inherited viewDireita: TcxGridDBTableView
                 OptionsCustomize.ColumnsQuickCustomization = True
                 OptionsData.Editing = True
+                OptionsView.ColumnAutoWidth = True
               end
             end
           end
@@ -146,15 +149,20 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
                 end>
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
-                Width = 41
-                Caption = 'Esp'#233'cies'
-                ExplicitWidth = 41
+                Width = 114
+                Caption = 'Esp'#233'cies dispon'#237'veis'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 439
-                Width = 105
+                Width = 124
                 Caption = 'Esp'#233'cies selecionadas'
-                ExplicitWidth = 105
+                Font.Style = [fsBold]
+                ParentFont = False
+                ExplicitLeft = 439
+                ExplicitWidth = 124
               end
             end
           end
@@ -799,54 +807,65 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       ProviderFlags = []
     end
     object cdsEspecieSelecionadaNOME: TStringField
+      DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsEspecieSelecionadaNOME_CIENTIFICO: TStringField
+      DisplayLabel = 'Nome cient'#237'fico'
       FieldName = 'NOME_CIENTIFICO'
       ProviderFlags = []
       Size = 100
     end
     object cdsEspecieSelecionadaFAMILIA_BOTANICA: TStringField
+      DisplayLabel = 'Fam'#237'lia Bot'#226'nica'
       FieldName = 'FAMILIA_BOTANICA'
       ProviderFlags = []
       Size = 100
     end
     object cdsEspecieSelecionadaTEMPO_GERMINACAO: TIntegerField
+      DisplayLabel = 'Tempo de Germina'#231#227'o'
       FieldName = 'TEMPO_GERMINACAO'
       ProviderFlags = []
     end
     object cdsEspecieSelecionadaTEMPO_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Tempo de Desenvolvimento'
       FieldName = 'TEMPO_DESENVOLVIMENTO'
       ProviderFlags = []
     end
     object cdsEspecieSelecionadaTAXA_CLASSIFICACAO: TBCDField
+      DisplayLabel = 'Taxa de Classifica'#231#227'o'
       FieldName = 'TAXA_CLASSIFICACAO'
       ProviderFlags = []
       Precision = 18
       Size = 2
     end
     object cdsEspecieSelecionadaTAXA_GERMINACAO: TBCDField
+      DisplayLabel = 'Taxa de Germina'#231#227'o'
       FieldName = 'TAXA_GERMINACAO'
       ProviderFlags = []
       Precision = 18
       Size = 2
     end
     object cdsEspecieSelecionadaQTDE_MUDA_PRONTA: TIntegerField
+      DisplayLabel = 'Qtde. de Muda Pronta'
       FieldName = 'QTDE_MUDA_PRONTA'
       ProviderFlags = []
     end
     object cdsEspecieSelecionadaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Qtde. de Muda em Desenvolvimento'
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = []
     end
     object cdsEspecieSelecionadaQTDE_SEMENTE_ESTOQUE: TBCDField
+      DisplayLabel = 'Qtde. de Semente em Estoque'
       FieldName = 'QTDE_SEMENTE_ESTOQUE'
       Precision = 18
       Size = 2
     end
     object cdsEspecieSelecionadaQTDE_SEMENTE_KILO: TIntegerField
+      DisplayLabel = 'Qtde. de Sementes Por Kilo'
       FieldName = 'QTDE_SEMENTE_KILO'
     end
   end

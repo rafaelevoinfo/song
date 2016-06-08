@@ -44,10 +44,12 @@ object frameGrids: TframeGrids
     object cxGrid1: TcxGrid
       Left = 1
       Top = 1
-      Width = 390
-      Height = 429
+      Width = 455
+      Height = 299
       Align = alClient
       TabOrder = 0
+      ExplicitWidth = 390
+      ExplicitHeight = 429
       object viewEsquerda: TcxGridDBTableView
         OnDblClick = viewEsquerdaDblClick
         Navigator.Buttons.CustomButtons = <>
@@ -67,13 +69,16 @@ object frameGrids: TframeGrids
       end
     end
     object pnBotoes: TPanel
-      Left = 391
+      Left = 456
       Top = 1
-      Width = 41
-      Height = 429
+      Width = 48
+      Height = 299
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitLeft = 391
+      ExplicitWidth = 41
+      ExplicitHeight = 429
       object btnAdd: TButton
         Left = 0
         Top = 0
@@ -116,12 +121,15 @@ object frameGrids: TframeGrids
       end
     end
     object cxGrid2: TcxGrid
-      Left = 432
+      Left = 504
       Top = 1
-      Width = 399
-      Height = 429
+      Width = 467
+      Height = 299
       Align = alClient
       TabOrder = 2
+      ExplicitLeft = 432
+      ExplicitWidth = 399
+      ExplicitHeight = 429
       object viewDireita: TcxGridDBTableView
         OnDblClick = viewDireitaDblClick
         Navigator.Buttons.CustomButtons = <>
@@ -190,12 +198,13 @@ object frameGrids: TframeGrids
         ExplicitHeight = 13
       end
       object lbInfoGridDireita: TLabel
-        Left = 431
+        Left = 503
         Top = 1
         Width = 69
         Height = 15
         Align = alLeft
         Caption = 'Info da Direita'
+        ExplicitLeft = 431
         ExplicitHeight = 13
       end
     end

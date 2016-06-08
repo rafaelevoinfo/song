@@ -176,9 +176,9 @@ end;
 procedure TfrmPrincipal.ppvAtualizarStatus;
 begin
   if dmPrincipal.Server.Started then
-    lbStatus.Caption := 'Online'
+    lbStatus.Caption := 'Ligado'
   else
-    lbStatus.Caption := 'Offline';
+    lbStatus.Caption := 'Desligado';
 end;
 
 procedure TfrmPrincipal.ppvIniciarFinalizarServidor(ipIniciar: Boolean);

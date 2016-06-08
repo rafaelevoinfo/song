@@ -88,12 +88,7 @@ type
     qLote_MudaQTDE_INICIAL: TIntegerField;
     qLote_MudaDATA: TDateField;
     qLote_MudaOBSERVACAO: TStringField;
-    qLote_MudaDATA_CLASSIFICACAO: TDateField;
-    qLote_MudaQTDE_CLASSIFICADA: TIntegerField;
-    qLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField;
-    qLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField;
     qLote_MudaSALDO: TIntegerField;
-    qLote_MudaPESSOA_CLASSIFICOU: TStringField;
     qLote_MudaTAXA_CLASSIFICACAO: TBCDField;
     qLote_MudaNOME_ESPECIE: TStringField;
     qLote_MudaSTATUS: TSmallintField;
@@ -104,6 +99,20 @@ type
     dspqLote_Semente: TDataSetProvider;
     dspqSemeadura: TDataSetProvider;
     dspqGerminacao: TDataSetProvider;
+    qClassificacao: TRFQuery;
+    qLote_Muda_Canteiro: TRFQuery;
+    qLote_Muda_CanteiroID: TIntegerField;
+    qLote_Muda_CanteiroID_LOTE_MUDA: TIntegerField;
+    qLote_Muda_CanteiroID_CANTEIRO: TIntegerField;
+    qLote_Muda_CanteiroNOME_CANTEIRO: TStringField;
+    qClassificacaoID: TIntegerField;
+    qClassificacaoID_LOTE_MUDA: TIntegerField;
+    qClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
+    qClassificacaoDATA: TDateField;
+    qClassificacaoQTDE: TIntegerField;
+    qClassificacaoOBSERVACAO: TStringField;
+    qClassificacaoPESSOA_CLASSIFICOU: TStringField;
+    dspqClassificacao: TDataSetProvider;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -114,6 +123,9 @@ type
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
     procedure dspqGerminacaoAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
+    procedure dspqClassificacaoAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
   private
@@ -132,6 +144,24 @@ implementation
 
 {$R *.dfm}
 { TsmViveiro }
+
+procedure TsmViveiro.dspqClassificacaoAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  inherited;
+  qAux.Close;
+  qAux.SQL.Text := 'select Lote_Muda.Id_Especie ' +
+    ' from Classificacao ' +
+    ' inner join Lote_Muda on (Lote_Muda.Id = Classificacao.Id_Lote_Muda)' +
+    ' where Classificacao.Id = :Id';
+  qAux.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID').OldValue;
+  qAux.Open;
+
+  dmPrincipal.Connection.ExecSQL('execute procedure sp_ajusta_saldo_especie(' +
+    VarToStr(qAux.FieldByName('ID_ESPECIE').AsInteger) + ',1,0)');
+
+  dmPrincipal.Connection.Commit;
+end;
 
 procedure TsmViveiro.dspqGerminacaoAfterUpdateRecord(Sender: TObject;
   SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);

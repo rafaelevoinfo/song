@@ -53,6 +53,8 @@ type
     destructor Destroy; override;
     procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipRepositorio: TcxEditRepositoryItem); overload;
     procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean); overload;
+    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible, ipEditavel: Boolean); overload;
+    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible, ipEditavel: Boolean;ipRepositorio: TcxEditRepositoryItem); overload;
     procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean; ipRepositorio: TcxEditRepositoryItem); overload;
     procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string); overload;
 
@@ -236,6 +238,13 @@ end;
 
 procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean;
   ipRepositorio: TcxEditRepositoryItem);
+begin
+  ppuAdicionarField(ipview, ipFieldName,ipVisible,false,ipRepositorio);
+end;
+
+procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView;
+  ipFieldName: string; ipVisible, ipEditavel: Boolean;
+  ipRepositorio: TcxEditRepositoryItem);
 var
   vaColumn: TcxGridDBColumn;
 begin
@@ -243,6 +252,7 @@ begin
   vaColumn.DataBinding.FieldName := ipFieldName;
   vaColumn.RepositoryItem := ipRepositorio;
   vaColumn.Visible := ipVisible;
+  vaColumn.Options.Editing := ipEditavel;
   vaColumn.Width := 150;
 end;
 
@@ -255,6 +265,12 @@ procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView;
   ipFieldName: string);
 begin
   ppuAdicionarField(ipView, ipFieldName, true);
+end;
+
+procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView;
+  ipFieldName: string; ipVisible, ipEditavel: Boolean);
+begin
+   ppuAdicionarField(ipView,ipFieldName,ipVisible,ipEditavel, nil);
 end;
 
 end.

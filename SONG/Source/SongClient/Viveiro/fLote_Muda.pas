@@ -16,21 +16,38 @@ uses
   dmuViveiro, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
   uTypes, uClientDataSet, System.DateUtils, cxCalc, cxDBEdit, cxSpinEdit,
   cxMemo, fPessoa, dmuPrincipal, uUtils, uExceptions, fBasicoCrud,
-  fBasicoCrudMasterDetail;
+  fBasicoCrudMasterDetail, fCanteiro;
 
 type
   TLoteMuda = class(TLote)
   private
-    FQtdeClassificada: Integer;
     FIdLoteSemente: Integer;
-    procedure SetQtdeClassificada(const Value: Integer);
+    FStatus: TStatusMuda;
     procedure SetIdLoteSemente(const Value: Integer);
+    procedure SetStatus(const Value: TStatusMuda);
   public
-    property QtdeClassificada: Integer read FQtdeClassificada write SetQtdeClassificada;
-    property IdLoteSemente:Integer read FIdLoteSemente write SetIdLoteSemente;
+    property IdLoteSemente: Integer read FIdLoteSemente write SetIdLoteSemente;
+    property Status: TStatusMuda read FStatus write SetStatus;
   end;
 
-  TfrmLoteMuda = class(TfrmBasicoCrud)
+  TClassificacao = class(TModelo)
+  private
+    FObservacao: String;
+    FQtde: Integer;
+    FIdPessoaClassificou: Integer;
+    FData: TDate;
+    procedure SetData(const Value: TDate);
+    procedure SetIdPessoaClassificou(const Value: Integer);
+    procedure SetObservacao(const Value: String);
+    procedure SetQtde(const Value: Integer);
+  public
+    property Qtde: Integer read FQtde write SetQtde;
+    property Data: TDate read FData write SetData;
+    property IdPessoaClassificou: Integer read FIdPessoaClassificou write SetIdPessoaClassificou;
+    property Observacao: String read FObservacao write SetObservacao;
+  end;
+
+  TfrmLoteMuda = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_ESPECIE: TcxGridDBColumn;
     viewRegistrosNOME: TcxGridDBColumn;
@@ -52,6 +69,21 @@ type
     Label4: TLabel;
     EditQtdeInicial: TcxDBSpinEdit;
     cxGroupBox1: TcxGroupBox;
+    viewRegistrosID_COMPRA_ITEM: TcxGridDBColumn;
+    viewRegistrosID_LOTE_SEMENTE: TcxGridDBColumn;
+    viewRegistrosSALDO: TcxGridDBColumn;
+    cbStatusMuda: TcxDBImageComboBox;
+    Label6: TLabel;
+    viewRegistrosSTATUS: TcxGridDBColumn;
+    cbPesquisaStatusMuda: TcxImageComboBox;
+    tabDetailCanteiros: TcxTabSheet;
+    pnBotoesCanteiro: TPanel;
+    btnIncluirCanteiro: TButton;
+    cxGrid1: TcxGrid;
+    viewCanteiros: TcxGridDBTableView;
+    ColumnAlterarCanteiro: TcxGridDBColumn;
+    ColumnExcluirCanteiro: TcxGridDBColumn;
+    level1: TcxGridLevel;
     Label8: TLabel;
     cbPessoaClassificou: TcxDBLookupComboBox;
     btnPesquisar_Pessoa_Semeadura: TButton;
@@ -61,21 +93,27 @@ type
     EditQtdeClassificada: TcxDBSpinEdit;
     Label11: TLabel;
     EditObservacaoClassificacao: TcxDBMemo;
-    viewRegistrosID_COMPRA_ITEM: TcxGridDBColumn;
-    viewRegistrosID_LOTE_SEMENTE: TcxGridDBColumn;
-    viewRegistrosDATA_CLASSIFICACAO: TcxGridDBColumn;
-    viewRegistrosQTDE_CLASSIFICADA: TcxGridDBColumn;
-    viewRegistrosID_PESSOA_CLASSIFICOU: TcxGridDBColumn;
-    viewRegistrosSALDO: TcxGridDBColumn;
-    viewRegistrosPESSOA_CLASSIFICOU: TcxGridDBColumn;
-    cbStatusMuda: TcxDBImageComboBox;
-    Label6: TLabel;
-    viewRegistrosSTATUS: TcxGridDBColumn;
-    cbPesquisaStatusMuda: TcxImageComboBox;
+    tabCadastroCanteiro: TcxTabSheet;
+    pnBotoesCadastrarCanteiro: TPanel;
+    btnSalvarCanteiro: TButton;
+    btnCancelarCanteiro: TButton;
+    btnSalvarIncluirCanteiro: TButton;
+    lb1: TLabel;
+    cbCanteiro: TcxDBLookupComboBox;
+    viewRegistrosDetailID: TcxGridDBColumn;
+    viewRegistrosDetailID_PESSOA_CLASSIFICOU: TcxGridDBColumn;
+    viewRegistrosDetailDATA: TcxGridDBColumn;
+    viewRegistrosDetailQTDE: TcxGridDBColumn;
+    viewRegistrosDetailPESSOA_CLASSIFICOU: TcxGridDBColumn;
+    dsLote_Muda_Canteiro: TDataSource;
+    viewCanteirosID: TcxGridDBColumn;
+    viewCanteirosID_CANTEIRO: TcxGridDBColumn;
+    viewCanteirosNOME_CANTEIRO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_Pessoa_ClassificouExecute(Sender: TObject);
+    procedure pcDetailsChange(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
@@ -84,10 +122,15 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     procedure pprEfetuarPesquisa; override;
     procedure pprValidarDados; override;
-    procedure pprValidarPesquisa;override;
+    procedure pprValidarPesquisa; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
-
     procedure pprCarregarDadosModelo; override;
+
+    // Detail
+    procedure pprValidarDadosDetail; override;
+    procedure pprDefinirTabDetailCadastro; override;
+    procedure pprBeforeAlterarDetail; override;
+    procedure pprCarregarDadosModeloDetail; override;
 
   public
     procedure ppuIncluir; override;
@@ -131,11 +174,35 @@ begin
 
   PesquisaPadrao := Ord(tppData);
 
-  dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
-  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   EditDataInicialPesquisa.Date := IncDay(Now, -7);
   EditDataFinalPesquisa.Date := Now;
 
+  dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
+  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+
+end;
+
+procedure TfrmLoteMuda.pcDetailsChange(Sender: TObject);
+begin
+  inherited;
+  if pcDetails.ActivePage = tabDetail then
+    dsDetail.DataSet := dmViveiro.cdsClassificacao
+  else if pcDetails.ActivePage = tabDetailCanteiros then
+    dsDetail.DataSet := dmViveiro.cdsLote_Muda_Canteiro;
+
+  if not dsDetail.DataSet.Active then
+    dsDetail.DataSet.Open;
+end;
+
+procedure TfrmLoteMuda.pprBeforeAlterarDetail;
+begin
+  inherited;
+  if dsDetail.DataSet = dmViveiro.cdsClassificacao then
+    begin
+      dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsClassificacao, dmViveiro.cdsClassificacaoID_PESSOA_CLASSIFICOU.FieldName,
+        dmViveiro.cdsClassificacaoPESSOA_CLASSIFICOU.FieldName);
+    end;
 end;
 
 procedure TfrmLoteMuda.pprCarregarDadosModelo;
@@ -143,7 +210,7 @@ var
   vaLote: TLoteMuda;
 begin
   inherited;
-  if (ModoExecucao in [meSomenteCadastro,meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TLoteMuda) then
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TLoteMuda) then
     begin
       vaLote := TLoteMuda(Modelo);
       dmViveiro.cdsLote_Muda.Edit;
@@ -163,13 +230,50 @@ begin
       if (vaLote.IdItemCompra <> 0) and (dmViveiro.cdsLote_MudaID_COMPRA_ITEM.AsInteger <> vaLote.IdItemCompra) then
         dmViveiro.cdsLote_MudaID_COMPRA_ITEM.AsInteger := vaLote.IdItemCompra;
 
-      if (vaLote.QtdeClassificada <> 0) and (dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger <> vaLote.QtdeClassificada) then
-        dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger := vaLote.QtdeClassificada;
-
       if (vaLote.IdLoteSemente <> 0) and (dmViveiro.cdsLote_MudaID_LOTE_SEMENTE.AsInteger <> vaLote.IdLoteSemente) then
         dmViveiro.cdsLote_MudaID_LOTE_SEMENTE.AsInteger := vaLote.IdLoteSemente;
     end;
 
+end;
+
+procedure TfrmLoteMuda.pprCarregarDadosModeloDetail;
+var
+  vaClassificacao: TClassificacao;
+  vaCanteiro: TCanteiro;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) then
+    begin
+      if (Modelo is TClassificacao) then
+        begin
+          vaClassificacao := TClassificacao(Modelo);
+          if not(dmViveiro.cdsClassificacao.state in [dsEdit, dsInsert]) then
+            dmViveiro.cdsClassificacao.Edit;
+
+          if (vaClassificacao.Qtde <> 0) and (dmViveiro.cdsClassificacaoQTDE.AsInteger <> vaClassificacao.Qtde) then
+            dmViveiro.cdsClassificacaoQTDE.AsInteger := vaClassificacao.Qtde;
+
+          if (vaClassificacao.Data <> 0) and (dmViveiro.cdsClassificacaoDATA.AsDateTime <> vaClassificacao.Data) then
+            dmViveiro.cdsClassificacaoDATA.AsDateTime := vaClassificacao.Data;
+
+          if (vaClassificacao.Observacao <> '') and (dmViveiro.cdsClassificacaoOBSERVACAO.AsString <> vaClassificacao.Observacao) then
+            dmViveiro.cdsClassificacaoOBSERVACAO.AsString := vaClassificacao.Observacao;
+
+          if (vaClassificacao.IdPessoaClassificou <> 0) and
+            (dmViveiro.cdsClassificacaoID_PESSOA_CLASSIFICOU.AsInteger <> vaClassificacao.IdPessoaClassificou) then
+            dmViveiro.cdsClassificacaoID_PESSOA_CLASSIFICOU.AsInteger := vaClassificacao.IdPessoaClassificou;
+        end
+      else if Modelo is TCanteiro then
+        begin
+          vaCanteiro := TCanteiro(Modelo);
+          if not(dmViveiro.cdsLote_Muda_Canteiro.state in [dsEdit, dsInsert]) then
+            dmViveiro.cdsLote_Muda_Canteiro.Edit;
+
+          if (vaCanteiro.Id <> 0) and (dmViveiro.cdsLote_Muda_CanteiroID_CANTEIRO.AsInteger <> vaCanteiro.Id) then
+            dmViveiro.cdsLote_Muda_CanteiroID_CANTEIRO.AsInteger := vaCanteiro.Id;
+
+        end;
+    end;
 end;
 
 procedure TfrmLoteMuda.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -184,44 +288,64 @@ begin
     ipCds.ppuAddParametro(TParametros.coLoteSemente, EditPesquisa.Text);
 end;
 
-procedure TfrmLoteMuda.pprEfetuarPesquisa;
+procedure TfrmLoteMuda.pprDefinirTabDetailCadastro;
 begin
   inherited;
-  dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsLote_Muda, dmViveiro.cdsLote_MudaID_PESSOA_CLASSIFICOU.FieldName,
-    dmViveiro.cdsLote_MudaPESSOA_CLASSIFICOU.FieldName);
+  if pcDetails.ActivePage = tabDetail then
+    pcPrincipal.ActivePage := tabCadastroDetail
+  else if pcDetails.ActivePage = tabDetailCanteiros then
+    pcPrincipal.ActivePage := tabCadastroCanteiro;
 end;
 
+procedure TfrmLoteMuda.pprEfetuarPesquisa;
+begin
+  dmViveiro.cdsClassificacao.Close;
+  dmViveiro.cdsLote_Muda_Canteiro.Close;
+  inherited;
+  dmViveiro.cdsLote_Muda_Canteiro.Open;
+  dmViveiro.cdsClassificacao.Open;
+end;
 
 procedure TfrmLoteMuda.pprValidarDados;
 begin
   inherited;
-  if dmViveiro.cdsLote_MudaQTDE_CLASSIFICADA.AsInteger > dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger then
-    raise TControlException.Create('A quantidade classificada não pode ser superior a quantidade inicial.', EditQtdeClassificada);
+
+end;
+
+procedure TfrmLoteMuda.pprValidarDadosDetail;
+begin
+  inherited;
+  if dsDetail.DataSet = dmViveiro.cdsClassificacao then
+    begin
+      if dmViveiro.cdsClassificacaoQTDE.AsInteger > dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger then
+        raise TControlException.Create('A quantidade classificada não pode ser superior a quantidade inicial.', EditQtdeClassificada);
+    end;
 end;
 
 procedure TfrmLoteMuda.pprValidarPesquisa;
 begin
   inherited;
   if cbPesquisaStatusMuda.visible and VarIsNull(cbPesquisaStatusMuda.EditValue) then
-    raise TControlException.Create('Informe o status a ser pesquisado.',cbPesquisaStatusMuda);
+    raise TControlException.Create('Informe o status a ser pesquisado.', cbPesquisaStatusMuda);
 
 end;
 
 procedure TfrmLoteMuda.ppuIncluir;
 begin
   inherited;
-  dmViveiro.cdsLote_MudaSTATUS.AsInteger := Ord(smDesenvolvimento);
+  if dmViveiro.cdsLote_MudaSTATUS.IsNull then
+    dmViveiro.cdsLote_MudaSTATUS.AsInteger := Ord(smDesenvolvimento);
 end;
 
 function TfrmLoteMuda.fprConfigurarControlesPesquisa: TWinControl;
 begin
   Result := inherited;
-  cbPesquisaStatusMuda.Visible := cbPesquisarPor.EditValue = coPesquisaStatus;
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaStatusMuda.Visible));
+  cbPesquisaStatusMuda.visible := cbPesquisarPor.EditValue = coPesquisaStatus;
+  EditPesquisa.visible := EditPesquisa.visible and (not(cbPesquisaStatusMuda.visible));
   if cbPesquisarPor.EditValue = coPesquisaLoteSemente then
     EditPesquisa.Properties.EditMask := '\d+(;\d+)*';
 
-  if cbPesquisaStatusMuda.Visible then
+  if cbPesquisaStatusMuda.visible then
     Result := cbPesquisaStatusMuda;
 end;
 
@@ -237,9 +361,31 @@ begin
   FIdLoteSemente := Value;
 end;
 
-procedure TLoteMuda.SetQtdeClassificada(const Value: Integer);
+procedure TLoteMuda.SetStatus(const Value: TStatusMuda);
 begin
-  FQtdeClassificada := Value;
+  FStatus := Value;
+end;
+
+{ TClassificacao }
+
+procedure TClassificacao.SetData(const Value: TDate);
+begin
+  FData := Value;
+end;
+
+procedure TClassificacao.SetIdPessoaClassificou(const Value: Integer);
+begin
+  FIdPessoaClassificou := Value;
+end;
+
+procedure TClassificacao.SetObservacao(const Value: String);
+begin
+  FObservacao := Value;
+end;
+
+procedure TClassificacao.SetQtde(const Value: Integer);
+begin
+  FQtde := Value;
 end;
 
 end.

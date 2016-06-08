@@ -388,35 +388,31 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 972
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
-                Width = 455
-                Height = 299
                 ExplicitWidth = 455
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
-                Left = 456
-                Width = 48
-                Height = 299
                 ExplicitLeft = 456
                 ExplicitWidth = 48
                 ExplicitHeight = 299
                 inherited btnAdd: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnAddTodos: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnRemover: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
                 inherited btnRemoverTodos: TButton
+                  Width = 48
                   ExplicitWidth = 48
                 end
               end
               inherited cxGrid2: TcxGrid
-                Left = 504
-                Width = 467
-                Height = 299
                 ExplicitLeft = 504
                 ExplicitWidth = 467
                 ExplicitHeight = 299
@@ -445,10 +441,8 @@ inherited frmLoteSemente: TfrmLoteSemente
                   ExplicitWidth = 110
                 end
                 inherited lbInfoGridDireita: TLabel
-                  Left = 503
                   Width = 92
                   Caption = 'Matr'#237'zes desse lote'
-                  ExplicitLeft = 503
                   ExplicitWidth = 92
                 end
               end
@@ -576,15 +570,7 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
-      inherited pnBotoesCadastroDetail: TPanel
-        TabOrder = 0
-      end
       inherited pnEditsCadastroDetail: TPanel
-        TabOrder = 1
         object Label8: TLabel
           Left = 6
           Top = 8
@@ -721,17 +707,13 @@ inherited frmLoteSemente: TfrmLoteSemente
     object tabCadastroGerminacao: TcxTabSheet
       Caption = 'tabCadastroGerminacao'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroGerminacao: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 0
+        TabOrder = 1
         object btnSalvar_Germinacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -773,7 +755,7 @@ inherited frmLoteSemente: TfrmLoteSemente
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 1
+        TabOrder = 0
         object Label12: TLabel
           Left = 4
           Top = 3

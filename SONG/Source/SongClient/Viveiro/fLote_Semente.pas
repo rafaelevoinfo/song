@@ -16,7 +16,8 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, fmGrids,
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
   uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
-  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit;
+  fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit,
+  fCanteiro;
 
 type
   TLoteSemente = class(TLote)
@@ -203,10 +204,15 @@ procedure TfrmLoteSemente.ppvGerarLoteMudas;
 var
   vaFrmLoteMuda: TfrmLoteMuda;
   vaLoteMuda: TLoteMuda;
+  vaIdsExcluir: TArray<Integer>;
 begin
   // realizando a entrada de muda
   vaFrmLoteMuda := TfrmLoteMuda.Create(nil);
   try
+    vaFrmLoteMuda.ModoSilencioso := true;
+    if not dmViveiro.cdsGerminacao.Active then
+      dmViveiro.cdsGerminacao.Open;
+
     dmViveiro.cdsGerminacao.Last; // ultimo registro cadastrado
 
     vaLoteMuda := TLoteMuda.Create;
@@ -221,6 +227,18 @@ begin
           vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteEdicao, vaLoteMuda);
           vaFrmLoteMuda.ppuAlterar(vaFrmLoteMuda.dsMaster.DataSet.FieldByName(TBancoDados.coId).AsInteger);
           vaFrmLoteMuda.ppuSalvar;
+          // vamos excluir todos os canteiros vinculados e cadastrar novamente
+          vaFrmLoteMuda.pcDetails.ActivePage := vaFrmLoteMuda.tabDetailCanteiros;
+
+          SetLength(vaIdsExcluir, vaFrmLoteMuda.dsLote_Muda_Canteiro.DataSet.RecordCount);
+          TUtils.ppuPercorrerCds(TClientDataSet(vaFrmLoteMuda.dsLote_Muda_Canteiro.DataSet),
+            procedure
+            begin
+              vaIdsExcluir[vaFrmLoteMuda.dsLote_Muda_Canteiro.DataSet.RecNo - 1] :=
+                vaFrmLoteMuda.dsLote_Muda_Canteiro.DataSet.FieldByName(TBancoDados.coId).AsInteger;
+            end);
+
+          vaFrmLoteMuda.fpuExcluirDetail(vaIdsExcluir);
         except
           on e: Exception do
             TMensagem.ppuShowException('Não foi possível alterar o lote de muda vinculado a este lote de semente. ' +
@@ -243,6 +261,26 @@ begin
         end;
       end;
 
+    // garantindo que esteja na aba certa
+    vaFrmLoteMuda.pcDetails.ActivePage := vaFrmLoteMuda.tabDetailCanteiros;
+    try
+      TUtils.ppuPercorrerCds(dmViveiro.cdsSemeadura,
+        procedure
+        var
+          vaCanteiro: TCanteiro;
+        begin
+          vaCanteiro := TCanteiro.Create;
+          vaCanteiro.Id := dmViveiro.cdsSemeaduraID_CANTEIRO.AsInteger;
+
+          vaFrmLoteMuda.Modelo := vaCanteiro;
+          vaFrmLoteMuda.ppuIncluirDetail;
+          vaFrmLoteMuda.ppuSalvarDetail;
+        end);
+    except
+      on e: Exception do
+        TMensagem.ppuShowException('Não foi possível incluir os canteiros no qual estão as mudas do lote gerado.s' +
+          'Será necessário incluí-los manualmente.', e);
+    end;
   finally
     vaFrmLoteMuda.Free;
   end;
@@ -455,11 +493,9 @@ procedure TfrmLoteSemente.pprExecutarSalvar;
 begin
   inherited;
 
-
   if (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0) then
     dmViveiro.cdsLote_Semente_Matriz.ApplyUpdates(0);
 end;
-
 
 procedure TfrmLoteSemente.pprValidarDadosDetail;
 begin

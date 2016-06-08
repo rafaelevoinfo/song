@@ -162,55 +162,66 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
     end
     object cdsTaxas_EspecieNOME: TStringField
+      DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsTaxas_EspecieNOME_CIENTIFICO: TStringField
+      DisplayLabel = 'Nome Cient'#237'fico'
       FieldName = 'NOME_CIENTIFICO'
       ProviderFlags = []
       Size = 100
     end
     object cdsTaxas_EspecieFAMILIA_BOTANICA: TStringField
+      DisplayLabel = 'Fam'#237'lia Bot'#226'nica'
       FieldName = 'FAMILIA_BOTANICA'
       ProviderFlags = []
       Size = 100
     end
     object cdsTaxas_EspecieTEMPO_GERMINACAO: TIntegerField
+      DisplayLabel = 'Tempo de Germina'#231#227'o'
       FieldName = 'TEMPO_GERMINACAO'
       ProviderFlags = []
     end
     object cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Tempo de Desenvolvimento'
       FieldName = 'TEMPO_DESENVOLVIMENTO'
       ProviderFlags = []
     end
     object cdsTaxas_EspecieTAXA_CLASSIFICACAO: TBCDField
+      DisplayLabel = 'Taxa de Classifica'#231#227'o'
       FieldName = 'TAXA_CLASSIFICACAO'
       ProviderFlags = []
       Precision = 18
       Size = 2
     end
     object cdsTaxas_EspecieTAXA_GERMINACAO: TBCDField
+      DisplayLabel = 'Taxa de Germina'#231#227'o'
       FieldName = 'TAXA_GERMINACAO'
       ProviderFlags = []
       Precision = 18
       Size = 2
     end
     object cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE: TBCDField
+      DisplayLabel = 'Qtde. de Semente em Estoque'
       FieldName = 'QTDE_SEMENTE_ESTOQUE'
       ProviderFlags = []
       Precision = 18
       Size = 2
     end
     object cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
+      DisplayLabel = 'Qtde. de Muda em Desenvolvimento'
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = []
     end
     object cdsTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField
+      DisplayLabel = 'Qtde. de Muda Pronta'
       FieldName = 'QTDE_MUDA_PRONTA'
       ProviderFlags = []
     end
     object cdsTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField
+      DisplayLabel = 'Qtde. de Semente Por Kilo'
       FieldName = 'QTDE_SEMENTE_KILO'
       ProviderFlags = []
     end

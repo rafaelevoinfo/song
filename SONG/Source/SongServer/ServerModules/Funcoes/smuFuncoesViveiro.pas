@@ -158,7 +158,7 @@ var
   vaEspecie: TEspecie;
   vaDataSet: TRFQuery;
   vaDataAtual, vaDataPrevisao, vaDataMudaPronta, vaDataMudaGerminada: TDateTime;
-  vaQtdeMudaPronta, vaQtdeMudaGerminada, vaQtdeMuda: Integer;
+  vaQtdeMudaPronta, vaQtdeMudaGerminada: Integer;
 
   function flGetEspecie(ipId: Integer): TEspecie;
   var
@@ -193,6 +193,8 @@ begin
     else
       cdsPrevisaoProducao.CreateDataSet;
     // ********************CONTABILIZANDO AS MUDAS QUE SERAO GERADAS A PARTIR DAS SEMENTES QUE SERAO SEMADAS***********
+    //nao posso pegar aqui a quantidad de muda em desenvolvimento  pois isso causaria uma duplicação quando
+    //chegasse na parte do codigo que calcula essas mudas. Portanto, vou deixar pra contabiliar somente lá.
     vaDataSet.SQL.Text := 'select Especie.Id,' +
       '       Especie.Nome,' +
       '       Especie.Nome_Cientifico,' +
@@ -200,7 +202,7 @@ begin
       '       Especie.Qtde_Semente_Kilo,' +
       '       Especie.Qtde_Semente_Estoque,' +
       '       Especie.Qtde_Muda_Pronta,' +
-      '       Especie.Qtde_Muda_Desenvolvimento' +
+      '       0 as Qtde_Muda_Desenvolvimento' + //nao posso pegar o valor do banco aqui pq senao vai duplicar
       ' from Especie' +
       ' where especie.id in (' + vaEspecies + ')';
     vaDataSet.Open;
@@ -254,7 +256,10 @@ begin
       ' inner join Semeadura on (Semeadura.Id_Lote_Semente = Lote_Semente.Id)' +
       ' left join Germinadas on (Germinadas.Id_Lote_Semente = Lote_Semente.Id)' +
       ' where Lote_Semente.Id_Especie in (' + vaEspecies + ') and' +
-      '      (Germinadas.id_lote_semente is null or ((select count(*)' +
+      '       ((Lote_Semente.status is null) or (lote_semente.status = 0)) and '+
+      //aqui vamos garantir que pegaremos somente lotes que ainda nao tem registro na tabela germinacao
+      //ou que tenha mas ainda nao tenha sido finalizado a fase de germinacao e portanto nao exista o lote de mudas
+      '      (Germinadas.data is null or ((select count(*)' +
       '                                  from Lote_Muda' +
       '                                  where Lote_Muda.Id_Lote_Semente = Lote_Semente.Id) = 0))';
     vaDataSet.Open;
@@ -294,10 +299,13 @@ begin
 
     vaDataSet.Close;
     vaDataSet.SQL.Text := 'select Lote_Muda.Id_Especie,' +
-      '       Lote_Muda.Qtde_Classificada, ' +
-      '       (Lote_Muda.Qtde_Inicial - (select sum(Saida_Item.Qtde)' +
+      '       (select first 1 classificacao.qtde' +
+      '                  from classificacao' +
+      '                  where classificacao.id_lote_muda = lote_muda.Id' +
+      '                  order by classificacao.Data desc) AS Qtde_Classificada, ' +
+      '       (Lote_Muda.Qtde_Inicial - coalesce((select sum(Saida_Item.Qtde)' +
       '                                  from Saida_Item' +
-      '                                  where Saida_Item.Id_Lote_Muda = Lote_Muda.Id)) as Saldo,' +
+      '                                  where Saida_Item.Id_Lote_Muda = Lote_Muda.Id),0)) as Saldo,' +
       '       Lote_Muda.Data' +
       ' from Lote_Muda' +
       ' where Lote_Muda.Id_Especie in (' + vaEspecies + ') and' +
@@ -306,8 +314,6 @@ begin
     vaDataSet.Open;
     while not vaDataSet.Eof do
       begin
-        // se o saldo ja for maior do que a quant classificada significa que a
-        // if vaDataSet.FieldByName('Saldo').AsInteger > vaDataSet.FieldByName('Qtde_Classificada').AsInteger then
         vaEspecie := flGetEspecie(vaDataSet.FieldByName('ID_ESPECIE').AsInteger);
         if cdsPrevisaoProducao.Locate(cdsPrevisaoProducaoID.FieldName, vaEspecie.Id, []) then
           begin
@@ -315,7 +321,7 @@ begin
             vaQtdeMudaPronta := Trunc(vaDataSet.FieldByName('SALDO').AsInteger * (vaEspecie.TaxaClassificacao / 100));
             // Se apos o calculo a qtde de muda pronta ainda for maior do que a quant já classificada então significa q
             // a taxa de classificacao nao funcionou, porntato vou pegar o valor da qtde_classficada
-            if vaQtdeMudaPronta > vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger then
+            if (vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger <> 0) and (vaQtdeMudaPronta > vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger) then
               vaQtdeMudaPronta := vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger;
 
             vaDataMudaPronta := IncDay(vaDataSet.FieldByName('DATA').AsDateTime, vaEspecie.TempoDesenvolvimento);

@@ -86,16 +86,24 @@ type
     cdsLote_SementeID_COMPRA_ITEM: TIntegerField;
     cdsLote_MudaID_COMPRA_ITEM: TIntegerField;
     cdsLote_MudaID_LOTE_SEMENTE: TIntegerField;
-    cdsLote_MudaDATA_CLASSIFICACAO: TDateField;
-    cdsLote_MudaQTDE_CLASSIFICADA: TIntegerField;
-    cdsLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField;
-    cdsLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField;
     cdsLote_MudaSALDO: TIntegerField;
-    cdsLote_MudaPESSOA_CLASSIFICOU: TStringField;
     cdsLote_MudaSTATUS: TSmallintField;
     cdsEspecieTEMPO_DESENVOLVIMENTO: TIntegerField;
     cdsEspecieQTDE_MUDA_PRONTA: TIntegerField;
     cdsEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    cdsLote_Muda_Canteiro: TRFClientDataSet;
+    cdsLote_Muda_CanteiroID: TIntegerField;
+    cdsLote_Muda_CanteiroID_LOTE_MUDA: TIntegerField;
+    cdsLote_Muda_CanteiroID_CANTEIRO: TIntegerField;
+    cdsLote_Muda_CanteiroNOME_CANTEIRO: TStringField;
+    cdsClassificacao: TRFClientDataSet;
+    cdsClassificacaoID: TIntegerField;
+    cdsClassificacaoID_LOTE_MUDA: TIntegerField;
+    cdsClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField;
+    cdsClassificacaoDATA: TDateField;
+    cdsClassificacaoQTDE: TIntegerField;
+    cdsClassificacaoOBSERVACAO: TStringField;
+    cdsClassificacaoPESSOA_CLASSIFICOU: TStringField;
   private
     { Private declarations }
   public

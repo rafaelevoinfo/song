@@ -8,14 +8,16 @@ uses
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   dxSkinsCore, dxSkinBlack, Vcl.StdCtrls, cxImage, cxProgressBar,
   dxGDIPlusClasses, fLogin, uMensagem, uTypes, uUtils, System.IOUtils,
-  Winapi.ShellAPI, System.Zip, System.ZLib, System.Types;
+  Winapi.ShellAPI, System.Zip, System.ZLib, System.Types, Vcl.ExtCtrls;
 
 type
   TfrmSplash = class(TfrmBasico)
-    cxImage1: TcxImage;
+    imgLogoOreades: TcxImage;
     Label7: TLabel;
     Label1: TLabel;
     pbProgresso: TcxProgressBar;
+    imgLogoSong: TcxImage;
+    pnBackground: TPanel;
     procedure FormCreate(Sender: TObject);
   private
     FDirAtualizacoes:string;
@@ -98,6 +100,7 @@ var
 
 begin
   inherited;
+
   vaNovoExecutavel := '';
   pbProgresso.Properties.Max := 2;
   pbProgresso.Position := 0;

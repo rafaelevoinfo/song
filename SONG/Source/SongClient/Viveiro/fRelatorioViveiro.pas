@@ -159,13 +159,10 @@ end;
 
 procedure TfrmRelatorioViveiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
-  vaIdOrganizacao: Integer;
   vaIdEspecie: Integer;
-  vaEspecies: TList<TEspecie>;
-  vaEspecie: TEspecie;
 begin
   inherited;
-  vaIdOrganizacao := fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
+  fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
   if pcPrincipal.ActivePage = tabSaldos then
     begin
       vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies, cbSaldoEspecie, 'Informe a espécie ou marque todas');
@@ -254,14 +251,14 @@ begin
   frameEspecies.ppuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_KILO.FieldName, false);
 
   // Direita
-  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId,false);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME.FieldName);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME_CIENTIFICO.FieldName, false);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieFAMILIA_BOTANICA.FieldName, false);
-  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_GERMINACAO.FieldName);
-  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName);
-  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName);
-  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_GERMINACAO.FieldName,true,true);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName,true,true);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName,true,true);
+  frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName,true,true);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE.FieldName, false);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO.FieldName, false);
   frameEspecies.ppuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_PRONTA.FieldName, false);

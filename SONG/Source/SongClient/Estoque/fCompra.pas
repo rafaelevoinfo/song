@@ -626,6 +626,7 @@ procedure TfrmCompra.ppvGerarEntradaMuda();
 var
   vaFrmLoteMuda: TfrmLoteMuda;
   vaLoteMuda: TLoteMuda;
+  vaClassificacao: TClassificacao;
 begin
   // realizando a entrada de muda
   vaFrmLoteMuda := TfrmLoteMuda.Create(nil);
@@ -641,11 +642,21 @@ begin
             vaLoteMuda.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
             vaLoteMuda.Nome := 'Compra de Muda';
             vaLoteMuda.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
-            vaLoteMuda.QtdeClassificada := dmEstoque.cdsCompra_ItemQTDE.AsInteger;
+            vaLoteMuda.Status := smProntaPlantio;
 
             vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
             vaFrmLoteMuda.ppuIncluir;
             vaFrmLoteMuda.ppuSalvar;
+
+            vaClassificacao := TClassificacao.Create;
+            vaClassificacao.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsInteger;
+            vaClassificacao.Data := dmEstoque.cdsCompraDATA.AsDateTime;
+            vaClassificacao.IdPessoaClassificou := dmEstoque.cdsCompraID_PESSOA_COMPROU.AsInteger;
+            vaClassificacao.Observacao := 'Mudas compradas';
+
+            vaFrmLoteMuda.Modelo := vaClassificacao;
+            vaFrmLoteMuda.ppuIncluirDetail;
+            vaFrmLoteMuda.ppuSalvarDetail;
 
           end;
         dmEstoque.cdsCompra_Item.Next;

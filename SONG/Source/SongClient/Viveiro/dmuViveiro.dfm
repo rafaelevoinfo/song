@@ -521,39 +521,11 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'ID_LOTE_SEMENTE'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsLote_MudaDATA_CLASSIFICACAO: TDateField
-      DisplayLabel = 'Data da Classifica'#231#227'o'
-      FieldName = 'DATA_CLASSIFICACAO'
-      ProviderFlags = [pfInUpdate]
-    end
-    object cdsLote_MudaQTDE_CLASSIFICADA: TIntegerField
-      DisplayLabel = 'Qtde. Classificada (Und)'
-      FieldName = 'QTDE_CLASSIFICADA'
-      ProviderFlags = [pfInUpdate]
-      DisplayFormat = ',0'
-    end
-    object cdsLote_MudaID_PESSOA_CLASSIFICOU: TIntegerField
-      DisplayLabel = 'Id da Pessoa que Classificou'
-      FieldName = 'ID_PESSOA_CLASSIFICOU'
-      ProviderFlags = [pfInUpdate]
-    end
-    object cdsLote_MudaOBSERVACAO_CLASSIFICACAO: TStringField
-      DisplayLabel = 'Observa'#231#227'o da Classifica'#231#227'o'
-      FieldName = 'OBSERVACAO_CLASSIFICACAO'
-      ProviderFlags = [pfInUpdate]
-      Size = 1000
-    end
     object cdsLote_MudaSALDO: TIntegerField
       DisplayLabel = 'Saldo (Und)'
       FieldName = 'SALDO'
       ProviderFlags = [pfInUpdate]
       DisplayFormat = ',0'
-    end
-    object cdsLote_MudaPESSOA_CLASSIFICOU: TStringField
-      DisplayLabel = 'Pessoa que Classificou'
-      FieldName = 'PESSOA_CLASSIFICOU'
-      ProviderFlags = []
-      Size = 100
     end
     object cdsLote_MudaSTATUS: TSmallintField
       Alignment = taLeftJustify
@@ -566,5 +538,98 @@ inherited dmViveiro: TdmViveiro
     DataSet = cdsLote_Muda
     Left = 172
     Top = 24
+  end
+  object cdsLote_Muda_Canteiro: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_LOTE_MUDA'
+    MasterFields = 'ID'
+    MasterSource = dsLote_Muda
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqLote_Muda_Canteiro'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 232
+    Top = 232
+    object cdsLote_Muda_CanteiroID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsLote_Muda_CanteiroID_LOTE_MUDA: TIntegerField
+      DisplayLabel = 'Id do Lote de Muda'
+      FieldName = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLote_Muda_CanteiroID_CANTEIRO: TIntegerField
+      DisplayLabel = 'Id do Canteiro'
+      FieldName = 'ID_CANTEIRO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsLote_Muda_CanteiroNOME_CANTEIRO: TStringField
+      DisplayLabel = 'Canteiro'
+      FieldName = 'NOME_CANTEIRO'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdsClassificacao: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_LOTE_MUDA'
+    MasterFields = 'ID'
+    MasterSource = dsLote_Muda
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_LOTE_MUDA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqClassificacao'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 344
+    Top = 240
+    object cdsClassificacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsClassificacaoID_LOTE_MUDA: TIntegerField
+      DisplayLabel = 'Id do Lote de Muda'
+      FieldName = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsClassificacaoID_PESSOA_CLASSIFICOU: TIntegerField
+      DisplayLabel = 'Id da Pessoa que Classificou'
+      FieldName = 'ID_PESSOA_CLASSIFICOU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsClassificacaoDATA: TDateField
+      DisplayLabel = 'Data da Classifica'#231#227'o'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsClassificacaoQTDE: TIntegerField
+      DisplayLabel = 'Quantidade'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsClassificacaoOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object cdsClassificacaoPESSOA_CLASSIFICOU: TStringField
+      DisplayLabel = 'Pessoa Classificou'
+      FieldName = 'PESSOA_CLASSIFICOU'
+      ProviderFlags = []
+      Size = 100
+    end
   end
 end
