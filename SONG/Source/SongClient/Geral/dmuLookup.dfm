@@ -637,6 +637,59 @@ inherited dmLookup: TdmLookup
     end
     object repCalcInteiro: TcxEditRepositoryCalcItem
       Properties.DisplayFormat = ',0'
+      Properties.ImmediatePost = True
+    end
+    object repIcbMeses: TcxEditRepositoryImageComboBoxItem
+      Properties.Items = <
+        item
+          Description = 'Janeiro'
+          ImageIndex = 0
+          Value = 1
+        end
+        item
+          Description = 'Fevereiro'
+          Value = 2
+        end
+        item
+          Description = 'Mar'#231'o'
+          Value = 3
+        end
+        item
+          Description = 'Abril'
+          Value = 4
+        end
+        item
+          Description = 'Maio'
+          Value = 5
+        end
+        item
+          Description = 'Junho'
+          Value = 6
+        end
+        item
+          Description = 'Julho'
+          Value = 7
+        end
+        item
+          Description = 'Agosto'
+          Value = 8
+        end
+        item
+          Description = 'Setembro'
+          Value = 9
+        end
+        item
+          Description = 'Outubro'
+          Value = 10
+        end
+        item
+          Description = 'Novembro'
+          Value = 11
+        end
+        item
+          Description = 'Dezembro'
+          Value = 12
+        end>
     end
   end
   object dslkPerfil: TDataSource

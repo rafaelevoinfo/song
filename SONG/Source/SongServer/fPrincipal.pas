@@ -14,7 +14,8 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, Datasnap.DBClient,
   cxGridLevel, cxGridCustomView, cxGrid, dxSkinscxPCPainter, System.IOUtils,
-  uMensagem, fAtualizacao, uUtils, uTypes;
+  uMensagem, fAtualizacao, uUtils, uTypes, cxButtonEdit, cxTimeEdit,
+  System.DateUtils, uBackup, FireDAC.Comp.Client;
 
 type
   TfrmPrincipal = class(TForm)
@@ -73,19 +74,33 @@ type
     viewAtualizacoesENDERECO: TcxGridDBColumn;
     viewAtualizacoesCALC_VERSAO: TcxGridDBColumn;
     cdsAtualizacoesVERSAO: TStringField;
+    tabBackup: TcxTabSheet;
+    EditEnderecoBackup: TcxButtonEdit;
+    Label10: TLabel;
+    Label9: TLabel;
+    EditEnderecoBackupRede: TcxButtonEdit;
+    Label11: TLabel;
+    EditEnderecoBackupFTP: TcxTextEdit;
+    tmrBackup: TTimer;
+    EditHoraBackup: TcxTimeEdit;
+    Label12: TLabel;
+    Label13: TLabel;
+    lbHoraUltimoBackup: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bttLigarDesligarClick(Sender: TObject);
     procedure btnAddAtualizacaoClick(Sender: TObject);
     procedure btnDelAtualizacaoClick(Sender: TObject);
+    procedure tmrBackupTimer(Sender: TObject);
   private
+    FHoraUltimoBackup: TDateTime;
     procedure ppvIniciarFinalizarServidor(ipIniciar: Boolean);
 
     procedure ppvAtualizarStatus;
     { Private declarations }
   public
-    procedure ppuAdicionarErroLog(ipException: Exception);overload;
-    procedure ppuAdicionarErroLog(ipErro:String);overload;
+    procedure ppuAdicionarErroLog(ipException: Exception); overload;
+    procedure ppuAdicionarErroLog(ipErro: String); overload;
   end;
 
 var
@@ -149,7 +164,7 @@ end;
 
 procedure TfrmPrincipal.ppuAdicionarErroLog(ipException: Exception);
 begin
-   ppuAdicionarErroLog(ipException);
+  ppuAdicionarErroLog(ipException);
 end;
 
 procedure TfrmPrincipal.ppuAdicionarErroLog(ipErro: String);
@@ -185,10 +200,17 @@ procedure TfrmPrincipal.ppvIniciarFinalizarServidor(ipIniciar: Boolean);
 begin
   try
     if ipIniciar then
-      dmPrincipal.ppuIniciarServidor(EditServidor.text, EditEnderecoBanco.text,
-        EditUsuario.text, EditSenha.text, EditPorta.Value)
+      begin
+        dmPrincipal.ppuIniciarServidor(EditServidor.text, EditEnderecoBanco.text,
+          EditUsuario.text, EditSenha.text, EditPorta.Value);
+
+        tmrBackup.Enabled := true;
+      end
     else
-      dmPrincipal.Server.Stop;
+      begin
+        dmPrincipal.Server.Stop;
+        tmrBackup.Enabled := false;
+      end;
 
     ppvAtualizarStatus;
   except
@@ -197,6 +219,55 @@ begin
         ppuAdicionarErroLog(E);
       end;
   end;
+end;
+
+procedure TfrmPrincipal.tmrBackupTimer(Sender: TObject);
+var
+  vaHoraAtual: TDateTime;
+  vaMinutoAtual: integer;
+  vaBackup: TBackup;
+  vaConn: TFDConnection;
+begin
+  Exit;
+  vaHoraAtual := Now;
+  if (EditHoraBackup.Time <> 0) and (EditEnderecoBackup.Text <> '') and ((FHoraUltimoBackup = 0) or (HourOf(FHoraUltimoBackup) <> HourOf(vaHoraAtual))) then
+    begin
+      vaMinutoAtual := MinuteOf(vaHoraAtual);
+      if (HourOf(vaHoraAtual) = HourOf(EditHoraBackup.Time)) and
+        (vaMinutoAtual >= MinuteOf(IncMinute(EditHoraBackup.Time, -3))) and
+        (vaMinutoAtual <= MinuteOf(IncMinute(EditHoraBackup.Time, 3))) then
+        begin
+
+          vaConn := TFDConnection.Create(nil);
+          try
+            vaConn.Params.Assign(dmPrincipal.conSong.Params);
+            vaBackup := TBackup.Create(vaConn, dmPrincipal.FDPhysFBDriverLink1);
+            try
+              tmrBackup.Enabled := false;
+              try
+                vaBackup.EnderecoBackup := EditEnderecoBackup.text;
+                vaBackup.EnderecoBackupRede := EditEnderecoBackupRede.text;
+                vaBackup.EnderecoBackupFTP := EditEnderecoBackupFTP.text;
+                //TODO: Aparentemente o componnete nao esta fazendo o backup corretamente. Esta gerando um arquivo invalido.
+                vaBackup.ppuRealizarBackup;
+
+                FHoraUltimoBackup := Now;
+                lbHoraUltimoBackup.Caption := FormatDateTime('dd/mm/yyy hh:mm',FHoraUltimoBackup);
+              except
+                on E: Exception do
+                  ppuAdicionarErroLog('Erro ao realizar o backup. Detalhes: ' + E.Message);
+              end;
+            finally
+              tmrBackup.Enabled := true;
+              vaBackup.Free;
+            end;
+          finally
+            vaConn.Close;
+            vaConn.Free;
+          end;
+        end;
+    end;
+
 end;
 
 end.

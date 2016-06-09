@@ -213,6 +213,7 @@ type
     cdslkEspecieQTDE_MUDA_PRONTA: TIntegerField;
     cdslkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     repCalcInteiro: TcxEditRepositoryCalcItem;
+    repIcbMeses: TcxEditRepositoryImageComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

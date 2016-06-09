@@ -58,16 +58,6 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'TEMPO_GERMINACAO'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsEspecieINICIO_PERIODO_COLETA: TDateField
-      DisplayLabel = 'In'#237'cio do per'#237'odo de coleta'
-      FieldName = 'INICIO_PERIODO_COLETA'
-      ProviderFlags = [pfInUpdate]
-    end
-    object cdsEspecieFIM_PERIODO_COLETA: TDateField
-      DisplayLabel = 'Fim do per'#237'odo de coleta'
-      FieldName = 'FIM_PERIODO_COLETA'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsEspecieOBSERVACAO: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
@@ -98,6 +88,14 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       ReadOnly = True
       DisplayFormat = ',0 Und'
+    end
+    object cdsEspecieMES_INICIO_COLETA: TIntegerField
+      DisplayLabel = 'M'#234's de In'#237'cio da Coleta'
+      FieldName = 'MES_INICIO_COLETA'
+    end
+    object cdsEspecieMES_FIM_COLETA: TIntegerField
+      DisplayLabel = 'M'#234's do Fim da Coleta'
+      FieldName = 'MES_FIM_COLETA'
     end
   end
   object cdsMatriz: TRFClientDataSet

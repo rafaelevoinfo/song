@@ -60,8 +60,6 @@ type
     cdsEspecieVALOR_MUDA: TBCDField;
     cdsEspecieVALOR_KG_SEMENTE: TBCDField;
     cdsEspecieTEMPO_GERMINACAO: TIntegerField;
-    cdsEspecieINICIO_PERIODO_COLETA: TDateField;
-    cdsEspecieFIM_PERIODO_COLETA: TDateField;
     cdsLote_Semente_MatrizID_LOTE_SEMENTE: TIntegerField;
     cdsGerminacaoID_LOTE_SEMENTE: TIntegerField;
     cdsSemeaduraID_LOTE_SEMENTE: TIntegerField;
@@ -104,6 +102,8 @@ type
     cdsClassificacaoQTDE: TIntegerField;
     cdsClassificacaoOBSERVACAO: TStringField;
     cdsClassificacaoPESSOA_CLASSIFICOU: TStringField;
+    cdsEspecieMES_INICIO_COLETA: TIntegerField;
+    cdsEspecieMES_FIM_COLETA: TIntegerField;
   private
     { Private declarations }
   public

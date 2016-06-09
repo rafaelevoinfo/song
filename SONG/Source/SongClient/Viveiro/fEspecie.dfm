@@ -1,9 +1,11 @@
 inherited frmEspecie: TfrmEspecie
+  ActiveControl = EditNome
   Caption = 'Esp'#233'cies Produzidas'
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -131,6 +133,10 @@ inherited frmEspecie: TfrmEspecie
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -165,7 +171,7 @@ inherited frmEspecie: TfrmEspecie
           FocusControl = EditObsevacao
         end
         object Label7: TLabel
-          Left = 385
+          Left = 553
           Top = 42
           Width = 131
           Height = 13
@@ -180,34 +186,34 @@ inherited frmEspecie: TfrmEspecie
           Caption = 'Qtde. de Dias para Germina'#231#227'o'
         end
         object Label9: TLabel
-          Left = 523
-          Top = 42
+          Left = 6
+          Top = 88
           Width = 114
           Height = 13
           Caption = 'Valor do Kg da Semente'
           FocusControl = EditValorKg
         end
         object Label10: TLabel
-          Left = 676
-          Top = 42
+          Left = 159
+          Top = 88
           Width = 108
           Height = 13
           Caption = 'Valor Unit'#225'rio da Muda'
           FocusControl = EditValorUnidadeMuda
         end
         object Label11: TLabel
-          Left = 7
+          Left = 316
           Top = 89
-          Width = 128
+          Width = 111
           Height = 13
-          Caption = 'In'#237'cio do Per'#237'odo de Coleta'
+          Caption = 'M'#234's de In'#237'cio da Coleta'
         end
         object lbl1: TLabel
-          Left = 151
+          Left = 460
           Top = 89
-          Width = 119
+          Width = 102
           Height = 13
-          Caption = 'Fim do Per'#237'odo de Coleta'
+          Caption = 'M'#234's de Fim da Coleta'
         end
         object Label12: TLabel
           Left = 160
@@ -215,6 +221,13 @@ inherited frmEspecie: TfrmEspecie
           Width = 220
           Height = 13
           Caption = 'Qtde. de Dias para Desenvolvimento da Muda'
+        end
+        object Label13: TLabel
+          Left = 386
+          Top = 42
+          Width = 130
+          Height = 13
+          Caption = 'Peso m'#233'dio da semente (g)'
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -245,36 +258,36 @@ inherited frmEspecie: TfrmEspecie
           Top = 147
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 10
+          TabOrder = 11
           Height = 89
           Width = 823
         end
         object EditQtdeSementeKilo: TcxDBCalcEdit
-          Left = 385
+          Left = 552
           Top = 58
+          RepositoryItem = dmLookup.repCalcInteiro
           DataBinding.DataField = 'QTDE_SEMENTE_KILO'
           DataBinding.DataSource = dsMaster
-          Properties.DisplayFormat = ',0'
-          Properties.ImmediatePost = True
-          TabOrder = 5
-          Width = 131
+          Properties.AssignedValues.DisplayFormat = True
+          TabOrder = 6
+          Width = 275
         end
         object EditValorKg: TcxDBCurrencyEdit
-          Left = 521
-          Top = 58
+          Left = 4
+          Top = 104
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_KG_SEMENTE'
           DataBinding.DataSource = dsMaster
-          TabOrder = 6
+          TabOrder = 7
           Width = 152
         end
         object EditValorUnidadeMuda: TcxDBCurrencyEdit
-          Left = 676
-          Top = 58
+          Left = 159
+          Top = 104
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_MUDA'
           DataBinding.DataSource = dsMaster
-          TabOrder = 7
+          TabOrder = 8
           Width = 151
         end
         object EditTempoGerminacao: TcxDBSpinEdit
@@ -285,26 +298,6 @@ inherited frmEspecie: TfrmEspecie
           TabOrder = 3
           Width = 152
         end
-        object EditInicioPeriodoColeta: TcxDBDateEdit
-          Left = 5
-          Top = 104
-          DataBinding.DataField = 'INICIO_PERIODO_COLETA'
-          DataBinding.DataSource = dsMaster
-          Properties.SaveTime = False
-          Properties.ShowTime = False
-          TabOrder = 8
-          Width = 139
-        end
-        object EditFimPeriodoColeta: TcxDBDateEdit
-          Left = 150
-          Top = 104
-          DataBinding.DataField = 'FIM_PERIODO_COLETA'
-          DataBinding.DataSource = dsMaster
-          Properties.SaveTime = False
-          Properties.ShowTime = False
-          TabOrder = 9
-          Width = 130
-        end
         object EditTempoDesenvolvimento: TcxDBSpinEdit
           Left = 160
           Top = 58
@@ -313,10 +306,43 @@ inherited frmEspecie: TfrmEspecie
           TabOrder = 4
           Width = 221
         end
+        object EditPesoMedio: TcxCalcEdit
+          Left = 386
+          Top = 58
+          EditValue = 0.000000000000000000
+          Properties.OnEditValueChanged = EditPesoMedioPropertiesEditValueChanged
+          TabOrder = 5
+          Width = 159
+        end
+        object cbMesInicioColeta: TcxDBImageComboBox
+          Left = 314
+          Top = 104
+          RepositoryItem = dmLookup.repIcbMeses
+          DataBinding.DataField = 'MES_INICIO_COLETA'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 9
+          Width = 141
+        end
+        object cbMesFimColeta: TcxDBImageComboBox
+          Left = 458
+          Top = 104
+          RepositoryItem = dmLookup.repIcbMeses
+          DataBinding.DataField = 'MES_FIM_COLETA'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 10
+          Width = 127
+        end
       end
     end
   end
+  inherited ActionList1: TActionList
+    Top = 248
+  end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsEspecie
+    Left = 240
+    Top = 224
   end
 end

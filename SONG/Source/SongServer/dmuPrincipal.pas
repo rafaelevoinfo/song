@@ -14,7 +14,8 @@ uses System.SysUtils, System.Classes,
   uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
   FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging, Datasnap.DBClient,
   System.IOUtils, System.RegularExpressions, FireDAC.Phys.FBDef,
-  FireDAC.VCLUI.Wait, FireDAC.Comp.UI;
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Phys.IBWrapper,
+  DbxCompressionFilter;
 
 type
   TdmPrincipal = class(TDataModule)

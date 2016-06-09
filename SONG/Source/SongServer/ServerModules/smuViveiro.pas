@@ -65,8 +65,6 @@ type
     qEspecieVALOR_MUDA: TBCDField;
     qEspecieVALOR_KG_SEMENTE: TBCDField;
     qEspecieTEMPO_GERMINACAO: TIntegerField;
-    qEspecieINICIO_PERIODO_COLETA: TDateField;
-    qEspecieFIM_PERIODO_COLETA: TDateField;
     qGerminacaoID_LOTE_SEMENTE: TIntegerField;
     qLote_Semente_MatrizID_LOTE_SEMENTE: TIntegerField;
     qSemeaduraID_LOTE_SEMENTE: TIntegerField;
@@ -113,6 +111,8 @@ type
     qClassificacaoOBSERVACAO: TStringField;
     qClassificacaoPESSOA_CLASSIFICOU: TStringField;
     dspqClassificacao: TDataSetProvider;
+    qEspecieMES_INICIO_COLETA: TIntegerField;
+    qEspecieMES_FIM_COLETA: TIntegerField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

@@ -2180,7 +2180,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 258
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabConfiguracoes
+    Properties.ActivePage = tabBackup
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 253
@@ -2411,6 +2411,96 @@ object frmPrincipal: TfrmPrincipal
         end
       end
     end
+    object tabBackup: TcxTabSheet
+      Caption = 'Backups'
+      ImageIndex = 3
+      ExplicitLeft = 4
+      ExplicitTop = 27
+      object Label10: TLabel
+        Left = 7
+        Top = 44
+        Width = 89
+        Height = 13
+        Caption = 'Pasta para backup'
+      end
+      object Label9: TLabel
+        Left = 7
+        Top = 84
+        Width = 129
+        Height = 13
+        Caption = 'Pasta para backup na rede'
+      end
+      object Label11: TLabel
+        Left = 7
+        Top = 124
+        Width = 125
+        Height = 13
+        Caption = 'Pasta para backup no FTP'
+      end
+      object Label12: TLabel
+        Left = 7
+        Top = 3
+        Width = 87
+        Height = 13
+        Caption = 'Hor'#225'rio de Backup'
+      end
+      object Label13: TLabel
+        Left = 7
+        Top = 192
+        Width = 141
+        Height = 13
+        Caption = 'Data e Hora do '#250'ltimo backup'
+      end
+      object lbHoraUltimoBackup: TLabel
+        Left = 7
+        Top = 208
+        Width = 52
+        Height = 13
+        Caption = '00-00-00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object EditEnderecoBackup: TcxButtonEdit
+        Left = 5
+        Top = 60
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        TabOrder = 0
+        Width = 804
+      end
+      object EditEnderecoBackupRede: TcxButtonEdit
+        Left = 5
+        Top = 100
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        TabOrder = 1
+        Width = 804
+      end
+      object EditEnderecoBackupFTP: TcxTextEdit
+        Left = 5
+        Top = 141
+        TabOrder = 2
+        Width = 804
+      end
+      object EditHoraBackup: TcxTimeEdit
+        Left = 5
+        Top = 19
+        EditValue = 0
+        Properties.TimeFormat = tfHourMin
+        TabOrder = 3
+        Width = 91
+      end
+    end
   end
   object skinController: TdxSkinController
     NativeStyle = False
@@ -2422,7 +2512,27 @@ object frmPrincipal: TfrmPrincipal
     Active = False
     Components = <
       item
+        Component = EditEnderecoBackup
+        Properties.Strings = (
+          'Text')
+      end
+      item
+        Component = EditEnderecoBackupRede
+        Properties.Strings = (
+          'Text')
+      end
+      item
         Component = EditEnderecoBanco
+        Properties.Strings = (
+          'Text')
+      end
+      item
+        Component = EditHoraBackup
+        Properties.Strings = (
+          'Time')
+      end
+      item
+        Component = EditEnderecoBackupFTP
         Properties.Strings = (
           'Text')
       end
@@ -2503,5 +2613,11 @@ object frmPrincipal: TfrmPrincipal
       FieldName = 'VERSAO'
       Size = 60
     end
+  end
+  object tmrBackup: TTimer
+    Interval = 10000
+    OnTimer = tmrBackupTimer
+    Left = 608
+    Top = 200
   end
 end

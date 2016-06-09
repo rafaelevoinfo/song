@@ -43,9 +43,7 @@ type
     viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn;
     EditTempoGerminacao: TcxDBSpinEdit;
     Label11: TLabel;
-    EditInicioPeriodoColeta: TcxDBDateEdit;
     lbl1: TLabel;
-    EditFimPeriodoColeta: TcxDBDateEdit;
     viewRegistrosINICIO_PERIODO_COLETA: TcxGridDBColumn;
     viewRegistrosFIM_PERIODO_COLETA: TcxGridDBColumn;
     viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn;
@@ -54,13 +52,20 @@ type
     viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn;
     viewRegistrosQTDE_MUDA_PRONTA: TcxGridDBColumn;
     viewRegistrosQTDE_MUDA_DESENVOLVIMENTO: TcxGridDBColumn;
+    Label13: TLabel;
+    EditPesoMedio: TcxCalcEdit;
+    cbMesInicioColeta: TcxDBImageComboBox;
+    cbMesFimColeta: TcxDBImageComboBox;
     procedure FormCreate(Sender: TObject);
+    procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
-    dmLookup:TdmLookup;
+    dmLookup: TdmLookup;
   protected
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+    procedure pprBeforeIncluir;override;
+    procedure pprBeforeAlterar;override;
   public
     { Public declarations }
   end;
@@ -78,12 +83,27 @@ implementation
 
 { TfrmEspecie }
 
+procedure TfrmEspecie.EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastro then
+    begin
+      if not VarIsNull(EditPesoMedio.EditValue) then
+        begin
+          if not(dmViveiro.cdsEspecie.State in [dsEdit, dsInsert]) then
+            dmViveiro.cdsEspecie.Edit;
+
+          dmViveiro.cdsEspecieQTDE_SEMENTE_KILO.AsInteger := Trunc(1000/EditPesoMedio.EditValue);
+        end;
+    end;
+end;
+
 procedure TfrmEspecie.FormCreate(Sender: TObject);
 begin
   dmViveiro := TdmViveiro.Create(Self);
   dmViveiro.Name := '';
 
-  dmLookup:=TdmLookup.Create(Self);
+  dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
 
   inherited;
@@ -94,6 +114,18 @@ end;
 function TfrmEspecie.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivEspecie));
+end;
+
+procedure TfrmEspecie.pprBeforeAlterar;
+begin
+  inherited;
+  EditPesoMedio.Clear;
+end;
+
+procedure TfrmEspecie.pprBeforeIncluir;
+begin
+  inherited;
+  EditPesoMedio.Clear;
 end;
 
 procedure TfrmEspecie.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);

@@ -15,8 +15,8 @@ inherited smViveiro: TsmViveiro
       '       Especie.Tempo_Germinacao,'
       '       Especie.Tempo_Desenvolvimento,'
       '       ESPECIE.OBSERVACAO,'
-      '       Especie.Inicio_Periodo_Coleta,'
-      '       Especie.Fim_Periodo_Coleta,'
+      '       Especie.Mes_Inicio_Coleta,'
+      '       Especie.Mes_Fim_Coleta,'
       
         '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
         'estoque,'
@@ -80,16 +80,6 @@ inherited smViveiro: TsmViveiro
       Origin = 'TEMPO_GERMINACAO'
       ProviderFlags = [pfInUpdate]
     end
-    object qEspecieINICIO_PERIODO_COLETA: TDateField
-      FieldName = 'INICIO_PERIODO_COLETA'
-      Origin = 'INICIO_PERIODO_COLETA'
-      ProviderFlags = [pfInUpdate]
-    end
-    object qEspecieFIM_PERIODO_COLETA: TDateField
-      FieldName = 'FIM_PERIODO_COLETA'
-      Origin = 'FIM_PERIODO_COLETA'
-      ProviderFlags = [pfInUpdate]
-    end
     object qEspecieOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
@@ -120,6 +110,16 @@ inherited smViveiro: TsmViveiro
       Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = [pfInUpdate]
       ReadOnly = True
+    end
+    object qEspecieMES_INICIO_COLETA: TIntegerField
+      FieldName = 'MES_INICIO_COLETA'
+      Origin = 'MES_INICIO_COLETA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieMES_FIM_COLETA: TIntegerField
+      FieldName = 'MES_FIM_COLETA'
+      Origin = 'MES_FIM_COLETA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qMatriz: TRFQuery

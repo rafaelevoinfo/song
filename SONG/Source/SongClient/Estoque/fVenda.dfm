@@ -1,9 +1,11 @@
 inherited frmVenda: TfrmVenda
+  ActiveControl = cbItem
   Caption = 'Vendas'
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
