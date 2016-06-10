@@ -1,7 +1,7 @@
 inherited dmViveiro: TdmViveiro
   OldCreateOrder = True
-  Height = 355
-  Width = 539
+  Height = 371
+  Width = 796
   object cdsEspecie: TRFClientDataSet
     Aggregates = <>
     Params = <>
@@ -30,7 +30,7 @@ inherited dmViveiro: TdmViveiro
     object cdsEspecieFAMILIA_BOTANICA: TStringField
       DisplayLabel = 'Fam'#237'lia Bot'#226'nica'
       FieldName = 'FAMILIA_BOTANICA'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = []
       Size = 100
     end
     object cdsEspecieQTDE_SEMENTE_KILO: TIntegerField
@@ -96,6 +96,17 @@ inherited dmViveiro: TdmViveiro
     object cdsEspecieMES_FIM_COLETA: TIntegerField
       DisplayLabel = 'M'#234's do Fim da Coleta'
       FieldName = 'MES_FIM_COLETA'
+    end
+    object cdsEspecieID_FAMILIA_BOTANICA: TIntegerField
+      DisplayLabel = 'Id da Fam'#237'lia Bot'#226'nica'
+      FieldName = 'ID_FAMILIA_BOTANICA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsEspeciePESO_MEDIO_SEMENTE: TBCDField
+      DisplayLabel = 'Peso M'#233'dio da Semente (g)'
+      FieldName = 'PESO_MEDIO_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 15
     end
   end
   object cdsMatriz: TRFClientDataSet
@@ -627,6 +638,26 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Pessoa Classificou'
       FieldName = 'PESSOA_CLASSIFICOU'
       ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdsFamilia_Botanica: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqFamilia_Botanica'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 472
+    Top = 232
+    object cdsFamilia_BotanicaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsFamilia_BotanicaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
       Size = 100
     end
   end

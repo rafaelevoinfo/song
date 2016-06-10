@@ -691,6 +691,19 @@ inherited dmLookup: TdmLookup
           Value = 12
         end>
     end
+    object repLcbFamiliaBotanica: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.ImmediatePost = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          Width = 150
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkFamilia_Botanica
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1655,5 +1668,30 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkLocal_Uso
     Left = 192
     Top = 784
+  end
+  object cdslkFamilia_Botanica: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkFamilia_Botanica'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 576
+    Top = 504
+    object cdslkFamilia_BotanicaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkFamilia_BotanicaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkFamilia_Botanica: TDataSource
+    DataSet = cdslkFamilia_Botanica
+    Left = 568
+    Top = 568
   end
 end

@@ -17,7 +17,7 @@ object dmPrincipal: TdmPrincipal
         'DriverAssemblyLoader=Borland.Data.TDBXClientDriverLoader,Borland' +
         '.Data.DbxClientDriver,Version=20.0.0.0,Culture=neutral,PublicKey' +
         'Token=91d62ebb5b0d1b1b'
-      'Filters={}'
+      'Filters={"ZLibCompression":{"CompressMoreThan":"512"}}'
       'DSAuthenticationUser=1'
       
         'DSAuthenticationPassword=356A192B7913B04C54574D18C28D46E6395428A' +

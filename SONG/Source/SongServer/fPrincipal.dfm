@@ -2180,7 +2180,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 258
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabBackup
+    Properties.ActivePage = tabConfiguracoes
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 253
@@ -2289,6 +2289,14 @@ object frmPrincipal: TfrmPrincipal
           TabOrder = 0
           Width = 88
         end
+      end
+      object btnSalvarConfiguracoes: TButton
+        Left = 0
+        Top = 114
+        Width = 113
+        Height = 47
+        Action = Ac_Salvar_Configuracoes
+        TabOrder = 2
       end
     end
     object tabLog: TcxTabSheet
@@ -2418,28 +2426,28 @@ object frmPrincipal: TfrmPrincipal
       ExplicitTop = 27
       object Label10: TLabel
         Left = 7
-        Top = 44
+        Top = 68
         Width = 89
         Height = 13
         Caption = 'Pasta para backup'
       end
       object Label9: TLabel
         Left = 7
-        Top = 84
+        Top = 108
         Width = 129
         Height = 13
         Caption = 'Pasta para backup na rede'
       end
       object Label11: TLabel
         Left = 7
-        Top = 124
+        Top = 148
         Width = 125
         Height = 13
         Caption = 'Pasta para backup no FTP'
       end
       object Label12: TLabel
         Left = 7
-        Top = 3
+        Top = 27
         Width = 87
         Height = 13
         Caption = 'Hor'#225'rio de Backup'
@@ -2464,11 +2472,26 @@ object frmPrincipal: TfrmPrincipal
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label14: TLabel
+        Left = 361
+        Top = 148
+        Width = 72
+        Height = 13
+        Caption = 'Usu'#225'rio do FTP'
+      end
+      object Label15: TLabel
+        Left = 520
+        Top = 148
+        Width = 66
+        Height = 13
+        Caption = 'Senha do FTP'
+      end
       object EditEnderecoBackup: TcxButtonEdit
         Left = 5
-        Top = 60
+        Top = 84
         Properties.Buttons = <
           item
+            Action = Ac_Localizar_Pasta
             Default = True
             Kind = bkEllipsis
           end>
@@ -2477,9 +2500,10 @@ object frmPrincipal: TfrmPrincipal
       end
       object EditEnderecoBackupRede: TcxButtonEdit
         Left = 5
-        Top = 100
+        Top = 124
         Properties.Buttons = <
           item
+            Action = Ac_Localizar_Pasta_Rede
             Default = True
             Kind = bkEllipsis
           end>
@@ -2488,17 +2512,45 @@ object frmPrincipal: TfrmPrincipal
       end
       object EditEnderecoBackupFTP: TcxTextEdit
         Left = 5
-        Top = 141
+        Top = 165
         TabOrder = 2
-        Width = 804
+        Width = 348
       end
       object EditHoraBackup: TcxTimeEdit
         Left = 5
-        Top = 19
-        EditValue = 0
+        Top = 43
+        EditValue = 0d
         Properties.TimeFormat = tfHourMin
         TabOrder = 3
         Width = 91
+      end
+      object chkHabilitarBackup: TcxCheckBox
+        Left = 3
+        Top = 3
+        Caption = 'Habilitar backup'
+        TabOrder = 4
+        Width = 121
+      end
+      object EditUsuarioFTP: TcxTextEdit
+        Left = 359
+        Top = 165
+        TabOrder = 5
+        Width = 153
+      end
+      object EditSenhaFTP: TcxTextEdit
+        Left = 518
+        Top = 165
+        Properties.PasswordChar = '*'
+        TabOrder = 6
+        Width = 139
+      end
+      object btnSalvarConfigBackup: TButton
+        Left = 694
+        Top = 148
+        Width = 113
+        Height = 38
+        Action = Ac_Salvar_Configuracoes
+        TabOrder = 7
       end
     end
   end
@@ -2512,7 +2564,17 @@ object frmPrincipal: TfrmPrincipal
     Active = False
     Components = <
       item
+        Component = chkHabilitarBackup
+        Properties.Strings = (
+          'State')
+      end
+      item
         Component = EditEnderecoBackup
+        Properties.Strings = (
+          'Text')
+      end
+      item
+        Component = EditEnderecoBackupFTP
         Properties.Strings = (
           'Text')
       end
@@ -2530,11 +2592,6 @@ object frmPrincipal: TfrmPrincipal
         Component = EditHoraBackup
         Properties.Strings = (
           'Time')
-      end
-      item
-        Component = EditEnderecoBackupFTP
-        Properties.Strings = (
-          'Text')
       end
       item
         Component = EditPorta
@@ -2555,6 +2612,11 @@ object frmPrincipal: TfrmPrincipal
         Component = EditUsuario
         Properties.Strings = (
           'Text')
+      end
+      item
+        Component = lbHoraUltimoBackup
+        Properties.Strings = (
+          'Caption')
       end>
     StorageName = 'configuracoes'
     Left = 208
@@ -2615,9 +2677,33 @@ object frmPrincipal: TfrmPrincipal
     end
   end
   object tmrBackup: TTimer
-    Interval = 10000
+    Interval = 60000
     OnTimer = tmrBackupTimer
     Left = 608
     Top = 200
+  end
+  object ActionList1: TActionList
+    Left = 592
+    Top = 120
+    object Ac_Localizar_Pasta: TAction
+      Caption = 'Ac_Localizar_Pasta'
+      OnExecute = Ac_Localizar_PastaExecute
+    end
+    object Ac_Localizar_Pasta_Rede: TAction
+      Caption = 'Ac_Localizar_Pasta_Rede'
+      OnExecute = Ac_Localizar_Pasta_RedeExecute
+    end
+    object Ac_Salvar_Configuracoes: TAction
+      Caption = 'Salvar'
+      OnExecute = Ac_Salvar_ConfiguracoesExecute
+    end
+  end
+  object foDialog: TFileOpenDialog
+    FavoriteLinks = <>
+    FileTypes = <>
+    Options = [fdoPickFolders, fdoHidePinnedPlaces]
+    Title = 'Selecione a pasta onde ser'#227'o salvos os arquivos de backup'
+    Left = 464
+    Top = 136
   end
 end

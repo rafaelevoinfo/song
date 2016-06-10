@@ -12,7 +12,12 @@ object dmPrincipal: TdmPrincipal
   object ServerTransport: TDSTCPServerTransport
     Port = 3004
     Server = Server
-    Filters = <>
+    Filters = <
+      item
+        FilterId = 'ZLibCompression'
+        Properties.Strings = (
+          'CompressMoreThan=512')
+      end>
     AuthenticationManager = Authentication
     OnDisconnect = ServerTransportDisconnect
     Left = 96

@@ -15,7 +15,9 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, Datasnap.DBClient,
   cxGridLevel, cxGridCustomView, cxGrid, dxSkinscxPCPainter, System.IOUtils,
   uMensagem, fAtualizacao, uUtils, uTypes, cxButtonEdit, cxTimeEdit,
-  System.DateUtils, uBackup, FireDAC.Comp.Client;
+  System.DateUtils, uBackup, FireDAC.Comp.Client, FireDAC.Stan.Def,
+  FireDAC.Phys.IBWrapper, FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.IBBase,
+  System.Actions, Vcl.ActnList, cxCheckBox;
 
 type
   TfrmPrincipal = class(TForm)
@@ -86,12 +88,27 @@ type
     Label12: TLabel;
     Label13: TLabel;
     lbHoraUltimoBackup: TLabel;
+    ActionList1: TActionList;
+    Ac_Localizar_Pasta: TAction;
+    foDialog: TFileOpenDialog;
+    Ac_Localizar_Pasta_Rede: TAction;
+    chkHabilitarBackup: TcxCheckBox;
+    EditUsuarioFTP: TcxTextEdit;
+    EditSenhaFTP: TcxTextEdit;
+    Label14: TLabel;
+    Label15: TLabel;
+    btnSalvarConfiguracoes: TButton;
+    Ac_Salvar_Configuracoes: TAction;
+    btnSalvarConfigBackup: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bttLigarDesligarClick(Sender: TObject);
     procedure btnAddAtualizacaoClick(Sender: TObject);
     procedure btnDelAtualizacaoClick(Sender: TObject);
     procedure tmrBackupTimer(Sender: TObject);
+    procedure Ac_Localizar_PastaExecute(Sender: TObject);
+    procedure Ac_Localizar_Pasta_RedeExecute(Sender: TObject);
+    procedure Ac_Salvar_ConfiguracoesExecute(Sender: TObject);
   private
     FHoraUltimoBackup: TDateTime;
     procedure ppvIniciarFinalizarServidor(ipIniciar: Boolean);
@@ -110,6 +127,23 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmPrincipal.Ac_Localizar_PastaExecute(Sender: TObject);
+begin
+  if foDialog.Execute then
+    EditEnderecoBackup.Text := foDialog.FileName;
+end;
+
+procedure TfrmPrincipal.Ac_Localizar_Pasta_RedeExecute(Sender: TObject);
+begin
+  if foDialog.Execute then
+    EditEnderecoBackupRede.Text := foDialog.FileName;
+end;
+
+procedure TfrmPrincipal.Ac_Salvar_ConfiguracoesExecute(Sender: TObject);
+begin
+  store.StoreTo();
+end;
 
 procedure TfrmPrincipal.btnAddAtualizacaoClick(Sender: TObject);
 begin
@@ -156,6 +190,8 @@ begin
   inherited;
   Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
   store.RestoreFrom;
+
+  FHoraUltimoBackup := StrToDateTimeDef(lbHoraUltimoBackup.Caption,0);
 
   ppvIniciarFinalizarServidor(true);
 
@@ -204,7 +240,7 @@ begin
         dmPrincipal.ppuIniciarServidor(EditServidor.text, EditEnderecoBanco.text,
           EditUsuario.text, EditSenha.text, EditPorta.Value);
 
-        tmrBackup.Enabled := true;
+        tmrBackup.Enabled := chkHabilitarBackup.Checked;
       end
     else
       begin
@@ -228,7 +264,6 @@ var
   vaBackup: TBackup;
   vaConn: TFDConnection;
 begin
-  Exit;
   vaHoraAtual := Now;
   if (EditHoraBackup.Time <> 0) and (EditEnderecoBackup.Text <> '') and ((FHoraUltimoBackup = 0) or (HourOf(FHoraUltimoBackup) <> HourOf(vaHoraAtual))) then
     begin
@@ -248,7 +283,6 @@ begin
                 vaBackup.EnderecoBackup := EditEnderecoBackup.text;
                 vaBackup.EnderecoBackupRede := EditEnderecoBackupRede.text;
                 vaBackup.EnderecoBackupFTP := EditEnderecoBackupFTP.text;
-                //TODO: Aparentemente o componnete nao esta fazendo o backup corretamente. Esta gerando um arquivo invalido.
                 vaBackup.ppuRealizarBackup;
 
                 FHoraUltimoBackup := Now;

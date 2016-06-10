@@ -8,7 +8,8 @@ inherited smViveiro: TsmViveiro
       'select ESPECIE.ID,'
       '       ESPECIE.NOME,'
       '       ESPECIE.NOME_CIENTIFICO,'
-      '       ESPECIE.FAMILIA_BOTANICA,'
+      '       ESPECIE.ID_FAMILIA_BOTANICA,'
+      '       familia_botanica.nome as FAMILIA_BOTANICA,'
       '       ESPECIE.QTDE_SEMENTE_KILO,'
       '       Especie.Valor_Muda,'
       '       Especie.Valor_Kg_Semente,'
@@ -17,6 +18,7 @@ inherited smViveiro: TsmViveiro
       '       ESPECIE.OBSERVACAO,'
       '       Especie.Mes_Inicio_Coleta,'
       '       Especie.Mes_Fim_Coleta,'
+      '       ESPECIE.PESO_MEDIO_SEMENTE,'
       
         '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
         'estoque,'
@@ -25,6 +27,9 @@ inherited smViveiro: TsmViveiro
         '       Coalesce(Especie.qtde_muda_desenvolvimento,0) as qtde_mud' +
         'a_desenvolvimento'
       'from ESPECIE  '
+      
+        'left join familia_botanica on (especie.id_familia_botanica = fam' +
+        'ilia_botanica.id)'
       '&WHERE')
     Left = 32
     Top = 16
@@ -42,17 +47,20 @@ inherited smViveiro: TsmViveiro
     object qEspecieNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
     object qEspecieNOME_CIENTIFICO: TStringField
       FieldName = 'NOME_CIENTIFICO'
       Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = [pfInUpdate]
       Size = 100
     end
     object qEspecieFAMILIA_BOTANICA: TStringField
       FieldName = 'FAMILIA_BOTANICA'
       Origin = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
       Size = 100
     end
     object qEspecieQTDE_SEMENTE_KILO: TIntegerField
@@ -89,7 +97,7 @@ inherited smViveiro: TsmViveiro
     object qEspecieQTDE_SEMENTE_ESTOQUE: TBCDField
       FieldName = 'QTDE_SEMENTE_ESTOQUE'
       Origin = 'QTDE_SEMENTE_ESTOQUE'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = []
       Precision = 18
       Size = 2
     end
@@ -102,13 +110,13 @@ inherited smViveiro: TsmViveiro
       AutoGenerateValue = arDefault
       FieldName = 'QTDE_MUDA_PRONTA'
       Origin = 'QTDE_MUDA_PRONTA'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = []
     end
     object qEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
       AutoGenerateValue = arDefault
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = []
       ReadOnly = True
     end
     object qEspecieMES_INICIO_COLETA: TIntegerField
@@ -120,6 +128,17 @@ inherited smViveiro: TsmViveiro
       FieldName = 'MES_FIM_COLETA'
       Origin = 'MES_FIM_COLETA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieID_FAMILIA_BOTANICA: TIntegerField
+      FieldName = 'ID_FAMILIA_BOTANICA'
+      Origin = 'ID_FAMILIA_BOTANICA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspeciePESO_MEDIO_SEMENTE: TBCDField
+      FieldName = 'PESO_MEDIO_SEMENTE'
+      Origin = 'PESO_MEDIO_SEMENTE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 15
     end
   end
   object qMatriz: TRFQuery
@@ -808,5 +827,20 @@ inherited smViveiro: TsmViveiro
     AfterUpdateRecord = dspqClassificacaoAfterUpdateRecord
     Left = 576
     Top = 96
+  end
+  object qFamilia_Botanica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Familia_Botanica.Id,'
+      '       Familia_Botanica.Nome'
+      'from Familia_Botanica'
+      '&WHERE')
+    Left = 192
+    Top = 24
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
   end
 end

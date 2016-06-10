@@ -1070,4 +1070,26 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkFamilia_Botanica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Familia_Botanica.Id,'
+      '       Familia_botanica.nome'
+      'from Familia_Botanica')
+    Left = 328
+    Top = 360
+    object qlkFamilia_BotanicaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkFamilia_BotanicaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

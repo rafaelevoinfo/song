@@ -690,6 +690,8 @@ begin
 end;
 
 procedure TfrmBasicoCrud.ppuRetornar(ipAtualizar: Boolean);
+var
+  vaIdAtual:Integer;
 begin
   if FModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     Close
@@ -697,7 +699,11 @@ begin
     begin
       pcPrincipal.ActivePage := tabPesquisa;
       if ipAtualizar then
-        pprEfetuarPesquisa;
+        begin
+          vaIdAtual := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
+          pprEfetuarPesquisa;
+          dsMaster.DataSet.Locate(TBancoDados.coId,vaIdAtual,[]);
+        end;
     end;
 end;
 

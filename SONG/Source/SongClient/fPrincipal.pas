@@ -14,7 +14,7 @@ uses
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
   uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
   fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda,
-  fRelatorioViveiro, fLocalUso;
+  fRelatorioViveiro, fLocalUso, fFamilia_Botanica;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -87,6 +87,8 @@ type
     Relatrios2: TMenuItem;
     Ac_Local_Uso: TAction;
     LocaisdeUso1: TMenuItem;
+    Ac_Familia_Botanica: TAction;
+    FamliaBotnica1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -118,6 +120,7 @@ type
     procedure Ac_VendaExecute(Sender: TObject);
     procedure Ac_Relatorio_ViveiroExecute(Sender: TObject);
     procedure Ac_Local_UsoExecute(Sender: TObject);
+    procedure Ac_Familia_BotanicaExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -190,6 +193,12 @@ procedure TfrmPrincipal.Ac_EspecieExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmEspecie>(pcPrincipal, TfrmEspecie, frmEspecie);
+end;
+
+procedure TfrmPrincipal.Ac_Familia_BotanicaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmFamiliaBotanica>(pcPrincipal, TfrmFamiliaBotanica, frmFamiliaBotanica);
 end;
 
 procedure TfrmPrincipal.Ac_FinanciadorExecute(Sender: TObject);

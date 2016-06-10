@@ -135,6 +135,9 @@ type
     qlkLote_MudaSTATUS: TSmallintField;
     qlkEspecieQTDE_MUDA_PRONTA: TIntegerField;
     qlkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
+    qlkFamilia_Botanica: TRFQuery;
+    qlkFamilia_BotanicaID: TIntegerField;
+    qlkFamilia_BotanicaNOME: TStringField;
   private
     { Private declarations }
   protected

@@ -104,6 +104,11 @@ type
     cdsClassificacaoPESSOA_CLASSIFICOU: TStringField;
     cdsEspecieMES_INICIO_COLETA: TIntegerField;
     cdsEspecieMES_FIM_COLETA: TIntegerField;
+    cdsEspecieID_FAMILIA_BOTANICA: TIntegerField;
+    cdsFamilia_Botanica: TRFClientDataSet;
+    cdsFamilia_BotanicaID: TIntegerField;
+    cdsFamilia_BotanicaNOME: TStringField;
+    cdsEspeciePESO_MEDIO_SEMENTE: TBCDField;
   private
     { Private declarations }
   public

@@ -214,6 +214,11 @@ type
     cdslkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     repCalcInteiro: TcxEditRepositoryCalcItem;
     repIcbMeses: TcxEditRepositoryImageComboBoxItem;
+    cdslkFamilia_Botanica: TRFClientDataSet;
+    cdslkFamilia_BotanicaID: TIntegerField;
+    cdslkFamilia_BotanicaNOME: TStringField;
+    dslkFamilia_Botanica: TDataSource;
+    repLcbFamiliaBotanica: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

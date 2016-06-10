@@ -4,16 +4,18 @@ interface
 
 uses
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBWrapper, System.Classes,
-  System.SysUtils, System.IOUtils;
+  System.SysUtils, System.IOUtils, FireDAC.Phys.IBBase, Winapi.Windows,
+  System.DateUtils;
 
 type
   TBackup = class
   private
     FConn: TFDConnection;
-    FNBackup: TFDFBNBackup;
+    FBackup: TFDIBBackup;
     FEnderecoBackupRede: String;
     FEnderecoBackup: String;
     FEnderecoBackupFTP: String;
+    FNomePadrao: String;
     procedure SetEnderecoBackup(const Value: String);
     procedure SetEnderecoBackupFTP(const Value: String);
     procedure SetEnderecoBackupRede(const Value: String);
@@ -34,15 +36,16 @@ implementation
 
 constructor TBackup.Create(ipConn: TFDConnection; ipDriverLink: TFDPhysFBDriverLink);
 begin
-  FNBackup := TFDFBNBackup.Create(nil);
-  FNBackup.Level := 0; // full backup
-  FNBackup.DriverLink := ipDriverLink;
-  FNBackup.Protocol := ipLocal;
+  FBackup := TFDIBBackup.Create(nil);
+  FBackup.DriverLink := ipDriverLink;
+  FBackup.Protocol := ipLocal;
 
-  FNBackup.Database := ipConn.Params.Values['Database'];
-  FNBackup.UserName := ipConn.Params.Values['User_Name'];
-  FNBackup.Password := ipConn.Params.Values['Password'];
-  FNBackup.Host := ipConn.Params.Values['server'];
+  FBackup.Database := ipConn.Params.Values['Database'];
+  FBackup.UserName := ipConn.Params.Values['User_Name'];
+  FBackup.Password := ipConn.Params.Values['Password'];
+  FBackup.Host := ipConn.Params.Values['server'];
+
+  FNomePadrao := 'song_' + DayOf(now).ToString + '.fbk';
 
   if not ipConn.Connected then
     ipConn.Open();
@@ -51,7 +54,7 @@ end;
 
 destructor TBackup.Destroy;
 begin
-  FNBackup.Free;
+  FBackup.Free;
   inherited;
 end;
 
@@ -60,26 +63,33 @@ begin
   if EnderecoBackup = '' then
     raise Exception.Create('Informe um endereço de backup.');
 
-  FNBackup.BackupFile := FEnderecoBackup;
-  if TFile.Exists(EnderecoBackup) then
-    TFile.Delete(EnderecoBackup);
+  FBackup.BackupFiles.Add(FEnderecoBackup);
+  if TFile.Exists(FEnderecoBackup) then
+    TFile.Delete(FEnderecoBackup);
 
-  FNBackup.Backup;
+  FBackup.Backup;
+  if not TFile.Exists(FEnderecoBackup) then
+    raise Exception.Create('O backup falhou. Detalhes: Não foi gerado o arquivo .fbk');
+
+  CopyFile(PChar(FEnderecoBackup), PChar(FEnderecoBackupRede), false);
+
+  if not TFile.Exists(FEnderecoBackupRede) then
+    raise Exception.Create('O backup não foi copiado para a pasta na rede.');
 end;
 
 procedure TBackup.SetEnderecoBackup(const Value: String);
 begin
-  FEnderecoBackup := Value;
+  FEnderecoBackup := IncludeTrailingBackslash(Value) + FNomePadrao;
 end;
 
 procedure TBackup.SetEnderecoBackupFTP(const Value: String);
 begin
-  FEnderecoBackupFTP := Value;
+  FEnderecoBackupFTP := IncludeTrailingBackslash(Value) + FNomePadrao;
 end;
 
 procedure TBackup.SetEnderecoBackupRede(const Value: String);
 begin
-  FEnderecoBackupRede := Value;
+  FEnderecoBackupRede := IncludeTrailingBackslash(Value) + FNomePadrao;
 end;
 
 end.

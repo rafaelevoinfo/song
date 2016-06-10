@@ -57,13 +57,17 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 174
             end
-            object viewRegistrosFAMILIA_BOTANICA: TcxGridDBColumn [3]
+            object viewRegistrosID_FAMILIA_BOTANICA: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'ID_FAMILIA_BOTANICA'
+              Visible = False
+            end
+            object viewRegistrosFAMILIA_BOTANICA: TcxGridDBColumn [4]
               DataBinding.FieldName = 'FAMILIA_BOTANICA'
               Visible = False
               Options.Editing = False
               Width = 178
             end
-            object viewRegistrosQTDE_POR_KILO: TcxGridDBColumn [4]
+            object viewRegistrosQTDE_POR_KILO: TcxGridDBColumn [5]
               DataBinding.FieldName = 'QTDE_SEMENTE_KILO'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.AssignedValues.DisplayFormat = True
@@ -71,54 +75,48 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 121
             end
-            object viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn [5]
+            object viewRegistrosPESO_MEDIO_SEMENTE: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'PESO_MEDIO_SEMENTE'
+              Visible = False
+            end
+            object viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn [7]
               DataBinding.FieldName = 'QTDE_SEMENTE_ESTOQUE'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = ',0.00 Kg'
               Options.Editing = False
               Width = 152
             end
-            object viewRegistrosQTDE_MUDA_PRONTA: TcxGridDBColumn [6]
+            object viewRegistrosQTDE_MUDA_PRONTA: TcxGridDBColumn [8]
               DataBinding.FieldName = 'QTDE_MUDA_PRONTA'
               Options.Editing = False
               Width = 112
             end
-            object viewRegistrosQTDE_MUDA_DESENVOLVIMENTO: TcxGridDBColumn [7]
+            object viewRegistrosQTDE_MUDA_DESENVOLVIMENTO: TcxGridDBColumn [9]
               DataBinding.FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
               Options.Editing = False
               Width = 184
             end
-            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [8]
+            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [10]
               DataBinding.FieldName = 'VALOR_KG_SEMENTE'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [9]
+            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [11]
               DataBinding.FieldName = 'VALOR_MUDA'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [10]
+            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [12]
               DataBinding.FieldName = 'TEMPO_GERMINACAO'
               Visible = False
               Options.Editing = False
               Width = 183
             end
-            object viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn [11]
+            object viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn [13]
               DataBinding.FieldName = 'TEMPO_DESENVOLVIMENTO'
               Visible = False
               Options.Editing = False
               Width = 265
-            end
-            object viewRegistrosINICIO_PERIODO_COLETA: TcxGridDBColumn [12]
-              DataBinding.FieldName = 'INICIO_PERIODO_COLETA'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosFIM_PERIODO_COLETA: TcxGridDBColumn [13]
-              DataBinding.FieldName = 'FIM_PERIODO_COLETA'
-              Visible = False
-              Options.Editing = False
             end
             inherited ColumnAlterar: TcxGridDBColumn
               MinWidth = 40
@@ -160,7 +158,6 @@ inherited frmEspecie: TfrmEspecie
           Width = 76
           Height = 13
           Caption = 'Fam'#237'lia Bot'#226'nica'
-          FocusControl = EditFamiliaBotanica
         end
         object Label6: TLabel
           Left = 5
@@ -245,14 +242,6 @@ inherited frmEspecie: TfrmEspecie
           TabOrder = 1
           Width = 240
         end
-        object EditFamiliaBotanica: TcxDBTextEdit
-          Left = 552
-          Top = 19
-          DataBinding.DataField = 'FAMILIA_BOTANICA'
-          DataBinding.DataSource = dsMaster
-          TabOrder = 2
-          Width = 275
-        end
         object EditObsevacao: TcxDBMemo
           Left = 4
           Top = 147
@@ -306,14 +295,6 @@ inherited frmEspecie: TfrmEspecie
           TabOrder = 4
           Width = 221
         end
-        object EditPesoMedio: TcxCalcEdit
-          Left = 386
-          Top = 58
-          EditValue = 0.000000000000000000
-          Properties.OnEditValueChanged = EditPesoMedioPropertiesEditValueChanged
-          TabOrder = 5
-          Width = 159
-        end
         object cbMesInicioColeta: TcxDBImageComboBox
           Left = 314
           Top = 104
@@ -333,6 +314,26 @@ inherited frmEspecie: TfrmEspecie
           Properties.Items = <>
           TabOrder = 10
           Width = 127
+        end
+        object EditPesoMedio: TcxDBCalcEdit
+          Left = 383
+          Top = 58
+          DataBinding.DataField = 'PESO_MEDIO_SEMENTE'
+          DataBinding.DataSource = dsMaster
+          Properties.AssignedValues.DisplayFormat = True
+          Properties.OnEditValueChanged = EditPesoMedioPropertiesEditValueChanged
+          TabOrder = 5
+          Width = 162
+        end
+        object cbFamiliaBotanica: TcxDBLookupComboBox
+          Left = 552
+          Top = 19
+          RepositoryItem = dmLookup.repLcbFamiliaBotanica
+          DataBinding.DataField = 'ID_FAMILIA_BOTANICA'
+          DataBinding.DataSource = dsMaster
+          Properties.ListColumns = <>
+          TabOrder = 2
+          Width = 275
         end
       end
     end

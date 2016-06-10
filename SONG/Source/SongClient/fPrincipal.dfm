@@ -119,6 +119,10 @@ inherited frmPrincipal: TfrmPrincipal
       object Canteiros1: TMenuItem
         Action = Ac_Canteiro
       end
+      object FamliaBotnica1: TMenuItem
+        Action = Ac_Familia_Botanica
+        Caption = 'Fam'#237'lias Bot'#226'nicas'
+      end
       object Espcie1: TMenuItem
         Action = Ac_Especie
       end
@@ -289,6 +293,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Estoque'
       Caption = 'Locais de Uso'
       OnExecute = Ac_Local_UsoExecute
+    end
+    object Ac_Familia_Botanica: TAction
+      Category = 'Viveiro'
+      Caption = 'Fam'#237'lia Bot'#226'nica'
+      OnExecute = Ac_Familia_BotanicaExecute
     end
   end
   object dxSkinController1: TdxSkinController

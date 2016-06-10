@@ -113,6 +113,9 @@ type
     dspqClassificacao: TDataSetProvider;
     qEspecieMES_INICIO_COLETA: TIntegerField;
     qEspecieMES_FIM_COLETA: TIntegerField;
+    qEspecieID_FAMILIA_BOTANICA: TIntegerField;
+    qFamilia_Botanica: TRFQuery;
+    qEspeciePESO_MEDIO_SEMENTE: TBCDField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

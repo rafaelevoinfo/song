@@ -55,7 +55,8 @@ uses
   fVenda in 'Estoque\fVenda.pas' {frmVenda},
   fRelatorioViveiro in 'Viveiro\fRelatorioViveiro.pas' {frmRelatorioViveiro},
   fLocalUso in 'Estoque\fLocalUso.pas' {frmLocalUso},
-  aduna_ds_list in '..\Comuns\aduna_ds_list.pas';
+  aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
+  fFamilia_Botanica in 'Viveiro\fFamilia_Botanica.pas' {frmFamiliaBotanica};
 
 {$R Localization.RES}
   {$R *.res}
