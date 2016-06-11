@@ -2,7 +2,7 @@ object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
   Caption = 'SONG Server'
-  ClientHeight = 358
+  ClientHeight = 370
   ClientWidth = 840
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,6 +15,23 @@ object frmPrincipal: TfrmPrincipal
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object lbStatusBackup: TLabel
+    AlignWithMargins = True
+    Left = 3
+    Top = 357
+    Width = 837
+    Height = 13
+    Margins.Top = 0
+    Margins.Right = 0
+    Align = alBottom
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ExplicitWidth = 3
+  end
   object pnTop: TPanel
     Left = 0
     Top = 0
@@ -2177,19 +2194,21 @@ object frmPrincipal: TfrmPrincipal
     Left = 0
     Top = 100
     Width = 840
-    Height = 258
+    Height = 257
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabConfiguracoes
+    Properties.ActivePage = tabBackup
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
-    ClientRectBottom = 253
+    ExplicitHeight = 258
+    ClientRectBottom = 252
     ClientRectLeft = 2
     ClientRectRight = 835
     ClientRectTop = 25
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
+      ExplicitHeight = 228
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3
@@ -2302,13 +2321,15 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
+      ExplicitHeight = 228
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
         Width = 833
-        Height = 228
+        Height = 227
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 228
         object viewLog: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsLog
@@ -2337,13 +2358,15 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
+      ExplicitHeight = 228
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25
         Width = 833
-        Height = 203
+        Height = 202
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 203
         object viewAtualizacoes: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           Navigator.Buttons.First.Visible = False
@@ -2424,6 +2447,7 @@ object frmPrincipal: TfrmPrincipal
       ImageIndex = 3
       ExplicitLeft = 4
       ExplicitTop = 27
+      ExplicitHeight = 228
       object Label10: TLabel
         Left = 7
         Top = 68
@@ -2439,7 +2463,7 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Pasta para backup na rede'
       end
       object Label11: TLabel
-        Left = 7
+        Left = 157
         Top = 148
         Width = 125
         Height = 13
@@ -2473,7 +2497,7 @@ object frmPrincipal: TfrmPrincipal
         ParentFont = False
       end
       object Label14: TLabel
-        Left = 361
+        Left = 360
         Top = 148
         Width = 72
         Height = 13
@@ -2486,6 +2510,13 @@ object frmPrincipal: TfrmPrincipal
         Height = 13
         Caption = 'Senha do FTP'
       end
+      object Label16: TLabel
+        Left = 9
+        Top = 148
+        Width = 18
+        Height = 13
+        Caption = 'FTP'
+      end
       object EditEnderecoBackup: TcxButtonEdit
         Left = 5
         Top = 84
@@ -2495,7 +2526,7 @@ object frmPrincipal: TfrmPrincipal
             Default = True
             Kind = bkEllipsis
           end>
-        TabOrder = 0
+        TabOrder = 3
         Width = 804
       end
       object EditEnderecoBackupRede: TcxButtonEdit
@@ -2507,41 +2538,43 @@ object frmPrincipal: TfrmPrincipal
             Default = True
             Kind = bkEllipsis
           end>
-        TabOrder = 1
+        TabOrder = 4
         Width = 804
       end
       object EditEnderecoBackupFTP: TcxTextEdit
-        Left = 5
+        Left = 154
         Top = 165
-        TabOrder = 2
-        Width = 348
+        TabOrder = 7
+        Width = 199
       end
       object EditHoraBackup: TcxTimeEdit
         Left = 5
         Top = 43
         EditValue = 0d
         Properties.TimeFormat = tfHourMin
-        TabOrder = 3
+        TabOrder = 2
         Width = 91
       end
       object chkHabilitarBackup: TcxCheckBox
         Left = 3
         Top = 3
         Caption = 'Habilitar backup'
-        TabOrder = 4
+        TabOrder = 0
+        OnClick = chkHabilitarBackupClick
         Width = 121
       end
       object EditUsuarioFTP: TcxTextEdit
         Left = 359
         Top = 165
-        TabOrder = 5
+        TabOrder = 8
         Width = 153
       end
       object EditSenhaFTP: TcxTextEdit
         Left = 518
         Top = 165
+        Properties.EchoMode = eemPassword
         Properties.PasswordChar = '*'
-        TabOrder = 6
+        TabOrder = 9
         Width = 139
       end
       object btnSalvarConfigBackup: TButton
@@ -2550,15 +2583,30 @@ object frmPrincipal: TfrmPrincipal
         Width = 113
         Height = 38
         Action = Ac_Salvar_Configuracoes
-        TabOrder = 7
+        TabOrder = 5
+      end
+      object EditHostFtp: TcxTextEdit
+        Left = 5
+        Top = 165
+        TabOrder = 6
+        Width = 147
+      end
+      object btnRealizarBackup: TButton
+        Left = 102
+        Top = 39
+        Width = 123
+        Height = 25
+        Caption = 'Realizar backup agora'
+        TabOrder = 1
+        OnClick = btnRealizarBackupClick
       end
     end
   end
   object skinController: TdxSkinController
     NativeStyle = False
     SkinName = 'Black'
-    Left = 416
-    Top = 184
+    Left = 400
+    Top = 88
   end
   object store: TcxPropertiesStore
     Active = False
@@ -2594,12 +2642,22 @@ object frmPrincipal: TfrmPrincipal
           'Time')
       end
       item
+        Component = EditHostFtp
+        Properties.Strings = (
+          'Text')
+      end
+      item
         Component = EditPorta
         Properties.Strings = (
           'Value')
       end
       item
         Component = EditSenha
+        Properties.Strings = (
+          'Text')
+      end
+      item
+        Component = EditSenhaFTP
         Properties.Strings = (
           'Text')
       end
@@ -2614,19 +2672,24 @@ object frmPrincipal: TfrmPrincipal
           'Text')
       end
       item
+        Component = EditUsuarioFTP
+        Properties.Strings = (
+          'Text')
+      end
+      item
         Component = lbHoraUltimoBackup
         Properties.Strings = (
           'Caption')
       end>
     StorageName = 'configuracoes'
-    Left = 208
-    Top = 168
+    Left = 480
+    Top = 88
   end
   object cdsLog: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 336
-    Top = 224
+    Left = 312
+    Top = 80
     object cdsLogDATA: TDateTimeField
       DisplayLabel = 'Data e Hora'
       FieldName = 'DATA'
@@ -2639,20 +2702,20 @@ object frmPrincipal: TfrmPrincipal
   end
   object dsLog: TDataSource
     DataSet = cdsLog
-    Left = 520
-    Top = 224
+    Left = 536
+    Top = 16
   end
   object dsAtualizacoes: TDataSource
     DataSet = cdsAtualizacoes
-    Left = 192
-    Top = 256
+    Left = 752
+    Top = 88
   end
   object cdsAtualizacoes: TClientDataSet
     Aggregates = <>
     IndexFieldNames = 'MAJOR;MINOR;RELEASE;BUILD'
     Params = <>
-    Left = 280
-    Top = 224
+    Left = 672
+    Top = 88
     object cdsAtualizacoesMAJOR: TIntegerField
       FieldName = 'MAJOR'
     end
@@ -2683,8 +2746,8 @@ object frmPrincipal: TfrmPrincipal
     Top = 200
   end
   object ActionList1: TActionList
-    Left = 592
-    Top = 120
+    Left = 616
+    Top = 88
     object Ac_Localizar_Pasta: TAction
       Caption = 'Ac_Localizar_Pasta'
       OnExecute = Ac_Localizar_PastaExecute
@@ -2703,7 +2766,7 @@ object frmPrincipal: TfrmPrincipal
     FileTypes = <>
     Options = [fdoPickFolders, fdoHidePinnedPlaces]
     Title = 'Selecione a pasta onde ser'#227'o salvos os arquivos de backup'
-    Left = 464
-    Top = 136
+    Left = 552
+    Top = 80
   end
 end
