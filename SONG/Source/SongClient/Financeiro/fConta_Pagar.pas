@@ -209,6 +209,19 @@ type
     chkSemVinculo: TcxCheckBox;
     cbPesquisaResponsavel: TcxLookupComboBox;
     cbPesquisaFundo: TcxLookupComboBox;
+    tabAutorizacoes: TcxTabSheet;
+    pnBotoesAutorizacoes: TPanel;
+    btnAutorizar: TButton;
+    Ac_Autorizar: TAction;
+    cxGrid4: TcxGrid;
+    viewAutorizacao: TcxGridDBTableView;
+    ColumnExcluirAutorizacao: TcxGridDBColumn;
+    level2: TcxGridLevel;
+    dsConta_Pagar_Autorizacao: TDataSource;
+    viewAutorizacaoID: TcxGridDBColumn;
+    viewAutorizacaoID_PESSOA: TcxGridDBColumn;
+    viewAutorizacaoPESSOA_AUTORIZOU: TcxGridDBColumn;
+    Ac_Excluir_Autorizacao: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -226,6 +239,8 @@ type
     procedure cbAtividadeAlocadaPropertiesEditValueChanged(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure chkSemVinculoPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_AutorizarExecute(Sender: TObject);
+    procedure Ac_Excluir_AutorizacaoExecute(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -237,6 +252,7 @@ type
     procedure ppvQuitarParcela;
     procedure ppvReabrirParcela;
     procedure ppvConfigurarControles;
+    function fpvContaSemPagamentos: Boolean;
     // procedure ppvValidarSaldos;
   protected
     function fprGetPermissao: string; override;
@@ -397,7 +413,9 @@ end;
 procedure TfrmContaPagar.pprEfetuarPesquisa;
 begin
   dmFinanceiro.cdsConta_Pagar_Vinculo.Close;
+  dmFinanceiro.cdsConta_Pagar_Autorizacao.Close;
   inherited;
+  dmFinanceiro.cdsConta_Pagar_Autorizacao.Open;
   dmFinanceiro.cdsConta_Pagar_Vinculo.Open;
 end;
 
@@ -591,6 +609,74 @@ begin
     dmFinanceiro.cdsConta_Pagar_Vinculo.Cancel;
     raise;
   end;
+end;
+
+function TfrmContaPagar.fpvContaSemPagamentos: Boolean;
+var
+  vaRecNo: Integer;
+begin
+  Result := True;
+  dmFinanceiro.cdsConta_Pagar_Parcela.DisableControls;
+  try
+    vaRecNo := dmFinanceiro.cdsConta_Pagar_Parcela.RecNo;
+    if dmFinanceiro.cdsConta_Pagar_Parcela.Locate(dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.FieldName, 1, []) then
+      Result := False;
+
+  finally
+    dmFinanceiro.cdsConta_Pagar_Parcela.RecNo := vaRecNo;
+    dmFinanceiro.cdsConta_Pagar_Parcela.EnableControls;
+  end;
+end;
+
+procedure TfrmContaPagar.Ac_AutorizarExecute(Sender: TObject);
+var
+  vaRecNo: Integer;
+begin
+  inherited;
+  pprValidarPermissao(atIncluir,GetEnumName(TypeInfo(TPermissaoFinanceiro),Ord(finAutorizarUsoFundo)));
+
+  if not fpvContaSemPagamentos then
+    raise Exception.Create('Já existe uma quitação para esta conta. Não é possível incluir autorizações.');
+
+  dmFinanceiro.cdsConta_Pagar_Autorizacao.DisableControls;
+  try
+    vaRecNo := dmFinanceiro.cdsConta_Pagar_Autorizacao.RecNo;
+    if dmFinanceiro.cdsConta_Pagar_Autorizacao.Locate(dmFinanceiro.cdsConta_Pagar_AutorizacaoID_PESSOA.FieldName,
+      TInfoLogin.fpuGetInstance.Usuario.Id, []) then
+      raise Exception.Create('O usuário atual já realizou a autorização para esta conta.');
+
+    if TMensagem.fpuPerguntar('Tem certeza que deseja autorizar o pagamento desta conta?', ppSimNao) = rpSim then
+      begin
+        dmFinanceiro.cdsConta_Pagar_Autorizacao.Append;
+        dmFinanceiro.cdsConta_Pagar_AutorizacaoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('CONTA_PAGAR_AUTORIZACAO');
+        dmFinanceiro.cdsConta_Pagar_AutorizacaoID_PESSOA.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
+        dmFinanceiro.cdsConta_Pagar_AutorizacaoPESSOA_AUTORIZOU.AsString := TInfoLogin.fpuGetInstance.Usuario.Nome;
+        dmFinanceiro.cdsConta_Pagar_Autorizacao.Post;
+      end;
+  finally
+    if vaRecNo > 0 then
+      dmFinanceiro.cdsConta_Pagar_Autorizacao.RecNo := vaRecNo;
+
+    dmFinanceiro.cdsConta_Pagar_Autorizacao.EnableControls;
+  end;
+
+end;
+
+procedure TfrmContaPagar.Ac_Excluir_AutorizacaoExecute(Sender: TObject);
+begin
+  inherited;
+  if not fpvContaSemPagamentos then
+    raise Exception.Create('Já existe uma quitação para esta conta. Não é possível excluir a autorização.');
+
+  if TMensagem.fpuPerguntar('Confirma a exclusão desta autorização?', ppSimNao) = rpSim then
+    begin
+      if (not TInfoLogin.fpuGetInstance.Usuario.Administrador) and
+        (dmFinanceiro.cdsConta_Pagar_AutorizacaoID_PESSOA.AsInteger <> TInfoLogin.fpuGetInstance.Usuario.Id) then
+        raise Exception.Create('Somente a pessoa que autorizou pode excluir sua autorização.');
+
+      dmFinanceiro.cdsConta_Pagar_Autorizacao.Delete;
+    end;
+
 end;
 
 procedure TfrmContaPagar.Ac_Excluir_VinculoExecute(Sender: TObject);

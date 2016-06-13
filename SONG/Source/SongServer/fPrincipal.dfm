@@ -2200,7 +2200,6 @@ object frmPrincipal: TfrmPrincipal
     Properties.ActivePage = tabBackup
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
-    ExplicitHeight = 258
     ClientRectBottom = 252
     ClientRectLeft = 2
     ClientRectRight = 835
@@ -2208,7 +2207,6 @@ object frmPrincipal: TfrmPrincipal
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
-      ExplicitHeight = 228
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3
@@ -2321,7 +2319,6 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
-      ExplicitHeight = 228
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -2329,7 +2326,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 227
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 228
         object viewLog: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsLog
@@ -2358,7 +2354,6 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
-      ExplicitHeight = 228
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25
@@ -2366,7 +2361,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 202
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 203
         object viewAtualizacoes: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           Navigator.Buttons.First.Visible = False
@@ -2445,9 +2439,6 @@ object frmPrincipal: TfrmPrincipal
     object tabBackup: TcxTabSheet
       Caption = 'Backups'
       ImageIndex = 3
-      ExplicitLeft = 4
-      ExplicitTop = 27
-      ExplicitHeight = 228
       object Label10: TLabel
         Left = 7
         Top = 68

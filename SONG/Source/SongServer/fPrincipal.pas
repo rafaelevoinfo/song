@@ -152,6 +152,7 @@ end;
 procedure TfrmPrincipal.Ac_Salvar_ConfiguracoesExecute(Sender: TObject);
 begin
   store.StoreTo();
+
 end;
 
 procedure TfrmPrincipal.btnAddAtualizacaoClick(Sender: TObject);

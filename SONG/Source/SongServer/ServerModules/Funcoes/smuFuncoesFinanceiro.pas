@@ -18,8 +18,7 @@ type
     procedure ppvQuitarReabrirParcela(ipIdParcela: Integer; ipQuitar: Boolean; ipDataPagamento: TDateTime);
     procedure ppvReceberReabrirParcela(ipIdParcela: Integer; ipReceber: Boolean);
     procedure ppvAtualizarSaldoFundo(ipIdParcela: Integer; ipDataSetVinculo, ipDataSetParcela: TRFQuery; ipIncrementar, ipContaReceber: Boolean);
-    function fpvVerificarStatusParcela(ipIdParcela: Integer;
-      ipContaReceber: Boolean; ipStatus: Integer): Boolean;
+    procedure ppvVerificarStatusParcela(ipIdParcela: Integer; ipContaReceber: Boolean; ipStatus: Integer);
     function fpvVerificarContaPagarVinculadaProjeto(ipIdParcela: Integer): Boolean;
   public
     function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
@@ -175,7 +174,6 @@ end;
 
 function TsmFuncoesFinanceiro.fpvVerificarContaPagarVinculadaProjeto(ipIdParcela: Integer): Boolean;
 var
-  vaDataSet: TRFQuery;
   vaResult: Boolean;
 begin
   pprEncapsularConsulta(
@@ -186,9 +184,9 @@ begin
         ' inner join conta_pagar_vinculo on (conta_pagar.id = conta_pagar_vinculo.id_conta_pagar)' +
         ' where conta_pagar_parcela.id = :ID_PARCELA and ' +
         '       conta_pagar_vinculo.id_projeto_origem is not null';
-      vaDataSet.ParamByName('ID_PARCELA').AsInteger := ipIdParcela;
-      vaDataSet.Open();
-      vaResult := vaDataSet.FieldByName('QTDE').AsInteger > 0;
+      ipDataSet.ParamByName('ID_PARCELA').AsInteger := ipIdParcela;
+      ipDataSet.Open();
+      vaResult := ipDataSet.FieldByName('QTDE').AsInteger > 0;
     end);
   Result := vaResult;
 end;
@@ -246,8 +244,8 @@ begin;
   try
     if ipQuitar then
       begin
-        if fpvVerificarStatusParcela(ipIdParcela, False, 1) then
-          Exit; // ja quitou
+        ppvVerificarStatusParcela(ipIdParcela, False, 1);
+
 
         vaUpdate := 'update conta_pagar_parcela ' +
           '  set conta_pagar_parcela.data_pagamento = ' + QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataPagamento)) + ',  ' +
@@ -256,8 +254,8 @@ begin;
       end
     else
       begin
-        if fpvVerificarStatusParcela(ipIdParcela, False, 0) then
-          Exit;
+        ppvVerificarStatusParcela(ipIdParcela, False, 0);
+
         vaUpdate := 'update conta_pagar_parcela ' +
           '  set conta_pagar_parcela.data_pagamento = null,  ' +
           '      conta_pagar_parcela.status = 0 ' +
@@ -456,9 +454,7 @@ begin
   end;
 end;
 
-function TsmFuncoesFinanceiro.fpvVerificarStatusParcela(ipIdParcela: Integer; ipContaReceber: Boolean; ipStatus: Integer): Boolean;
-var
-  vaResult: Boolean;
+procedure TsmFuncoesFinanceiro.ppvVerificarStatusParcela(ipIdParcela: Integer; ipContaReceber: Boolean; ipStatus: Integer);
 begin
   pprEncapsularConsulta(
     procedure(ipDataSet: TRFQuery)
@@ -468,17 +464,36 @@ begin
           '   from conta_receber_parcela ' +
           'where conta_receber_parcela.id = :ID'
       else
-        ipDataSet.SQL.Text := 'Select conta_pagar_parcela.status ' +
-          '   from conta_pagar_parcela ' +
-          'where conta_pagar_parcela.id = :ID';
+        ipDataSet.SQL.Text := 'select Conta_Pagar_Parcela.Status,  '+
+        '       (select count(*) '+
+        '        from Conta_Pagar_Vinculo '+
+        '        inner join fundo on (fundo.id = conta_pagar_vinculo.id_fundo) '+
+        '        where Conta_Pagar_Vinculo.Id_Fundo is not null and '+
+        '              Conta_Pagar_Vinculo.Id_Conta_Pagar = Conta_Pagar_Parcela.Id_Conta_Pagar and '+
+        '              Fundo.Requer_Autorizacao = 1) as Qtde_Fundo, '+
+        '       (select count(*) '+
+        '        from Conta_Pagar_Autorizacao '+
+        '        where Conta_Pagar_Autorizacao.Id_Conta_Pagar = Conta_Pagar_Autorizacao.Id_Conta_Pagar) as Qtde_Autorizacoes '+
+        ' from Conta_Pagar_Parcela ' +
+        ' where Conta_Pagar_Parcela.Id = :Id';
 
       ipDataSet.ParamByName('ID').AsInteger := ipIdParcela;
       ipDataSet.Open();
 
-      vaResult := ipDataSet.FieldByName('STATUS').AsInteger = ipStatus;
-    end);
+      if ipDataSet.FieldByName('STATUS').AsInteger = ipStatus then
+        raise Exception.Create('A parcela atual já possuí o status desejado.');
 
-  Result := vaResult;
+      if (not ipContaReceber) and (ipStatus = 1) then
+        begin
+          //se maior que zero, entao possui vinculo com um fundo que precisa de autorizacao especial
+          if ipDataSet.FieldByName('QTDE_FUNDO').AsInteger > 0 then
+            begin
+              if ipDataSet.FieldByName('QTDE_AUTORIZACOES').AsInteger < 3 then
+                raise Exception.Create('É necessário autorização de três pessoas para que seja possível realizar a quitação desta parcela.');
+            end;
+
+        end;
+    end);
 end;
 
 procedure TsmFuncoesFinanceiro.ppvReceberReabrirParcela(ipIdParcela: Integer;
@@ -490,8 +505,8 @@ begin;
   try
     if ipReceber then
       begin
-        if fpvVerificarStatusParcela(ipIdParcela, True, 1) then
-          Exit; // ja recebeu
+        ppvVerificarStatusParcela(ipIdParcela, True, 1);
+
 
         vaUpdate := 'update conta_receber_parcela ' +
           '  set conta_receber_parcela.data_recebimento = current_timestamp,  ' +
@@ -500,8 +515,8 @@ begin;
       end
     else
       begin
-        if fpvVerificarStatusParcela(ipIdParcela, True, 0) then
-          Exit; // ja reabriu
+        ppvVerificarStatusParcela(ipIdParcela, True, 0);
+
         vaUpdate := 'update conta_receber_parcela ' +
           '  set conta_receber_parcela.data_recebimento = null,  ' +
           '      conta_receber_parcela.status = 0 ' +

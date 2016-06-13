@@ -147,6 +147,11 @@ type
     qTransferencia_FinanceiraDATA: TSQLTimeStampField;
     dspqTransferencia_Financeira: TDataSetProvider;
     qConta_ReceberID_VENDA: TIntegerField;
+    qConta_Pagar_Autorizacao: TRFQuery;
+    qConta_Pagar_AutorizacaoID: TIntegerField;
+    qConta_Pagar_AutorizacaoID_CONTA_PAGAR: TIntegerField;
+    qConta_Pagar_AutorizacaoID_PESSOA: TIntegerField;
+    qConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField;
     procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

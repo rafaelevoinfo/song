@@ -27,11 +27,9 @@ type
 
   TBackup = class
   private
-    FConn: TFDConnection;
     FBackup: TFDIBBackup;
     FEnderecoBackupRede: String;
     FEnderecoBackup: String;
-    FEnderecoBackupFTP: String;
     FNomePadrao: String;
     FFtp: TFtp;
     procedure SetEnderecoBackup(const Value: String);

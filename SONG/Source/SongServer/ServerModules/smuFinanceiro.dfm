@@ -1158,4 +1158,51 @@ inherited smFinanceiro: TsmFinanceiro
     Left = 416
     Top = 256
   end
+  object qConta_Pagar_Autorizacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Conta_Pagar_Autorizacao.Id,'
+      '       Conta_Pagar_Autorizacao.Id_Conta_Pagar,'
+      '       Conta_Pagar_Autorizacao.Id_Pessoa,'
+      '       Pessoa.nome as Pessoa_Autorizou'
+      'from Conta_Pagar_Autorizacao  '
+      
+        'inner join pessoa on (pessoa.id = conta_pagar_autorizacao.id_pes' +
+        'soa)'
+      'where conta_pagar_autorizacao.id_conta_pagar = :ID_CONTA_PAGAR')
+    Left = 608
+    Top = 192
+    ParamData = <
+      item
+        Name = 'ID_CONTA_PAGAR'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qConta_Pagar_AutorizacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qConta_Pagar_AutorizacaoID_CONTA_PAGAR: TIntegerField
+      FieldName = 'ID_CONTA_PAGAR'
+      Origin = 'ID_CONTA_PAGAR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_AutorizacaoID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PESSOA_AUTORIZOU'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

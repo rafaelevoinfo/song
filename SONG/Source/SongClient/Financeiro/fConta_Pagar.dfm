@@ -4,6 +4,7 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
+  ExplicitTop = -118
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -26,7 +27,7 @@ inherited frmContaPagar: TfrmContaPagar
         inherited pnEditsPesquisa: TPanel
           Left = 553
           Width = 432
-          ExplicitLeft = 551
+          ExplicitLeft = 553
           ExplicitWidth = 432
           inherited Label1: TLabel
             Left = 4
@@ -268,6 +269,7 @@ inherited frmContaPagar: TfrmContaPagar
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
+            Properties.ActivePage = tabAutorizacoes
             ExplicitWidth = 982
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
@@ -470,11 +472,102 @@ inherited frmContaPagar: TfrmContaPagar
                 end
               end
             end
+            object tabAutorizacoes: TcxTabSheet
+              Caption = 'Autoriza'#231#245'es'
+              ImageIndex = 2
+              object pnBotoesAutorizacoes: TPanel
+                Left = 0
+                Top = 0
+                Width = 975
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = 8
+                object btnAutorizar: TButton
+                  Left = 1
+                  Top = 1
+                  Width = 101
+                  Height = 23
+                  Action = Ac_Autorizar
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                  ExplicitLeft = 82
+                end
+              end
+              object cxGrid4: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 975
+                Height = 131
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                object viewAutorizacao: TcxGridDBTableView
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsConta_Pagar_Autorizacao
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewAutorizacaoID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewAutorizacaoID_PESSOA: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_PESSOA'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewAutorizacaoPESSOA_AUTORIZOU: TcxGridDBColumn
+                    DataBinding.FieldName = 'PESSOA_AUTORIZOU'
+                    Options.Editing = False
+                  end
+                  object ColumnExcluirAutorizacao: TcxGridDBColumn
+                    Caption = 'Excluir'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Excluir_Autorizacao
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    MinWidth = 64
+                    Options.Filtering = False
+                    Options.ShowEditButtons = isebAlways
+                    Options.GroupFooters = False
+                    Options.Grouping = False
+                    Options.HorzSizing = False
+                    Options.Moving = False
+                    VisibleForCustomization = False
+                  end
+                end
+                object level2: TcxGridLevel
+                  GridView = viewAutorizacao
+                end
+              end
+            end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -1372,6 +1465,18 @@ inherited frmContaPagar: TfrmContaPagar
       OnExecute = Ac_Quitar_ReabrirExecute
       OnUpdate = Ac_Quitar_ReabrirUpdate
     end
+    object Ac_Autorizar: TAction
+      Category = 'Autorizacao'
+      Caption = 'Autorizar'
+      ImageIndex = 6
+      OnExecute = Ac_AutorizarExecute
+    end
+    object Ac_Excluir_Autorizacao: TAction
+      Category = 'Autorizacao'
+      Caption = 'Excluir'
+      ImageIndex = 2
+      OnExecute = Ac_Excluir_AutorizacaoExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmFinanceiro.cdsConta_Pagar
@@ -1425,5 +1530,10 @@ inherited frmContaPagar: TfrmContaPagar
     DataSet = cdsLocalRubricas
     Left = 488
     Top = 216
+  end
+  object dsConta_Pagar_Autorizacao: TDataSource
+    DataSet = dmFinanceiro.cdsConta_Pagar_Autorizacao
+    Left = 488
+    Top = 248
   end
 end

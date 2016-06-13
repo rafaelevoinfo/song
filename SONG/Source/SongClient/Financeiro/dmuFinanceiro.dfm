@@ -848,4 +848,35 @@ inherited dmFinanceiro: TdmFinanceiro
       Required = True
     end
   end
+  object cdsConta_Pagar_Autorizacao: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_CONTA_PAGAR'
+    MasterFields = 'ID'
+    MasterSource = dsConta_Pagar
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqConta_Pagar_Autorizacao'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 584
+    Top = 144
+    object cdsConta_Pagar_AutorizacaoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsConta_Pagar_AutorizacaoID_CONTA_PAGAR: TIntegerField
+      DisplayLabel = 'Id do Conta a Pagar'
+      FieldName = 'ID_CONTA_PAGAR'
+      Required = True
+    end
+    object cdsConta_Pagar_AutorizacaoID_PESSOA: TIntegerField
+      DisplayLabel = 'Id da Pessoa'
+      FieldName = 'ID_PESSOA'
+      Required = True
+    end
+    object cdsConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField
+      DisplayLabel = 'Pessoa que Autorizou'
+      FieldName = 'PESSOA_AUTORIZOU'
+      Size = 100
+    end
+  end
 end

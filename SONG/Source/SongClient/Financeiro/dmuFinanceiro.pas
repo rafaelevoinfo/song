@@ -144,6 +144,11 @@ type
     cdsTransferencia_FinanceiraRESPONSAVEL: TStringField;
     cdsTransferencia_FinanceiraDATA: TSQLTimeStampField;
     cdsConta_ReceberID_VENDA: TIntegerField;
+    cdsConta_Pagar_Autorizacao: TRFClientDataSet;
+    cdsConta_Pagar_AutorizacaoID: TIntegerField;
+    cdsConta_Pagar_AutorizacaoID_CONTA_PAGAR: TIntegerField;
+    cdsConta_Pagar_AutorizacaoID_PESSOA: TIntegerField;
+    cdsConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField;
   private
     { Private declarations }
   public
