@@ -704,6 +704,37 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkFamilia_Botanica
     end
+    object repIcbTipoNotificacao: TcxEditRepositoryImageComboBoxItem
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Conta a Pagar Vencendo/Vencida'
+          ImageIndex = 0
+          Value = 1
+        end
+        item
+          Description = 'Conta a Receber N'#227'o Recebida'
+          Value = 2
+        end
+        item
+          Description = 'Rubrica atingindo limite de saldo'
+          Value = 3
+        end
+        item
+          Description = 'Fundo atingindo limite'
+          Value = 4
+        end
+        item
+          Description = 'Atividade cadastrada'
+          Value = 5
+        end>
+    end
+    object RepChkNaoSim: TcxEditRepositoryCheckBoxItem
+      Properties.ImmediatePost = True
+      Properties.NullStyle = nssUnchecked
+      Properties.ValueChecked = 1
+      Properties.ValueUnchecked = 0
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil

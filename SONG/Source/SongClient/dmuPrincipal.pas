@@ -36,6 +36,7 @@ type
     cxLocalizer1: TcxLocalizer;
     ProviderEstoque: TRFProviderConnection;
     ProviderRelatorio: TRFProviderConnection;
+    ProviderSistema: TRFProviderConnection;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -48,6 +49,8 @@ type
     FFuncoesFinanceiro: TSMFuncoesFinanceiroClient;
     FFuncoesEstoque: TSMFuncoesEstoqueClient;
     FFuncoesRelatorio: TsmFuncoesRelatorioClient;
+    FFuncoesSistema: TsmFuncoesSistemaClient;
+    procedure SetFuncoesSistema(const Value: TsmFuncoesSistemaClient);
 
     { Private declarations }
   public
@@ -59,6 +62,7 @@ type
     property FuncoesFinanceiro: TSMFuncoesFinanceiroClient read FFuncoesFinanceiro;
     property FuncoesEstoque: TSMFuncoesEstoqueClient read FFuncoesEstoque;
     property FuncoesRelatorio: TsmFuncoesRelatorioClient read FFuncoesRelatorio;
+    property FuncoesSistema: TsmFuncoesSistemaClient read FFuncoesSistema write SetFuncoesSistema;
   end;
 
 var
@@ -118,6 +122,8 @@ begin
   FFuncoesFinanceiro := TSMFuncoesFinanceiroClient.Create(DataSnapConn.DBXConnection);
   FFuncoesEstoque := TSMFuncoesEstoqueClient.Create(DataSnapConn.DBXConnection);
   FFuncoesRelatorio := TSMFuncoesRelatorioClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesSistema := TSMFuncoesSistemaClient.Create(DataSnapConn.DBXConnection);
+
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
@@ -139,6 +145,9 @@ begin
 
   if Assigned(FFuncoesRelatorio) then
     FreeAndNil(FFuncoesRelatorio);
+
+  if Assigned(FFuncoesSistema) then
+    FreeAndNil(FFuncoesSistema);
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);
@@ -175,6 +184,11 @@ begin
   DataSnapConn.Params.Values['DSAuthenticationPassword'] := ipSenha;
   DataSnapConn.Open;
 
+end;
+
+procedure TdmPrincipal.SetFuncoesSistema(const Value: TsmFuncoesSistemaClient);
+begin
+  FFuncoesSistema := Value;
 end;
 
 end.

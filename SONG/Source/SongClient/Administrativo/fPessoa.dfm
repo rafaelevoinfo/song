@@ -1,15 +1,11 @@
 inherited frmPessoa: TfrmPessoa
   Caption = 'Pessoas'
-  ExplicitHeight = 515
+  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 321
@@ -169,6 +165,10 @@ inherited frmPessoa: TfrmPessoa
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Perfis da Pessoa'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -592,12 +592,14 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 82
+                Height = 13
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 82
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 91
+                Height = 13
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 91

@@ -1,15 +1,11 @@
 inherited frmOrganizacao: TfrmOrganizacao
+  ActiveControl = cbPessoa
   Caption = 'Organiza'#231#245'es'
-  ExplicitWidth = 320
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -86,10 +82,6 @@ inherited frmOrganizacao: TfrmOrganizacao
             object tabDetailFundo: TcxTabSheet [0]
               Caption = 'Contas'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetailFundo: TPanel
                 Left = 0
                 Top = 0
@@ -119,8 +111,6 @@ inherited frmOrganizacao: TfrmOrganizacao
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitLeft = 1
-                ExplicitTop = 30
                 object viewFundo: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -204,10 +194,6 @@ inherited frmOrganizacao: TfrmOrganizacao
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Contatos da Organiza'#231#227'o'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]

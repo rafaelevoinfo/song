@@ -691,7 +691,7 @@ end;
 
 procedure TfrmBasicoCrud.ppuRetornar(ipAtualizar: Boolean);
 var
-  vaIdAtual:Integer;
+  vaIdAtual: Integer;
 begin
   if FModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     Close
@@ -702,7 +702,7 @@ begin
         begin
           vaIdAtual := dsMaster.DataSet.FieldByName(TBancoDados.coID).AsInteger;
           pprEfetuarPesquisa;
-          dsMaster.DataSet.Locate(TBancoDados.coId,vaIdAtual,[]);
+          dsMaster.DataSet.Locate(TBancoDados.coID, vaIdAtual, []);
         end;
     end;
 end;
@@ -829,29 +829,34 @@ var
   vaControl: TWinControl;
 begin
   vaControl := nil;
-  vaMsg := TStringList.Create;
-  try
-    for vaField in ipDataSet.Fields do
-      begin
-        if vaField.Required and (vaField.IsNull or (vaField.AsString.Trim = '')) then
+  //tem q estar em edit ou insert ou entao tem q ter algo no cds. Se isso nao acontecer é pq o usuario
+  //deletou todos os registros e mandou gravar. Isso é possivel quando se usa o frameGrids
+  if (ipDataSet.State in [dsInsert, dsEdit]) or (ipDataSet.RecordCount > 0) then
+    begin
+      vaMsg := TStringList.Create;
+      try
+        for vaField in ipDataSet.Fields do
           begin
-            vaMsg.Add(vaField.DisplayLabel);
-            if not Assigned(vaControl) then
-              vaControl := fprProcurarControlePorFieldName(vaField.FieldName);
+            if vaField.Required and (vaField.IsNull or (vaField.AsString.Trim = '')) then
+              begin
+                vaMsg.Add(vaField.DisplayLabel);
+                if not Assigned(vaControl) then
+                  vaControl := fprProcurarControlePorFieldName(vaField.FieldName);
+              end;
           end;
-      end;
 
-    if vaMsg.Count > 0 then
-      begin
-        if Assigned(vaControl) then
-          raise TControlException.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text, vaControl)
-        else
-          raise Exception.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text);
-      end;
+        if vaMsg.Count > 0 then
+          begin
+            if Assigned(vaControl) then
+              raise TControlException.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text, vaControl)
+            else
+              raise Exception.Create('Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text);
+          end;
 
-  finally
-    vaMsg.Free;
-  end;
+      finally
+        vaMsg.Free;
+      end;
+    end;
 
 end;
 

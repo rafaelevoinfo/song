@@ -83,6 +83,7 @@ type
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda,vivFamiliaBotanica);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
   estSaida, estVenda, estLocalUso);
+  TPermissaoSistema = (sisNotificacao);
 
 implementation
 
@@ -124,6 +125,14 @@ var
     vaPermissoes.Add(vaPermissao);
   end;
 
+  procedure plAddSistema(ipPermissao: TPermissaoSistema; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoSistema), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
 begin
   FItems := TDictionary < String, TList < TPermissao >>.Create();
 
@@ -157,6 +166,10 @@ begin
   plAddViveiro(vivLoteMuda, 'Lote de Mudas');
   plAddViveiro(vivMatriz, 'Matrizes');
   FItems.Add('Viveiro', vaPermissoes);
+
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddSistema(sisNotificacao, 'Notificações');
+  FItems.Add('Sistema', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;
   plAddEstoque(estItem, 'Itens');

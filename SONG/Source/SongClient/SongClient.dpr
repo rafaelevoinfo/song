@@ -56,7 +56,9 @@ uses
   fRelatorioViveiro in 'Viveiro\fRelatorioViveiro.pas' {frmRelatorioViveiro},
   fLocalUso in 'Estoque\fLocalUso.pas' {frmLocalUso},
   aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
-  fFamilia_Botanica in 'Viveiro\fFamilia_Botanica.pas' {frmFamiliaBotanica};
+  fFamilia_Botanica in 'Viveiro\fFamilia_Botanica.pas' {frmFamiliaBotanica},
+  dmuSistema in 'Sistema\dmuSistema.pas' {dmSistema: TDataModule},
+  fNotificacao in 'Sistema\fNotificacao.pas' {frmNotificacao};
 
 {$R Localization.RES}
   {$R *.res}

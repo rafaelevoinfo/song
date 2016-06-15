@@ -1,6 +1,7 @@
 inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   Caption = 'Relat'#243'rios do Viveiro'
   ClientHeight = 480
+  ExplicitWidth = 320
   ExplicitHeight = 519
   PixelsPerInch = 96
   TextHeight = 13
@@ -28,6 +29,10 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos Por Esp'#233'cie'
         ImageIndex = 0
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label2: TLabel
           Left = 7
           Top = 3
@@ -150,6 +155,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 114
+                Height = 13
                 Caption = 'Esp'#233'cies dispon'#237'veis'
                 Font.Style = [fsBold]
                 ParentFont = False
@@ -158,6 +164,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               inherited lbInfoGridDireita: TLabel
                 Left = 439
                 Width = 124
+                Height = 13
                 Caption = 'Esp'#233'cies selecionadas'
                 Font.Style = [fsBold]
                 ParentFont = False

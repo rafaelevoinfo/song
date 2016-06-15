@@ -3032,4 +3032,10 @@ object dmPrincipal: TdmPrincipal
     Left = 328
     Top = 360
   end
+  object ProviderSistema: TRFProviderConnection
+    ServerClassName = 'TsmSistema'
+    SQLConnection = DataSnapConn
+    Left = 352
+    Top = 296
+  end
 end

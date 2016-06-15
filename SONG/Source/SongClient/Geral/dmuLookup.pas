@@ -219,6 +219,8 @@ type
     cdslkFamilia_BotanicaNOME: TStringField;
     dslkFamilia_Botanica: TDataSource;
     repLcbFamiliaBotanica: TcxEditRepositoryLookupComboBoxItem;
+    repIcbTipoNotificacao: TcxEditRepositoryImageComboBoxItem;
+    RepChkNaoSim: TcxEditRepositoryCheckBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private
@@ -331,6 +333,7 @@ end;
 procedure TdmLookup.DataModuleCreate(Sender: TObject);
 var
   vaTipo: TTipoRelacionamentoPessoa;
+  vaTipoNotificacao:TTipoNotificacao;
   vaItem: TcxImageComboBoxItem;
 begin
   inherited;
@@ -340,6 +343,14 @@ begin
       vaItem := repIcbTipoPessoa.Properties.Items.Add;
       vaItem.Value := Ord(vaTipo);
       vaItem.Description := TipoRelacionamentoPessoa[vaTipo];
+    end;
+
+  repIcbTipoNotificacao.Properties.Items.Clear;
+  for vaTipoNotificacao := Low(TTipoNotificacao) to High(TTipoNotificacao) do
+    begin
+      vaItem := repIcbTipoNotificacao.Properties.Items.Add;
+      vaItem.Value := Ord(vaTipoNotificacao);
+      vaItem.Description := TiposNotificacao[vaTipoNotificacao];
     end;
 
 end;

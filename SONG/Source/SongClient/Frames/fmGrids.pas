@@ -13,6 +13,9 @@ uses
   uTypes;
 
 type
+  TTipoAcao = (tcAdd, tcRemove);
+  TOnAddRemove = reference to procedure(ipDataSetOrigem, ipDataSetDestino: TDataSet; ipTipo:TTipoAcao);
+
   TframeGrids = class(TFrame)
     gpGrids: TGridPanel;
     pnLabels: TPanel;
@@ -47,18 +50,25 @@ type
     procedure viewDireitaDblClick(Sender: TObject);
   private
     FMapaFields: TDictionary<String, string>;
+    FOnAddRemoveRegistro: TOnAddRemove;
     procedure ppvPreencherCamposPadroes(ipDataSet: TDataSet);
+    procedure SetOnAddRemoveRegistro(const Value: TOnAddRemove);
   public
+    property OnAddRemoveRegistro: TOnAddRemove read FOnAddRemoveRegistro write SetOnAddRemoveRegistro;
+
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipRepositorio: TcxEditRepositoryItem); overload;
-    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean); overload;
-    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible, ipEditavel: Boolean); overload;
-    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible, ipEditavel: Boolean;ipRepositorio: TcxEditRepositoryItem); overload;
-    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean; ipRepositorio: TcxEditRepositoryItem); overload;
-    procedure ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string); overload;
+    function fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipRepositorio: TcxEditRepositoryItem): TcxGridDBColumn; overload;
+    function fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean): TcxGridDBColumn; overload;
+    function fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible, ipEditavel: Boolean): TcxGridDBColumn; overload;
+    function fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible, ipEditavel: Boolean;
+      ipRepositorio: TcxEditRepositoryItem): TcxGridDBColumn; overload;
+    function fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean; ipRepositorio: TcxEditRepositoryItem)
+      : TcxGridDBColumn; overload;
+    function fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string): TcxGridDBColumn; overload;
 
     procedure ppuMapearFields(ipFieldEsquerda, ipFieldDireita: String);
+
   end;
 
 implementation
@@ -98,12 +108,9 @@ begin
         end;
     end;
   ppvPreencherCamposPadroes(dsDireita.DataSet);
-  // for vaField in dsEsquerda.DataSet.Fields do
-  // begin
-  // vaFieldDestino := dsDireita.DataSet.FindField(vaField.FieldName);
-  // if Assigned(vaFieldDestino) then
-  // vaFieldDestino.Assign(vaField);
-  // end;
+  if Assigned(FOnAddRemoveRegistro) then
+    FOnAddRemoveRegistro(dsEsquerda.DataSet, dsDireita.DataSet,tcAdd);
+
   dsEsquerda.DataSet.Delete;
   dsDireita.DataSet.Post;
 end;
@@ -142,6 +149,11 @@ begin
             end;
         end;
     end;
+end;
+
+procedure TframeGrids.SetOnAddRemoveRegistro(const Value: TOnAddRemove);
+begin
+  FOnAddRemoveRegistro := Value;
 end;
 
 procedure TframeGrids.viewDireitaDblClick(Sender: TObject);
@@ -189,6 +201,9 @@ begin
   // vaFieldDestino.Assign(vaField);
   // end;
 
+  if Assigned(FOnAddRemoveRegistro) then
+    FOnAddRemoveRegistro(dsDireita.DataSet, dsEsquerda.DataSet,tcRemove);
+
   dsDireita.DataSet.Delete;
 
   dsEsquerda.DataSet.Post;
@@ -225,35 +240,40 @@ begin
   inherited;
 end;
 
-procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string;
-  ipRepositorio: TcxEditRepositoryItem);
+function TframeGrids.fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string;
+  ipRepositorio: TcxEditRepositoryItem): TcxGridDBColumn;
 begin
-  ppuAdicionarField(ipView, ipFieldName, true, ipRepositorio);
+  Result := fpuAdicionarField(ipView, ipFieldName, true, ipRepositorio);
 end;
 
-procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean);
+function TframeGrids.fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean): TcxGridDBColumn;
 begin
-  ppuAdicionarField(ipView, ipFieldName, ipVisible, nil);
+  Result := fpuAdicionarField(ipView, ipFieldName, ipVisible, nil);
 end;
 
-procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean;
-  ipRepositorio: TcxEditRepositoryItem);
+function TframeGrids.fpuAdicionarField(ipView: TcxGridDBTableView; ipFieldName: string; ipVisible: Boolean;
+  ipRepositorio: TcxEditRepositoryItem): TcxGridDBColumn;
 begin
-  ppuAdicionarField(ipview, ipFieldName,ipVisible,false,ipRepositorio);
+  Result := fpuAdicionarField(ipView, ipFieldName, ipVisible, false, ipRepositorio);
 end;
 
-procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView;
-  ipFieldName: string; ipVisible, ipEditavel: Boolean;
-  ipRepositorio: TcxEditRepositoryItem);
+function TframeGrids.fpuAdicionarField(ipView: TcxGridDBTableView;
+  ipFieldName: string; ipVisible, ipEditavel: Boolean; ipRepositorio: TcxEditRepositoryItem): TcxGridDBColumn;
 var
-  vaColumn: TcxGridDBColumn;
+  vaField: TField;
 begin
-  vaColumn := ipView.CreateColumn;
-  vaColumn.DataBinding.FieldName := ipFieldName;
-  vaColumn.RepositoryItem := ipRepositorio;
-  vaColumn.Visible := ipVisible;
-  vaColumn.Options.Editing := ipEditavel;
-  vaColumn.Width := 150;
+  Result := ipView.CreateColumn;
+  Result.DataBinding.FieldName := ipFieldName;
+  Result.RepositoryItem := ipRepositorio;
+  Result.Visible := ipVisible;
+  Result.Options.Editing := ipEditavel;
+  vaField := ipView.DataController.DataSource.DataSet.FindField(ipFieldName);
+  if Assigned(vaField) and (vaField is TStringField) then
+    begin
+      Result.Width := vaField.Size;
+    end
+  else
+    Result.Width := 150;
 end;
 
 procedure TframeGrids.ppuMapearFields(ipFieldEsquerda, ipFieldDireita: String);
@@ -261,16 +281,16 @@ begin
   FMapaFields.Add(ipFieldEsquerda, ipFieldDireita);
 end;
 
-procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView;
-  ipFieldName: string);
+function TframeGrids.fpuAdicionarField(ipView: TcxGridDBTableView;
+  ipFieldName: string): TcxGridDBColumn;
 begin
-  ppuAdicionarField(ipView, ipFieldName, true);
+  Result := fpuAdicionarField(ipView, ipFieldName, true);
 end;
 
-procedure TframeGrids.ppuAdicionarField(ipView: TcxGridDBTableView;
-  ipFieldName: string; ipVisible, ipEditavel: Boolean);
+function TframeGrids.fpuAdicionarField(ipView: TcxGridDBTableView;
+  ipFieldName: string; ipVisible, ipEditavel: Boolean): TcxGridDBColumn;
 begin
-   ppuAdicionarField(ipView,ipFieldName,ipVisible,ipEditavel, nil);
+  Result := fpuAdicionarField(ipView, ipFieldName, ipVisible, ipEditavel, nil);
 end;
 
 end.

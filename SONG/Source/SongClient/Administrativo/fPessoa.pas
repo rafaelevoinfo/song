@@ -170,9 +170,9 @@ end;
 procedure TfrmPessoa.ppvConfigurarGrids;
 begin
   // Esquerda
-  frameGrids.ppuAdicionarField(frameGrids.viewEsquerda, 'ID', dmLookup.repLcbPerfil);
+  frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'ID', dmLookup.repLcbPerfil);
   // Direita
-  frameGrids.ppuAdicionarField(frameGrids.viewDireita, 'ID_PERFIL', dmLookup.repLcbPerfil);
+  frameGrids.fpuAdicionarField(frameGrids.viewDireita, 'ID_PERFIL', dmLookup.repLcbPerfil);
   // mapeando
   frameGrids.ppuMapearFields('ID', 'ID_PERFIL');
 end;

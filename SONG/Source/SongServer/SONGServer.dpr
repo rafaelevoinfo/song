@@ -28,7 +28,9 @@ uses
   smuRelatorio in 'ServerModules\smuRelatorio.pas' {smRelatorio: TDSServerModule},
   smuFuncoesRelatorio in 'ServerModules\Funcoes\smuFuncoesRelatorio.pas' {smFuncoesRelatorio: TDSServerModule},
   aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
-  uBackup in 'uBackup.pas';
+  uBackup in 'uBackup.pas',
+  smuSistema in 'ServerModules\smuSistema.pas' {smSistema: TDSServerModule},
+  smuFuncoesSistema in 'ServerModules\Funcoes\smuFuncoesSistema.pas' {smFuncoesSistema: TDSServerModule};
 
 {$R *.res}
 

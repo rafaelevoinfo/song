@@ -658,9 +658,9 @@ end;
 procedure TfrmLoteSemente.ppvConfigurarGrids;
 begin
   // Esquerda
-  frameMatrizes.ppuAdicionarField(frameMatrizes.viewEsquerda, 'ID', dmLookup.replcbMatriz);
+  frameMatrizes.fpuAdicionarField(frameMatrizes.viewEsquerda, 'ID', dmLookup.replcbMatriz);
   // Direita
-  frameMatrizes.ppuAdicionarField(frameMatrizes.viewDireita, 'ID_MATRIZ', dmLookup.replcbMatriz);
+  frameMatrizes.fpuAdicionarField(frameMatrizes.viewDireita, 'ID_MATRIZ', dmLookup.replcbMatriz);
   // mapeando
   frameMatrizes.ppuMapearFields('ID', 'ID_MATRIZ');
 end;

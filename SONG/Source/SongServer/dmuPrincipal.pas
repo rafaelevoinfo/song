@@ -51,6 +51,8 @@ type
     SCFuncoesEstoque: TDSServerClass;
     SCRelatorio: TDSServerClass;
     SCFuncoesRelatorio: TDSServerClass;
+    SCSistema: TDSServerClass;
+    SCFuncoesSistema: TDSServerClass;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SCAdministrativoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -78,6 +80,11 @@ type
     procedure SCRelatorioGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure SCFuncoesRelatorioGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure SCSistemaGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
+    procedure SCFuncoesSistemaGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     FSyncro: TMultiReadExclusiveWriteSynchronizer;
@@ -107,9 +114,16 @@ implementation
 
 uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
   smuFinanceiro, smuViveiro, smuFuncoesViveiro, smuFuncoesFinanceiro, smuEstoque,
-  smuFuncoesEstoque, smuRelatorio, smuFuncoesRelatorio;
+  smuFuncoesEstoque, smuRelatorio, smuFuncoesRelatorio, smuSistema, fPrincipal,
+  smuFuncoesSistema;
 
 { TdmPrincipal }
+
+procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject;
+  E: Exception);
+begin
+  frmPrincipal.ppuAdicionarErroLog(e);
+end;
 
 procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
   var valid: Boolean; UserRoles: TStrings);
@@ -391,6 +405,12 @@ begin
   PersistentClass := smuFuncoesRelatorio.TsmFuncoesRelatorio;
 end;
 
+procedure TdmPrincipal.SCFuncoesSistemaGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := smuFuncoesSistema.TsmFuncoesSistema;
+end;
+
 procedure TdmPrincipal.SCFuncoesViveiroGetClass(DSServerClass: TDSServerClass;
   var PersistentClass: TPersistentClass);
 begin
@@ -406,6 +426,12 @@ procedure TdmPrincipal.SCRelatorioGetClass(DSServerClass: TDSServerClass;
   var PersistentClass: TPersistentClass);
 begin
   PersistentClass := smuRelatorio.TSMRelatorio;
+end;
+
+procedure TdmPrincipal.SCSistemaGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := smuSistema.TsmSistema;
 end;
 
 procedure TdmPrincipal.SCViveiroGetClass(DSServerClass: TDSServerClass;

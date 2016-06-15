@@ -2197,7 +2197,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 257
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabBackup
+    Properties.ActivePage = tabLog
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 252
@@ -2705,8 +2705,8 @@ object frmPrincipal: TfrmPrincipal
     Aggregates = <>
     IndexFieldNames = 'MAJOR;MINOR;RELEASE;BUILD'
     Params = <>
-    Left = 672
-    Top = 88
+    Left = 704
+    Top = 144
     object cdsAtualizacoesMAJOR: TIntegerField
       FieldName = 'MAJOR'
     end

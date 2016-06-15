@@ -152,7 +152,7 @@ begin
   inherited;
   PesquisaPadrao := Ord(tppTodos);
 
-  dmLookup.cdslkPessoa.Open;
+  dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
   // Essa tela tela é um caso especial, por isso precisei fazer isso
   dsDetail.DataSet := dmAdministrativo.cdsFundo;
 end;

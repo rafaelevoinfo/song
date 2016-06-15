@@ -144,6 +144,9 @@ inherited frmPrincipal: TfrmPrincipal
       object MeusDados1: TMenuItem
         Action = Ac_Meus_Dados
       end
+      object ConfiguraodeNotificaes1: TMenuItem
+        Action = Ac_Notificacao
+      end
     end
   end
   object ActionList1: TActionList
@@ -298,6 +301,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Viveiro'
       Caption = 'Fam'#237'lia Bot'#226'nica'
       OnExecute = Ac_Familia_BotanicaExecute
+    end
+    object Ac_Notificacao: TAction
+      Category = 'Sistema'
+      Caption = 'Configura'#231#227'o de Notifica'#231#245'es'
+      OnExecute = Ac_NotificacaoExecute
     end
   end
   object dxSkinController1: TdxSkinController

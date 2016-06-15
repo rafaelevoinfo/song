@@ -121,6 +121,7 @@ object dmPrincipal: TdmPrincipal
     end
   end
   object ApplicationEvents1: TApplicationEvents
+    OnException = ApplicationEvents1Exception
     Left = 680
     Top = 72
   end
@@ -218,5 +219,17 @@ object dmPrincipal: TdmPrincipal
     Server = Server
     Left = 800
     Top = 232
+  end
+  object SCSistema: TDSServerClass
+    OnGetClass = SCSistemaGetClass
+    Server = Server
+    Left = 776
+    Top = 312
+  end
+  object SCFuncoesSistema: TDSServerClass
+    OnGetClass = SCFuncoesSistemaGetClass
+    Server = Server
+    Left = 680
+    Top = 376
   end
 end

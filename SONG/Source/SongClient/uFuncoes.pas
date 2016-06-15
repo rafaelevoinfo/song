@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/06/2016 21:00:02
+// 14/06/2016 23:39:09
 //
 
 unit uFuncoes;
@@ -240,6 +240,32 @@ type
     destructor Destroy; override;
     function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant;
     function fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant;
+    function fpuGetId(ipTabela: string): Integer;
+    function fpuDataHoraAtual: string;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmSistemaClient = class(TDSAdminClient)
+  private
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFuncoesSistemaClient = class(TDSAdminClient)
+  private
+    FfpuValidarTipoNotificacaoCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -1671,6 +1697,139 @@ destructor TsmFuncoesRelatorioClient.Destroy;
 begin
   FfpuMovimentacaoFinanceiraCommand.DisposeOf;
   FfpuSaldoCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+procedure TsmSistemaClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmSistema.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmSistemaClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmSistemaClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmSistemaClient.Destroy;
+begin
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+function TsmFuncoesSistemaClient.fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean;
+begin
+  if FfpuValidarTipoNotificacaoCommand = nil then
+  begin
+    FfpuValidarTipoNotificacaoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarTipoNotificacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarTipoNotificacaoCommand.Text := 'TsmFuncoesSistema.fpuValidarTipoNotificacao';
+    FfpuValidarTipoNotificacaoCommand.Prepare;
+  end;
+  FfpuValidarTipoNotificacaoCommand.Parameters[0].Value.SetInt32(ipIdNotificacao);
+  FfpuValidarTipoNotificacaoCommand.Parameters[1].Value.SetInt32(ipTipo);
+  FfpuValidarTipoNotificacaoCommand.ExecuteUpdate;
+  Result := FfpuValidarTipoNotificacaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TsmFuncoesSistemaClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesSistema.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesSistemaClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesSistema.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
+procedure TsmFuncoesSistemaClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFuncoesSistema.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFuncoesSistemaClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFuncoesSistemaClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFuncoesSistemaClient.Destroy;
+begin
+  FfpuValidarTipoNotificacaoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

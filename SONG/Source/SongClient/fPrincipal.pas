@@ -14,7 +14,7 @@ uses
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
   uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
   fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda,
-  fRelatorioViveiro, fLocalUso, fFamilia_Botanica;
+  fRelatorioViveiro, fLocalUso, fFamilia_Botanica, fNotificacao;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -89,6 +89,8 @@ type
     LocaisdeUso1: TMenuItem;
     Ac_Familia_Botanica: TAction;
     FamliaBotnica1: TMenuItem;
+    Ac_Notificacao: TAction;
+    ConfiguraodeNotificaes1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -121,6 +123,7 @@ type
     procedure Ac_Relatorio_ViveiroExecute(Sender: TObject);
     procedure Ac_Local_UsoExecute(Sender: TObject);
     procedure Ac_Familia_BotanicaExecute(Sender: TObject);
+    procedure Ac_NotificacaoExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -280,7 +283,7 @@ begin
     vaPessoa.Id := TInfoLogin.fpuGetInstance.Usuario.Id;
     vaPessoa.Nome := TInfoLogin.fpuGetInstance.Usuario.Nome;
 
-    vaFrmPessoa.ppuConfigurarModoExecucao(meSomenteEdicao,vaPessoa);
+    vaFrmPessoa.ppuConfigurarModoExecucao(meSomenteEdicao, vaPessoa);
     vaFrmPessoa.ShowModal;
 
   finally
@@ -288,6 +291,12 @@ begin
     vaFrmPessoa.Free;
   end;
 
+end;
+
+procedure TfrmPrincipal.Ac_NotificacaoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmNotificacao>(pcPrincipal, TfrmNotificacao, frmNotificacao);
 end;
 
 procedure TfrmPrincipal.Ac_OrganizacaoExecute(Sender: TObject);

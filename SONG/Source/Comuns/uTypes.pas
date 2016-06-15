@@ -128,6 +128,9 @@ type
 
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
+  TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
+    tnAtividadeIniciada, tnAtividadeVencendo);
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;
@@ -147,6 +150,9 @@ const
     'Financiador', 'Parceiro', 'Estagiário', 'Voluntário', 'Outro');
   FormaPagamennto: array [TFormaPagamento] of string = ('Transferência Bancária', 'Débito em Conta', 'Cartão de Crédito', 'Cartão de Débito',
     'Cheque', 'Dinheiro', 'Outro');
+
+  TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
+    'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade iniciada', 'Atividade prestes a vencer prazo de execução');
 
 implementation
 
