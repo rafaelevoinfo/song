@@ -137,7 +137,7 @@ begin
     dmLookup.cdslkRubrica.Edit;
 
   dmLookup.cdslkRubricaID_RUBRICA_PAI.AsInteger := dmFinanceiro.cdsRubricaID_RUBRICA_PAI.AsInteger;
-  dmLookup.cdslkRubricaNOME.AsString := dmFinanceiro.cdsRubricaIDENTIFICADOR.AsString + ' - ' + dmFinanceiro.cdsRubricaNOME.AsString;
+  dmLookup.cdslkRubricaNOME.AsString := dmFinanceiro.cdsRubricaNOME.AsString;
   dmLookup.cdslkRubrica.Post;
 end;
 

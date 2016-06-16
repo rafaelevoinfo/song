@@ -109,6 +109,8 @@ type
     cdsFamilia_BotanicaID: TIntegerField;
     cdsFamilia_BotanicaNOME: TStringField;
     cdsEspeciePESO_MEDIO_SEMENTE: TBCDField;
+    cdsEspecieCALC_TOTAL_MUDAS: TIntegerField;
+    procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -120,8 +122,15 @@ var
 
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
+
+
+procedure TdmViveiro.cdsEspecieCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  cdsEspecieCALC_TOTAL_MUDAS.AsInteger := cdsEspecieQTDE_MUDA_DESENVOLVIMENTO.AsInteger + cdsEspecieQTDE_MUDA_PRONTA.AsInteger;
+end;
 
 end.

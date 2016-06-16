@@ -43,6 +43,7 @@ type
     cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     cdsTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField;
     cdsTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField;
+    cdsSaldo_Semente_MudaCALC_TOTAL_MUDA: TIntegerField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -65,6 +66,7 @@ begin
   cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE.AsString := FormatFloat(',0.00',cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE.AsFloat);
   cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO.AsInteger);
   cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger);
+  cdsSaldo_Semente_MudaCALC_TOTAL_MUDA.AsInteger := cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsInteger+ cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger;
 end;
 
 end.

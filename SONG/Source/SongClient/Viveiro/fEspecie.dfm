@@ -1,11 +1,9 @@
 inherited frmEspecie: TfrmEspecie
-  ActiveControl = EditNome
   Caption = 'Esp'#233'cies Produzidas'
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -96,23 +94,28 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 184
             end
-            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [10]
+            object viewRegistrosCALC_TOTAL_MUDAS: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'CALC_TOTAL_MUDAS'
+              Options.Editing = False
+              Width = 78
+            end
+            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [11]
               DataBinding.FieldName = 'VALOR_KG_SEMENTE'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [11]
+            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [12]
               DataBinding.FieldName = 'VALOR_MUDA'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [12]
+            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [13]
               DataBinding.FieldName = 'TEMPO_GERMINACAO'
               Visible = False
               Options.Editing = False
               Width = 183
             end
-            object viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn [13]
+            object viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn [14]
               DataBinding.FieldName = 'TEMPO_DESENVOLVIMENTO'
               Visible = False
               Options.Editing = False

@@ -1,7 +1,6 @@
 inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   Caption = 'Relat'#243'rios do Viveiro'
   ClientHeight = 480
-  ExplicitWidth = 320
   ExplicitHeight = 519
   PixelsPerInch = 96
   TextHeight = 13
@@ -29,10 +28,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos Por Esp'#233'cie'
         ImageIndex = 0
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label2: TLabel
           Left = 7
           Top = 3
@@ -94,8 +89,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
             ExplicitWidth = 848
             ExplicitHeight = 320
             inherited cxGrid1: TcxGrid
-              Width = 397
-              Height = 318
               ExplicitWidth = 397
               ExplicitHeight = 318
               inherited viewEsquerda: TcxGridDBTableView
@@ -103,29 +96,27 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited pnBotoes: TPanel
-              Left = 398
-              Width = 42
-              Height = 318
               ExplicitLeft = 398
               ExplicitWidth = 42
               ExplicitHeight = 318
               inherited btnAdd: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
               inherited btnAddTodos: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
               inherited btnRemover: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
               inherited btnRemoverTodos: TButton
+                Width = 42
                 ExplicitWidth = 42
               end
             end
             inherited cxGrid2: TcxGrid
-              Left = 440
-              Width = 407
-              Height = 318
               ExplicitLeft = 440
               ExplicitWidth = 407
               ExplicitHeight = 318
@@ -155,19 +146,12 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 114
-                Height = 13
                 Caption = 'Esp'#233'cies dispon'#237'veis'
-                Font.Style = [fsBold]
-                ParentFont = False
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
-                Left = 439
                 Width = 124
-                Height = 13
                 Caption = 'Esp'#233'cies selecionadas'
-                Font.Style = [fsBold]
-                ParentFont = False
                 ExplicitLeft = 439
                 ExplicitWidth = 124
               end
@@ -431,7 +415,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         FormField = False
         Transparent = True
         mmHeight = 3704
-        mmLeft = 89426
+        mmLeft = 84929
         mmTop = 22225
         mmWidth = 21696
         BandType = 0
@@ -440,7 +424,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object ppLabel5: TppLabel
         DesignLayer = ppDesignLayer4
         UserName = 'Label7'
-        Caption = 'Mudas Prontas (Und)'
+        Caption = 'Mudas Prontas'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -449,9 +433,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         FormField = False
         Transparent = True
         mmHeight = 3704
-        mmLeft = 164572
+        mmLeft = 151871
         mmTop = 22225
-        mmWidth = 30427
+        mmWidth = 21961
         BandType = 0
         LayerName = BandLayer4
       end
@@ -469,7 +453,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object ppLabel3: TppLabel
         DesignLayer = ppDesignLayer4
         UserName = 'Label5'
-        Caption = 'Mudas em Desenvolvimento (Und)'
+        Caption = 'Mudas em Desenvolvimento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -479,9 +463,27 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3704
-        mmLeft = 112981
+        mmLeft = 108475
         mmTop = 22225
-        mmWidth = 50007
+        mmWidth = 41540
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label9'
+        Caption = 'Total Mudas'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 175150
+        mmTop = 22225
+        mmWidth = 17727
         BandType = 0
         LayerName = BandLayer4
       end
@@ -502,13 +504,13 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taRightJustified
+        TextAlignment = taCentered
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 164569
+        mmLeft = 151869
         mmTop = 0
-        mmWidth = 30385
+        mmWidth = 21960
         BandType = 4
         LayerName = BandLayer4
       end
@@ -541,11 +543,11 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taRightJustified
+        TextAlignment = taCentered
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 89426
+        mmLeft = 84929
         mmTop = 0
         mmWidth = 21696
         BandType = 4
@@ -566,7 +568,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmHeight = 4763
         mmLeft = 43657
         mmTop = 0
-        mmWidth = 44979
+        mmWidth = 39952
         BandType = 4
         LayerName = BandLayer4
       end
@@ -580,13 +582,33 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taRightJustified
+        TextAlignment = taCentered
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 112977
+        mmLeft = 108480
         mmTop = 0
-        mmWidth = 50006
+        mmWidth = 41540
+        BandType = 4
+        LayerName = BandLayer4
+      end
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText11'
+        DataField = 'CALC_TOTAL_MUDA'
+        DataPipeline = DBPipeSaldoEspecie
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeSaldoEspecie'
+        mmHeight = 4763
+        mmLeft = 175154
+        mmTop = 0
+        mmWidth = 20638
         BandType = 4
         LayerName = BandLayer4
       end
@@ -676,6 +698,89 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         LayerName = BandLayer4
       end
     end
+    object ppSummaryBand1: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 13229
+      mmPrintPosition = 0
+      object ppLabel13: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label8'
+        Caption = 'Total de Sementes:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 109273
+        mmTop = 1323
+        mmWidth = 32544
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object ppLabel14: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label14'
+        Caption = 'Total de Mudas:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 4234
+        mmLeft = 115096
+        mmTop = 6879
+        mmWidth = 26723
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object ppDBCalc1: TppDBCalc
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBCalc1'
+        DataField = 'CALC_QTDE_SEMENTE'
+        DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0.00 Kg'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'DBPipeSaldoEspecie'
+        mmHeight = 4498
+        mmLeft = 142610
+        mmTop = 1322
+        mmWidth = 51858
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object ppDBCalc2: TppDBCalc
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBCalc2'
+        DataField = 'CALC_TOTAL_MUDA'
+        DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0 Und'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'DBPipeSaldoEspecie'
+        mmHeight = 4498
+        mmLeft = 142609
+        mmTop = 7144
+        mmWidth = 51858
+        BandType = 7
+        LayerName = BandLayer4
+      end
+    end
     object raCodeModule2: TraCodeModule
       ProgramStream = {00}
     end
@@ -697,8 +802,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object DBPipeSaldoEspecieppField1: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 0
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 0
     end
     object DBPipeSaldoEspecieppField2: TppField
@@ -762,6 +867,15 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       FieldLength = 60
       DisplayWidth = 60
       Position = 8
+    end
+    object DBPipeSaldoEspecieppField10: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'CALC_TOTAL_MUDA'
+      FieldName = 'CALC_TOTAL_MUDA'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 9
     end
   end
   object DBPipeOrganizacao: TppDBPipeline

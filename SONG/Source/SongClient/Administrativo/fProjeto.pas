@@ -16,7 +16,7 @@ uses
   cxDBEdit, cxMemo, dmuLookup, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
   uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit, cxLocalization,
-  cxCheckBox, uMensagem;
+  cxCheckBox, uMensagem, System.Math, System.Types, Datasnap.DBClient;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -401,7 +401,7 @@ begin
     dmAdministrativo.cdsProjeto_Financiador_PagtoFORMA_PAGTO.AsInteger := cbFormaPagamento.EditValue;
     dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat := EditPercentualPagamento.Value;
     dmAdministrativo.cdsProjeto_Financiador_PagtoID_PROJETO_ORGANIZACAO.AsInteger := cbProjetoOrganizacao.EditValue;
-    if dmLookup.cdslkProjeto_Organizacao.Locate(TBancoDados.coId,cbProjetoOrganizacao.EditValue,[]) then
+    if dmLookup.cdslkProjeto_Organizacao.Locate(TBancoDados.coId, cbProjetoOrganizacao.EditValue, []) then
       dmAdministrativo.cdsProjeto_Financiador_PagtoNOME_ORGANIZACAO.AsString := dmLookup.cdslkProjeto_OrganizacaoNOME.AsString;
     dmAdministrativo.cdsProjeto_Financiador_Pagto.Post;
 
@@ -582,12 +582,18 @@ begin
       vaSaldoReal := dmPrincipal.FuncoesAdm.fpuSomaOrcamentoRubrica(dmAdministrativo.cdsProjetoID.AsInteger);
       if dmAdministrativo.cdsProjeto_Rubrica.State = dsEdit then
         begin
-          if (vaSaldoReal - dmAdministrativo.cdsProjeto_RubricaORCAMENTO.OldValue) + dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat >
-            dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
+          if CompareValue((vaSaldoReal - dmAdministrativo.cdsProjeto_RubricaORCAMENTO.OldValue) +
+            dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat, dmAdministrativo.cdsProjetoORCAMENTO.AsFloat) = GreaterThanValue then
             raise Exception.Create('A soma de todos os orçamentos das rubricas deste projeto não pode ser superior ao orçamento do projeto.');
         end
-      else if vaSaldoReal + dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat > dmAdministrativo.cdsProjetoORCAMENTO.AsFloat then
+      else if CompareValue((vaSaldoReal + dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat),
+        dmAdministrativo.cdsProjetoORCAMENTO.AsFloat) = GreaterThanValue then
         raise Exception.Create('A soma de todos os orçamentos das rubricas deste projeto não pode ser superior ao orçamento do projeto.');
+
+      if not dmPrincipal.FuncoesFinanceiro.fpuValidarCadastroRubricaProjeto(dmAdministrativo.cdsProjeto_RubricaID.AsInteger,
+        dmAdministrativo.cdsProjeto_RubricaID_PROJETO.AsInteger, dmAdministrativo.cdsProjeto_RubricaID_RUBRICA.AsInteger) then
+        raise Exception.Create('A rubrica selecionada já foi cadastrada para este projeto.');
+
     end
   else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     begin

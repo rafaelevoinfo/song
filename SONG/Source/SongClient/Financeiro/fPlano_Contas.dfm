@@ -1,10 +1,11 @@
 inherited frmPlanoContas: TfrmPlanoContas
   ActiveControl = EditNome
   Caption = 'Plano de Contas'
-  ExplicitHeight = 240
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -54,6 +55,7 @@ inherited frmPlanoContas: TfrmPlanoContas
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
             TabOrder = 2
+            Visible = False
             WordWrap = True
           end
         end
@@ -87,6 +89,10 @@ inherited frmPlanoContas: TfrmPlanoContas
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lblNome: TLabel
           Left = 4
@@ -111,6 +117,7 @@ inherited frmPlanoContas: TfrmPlanoContas
           Height = 13
           Caption = 'Conta Pai'
           FocusControl = cbContaPai
+          Visible = False
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -138,15 +145,13 @@ inherited frmPlanoContas: TfrmPlanoContas
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 2
+          Visible = False
           Width = 145
         end
       end
     end
   end
   inherited ActionList1: TActionList
-    inherited Ac_Incluir: TAction
-      Caption = 'Incluir Plano de Contas'
-    end
     object Ac_Incluir_Item: TAction
       Category = 'Master'
       Caption = 'Incluir Item'

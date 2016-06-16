@@ -56,6 +56,7 @@ type
     viewRegistrosID_FAMILIA_BOTANICA: TcxGridDBColumn;
     viewRegistrosPESO_MEDIO_SEMENTE: TcxGridDBColumn;
     cbFamiliaBotanica: TcxDBLookupComboBox;
+    viewRegistrosCALC_TOTAL_MUDAS: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
   private

@@ -103,11 +103,14 @@ inherited smRelatorio: TsmRelatorio
     SQL.Strings = (
       'select Especie.Nome,'
       '       Especie.Nome_Cientifico,'
-      '       Especie.Familia_Botanica,'
+      '       familia_botanica.nome as Familia_Botanica,'
       '       Especie.Qtde_Semente_Estoque,'
       '       Especie.Qtde_Muda_Pronta,'
       '       Especie.Qtde_Muda_Desenvolvimento'
       'from Especie'
+      
+        'inner join familia_botanica on (especie.id_familia_botanica = fa' +
+        'milia_botanica.id)'
       'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL'
       'order by Especie.Nome')
     Left = 200
@@ -161,7 +164,7 @@ inherited smRelatorio: TsmRelatorio
       'select Especie.Id,'
       '       Especie.Nome,'
       '       Especie.Nome_Cientifico,'
-      '       Especie.Familia_Botanica,'
+      '       Familia_botanica.nome as Familia_Botanica,'
       '       Especie.Tempo_Germinacao,'
       '       Especie.Tempo_Desenvolvimento,'
       '       Especie.Qtde_Semente_kilo,'
@@ -175,6 +178,9 @@ inherited smRelatorio: TsmRelatorio
         '       sum(Lote_Semente.Taxa_Germinacao) / count(Lote_Semente.Id' +
         ') as Taxa_Germinacao'
       'from Especie'
+      
+        'inner join familia_botanica on (especie.id_familia_botanica = fa' +
+        'milia_botanica.id)'
       
         'left join Lote_Muda on (Lote_Muda.Id_Especie = Especie.Id and Lo' +
         'te_Muda.Id_Compra_Item is null and Lote_Muda.Id_Lote_Semente is ' +

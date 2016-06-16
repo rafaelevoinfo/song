@@ -114,6 +114,13 @@ type
     cdsPrevisaoProducaoQTDE_SEMENTE_ESTOQUE: TBCDField;
     cdsPrevisaoProducaoQTDE_SEMENTE_KILO: TIntegerField;
     dsPrevisaoProducao: TDataSource;
+    ppLabel9: TppLabel;
+    ppDBText11: TppDBText;
+    ppSummaryBand1: TppSummaryBand;
+    ppLabel13: TppLabel;
+    ppLabel14: TppLabel;
+    ppDBCalc1: TppDBCalc;
+    ppDBCalc2: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);

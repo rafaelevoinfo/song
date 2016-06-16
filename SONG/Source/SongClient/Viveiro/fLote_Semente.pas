@@ -166,6 +166,7 @@ type
   public
 
     procedure ppuIncluir; override;
+    procedure ppuIncluirDetail;override;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
 
   public const
@@ -398,6 +399,7 @@ begin
       if dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat <= 0 then
         raise Exception.Create('Este lote já foi totalmente semeado.');
     end;
+
 end;
 
 procedure TfrmLoteSemente.pprBeforeSalvar;
@@ -511,6 +513,16 @@ begin
   ppvCarregarMatrizes;
   pprPreencherCamposPadroes(dmViveiro.cdsLote_Semente);
   dmViveiro.cdsLote_SementeSTATUS.AsInteger := 0;
+end;
+
+procedure TfrmLoteSemente.ppuIncluirDetail;
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroGerminacao then
+    begin
+      if dmLookup.cdslkPessoa.Locate(TBancoDados.coId,TInfoLogin.fpuGetInstance.Usuario.Id,[]) then
+        dmViveiro.cdsGerminacaoID_PESSOA_VERIFICOU.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
+    end
 end;
 
 procedure TfrmLoteSemente.ppvCarregarMatrizes;

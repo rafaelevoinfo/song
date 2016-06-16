@@ -198,12 +198,13 @@ begin
     vaDataSet.SQL.Text := 'select Especie.Id,' +
       '       Especie.Nome,' +
       '       Especie.Nome_Cientifico,' +
-      '       Especie.Familia_Botanica,' +
+      '       familia_botanica.nome as Familia_Botanica,' +
       '       Especie.Qtde_Semente_Kilo,' +
       '       Especie.Qtde_Semente_Estoque,' +
       '       Especie.Qtde_Muda_Pronta,' +
       '       0 as Qtde_Muda_Desenvolvimento' + //nao posso pegar o valor do banco aqui pq senao vai duplicar
       ' from Especie' +
+      ' inner join familia_botanica on (familia_botanica.id = especie.id_familia_botanica) '+
       ' where especie.id in (' + vaEspecies + ')';
     vaDataSet.Open;
     while not vaDataSet.Eof do

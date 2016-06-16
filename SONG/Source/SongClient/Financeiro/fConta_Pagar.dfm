@@ -4,7 +4,6 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
-  ExplicitTop = -118
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -349,6 +348,10 @@ inherited frmContaPagar: TfrmContaPagar
             object tabVinculoPesquisa: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -475,6 +478,10 @@ inherited frmContaPagar: TfrmContaPagar
             object tabAutorizacoes: TcxTabSheet
               Caption = 'Autoriza'#231#245'es'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesAutorizacoes: TPanel
                 Left = 0
                 Top = 0
@@ -596,6 +603,10 @@ inherited frmContaPagar: TfrmContaPagar
           object tabInfoGeral: TcxTabSheet
             Caption = 'Informa'#231#245'es Gerais'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label3: TLabel
               Left = 5
               Top = 2
@@ -869,6 +880,10 @@ inherited frmContaPagar: TfrmContaPagar
           object tabVinculo: TcxTabSheet
             Caption = 'V'#237'nculos'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnVinculoTop: TPanel
               Left = 0
               Top = 0
@@ -913,6 +928,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabProjeto: TcxTabSheet
                   Caption = 'tabProjeto'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label10: TLabel
                     Left = 4
                     Top = 3
@@ -949,6 +968,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabFundo: TcxTabSheet
                   Caption = 'tabFundo'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label15: TLabel
                     Left = 4
                     Top = 3
@@ -1020,6 +1043,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabNao: TcxTabSheet
                   Caption = 'tabNao'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label14: TLabel
                     Left = 206
                     Top = 2
@@ -1070,6 +1097,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabSim: TcxTabSheet
                   Caption = 'tabSim'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object lb1: TLabel
                     Left = 2
                     Top = 1

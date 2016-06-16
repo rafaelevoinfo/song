@@ -7,6 +7,7 @@ inherited dmViveiro: TdmViveiro
     Params = <>
     ProviderName = 'dspqEspecie'
     RemoteServer = dmPrincipal.ProviderViveiro
+    OnCalcFields = cdsEspecieCalcFields
     Left = 256
     Top = 132
     object cdsEspecieID: TIntegerField
@@ -107,6 +108,13 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = [pfInUpdate]
       Precision = 15
+    end
+    object cdsEspecieCALC_TOTAL_MUDAS: TIntegerField
+      DisplayLabel = 'Total de Mudas'
+      FieldKind = fkCalculated
+      FieldName = 'CALC_TOTAL_MUDAS'
+      DisplayFormat = ',0 Und'
+      Calculated = True
     end
   end
   object cdsMatriz: TRFClientDataSet

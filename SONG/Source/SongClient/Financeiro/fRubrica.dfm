@@ -1,9 +1,11 @@
 inherited frmRubrica: TfrmRubrica
+  ActiveControl = EditNome
   Caption = 'Rubricas'
-  ExplicitHeight = 240
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -51,9 +53,8 @@ inherited frmRubrica: TfrmRubrica
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
             TabOrder = 2
+            Visible = False
             WordWrap = True
-            ExplicitLeft = 76
-            ExplicitTop = 0
           end
         end
       end
@@ -84,9 +85,11 @@ inherited frmRubrica: TfrmRubrica
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        ExplicitLeft = 4
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 4
           Top = 0
@@ -102,6 +105,7 @@ inherited frmRubrica: TfrmRubrica
           Height = 13
           Caption = 'Rubrica Pai'
           FocusControl = cbRubricaPai
+          Visible = False
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -119,15 +123,13 @@ inherited frmRubrica: TfrmRubrica
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 1
+          Visible = False
           Width = 247
         end
       end
     end
   end
   inherited ActionList1: TActionList
-    inherited Ac_Incluir: TAction
-      Caption = 'Incluir Rubrica'
-    end
     object Ac_Incluir_Item: TAction
       Category = 'Master'
       Caption = 'Incluir Item'

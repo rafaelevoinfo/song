@@ -78,6 +78,7 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <
       item
@@ -141,6 +142,12 @@ inherited dmRelatorio: TdmRelatorio
       FieldKind = fkCalculated
       FieldName = 'CALC_QTDE_MUDA_DESENVOLVIMENTO'
       Size = 60
+      Calculated = True
+    end
+    object cdsSaldo_Semente_MudaCALC_TOTAL_MUDA: TIntegerField
+      DisplayLabel = 'Total de Mudas'
+      FieldKind = fkCalculated
+      FieldName = 'CALC_TOTAL_MUDA'
       Calculated = True
     end
   end

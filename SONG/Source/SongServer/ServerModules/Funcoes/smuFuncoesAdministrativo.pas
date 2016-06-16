@@ -161,12 +161,10 @@ begin
   pprEncapsularConsulta(
     procedure(ipDataSet: TRFQuery)
     begin
-      ipDataSet.SQL.Text := 'select sum(Projeto_Rubrica.Orcamento) as Soma_Orcamentos, ' +
-        '                           Projeto.Orcamento ' +
+      ipDataSet.SQL.Text := 'select sum(Projeto_Rubrica.Orcamento) as Soma_Orcamentos ' +
         ' from Projeto_Rubrica' +
         ' inner join projeto on (projeto.id = projeto_rubrica.id_projeto)' +
-        ' where Projeto_Rubrica.Id_Projeto = :Id_Projeto ' +
-        ' group by Projeto.Orcamento';
+        ' where Projeto_Rubrica.Id_Projeto = :Id_Projeto ';
       ipDataSet.ParamByName('Id_Projeto').AsInteger := ipIdProjeto;
       ipDataSet.Open();
       vaSaldo := ipDataSet.FieldByName('SOMA_ORCAMENTOS').AsFloat;

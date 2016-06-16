@@ -1,15 +1,11 @@
 inherited frmLoteSemente: TfrmLoteSemente
+  ActiveControl = cbPessoaVerificou
   Caption = 'Lotes de Sementes'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroGerminacao
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 291
@@ -189,10 +185,6 @@ inherited frmLoteSemente: TfrmLoteSemente
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -446,17 +438,17 @@ inherited frmLoteSemente: TfrmLoteSemente
                   end>
                 ExplicitWidth = 970
                 inherited lbInfoGridEsquerda: TLabel
-                  Width = 110
+                  Width = 131
                   Height = 13
                   Caption = 'Matrizes dessa esp'#233'cie'
-                  ExplicitWidth = 110
+                  ExplicitWidth = 131
                 end
                 inherited lbInfoGridDireita: TLabel
-                  Width = 92
+                  Width = 110
                   Height = 13
                   Caption = 'Matr'#237'zes desse lote'
-                  ExplicitLeft = 431
-                  ExplicitWidth = 92
+                  ExplicitLeft = 439
+                  ExplicitWidth = 110
                 end
               end
             end
@@ -720,10 +712,6 @@ inherited frmLoteSemente: TfrmLoteSemente
     object tabCadastroGerminacao: TcxTabSheet
       Caption = 'tabCadastroGerminacao'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroGerminacao: TPanel
         Left = 0
         Top = 0

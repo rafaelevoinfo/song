@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 14/06/2016 23:39:09
+// 15/06/2016 22:10:45
 //
 
 unit uFuncoes;
@@ -144,6 +144,7 @@ type
     FppuCancelarRecebimentoParcelaCommand: TDBXCommand;
     FppuCancelarTodosRecebimentosContaReceberCommand: TDBXCommand;
     FfpuSaldoRealRubricaCommand: TDBXCommand;
+    FfpuValidarCadastroRubricaProjetoCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -162,6 +163,7 @@ type
     procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
     procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
     function fpuSaldoRealRubrica(ipIdProjeto: Integer; ipIdRubrica: Integer): Double;
+    function fpuValidarCadastroRubricaProjeto(ipIdIgnorar: Integer; ipIdProjeto: Integer; ipIdRubrica: Integer): Boolean;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -1139,6 +1141,22 @@ begin
   Result := FfpuSaldoRealRubricaCommand.Parameters[2].Value.GetDouble;
 end;
 
+function TsmFuncoesFinanceiroClient.fpuValidarCadastroRubricaProjeto(ipIdIgnorar: Integer; ipIdProjeto: Integer; ipIdRubrica: Integer): Boolean;
+begin
+  if FfpuValidarCadastroRubricaProjetoCommand = nil then
+  begin
+    FfpuValidarCadastroRubricaProjetoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarCadastroRubricaProjetoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarCadastroRubricaProjetoCommand.Text := 'TsmFuncoesFinanceiro.fpuValidarCadastroRubricaProjeto';
+    FfpuValidarCadastroRubricaProjetoCommand.Prepare;
+  end;
+  FfpuValidarCadastroRubricaProjetoCommand.Parameters[0].Value.SetInt32(ipIdIgnorar);
+  FfpuValidarCadastroRubricaProjetoCommand.Parameters[1].Value.SetInt32(ipIdProjeto);
+  FfpuValidarCadastroRubricaProjetoCommand.Parameters[2].Value.SetInt32(ipIdRubrica);
+  FfpuValidarCadastroRubricaProjetoCommand.ExecuteUpdate;
+  Result := FfpuValidarCadastroRubricaProjetoCommand.Parameters[3].Value.GetBoolean;
+end;
+
 function TsmFuncoesFinanceiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1217,6 +1235,7 @@ begin
   FppuCancelarRecebimentoParcelaCommand.DisposeOf;
   FppuCancelarTodosRecebimentosContaReceberCommand.DisposeOf;
   FfpuSaldoRealRubricaCommand.DisposeOf;
+  FfpuValidarCadastroRubricaProjetoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

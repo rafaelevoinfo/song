@@ -450,15 +450,11 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select Plano_Contas.Id,'
       '       Plano_Contas.Id_Conta_Pai,'
-      
-        '       (Plano_Contas.Identificador || '#39' - '#39' || Plano_Contas.Nome' +
-        ') as Nome,'
+      '       Plano_Contas.Nome,'
       '       Plano_Contas.Tipo'
       'from Plano_Contas  '
       '&where'
-      
-        'order by (Plano_Contas.Identificador || '#39' - '#39' || Plano_Contas.No' +
-        'me) ')
+      'order by Plano_Contas.Nome')
     Left = 780
     Top = 16
     MacroData = <
@@ -494,15 +490,13 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select distinct Rubrica.Id,'
       '                Rubrica.Id_Rubrica_Pai,'
-      
-        '                (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome)' +
-        ' as Nome'
+      '                Rubrica.Nome as Nome'
       'from Rubrica'
       
         'left join Projeto_Rubrica on (Projeto_Rubrica.Id_Rubrica = Rubri' +
         'ca.Id)'
       '&where'
-      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) ')
+      'order by Rubrica.Nome ')
     Left = 616
     Top = 296
     MacroData = <
@@ -652,7 +646,7 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select distinct Rubrica.Id,'
       '       Rubrica.Id_Rubrica_Pai,'
-      '       (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome) as Nome'
+      '       Rubrica.Nome'
       'from Rubrica'
       
         'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
@@ -664,7 +658,7 @@ inherited smLookup: TsmLookup
         'left join atividade on (projeto_rubrica.id_projeto = atividade.i' +
         'd_projeto)'
       '&WHERE'
-      'order by (Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome)')
+      'order by Rubrica.Nome')
     Left = 624
     Top = 224
     MacroData = <
@@ -993,9 +987,7 @@ inherited smLookup: TsmLookup
       
         '                coalesce(view_rubrica_projeto.saldo_real,0) as S' +
         'aldo_Real,'
-      
-        '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
-        's Nome_Rubrica'
+      '                Rubrica.Nome as Nome_Rubrica'
       'from Projeto_Rubrica'
       'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       

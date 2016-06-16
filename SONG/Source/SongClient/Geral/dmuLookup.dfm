@@ -342,8 +342,12 @@ inherited dmLookup: TdmLookup
           Value = 6
         end
         item
-          Description = 'Outro'
+          Description = 'Boleto'
           Value = 7
+        end
+        item
+          Description = 'Outro'
+          Value = 8
         end>
     end
     object repLcbFornecedor: TcxEditRepositoryLookupComboBoxItem

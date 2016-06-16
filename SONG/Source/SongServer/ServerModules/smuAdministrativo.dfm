@@ -1181,9 +1181,7 @@ inherited smAdministrativo: TsmAdministrativo
       
         '                coalesce(view_rubrica_projeto.saldo_previsto,0) ' +
         'as Saldo_Previsto,'
-      
-        '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
-        's Nome_Rubrica'
+      '                Rubrica.Nome as Nome_Rubrica'
       'from Projeto_Rubrica'
       'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       
