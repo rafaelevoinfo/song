@@ -57,6 +57,9 @@ type
     viewRegistrosPESO_MEDIO_SEMENTE: TcxGridDBColumn;
     cbFamiliaBotanica: TcxDBLookupComboBox;
     viewRegistrosCALC_TOTAL_MUDAS: TcxGridDBColumn;
+    viewRegistrosQTDE_SEMENTE_TUBETE: TcxGridDBColumn;
+    Label14: TLabel;
+    EditQtdeSementeTubete: TcxDBSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
   private

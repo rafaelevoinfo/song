@@ -138,6 +138,7 @@ type
     qlkFamilia_Botanica: TRFQuery;
     qlkFamilia_BotanicaID: TIntegerField;
     qlkFamilia_BotanicaNOME: TStringField;
+    qlkEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
   private
     { Private declarations }
   protected

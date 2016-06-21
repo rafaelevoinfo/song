@@ -109,25 +109,17 @@ type
     rgRecursoAlocado: TcxRadioGroup;
     gbOrigem: TcxGroupBox;
     pcRecursoAlocado: TcxPageControl;
-    tabNao: TcxTabSheet;
+    tabRecursoNaoAlocado: TcxTabSheet;
     Label14: TLabel;
     Label12: TLabel;
     lbl3: TLabel;
     cbRubricaAtividadeOrigem: TcxLookupComboBox;
     cbAtividadeOrigem: TcxLookupComboBox;
     cbAreaAtuacaoOrigem: TcxLookupComboBox;
-    tabSim: TcxTabSheet;
+    tabRecursoAlocado: TcxTabSheet;
     lb1: TLabel;
     cbRubricaProjetoOrigem: TcxLookupComboBox;
     gbAlocado: TcxGroupBox;
-    Label16: TLabel;
-    Label18: TLabel;
-    Label19: TLabel;
-    Label20: TLabel;
-    cbAtividadeAlocada: TcxLookupComboBox;
-    cbRubricaAtividadeAlocada: TcxLookupComboBox;
-    cbAreaAtuacaoAlocada: TcxLookupComboBox;
-    cbProjetoAlocado: TcxLookupComboBox;
     pnValor: TPanel;
     btnAdicionarVinculo: TButton;
     cxGrid2: TcxGrid;
@@ -222,6 +214,23 @@ type
     viewAutorizacaoID_PESSOA: TcxGridDBColumn;
     viewAutorizacaoPESSOA_AUTORIZOU: TcxGridDBColumn;
     Ac_Excluir_Autorizacao: TAction;
+    rgAlocadoPara: TcxRadioGroup;
+    pcAlocadoPara: TcxPageControl;
+    tabAlocadoProjeto: TcxTabSheet;
+    tabAlocadoFundo: TcxTabSheet;
+    Label19: TLabel;
+    cbAreaAtuacaoAlocada: TcxLookupComboBox;
+    cbRubricaAtividadeAlocada: TcxLookupComboBox;
+    Label18: TLabel;
+    cbAtividadeAlocada: TcxLookupComboBox;
+    Label16: TLabel;
+    cbProjetoAlocado: TcxLookupComboBox;
+    Label20: TLabel;
+    cbFundoAlocado: TcxLookupComboBox;
+    lb3: TLabel;
+    viewVinculosNOME_FUNDO_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1ID_FUNDO_ALOCADO: TcxGridDBColumn;
+    cxGridDBTableView1NOME_FUNDO_ALOCADO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -278,6 +287,9 @@ type
 
     coOrigemProjeto = 0;
     coOrigemFundo = 1;
+
+    coAlocadoProjeto = 0;
+    coAlocadoFundo = 1;
 
     coSim = 1;
     coNao = 0;
@@ -500,29 +512,40 @@ end;
 procedure TfrmContaPagar.ppvAddVinculo();
   procedure plValidarInformacoesAlocado;
   begin
-    if VarIsNull(cbProjetoAlocado.EditValue) then
-      raise TControlException.Create('Informe o projeto para qual foi alocado o recurso.', cbProjetoAlocado);
+    if rgAlocadoPara.EditValue = coAlocadoProjeto then
+      begin
+        if VarIsNull(cbProjetoAlocado.EditValue) then
+          raise TControlException.Create('Informe o projeto para qual foi alocado o recurso.', cbProjetoAlocado);
 
-    dmFinanceiro.cdsConta_Pagar_VinculoID_PROJETO_ALOCADO.AsInteger := cbProjetoAlocado.EditValue;
-    dmFinanceiro.cdsConta_Pagar_VinculoPROJETO_ALOCADO.AsString := cbProjetoAlocado.Text;
+        dmFinanceiro.cdsConta_Pagar_VinculoID_PROJETO_ALOCADO.AsInteger := cbProjetoAlocado.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoPROJETO_ALOCADO.AsString := cbProjetoAlocado.Text;
 
-    if VarIsNull(cbAtividadeAlocada.EditValue) then
-      raise TControlException.Create('Informe a atividade para qual foi alocado o recurso.', cbAtividadeAlocada);
+        if VarIsNull(cbAtividadeAlocada.EditValue) then
+          raise TControlException.Create('Informe a atividade para qual foi alocado o recurso.', cbAtividadeAlocada);
 
-    dmFinanceiro.cdsConta_Pagar_VinculoID_ATIVIDADE_ALOCADO.AsInteger := cbAtividadeAlocada.EditValue;
-    dmFinanceiro.cdsConta_Pagar_VinculoATIVIDADE_ALOCADA.AsString := cbAtividadeAlocada.Text;
+        dmFinanceiro.cdsConta_Pagar_VinculoID_ATIVIDADE_ALOCADO.AsInteger := cbAtividadeAlocada.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoATIVIDADE_ALOCADA.AsString := cbAtividadeAlocada.Text;
 
-    if VarIsNull(cbRubricaAtividadeAlocada.EditValue) then
-      raise TControlException.Create('Informe a rubrica para qual foi alocado o recurso.', cbRubricaAtividadeAlocada);
+        if VarIsNull(cbRubricaAtividadeAlocada.EditValue) then
+          raise TControlException.Create('Informe a rubrica para qual foi alocado o recurso.', cbRubricaAtividadeAlocada);
 
-    dmFinanceiro.cdsConta_Pagar_VinculoID_RUBRICA_ALOCADO.AsInteger := cbRubricaAtividadeAlocada.EditValue;
-    dmFinanceiro.cdsConta_Pagar_VinculoRUBRICA_ALOCADA.AsString := cbRubricaAtividadeAlocada.Text;
+        dmFinanceiro.cdsConta_Pagar_VinculoID_RUBRICA_ALOCADO.AsInteger := cbRubricaAtividadeAlocada.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoRUBRICA_ALOCADA.AsString := cbRubricaAtividadeAlocada.Text;
 
-    if VarIsNull(cbAreaAtuacaoAlocada.EditValue) then
-      raise TControlException.Create('Informe a área de atuação para qual foi alocado o recurso.', cbAreaAtuacaoAlocada);
+        if VarIsNull(cbAreaAtuacaoAlocada.EditValue) then
+          raise TControlException.Create('Informe a área de atuação para qual foi alocado o recurso.', cbAreaAtuacaoAlocada);
 
-    dmFinanceiro.cdsConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO.AsInteger := cbAreaAtuacaoAlocada.EditValue;
-    dmFinanceiro.cdsConta_Pagar_VinculoAREA_ATUACAO_ALOCADA.AsString := cbAreaAtuacaoAlocada.Text;
+        dmFinanceiro.cdsConta_Pagar_VinculoID_AREA_ATUACAO_ALOCADO.AsInteger := cbAreaAtuacaoAlocada.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoAREA_ATUACAO_ALOCADA.AsString := cbAreaAtuacaoAlocada.Text;
+      end
+    else
+      begin
+        if VarIsNull(cbFundoAlocado.EditValue) then
+          raise TControlException.Create('Informe a conta para qual foi alocado o recurso.',cbFundoAlocado);
+
+        dmFinanceiro.cdsConta_Pagar_VinculoID_FUNDO_ALOCADO.AsInteger := cbFundoAlocado.EditValue;
+        dmFinanceiro.cdsConta_Pagar_VinculoNOME_FUNDO_ALOCADO.AsString := cbFundoAlocado.Text;
+      end;
   end;
 
 var
@@ -633,7 +656,7 @@ var
   vaRecNo: Integer;
 begin
   inherited;
-  pprValidarPermissao(atIncluir,GetEnumName(TypeInfo(TPermissaoFinanceiro),Ord(finAutorizarUsoFundo)));
+  pprValidarPermissao(atIncluir, GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finAutorizarUsoFundo)));
 
   if not fpvContaSemPagamentos then
     raise Exception.Create('Já existe uma quitação para esta conta. Não é possível incluir autorizações.');
@@ -1004,6 +1027,7 @@ end;
 procedure TfrmContaPagar.ppvConfigurarControles;
 begin
   rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+  rgAlocadoPara.Visible := rgRecursoAlocado.Visible;
 
   if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
     pcOrigemRecurso.ActivePage := tabProjeto
@@ -1015,9 +1039,14 @@ begin
     ((rgTipoOrigemRecurso.EditValue = coOrigemProjeto) and (rgRecursoAlocado.EditValue = coSim));
 
   if rgRecursoAlocado.EditValue = coSim then
-    pcRecursoAlocado.ActivePage := tabSim
+    pcRecursoAlocado.ActivePage := tabRecursoAlocado
   else
-    pcRecursoAlocado.ActivePage := tabNao;
+    pcRecursoAlocado.ActivePage := tabRecursoNaoAlocado;
+
+  if rgAlocadoPara.EditValue = coAlocadoProjeto then
+    pcAlocadoPara.ActivePage := tabAlocadoProjeto
+  else
+    pcAlocadoPara.ActivePage := tabAlocadoFundo;
 
   gbOrigem.Top := pnVinculoTop.Top + 5;
   gbAlocado.Top := gbOrigem.Top + 5;
@@ -1037,12 +1066,16 @@ begin
 
   pcRecursoAlocado.Properties.HideTabs := True;
   pcOrigemRecurso.Properties.HideTabs := True;
+  pcAlocadoPara.Properties.HideTabs := True;
   pcOrigemRecurso.Height := 42;
-  gbOrigem.Height := 62;
+  pcAlocadoPara.Height := 42;
+  gbOrigem.Height := 64;
+  gbAlocado.Height := 64;
   pcRecursoAlocado.Height := 46;
 
-  pcRecursoAlocado.ActivePage := tabNao;
+  pcRecursoAlocado.ActivePage := tabRecursoNaoAlocado;
   pcOrigemRecurso.ActivePage := tabProjeto;
+  pcAlocadoPara.ActivePage := tabAlocadoProjeto;
   pcEditsCadastro.ActivePage := tabInfoGeral;
 
   PesquisaPadrao := Ord(tppData);

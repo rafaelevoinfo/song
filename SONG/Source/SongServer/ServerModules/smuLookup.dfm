@@ -347,7 +347,8 @@ inherited smLookup: TsmLookup
       '       Especie.Tempo_Germinacao,'
       '       Especie.Qtde_Semente_Estoque,'
       '       Especie.Qtde_Muda_Pronta,'
-      '       Especie.Qtde_Muda_Desenvolvimento'
+      '       Especie.Qtde_Muda_Desenvolvimento,'
+      '       Especie.Qtde_Semente_Tubete'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -405,6 +406,11 @@ inherited smLookup: TsmLookup
     object qlkEspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
+      ProviderFlags = []
+    end
+    object qlkEspecieQTDE_SEMENTE_TUBETE: TIntegerField
+      FieldName = 'QTDE_SEMENTE_TUBETE'
+      Origin = 'QTDE_SEMENTE_TUBETE'
       ProviderFlags = []
     end
   end

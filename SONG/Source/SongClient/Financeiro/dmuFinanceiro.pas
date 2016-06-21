@@ -149,6 +149,8 @@ type
     cdsConta_Pagar_AutorizacaoID_CONTA_PAGAR: TIntegerField;
     cdsConta_Pagar_AutorizacaoID_PESSOA: TIntegerField;
     cdsConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField;
+    cdsConta_Pagar_VinculoID_FUNDO_ALOCADO: TIntegerField;
+    cdsConta_Pagar_VinculoNOME_FUNDO_ALOCADO: TStringField;
   private
     { Private declarations }
   public

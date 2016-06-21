@@ -739,9 +739,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Id_Atividade_Origem,'
       '       atividade_origem.nome as atividade_origem,'
       '       Conta_Pagar_Vinculo.Id_Rubrica_Origem,'
-      
-        '       rubrica_origem.identificador || '#39' - '#39'||rubrica_origem.nom' +
-        'e as rubrica_origem,'
+      '       rubrica_origem.nome as rubrica_origem,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,'
       '       area_origem.nome as area_atuacao_origem,'
       '       Conta_Pagar_Vinculo.Id_Projeto_Alocado,'
@@ -749,11 +747,11 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Id_Atividade_Alocado,'
       '       atividade_alocado.nome as atividade_alocada,'
       '       Conta_Pagar_Vinculo.Id_Rubrica_Alocado,'
-      
-        '       rubrica_alocado.identificador || '#39' - '#39'|| rubrica_alocado.' +
-        'nome as rubrica_alocada,'
+      '       rubrica_alocado.nome as rubrica_alocada,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Alocado,'
       '       area_alocado.nome as area_atuacao_alocada,'
+      '       Conta_Pagar_Vinculo.Id_Fundo_Alocado,'
+      '       Fundo_Alocado.nome as Nome_Fundo_Alocado,'
       '       Conta_Pagar_Vinculo.Valor'
       ''
       'from Conta_Pagar_Vinculo  '
@@ -761,6 +759,9 @@ inherited smFinanceiro: TsmFinanceiro
         'inner join organizacao on (organizacao.id = conta_pagar_vinculo.' +
         'id_organizacao_origem)'
       'left join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)'
+      
+        'left join Fundo Fundo_Alocado on (Fundo_Alocado.id = conta_pagar' +
+        '_vinculo.id_fundo_alocado)'
       
         'left join projeto projeto_origem on (projeto_origem.id = conta_p' +
         'agar_vinculo.id_projeto_origem)'
@@ -773,8 +774,6 @@ inherited smFinanceiro: TsmFinanceiro
       
         'left join projeto_area area_origem on (area_origem.id = conta_pa' +
         'gar_vinculo.id_area_atuacao_origem)'
-      ''
-      ''
       
         'left join projeto projeto_alocado on (projeto_alocado.id = conta' +
         '_pagar_vinculo.id_projeto_alocado)'
@@ -934,6 +933,18 @@ inherited smFinanceiro: TsmFinanceiro
     object qConta_Pagar_VinculoNOME_ORGANIZACAO: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qConta_Pagar_VinculoID_FUNDO_ALOCADO: TIntegerField
+      FieldName = 'ID_FUNDO_ALOCADO'
+      Origin = 'ID_FUNDO_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qConta_Pagar_VinculoNOME_FUNDO_ALOCADO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_FUNDO_ALOCADO'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

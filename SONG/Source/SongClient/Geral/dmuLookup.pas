@@ -221,6 +221,7 @@ type
     repLcbFamiliaBotanica: TcxEditRepositoryLookupComboBoxItem;
     repIcbTipoNotificacao: TcxEditRepositoryImageComboBoxItem;
     RepChkNaoSim: TcxEditRepositoryCheckBoxItem;
+    cdslkEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

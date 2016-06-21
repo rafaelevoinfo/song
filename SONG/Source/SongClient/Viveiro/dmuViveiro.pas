@@ -110,6 +110,7 @@ type
     cdsFamilia_BotanicaNOME: TStringField;
     cdsEspeciePESO_MEDIO_SEMENTE: TBCDField;
     cdsEspecieCALC_TOTAL_MUDAS: TIntegerField;
+    cdsEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

@@ -152,6 +152,8 @@ type
     qConta_Pagar_AutorizacaoID_CONTA_PAGAR: TIntegerField;
     qConta_Pagar_AutorizacaoID_PESSOA: TIntegerField;
     qConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField;
+    qConta_Pagar_VinculoID_FUNDO_ALOCADO: TIntegerField;
+    qConta_Pagar_VinculoNOME_FUNDO_ALOCADO: TStringField;
     procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

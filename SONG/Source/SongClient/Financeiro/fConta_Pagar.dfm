@@ -11,6 +11,7 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
+    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
@@ -268,7 +269,7 @@ inherited frmContaPagar: TfrmContaPagar
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
-            Properties.ActivePage = tabAutorizacoes
+            Properties.ActivePage = tabVinculoPesquisa
             ExplicitWidth = 982
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
@@ -348,10 +349,6 @@ inherited frmContaPagar: TfrmContaPagar
             object tabVinculoPesquisa: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -387,6 +384,7 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object cxGridDBTableView1NOME_ORGANIZACAO: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_ORGANIZACAO'
+                    Visible = False
                     Width = 174
                   end
                   object cxGridDBTableView1ID_FUNDO: TcxGridDBColumn
@@ -469,6 +467,14 @@ inherited frmContaPagar: TfrmContaPagar
                     Visible = False
                     Width = 139
                   end
+                  object cxGridDBTableView1ID_FUNDO_ALOCADO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_FUNDO_ALOCADO'
+                    Visible = False
+                  end
+                  object cxGridDBTableView1NOME_FUNDO_ALOCADO: TcxGridDBColumn
+                    DataBinding.FieldName = 'NOME_FUNDO_ALOCADO'
+                    Width = 150
+                  end
                 end
                 object cxGridLevel2: TcxGridLevel
                   GridView = cxGridDBTableView1
@@ -478,10 +484,6 @@ inherited frmContaPagar: TfrmContaPagar
             object tabAutorizacoes: TcxTabSheet
               Caption = 'Autoriza'#231#245'es'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesAutorizacoes: TPanel
                 Left = 0
                 Top = 0
@@ -489,7 +491,6 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnAutorizar: TButton
                   Left = 1
                   Top = 1
@@ -499,7 +500,6 @@ inherited frmContaPagar: TfrmContaPagar
                   Align = alLeft
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
-                  ExplicitLeft = 82
                 end
               end
               object cxGrid4: TcxGrid
@@ -594,7 +594,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabInfoGeral
+          Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -603,10 +603,6 @@ inherited frmContaPagar: TfrmContaPagar
           object tabInfoGeral: TcxTabSheet
             Caption = 'Informa'#231#245'es Gerais'
             ImageIndex = 0
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label3: TLabel
               Left = 5
               Top = 2
@@ -880,10 +876,6 @@ inherited frmContaPagar: TfrmContaPagar
           object tabVinculo: TcxTabSheet
             Caption = 'V'#237'nculos'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnVinculoTop: TPanel
               Left = 0
               Top = 0
@@ -928,10 +920,6 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabProjeto: TcxTabSheet
                   Caption = 'tabProjeto'
                   ImageIndex = 0
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object Label10: TLabel
                     Left = 4
                     Top = 3
@@ -968,10 +956,6 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabFundo: TcxTabSheet
                   Caption = 'tabFundo'
                   ImageIndex = 1
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object Label15: TLabel
                     Left = 4
                     Top = 3
@@ -1018,6 +1002,26 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 41
                 Width = 111
               end
+              object rgAlocadoPara: TcxRadioGroup
+                Left = 719
+                Top = 0
+                Caption = 'Recurso Alocado Para'
+                Properties.Columns = 2
+                Properties.Items = <
+                  item
+                    Caption = 'Projeto'
+                    Value = 0
+                  end
+                  item
+                    Caption = 'Conta'
+                    Value = 1
+                  end>
+                Properties.OnEditValueChanged = rgRecursoAlocadoPropertiesEditValueChanged
+                ItemIndex = 0
+                TabOrder = 3
+                Height = 41
+                Width = 144
+              end
             end
             object gbOrigem: TcxGroupBox
               Left = 0
@@ -1034,43 +1038,39 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 68
                 Align = alTop
                 TabOrder = 0
-                Properties.ActivePage = tabNao
+                Properties.ActivePage = tabRecursoNaoAlocado
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 63
                 ClientRectLeft = 2
                 ClientRectRight = 966
                 ClientRectTop = 25
-                object tabNao: TcxTabSheet
-                  Caption = 'tabNao'
+                object tabRecursoNaoAlocado: TcxTabSheet
+                  Caption = 'tabRecursoNaoAlocado'
                   ImageIndex = 0
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object Label14: TLabel
                     Left = 206
-                    Top = 2
+                    Top = 0
                     Width = 36
                     Height = 13
                     Caption = 'Rubrica'
                   end
                   object Label12: TLabel
                     Left = 0
-                    Top = 2
+                    Top = 0
                     Width = 45
                     Height = 13
                     Caption = 'Atividade'
                   end
                   object lbl3: TLabel
                     Left = 377
-                    Top = 2
+                    Top = 0
                     Width = 81
                     Height = 13
                     Caption = #193'rea de Atua'#231#227'o'
                   end
                   object cbRubricaAtividadeOrigem: TcxLookupComboBox
                     Left = 203
-                    Top = 17
+                    Top = 15
                     RepositoryItem = dmLookup.repLcbRubricaAtividade
                     Properties.ListColumns = <>
                     TabOrder = 1
@@ -1078,7 +1078,7 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object cbAtividadeOrigem: TcxLookupComboBox
                     Left = 0
-                    Top = 18
+                    Top = 16
                     RepositoryItem = dmLookup.repLcbAtividade
                     Properties.ListColumns = <>
                     Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
@@ -1087,20 +1087,16 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object cbAreaAtuacaoOrigem: TcxLookupComboBox
                     Left = 375
-                    Top = 17
+                    Top = 15
                     RepositoryItem = dmLookup.repLcbProjeto_Area_Atividade
                     Properties.ListColumns = <>
                     TabOrder = 2
                     Width = 170
                   end
                 end
-                object tabSim: TcxTabSheet
-                  Caption = 'tabSim'
+                object tabRecursoAlocado: TcxTabSheet
+                  Caption = 'tabRecursoAlocado'
                   ImageIndex = 1
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object lb1: TLabel
                     Left = 2
                     Top = 1
@@ -1126,103 +1122,146 @@ inherited frmContaPagar: TfrmContaPagar
               Caption = 'Recurso Alocado Para'
               TabOrder = 2
               Visible = False
-              Height = 63
+              Height = 94
               Width = 977
-              object Label16: TLabel
-                Left = 212
-                Top = 15
-                Width = 45
-                Height = 13
-                Caption = 'Atividade'
-              end
-              object Label18: TLabel
-                Left = 486
-                Top = 15
-                Width = 36
-                Height = 13
-                Caption = 'Rubrica'
-              end
-              object Label19: TLabel
-                Left = 818
-                Top = 15
-                Width = 81
-                Height = 13
-                Caption = #193'rea de Atua'#231#227'o'
-              end
-              object Label20: TLabel
-                Left = 5
-                Top = 15
-                Width = 35
-                Height = 13
-                Caption = 'Projeto'
-              end
-              object cbAtividadeAlocada: TcxLookupComboBox
-                Left = 209
-                Top = 31
-                Properties.DropDownAutoSize = True
-                Properties.DropDownListStyle = lsFixedList
-                Properties.DropDownSizeable = True
-                Properties.KeyFieldNames = 'ID'
-                Properties.ListColumns = <
-                  item
-                    FieldName = 'NOME'
-                  end>
-                Properties.ListOptions.SyncMode = True
-                Properties.ListSource = dsAtividadeAlocada
-                Properties.OnEditValueChanged = cbAtividadeAlocadaPropertiesEditValueChanged
-                TabOrder = 1
-                Width = 272
-              end
-              object cbRubricaAtividadeAlocada: TcxLookupComboBox
-                Left = 484
-                Top = 31
-                Properties.DropDownAutoSize = True
-                Properties.DropDownListStyle = lsFixedList
-                Properties.DropDownSizeable = True
-                Properties.KeyFieldNames = 'ID'
-                Properties.ListColumns = <
-                  item
-                    FieldName = 'NOME'
-                  end>
-                Properties.ListOptions.SyncMode = True
-                Properties.ListSource = dsRubricaAlocada
-                TabOrder = 2
-                Width = 333
-              end
-              object cbAreaAtuacaoAlocada: TcxLookupComboBox
-                Left = 818
-                Top = 31
-                Properties.DropDownAutoSize = True
-                Properties.DropDownListStyle = lsFixedList
-                Properties.DropDownSizeable = True
-                Properties.KeyFieldNames = 'ID'
-                Properties.ListColumns = <
-                  item
-                    FieldName = 'NOME'
-                  end>
-                Properties.ListOptions.SyncMode = True
-                Properties.ListSource = dsAreaAlocada
-                TabOrder = 3
-                Width = 151
-              end
-              object cbProjetoAlocado: TcxLookupComboBox
+              object pcAlocadoPara: TcxPageControl
                 Left = 3
-                Top = 31
-                RepositoryItem = dmLookup.repLcbProjeto
-                Properties.ListColumns = <>
-                Properties.OnEditValueChanged = cbProjetoAlocadoPropertiesEditValueChanged
+                Top = 15
+                Width = 971
+                Height = 69
+                Align = alClient
                 TabOrder = 0
-                Width = 203
+                Properties.ActivePage = tabAlocadoFundo
+                Properties.CustomButtons.Buttons = <>
+                ExplicitHeight = 75
+                ClientRectBottom = 64
+                ClientRectLeft = 2
+                ClientRectRight = 966
+                ClientRectTop = 25
+                object tabAlocadoProjeto: TcxTabSheet
+                  Caption = 'tabAlocadoProjeto'
+                  ImageIndex = 0
+                  ExplicitWidth = 282
+                  ExplicitHeight = 163
+                  object Label19: TLabel
+                    Left = 817
+                    Top = 0
+                    Width = 81
+                    Height = 13
+                    Caption = #193'rea de Atua'#231#227'o'
+                  end
+                  object Label18: TLabel
+                    Left = 485
+                    Top = 0
+                    Width = 36
+                    Height = 13
+                    Caption = 'Rubrica'
+                  end
+                  object Label16: TLabel
+                    Left = 211
+                    Top = 0
+                    Width = 45
+                    Height = 13
+                    Caption = 'Atividade'
+                  end
+                  object Label20: TLabel
+                    Left = 4
+                    Top = 0
+                    Width = 35
+                    Height = 13
+                    Caption = 'Projeto'
+                  end
+                  object cbAreaAtuacaoAlocada: TcxLookupComboBox
+                    Left = 812
+                    Top = 16
+                    Properties.DropDownAutoSize = True
+                    Properties.DropDownListStyle = lsFixedList
+                    Properties.DropDownSizeable = True
+                    Properties.KeyFieldNames = 'ID'
+                    Properties.ListColumns = <
+                      item
+                        FieldName = 'NOME'
+                      end>
+                    Properties.ListOptions.SyncMode = True
+                    Properties.ListSource = dsAreaAlocada
+                    TabOrder = 0
+                    Width = 151
+                  end
+                  object cbRubricaAtividadeAlocada: TcxLookupComboBox
+                    Left = 483
+                    Top = 16
+                    Properties.DropDownAutoSize = True
+                    Properties.DropDownListStyle = lsFixedList
+                    Properties.DropDownSizeable = True
+                    Properties.KeyFieldNames = 'ID'
+                    Properties.ListColumns = <
+                      item
+                        FieldName = 'NOME'
+                      end>
+                    Properties.ListOptions.SyncMode = True
+                    Properties.ListSource = dsRubricaAlocada
+                    TabOrder = 1
+                    Width = 327
+                  end
+                  object cbAtividadeAlocada: TcxLookupComboBox
+                    Left = 208
+                    Top = 16
+                    Properties.DropDownAutoSize = True
+                    Properties.DropDownListStyle = lsFixedList
+                    Properties.DropDownSizeable = True
+                    Properties.KeyFieldNames = 'ID'
+                    Properties.ListColumns = <
+                      item
+                        FieldName = 'NOME'
+                      end>
+                    Properties.ListOptions.SyncMode = True
+                    Properties.ListSource = dsAtividadeAlocada
+                    Properties.OnEditValueChanged = cbAtividadeAlocadaPropertiesEditValueChanged
+                    TabOrder = 2
+                    Width = 272
+                  end
+                  object cbProjetoAlocado: TcxLookupComboBox
+                    Left = 2
+                    Top = 16
+                    RepositoryItem = dmLookup.repLcbProjeto
+                    Properties.ListColumns = <>
+                    Properties.OnEditValueChanged = cbProjetoAlocadoPropertiesEditValueChanged
+                    TabOrder = 3
+                    Width = 203
+                  end
+                end
+                object tabAlocadoFundo: TcxTabSheet
+                  Caption = 'tabAlocadoFundo'
+                  ImageIndex = 1
+                  ExplicitHeight = 24
+                  object lb3: TLabel
+                    Left = 4
+                    Top = 1
+                    Width = 29
+                    Height = 13
+                    Caption = 'Conta'
+                  end
+                  object cbFundoAlocado: TcxLookupComboBox
+                    Left = 3
+                    Top = 16
+                    RepositoryItem = dmLookup.repLcbFundo
+                    Properties.ListColumns = <>
+                    Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
+                    TabOrder = 0
+                    Width = 218
+                  end
+                end
               end
             end
             object pnValor: TPanel
               Left = 0
-              Top = 224
+              Top = 255
               Width = 977
               Height = 43
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 3
+              ExplicitTop = 224
               object Label21: TLabel
                 Left = 5
                 Top = 6
@@ -1249,12 +1288,14 @@ inherited frmContaPagar: TfrmContaPagar
             end
             object cxGrid2: TcxGrid
               Left = 0
-              Top = 267
+              Top = 298
               Width = 977
-              Height = 114
+              Height = 83
               Align = alClient
               TabOrder = 4
               TabStop = False
+              ExplicitTop = 267
+              ExplicitHeight = 114
               object viewVinculos: TcxGridDBTableView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dsVinculo
@@ -1274,6 +1315,7 @@ inherited frmContaPagar: TfrmContaPagar
                 end
                 object viewVinculosNOME_ORGANIZACAO: TcxGridDBColumn
                   DataBinding.FieldName = 'NOME_ORGANIZACAO'
+                  Visible = False
                   Options.Editing = False
                   Width = 178
                 end
@@ -1381,6 +1423,10 @@ inherited frmContaPagar: TfrmContaPagar
                   Visible = False
                   Options.Editing = False
                 end
+                object viewVinculosNOME_FUNDO_ALOCADO: TcxGridDBColumn
+                  DataBinding.FieldName = 'NOME_FUNDO_ALOCADO'
+                  Width = 200
+                end
                 object ColumnDeletarVinculo: TcxGridDBColumn
                   Caption = 'Excluir'
                   PropertiesClassName = 'TcxButtonEditProperties'
@@ -1470,8 +1516,8 @@ inherited frmContaPagar: TfrmContaPagar
     end
   end
   inherited ActionList1: TActionList
-    Left = 216
-    Top = 392
+    Left = 240
+    Top = 328
     object Ac_Gerar_Parcelas: TAction
       Category = 'Detail'
       Caption = 'Gerar Parcelas'
@@ -1516,8 +1562,8 @@ inherited frmContaPagar: TfrmContaPagar
   end
   inherited dsDetail: TDataSource
     DataSet = dmFinanceiro.cdsConta_Pagar_Parcela
-    Left = 288
-    Top = 408
+    Left = 304
+    Top = 304
   end
   object dsVinculos: TDataSource
     Left = 600
@@ -1540,8 +1586,8 @@ inherited frmContaPagar: TfrmContaPagar
   end
   object dsVinculo: TDataSource
     DataSet = dmFinanceiro.cdsConta_Pagar_Vinculo
-    Left = 488
-    Top = 256
+    Left = 504
+    Top = 136
   end
   object cdsLocalRubricas: TClientDataSet
     Aggregates = <>
@@ -1559,12 +1605,12 @@ inherited frmContaPagar: TfrmContaPagar
   end
   object dsLocalRubricas: TDataSource
     DataSet = cdsLocalRubricas
-    Left = 488
-    Top = 216
+    Left = 504
+    Top = 184
   end
   object dsConta_Pagar_Autorizacao: TDataSource
     DataSet = dmFinanceiro.cdsConta_Pagar_Autorizacao
-    Left = 488
-    Top = 248
+    Left = 408
+    Top = 160
   end
 end

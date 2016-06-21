@@ -116,6 +116,7 @@ type
     qEspecieID_FAMILIA_BOTANICA: TIntegerField;
     qFamilia_Botanica: TRFQuery;
     qEspeciePESO_MEDIO_SEMENTE: TBCDField;
+    qEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

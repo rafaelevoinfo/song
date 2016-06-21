@@ -73,49 +73,55 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 121
             end
-            object viewRegistrosPESO_MEDIO_SEMENTE: TcxGridDBColumn [6]
+            object viewRegistrosQTDE_SEMENTE_TUBETE: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'QTDE_SEMENTE_TUBETE'
+              Visible = False
+              Options.Editing = False
+              Width = 152
+            end
+            object viewRegistrosPESO_MEDIO_SEMENTE: TcxGridDBColumn [7]
               DataBinding.FieldName = 'PESO_MEDIO_SEMENTE'
               Visible = False
             end
-            object viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn [7]
+            object viewRegistrosQTDE_SEMENTE_ESTOQUE: TcxGridDBColumn [8]
               DataBinding.FieldName = 'QTDE_SEMENTE_ESTOQUE'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = ',0.00 Kg'
               Options.Editing = False
               Width = 152
             end
-            object viewRegistrosQTDE_MUDA_PRONTA: TcxGridDBColumn [8]
+            object viewRegistrosQTDE_MUDA_PRONTA: TcxGridDBColumn [9]
               DataBinding.FieldName = 'QTDE_MUDA_PRONTA'
               Options.Editing = False
               Width = 112
             end
-            object viewRegistrosQTDE_MUDA_DESENVOLVIMENTO: TcxGridDBColumn [9]
+            object viewRegistrosQTDE_MUDA_DESENVOLVIMENTO: TcxGridDBColumn [10]
               DataBinding.FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
               Options.Editing = False
               Width = 184
             end
-            object viewRegistrosCALC_TOTAL_MUDAS: TcxGridDBColumn [10]
+            object viewRegistrosCALC_TOTAL_MUDAS: TcxGridDBColumn [11]
               DataBinding.FieldName = 'CALC_TOTAL_MUDAS'
               Options.Editing = False
               Width = 78
             end
-            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [11]
+            object viewRegistrosVALOR_KG_SEMENTE: TcxGridDBColumn [12]
               DataBinding.FieldName = 'VALOR_KG_SEMENTE'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [12]
+            object viewRegistrosVALOR_MUDA: TcxGridDBColumn [13]
               DataBinding.FieldName = 'VALOR_MUDA'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
             end
-            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [13]
+            object viewRegistrosTEMPO_GERMINACAO: TcxGridDBColumn [14]
               DataBinding.FieldName = 'TEMPO_GERMINACAO'
               Visible = False
               Options.Editing = False
               Width = 183
             end
-            object viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn [14]
+            object viewRegistrosTEMPO_DESENVOLVIMENTO: TcxGridDBColumn [15]
               DataBinding.FieldName = 'TEMPO_DESENVOLVIMENTO'
               Visible = False
               Options.Editing = False
@@ -186,7 +192,7 @@ inherited frmEspecie: TfrmEspecie
           Caption = 'Qtde. de Dias para Germina'#231#227'o'
         end
         object Label9: TLabel
-          Left = 6
+          Left = 161
           Top = 88
           Width = 114
           Height = 13
@@ -194,7 +200,7 @@ inherited frmEspecie: TfrmEspecie
           FocusControl = EditValorKg
         end
         object Label10: TLabel
-          Left = 159
+          Left = 314
           Top = 88
           Width = 108
           Height = 13
@@ -202,14 +208,14 @@ inherited frmEspecie: TfrmEspecie
           FocusControl = EditValorUnidadeMuda
         end
         object Label11: TLabel
-          Left = 316
+          Left = 471
           Top = 89
           Width = 111
           Height = 13
           Caption = 'M'#234's de In'#237'cio da Coleta'
         end
         object lbl1: TLabel
-          Left = 460
+          Left = 615
           Top = 89
           Width = 102
           Height = 13
@@ -228,6 +234,13 @@ inherited frmEspecie: TfrmEspecie
           Width = 130
           Height = 13
           Caption = 'Peso m'#233'dio da semente (g)'
+        end
+        object Label14: TLabel
+          Left = 5
+          Top = 88
+          Width = 146
+          Height = 13
+          Caption = 'Qtde. de sementes por tubete'
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -250,7 +263,7 @@ inherited frmEspecie: TfrmEspecie
           Top = 147
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 11
+          TabOrder = 12
           Height = 89
           Width = 823
         end
@@ -265,21 +278,21 @@ inherited frmEspecie: TfrmEspecie
           Width = 275
         end
         object EditValorKg: TcxDBCurrencyEdit
-          Left = 4
+          Left = 159
           Top = 104
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_KG_SEMENTE'
           DataBinding.DataSource = dsMaster
-          TabOrder = 7
+          TabOrder = 8
           Width = 152
         end
         object EditValorUnidadeMuda: TcxDBCurrencyEdit
-          Left = 159
+          Left = 314
           Top = 104
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_MUDA'
           DataBinding.DataSource = dsMaster
-          TabOrder = 8
+          TabOrder = 9
           Width = 151
         end
         object EditTempoGerminacao: TcxDBSpinEdit
@@ -299,23 +312,23 @@ inherited frmEspecie: TfrmEspecie
           Width = 221
         end
         object cbMesInicioColeta: TcxDBImageComboBox
-          Left = 314
+          Left = 469
           Top = 104
           RepositoryItem = dmLookup.repIcbMeses
           DataBinding.DataField = 'MES_INICIO_COLETA'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 9
+          TabOrder = 10
           Width = 141
         end
         object cbMesFimColeta: TcxDBImageComboBox
-          Left = 458
+          Left = 613
           Top = 104
           RepositoryItem = dmLookup.repIcbMeses
           DataBinding.DataField = 'MES_FIM_COLETA'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 10
+          TabOrder = 11
           Width = 127
         end
         object EditPesoMedio: TcxDBCalcEdit
@@ -337,6 +350,14 @@ inherited frmEspecie: TfrmEspecie
           Properties.ListColumns = <>
           TabOrder = 2
           Width = 275
+        end
+        object EditQtdeSementeTubete: TcxDBSpinEdit
+          Left = 5
+          Top = 104
+          DataBinding.DataField = 'QTDE_SEMENTE_TUBETE'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 7
+          Width = 150
         end
       end
     end

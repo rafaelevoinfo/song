@@ -133,6 +133,7 @@ type
     procedure cbPessoaVerificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
+    procedure EditQtdeTubetePropertiesEditValueChanged(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
@@ -166,7 +167,7 @@ type
   public
 
     procedure ppuIncluir; override;
-    procedure ppuIncluirDetail;override;
+    procedure ppuIncluirDetail; override;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
 
   public const
@@ -520,7 +521,7 @@ begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastroGerminacao then
     begin
-      if dmLookup.cdslkPessoa.Locate(TBancoDados.coId,TInfoLogin.fpuGetInstance.Usuario.Id,[]) then
+      if dmLookup.cdslkPessoa.Locate(TBancoDados.coId, TInfoLogin.fpuGetInstance.Usuario.Id, []) then
         dmViveiro.cdsGerminacaoID_PESSOA_VERIFICOU.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
     end
 end;
@@ -598,6 +599,22 @@ begin
 
               dmViveiro.cdsSemeaduraDATA_PREVISTA_GERMINACAO.AsDateTime :=
                 IncDay(EditDataSemeadura.Date, dmLookup.cdslkEspecieTEMPO_GERMINACAO.AsInteger);
+            end;
+        end;
+    end;
+end;
+
+procedure TfrmLoteSemente.EditQtdeTubetePropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    begin
+      if dmViveiro.cdsSemeadura.State in [dsEdit, dsInsert] then
+        begin
+          if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, []) then
+            begin
+              dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsInteger := dmViveiro.cdsSemeaduraQTDE_TUBETE.AsInteger * dmLookup.cdslkEspecieQTDE_SEMENTE_TUBETE.AsInteger;
             end;
         end;
     end;

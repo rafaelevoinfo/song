@@ -18,7 +18,8 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.DateUtils, uBackup, FireDAC.Comp.Client, FireDAC.Stan.Def,
   FireDAC.Phys.IBWrapper, FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.IBBase,
   System.Actions, Vcl.ActnList, cxCheckBox, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdFTP;
+  IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdFTP,
+  Vcl.ComCtrls;
 
 type
   TfrmPrincipal = class(TForm)
@@ -104,7 +105,7 @@ type
     Label16: TLabel;
     EditHostFtp: TcxTextEdit;
     btnRealizarBackup: TButton;
-    lbStatusBackup: TLabel;
+    statusBar: TStatusBar;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bttLigarDesligarClick(Sender: TObject);
@@ -283,10 +284,11 @@ var
   vaMinutoAtual: Integer;
 
 begin
+  vaHoraAtual := Now;
+  statusBar.Panels[1].Text := FormatDateTime('dd/mm/yyyy hh:nn:ss', vaHoraAtual);
   if FEfetuandoBackup then
     Exit;
 
-  vaHoraAtual := Now;
   if (EditHoraBackup.Time <> 0) and (EditEnderecoBackup.Text <> '') and
     ((FHoraUltimoBackup = 0) or (DayOf(FHoraUltimoBackup) <> DayOf(vaHoraAtual)) or (HourOf(FHoraUltimoBackup) <> HourOf(vaHoraAtual)))
   then
@@ -294,8 +296,8 @@ begin
       vaMinutoAtual := MinuteOf(vaHoraAtual);
       if (HourOf(vaHoraAtual) = HourOf(EditHoraBackup.Time)) then
         begin
-          if (vaMinutoAtual >= MinuteOf(IncMinute(EditHoraBackup.Time, -3))) and
-            (vaMinutoAtual <= MinuteOf(IncMinute(EditHoraBackup.Time, 3))) then
+          if (vaMinutoAtual >= MinuteOf(IncMinute(EditHoraBackup.Time, -5))) and
+            (vaMinutoAtual <= MinuteOf(IncMinute(EditHoraBackup.Time, 5))) then
             begin
               ppvEfetuarBackup;
             end;
@@ -311,7 +313,7 @@ var
 begin
   FEfetuandoBackup := true;
   try
-    lbStatusBackup.Caption := 'Efetuando backup...';
+    statusBar.Panels[0].Text := 'Efetuando backup...';
     Application.ProcessMessages;
     vaConn := TFDConnection.Create(nil);
     try
@@ -333,7 +335,7 @@ begin
           vaBackup.ppuRealizarBackup;
 
           FHoraUltimoBackup := Now;
-          lbHoraUltimoBackup.Caption := FormatDateTime('dd/mm/yyy hh:mm', FHoraUltimoBackup);
+          lbHoraUltimoBackup.Caption := FormatDateTime('dd/mm/yyy hh:nn', FHoraUltimoBackup);
         except
           on E: Exception do
             ppuAdicionarErroLog('Erro ao realizar o backup. Detalhes: ' + E.Message);
@@ -349,7 +351,7 @@ begin
   finally
     FEfetuandoBackup := false;
 
-    lbStatusBackup.Caption := '';
+    statusBar.Panels[0].Text := '';
     Application.ProcessMessages;
   end;
 end;

@@ -19,6 +19,7 @@ inherited smViveiro: TsmViveiro
       '       Especie.Mes_Inicio_Coleta,'
       '       Especie.Mes_Fim_Coleta,'
       '       ESPECIE.PESO_MEDIO_SEMENTE,'
+      '       ESPECIE.Qtde_Semente_Tubete,'
       
         '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
         'estoque,'
@@ -139,6 +140,11 @@ inherited smViveiro: TsmViveiro
       Origin = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = [pfInUpdate]
       Precision = 15
+    end
+    object qEspecieQTDE_SEMENTE_TUBETE: TIntegerField
+      FieldName = 'QTDE_SEMENTE_TUBETE'
+      Origin = 'QTDE_SEMENTE_TUBETE'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qMatriz: TRFQuery

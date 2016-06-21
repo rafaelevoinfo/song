@@ -709,6 +709,18 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = []
       Size = 100
     end
+    object cdsConta_Pagar_VinculoID_FUNDO_ALOCADO: TIntegerField
+      DisplayLabel = 'Id do Fundo Alocado'
+      FieldName = 'ID_FUNDO_ALOCADO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsConta_Pagar_VinculoNOME_FUNDO_ALOCADO: TStringField
+      DisplayLabel = 'Conta Alocada'
+      FieldName = 'NOME_FUNDO_ALOCADO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
   end
   object cdsConta_Receber_Vinculo: TRFClientDataSet
     Aggregates = <>

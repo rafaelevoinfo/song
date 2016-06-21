@@ -15,23 +15,6 @@ object frmPrincipal: TfrmPrincipal
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object lbStatusBackup: TLabel
-    AlignWithMargins = True
-    Left = 3
-    Top = 357
-    Width = 837
-    Height = 13
-    Margins.Top = 0
-    Margins.Right = 0
-    Align = alBottom
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-    ExplicitWidth = 3
-  end
   object pnTop: TPanel
     Left = 0
     Top = 0
@@ -2194,19 +2177,21 @@ object frmPrincipal: TfrmPrincipal
     Left = 0
     Top = 100
     Width = 840
-    Height = 257
+    Height = 251
     Align = alClient
     TabOrder = 1
     Properties.ActivePage = tabLog
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
-    ClientRectBottom = 252
+    ExplicitHeight = 257
+    ClientRectBottom = 246
     ClientRectLeft = 2
     ClientRectRight = 835
     ClientRectTop = 25
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
+      ExplicitHeight = 227
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3
@@ -2319,13 +2304,15 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
+      ExplicitHeight = 227
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
         Width = 833
-        Height = 227
+        Height = 221
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 227
         object viewLog: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsLog
@@ -2354,13 +2341,15 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
+      ExplicitHeight = 227
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25
         Width = 833
-        Height = 202
+        Height = 196
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 202
         object viewAtualizacoes: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           Navigator.Buttons.First.Visible = False
@@ -2439,6 +2428,7 @@ object frmPrincipal: TfrmPrincipal
     object tabBackup: TcxTabSheet
       Caption = 'Backups'
       ImageIndex = 3
+      ExplicitHeight = 227
       object Label10: TLabel
         Left = 7
         Top = 68
@@ -2592,6 +2582,24 @@ object frmPrincipal: TfrmPrincipal
         OnClick = btnRealizarBackupClick
       end
     end
+  end
+  object statusBar: TStatusBar
+    Left = 0
+    Top = 351
+    Width = 840
+    Height = 19
+    Panels = <
+      item
+        Width = 200
+      end
+      item
+        Alignment = taRightJustify
+        Width = 0
+      end>
+    SizeGrip = False
+    ExplicitLeft = 432
+    ExplicitTop = 192
+    ExplicitWidth = 0
   end
   object skinController: TdxSkinController
     NativeStyle = False

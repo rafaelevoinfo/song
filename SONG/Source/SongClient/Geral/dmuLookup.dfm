@@ -1062,6 +1062,11 @@ inherited dmLookup: TdmLookup
       DisplayLabel = 'Qtde. de Mudas em Desenvolvimento'
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
     end
+    object cdslkEspecieQTDE_SEMENTE_TUBETE: TIntegerField
+      DisplayLabel = 'Qtde. de Semente por Tubete'
+      FieldName = 'QTDE_SEMENTE_TUBETE'
+      ProviderFlags = []
+    end
   end
   object dslkEspecie: TDataSource
     DataSet = cdslkEspecie

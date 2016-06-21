@@ -116,6 +116,11 @@ inherited dmViveiro: TdmViveiro
       DisplayFormat = ',0 Und'
       Calculated = True
     end
+    object cdsEspecieQTDE_SEMENTE_TUBETE: TIntegerField
+      DisplayLabel = 'Qtde. de Semente por Tubete'
+      FieldName = 'QTDE_SEMENTE_TUBETE'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
