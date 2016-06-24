@@ -116,6 +116,9 @@ type
     EditQtdeGerminada: TcxDBSpinEdit;
     viewRegistrosID_ESPECIE: TcxGridDBColumn;
     viewRegistrosPESSOA_COLETOU: TcxGridDBColumn;
+    cbCamaraFria: TcxDBLookupComboBox;
+    Label16: TLabel;
+    viewRegistrosCAMARA_FRIA: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -635,6 +638,7 @@ begin
   dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkCamara_Fria.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 
   ppvConfigurarGrids;
 

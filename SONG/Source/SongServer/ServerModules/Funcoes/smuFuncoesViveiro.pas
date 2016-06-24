@@ -29,7 +29,9 @@ type
   public
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: String): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: String): Boolean;
+    function fpuvalidarNomeCamaraFria(ipId:Integer; ipNome:String):Boolean;
     procedure ppuValidarSemeadura(ipIdLote, ipIdSemeadura: Integer; ipQtdeSemeada: Double);
+
 
     function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
@@ -151,8 +153,7 @@ begin
 
 end;
 
-function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(
-  ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
+function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda( ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
 var
   vaEspecies: String;
   vaEspecie: TEspecie;
@@ -348,6 +349,12 @@ begin
     vaDataSet.Close;
     vaDataSet.Free;
   end;
+end;
+
+function TsmFuncoesViveiro.fpuvalidarNomeCamaraFria(ipId: Integer;
+  ipNome: String): Boolean;
+begin
+  Result := fprValidarCampoUnico('CAMARA_FRIA', 'NOME', ipId, ipNome);
 end;
 
 function TsmFuncoesViveiro.fpuValidarNomeCanteiro(ipId: Integer;

@@ -222,6 +222,11 @@ type
     repIcbTipoNotificacao: TcxEditRepositoryImageComboBoxItem;
     RepChkNaoSim: TcxEditRepositoryCheckBoxItem;
     cdslkEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
+    cdslkCamara_Fria: TRFClientDataSet;
+    cdslkCamara_FriaID: TIntegerField;
+    cdslkCamara_FriaNOME: TStringField;
+    dslkCamara_Fria: TDataSource;
+    repLcbCamaraFria: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

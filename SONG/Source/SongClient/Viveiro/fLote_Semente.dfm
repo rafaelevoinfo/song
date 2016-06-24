@@ -1,10 +1,11 @@
 inherited frmLoteSemente: TfrmLoteSemente
-  ActiveControl = cbPessoaSemeou
+  ActiveControl = btnIncluir
   Caption = 'Lotes de Sementes'
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -180,6 +181,12 @@ inherited frmLoteSemente: TfrmLoteSemente
               Properties.DisplayFormat = ',0.00 %'
               Options.Editing = False
               Width = 77
+            end
+            object viewRegistrosCAMARA_FRIA: TcxGridDBColumn [12]
+              DataBinding.FieldName = 'CAMARA_FRIA'
+              Visible = False
+              Options.Editing = False
+              Width = 130
             end
           end
         end
@@ -511,6 +518,14 @@ inherited frmLoteSemente: TfrmLoteSemente
             Caption = 'Quantidade (Kg)'
             FocusControl = EditQtde
           end
+          object Label16: TLabel
+            Left = 217
+            Top = 38
+            Width = 58
+            Height = 13
+            Caption = 'C'#226'mara Fria'
+            FocusControl = cbCamaraFria
+          end
           object EditNome: TcxDBTextEdit
             Left = 4
             Top = 15
@@ -572,6 +587,16 @@ inherited frmLoteSemente: TfrmLoteSemente
             Images = dmPrincipal.imgIcons_16
             TabOrder = 2
             TabStop = False
+          end
+          object cbCamaraFria: TcxDBLookupComboBox
+            Left = 215
+            Top = 53
+            RepositoryItem = dmLookup.repLcbCamaraFria
+            DataBinding.DataField = 'ID_CAMARA_FRIA'
+            DataBinding.DataSource = dsMaster
+            Properties.ListColumns = <>
+            TabOrder = 6
+            Width = 218
           end
         end
       end

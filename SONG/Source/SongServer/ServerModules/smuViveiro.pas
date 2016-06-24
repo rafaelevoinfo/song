@@ -117,6 +117,11 @@ type
     qFamilia_Botanica: TRFQuery;
     qEspeciePESO_MEDIO_SEMENTE: TBCDField;
     qEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
+    qCamara_Fria: TRFQuery;
+    qCamara_FriaID: TIntegerField;
+    qCamara_FriaNOME: TStringField;
+    qLote_SementeID_CAMARA_FRIA: TIntegerField;
+    qLote_SementeCAMARA_FRIA: TStringField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

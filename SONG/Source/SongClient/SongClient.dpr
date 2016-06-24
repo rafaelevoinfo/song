@@ -58,7 +58,8 @@ uses
   aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
   fFamilia_Botanica in 'Viveiro\fFamilia_Botanica.pas' {frmFamiliaBotanica},
   dmuSistema in 'Sistema\dmuSistema.pas' {dmSistema: TDataModule},
-  fNotificacao in 'Sistema\fNotificacao.pas' {frmNotificacao};
+  fNotificacao in 'Sistema\fNotificacao.pas' {frmNotificacao},
+  fCamara_Fria in 'Viveiro\fCamara_Fria.pas' {frmCamaraFria};
 
 {$R Localization.RES}
   {$R *.res}

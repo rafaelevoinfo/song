@@ -279,6 +279,17 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Id do Item da Compra'
       FieldName = 'ID_COMPRA_ITEM'
     end
+    object cdsLote_SementeID_CAMARA_FRIA: TIntegerField
+      DisplayLabel = 'Id da C'#226'mara Fria'
+      FieldName = 'ID_CAMARA_FRIA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsLote_SementeCAMARA_FRIA: TStringField
+      DisplayLabel = 'C'#226'mara Fria'
+      FieldName = 'CAMARA_FRIA'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsLote_Semente_Matriz: TRFClientDataSet
     Aggregates = <>
@@ -667,6 +678,26 @@ inherited dmViveiro: TdmViveiro
       Required = True
     end
     object cdsFamilia_BotanicaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+  end
+  object cdsCamara_Fria: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqCamara_Fria'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 448
+    Top = 48
+    object cdsCamara_FriaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsCamara_FriaNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = [pfInUpdate]

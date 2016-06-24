@@ -80,7 +80,7 @@ type
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
     finContaPagar, finContaReceber, finCliente, finTransferencia, finAutorizarUsoFundo);
-  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda,vivFamiliaBotanica);
+  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda,vivFamiliaBotanica,vivCamaraFria);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
   estSaida, estVenda, estLocalUso);
   TPermissaoSistema = (sisNotificacao);

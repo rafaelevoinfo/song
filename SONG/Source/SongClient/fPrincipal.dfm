@@ -116,6 +116,9 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object miViveiro: TMenuItem
       Caption = 'Viveiro'
+      object CmaraFria1: TMenuItem
+        Action = Ac_Camara_Fria
+      end
       object Canteiros1: TMenuItem
         Action = Ac_Canteiro
       end
@@ -306,6 +309,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Sistema'
       Caption = 'Configura'#231#227'o de Notifica'#231#245'es'
       OnExecute = Ac_NotificacaoExecute
+    end
+    object Ac_Camara_Fria: TAction
+      Category = 'Viveiro'
+      Caption = 'C'#226'mara Fria'
+      OnExecute = Ac_Camara_FriaExecute
     end
   end
   object dxSkinController1: TdxSkinController

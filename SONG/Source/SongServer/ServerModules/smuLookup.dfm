@@ -1090,4 +1090,24 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkCamara_Fria: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Camara_Fria.Id,'
+      '       Camara_Fria.Nome'
+      'from Camara_Fria  ')
+    Left = 472
+    Top = 360
+    object qlkCamara_FriaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkCamara_FriaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

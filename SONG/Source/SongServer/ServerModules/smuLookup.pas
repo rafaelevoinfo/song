@@ -139,6 +139,9 @@ type
     qlkFamilia_BotanicaID: TIntegerField;
     qlkFamilia_BotanicaNOME: TStringField;
     qlkEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
+    qlkCamara_Fria: TRFQuery;
+    qlkCamara_FriaID: TIntegerField;
+    qlkCamara_FriaNOME: TStringField;
   private
     { Private declarations }
   protected

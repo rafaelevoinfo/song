@@ -739,6 +739,18 @@ inherited dmLookup: TdmLookup
       Properties.ValueChecked = 1
       Properties.ValueUnchecked = 0
     end
+    object repLcbCamaraFria: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          Width = 200
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkCamara_Fria
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1733,5 +1745,28 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkFamilia_Botanica
     Left = 568
     Top = 568
+  end
+  object cdslkCamara_Fria: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkCamara_Fria'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 312
+    Top = 784
+    object cdslkCamara_FriaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkCamara_FriaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object dslkCamara_Fria: TDataSource
+    DataSet = cdslkCamara_Fria
+    Left = 440
+    Top = 792
   end
 end

@@ -247,12 +247,17 @@ inherited smViveiro: TsmViveiro
       '       Lote_Semente.Taxa_Descarte,'
       '       Lote_Semente.Status,'
       '       Especie.Nome as Nome_Especie,'
-      '       pessoa.nome as pessoa_coletou'
+      '       pessoa.nome as pessoa_coletou,'
+      '       Lote_Semente.id_camara_fria,'
+      '       Camara_Fria.nome as Camara_Fria'
       'from Lote_Semente'
       'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
       
         'inner join pessoa on (pessoa.id = lote_semente.id_pessoa_coletou' +
         ')'
+      
+        'left join camara_fria on (camara_fria.id = lote_semente.id_camar' +
+        'a_fria)'
       '&WHERE')
     Left = 376
     Top = 144
@@ -352,6 +357,18 @@ inherited smViveiro: TsmViveiro
       FieldName = 'ID_COMPRA_ITEM'
       Origin = 'ID_COMPRA_ITEM'
       ProviderFlags = [pfInUpdate]
+    end
+    object qLote_SementeID_CAMARA_FRIA: TIntegerField
+      FieldName = 'ID_CAMARA_FRIA'
+      Origin = 'ID_CAMARA_FRIA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qLote_SementeCAMARA_FRIA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CAMARA_FRIA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qLote_Semente_Matriz: TRFQuery
@@ -848,5 +865,27 @@ inherited smViveiro: TsmViveiro
         Value = Null
         Name = 'WHERE'
       end>
+  end
+  object qCamara_Fria: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Camara_Fria.Id,'
+      '       Camara_Fria.Nome'
+      'from Camara_Fria  ')
+    Left = 312
+    Top = 56
+    object qCamara_FriaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qCamara_FriaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
   end
 end

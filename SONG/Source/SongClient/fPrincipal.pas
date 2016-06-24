@@ -14,7 +14,7 @@ uses
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
   uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
   fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda,
-  fRelatorioViveiro, fLocalUso, fFamilia_Botanica, fNotificacao;
+  fRelatorioViveiro, fLocalUso, fFamilia_Botanica, fNotificacao, fCamara_Fria;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -91,6 +91,8 @@ type
     FamliaBotnica1: TMenuItem;
     Ac_Notificacao: TAction;
     ConfiguraodeNotificaes1: TMenuItem;
+    Ac_Camara_Fria: TAction;
+    CmaraFria1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -124,6 +126,7 @@ type
     procedure Ac_Local_UsoExecute(Sender: TObject);
     procedure Ac_Familia_BotanicaExecute(Sender: TObject);
     procedure Ac_NotificacaoExecute(Sender: TObject);
+    procedure Ac_Camara_FriaExecute(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -154,6 +157,12 @@ procedure TfrmPrincipal.Ac_BancoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmBanco>(pcPrincipal, TfrmBanco, frmBanco);
+end;
+
+procedure TfrmPrincipal.Ac_Camara_FriaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmCamaraFria>(pcPrincipal, TfrmCamaraFria, frmCamaraFria);
 end;
 
 procedure TfrmPrincipal.Ac_CanteiroExecute(Sender: TObject);

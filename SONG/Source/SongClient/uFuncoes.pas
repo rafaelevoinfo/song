@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 15/06/2016 22:10:45
+// 23/06/2016 23:52:35
 //
 
 unit uFuncoes;
@@ -103,6 +103,7 @@ type
   private
     FfpuValidarNomeMatrizCommand: TDBXCommand;
     FfpuValidarNomeCanteiroCommand: TDBXCommand;
+    FfpuvalidarNomeCamaraFriaCommand: TDBXCommand;
     FppuValidarSemeaduraCommand: TDBXCommand;
     FfpuBuscarLotesMudasCommand: TDBXCommand;
     FfpuBuscarLoteMudaCommand: TDBXCommand;
@@ -119,6 +120,7 @@ type
     destructor Destroy; override;
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: string): Boolean;
+    function fpuvalidarNomeCamaraFria(ipId: Integer; ipNome: string): Boolean;
     procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
     function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
@@ -798,6 +800,21 @@ begin
   Result := FfpuValidarNomeCanteiroCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesViveiroClient.fpuvalidarNomeCamaraFria(ipId: Integer; ipNome: string): Boolean;
+begin
+  if FfpuvalidarNomeCamaraFriaCommand = nil then
+  begin
+    FfpuvalidarNomeCamaraFriaCommand := FDBXConnection.CreateCommand;
+    FfpuvalidarNomeCamaraFriaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuvalidarNomeCamaraFriaCommand.Text := 'TsmFuncoesViveiro.fpuvalidarNomeCamaraFria';
+    FfpuvalidarNomeCamaraFriaCommand.Prepare;
+  end;
+  FfpuvalidarNomeCamaraFriaCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuvalidarNomeCamaraFriaCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuvalidarNomeCamaraFriaCommand.ExecuteUpdate;
+  Result := FfpuvalidarNomeCamaraFriaCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesViveiroClient.ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
 begin
   if FppuValidarSemeaduraCommand = nil then
@@ -978,6 +995,7 @@ destructor TsmFuncoesViveiroClient.Destroy;
 begin
   FfpuValidarNomeMatrizCommand.DisposeOf;
   FfpuValidarNomeCanteiroCommand.DisposeOf;
+  FfpuvalidarNomeCamaraFriaCommand.DisposeOf;
   FppuValidarSemeaduraCommand.DisposeOf;
   FfpuBuscarLotesMudasCommand.DisposeOf;
   FfpuBuscarLoteMudaCommand.DisposeOf;

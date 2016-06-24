@@ -111,6 +111,11 @@ type
     cdsEspeciePESO_MEDIO_SEMENTE: TBCDField;
     cdsEspecieCALC_TOTAL_MUDAS: TIntegerField;
     cdsEspecieQTDE_SEMENTE_TUBETE: TIntegerField;
+    cdsCamara_Fria: TRFClientDataSet;
+    cdsCamara_FriaID: TIntegerField;
+    cdsCamara_FriaNOME: TStringField;
+    cdsLote_SementeID_CAMARA_FRIA: TIntegerField;
+    cdsLote_SementeCAMARA_FRIA: TStringField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
