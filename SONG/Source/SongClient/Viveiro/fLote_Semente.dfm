@@ -360,10 +360,6 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnMatrizes: TPanel
           Left = 1
@@ -413,6 +409,7 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 48
                 ExplicitHeight = 299
                 inherited btnAdd: TButton
+                  OnClick = frameMatrizesbtnAddClick
                   ExplicitWidth = 48
                 end
                 inherited btnAddTodos: TButton

@@ -116,6 +116,7 @@ type
     cdsCamara_FriaNOME: TStringField;
     cdsLote_SementeID_CAMARA_FRIA: TIntegerField;
     cdsLote_SementeCAMARA_FRIA: TStringField;
+    cdsLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

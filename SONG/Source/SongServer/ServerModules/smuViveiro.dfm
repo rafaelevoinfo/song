@@ -249,7 +249,8 @@ inherited smViveiro: TsmViveiro
       '       Especie.Nome as Nome_Especie,'
       '       pessoa.nome as pessoa_coletou,'
       '       Lote_Semente.id_camara_fria,'
-      '       Camara_Fria.nome as Camara_Fria'
+      '       Camara_Fria.nome as Camara_Fria,'
+      '       Lote_Semente.id_lote_semente_origem'
       'from Lote_Semente'
       'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
       
@@ -369,6 +370,11 @@ inherited smViveiro: TsmViveiro
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField
+      FieldName = 'ID_LOTE_SEMENTE_ORIGEM'
+      Origin = 'ID_LOTE_SEMENTE_ORIGEM'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qLote_Semente_Matriz: TRFQuery

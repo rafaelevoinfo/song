@@ -290,6 +290,10 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = []
       Size = 100
     end
+    object cdsLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField
+      FieldName = 'ID_LOTE_SEMENTE_ORIGEM'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsLote_Semente_Matriz: TRFClientDataSet
     Aggregates = <>

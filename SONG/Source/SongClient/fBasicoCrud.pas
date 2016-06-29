@@ -400,7 +400,10 @@ begin
   { TODO -orafae -c :   Implementar comportamentos diferentes para cada tipo de modo de execucao 26/02/2016 23:14:38 }
   case ipModo of
     meNormal:
-      ;
+      begin
+        btnIncluir.Visible := True;
+        btnUtilizar.Visible := False;
+      end;
     mePesquisa:
       btnUtilizar.Visible := True;
     meSomentePesquisa:
@@ -829,8 +832,8 @@ var
   vaControl: TWinControl;
 begin
   vaControl := nil;
-  //tem q estar em edit ou insert ou entao tem q ter algo no cds. Se isso nao acontecer é pq o usuario
-  //deletou todos os registros e mandou gravar. Isso é possivel quando se usa o frameGrids
+  // tem q estar em edit ou insert ou entao tem q ter algo no cds. Se isso nao acontecer é pq o usuario
+  // deletou todos os registros e mandou gravar. Isso é possivel quando se usa o frameGrids
   if (ipDataSet.State in [dsInsert, dsEdit]) or (ipDataSet.RecordCount > 0) then
     begin
       vaMsg := TStringList.Create;

@@ -122,6 +122,7 @@ type
     qCamara_FriaNOME: TStringField;
     qLote_SementeID_CAMARA_FRIA: TIntegerField;
     qLote_SementeCAMARA_FRIA: TStringField;
+    qLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

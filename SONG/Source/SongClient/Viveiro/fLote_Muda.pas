@@ -335,6 +335,10 @@ begin
   inherited;
   if dmViveiro.cdsLote_MudaSTATUS.IsNull then
     dmViveiro.cdsLote_MudaSTATUS.AsInteger := Ord(smDesenvolvimento);
+
+  if dmViveiro.cdsLote_MudaDATA.IsNull then
+    dmViveiro.cdsLote_MudaDATA.AsDateTime := now;
+
 end;
 
 function TfrmLoteMuda.fprConfigurarControlesPesquisa: TWinControl;

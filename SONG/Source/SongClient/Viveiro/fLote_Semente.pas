@@ -17,15 +17,28 @@ uses
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
   uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
   fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit,
-  fCanteiro;
+  fCanteiro, System.Generics.Collections;
 
 type
   TLoteSemente = class(TLote)
   private
     FIdPessoaColetou: Integer;
+    FIdLoteOrigem: Integer;
+    FIdCamaraFria: Integer;
+    FMatrizes: TList<Integer>;
     procedure SetIdPessoaColetou(const Value: Integer);
+    procedure SetIdLoteOrigem(const Value: Integer);
+    procedure SetIdCamaraFria(const Value: Integer);
+    procedure SetMatrizes(const Value: TList<Integer>);
   public
+    constructor Create;
+    Destructor Destroy; override;
+
     property IdPessoaColetouComprou: Integer read FIdPessoaColetou write SetIdPessoaColetou;
+    property IdLoteOrigem: Integer read FIdLoteOrigem write SetIdLoteOrigem;
+    property IdCamaraFria: Integer read FIdCamaraFria write SetIdCamaraFria;
+
+    property Matrizes: TList<Integer> read FMatrizes write SetMatrizes;
   end;
 
   TfrmLoteSemente = class(TfrmBasicoCrudMasterDetail)
@@ -137,6 +150,7 @@ type
       Shift: TShiftState);
     procedure EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
     procedure EditQtdeTubetePropertiesEditValueChanged(Sender: TObject);
+    procedure frameMatrizesbtnAddClick(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
@@ -147,6 +161,7 @@ type
 
     function fpvGerminacaoEmAndamento: Boolean;
     procedure ppvGerarLoteMudas;
+    procedure ppvGerarLoteSemente(ipQuantidadeInicial: Double);
   protected
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterar; override;
@@ -167,8 +182,9 @@ type
     procedure pprDefinirTabDetailCadastro; override;
 
     procedure pprCarregarDadosModelo; override;
-  public
 
+    procedure pprBeforeIncluir; override;
+  public
     procedure ppuIncluir; override;
     procedure ppuIncluirDetail; override;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
@@ -190,19 +206,92 @@ uses
 {$R *.dfm}
 
 
+procedure TfrmLoteSemente.ppvGerarLoteSemente(ipQuantidadeInicial: Double);
+var
+  vaLoteSemente: TLoteSemente;
+begin
+  vaLoteSemente := TLoteSemente.Create;
+  try
+    vaLoteSemente.Id := dmPrincipal.FuncoesGeral.fpuGetId('LOTE_SEMENTE');
+    vaLoteSemente.Nome := dmViveiro.cdsLote_SementeNOME.AsString;
+    vaLoteSemente.Qtde := ipQuantidadeInicial;
+    vaLoteSemente.IdLoteOrigem := dmViveiro.cdsLote_SementeID.AsInteger;
+    vaLoteSemente.IdPessoaColetouComprou := dmViveiro.cdsLote_SementeID_PESSOA_COLETOU.AsInteger;
+    vaLoteSemente.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
+    vaLoteSemente.IdCamaraFria := dmViveiro.cdsLote_SementeID_CAMARA_FRIA.AsInteger;
+    vaLoteSemente.Data := now;
+
+    dmViveiro.cdsLote_Semente_Matriz.First;
+    while not dmViveiro.cdsLote_Semente_Matriz.eof do
+      begin
+        vaLoteSemente.Matrizes.Add(dmViveiro.cdsLote_Semente_MatrizID_MATRIZ.AsInteger);
+        dmViveiro.cdsLote_Semente_Matriz.Next;
+      end;
+
+    ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteSemente);
+
+    ppuIncluir;
+    ppuSalvar;  
+  finally
+    ppuConfigurarModoExecucao(meNormal, nil);
+
+    ppuRetornar(false);
+  end;
+end;
+
 procedure TfrmLoteSemente.Ac_Finalizar_Etapa_GerminacaoExecute(Sender: TObject);
+var
+  vaQuantidade: Double;
+  vaResposta: TRespostaPadrao;
 begin
   inherited;
+  vaResposta := rpNao;
+  if not dmViveiro.cdsGerminacao.Active then
+    dmViveiro.cdsGerminacao.Open;
+
+  if dmViveiro.cdsGerminacao.RecordCount = 0 then
+    raise Exception.Create('Nenhum registro de germinação foi incluido.' +
+      ' É necessário que seja informado algum registro de germinação para que seja possível gerar um lote de muda.');
+
   if TMensagem.fpuPerguntar('Confirma a finalização da etapa de germinação desse lote. ' +
     'Após essa ação um lote de mudas será gerado automaticamente.', ppSimNao) = rpSim then
     begin
-      dmViveiro.cdsLote_Semente.Edit;
-      dmViveiro.cdsLote_SementeSTATUS.AsInteger := coLoteFechado;
-      dmViveiro.cdsLote_Semente.Post;
+      if dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat > 0 then
+        begin
+          vaResposta := TMensagem.fpuPerguntar('O lote atual não foi totalmente semeado. Deseja gerar um novo lote de semente com o valor restante?',
+            ppSimNaoCancelar);
 
-      ppvGerarLoteMudas;
+          if vaResposta = rpSim then
+            begin
+              vaQuantidade := dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat;
+
+              dmViveiro.cdsLote_Semente.Edit;
+              dmViveiro.cdsLote_SementeQTDE.AsFloat := dmViveiro.cdsLote_SementeQTDE.AsFloat - dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat;
+              dmViveiro.cdsLote_SementeSTATUS.AsInteger := coLoteFechado;
+              dmViveiro.cdsLote_Semente.Post;
+
+              ppvGerarLoteMudas;
+              ppvGerarLoteSemente(vaQuantidade);
+            end
+          else if vaResposta = rpCancelar then
+            begin
+              Exit;
+            end;
+        end;
+
+      if vaResposta = rpNao then
+        begin
+          dmViveiro.cdsLote_Semente.Edit;
+          dmViveiro.cdsLote_SementeSTATUS.AsInteger := coLoteFechado;
+          dmViveiro.cdsLote_Semente.Post;
+
+          ppvGerarLoteMudas;
+        end;
+
       pprEfetuarPesquisa;
+
     end;
+
 end;
 
 procedure TfrmLoteSemente.ppvGerarLoteMudas;
@@ -222,6 +311,7 @@ begin
 
     vaLoteMuda := TLoteMuda.Create;
     vaLoteMuda.IdLoteSemente := dmViveiro.cdsLote_SementeID.AsInteger;
+
     vaLoteMuda.Qtde := dmViveiro.cdsGerminacaoQTDE_GERMINADA.AsInteger;
 
     vaFrmLoteMuda.ppuConfigurarPesquisa(vaFrmLoteMuda.coPesquisaLoteSemente, dmViveiro.cdsLote_SementeID.AsString);
@@ -246,8 +336,8 @@ begin
           vaFrmLoteMuda.fpuExcluirDetail(vaIdsExcluir);
         except
           on e: Exception do
-            TMensagem.ppuShowException('Não foi possível alterar o lote de muda vinculado a este lote de semente. ' +
-              'Será necessário alterá-lo manualmente.', e);
+            raise Exception.Create('Não foi possível alterar o lote de muda vinculado a este lote de semente. ' +
+              'Será necessário alterá-lo manualmente. Detalhes: ' + e.Message);
         end;
       end
     else
@@ -262,7 +352,7 @@ begin
           vaFrmLoteMuda.ppuSalvar;
         except
           on e: Exception do
-            TMensagem.ppuShowException('Não foi possível incluir o lote de muda.', e);
+            raise Exception.Create('Não foi possível incluir o lote de muda. Detalhes: ' + e.Message);
         end;
       end;
 
@@ -283,8 +373,8 @@ begin
         end);
     except
       on e: Exception do
-        TMensagem.ppuShowException('Não foi possível incluir os canteiros no qual estão as mudas do lote gerado.s' +
-          'Será necessário incluí-los manualmente.', e);
+        raise Exception.Create('Não foi possível incluir os canteiros no qual estão as mudas do lote gerado.' +
+          'Será necessário incluí-los manualmente. Detalhes: ' + e.Message);
     end;
   finally
     vaFrmLoteMuda.Free;
@@ -346,7 +436,7 @@ begin
   dmViveiro.cdsLote_Semente_Matriz.DisableControls;
   try
     dmViveiro.cdsLote_Semente_Matriz.First;
-    while not dmViveiro.cdsLote_Semente_Matriz.Eof do
+    while not dmViveiro.cdsLote_Semente_Matriz.eof do
       begin
         dmViveiro.cdsLote_Semente_Matriz.Delete;
       end;
@@ -395,6 +485,12 @@ begin
   ppvCarregarMatrizes;
 end;
 
+procedure TfrmLoteSemente.pprBeforeIncluir;
+begin
+  inherited;
+  ppvCarregarMatrizes;
+end;
+
 procedure TfrmLoteSemente.pprBeforeIncluirDetail;
 begin
   inherited;
@@ -418,6 +514,7 @@ end;
 procedure TfrmLoteSemente.pprCarregarDadosModelo;
 var
   vaLote: TLoteSemente;
+  vaIdMatriz: Integer;
 
   procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
   begin
@@ -435,6 +532,9 @@ begin
       vaLote := TLoteSemente(Modelo);
 
       plSetEdit(EditNome, vaLote.Nome);
+      if vaLote.Id <> 0 then
+        dmViveiro.cdsLote_SementeID.AsInteger := vaLote.Id;
+
       if vaLote.IdPessoaColetouComprou <> 0 then
         plSetEdit(cbPessoaColetou, vaLote.IdPessoaColetouComprou);
 
@@ -449,6 +549,23 @@ begin
 
       if vaLote.IdItemCompra <> 0 then
         dmViveiro.cdsLote_SementeID_COMPRA_ITEM.AsInteger := vaLote.IdItemCompra;
+
+      if vaLote.IdCamaraFria <> 0 then
+        plSetEdit(cbCamaraFria, vaLote.IdCamaraFria);
+
+      if vaLote.IdLoteOrigem <> 0 then
+        dmViveiro.cdsLote_SementeID_LOTE_SEMENTE_ORIGEM.AsInteger := vaLote.IdLoteOrigem;
+
+      if vaLote.Matrizes.Count > 0 then
+        begin
+          for vaIdMatriz in vaLote.Matrizes do
+            begin
+              if cdsLocalMatrizes.Locate(TBancoDados.coId, vaIdMatriz, []) then
+                begin
+                  frameMatrizes.Ac_Add.Execute;
+                end;
+            end;
+        end;
     end;
 
 end;
@@ -514,7 +631,6 @@ end;
 procedure TfrmLoteSemente.ppuIncluir;
 begin
   inherited;
-  ppvCarregarMatrizes;
   pprPreencherCamposPadroes(dmViveiro.cdsLote_Semente);
   dmViveiro.cdsLote_SementeSTATUS.AsInteger := 0;
 end;
@@ -617,7 +733,8 @@ begin
         begin
           if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, []) then
             begin
-              dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsInteger := dmViveiro.cdsSemeaduraQTDE_TUBETE.AsInteger * dmLookup.cdslkEspecieQTDE_SEMENTE_TUBETE.AsInteger;
+              dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsInteger := dmViveiro.cdsSemeaduraQTDE_TUBETE.AsInteger *
+                dmLookup.cdslkEspecieQTDE_SEMENTE_TUBETE.AsInteger;
             end;
         end;
     end;
@@ -642,8 +759,8 @@ begin
 
   ppvConfigurarGrids;
 
-  EditDataInicialPesquisa.Date := IncDay(Now, -7);
-  EditDataFinalPesquisa.Date := Now;
+  EditDataInicialPesquisa.Date := IncDay(now, -7);
+  EditDataFinalPesquisa.Date := now;
 end;
 
 function TfrmLoteSemente.fprGetPermissao: String;
@@ -688,6 +805,13 @@ begin
   Result := dmViveiro.cdsLote_Semente.Active and (dmViveiro.cdsLote_SementeSTATUS.AsInteger = 0);
 end;
 
+procedure TfrmLoteSemente.frameMatrizesbtnAddClick(Sender: TObject);
+begin
+  inherited;
+  frameMatrizes.Ac_AddExecute(Sender);
+
+end;
+
 procedure TfrmLoteSemente.ppvConfigurarGrids;
 begin
   // Esquerda
@@ -700,9 +824,35 @@ end;
 
 { TLoteSemente }
 
+constructor TLoteSemente.Create;
+begin
+  FMatrizes := TList<Integer>.Create;
+end;
+
+destructor TLoteSemente.Destroy;
+begin
+  FMatrizes.Free;
+  inherited;
+end;
+
+procedure TLoteSemente.SetIdCamaraFria(const Value: Integer);
+begin
+  FIdCamaraFria := Value;
+end;
+
+procedure TLoteSemente.SetIdLoteOrigem(const Value: Integer);
+begin
+  FIdLoteOrigem := Value;
+end;
+
 procedure TLoteSemente.SetIdPessoaColetou(const Value: Integer);
 begin
   FIdPessoaColetou := Value;
+end;
+
+procedure TLoteSemente.SetMatrizes(const Value: TList<Integer>);
+begin
+  FMatrizes := Value;
 end;
 
 end.
