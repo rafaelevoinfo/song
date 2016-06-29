@@ -1079,6 +1079,11 @@ inherited dmLookup: TdmLookup
       FieldName = 'QTDE_SEMENTE_TUBETE'
       ProviderFlags = []
     end
+    object cdslkEspeciePESO_MEDIO_SEMENTE: TBCDField
+      FieldName = 'PESO_MEDIO_SEMENTE'
+      ProviderFlags = []
+      Precision = 18
+    end
   end
   object dslkEspecie: TDataSource
     DataSet = cdslkEspecie

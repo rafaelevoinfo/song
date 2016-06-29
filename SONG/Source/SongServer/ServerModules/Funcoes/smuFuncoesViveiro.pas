@@ -9,7 +9,8 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uTypes, Datasnap.DBClient, System.Generics.Collections,
-  uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list;
+  uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list,
+  System.Math, System.Types;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -398,7 +399,7 @@ begin
         raise Exception.Create('Lote inválido.');
 
       // Faço a soma para os caso onde estiver alterando, pois nesse caso tenho que desconsiderar o valor já cadastrado para a semeadura que esta sendo alterada
-      if (ipDataSet.FieldByName('QTDE_ARMAZENADA').AsFloat + ipDataSet.FieldByName('QTDE_SEMEADA').AsFloat) < ipQtdeSemeada then
+      if System.Math.CompareValue(ipDataSet.FieldByName('QTDE_ARMAZENADA').AsFloat + ipDataSet.FieldByName('QTDE_SEMEADA').AsFloat, ipQtdeSemeada) = LessThanValue then
         raise Exception.Create('Quantidade semeada não pode ser superior a quantidade em estoque para este lote.');
 
     end);

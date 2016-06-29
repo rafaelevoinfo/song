@@ -348,7 +348,8 @@ inherited smLookup: TsmLookup
       '       Especie.Qtde_Semente_Estoque,'
       '       Especie.Qtde_Muda_Pronta,'
       '       Especie.Qtde_Muda_Desenvolvimento,'
-      '       Especie.Qtde_Semente_Tubete'
+      '       Especie.Qtde_Semente_Tubete,'
+      '       Especie.Peso_Medio_Semente'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -412,6 +413,12 @@ inherited smLookup: TsmLookup
       FieldName = 'QTDE_SEMENTE_TUBETE'
       Origin = 'QTDE_SEMENTE_TUBETE'
       ProviderFlags = []
+    end
+    object qlkEspeciePESO_MEDIO_SEMENTE: TBCDField
+      FieldName = 'PESO_MEDIO_SEMENTE'
+      Origin = 'PESO_MEDIO_SEMENTE'
+      ProviderFlags = []
+      Precision = 18
     end
   end
   object qlkMatriz: TRFQuery

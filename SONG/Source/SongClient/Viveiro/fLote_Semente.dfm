@@ -1,11 +1,10 @@
 inherited frmLoteSemente: TfrmLoteSemente
-  ActiveControl = btnIncluir
+  ActiveControl = cbPessoaSemeou
   Caption = 'Lotes de Sementes'
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24

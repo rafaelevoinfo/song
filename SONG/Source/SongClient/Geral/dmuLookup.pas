@@ -227,6 +227,7 @@ type
     cdslkCamara_FriaNOME: TStringField;
     dslkCamara_Fria: TDataSource;
     repLcbCamaraFria: TcxEditRepositoryLookupComboBoxItem;
+    cdslkEspeciePESO_MEDIO_SEMENTE: TBCDField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

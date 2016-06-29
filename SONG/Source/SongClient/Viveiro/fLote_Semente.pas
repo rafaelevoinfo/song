@@ -231,7 +231,7 @@ begin
     ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteSemente);
 
     ppuIncluir;
-    ppuSalvar;  
+    ppuSalvar;
   finally
     ppuConfigurarModoExecucao(meNormal, nil);
 
@@ -733,8 +733,8 @@ begin
         begin
           if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger, []) then
             begin
-              dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsInteger := dmViveiro.cdsSemeaduraQTDE_TUBETE.AsInteger *
-                dmLookup.cdslkEspecieQTDE_SEMENTE_TUBETE.AsInteger;
+              dmViveiro.cdsSemeaduraQTDE_SEMEADA.AsFloat := TUtils.fpuTruncTo((dmLookup.cdslkEspeciePESO_MEDIO_SEMENTE.AsFloat *
+                (dmViveiro.cdsSemeaduraQTDE_TUBETE.AsInteger * dmLookup.cdslkEspecieQTDE_SEMENTE_TUBETE.AsInteger)) / 1000, 2);
             end;
         end;
     end;

@@ -142,6 +142,7 @@ type
     qlkCamara_Fria: TRFQuery;
     qlkCamara_FriaID: TIntegerField;
     qlkCamara_FriaNOME: TStringField;
+    qlkEspeciePESO_MEDIO_SEMENTE: TBCDField;
   private
     { Private declarations }
   protected
