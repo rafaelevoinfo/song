@@ -731,6 +731,10 @@ inherited dmLookup: TdmLookup
         item
           Description = 'Atividade cadastrada'
           Value = 5
+        end
+        item
+          Description = 'Atividade vencendo prazo de execu'#231#227'o'
+          Value = 6
         end>
     end
     object RepChkNaoSim: TcxEditRepositoryCheckBoxItem

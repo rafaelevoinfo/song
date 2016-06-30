@@ -1,9 +1,16 @@
 inherited frmNotificacao: TfrmNotificacao
+  ActiveControl = cbTipo
   Caption = 'Notifica'#231#245'es'
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
@@ -28,6 +35,10 @@ inherited frmNotificacao: TfrmNotificacao
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas que receber'#227'o a notifica'#231#227'o'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -70,7 +81,6 @@ inherited frmNotificacao: TfrmNotificacao
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 5
           Top = 5
@@ -156,6 +166,10 @@ inherited frmNotificacao: TfrmNotificacao
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object lbAviso: TLabel
           AlignWithMargins = True
@@ -174,8 +188,6 @@ inherited frmNotificacao: TfrmNotificacao
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
           ExplicitWidth = 785
         end
         inline frameUsuarios: TframeGrids
@@ -185,7 +197,9 @@ inherited frmNotificacao: TfrmNotificacao
           Height = 382
           Align = alClient
           TabOrder = 0
-          ExplicitTop = -52
+          ExplicitTop = 16
+          ExplicitWidth = 976
+          ExplicitHeight = 382
           inherited gpGrids: TGridPanel
             Width = 976
             Height = 363
@@ -205,19 +219,41 @@ inherited frmNotificacao: TfrmNotificacao
                 Control = frameUsuarios.cxGrid2
                 Row = 0
               end>
+            ExplicitWidth = 976
+            ExplicitHeight = 363
             inherited cxGrid1: TcxGrid
               Width = 457
               Height = 361
+              ExplicitWidth = 457
+              ExplicitHeight = 361
             end
             inherited pnBotoes: TPanel
               Left = 458
               Width = 48
               Height = 361
+              ExplicitLeft = 458
+              ExplicitWidth = 48
+              ExplicitHeight = 361
+              inherited btnAdd: TButton
+                ExplicitWidth = 48
+              end
+              inherited btnAddTodos: TButton
+                ExplicitWidth = 48
+              end
+              inherited btnRemover: TButton
+                ExplicitWidth = 48
+              end
+              inherited btnRemoverTodos: TButton
+                ExplicitWidth = 48
+              end
             end
             inherited cxGrid2: TcxGrid
               Left = 506
               Width = 469
               Height = 361
+              ExplicitLeft = 506
+              ExplicitWidth = 469
+              ExplicitHeight = 361
               inherited viewDireita: TcxGridDBTableView
                 OptionsData.Editing = True
               end
@@ -225,6 +261,7 @@ inherited frmNotificacao: TfrmNotificacao
           end
           inherited pnLabels: TPanel
             Width = 976
+            ExplicitWidth = 976
             inherited gpLabels: TGridPanel
               Width = 974
               ControlCollection = <
@@ -238,19 +275,18 @@ inherited frmNotificacao: TfrmNotificacao
                   Control = frameUsuarios.lbInfoGridDireita
                   Row = 0
                 end>
+              ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 112
+                Height = 15
                 Caption = 'Pessoas dispon'#237'veis'
-                Font.Style = [fsBold]
-                ParentFont = False
                 ExplicitWidth = 112
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 206
+                Height = 15
                 Caption = 'Pessoas que receber'#227'o a notifica'#231#227'o'
-                Font.Style = [fsBold]
-                ParentFont = False
                 ExplicitLeft = 505
                 ExplicitWidth = 206
               end

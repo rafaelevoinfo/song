@@ -14,7 +14,12 @@ uses
   fConta_Receber, fCliente, fItem, fEntrada, fSolicitacaoCompra, fCompra,
   uControleAcesso, System.TypInfo, cxContainer, cxEdit, cxLabel,
   fRelatorioFinanceiro, fSaida, fTransferenciaFinanceira, fVenda,
-  fRelatorioViveiro, fLocalUso, fFamilia_Botanica, fNotificacao, fCamara_Fria;
+  fRelatorioViveiro, fLocalUso, fFamilia_Botanica, fNotificacao, fCamara_Fria,
+  cxStyles, cxCustomData, Data.DB, cxDBData, cxFilter, cxData, cxDataStorage,
+  cxNavigator, cxGridCardView, cxGridDBCardView, dxLayoutContainer,
+  cxGridCustomView, cxGridCustomTableView, cxGridCustomLayoutView,
+  cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
+  dxCustomTileControl, dxTileControl, aduna_ds_list;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -93,6 +98,10 @@ type
     ConfiguraodeNotificaes1: TMenuItem;
     Ac_Camara_Fria: TAction;
     CmaraFria1: TMenuItem;
+    TileControl: TdxTileControl;
+    dxTileControl1Item1: TdxTileControlItem;
+    btnAtualizar: TButton;
+    TileControlItem2: TdxTileControlItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -127,16 +136,20 @@ type
     procedure Ac_Familia_BotanicaExecute(Sender: TObject);
     procedure Ac_NotificacaoExecute(Sender: TObject);
     procedure Ac_Camara_FriaExecute(Sender: TObject);
+    procedure btnAtualizarClick(Sender: TObject);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
-    { Public declarations }
+    procedure ppuCarregarNotificacoes;
   end;
 
 var
   frmPrincipal: TfrmPrincipal;
 
 implementation
+
+uses
+  dmuPrincipal;
 
 {$R *.dfm}
 
@@ -374,6 +387,12 @@ begin
   TUtils.ppuAbrirFormAba<TfrmVenda>(pcPrincipal, TfrmVenda, frmVenda);
 end;
 
+procedure TfrmPrincipal.btnAtualizarClick(Sender: TObject);
+begin
+  inherited;
+  ppuCarregarNotificacoes;
+end;
+
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
 begin
   inherited;
@@ -396,8 +415,51 @@ begin
   if not frmLogin.LoginEfetuado then
     begin
       Application.Terminate;
-    end;
+    end
+  else
+    ppuCarregarNotificacoes;
 
+end;
+
+procedure TfrmPrincipal.ppuCarregarNotificacoes;
+var
+  vaNotificacoes: TadsObjectlist<TNotificacao>;
+  vaNotificacao: TNotificacao;
+  vaGrupo: TdxTileControlGroup;
+  I: Integer;
+  vaItem: TdxTileControlItem;
+begin
+
+  TileControl.Groups.Clear;
+
+  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuBuscarNotificacoes(-1);
+  for vaNotificacao in vaNotificacoes do
+    begin
+      vaGrupo := nil;
+       for I := 0 to TileControl.Groups.Count - 1 do
+        begin
+          if TileControl.Groups.Items[I].Tag = vaNotificacao.Tipo then
+            begin
+              vaGrupo := TileControl.Groups.Items[I];
+              break;
+            end;
+        end;
+
+      if not Assigned(vaGrupo) then
+        begin
+          vaGrupo := TileControl.Groups.Add;
+          vaGrupo.Tag := vaNotificacao.Tipo;
+          vaGrupo.Caption.Text := TiposNotificacao[TTipoNotificacao(vaNotificacao.Tipo)];
+          vaGrupo.Caption.Font.Size := 12;
+        end;
+
+      vaItem := TileControl.Items.Add;
+      vaItem.Tag := vaNotificacao.Id;
+      vaItem.Size := tcisRegular;
+      vaItem.Text1.Value := vaNotificacao.Descricao;
+      vaItem.Text1.WordWrap := true;
+      vaItem.Group := vaGrupo;
+    end;
 end;
 
 end.

@@ -29,8 +29,48 @@ inherited frmPrincipal: TfrmPrincipal
     ClientRectTop = 25
     object tabDashBoard: TcxTabSheet
       AllowCloseButton = False
-      Caption = 'Avisos'
+      Caption = 'Notifica'#231#245'es'
       ImageIndex = 0
+      object TileControl: TdxTileControl
+        Left = 0
+        Top = 25
+        Width = 778
+        Height = 332
+        OptionsBehavior.ItemCheckMode = tcicmNone
+        Style.FocusedColor = clBlack
+        TabOrder = 0
+        ExplicitTop = 31
+        object dxTileControl1Item1: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Size = tcisSmall
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem2: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Size = tcisLarge
+          Style.BorderColor = clNone
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+      end
+      object btnAtualizar: TButton
+        Left = 0
+        Top = 0
+        Width = 778
+        Height = 25
+        Align = alTop
+        Caption = 'Atualizar'
+        TabOrder = 1
+        OnClick = btnAtualizarClick
+        ExplicitWidth = 75
+      end
     end
   end
   object mmMenuPrincipal: TMainMenu

@@ -53,7 +53,7 @@ type
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
-    procedure pprExecutarSalvarDetail;override;
+    procedure pprExecutarSalvarDetail; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
@@ -85,6 +85,10 @@ begin
 end;
 
 procedure TfrmNotificacao.FormCreate(Sender: TObject);
+var
+  vaTipo: TTipoNotificacao;
+  I: Integer;
+  vaItem: TcxImageComboBoxItem;
 begin
   dmSistema := TdmSistema.Create(Self);
   dmSistema.Name := '';
@@ -99,6 +103,14 @@ begin
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpMembroDiretoria]);
 
   ppvConfigurarGrids;
+
+  dmLookup.repIcbTipoNotificacao.Properties.Items.Clear;
+  for vaTipo := Low(TTipoNotificacao) to High(TTipoNotificacao) do
+    begin
+      vaItem := dmLookup.repIcbTipoNotificacao.Properties.Items.Add;
+      vaItem.Value := Ord(vaTipo);
+      vaItem.Description := TiposNotificacao[vaTipo];
+    end;
 
 end;
 

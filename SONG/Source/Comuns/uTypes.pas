@@ -87,6 +87,20 @@ type
     property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
   end;
 
+  TNotificacao = class
+  private
+    FDescricao: String;
+    FId: Integer;
+    FTipo: Integer;
+    procedure SetDescricao(const Value: String);
+    procedure SetId(const Value: Integer);
+    procedure SetTipo(const Value: Integer);
+    public
+      property Id:Integer read FId write SetId;
+      property Tipo:Integer read FTipo write SetTipo;
+      property Descricao:String read FDescricao write SetDescricao;
+  end;
+
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
 
   TAcaoTela = (atVisualizar, atIncluir, atAlterar, atExcluir, atAtivar, atInativar);
@@ -237,6 +251,23 @@ end;
 procedure TEspecie.SetTempoGerminacao(const Value: Integer);
 begin
   FTempoGerminacao := Value;
+end;
+
+{ TNotificacao }
+
+procedure TNotificacao.SetDescricao(const Value: String);
+begin
+  FDescricao := Value;
+end;
+
+procedure TNotificacao.SetId(const Value: Integer);
+begin
+  FId := Value;
+end;
+
+procedure TNotificacao.SetTipo(const Value: Integer);
+begin
+  FTipo := Value;
 end;
 
 end.
