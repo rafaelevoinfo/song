@@ -420,6 +420,9 @@ begin
   else if cbPesquisarPor.EditValue = coPesquisaFundo then
     ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue);
 
+  if rgStatus.EditValue <> 2 then//ambos
+    ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.EditValue);
+
 end;
 
 procedure TfrmContaPagar.pprEfetuarPesquisa;
@@ -1063,6 +1066,9 @@ begin
   inherited;
 
   FIdsParcelasCancelar := TList<Integer>.Create;;
+
+  rgStatus.EditValue := 2;//ambos
+  rgStatus.PostEditValue;
 
   pcRecursoAlocado.Properties.HideTabs := True;
   pcOrigemRecurso.Properties.HideTabs := True;

@@ -30,7 +30,8 @@ uses
   aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
   uBackup in 'uBackup.pas',
   smuSistema in 'ServerModules\smuSistema.pas' {smSistema: TDSServerModule},
-  smuFuncoesSistema in 'ServerModules\Funcoes\smuFuncoesSistema.pas' {smFuncoesSistema: TDSServerModule};
+  smuFuncoesSistema in 'ServerModules\Funcoes\smuFuncoesSistema.pas' {smFuncoesSistema: TDSServerModule},
+  uEnviarEmail in '..\Comuns\uEnviarEmail.pas';
 
 {$R *.res}
 

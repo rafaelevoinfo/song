@@ -40,6 +40,7 @@ type
     coVendedor = 'PESSOA_VENDEU';
     coResponsavelDespesa = 'RESPONSAVEL_DESPESA';
     coLoteSemente = 'LOTE_SEMENTE';
+    coVencida = 'VENCIDA';
 
     coTipo = 'TIPO';
     coTipoItem = 'TIPO_ITEM';

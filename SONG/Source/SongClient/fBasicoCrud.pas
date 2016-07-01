@@ -334,11 +334,15 @@ begin
     Exit;
 
   inherited;
-  pprRealizarPesquisaInicial;
-  if FModoExecucao = meSomenteCadastro then
-    ppuIncluir
-  else if (FModoExecucao = meSomenteEdicao) and Assigned(FModelo) then
-    ppuAlterar(FModelo.Id);
+  //se for mePesquisa significa que ja fez a pesquisa antes de dar show na tela
+  if ModoExecucao <> mePesquisa then
+    begin
+      pprRealizarPesquisaInicial;
+      if FModoExecucao = meSomenteCadastro then
+        ppuIncluir
+      else if (FModoExecucao = meSomenteEdicao) and Assigned(FModelo) then
+        ppuAlterar(FModelo.Id);
+    end;
 
   FShowExecutado := True;
 end;

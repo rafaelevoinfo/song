@@ -1,4 +1,5 @@
 inherited smFuncoesBasico: TsmFuncoesBasico
+  OldCreateOrder = True
   object qId: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (

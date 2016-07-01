@@ -253,6 +253,13 @@ begin
         begin
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PLANO_CONTAS', vaValor.ToInteger, vaOperador)
         end
+      else if ipParam.Name = TParametros.coStatus then
+        begin
+          if vaValor = '0' then
+            Result := Result + ' ((' + ipTabela + '_PARCELA.status is null) or ('+ipTabela+'_PARCELA.status = 0)) ' + vaOperador
+          else
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela+'_PARCELA', 'STATUS', vaValor.ToInteger, vaOperador)
+        end
       else
         begin
           if ipTabela = 'CONTA_PAGAR' then

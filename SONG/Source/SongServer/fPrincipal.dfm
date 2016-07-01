@@ -2183,7 +2183,6 @@ object frmPrincipal: TfrmPrincipal
     Properties.ActivePage = tabLog
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
-    ExplicitHeight = 257
     ClientRectBottom = 246
     ClientRectLeft = 2
     ClientRectRight = 835
@@ -2191,7 +2190,6 @@ object frmPrincipal: TfrmPrincipal
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
-      ExplicitHeight = 227
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3
@@ -2304,7 +2302,6 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
-      ExplicitHeight = 227
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -2312,7 +2309,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 221
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 227
         object viewLog: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsLog
@@ -2341,7 +2337,6 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
-      ExplicitHeight = 227
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25
@@ -2349,7 +2344,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 196
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 202
         object viewAtualizacoes: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           Navigator.Buttons.First.Visible = False
@@ -2428,7 +2422,6 @@ object frmPrincipal: TfrmPrincipal
     object tabBackup: TcxTabSheet
       Caption = 'Backups'
       ImageIndex = 3
-      ExplicitHeight = 227
       object Label10: TLabel
         Left = 7
         Top = 68
@@ -2541,7 +2534,6 @@ object frmPrincipal: TfrmPrincipal
         Top = 3
         Caption = 'Habilitar backup'
         TabOrder = 0
-        OnClick = chkHabilitarBackupClick
         Width = 121
       end
       object EditUsuarioFTP: TcxTextEdit
@@ -2597,9 +2589,6 @@ object frmPrincipal: TfrmPrincipal
         Width = 0
       end>
     SizeGrip = False
-    ExplicitLeft = 432
-    ExplicitTop = 192
-    ExplicitWidth = 0
   end
   object skinController: TdxSkinController
     NativeStyle = False
@@ -2738,9 +2727,9 @@ object frmPrincipal: TfrmPrincipal
       Size = 60
     end
   end
-  object tmrBackup: TTimer
+  object tmrTempo: TTimer
     Interval = 60000
-    OnTimer = tmrBackupTimer
+    OnTimer = tmrTempoTimer
     Left = 608
     Top = 200
   end

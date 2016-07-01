@@ -3,7 +3,7 @@ unit uTypes;
 interface
 
 uses
-  Winapi.Messages;
+  Winapi.Messages, System.Classes, System.SysUtils;
 
 type
   TBancoDados = class
@@ -27,6 +27,20 @@ type
     procedure SetId(const Value: Integer);
   public
     property Id: Integer read FId write SetId;
+  end;
+
+  TConta = class(TModelo)
+  private
+    FValor: Double;
+    FDescricao: String;
+    FVencimento: TDateTime;
+    procedure SetDescricao(const Value: String);
+    procedure SetValor(const Value: Double);
+    procedure SetVencimento(const Value: TDateTime);
+    public
+      property Descricao:String read FDescricao write SetDescricao;
+      property Valor:Double read FValor write SetValor;
+      property Vencimento:TDateTime read FVencimento write SetVencimento;
   end;
 
   TEspecie = class(TModelo)
@@ -89,16 +103,17 @@ type
 
   TNotificacao = class
   private
-    FDescricao: String;
     FId: Integer;
     FTipo: Integer;
-    procedure SetDescricao(const Value: String);
+    FInfo: TModelo;
     procedure SetId(const Value: Integer);
     procedure SetTipo(const Value: Integer);
-    public
-      property Id:Integer read FId write SetId;
-      property Tipo:Integer read FTipo write SetTipo;
-      property Descricao:String read FDescricao write SetDescricao;
+    procedure SetInfo(const Value: TModelo);
+  public
+    Destructor Destroy;override;
+    property Id: Integer read FId write SetId;
+    property Tipo: Integer read FTipo write SetTipo;
+    property Info:TModelo read FInfo write SetInfo;
   end;
 
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
@@ -255,9 +270,11 @@ end;
 
 { TNotificacao }
 
-procedure TNotificacao.SetDescricao(const Value: String);
+destructor TNotificacao.Destroy;
 begin
-  FDescricao := Value;
+  if Assigned(FInfo) then
+    FreeAndNil(FInfo);
+  inherited;
 end;
 
 procedure TNotificacao.SetId(const Value: Integer);
@@ -265,9 +282,31 @@ begin
   FId := Value;
 end;
 
+procedure TNotificacao.SetInfo(const Value: TModelo);
+begin
+  FInfo := Value;
+end;
+
 procedure TNotificacao.SetTipo(const Value: Integer);
 begin
   FTipo := Value;
+end;
+
+{ TConta }
+
+procedure TConta.SetDescricao(const Value: String);
+begin
+  FDescricao := Value;
+end;
+
+procedure TConta.SetValor(const Value: Double);
+begin
+  FValor := Value;
+end;
+
+procedure TConta.SetVencimento(const Value: TDateTime);
+begin
+  FVencimento := Value;
 end;
 
 end.

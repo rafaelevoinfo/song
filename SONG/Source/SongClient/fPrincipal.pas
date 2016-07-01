@@ -31,7 +31,7 @@ type
     Ac_Perfis: TAction;
     PerfisdeUsurios1: TMenuItem;
     pcPrincipal: TcxPageControl;
-    tabDashBoard: TcxTabSheet;
+    tabNotificacoes: TcxTabSheet;
     dxSkinController1: TdxSkinController;
     Ac_Organizacao: TAction;
     Ac_Projeto: TAction;
@@ -102,6 +102,16 @@ type
     dxTileControl1Item1: TdxTileControlItem;
     btnAtualizar: TButton;
     TileControlItem2: TdxTileControlItem;
+    tmrAtualizacoes: TTimer;
+    TileControlItem1: TdxTileControlItem;
+    TileControlItem3: TdxTileControlItem;
+    TileControlItem4: TdxTileControlItem;
+    TileControlItem5: TdxTileControlItem;
+    TileControlItem6: TdxTileControlItem;
+    TileControlItem8: TdxTileControlItem;
+    TileControlItem9: TdxTileControlItem;
+    TileControlItem10: TdxTileControlItem;
+    TileControlItem11: TdxTileControlItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -137,6 +147,9 @@ type
     procedure Ac_NotificacaoExecute(Sender: TObject);
     procedure Ac_Camara_FriaExecute(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
+    procedure tmrAtualizacoesTimer(Sender: TObject);
+  private
+    procedure ppvOnClickItem(ipItem: TdxTileControlItem);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
@@ -149,7 +162,7 @@ var
 implementation
 
 uses
-  dmuPrincipal;
+  dmuPrincipal, fBasicoCrud;
 
 {$R *.dfm}
 
@@ -417,8 +430,36 @@ begin
       Application.Terminate;
     end
   else
-    ppuCarregarNotificacoes;
+    begin
+      tmrAtualizacoes.Enabled := True; // a cada 10 min vai atualizar as notificacoes
+      ppuCarregarNotificacoes;
+    end;
+end;
 
+procedure TfrmPrincipal.ppvOnClickItem(ipItem: TdxTileControlItem);
+var
+  vaForm: TfrmBasicoCrud;
+begin
+  if TTipoNotificacao(ipItem.Group.Tag) = tnContaPagarVencendo then
+    vaForm := TFrmContaPagar.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnContaReceberVencida then
+    vaForm := TfrmContaReceber.Create(nil);
+
+  try
+    vaForm.ppuConfigurarModoExecucao(mePesquisa);
+    vaForm.ppuConfigurarPesquisa(Ord(tppId), ipItem.Tag.ToString());
+    vaForm.ppuPesquisar;
+
+    vaForm.ShowModal;
+  finally
+    vaForm.Free;
+  end;
+end;
+
+procedure TfrmPrincipal.tmrAtualizacoesTimer(Sender: TObject);
+begin
+  inherited;
+  ppuCarregarNotificacoes;
 end;
 
 procedure TfrmPrincipal.ppuCarregarNotificacoes;
@@ -428,15 +469,15 @@ var
   vaGrupo: TdxTileControlGroup;
   I: Integer;
   vaItem: TdxTileControlItem;
+  vaConta: TConta;
 begin
-
   TileControl.Groups.Clear;
 
-  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuBuscarNotificacoes(-1);
+  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(-1, false);
   for vaNotificacao in vaNotificacoes do
     begin
       vaGrupo := nil;
-       for I := 0 to TileControl.Groups.Count - 1 do
+      for I := 0 to TileControl.Groups.Count - 1 do
         begin
           if TileControl.Groups.Items[I].Tag = vaNotificacao.Tipo then
             begin
@@ -456,9 +497,24 @@ begin
       vaItem := TileControl.Items.Add;
       vaItem.Tag := vaNotificacao.Id;
       vaItem.Size := tcisRegular;
-      vaItem.Text1.Value := vaNotificacao.Descricao;
-      vaItem.Text1.WordWrap := true;
+      vaItem.OnClick := ppvOnClickItem;
+
       vaItem.Group := vaGrupo;
+
+      case TTipoNotificacao(vaNotificacao.Tipo) of
+        tnContaPagarVencendo, tnContaReceberVencida:
+          begin
+            vaConta := vaNotificacao.Info as TConta;
+            vaItem.Text1.Value := vaConta.Descricao;
+            vaItem.Text1.WordWrap := True;
+
+            vaItem.Text2.Align := oaMiddleCenter;
+            vaItem.Text2.Value := FormatFloat('R$ ,0.00', vaConta.Valor);
+
+            vaItem.Text3.Value := DateToStr(vaConta.Vencimento);
+          end;
+      end;
+
     end;
 end;
 

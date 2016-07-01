@@ -18,7 +18,7 @@ inherited frmPrincipal: TfrmPrincipal
     Align = alClient
     TabOrder = 0
     TabStop = False
-    Properties.ActivePage = tabDashBoard
+    Properties.ActivePage = tabNotificacoes
     Properties.AllowTabDragDrop = True
     Properties.CloseButtonMode = cbmEveryTab
     Properties.CustomButtons.Buttons = <>
@@ -27,7 +27,7 @@ inherited frmPrincipal: TfrmPrincipal
     ClientRectLeft = 2
     ClientRectRight = 780
     ClientRectTop = 25
-    object tabDashBoard: TcxTabSheet
+    object tabNotificacoes: TcxTabSheet
       AllowCloseButton = False
       Caption = 'Notifica'#231#245'es'
       ImageIndex = 0
@@ -37,6 +37,12 @@ inherited frmPrincipal: TfrmPrincipal
         Width = 778
         Height = 332
         OptionsBehavior.ItemCheckMode = tcicmNone
+        OptionsView.GroupIndent = 30
+        OptionsView.GroupLayout = glVertical
+        OptionsView.GroupMaxRowCount = 2
+        OptionsView.IndentHorz = 10
+        OptionsView.IndentVert = 10
+        OptionsView.ItemIndent = 4
         Style.FocusedColor = clBlack
         TabOrder = 0
         ExplicitTop = 31
@@ -59,6 +65,78 @@ inherited frmPrincipal: TfrmPrincipal
           Text3.AssignedValues = []
           Text4.AssignedValues = []
         end
+        object TileControlItem1: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem3: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem4: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem5: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem6: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem8: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem9: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem10: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem11: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
       end
       object btnAtualizar: TButton
         Left = 0
@@ -69,7 +147,6 @@ inherited frmPrincipal: TfrmPrincipal
         Caption = 'Atualizar'
         TabOrder = 1
         OnClick = btnAtualizarClick
-        ExplicitWidth = 75
       end
     end
   end
@@ -362,5 +439,12 @@ inherited frmPrincipal: TfrmPrincipal
     OnSkinControl = dxSkinController1SkinControl
     Left = 136
     Top = 280
+  end
+  object tmrAtualizacoes: TTimer
+    Enabled = False
+    Interval = 600000
+    OnTimer = tmrAtualizacoesTimer
+    Left = 384
+    Top = 208
   end
 end
