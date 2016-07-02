@@ -786,12 +786,6 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DATA_FINAL'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField
-      Alignment = taLeftJustify
-      DisplayLabel = 'Notificar pessoas envolvidas'
-      FieldName = 'NOTIFICAR_ENVOLVIDOS'
-      ProviderFlags = [pfInUpdate]
-    end
     object cdsAtividadeID_PROJETO: TIntegerField
       Alignment = taLeftJustify
       DisplayLabel = 'Id do Projeto'
@@ -809,6 +803,11 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object cdsAtividadeDATA_CADASTRO: TSQLTimeStampField
+      DisplayLabel = 'Data de Cadastro'
+      FieldName = 'DATA_CADASTRO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object cdsAtividade_Projeto: TRFClientDataSet

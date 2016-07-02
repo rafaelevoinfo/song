@@ -19,7 +19,7 @@ uses
   cxNavigator, cxGridCardView, cxGridDBCardView, dxLayoutContainer,
   cxGridCustomView, cxGridCustomTableView, cxGridCustomLayoutView,
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
-  dxCustomTileControl, dxTileControl, aduna_ds_list;
+  dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -112,6 +112,12 @@ type
     TileControlItem9: TdxTileControlItem;
     TileControlItem10: TdxTileControlItem;
     TileControlItem11: TdxTileControlItem;
+    TileControlItem7: TdxTileControlItem;
+    TileControlItem12: TdxTileControlItem;
+    TileControlGroup1: TdxTileControlGroup;
+    TileControlItem13: TdxTileControlItem;
+    TileControlItem14: TdxTileControlItem;
+    TileControlItem15: TdxTileControlItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -148,7 +154,9 @@ type
     procedure Ac_Camara_FriaExecute(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
     procedure tmrAtualizacoesTimer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
+    dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
@@ -414,11 +422,20 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  dmLookup := TdmLookup.Create(nil);
+  dmLookup.Name := '';
+
   inherited;
 {$IFDEF DEBUG}
   ReportMemoryLeaksOnShutdown := True;
 {$ENDIF}
   Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
+end;
+
+procedure TfrmPrincipal.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  dmLookup.Free;
 end;
 
 procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);
@@ -443,7 +460,13 @@ begin
   if TTipoNotificacao(ipItem.Group.Tag) = tnContaPagarVencendo then
     vaForm := TFrmContaPagar.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnContaReceberVencida then
-    vaForm := TfrmContaReceber.Create(nil);
+    vaForm := TfrmContaReceber.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnRubricaAtigindoSaldo then
+    vaForm := TfrmProjeto.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnFundoFicandoSemSaldo then
+    vaForm := TfrmOrganizacao.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnAtividadeCadastrada then
+    vaForm := TfrmAtividade.Create(nil);
 
   try
     vaForm.ppuConfigurarModoExecucao(mePesquisa);
@@ -470,10 +493,13 @@ var
   I: Integer;
   vaItem: TdxTileControlItem;
   vaConta: TConta;
+  vaRubrica: TRubrica;
+  vaFundo: TFundo;
+  vaAtividade: TAtividade;
 begin
   TileControl.Groups.Clear;
 
-  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(-1, false);
+  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false);
   for vaNotificacao in vaNotificacoes do
     begin
       vaGrupo := nil;
@@ -499,6 +525,9 @@ begin
       vaItem.Size := tcisRegular;
       vaItem.OnClick := ppvOnClickItem;
 
+      vaItem.Text1.WordWrap := True;
+      vaItem.Text2.Align := oaMiddleCenter;
+
       vaItem.Group := vaGrupo;
 
       case TTipoNotificacao(vaNotificacao.Tipo) of
@@ -506,12 +535,51 @@ begin
           begin
             vaConta := vaNotificacao.Info as TConta;
             vaItem.Text1.Value := vaConta.Descricao;
-            vaItem.Text1.WordWrap := True;
 
-            vaItem.Text2.Align := oaMiddleCenter;
             vaItem.Text2.Value := FormatFloat('R$ ,0.00', vaConta.Valor);
+            vaItem.Text2.Font.Size := 12;
+            vaItem.Text2.Font.Style := [fsBold];
 
             vaItem.Text3.Value := DateToStr(vaConta.Vencimento);
+          end;
+        tnRubricaAtigindoSaldo:
+          begin
+            vaRubrica := vaNotificacao.Info as TRubrica;
+            vaItem.Text1.Value := vaRubrica.NomeRubrica + ' - ' + vaRubrica.NomeProjeto;
+
+            vaItem.Text2.Value := FormatFloat(',0.00%', vaRubrica.PercentualGasto);
+            vaItem.Text2.Font.Size := 12;
+            vaItem.Text2.Font.Style := [fsBold];
+
+            vaItem.Text3.Value := FormatFloat('Saldo: R$ ,0.00;Saldo: -R$ ,0.00', vaRubrica.SaldoReal);
+            vaItem.Text3.WordWrap := True;
+          end;
+        tnFundoFicandoSemSaldo:
+          begin
+            vaFundo := vaNotificacao.Info as TFundo;
+            vaItem.Text1.Value := vaFundo.Nome + ' - ' + vaFundo.NomeOrganizacao;
+
+            vaItem.Text2.Value := FormatFloat('R$ ,0.00', vaFundo.Saldo);
+            vaItem.Text2.Font.Size := 12;
+            vaItem.Text2.Font.Style := [fsBold];
+          end;
+        tnAtividadeCadastrada:
+          begin
+            vaAtividade := vaNotificacao.Info as TAtividade;
+            vaItem.Text1.Value := vaAtividade.Nome + ' - ' + vaAtividade.NomeProjeto;
+
+            for I := 0 to dmLookup.repIcbStatusAtividade.Properties.Items.Count - 1 do
+              begin
+                if dmLookup.repIcbStatusAtividade.Properties.Items[i].Value = vaAtividade.Status then
+                  begin
+                    vaItem.Text2.Value := dmLookup.repIcbStatusAtividade.Properties.Items[i].Description;
+                    vaItem.Text2.Font.Size := 12;
+                    vaItem.Text2.Font.Style := [fsBold];
+
+                    break;
+                  end;
+              end;
+
           end;
       end;
 

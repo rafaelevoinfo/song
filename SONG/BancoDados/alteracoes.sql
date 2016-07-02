@@ -54,3 +54,47 @@ REFERENCES LOTE_SEMENTE(ID)
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
+
+
+CREATE OR ALTER VIEW VIEW_RUBRICA_PROJETO(
+    ID_RUBRICA,
+    ID_PROJETO,
+    NOME_PROJETO,
+    NOME_RUBRICA,
+    ORCAMENTO,
+    VALOR_GASTO,
+    VALOR_RECEBIDO,
+    VALOR_APROVISIONADO,
+    SALDO_REAL,
+    SALDO_PREVISTO)
+AS
+select distinct Projeto_Rubrica.Id_Rubrica,
+                Projeto_Rubrica.Id_Projeto,
+                Projeto.Nome as Nome_Projeto,
+                Rubrica.Nome as Nome_Rubrica,
+                Projeto_Rubrica.Orcamento,
+                (View_Valores_Rubrica_Projeto.Valor_Gasto+View_Valores_Rubrica_Projeto.valor_gasto_transferido) as valor_gasto,
+                (View_Valores_Rubrica_Projeto.Valor_Recebido+View_Valores_Rubrica_Projeto.valor_recebido_transferido) as valor_recebido,
+                View_Valores_Rubrica_Projeto.valor_aprovisionado,
+                (View_Valores_Rubrica_Projeto.Valor_Recebido+ View_Valores_Rubrica_Projeto.valor_recebido_transferido)-(View_Valores_Rubrica_Projeto.Valor_Gasto+View_Valores_Rubrica_Projeto.valor_gasto_transferido) as Saldo_Real,
+                (Projeto_Rubrica.Orcamento+View_Valores_Rubrica_Projeto.valor_recebido_transferido) - (View_Valores_Rubrica_Projeto.Valor_Gasto +View_Valores_Rubrica_Projeto.valor_gasto_transferido+ View_Valores_Rubrica_Projeto.valor_aprovisionado) as Saldo_Previsto
+
+from Projeto_Rubrica
+inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)
+inner join Projeto on (Projeto.Id = Projeto_Rubrica.Id_Projeto)
+left join View_Valores_Rubrica_Projeto on (View_Valores_Rubrica_Projeto.Id_Projeto = Projeto_Rubrica.Id_Projeto and View_Valores_Rubrica_Projeto.Id_Rubrica = Projeto_Rubrica.Id_Rubrica)
+;
+
+
+
+ALTER TABLE NOTIFICACAO
+    ADD VALOR_GATILHO NUMERIC(15,2);
+
+COMMENT ON COLUMN NOTIFICACAO.VALOR_GATILHO IS
+'Usado por algumas notificoes (Fundo sem saldo) para se saber o ponto no qual deve-se iniciar os envios das notificacoes';
+
+
+
+ALTER TABLE ATIVIDADE
+    ADD DATA_CADASTRO TIMESTAMP;
+

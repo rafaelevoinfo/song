@@ -766,9 +766,9 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE.STATUS,'
       '       ATIVIDADE.DATA_INICIAL,'
       '       ATIVIDADE.DATA_FINAL,'
-      '       ATIVIDADE.NOTIFICAR_ENVOLVIDOS,'
       '       ATIVIDADE.DESCRICAO,'
-      '       PROJETO.NOME AS NOME_PROJETO'
+      '       PROJETO.NOME AS NOME_PROJETO,'
+      '       ATIVIDADE.DATA_CADASTRO'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
@@ -823,11 +823,6 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DATA_FINAL'
       ProviderFlags = [pfInUpdate]
     end
-    object qAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField
-      FieldName = 'NOTIFICAR_ENVOLVIDOS'
-      Origin = 'NOTIFICAR_ENVOLVIDOS'
-      ProviderFlags = [pfInUpdate]
-    end
     object qAtividadeID_PROJETO: TIntegerField
       FieldName = 'ID_PROJETO'
       Origin = 'ID_PROJETO'
@@ -846,6 +841,11 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qAtividadeDATA_CADASTRO: TSQLTimeStampField
+      FieldName = 'DATA_CADASTRO'
+      Origin = 'DATA_CADASTRO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qAtividade_Pessoa: TRFQuery

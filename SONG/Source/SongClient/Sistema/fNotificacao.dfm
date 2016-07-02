@@ -1,6 +1,7 @@
 inherited frmNotificacao: TfrmNotificacao
-  ActiveControl = cbTipo
+  ActiveControl = nil
   Caption = 'Notifica'#231#245'es'
+  ExplicitLeft = -35
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -25,9 +26,15 @@ inherited frmNotificacao: TfrmNotificacao
               Width = 322
             end
             object viewRegistrosTEMPO_ANTECEDENCIA: TcxGridDBColumn [2]
+              Caption = 'Tempo (dias)'
               DataBinding.FieldName = 'TEMPO_ANTECEDENCIA'
               Options.Editing = False
               Width = 120
+            end
+            object viewRegistrosVALOR_GATILHO: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'VALOR_GATILHO'
+              RepositoryItem = dmLookup.repCurPadrao
+              Width = 135
             end
           end
         end
@@ -81,86 +88,199 @@ inherited frmNotificacao: TfrmNotificacao
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        object Label3: TLabel
-          Left = 5
-          Top = 5
-          Width = 91
-          Height = 13
-          Caption = 'Tipo de Notifica'#231#227'o'
-        end
-        object cbTipo: TcxDBImageComboBox
+        ExplicitLeft = 3
+        ExplicitTop = 52
+        object pnLeft: TPanel
           Left = 4
-          Top = 21
-          RepositoryItem = dmLookup.repIcbTipoNotificacao
-          DataBinding.DataField = 'TIPO'
-          DataBinding.DataSource = dsMaster
-          Properties.Items = <>
-          Properties.OnEditValueChanged = cbTipoPropertiesEditValueChanged
+          Top = 6
+          Width = 1500
+          Height = 51
+          BevelOuter = bvNone
           TabOrder = 0
-          Width = 205
-        end
-        object pnDiasAntecedencia: TPanel
-          Left = 215
-          Top = 21
-          Width = 220
-          Height = 21
-          AutoSize = True
-          BevelOuter = bvNone
-          TabOrder = 1
-          Visible = False
-          object Label4: TLabel
+          object pnTipo: TPanel
             Left = 0
-            Top = 2
-            Width = 52
-            Height = 13
-            Caption = 'Avisar com'
-          end
-          object Label5: TLabel
-            Left = 141
-            Top = 2
-            Width = 79
-            Height = 13
-            Caption = 'de anteced'#234'ncia'
-          end
-          object EditTempoAntecedencia: TcxDBSpinEdit
-            Left = 55
             Top = 0
-            DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
-            DataBinding.DataSource = dsMaster
+            Width = 205
+            Height = 51
+            Align = alLeft
+            AutoSize = True
+            BevelOuter = bvNone
             TabOrder = 0
-            Width = 81
+            ExplicitLeft = 4
+            ExplicitTop = 6
+            ExplicitHeight = 36
+            object Label3: TLabel
+              Left = 1
+              Top = 0
+              Width = 91
+              Height = 13
+              Caption = 'Tipo de Notifica'#231#227'o'
+            end
+            object cbTipo: TcxDBImageComboBox
+              Left = 0
+              Top = 15
+              RepositoryItem = dmLookup.repIcbTipoNotificacao
+              DataBinding.DataField = 'TIPO'
+              DataBinding.DataSource = dsMaster
+              Properties.Items = <>
+              Properties.OnEditValueChanged = cbTipoPropertiesEditValueChanged
+              TabOrder = 0
+              Width = 205
+            end
           end
-        end
-        object pnDiasProcedencia: TPanel
-          Left = 215
-          Top = 21
-          Width = 206
-          Height = 21
-          AutoSize = True
-          BevelOuter = bvNone
-          TabOrder = 2
-          Visible = False
-          object Label6: TLabel
-            Left = 0
-            Top = 3
-            Width = 30
-            Height = 13
-            Caption = 'Avisar'
-          end
-          object Label7: TLabel
-            Left = 116
-            Top = 3
-            Width = 90
-            Height = 13
-            Caption = 'ap'#243's o vencimento'
-          end
-          object EditTempoProcedencia: TcxDBSpinEdit
-            Left = 32
+          object pnDiasProcedencia: TPanel
+            Left = 1105
             Top = 0
-            DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
-            DataBinding.DataSource = dsMaster
-            TabOrder = 0
-            Width = 81
+            Width = 215
+            Height = 51
+            Margins.Top = 14
+            Align = alLeft
+            AutoSize = True
+            BevelOuter = bvNone
+            TabOrder = 1
+            Visible = False
+            ExplicitLeft = 442
+            ExplicitTop = 14
+            ExplicitHeight = 34
+            object Label6: TLabel
+              Left = 0
+              Top = 17
+              Width = 40
+              Height = 13
+              Caption = 'Notificar'
+            end
+            object Label7: TLabel
+              Left = 125
+              Top = 17
+              Width = 90
+              Height = 13
+              Caption = 'ap'#243's o vencimento'
+            end
+            object EditTempoProcedencia: TcxDBSpinEdit
+              Left = 41
+              Top = 15
+              DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
+              DataBinding.DataSource = dsMaster
+              TabOrder = 0
+              Width = 81
+            end
+          end
+          object pnDiasAntecedencia: TPanel
+            Left = 877
+            Top = 0
+            Width = 228
+            Height = 51
+            Margins.Top = 14
+            Align = alLeft
+            AutoSize = True
+            BevelOuter = bvNone
+            TabOrder = 2
+            Visible = False
+            ExplicitLeft = 208
+            ExplicitTop = 14
+            ExplicitHeight = 34
+            object Label4: TLabel
+              Left = 0
+              Top = 17
+              Width = 62
+              Height = 13
+              Caption = 'Notificar com'
+            end
+            object Label5: TLabel
+              Left = 149
+              Top = 17
+              Width = 79
+              Height = 13
+              Caption = 'de anteced'#234'ncia'
+            end
+            object EditTempoAntecedencia: TcxDBSpinEdit
+              Left = 63
+              Top = 15
+              DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
+              DataBinding.DataSource = dsMaster
+              TabOrder = 0
+              Width = 81
+            end
+          end
+          object pnValorGatilho: TPanel
+            Left = 1320
+            Top = 0
+            Width = 317
+            Height = 51
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 3
+            Visible = False
+            ExplicitLeft = 660
+            object Label9: TLabel
+              Left = 8
+              Top = 17
+              Width = 186
+              Height = 13
+              Caption = 'Notificar quando o saldo ficar inferior a'
+            end
+            object EditValorGatilho: TcxDBCurrencyEdit
+              Left = 198
+              Top = 15
+              RepositoryItem = dmLookup.repCurPadrao
+              DataBinding.DataField = 'VALOR_GATILHO'
+              DataBinding.DataSource = dsMaster
+              TabOrder = 0
+              Width = 115
+            end
+          end
+          object pnDiasAtividades: TPanel
+            Left = 529
+            Top = 0
+            Width = 348
+            Height = 51
+            Margins.Top = 14
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 4
+            Visible = False
+            ExplicitLeft = 205
+            object lb1: TLabel
+              Left = 0
+              Top = 18
+              Width = 257
+              Height = 13
+              Caption = 'Notificar atividades cadastradas/iniciadas nos '#250'ltimos '
+            end
+            object EditDiasAtividade: TcxDBSpinEdit
+              Left = 256
+              Top = 15
+              DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
+              DataBinding.DataSource = dsMaster
+              TabOrder = 0
+              Width = 81
+            end
+          end
+          object pnDiasAtividadeVencendo: TPanel
+            Left = 205
+            Top = 0
+            Width = 324
+            Height = 51
+            Margins.Top = 14
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 5
+            Visible = False
+            object lb2: TLabel
+              Left = 0
+              Top = 18
+              Width = 236
+              Height = 13
+              Caption = 'Notificar atividades que ir'#227'o vencer nos pr'#243'ximos'
+            end
+            object EditDiaAtividadeVencendo: TcxDBSpinEdit
+              Left = 238
+              Top = 15
+              DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
+              DataBinding.DataSource = dsMaster
+              TabOrder = 0
+              Width = 81
+            end
           end
         end
       end
@@ -180,15 +300,14 @@ inherited frmNotificacao: TfrmNotificacao
           Align = alTop
           Caption = 
             'Para notifica'#231#245'es sobre atividades somente as pessoas envolvidas' +
-            ' na atividade receber'#227'o as notifica'#231#245'es, caso estejam configurad' +
-            'as aqui.'
+            ' na atividade e configuradas aqui receber'#227'o as notifica'#231#245'es.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clRed
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitWidth = 785
+          ExplicitWidth = 713
         end
         inline frameUsuarios: TframeGrids
           Left = 0

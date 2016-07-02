@@ -14,7 +14,8 @@ uses
   cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit,
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuSistema, dmuLookup, cxDBEdit,
   cxSpinEdit, fmGrids, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.TypInfo, uTypes, uConnection, uControleAcesso, dmuPrincipal;
+  System.TypInfo, uTypes, uConnection, uControleAcesso, dmuPrincipal,
+  cxCurrencyEdit;
 
 type
   TfrmNotificacao = class(TfrmBasicoCrudMasterDetail)
@@ -26,21 +27,33 @@ type
     viewRegistrosDetailNOME_PESSOA: TcxGridDBColumn;
     viewRegistrosDetailNOTIFICACAO_SISTEMA: TcxGridDBColumn;
     viewRegistrosDetailNOTIFICACAO_EMAIL: TcxGridDBColumn;
-    cbTipo: TcxDBImageComboBox;
-    Label3: TLabel;
     frameUsuarios: TframeGrids;
     cdsLocalPessoa: TClientDataSet;
     cdsLocalPessoaID: TIntegerField;
-    pnDiasAntecedencia: TPanel;
-    Label4: TLabel;
-    EditTempoAntecedencia: TcxDBSpinEdit;
-    Label5: TLabel;
     lbAviso: TLabel;
     cdsLocalPessoaNOME: TStringField;
+    pnLeft: TPanel;
+    pnTipo: TPanel;
+    Label3: TLabel;
+    cbTipo: TcxDBImageComboBox;
     pnDiasProcedencia: TPanel;
     Label6: TLabel;
     Label7: TLabel;
     EditTempoProcedencia: TcxDBSpinEdit;
+    pnDiasAntecedencia: TPanel;
+    Label4: TLabel;
+    Label5: TLabel;
+    EditTempoAntecedencia: TcxDBSpinEdit;
+    pnValorGatilho: TPanel;
+    Label9: TLabel;
+    EditValorGatilho: TcxDBCurrencyEdit;
+    viewRegistrosVALOR_GATILHO: TcxGridDBColumn;
+    pnDiasAtividades: TPanel;
+    EditDiasAtividade: TcxDBSpinEdit;
+    lb1: TLabel;
+    pnDiasAtividadeVencendo: TPanel;
+    lb2: TLabel;
+    EditDiaAtividadeVencendo: TcxDBSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbTipoPropertiesEditValueChanged(Sender: TObject);
   private
@@ -73,13 +86,19 @@ begin
   if Not VarIsNull(cbTipo.EditValue) then
     begin
       pnDiasAntecedencia.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnContaPagarVencendo, tnAtividadeVencendo];
+      pnDiasAtividades.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnAtividadeCadastrada, tnAtividadeIniciada];
+      pnDiasAtividadeVencendo.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnAtividadeVencendo;
       pnDiasProcedencia.Visible := (not pnDiasAntecedencia.Visible) and
         (TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnContaReceberVencida);
+      pnValorGatilho.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnFundoFicandoSemSaldo;
     end
   else
     begin
       pnDiasAntecedencia.Visible := false;
       pnDiasProcedencia.Visible := false;
+      pnDiasAtividades.Visible := false;
+      pnValorGatilho.Visible := false;
+      pnDiasAtividadeVencendo.Visible := false;
     end;
 
 end;
@@ -122,10 +141,12 @@ end;
 procedure TfrmNotificacao.pprBeforeSalvar;
 begin
   inherited;
-  if not(pnDiasAntecedencia.Visible or pnDiasProcedencia.Visible) then
+  if not(pnDiasAntecedencia.Visible or pnDiasProcedencia.Visible or pnDiasAtividades.Visible or pnDiasAtividadeVencendo.Visible) then
     begin
       dmSistema.cdsNotificacaoTEMPO_ANTECEDENCIA.Clear;
     end;
+  if not pnValorGatilho.Visible then
+    dmSistema.cdsNotificacaoVALOR_GATILHO.Clear;
 end;
 
 procedure TfrmNotificacao.pprExecutarSalvarDetail;
@@ -166,7 +187,7 @@ begin
     TUtils.ppuPercorrerCds(dmSistema.cdsNotificacao_Pessoa,
       procedure
       begin
-        if cdsLocalPessoa.Locate(TBancoDados.coId, dmSistema.cdsNotificacao_PessoaID.AsInteger, []) then
+        if cdsLocalPessoa.Locate(cdsLocalPessoaID.FieldName, dmSistema.cdsNotificacao_PessoaID_PESSOA.AsInteger, []) then
           begin
             cdsLocalPessoa.Delete;
           end;
@@ -200,7 +221,7 @@ begin
     begin
       if ipAcao = tcAdd then
         begin
-          ipDataSetDestino.FieldByName(dmSistema.cdsNotificacao_PessoaNOTIFICACAO_SISTEMA.FieldName).AsInteger := 0;
+          ipDataSetDestino.FieldByName(dmSistema.cdsNotificacao_PessoaNOTIFICACAO_SISTEMA.FieldName).AsInteger := 1;
           ipDataSetDestino.FieldByName(dmSistema.cdsNotificacao_PessoaNOTIFICACAO_EMAIL.FieldName).AsInteger := 0;
         end;
     end;

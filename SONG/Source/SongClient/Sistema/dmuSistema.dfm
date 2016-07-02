@@ -1,4 +1,5 @@
 inherited dmSistema: TdmSistema
+  OldCreateOrder = True
   Height = 263
   Width = 426
   object cdsNotificacao: TRFClientDataSet
@@ -22,6 +23,12 @@ inherited dmSistema: TdmSistema
       DisplayLabel = 'Tempo de Anteced'#234'ncia'
       FieldName = 'TEMPO_ANTECEDENCIA'
       DisplayFormat = '0 dias'
+    end
+    object cdsNotificacaoVALOR_GATILHO: TBCDField
+      DisplayLabel = 'Valor de Gatilho'
+      FieldName = 'VALOR_GATILHO'
+      Precision = 18
+      Size = 2
     end
   end
   object cdsNotificacao_Pessoa: TRFClientDataSet

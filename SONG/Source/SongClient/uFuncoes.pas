@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 30/06/2016 22:58:19
+// 01/07/2016 21:29:20
 //
 
 unit uFuncoes;
@@ -271,7 +271,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean;
-    function fpuVerificarNotificacoes(ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>;
+    function fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -1801,7 +1801,7 @@ begin
   Result := FfpuValidarTipoNotificacaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TsmFuncoesSistemaClient.fpuVerificarNotificacoes(ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>;
+function TsmFuncoesSistemaClient.fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>;
 begin
   if FfpuVerificarNotificacoesCommand = nil then
   begin
@@ -1810,14 +1810,15 @@ begin
     FfpuVerificarNotificacoesCommand.Text := 'TsmFuncoesSistema.fpuVerificarNotificacoes';
     FfpuVerificarNotificacoesCommand.Prepare;
   end;
-  FfpuVerificarNotificacoesCommand.Parameters[0].Value.SetInt32(ipTipo);
-  FfpuVerificarNotificacoesCommand.Parameters[1].Value.SetBoolean(ipEnviarEmail);
+  FfpuVerificarNotificacoesCommand.Parameters[0].Value.SetInt32(ipIdPessoa);
+  FfpuVerificarNotificacoesCommand.Parameters[1].Value.SetInt32(ipTipo);
+  FfpuVerificarNotificacoesCommand.Parameters[2].Value.SetBoolean(ipEnviarEmail);
   FfpuVerificarNotificacoesCommand.ExecuteUpdate;
-  if not FfpuVerificarNotificacoesCommand.Parameters[2].Value.IsNull then
+  if not FfpuVerificarNotificacoesCommand.Parameters[3].Value.IsNull then
   begin
-    FUnMarshal := TDBXClientCommand(FfpuVerificarNotificacoesCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    FUnMarshal := TDBXClientCommand(FfpuVerificarNotificacoesCommand.Parameters[3].ConnectionHandler).GetJSONUnMarshaler;
     try
-      Result := TadsObjectlist<uTypes.TNotificacao>(FUnMarshal.UnMarshal(FfpuVerificarNotificacoesCommand.Parameters[2].Value.GetJSONValue(True)));
+      Result := TadsObjectlist<uTypes.TNotificacao>(FUnMarshal.UnMarshal(FfpuVerificarNotificacoesCommand.Parameters[3].Value.GetJSONValue(True)));
       if FInstanceOwner then
         FfpuVerificarNotificacoesCommand.FreeOnExecute(Result);
     finally

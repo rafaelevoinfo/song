@@ -13,6 +13,7 @@ type
     coId = 'ID';
     coNome = 'NOME';
     coAtivo = 'ATIVO';
+    coDataCadastro = 'DATA_CADASTRO';
   end;
 
   TOperadores = class
@@ -37,10 +38,61 @@ type
     procedure SetDescricao(const Value: String);
     procedure SetValor(const Value: Double);
     procedure SetVencimento(const Value: TDateTime);
+  public
+    property Descricao: String read FDescricao write SetDescricao;
+    property Valor: Double read FValor write SetValor;
+    property Vencimento: TDateTime read FVencimento write SetVencimento;
+  end;
+
+  TRubrica = class(TModelo)
+  private
+    FNomeRubrica: String;
+    FPercentualGasto: Double;
+    FIdProjeto: Integer;
+    FNomeProjeto: String;
+    FSaldoReal: Double;
+    procedure SetIdProjeto(const Value: Integer);
+    procedure SetNomeProjeto(const Value: String);
+    procedure SetNomeRubrica(const Value: String);
+    procedure SetPercentualGasto(const Value: Double);
+    procedure SetSaldoReal(const Value: Double);
+  public
+    property IdProjeto: Integer read FIdProjeto write SetIdProjeto;
+    property NomeRubrica: String read FNomeRubrica write SetNomeRubrica;
+    property NomeProjeto: String read FNomeProjeto write SetNomeProjeto;
+    property PercentualGasto: Double read FPercentualGasto write SetPercentualGasto;
+    property SaldoReal: Double read FSaldoReal write SetSaldoReal;
+  end;
+
+  TAtividade = class(TModelo)
+  private
+    FDataVencimento: TDateTime;
+    FStatus: Integer;
+    FNome: String;
+    FNomeProjeto: String;
+    procedure SetDataVencimento(const Value: TDateTime);
+    procedure SetNome(const Value: String);
+    procedure SetNomeProjeto(const Value: String);
+    procedure SetStatus(const Value: Integer);
     public
-      property Descricao:String read FDescricao write SetDescricao;
-      property Valor:Double read FValor write SetValor;
-      property Vencimento:TDateTime read FVencimento write SetVencimento;
+      property Nome:String read FNome write SetNome;
+      property NomeProjeto:String read FNomeProjeto write SetNomeProjeto;
+      property Status:Integer read FStatus write SetStatus;
+      property DataVencimento:TDateTime read FDataVencimento write SetDataVencimento;
+  end;
+
+  TFundo = class(TModelo)
+  private
+    FSaldo: Double;
+    FNome: String;
+    FNomeOrganizacao: String;
+    procedure SetNome(const Value: String);
+    procedure SetSaldo(const Value: Double);
+    procedure SetNomeOrganizacao(const Value: String);
+  public
+    property Nome: String read FNome write SetNome;
+    property NomeOrganizacao:String read FNomeOrganizacao write SetNomeOrganizacao;
+    property Saldo: Double read FSaldo write SetSaldo;
   end;
 
   TEspecie = class(TModelo)
@@ -110,10 +162,10 @@ type
     procedure SetTipo(const Value: Integer);
     procedure SetInfo(const Value: TModelo);
   public
-    Destructor Destroy;override;
+    Destructor Destroy; override;
     property Id: Integer read FId write SetId;
     property Tipo: Integer read FTipo write SetTipo;
-    property Info:TModelo read FInfo write SetInfo;
+    property Info: TModelo read FInfo write SetInfo;
   end;
 
   TTipoPesquisaPadrao = (tppActive, tppTodos, tppId, tppNome, tppData);
@@ -307,6 +359,72 @@ end;
 procedure TConta.SetVencimento(const Value: TDateTime);
 begin
   FVencimento := Value;
+end;
+
+{ TRubrica }
+
+procedure TRubrica.SetIdProjeto(const Value: Integer);
+begin
+  FIdProjeto := Value;
+end;
+
+procedure TRubrica.SetNomeProjeto(const Value: String);
+begin
+  FNomeProjeto := Value;
+end;
+
+procedure TRubrica.SetNomeRubrica(const Value: String);
+begin
+  FNomeRubrica := Value;
+end;
+
+procedure TRubrica.SetPercentualGasto(const Value: Double);
+begin
+  FPercentualGasto := Value;
+end;
+
+procedure TRubrica.SetSaldoReal(const Value: Double);
+begin
+  FSaldoReal := Value;
+end;
+
+{ TFundo }
+
+procedure TFundo.SetNome(const Value: String);
+begin
+  FNome := Value;
+end;
+
+procedure TFundo.SetNomeOrganizacao(const Value: String);
+begin
+  FNomeOrganizacao := Value;
+end;
+
+procedure TFundo.SetSaldo(const Value: Double);
+begin
+  FSaldo := Value;
+end;
+
+{ TAtividade }
+
+procedure TAtividade.SetDataVencimento(const Value: TDateTime);
+begin
+  FDataVencimento := Value;
+end;
+
+procedure TAtividade.SetNome(const Value: String);
+begin
+  FNome := Value;
+end;
+
+procedure TAtividade.SetNomeProjeto(const Value: String);
+begin
+  FNomeProjeto := Value;
+end;
+
+procedure TAtividade.SetStatus(const Value: Integer);
+begin
+  FStatus := Value;
 end;
 
 end.

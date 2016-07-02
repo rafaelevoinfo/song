@@ -104,7 +104,6 @@ type
     cdsAtividadeSTATUS: TSmallintField;
     cdsAtividadeDATA_INICIAL: TSQLTimeStampField;
     cdsAtividadeDATA_FINAL: TSQLTimeStampField;
-    cdsAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField;
     cdsAtividade_ProjetoID: TIntegerField;
     cdsAtividade_ProjetoID_ATIVIDADE: TIntegerField;
     cdsAtividade_ProjetoID_PROJETO: TIntegerField;
@@ -180,6 +179,7 @@ type
     cdsFundoREQUER_AUTORIZACAO: TSmallintField;
     cdsProjeto_RubricaSALDO_REAL: TFMTBCDField;
     cdsProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
+    cdsAtividadeDATA_CADASTRO: TSQLTimeStampField;
   private
     { Private declarations }
   public

@@ -31,7 +31,6 @@ type
     viewRegistrosSTATUS: TcxGridDBColumn;
     viewRegistrosDATA_INICIAL: TcxGridDBColumn;
     viewRegistrosDATA_FINAL: TcxGridDBColumn;
-    viewRegistrosNOTIFICAR_ENVOLVIDOS: TcxGridDBColumn;
     Label3: TLabel;
     cbProjetosPesquisa: TcxCheckComboBox;
     Label4: TLabel;
@@ -46,7 +45,6 @@ type
     cbResponsavel: TcxDBLookupComboBox;
     cbStatus: TcxDBImageComboBox;
     Label9: TLabel;
-    chkNotificarEnvolvidos: TcxDBCheckBox;
     Label10: TLabel;
     EditDescricao: TcxDBMemo;
     Label11: TLabel;
@@ -164,6 +162,7 @@ type
     btnPesquisarPessoa: TButton;
     Ac_Pesquisar_Pessoa_Envolvida: TAction;
     viewRegistrosDetailNOME_PESSOA: TcxGridDBColumn;
+    viewRegistrosDATA_CADASTRO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);

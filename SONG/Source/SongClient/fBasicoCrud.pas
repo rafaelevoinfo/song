@@ -334,7 +334,7 @@ begin
     Exit;
 
   inherited;
-  //se for mePesquisa significa que ja fez a pesquisa antes de dar show na tela
+  // se for mePesquisa significa que ja fez a pesquisa antes de dar show na tela
   if ModoExecucao <> mePesquisa then
     begin
       pprRealizarPesquisaInicial;
@@ -532,6 +532,18 @@ begin
             begin
               vaTabela := Copy(ipDataSet.Name, 4, Length(ipDataSet.Name) - 3);
               vaField.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId(vaTabela);
+            end;
+        end;
+    end;
+
+  vaField := ipDataSet.FindField(TBancoDados.coDataCadastro);
+  if Assigned(vaField) then
+    begin
+      if vaField.IsNull then
+        begin
+          if ipDataSet.State in [dsEdit, dsInsert] then
+            begin
+              vaField.AsDateTime := StrToDateTimeDef(dmPrincipal.FuncoesGeral.fpuDataHoraAtual, 0);
             end;
         end;
     end;

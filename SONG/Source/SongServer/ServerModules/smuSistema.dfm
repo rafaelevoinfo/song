@@ -11,7 +11,8 @@ inherited smSistema: TsmSistema
     SQL.Strings = (
       'select Notificacao.Id,'
       '       Notificacao.Tipo,'
-      '       Notificacao.Tempo_Antecedencia'
+      '       Notificacao.Tempo_Antecedencia,'
+      '       Notificacao.valor_gatilho'
       'from Notificacao'
       '&WHERE')
     Left = 160
@@ -37,6 +38,13 @@ inherited smSistema: TsmSistema
       FieldName = 'TEMPO_ANTECEDENCIA'
       Origin = 'TEMPO_ANTECEDENCIA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qNotificacaoVALOR_GATILHO: TBCDField
+      FieldName = 'VALOR_GATILHO'
+      Origin = 'VALOR_GATILHO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
     end
   end
   object qNotificacao_Pessoa: TRFQuery

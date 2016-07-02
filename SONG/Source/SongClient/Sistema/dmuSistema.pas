@@ -20,6 +20,7 @@ type
     cdsNotificacao_PessoaNOTIFICACAO_SISTEMA: TSmallintField;
     cdsNotificacao_PessoaNOTIFICACAO_EMAIL: TSmallintField;
     dsNotificacao: TDataSource;
+    cdsNotificacaoVALOR_GATILHO: TBCDField;
   private
     { Private declarations }
   public

@@ -5,7 +5,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailRubrica
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -290,10 +290,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailRubrica: TcxTabSheet
               Caption = 'Rubricas'
               ImageIndex = 4
-              ExplicitLeft = 4
-              ExplicitTop = 24
-              ExplicitWidth = 964
-              ExplicitHeight = 220
               object Panel7: TPanel
                 Left = 0
                 Top = 0
@@ -301,7 +297,6 @@ inherited frmProjeto: TfrmProjeto
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 964
                 object btnIncluirRubrica: TButton
                   Left = 0
                   Top = 1
@@ -323,8 +318,6 @@ inherited frmProjeto: TfrmProjeto
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitWidth = 964
-                ExplicitHeight = 195
                 object viewRubricas: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>

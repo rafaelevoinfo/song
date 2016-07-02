@@ -98,7 +98,6 @@ type
     qAtividadeSTATUS: TSmallintField;
     qAtividadeDATA_INICIAL: TSQLTimeStampField;
     qAtividadeDATA_FINAL: TSQLTimeStampField;
-    qAtividadeNOTIFICAR_ENVOLVIDOS: TSmallintField;
     qAtividade_Pessoa: TRfQuery;
     qAtividade_Projeto: TRfQuery;
     qAtividade_ProjetoID: TIntegerField;
@@ -177,6 +176,7 @@ type
     qFundoREQUER_AUTORIZACAO: TSmallintField;
     qProjeto_RubricaSALDO_REAL: TFMTBCDField;
     qProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
+    qAtividadeDATA_CADASTRO: TSQLTimeStampField;
   private
     { Private declarations }
   protected

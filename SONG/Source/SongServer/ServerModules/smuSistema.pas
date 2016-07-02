@@ -22,6 +22,7 @@ type
     qNotificacao_PessoaNOME_PESSOA: TStringField;
     qNotificacao_PessoaNOTIFICACAO_SISTEMA: TSmallintField;
     qNotificacao_PessoaNOTIFICACAO_EMAIL: TSmallintField;
+    qNotificacaoVALOR_GATILHO: TBCDField;
   private
     { Private declarations }
   public

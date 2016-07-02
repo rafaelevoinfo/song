@@ -6,6 +6,7 @@ inherited frmPrincipal: TfrmPrincipal
   Position = poMainFormCenter
   WindowState = wsMaximized
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   ExplicitWidth = 801
   ExplicitHeight = 446
   PixelsPerInch = 96
@@ -37,15 +38,19 @@ inherited frmPrincipal: TfrmPrincipal
         Width = 778
         Height = 332
         OptionsBehavior.ItemCheckMode = tcicmNone
+        OptionsView.CenterContentHorz = True
         OptionsView.GroupIndent = 30
         OptionsView.GroupLayout = glVertical
         OptionsView.GroupMaxRowCount = 2
         OptionsView.IndentHorz = 10
         OptionsView.IndentVert = 10
         OptionsView.ItemIndent = 4
+        OptionsView.ItemWidth = 200
         Style.FocusedColor = clBlack
         TabOrder = 0
-        ExplicitTop = 31
+        object TileControlGroup1: TdxTileControlGroup
+          Index = 0
+        end
         object dxTileControl1Item1: TdxTileControlItem
           GroupIndex = -1
           IndexInGroup = -1
@@ -137,6 +142,47 @@ inherited frmPrincipal: TfrmPrincipal
           Text3.AssignedValues = []
           Text4.AssignedValues = []
         end
+        object TileControlItem7: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Size = tcisLarge
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem12: TdxTileControlItem
+          GroupIndex = -1
+          IndexInGroup = -1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem13: TdxTileControlItem
+          GroupIndex = 0
+          IndexInGroup = 0
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem14: TdxTileControlItem
+          GroupIndex = 0
+          IndexInGroup = 1
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
+        object TileControlItem15: TdxTileControlItem
+          GroupIndex = 0
+          IndexInGroup = 2
+          Text1.AssignedValues = []
+          Text2.AssignedValues = []
+          Text3.AssignedValues = []
+          Text4.AssignedValues = []
+        end
       end
       object btnAtualizar: TButton
         Left = 0
@@ -146,6 +192,7 @@ inherited frmPrincipal: TfrmPrincipal
         Align = alTop
         Caption = 'Atualizar'
         TabOrder = 1
+        TabStop = False
         OnClick = btnAtualizarClick
       end
     end
