@@ -32,29 +32,8 @@ function TsmFuncoesSistema.fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo:
 var
   vaDataSetNotificacao, vaDataSetNotificacaoPessoa, vaDataSet: TRFQuery;
   vaNotificacao: TNotificacao;
+  vaTipoNotificacao:TTipoNotificacao;
   vaMsg: String;
-
-  procedure plEnviarEmail(ipAssunto, ipMsg, ipDestinatario: String);
-  var
-    vaEnviarEmail: TEnviarEmail;
-  begin
-    vaEnviarEmail := TEnviarEmail.Create(true);
-    vaEnviarEmail.ExibirMensagens := false;
-    vaEnviarEmail.EMail.Remetente.Nome := 'SONG';
-    vaEnviarEmail.EMail.Remetente.EMail := 'song@oreades.org.br';
-
-    vaEnviarEmail.EMail.Destinatario.Para.Add.EnderecoEMail.EMail := ipDestinatario;
-
-    vaEnviarEmail.EMail.Configuracao.Usuario := 'song@oreades.org.br';
-    vaEnviarEmail.EMail.Configuracao.Senha := 'ipeAmarelo';
-    vaEnviarEmail.EMail.Configuracao.Host := 'smtp.oreades.org.br';
-    vaEnviarEmail.EMail.Configuracao.Porta := 587;
-
-    vaEnviarEmail.EMail.Assunto := ipAssunto;
-    vaEnviarEmail.EMail.Mensagem := ipMsg;
-    vaEnviarEmail.Start;
-
-  end;
 
   procedure plEnviarEmails(ipTipo: TTipoNotificacao; ipMsg: String);
   begin
@@ -66,8 +45,7 @@ var
             if (vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
               (vaDataSetNotificacaoPessoa.FieldByName('Email').AsString <> '') then
               begin
-
-                plEnviarEmail(TiposNotificacao[ipTipo], ipMsg, vaDataSetNotificacaoPessoa.FieldByName('Email').AsString);
+                pprEnviarEmail(TiposNotificacao[ipTipo], ipMsg, vaDataSetNotificacaoPessoa.FieldByName('Email').AsString);
               end;
             vaDataSetNotificacaoPessoa.next;
           end;
@@ -184,12 +162,23 @@ var
       '       View_Rubrica_Projeto.Id_Projeto, ' +
       '       View_Rubrica_Projeto.Nome_Projeto,' +
       '       View_Rubrica_Projeto.Nome_Rubrica,' +
-      '       View_Rubrica_Projeto.Valor_Gasto,' +
-      '       View_Rubrica_Projeto.Valor_Recebido,' +
+      '       case' +
+      '                    when view_rubrica_projeto.valor_gasto_transferido > view_rubrica_projeto.valor_recebido_transferido then' +
+      '                        view_rubrica_projeto.valor_gasto + (view_rubrica_projeto.valor_gasto_transferido - view_rubrica_projeto.valor_recebido_transferido)' +
+      '                       else' +
+      '                        view_rubrica_projeto.valor_gasto' +
+      '                end as VALOR_GASTO,' +
+      '                 case' +
+      '                    when view_rubrica_projeto.valor_gasto_transferido < view_rubrica_projeto.valor_recebido_transferido then' +
+      '                        view_rubrica_projeto.valor_recebido + (view_rubrica_projeto.valor_recebido_transferido - view_rubrica_projeto.valor_gasto_transferido)' +
+      '                       else' +
+      '                        view_rubrica_projeto.valor_recebido' +
+      '                end as VALOR_RECEBIDO,' +
       '       View_Rubrica_Projeto.Saldo_Real ' +
       ' from View_Rubrica_Projeto' +
       ' where (View_Rubrica_Projeto.Valor_Gasto > View_Rubrica_Projeto.Valor_Recebido) or' +
-      '      ((View_Rubrica_Projeto.Valor_Gasto / View_Rubrica_Projeto.Valor_Recebido) >= 0.9)';
+      '      (((View_Rubrica_Projeto.Valor_Gasto / View_Rubrica_Projeto.Valor_Recebido)*100) >= :PERCENTUAL_NOTIFICACAO)';
+    vaDataSet.ParamByName('PERCENTUAL_NOTIFICACAO').AsFloat := vaDataSetNotificacao.FieldByName('VALOR_GATILHO').AsFloat;
     vaDataSet.Open;
     vaMsg := '';
     while not vaDataSet.Eof do
@@ -270,20 +259,34 @@ var
       plEnviarEmails(tnFundoFicandoSemSaldo, vaMsg);
   end;
 
-  procedure plVerificarAtividadeIniciada;
+  procedure plVerificarAtividade(ipTipoNotificacao:TTipoNotificacao);
   var
     vaAtividade: TAtividade;
   begin
     vaDataSet.close;
-    //TODO: Levar em consideracao aqui se a pessoa esta envolvida com a atividade informada pq se nao tiver nao pode mesmo q esteja configurado na tabela de notificacoes
     vaDataSet.SQL.Text := 'select Atividade.Id,' +
-                          '       Atividade.Nome,' +
-                          '       Atividade.status,' +
-                          '       Projeto.Nome as Nome_Projeto' +
-                          ' from Atividade' +
-                          ' inner join Projeto on (Atividade.Id_Projeto = Projeto.Id) '+
-                          ' where Atividade.Data_Cadastro >= (dateadd(day, :DIAS, current_date))';
-    vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger*-1;
+      '       Atividade.Nome,' +
+      '       Atividade.status,' +
+      '       Projeto.Nome as Nome_Projeto' +
+      ' from Atividade' +
+      ' inner join Projeto on (Atividade.Id_Projeto = Projeto.Id) ';
+    if ipTipoNotificacao = tnAtividadeVencendo then
+      begin
+        vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where (dateadd(day, :DIAS, current_date) >= Atividade.Data_Final) and ' +
+          ' (Atividade.status not in (' + Ord(saFinalizada).ToString + ',' + Ord(saCancelada).ToString + '))';
+
+        vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger
+      end
+    else
+      begin
+        if ipTipoNotificacao = tnAtividadeAlterada then
+          vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Atividade.Data_Alteracao >= (dateadd(day, :DIAS, current_date))'
+        else
+          vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Atividade.Data_Cadastro >= (dateadd(day, :DIAS, current_date))';
+
+        vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger * -1;
+      end;
+
     vaDataSet.Open;
     vaMsg := '';
     while not vaDataSet.Eof do
@@ -293,7 +296,7 @@ var
             vaNotificacao := TNotificacao.Create;
 
             vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
-            vaNotificacao.Tipo := Ord(tnAtividadeCadastrada);
+            vaNotificacao.Tipo := Ord(ipTipoNotificacao);
 
             vaAtividade := TAtividade.Create;
             vaAtividade.Id := vaDataSet.FieldByName('ID').AsInteger;
@@ -306,14 +309,21 @@ var
             Result.Add(vaNotificacao);
           end;
 
-        vaMsg := vaMsg + 'Foi cadastrada a atividade ' + vaDataSet.FieldByName('NOME').AsString + ' para o projeto ' +
-          vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>';
+        if ipTipoNotificacao = tnAtividadeVencendo then
+          vaMsg := vaMsg + 'A atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
+            vaDataSet.FieldByName('NOME_PROJETO').AsString + ' está prestes a vencer seu prazo de execução. <br/><br/>'
+        else if ipTipoNotificacao = tnAtividadeAlterada then
+          vaMsg := vaMsg + 'Houve modificações na atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
+            vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>'
+        else
+          vaMsg := vaMsg + 'Foi cadastrada a atividade ' + vaDataSet.FieldByName('NOME').AsString + ' para o projeto ' +
+            vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>';
 
         vaDataSet.next;
       end;
 
     if vaMsg <> '' then
-      plEnviarEmails(tnAtividadeCadastrada, vaMsg);
+      plEnviarEmails(ipTipoNotificacao, vaMsg);
 
   end;
 
@@ -355,7 +365,8 @@ begin
               ((vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) or
               (vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1)) then
               begin
-                case TTipoNotificacao(vaDataSetNotificacao.FieldByName('TIPO').AsInteger) of
+                vaTipoNotificacao := TTipoNotificacao(vaDataSetNotificacao.FieldByName('TIPO').AsInteger);
+                case vaTipoNotificacao of
                   tnContaPagarVencendo:
                     plVerificarContaPagarVencendo;
                   tnContaReceberVencida:
@@ -364,10 +375,8 @@ begin
                     plVerificarRubricas;
                   tnFundoFicandoSemSaldo:
                     plVerificarFundo;
-                  tnAtividadeCadastrada:
-                    plVerificarAtividadeIniciada;
-                  // tnAtividadeIniciada:
-                  // tnAtividadeVencendo:
+                  tnAtividadeCadastrada,tnAtividadeAlterada,tnAtividadeVencendo:
+                    plVerificarAtividade(vaTipoNotificacao);
                 end;
               end;
           end;

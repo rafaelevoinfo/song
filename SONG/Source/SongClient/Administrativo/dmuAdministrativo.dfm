@@ -809,6 +809,11 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DATA_CADASTRO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsAtividadeDATA_ALTERACAO: TSQLTimeStampField
+      DisplayLabel = 'Data da '#218'ltima Altera'#231#227'o'
+      FieldName = 'DATA_ALTERACAO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsAtividade_Projeto: TRFClientDataSet
     Aggregates = <>
@@ -1127,6 +1132,33 @@ inherited dmAdministrativo: TdmAdministrativo
         DataType = ftFMTBcd
         Precision = 18
         Size = 6
+      end
+      item
+        Name = 'GASTO_TRANSFERENCIA'
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'RECEBIDO_TRANSFERENCIA'
+        Attributes = [faReadonly]
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'CALC_VALOR_GASTO'
+        Attributes = [faReadonly]
+        DataType = ftBCD
+        Precision = 18
+        Size = 6
+      end
+      item
+        Name = 'CALC_VALOR_RECEBIDO'
+        Attributes = [faReadonly]
+        DataType = ftBCD
+        Precision = 18
+        Size = 6
       end>
     IndexDefs = <
       item
@@ -1221,6 +1253,34 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'SALDO_PREVISTO'
       ProviderFlags = []
       currency = True
+      Precision = 18
+      Size = 6
+    end
+    object cdsProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField
+      DisplayLabel = 'Valor Transferido'
+      FieldName = 'GASTO_TRANSFERENCIA'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField
+      DisplayLabel = 'Recebido por Transfer'#234'ncia'
+      FieldName = 'RECEBIDO_TRANSFERENCIA'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_RubricaCALC_VALOR_GASTO: TBCDField
+      DisplayLabel = 'Valor Gasto'
+      FieldName = 'CALC_VALOR_GASTO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+    end
+    object cdsProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField
+      DisplayLabel = 'Valor Recebido'
+      FieldName = 'CALC_VALOR_RECEBIDO'
+      ProviderFlags = []
       Precision = 18
       Size = 6
     end

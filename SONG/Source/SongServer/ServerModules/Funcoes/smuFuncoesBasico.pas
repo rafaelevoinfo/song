@@ -7,14 +7,15 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, uEnviarEmail;
 
 type
   TsmFuncoesBasico = class(TsmBasico)
     qId: TRFQuery;
     qIdID: TIntegerField;
   private
-    { Private declarations }
+  protected
+    procedure pprEnviarEmail(ipAssunto, ipMsg, ipDestinatario: String);
   public
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
@@ -46,6 +47,28 @@ begin
   qId.Open();
 
   Result := qIdID.AsInteger;
+end;
+
+procedure TsmFuncoesBasico.pprEnviarEmail(ipAssunto, ipMsg,
+  ipDestinatario: String);
+var
+  vaEnviarEmail: TEnviarEmail;
+begin
+  vaEnviarEmail := TEnviarEmail.Create(true);
+  vaEnviarEmail.ExibirMensagens := false;
+  vaEnviarEmail.EMail.Remetente.Nome := 'SONG';
+  vaEnviarEmail.EMail.Remetente.EMail := 'song@oreades.org.br';
+
+  vaEnviarEmail.EMail.Destinatario.Para.Add.EnderecoEMail.EMail := ipDestinatario;
+
+  vaEnviarEmail.EMail.Configuracao.Usuario := 'song@oreades.org.br';
+  vaEnviarEmail.EMail.Configuracao.Senha := 'ipeAmarelo';
+  vaEnviarEmail.EMail.Configuracao.Host := 'smtp.oreades.org.br';
+  vaEnviarEmail.EMail.Configuracao.Porta := 587;
+
+  vaEnviarEmail.EMail.Assunto := ipAssunto;
+  vaEnviarEmail.EMail.Mensagem := ipMsg;
+  vaEnviarEmail.Start;
 end;
 
 end.

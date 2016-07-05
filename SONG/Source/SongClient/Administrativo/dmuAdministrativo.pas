@@ -180,6 +180,11 @@ type
     cdsProjeto_RubricaSALDO_REAL: TFMTBCDField;
     cdsProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
     cdsAtividadeDATA_CADASTRO: TSQLTimeStampField;
+    cdsAtividadeDATA_ALTERACAO: TSQLTimeStampField;
+    cdsProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField;
+    cdsProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    cdsProjeto_RubricaCALC_VALOR_GASTO: TBCDField;
+    cdsProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
   private
     { Private declarations }
   public

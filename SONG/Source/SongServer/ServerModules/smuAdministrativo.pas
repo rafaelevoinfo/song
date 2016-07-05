@@ -177,6 +177,12 @@ type
     qProjeto_RubricaSALDO_REAL: TFMTBCDField;
     qProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
     qAtividadeDATA_CADASTRO: TSQLTimeStampField;
+    qAtividadeDATA_ALTERACAO: TSQLTimeStampField;
+    qProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField;
+    qProjeto_RubricaCALC_VALOR_GASTO: TBCDField;
+    qProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
+    qProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   protected
@@ -229,6 +235,18 @@ begin
             ['ID_PROJETO', 'ID_PROJETO'], [vaCodigos, vaCodigos], TOperadores.coOR, vaOperador);
         end;
     end;
+end;
+
+procedure TsmAdministrativo.qProjeto_RubricaCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  qProjeto_RubricaCALC_VALOR_GASTO.AsFloat := qProjeto_RubricaGASTO.AsFloat;
+  qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat := qProjeto_RubricaRECEBIDO.AsFloat;
+
+  if qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat > qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat then
+    qProjeto_RubricaCALC_VALOR_GASTO.AsFloat := qProjeto_RubricaCALC_VALOR_GASTO.AsFloat + (qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat - qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat)
+  else if qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat < qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat then
+    qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat := qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat + (qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat - qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat);
 end;
 
 end.

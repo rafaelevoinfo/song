@@ -114,10 +114,10 @@ type
     TileControlItem11: TdxTileControlItem;
     TileControlItem7: TdxTileControlItem;
     TileControlItem12: TdxTileControlItem;
-    TileControlGroup1: TdxTileControlGroup;
     TileControlItem13: TdxTileControlItem;
     TileControlItem14: TdxTileControlItem;
     TileControlItem15: TdxTileControlItem;
+    AlertWindowManager: TdxAlertWindowManager;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -155,13 +155,15 @@ type
     procedure btnAtualizarClick(Sender: TObject);
     procedure tmrAtualizacoesTimer(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure AlertWindowManagerClick(Sender: TObject;
+      AAlertWindow: TdxAlertWindow);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
-    procedure ppuCarregarNotificacoes;
+    procedure ppuCarregarNotificacoes(ipExibirAlerta:boolean);
   end;
 
 var
@@ -408,10 +410,17 @@ begin
   TUtils.ppuAbrirFormAba<TfrmVenda>(pcPrincipal, TfrmVenda, frmVenda);
 end;
 
+procedure TfrmPrincipal.AlertWindowManagerClick(Sender: TObject;
+  AAlertWindow: TdxAlertWindow);
+begin
+  inherited;
+  pcPrincipal.ActivePage := tabNotificacoes;
+end;
+
 procedure TfrmPrincipal.btnAtualizarClick(Sender: TObject);
 begin
   inherited;
-  ppuCarregarNotificacoes;
+  ppuCarregarNotificacoes(false);
 end;
 
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -449,7 +458,7 @@ begin
   else
     begin
       tmrAtualizacoes.Enabled := True; // a cada 10 min vai atualizar as notificacoes
-      ppuCarregarNotificacoes;
+      ppuCarregarNotificacoes(false);
     end;
 end;
 
@@ -457,6 +466,7 @@ procedure TfrmPrincipal.ppvOnClickItem(ipItem: TdxTileControlItem);
 var
   vaForm: TfrmBasicoCrud;
 begin
+  vaForm := nil;
   if TTipoNotificacao(ipItem.Group.Tag) = tnContaPagarVencendo then
     vaForm := TFrmContaPagar.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnContaReceberVencida then
@@ -465,8 +475,11 @@ begin
     vaForm := TfrmProjeto.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnFundoFicandoSemSaldo then
     vaForm := TfrmOrganizacao.Create(nil)
-  else if TTipoNotificacao(ipItem.Group.Tag) = tnAtividadeCadastrada then
+  else if TTipoNotificacao(ipItem.Group.Tag) in [tnAtividadeCadastrada,tnAtividadeAlterada,tnAtividadeVencendo] then
     vaForm := TfrmAtividade.Create(nil);
+
+  if not Assigned(vaForm) then
+    raise Exception.Create('Notificação ainda não suportada completamente.');
 
   try
     vaForm.ppuConfigurarModoExecucao(mePesquisa);
@@ -482,10 +495,10 @@ end;
 procedure TfrmPrincipal.tmrAtualizacoesTimer(Sender: TObject);
 begin
   inherited;
-  ppuCarregarNotificacoes;
+  ppuCarregarNotificacoes(true);
 end;
 
-procedure TfrmPrincipal.ppuCarregarNotificacoes;
+procedure TfrmPrincipal.ppuCarregarNotificacoes(ipExibirAlerta:boolean);
 var
   vaNotificacoes: TadsObjectlist<TNotificacao>;
   vaNotificacao: TNotificacao;
@@ -496,7 +509,11 @@ var
   vaRubrica: TRubrica;
   vaFundo: TFundo;
   vaAtividade: TAtividade;
+  vaTotalNotificacoes:Integer;
 begin
+  vaTotalNotificacoes := TileControl.Items.Count;
+
+  TileControl.Items.Clear;
   TileControl.Groups.Clear;
 
   vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false);
@@ -526,7 +543,9 @@ begin
       vaItem.OnClick := ppvOnClickItem;
 
       vaItem.Text1.WordWrap := True;
+
       vaItem.Text2.Align := oaMiddleCenter;
+      vaItem.Text2.WordWrap := True;
 
       vaItem.Group := vaGrupo;
 
@@ -563,27 +582,25 @@ begin
             vaItem.Text2.Font.Size := 12;
             vaItem.Text2.Font.Style := [fsBold];
           end;
-        tnAtividadeCadastrada:
+        tnAtividadeCadastrada, tnAtividadeAlterada, tnAtividadeVencendo:
           begin
             vaAtividade := vaNotificacao.Info as TAtividade;
-            vaItem.Text1.Value := vaAtividade.Nome + ' - ' + vaAtividade.NomeProjeto;
+            vaItem.Text1.Value := vaAtividade.NomeProjeto;
 
-            for I := 0 to dmLookup.repIcbStatusAtividade.Properties.Items.Count - 1 do
-              begin
-                if dmLookup.repIcbStatusAtividade.Properties.Items[i].Value = vaAtividade.Status then
-                  begin
-                    vaItem.Text2.Value := dmLookup.repIcbStatusAtividade.Properties.Items[i].Description;
-                    vaItem.Text2.Font.Size := 12;
-                    vaItem.Text2.Font.Style := [fsBold];
+            vaItem.Text2.Value := vaAtividade.Nome;
+            vaItem.Text2.Font.Size := 10;
+            vaItem.Text2.Font.Style := [fsBold];
 
-                    break;
-                  end;
-              end;
+            if vaAtividade.DataVencimento <> 0 then
+              vaItem.Text3.Value := 'Data Final: '+DateToStr(vaAtividade.DataVencimento);
 
           end;
       end;
 
     end;
+
+  if ipExibirAlerta and (TileControl.Items.Count <> vaTotalNotificacoes) then
+    AlertWindowManager.Show('Novas Notificações','Existem novas notificações a serem visualizadas.');
 end;
 
 end.

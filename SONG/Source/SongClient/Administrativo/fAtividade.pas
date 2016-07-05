@@ -530,7 +530,19 @@ end;
 procedure TfrmAtividade.pprExecutarSalvarDetail;
 begin
   try
+    if not(dmAdministrativo.cdsAtividade.State in [dsEdit, dsInsert]) then
+      dmAdministrativo.cdsAtividade.Edit;
+
+    pprPreencherCamposPadroes(dmAdministrativo.cdsAtividade); // apenas para trocar o campo data_alteracao
     inherited;
+
+    if dmAdministrativo.cdsAtividade.State in [dsEdit, dsInsert] then
+      begin
+        dmAdministrativo.cdsAtividade.Post;
+        if dmAdministrativo.cdsAtividade.ChangeCount > 0 then
+          dmAdministrativo.cdsAtividade.ApplyUpdates(0);
+      end;
+
   except
     on E: Exception do
       begin
@@ -574,7 +586,7 @@ begin
   inherited;
   if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]) then
     begin
-      if not (VarToStr(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]).ToInteger in [Ord(saFinalizada), Ord(saCancelada)]) then
+      if not(VarToStr(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]).ToInteger in [Ord(saFinalizada), Ord(saCancelada)]) then
         begin
           if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index]) then
             begin

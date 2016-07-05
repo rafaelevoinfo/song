@@ -139,23 +139,18 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailRubrica
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 4
-              ExplicitTop = 24
-              ExplicitWidth = 964
-              ExplicitHeight = 220
-              inherited pnBotoesDetail: TPanel
-                ExplicitWidth = 964
-              end
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
-                ExplicitWidth = 964
-                ExplicitHeight = 195
+                ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -394,13 +389,13 @@ inherited frmProjeto: TfrmProjeto
                     Width = 128
                   end
                   object viewRubricasRECEBIDO: TcxGridDBColumn
-                    DataBinding.FieldName = 'RECEBIDO'
+                    DataBinding.FieldName = 'CALC_VALOR_RECEBIDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                     Width = 128
                   end
                   object viewRubricasGASTO: TcxGridDBColumn
-                    DataBinding.FieldName = 'GASTO'
+                    DataBinding.FieldName = 'CALC_VALOR_GASTO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                     Width = 128
@@ -1269,7 +1264,6 @@ inherited frmProjeto: TfrmProjeto
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitTop = 9
             object Label14: TLabel
               Left = 298
               Top = 4
@@ -1563,6 +1557,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailRubrica: TcxTabSheet
       Caption = 'tabCadastroDetailRubrica'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0

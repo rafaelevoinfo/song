@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuSistema, dmuLookup, cxDBEdit,
   cxSpinEdit, fmGrids, Datasnap.DBClient, uClientDataSet, uUtils,
   System.TypInfo, uTypes, uConnection, uControleAcesso, dmuPrincipal,
-  cxCurrencyEdit;
+  cxCurrencyEdit, cxCalc;
 
 type
   TfrmNotificacao = class(TfrmBasicoCrudMasterDetail)
@@ -30,12 +30,8 @@ type
     frameUsuarios: TframeGrids;
     cdsLocalPessoa: TClientDataSet;
     cdsLocalPessoaID: TIntegerField;
-    lbAviso: TLabel;
     cdsLocalPessoaNOME: TStringField;
-    pnLeft: TPanel;
-    pnTipo: TPanel;
-    Label3: TLabel;
-    cbTipo: TcxDBImageComboBox;
+    pnEditsVariaveis: TPanel;
     pnDiasProcedencia: TPanel;
     Label6: TLabel;
     Label7: TLabel;
@@ -51,9 +47,12 @@ type
     pnDiasAtividades: TPanel;
     EditDiasAtividade: TcxDBSpinEdit;
     lb1: TLabel;
-    pnDiasAtividadeVencendo: TPanel;
-    lb2: TLabel;
-    EditDiaAtividadeVencendo: TcxDBSpinEdit;
+    pnTipo: TPanel;
+    Label3: TLabel;
+    cbTipo: TcxDBImageComboBox;
+    pnPercentualGatilho: TPanel;
+    Label8: TLabel;
+    EditPercentualGatilho: TcxDBCalcEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbTipoPropertiesEditValueChanged(Sender: TObject);
   private
@@ -86,11 +85,11 @@ begin
   if Not VarIsNull(cbTipo.EditValue) then
     begin
       pnDiasAntecedencia.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnContaPagarVencendo, tnAtividadeVencendo];
-      pnDiasAtividades.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnAtividadeCadastrada, tnAtividadeIniciada];
-      pnDiasAtividadeVencendo.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnAtividadeVencendo;
+      pnDiasAtividades.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnAtividadeCadastrada, tnAtividadeAlterada];
       pnDiasProcedencia.Visible := (not pnDiasAntecedencia.Visible) and
         (TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnContaReceberVencida);
       pnValorGatilho.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnFundoFicandoSemSaldo;
+      pnPercentualGatilho.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnRubricaAtigindoSaldo;
     end
   else
     begin
@@ -98,7 +97,7 @@ begin
       pnDiasProcedencia.Visible := false;
       pnDiasAtividades.Visible := false;
       pnValorGatilho.Visible := false;
-      pnDiasAtividadeVencendo.Visible := false;
+      pnPercentualGatilho.Visible := false;
     end;
 
 end;
@@ -141,11 +140,11 @@ end;
 procedure TfrmNotificacao.pprBeforeSalvar;
 begin
   inherited;
-  if not(pnDiasAntecedencia.Visible or pnDiasProcedencia.Visible or pnDiasAtividades.Visible or pnDiasAtividadeVencendo.Visible) then
+  if not(pnDiasAntecedencia.Visible or pnDiasProcedencia.Visible or pnDiasAtividades.Visible) then
     begin
       dmSistema.cdsNotificacaoTEMPO_ANTECEDENCIA.Clear;
     end;
-  if not pnValorGatilho.Visible then
+  if not (pnValorGatilho.Visible or pnPercentualGatilho.Visible) then
     dmSistema.cdsNotificacaoVALOR_GATILHO.Clear;
 end;
 

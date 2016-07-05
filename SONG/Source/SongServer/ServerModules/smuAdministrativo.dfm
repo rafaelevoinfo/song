@@ -768,7 +768,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE.DATA_FINAL,'
       '       ATIVIDADE.DESCRICAO,'
       '       PROJETO.NOME AS NOME_PROJETO,'
-      '       ATIVIDADE.DATA_CADASTRO'
+      '       ATIVIDADE.DATA_CADASTRO,'
+      '       ATIVIDADE.DATA_ALTERACAO'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
@@ -845,6 +846,11 @@ inherited smAdministrativo: TsmAdministrativo
     object qAtividadeDATA_CADASTRO: TSQLTimeStampField
       FieldName = 'DATA_CADASTRO'
       Origin = 'DATA_CADASTRO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeDATA_ALTERACAO: TSQLTimeStampField
+      FieldName = 'DATA_ALTERACAO'
+      Origin = 'DATA_ALTERACAO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -1160,6 +1166,7 @@ inherited smAdministrativo: TsmAdministrativo
     end
   end
   object qProjeto_Rubrica: TRFQuery
+    OnCalcFields = qProjeto_RubricaCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Projeto_Rubrica.Id,'
@@ -1170,8 +1177,14 @@ inherited smAdministrativo: TsmAdministrativo
         '                coalesce(view_rubrica_projeto.valor_gasto,0) as ' +
         'Gasto,'
       
+        '                coalesce(view_rubrica_projeto.valor_gasto_transf' +
+        'erido,0) as Gasto_Transferencia,'
+      
         '                coalesce(view_rubrica_projeto.valor_recebido,0) ' +
         'as Recebido,'
+      
+        '                coalesce(view_rubrica_projeto.valor_recebido_tra' +
+        'nsferido,0) as Recebido_Transferencia,'
       
         '                coalesce(view_rubrica_projeto.valor_aprovisionad' +
         'o,0) as Aprovisionado,'
@@ -1270,6 +1283,39 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = []
       Precision = 18
       Size = 6
+    end
+    object qProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'GASTO_TRANSFERENCIA'
+      Origin = 'GASTO_TRANSFERENCIA'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'RECEBIDO_TRANSFERENCIA'
+      Origin = 'RECEBIDO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaCALC_VALOR_GASTO: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_GASTO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+      Calculated = True
+    end
+    object qProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_RECEBIDO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+      Calculated = True
     end
   end
   object qProjeto_Area: TRFQuery

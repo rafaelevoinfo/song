@@ -522,7 +522,9 @@ procedure TfrmBasicoCrud.pprPreencherCamposPadroes(ipDataSet: TDataSet);
 var
   vaField: TField;
   vaTabela: String;
+  vaDataHoraAtual: TDatetime;
 begin
+  vaDataHoraAtual := 0;
   vaField := ipDataSet.FindField(TBancoDados.coID);
   if Assigned(vaField) then
     begin
@@ -543,8 +545,21 @@ begin
         begin
           if ipDataSet.State in [dsEdit, dsInsert] then
             begin
-              vaField.AsDateTime := StrToDateTimeDef(dmPrincipal.FuncoesGeral.fpuDataHoraAtual, 0);
+              vaDataHoraAtual := StrToDateTimeDef(dmPrincipal.FuncoesGeral.fpuDataHoraAtual, 0);
+              vaField.AsDateTime := vaDataHoraAtual;
             end;
+        end;
+    end;
+
+  vaField := ipDataSet.FindField(TBancoDados.coDataAlteracao);
+  if Assigned(vaField) then
+    begin
+      if ipDataSet.State in [dsEdit, dsInsert] then
+        begin
+          if vaDataHoraAtual = 0 then
+            vaDataHoraAtual := StrToDateTimeDef(dmPrincipal.FuncoesGeral.fpuDataHoraAtual, 0);
+
+          vaField.AsDateTime := vaDataHoraAtual;
         end;
     end;
 end;

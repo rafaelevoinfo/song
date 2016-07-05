@@ -48,9 +48,6 @@ inherited frmPrincipal: TfrmPrincipal
         OptionsView.ItemWidth = 200
         Style.FocusedColor = clBlack
         TabOrder = 0
-        object TileControlGroup1: TdxTileControlGroup
-          Index = 0
-        end
         object dxTileControl1Item1: TdxTileControlItem
           GroupIndex = -1
           IndexInGroup = -1
@@ -160,24 +157,24 @@ inherited frmPrincipal: TfrmPrincipal
           Text4.AssignedValues = []
         end
         object TileControlItem13: TdxTileControlItem
-          GroupIndex = 0
-          IndexInGroup = 0
+          GroupIndex = -1
+          IndexInGroup = -1
           Text1.AssignedValues = []
           Text2.AssignedValues = []
           Text3.AssignedValues = []
           Text4.AssignedValues = []
         end
         object TileControlItem14: TdxTileControlItem
-          GroupIndex = 0
-          IndexInGroup = 1
+          GroupIndex = -1
+          IndexInGroup = -1
           Text1.AssignedValues = []
           Text2.AssignedValues = []
           Text3.AssignedValues = []
           Text4.AssignedValues = []
         end
         object TileControlItem15: TdxTileControlItem
-          GroupIndex = 0
-          IndexInGroup = 2
+          GroupIndex = -1
+          IndexInGroup = -1
           Text1.AssignedValues = []
           Text2.AssignedValues = []
           Text3.AssignedValues = []
@@ -493,5 +490,34 @@ inherited frmPrincipal: TfrmPrincipal
     OnTimer = tmrAtualizacoesTimer
     Left = 384
     Top = 208
+  end
+  object AlertWindowManager: TdxAlertWindowManager
+    OptionsAnimate.HidingAnimation = awaMove
+    OptionsAnimate.HidingAnimationTime = 500
+    OptionsAnimate.HotTrackFadeOutTime = 500
+    OptionsBehavior.DisplayTime = 5000
+    OptionsButtons.Buttons = <>
+    OptionsCaptionButtons.CaptionButtons = [awcbClose]
+    OptionsMessage.Caption.Font.Charset = DEFAULT_CHARSET
+    OptionsMessage.Caption.Font.Color = clWindowText
+    OptionsMessage.Caption.Font.Height = -13
+    OptionsMessage.Caption.Font.Name = 'Tahoma'
+    OptionsMessage.Caption.Font.Style = [fsBold]
+    OptionsMessage.Text.Font.Charset = DEFAULT_CHARSET
+    OptionsMessage.Text.Font.Color = clWindowText
+    OptionsMessage.Text.Font.Height = -11
+    OptionsMessage.Text.Font.Name = 'Tahoma'
+    OptionsMessage.Text.Font.Style = []
+    OptionsNavigationPanel.Font.Charset = DEFAULT_CHARSET
+    OptionsNavigationPanel.Font.Color = clWindowText
+    OptionsNavigationPanel.Font.Height = -11
+    OptionsNavigationPanel.Font.Name = 'Tahoma'
+    OptionsNavigationPanel.Font.Style = []
+    OptionsSize.AutoWidth = True
+    WindowPosition = awpBottomRight
+    OnClick = AlertWindowManagerClick
+    Left = 672
+    Top = 88
+    PixelsPerInch = 96
   end
 end

@@ -8,12 +8,30 @@ inherited smRelatorio: TsmRelatorio
       'select distinct view_rubrica_projeto.id_rubrica,'
       '                view_rubrica_projeto.id_projeto,'
       '                view_rubrica_projeto.nome_projeto,'
-      
-        '                Rubrica.Identificador || '#39' - '#39' || Rubrica.Nome a' +
-        's Nome_Rubrica,'
+      '                Rubrica.Nome as Nome_Rubrica,'
       '                view_rubrica_projeto.orcamento,'
-      '                view_rubrica_projeto.valor_recebido as Recebido,'
-      '                view_rubrica_projeto.valor_gasto as Gasto,'
+      '                case'
+      
+        '                    when view_rubrica_projeto.valor_gasto_transf' +
+        'erido > view_rubrica_projeto.valor_recebido_transferido then'
+      
+        '                        view_rubrica_projeto.valor_gasto + (view' +
+        '_rubrica_projeto.valor_gasto_transferido - view_rubrica_projeto.' +
+        'valor_recebido_transferido)'
+      '                       else'
+      '                        view_rubrica_projeto.valor_gasto'
+      '                end as Gasto,'
+      '                 case'
+      
+        '                    when view_rubrica_projeto.valor_gasto_transf' +
+        'erido < view_rubrica_projeto.valor_recebido_transferido then'
+      
+        '                        view_rubrica_projeto.valor_recebido + (v' +
+        'iew_rubrica_projeto.valor_recebido_transferido - view_rubrica_pr' +
+        'ojeto.valor_gasto_transferido)'
+      '                       else'
+      '                        view_rubrica_projeto.valor_recebido'
+      '                end as Recebido,'
       
         '                view_rubrica_projeto.valor_aprovisionado as Apro' +
         'visionado,'

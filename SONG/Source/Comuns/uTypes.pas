@@ -14,6 +14,7 @@ type
     coNome = 'NOME';
     coAtivo = 'ATIVO';
     coDataCadastro = 'DATA_CADASTRO';
+    coDataAlteracao = 'DATA_ALTERACAO';
   end;
 
   TOperadores = class
@@ -210,7 +211,7 @@ type
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
   TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
-    tnAtividadeIniciada, tnAtividadeVencendo);
+    tnAtividadeAlterada, tnAtividadeVencendo);
 
 const
   // mensagens customizadas do windows
@@ -233,7 +234,7 @@ const
     'Cheque', 'Dinheiro', 'Outro');
 
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
-    'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade iniciada', 'Atividade prestes a vencer prazo de execução');
+    'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada', 'Atividade vencendo prazo de execução');
 
 implementation
 
