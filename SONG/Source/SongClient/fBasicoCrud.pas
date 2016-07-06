@@ -335,7 +335,7 @@ begin
 
   inherited;
   // se for mePesquisa significa que ja fez a pesquisa antes de dar show na tela
-  if ModoExecucao <> mePesquisa then
+  if ModoExecucao <> mePesquisaRealizada then
     begin
       pprRealizarPesquisaInicial;
       if FModoExecucao = meSomenteCadastro then
@@ -403,18 +403,13 @@ begin
   FModelo := ipModelo;
   { TODO -orafae -c :   Implementar comportamentos diferentes para cada tipo de modo de execucao 26/02/2016 23:14:38 }
   case ipModo of
-    meNormal:
+    meNormal,mePesquisaRealizada :
       begin
         btnIncluir.Visible := True;
         btnUtilizar.Visible := False;
       end;
     mePesquisa:
       btnUtilizar.Visible := True;
-    meSomentePesquisa:
-      begin
-        btnIncluir.Visible := False;
-        btnUtilizar.Visible := True;
-      end;
     meSomenteCadastro:
       ;
     meSomenteEdicao:

@@ -2180,7 +2180,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 251
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabLog
+    Properties.ActivePage = tabBackup
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 246

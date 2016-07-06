@@ -5,7 +5,7 @@ interface
 uses
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBWrapper, System.Classes,
   System.SysUtils, System.IOUtils, FireDAC.Phys.IBBase, Winapi.Windows,
-  System.DateUtils, IdFTP;
+  System.DateUtils, IdFTP, System.SyncObjs;
 
 type
   TFtp = record
@@ -49,6 +49,34 @@ type
     procedure ppuRealizarBackup;
   end;
 
+  TThreadBackup = class(TThread)
+  private
+    FEvent: TEvent;
+    FBackup: TBackup;
+    FDataUltimoBackup: TDateTime;
+    FHoraBackup: TTime;
+    FOnFinishBackup: TThreadProcedure;
+    FOnStartBackup: TThreadProcedure;
+    procedure SetBackup(const Value: TBackup);
+    procedure SetDataUltimoBackup(const Value: TDateTime);
+    procedure SetHoraBackup(const Value: TTime);
+    procedure SetOnFinishBackup(const Value: TThreadProcedure);
+    procedure SetOnStartBackup(const Value: TThreadProcedure);
+  public
+    property DataUltimoBackup: TDateTime read FDataUltimoBackup write SetDataUltimoBackup;
+    property HoraBackup: TTime read FHoraBackup write SetHoraBackup;
+    property Backup: TBackup read FBackup write SetBackup;
+    property Event: TEvent read FEvent;
+
+    property OnStartBackup: TThreadProcedure read FOnStartBackup write SetOnStartBackup;
+    property OnFinishBackup: TThreadProcedure read FOnFinishBackup write SetOnFinishBackup;
+
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure execute; override;
+  end;
+
 implementation
 
 uses
@@ -68,9 +96,6 @@ begin
   FBackup.Host := ipConn.Params.Values['server'];
 
   FNomePadrao := 'song_' + DayOf(now).ToString + '.fbk';
-
-  if not ipConn.Connected then
-    ipConn.Open();
 
 end;
 
@@ -178,6 +203,96 @@ end;
 procedure TFtp.SetUsuario(const Value: String);
 begin
   FUsuario := Value;
+end;
+
+{ TBackupThread }
+
+constructor TThreadBackup.Create;
+begin
+  inherited Create(true);
+  FEvent := TEvent.Create(nil, false, false, '');
+end;
+
+destructor TThreadBackup.Destroy;
+begin
+  FEvent.Free;
+  FBackup.Free;
+
+  inherited;
+end;
+
+procedure TThreadBackup.execute;
+var
+  vaHoraAtual, vaProximoBkp: TDateTime;
+  vaMinutoAtual: Integer;
+begin
+  inherited;
+  while not Terminated do
+    begin
+      try
+        vaHoraAtual := now;
+        if (DataUltimoBackup = 0) or (DayOf(DataUltimoBackup) <> DayOf(vaHoraAtual)) or
+          (HourOf(DataUltimoBackup) <> HourOf(vaHoraAtual)) then
+          begin
+            vaMinutoAtual := MinuteOf(vaHoraAtual);
+            if (HourOf(vaHoraAtual) = HourOf(HoraBackup)) then
+              begin
+                if (vaMinutoAtual >= MinuteOf(IncMinute(HoraBackup, -5))) and
+                  (vaMinutoAtual <= MinuteOf(IncMinute(HoraBackup, 5))) then
+                  begin
+                    if Assigned(FOnStartBackup) then
+                      Synchronize(FOnStartBackup);
+
+                    Backup.ppuRealizarBackup;
+
+                    DataUltimoBackup := now;
+                    vaProximoBkp := IncHour(DataUltimoBackup, 23);
+                    vaProximoBkp := IncMinute(vaProximoBkp, 58);
+
+                    if Assigned(FOnFinishBackup) then
+                      Synchronize(FOnFinishBackup);
+
+                    FEvent.WaitFor(MilliSecondsBetween(vaProximoBkp, DataUltimoBackup)); // 23 hr e 58 min
+                  end;
+              end
+            else
+              FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));
+          end
+        else
+          FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));
+      except
+        on E: Exception do
+          begin
+            frmPrincipal.ppuAdicionarErroLog('Erro na thread do backup. Detalhes: ' + E.Message);
+            Sleep(10000);
+          end;
+      end;
+    end;
+end;
+
+procedure TThreadBackup.SetBackup(const Value: TBackup);
+begin
+  FBackup := Value;
+end;
+
+procedure TThreadBackup.SetDataUltimoBackup(const Value: TDateTime);
+begin
+  FDataUltimoBackup := Value;
+end;
+
+procedure TThreadBackup.SetHoraBackup(const Value: TTime);
+begin
+  FHoraBackup := Value;
+end;
+
+procedure TThreadBackup.SetOnFinishBackup(const Value: TThreadProcedure);
+begin
+  FOnFinishBackup := Value;
+end;
+
+procedure TThreadBackup.SetOnStartBackup(const Value: TThreadProcedure);
+begin
+  FOnStartBackup := Value;
 end;
 
 end.

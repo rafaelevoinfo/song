@@ -75,11 +75,11 @@ type
     procedure SetNome(const Value: String);
     procedure SetNomeProjeto(const Value: String);
     procedure SetStatus(const Value: Integer);
-    public
-      property Nome:String read FNome write SetNome;
-      property NomeProjeto:String read FNomeProjeto write SetNomeProjeto;
-      property Status:Integer read FStatus write SetStatus;
-      property DataVencimento:TDateTime read FDataVencimento write SetDataVencimento;
+  public
+    property Nome: String read FNome write SetNome;
+    property NomeProjeto: String read FNomeProjeto write SetNomeProjeto;
+    property Status: Integer read FStatus write SetStatus;
+    property DataVencimento: TDateTime read FDataVencimento write SetDataVencimento;
   end;
 
   TFundo = class(TModelo)
@@ -92,7 +92,7 @@ type
     procedure SetNomeOrganizacao(const Value: String);
   public
     property Nome: String read FNome write SetNome;
-    property NomeOrganizacao:String read FNomeOrganizacao write SetNomeOrganizacao;
+    property NomeOrganizacao: String read FNomeOrganizacao write SetNomeOrganizacao;
     property Saldo: Double read FSaldo write SetSaldo;
   end;
 
@@ -154,6 +154,26 @@ type
     property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
   end;
 
+  TSolicitacaoCompra = class(TModelo)
+  private
+    FDataAnalise: TDateTime;
+    FItens: String;
+    FDataSolicitacao: TDateTime;
+    FStatus: Integer;
+    FSolicitante: String;
+    procedure SetDataAnalise(const Value: TDateTime);
+    procedure SetDataSolicitacao(const Value: TDateTime);
+    procedure SetItens(const Value: String);
+    procedure SetStatus(const Value: Integer);
+    procedure SetSolicitante(const Value: String);
+  public
+    property DataSolicitacao: TDateTime read FDataSolicitacao write SetDataSolicitacao;
+    property DataAnalise: TDateTime read FDataAnalise write SetDataAnalise;
+    property Status: Integer read FStatus write SetStatus;
+    property Itens: String read FItens write SetItens;
+    property Solicitante:String read FSolicitante write SetSolicitante;
+  end;
+
   TNotificacao = class
   private
     FId: Integer;
@@ -182,7 +202,7 @@ type
 
   TTipoVinculo = (tvRelacionado, tvDependente);
 
-  TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, meSomentePesquisa, meSomenteCadastro, meSomenteEdicao);
+  TModoExecucao = (meNormal, mePesquisa, mePesquisaDetail, mePesquisaRealizada, meSomenteCadastro, meSomenteEdicao);
 
   TTipoFinForCli = (tfFinanciador = 1, tfFornecedor, tfCliente);
 
@@ -211,7 +231,7 @@ type
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
   TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
-    tnAtividadeAlterada, tnAtividadeVencendo);
+    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra);
 
 const
   // mensagens customizadas do windows
@@ -234,7 +254,8 @@ const
     'Cheque', 'Dinheiro', 'Outro');
 
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
-    'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada', 'Atividade vencendo prazo de execução');
+    'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
+    'Atividade vencendo prazo de execução', 'Solicitação de Compra');
 
 implementation
 
@@ -424,6 +445,33 @@ begin
 end;
 
 procedure TAtividade.SetStatus(const Value: Integer);
+begin
+  FStatus := Value;
+end;
+
+{ TSolicitacaoCompra }
+
+procedure TSolicitacaoCompra.SetDataAnalise(const Value: TDateTime);
+begin
+  FDataAnalise := Value;
+end;
+
+procedure TSolicitacaoCompra.SetDataSolicitacao(const Value: TDateTime);
+begin
+  FDataSolicitacao := Value;
+end;
+
+procedure TSolicitacaoCompra.SetItens(const Value: String);
+begin
+  FItens := Value;
+end;
+
+procedure TSolicitacaoCompra.SetSolicitante(const Value: String);
+begin
+  FSolicitante := Value;
+end;
+
+procedure TSolicitacaoCompra.SetStatus(const Value: Integer);
 begin
   FStatus := Value;
 end;

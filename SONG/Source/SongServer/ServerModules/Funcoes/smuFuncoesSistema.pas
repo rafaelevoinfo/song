@@ -32,7 +32,7 @@ function TsmFuncoesSistema.fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo:
 var
   vaDataSetNotificacao, vaDataSetNotificacaoPessoa, vaDataSet: TRFQuery;
   vaNotificacao: TNotificacao;
-  vaTipoNotificacao:TTipoNotificacao;
+  vaTipoNotificacao: TTipoNotificacao;
   vaMsg: String;
 
   procedure plEnviarEmails(ipTipo: TTipoNotificacao; ipMsg: String);
@@ -164,13 +164,15 @@ var
       '       View_Rubrica_Projeto.Nome_Rubrica,' +
       '       case' +
       '                    when view_rubrica_projeto.valor_gasto_transferido > view_rubrica_projeto.valor_recebido_transferido then' +
-      '                        view_rubrica_projeto.valor_gasto + (view_rubrica_projeto.valor_gasto_transferido - view_rubrica_projeto.valor_recebido_transferido)' +
+      '                        view_rubrica_projeto.valor_gasto + (view_rubrica_projeto.valor_gasto_transferido - view_rubrica_projeto.valor_recebido_transferido)'
+      +
       '                       else' +
       '                        view_rubrica_projeto.valor_gasto' +
       '                end as VALOR_GASTO,' +
       '                 case' +
       '                    when view_rubrica_projeto.valor_gasto_transferido < view_rubrica_projeto.valor_recebido_transferido then' +
-      '                        view_rubrica_projeto.valor_recebido + (view_rubrica_projeto.valor_recebido_transferido - view_rubrica_projeto.valor_gasto_transferido)' +
+      '                        view_rubrica_projeto.valor_recebido + (view_rubrica_projeto.valor_recebido_transferido - view_rubrica_projeto.valor_gasto_transferido)'
+      +
       '                       else' +
       '                        view_rubrica_projeto.valor_recebido' +
       '                end as VALOR_RECEBIDO,' +
@@ -259,7 +261,7 @@ var
       plEnviarEmails(tnFundoFicandoSemSaldo, vaMsg);
   end;
 
-  procedure plVerificarAtividade(ipTipoNotificacao:TTipoNotificacao);
+  procedure plVerificarAtividade(ipTipoNotificacao: TTipoNotificacao);
   var
     vaAtividade: TAtividade;
   begin
@@ -327,6 +329,68 @@ var
 
   end;
 
+  procedure plVerificarSolicitacaoCompra();
+  var
+    vaSolicitacao: TSolicitacaoCompra;
+  begin
+    vaDataSet.close;
+    vaDataSet.SQL.Text := ' select Solicitacao_Compra.id, ' +
+      '       Solicitacao_Compra.Data,' +
+      '       Pessoa.nome as Solicitante, '+
+      '       Solicitacao_Compra.Status,' +
+      '       Solicitacao_Compra.Data_Analise, ' +
+      '       list(coalesce(Especie.Nome, Item.Nome), '', '') as Itens' +
+      ' from Solicitacao_Compra' +
+      ' inner join Solicitacao_Compra_Item on (Solicitacao_Compra.Id = Solicitacao_Compra_Item.Id_Solicitacao_Compra)' +
+      ' inner join pessoa on (pessoa.id = Solicitacao_Compra.id_pessoa_solicitou) '+
+      ' inner join Item on (Item.Id = Solicitacao_Compra_Item.Id_Item)' +
+      ' left join Especie on (Especie.Id = Solicitacao_Compra_Item.Id_Especie)'+
+      ' where ((Solicitacao_Compra.Status = 0) and' +
+      '         (dateadd(day, :Dias, Solicitacao_Compra.Data) >= current_date)) or '+
+      '       ((Solicitacao_Compra.Status <> 0) and' +
+      '        (dateadd(day, :Dias, Solicitacao_Compra.Data_Analise) >= current_date))'+
+      ' group by Solicitacao_Compra.id, Solicitacao_Compra.Data, Pessoa.nome, Solicitacao_Compra.Status, Solicitacao_Compra.Data_Analise ';
+
+    vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger;
+    vaDataSet.Open;
+    vaMsg := '';
+    while not vaDataSet.Eof do
+      begin
+        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+          begin
+            vaNotificacao := TNotificacao.Create;
+
+            vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
+            vaNotificacao.Tipo := Ord(tnSolicitacaoCompra);
+            vaSolicitacao := TSolicitacaoCompra.Create;
+
+            vaSolicitacao.Id := vaDataSet.FieldByName('ID').AsInteger;
+            vaSolicitacao.Itens := vaDataSet.FieldByName('ITENS').AsString;
+            vaSolicitacao.DataSolicitacao := vaDataSet.FieldByName('DATA').AsDateTime;
+            vaSolicitacao.DataAnalise := vaDataSet.FieldByName('DATA_ANALISE').AsDateTime;
+            vaSolicitacao.Status := vaDataSet.FieldByName('STATUS').AsInteger;
+            vaSolicitacao.Solicitante := vaDataSet.FieldByName('SOLICITANTE').AsString;
+
+            vaNotificacao.Info := vaSolicitacao;
+
+            Result.Add(vaNotificacao);
+          end;
+
+        if vaDataSet.FieldByName('STATUS').AsInteger = Ord(sscSolicitacada) then
+          vaMsg := vaMsg + 'Houve uma solicitação de compra dos seguintes itens: ' + vaDataSet.FieldByName('ITENS').AsString + ' <br/><br/>'
+        else if vaDataSet.FieldByName('STATUS').AsInteger = Ord(sscAprovada) then
+          vaMsg := vaMsg + 'A solicitação dos itens ' + vaDataSet.FieldByName('ITENS').AsString + ' foi aprovada.' + ' <br/><br/>'
+        else if vaDataSet.FieldByName('STATUS').AsInteger = Ord(sscNegada) then
+          vaMsg := vaMsg + 'A solicitação dos itens ' + vaDataSet.FieldByName('ITENS').AsString + ' foi negada.' + ' <br/><br/>';
+
+        vaDataSet.next;
+      end;
+
+    if vaMsg <> '' then
+      plEnviarEmails(tnSolicitacaoCompra, vaMsg);
+
+  end;
+
 begin
   Result := TadsObjectlist<TNotificacao>.Create;
 
@@ -375,8 +439,10 @@ begin
                     plVerificarRubricas;
                   tnFundoFicandoSemSaldo:
                     plVerificarFundo;
-                  tnAtividadeCadastrada,tnAtividadeAlterada,tnAtividadeVencendo:
+                  tnAtividadeCadastrada, tnAtividadeAlterada, tnAtividadeVencendo:
                     plVerificarAtividade(vaTipoNotificacao);
+                  tnSolicitacaoCompra:
+                    plVerificarSolicitacaoCompra;
                 end;
               end;
           end;

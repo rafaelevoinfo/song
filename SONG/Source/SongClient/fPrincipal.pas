@@ -118,6 +118,7 @@ type
     TileControlItem14: TdxTileControlItem;
     TileControlItem15: TdxTileControlItem;
     AlertWindowManager: TdxAlertWindowManager;
+    Button1: TButton;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -157,13 +158,14 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure AlertWindowManagerClick(Sender: TObject;
       AAlertWindow: TdxAlertWindow);
+    procedure Button1Click(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
   public
-    procedure ppuCarregarNotificacoes(ipExibirAlerta:boolean);
+    procedure ppuCarregarNotificacoes(ipExibirAlerta: Boolean);
   end;
 
 var
@@ -423,6 +425,13 @@ begin
   ppuCarregarNotificacoes(false);
 end;
 
+procedure TfrmPrincipal.Button1Click(Sender: TObject);
+begin
+  inherited;
+  dmPrincipal.DataSnapConn.Close;
+  dmPrincipal.DataSnapConn.Open;
+end;
+
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
 begin
   inherited;
@@ -475,14 +484,16 @@ begin
     vaForm := TfrmProjeto.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnFundoFicandoSemSaldo then
     vaForm := TfrmOrganizacao.Create(nil)
-  else if TTipoNotificacao(ipItem.Group.Tag) in [tnAtividadeCadastrada,tnAtividadeAlterada,tnAtividadeVencendo] then
-    vaForm := TfrmAtividade.Create(nil);
+  else if TTipoNotificacao(ipItem.Group.Tag) in [tnAtividadeCadastrada, tnAtividadeAlterada, tnAtividadeVencendo] then
+    vaForm := TfrmAtividade.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnSolicitacaoCompra then
+    vaForm := TfrmSolicitacaoCompra.Create(nil);
 
   if not Assigned(vaForm) then
     raise Exception.Create('Notificação ainda não suportada completamente.');
 
   try
-    vaForm.ppuConfigurarModoExecucao(mePesquisa);
+    vaForm.ppuConfigurarModoExecucao(mePesquisaRealizada);
     vaForm.ppuConfigurarPesquisa(Ord(tppId), ipItem.Tag.ToString());
     vaForm.ppuPesquisar;
 
@@ -495,10 +506,10 @@ end;
 procedure TfrmPrincipal.tmrAtualizacoesTimer(Sender: TObject);
 begin
   inherited;
-  ppuCarregarNotificacoes(true);
+  ppuCarregarNotificacoes(True);
 end;
 
-procedure TfrmPrincipal.ppuCarregarNotificacoes(ipExibirAlerta:boolean);
+procedure TfrmPrincipal.ppuCarregarNotificacoes(ipExibirAlerta: Boolean);
 var
   vaNotificacoes: TadsObjectlist<TNotificacao>;
   vaNotificacao: TNotificacao;
@@ -509,7 +520,9 @@ var
   vaRubrica: TRubrica;
   vaFundo: TFundo;
   vaAtividade: TAtividade;
-  vaTotalNotificacoes:Integer;
+  vaSolicitacao: TSolicitacaoCompra;
+  vaTotalNotificacoes: Integer;
+  vaFrame: TdxTileControlItemFrame;
 begin
   vaTotalNotificacoes := TileControl.Items.Count;
 
@@ -541,6 +554,7 @@ begin
       vaItem.Tag := vaNotificacao.Id;
       vaItem.Size := tcisRegular;
       vaItem.OnClick := ppvOnClickItem;
+      vaItem.AnimationInterval := 5000;
 
       vaItem.Text1.WordWrap := True;
 
@@ -592,7 +606,31 @@ begin
             vaItem.Text2.Font.Style := [fsBold];
 
             if vaAtividade.DataVencimento <> 0 then
-              vaItem.Text3.Value := 'Data Final: '+DateToStr(vaAtividade.DataVencimento);
+              vaItem.Text3.Value := 'Data Final: ' + DateToStr(vaAtividade.DataVencimento);
+          end;
+        tnSolicitacaoCompra:
+          begin
+            vaSolicitacao := vaNotificacao.Info as TSolicitacaoCompra;
+            vaFrame := vaItem.Frames.Add;
+
+            vaFrame.Text1.Value := vaSolicitacao.Solicitante;
+            vaFrame.Text2.Value := DateToStr(vaSolicitacao.DataSolicitacao);
+            if vaSolicitacao.Status <> Ord(sscSolicitacada) then
+              vaFrame.Text4.Value := 'Data da Análise: '+DateToStr(vaSolicitacao.DataSolicitacao);
+
+            vaFrame.Text3.Align := oaMiddleCenter;
+            vaFrame.Text3.Font.Style := [fsBold];
+
+            if vaSolicitacao.Status = Ord(sscAprovada) then
+              vaFrame.Text3.Value := 'Aprovada'
+            else if vaSolicitacao.Status = Ord(sscNegada) then
+              vaFrame.Text3.Value := 'Negada'
+            else
+              vaFrame.Text3.Value := 'Solicitada';
+
+            vaFrame := vaItem.Frames.Add;
+            vaFrame.Text1.WordWrap := True;
+            vaFrame.Text1.Value := vaSolicitacao.Itens;
 
           end;
       end;
@@ -600,7 +638,7 @@ begin
     end;
 
   if ipExibirAlerta and (TileControl.Items.Count <> vaTotalNotificacoes) then
-    AlertWindowManager.Show('Novas Notificações','Existem novas notificações a serem visualizadas.');
+    AlertWindowManager.Show('Novas Notificações', 'Existem novas notificações a serem visualizadas.');
 end;
 
 end.

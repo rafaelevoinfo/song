@@ -5,7 +5,7 @@ inherited frmNotificacao: TfrmNotificacao
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -90,15 +90,15 @@ inherited frmNotificacao: TfrmNotificacao
       ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnEditsVariaveis: TPanel
-          Left = 212
-          Top = 18
+          Left = 216
+          Top = 21
           Width = 500
           Height = 239
           BevelOuter = bvNone
           TabOrder = 0
           object pnDiasProcedencia: TPanel
             Left = 0
-            Top = 42
+            Top = 63
             Width = 500
             Height = 21
             Margins.Top = 14
@@ -107,8 +107,7 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 0
             Visible = False
-            ExplicitTop = 369
-            ExplicitWidth = 1500
+            ExplicitTop = 42
             object Label6: TLabel
               Left = 0
               Top = 2
@@ -143,7 +142,7 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 1
             Visible = False
-            ExplicitWidth = 1500
+            ExplicitTop = 1
             object Label4: TLabel
               Left = 0
               Top = 2
@@ -169,7 +168,7 @@ inherited frmNotificacao: TfrmNotificacao
           end
           object pnValorGatilho: TPanel
             Left = 0
-            Top = 63
+            Top = 84
             Width = 500
             Height = 21
             Align = alTop
@@ -177,6 +176,7 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 2
             Visible = False
+            ExplicitTop = 63
             object Label9: TLabel
               Left = 0
               Top = 2
@@ -196,7 +196,7 @@ inherited frmNotificacao: TfrmNotificacao
           end
           object pnDiasAtividades: TPanel
             Left = 0
-            Top = 21
+            Top = 42
             Width = 500
             Height = 21
             Margins.Top = 14
@@ -205,6 +205,7 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 3
             Visible = False
+            ExplicitTop = 21
             object lb1: TLabel
               Left = 0
               Top = 3
@@ -223,7 +224,7 @@ inherited frmNotificacao: TfrmNotificacao
           end
           object pnPercentualGatilho: TPanel
             Left = 0
-            Top = 84
+            Top = 105
             Width = 500
             Height = 21
             Align = alTop
@@ -231,6 +232,7 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 4
             Visible = False
+            ExplicitTop = 84
             object Label8: TLabel
               Left = 0
               Top = 4
@@ -248,24 +250,52 @@ inherited frmNotificacao: TfrmNotificacao
               Width = 67
             end
           end
+          object pnDiasSolicitacao: TPanel
+            Left = 0
+            Top = 21
+            Width = 500
+            Height = 21
+            Margins.Top = 14
+            Align = alTop
+            AutoSize = True
+            BevelOuter = bvNone
+            TabOrder = 5
+            Visible = False
+            object lb2: TLabel
+              Left = 0
+              Top = 4
+              Width = 345
+              Height = 13
+              Caption = 
+                'Notificar solicita'#231#245'es feitas cadastradas/aprovadas/negadas nos ' +
+                #250'ltimos'
+            end
+            object EditDiasAposSolicitacao: TcxDBSpinEdit
+              Left = 346
+              Top = 0
+              DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
+              DataBinding.DataSource = dsMaster
+              TabOrder = 0
+              Width = 81
+            end
+          end
         end
         object pnTipo: TPanel
           Left = 0
           Top = 6
-          Width = 205
+          Width = 210
           Height = 36
-          AutoSize = True
           BevelOuter = bvNone
           TabOrder = 1
           object Label3: TLabel
-            Left = 1
+            Left = 5
             Top = 0
             Width = 91
             Height = 13
             Caption = 'Tipo de Notifica'#231#227'o'
           end
           object cbTipo: TcxDBImageComboBox
-            Left = 0
+            Left = 4
             Top = 15
             RepositoryItem = dmLookup.repIcbTipoNotificacao
             DataBinding.DataField = 'TIPO'
@@ -291,9 +321,8 @@ inherited frmNotificacao: TfrmNotificacao
           Height = 398
           Align = alClient
           TabOrder = 0
-          ExplicitTop = 16
           ExplicitWidth = 976
-          ExplicitHeight = 382
+          ExplicitHeight = 398
           inherited gpGrids: TGridPanel
             Width = 976
             Height = 379
@@ -314,15 +343,15 @@ inherited frmNotificacao: TfrmNotificacao
                 Row = 0
               end>
             ExplicitWidth = 976
-            ExplicitHeight = 363
+            ExplicitHeight = 379
             inherited cxGrid1: TcxGrid
               ExplicitWidth = 457
-              ExplicitHeight = 361
+              ExplicitHeight = 377
             end
             inherited pnBotoes: TPanel
               ExplicitLeft = 458
               ExplicitWidth = 48
-              ExplicitHeight = 361
+              ExplicitHeight = 377
               inherited btnAdd: TButton
                 ExplicitWidth = 48
               end
@@ -339,7 +368,7 @@ inherited frmNotificacao: TfrmNotificacao
             inherited cxGrid2: TcxGrid
               ExplicitLeft = 506
               ExplicitWidth = 469
-              ExplicitHeight = 361
+              ExplicitHeight = 377
               inherited viewDireita: TcxGridDBTableView
                 OptionsData.Editing = True
               end
@@ -389,6 +418,8 @@ inherited frmNotificacao: TfrmNotificacao
   end
   inherited dsMaster: TDataSource
     DataSet = dmSistema.cdsNotificacao
+    Left = 128
+    Top = 256
   end
   inherited dsDetail: TDataSource
     DataSet = dmSistema.cdsNotificacao_Pessoa

@@ -296,7 +296,7 @@ begin
         btnUtilizar.Visible := False;
         btnUtilizarDetailSelecionado.Visible := True;
       end;
-    meSomentePesquisa:
+    mePesquisaRealizada:
       btnIncluirDetail.Visible := False;
   end;
 end;
