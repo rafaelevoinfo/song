@@ -51,11 +51,12 @@ type
     coFundo = 'FUNDO';
     coPossuiEstoque = 'POSSUI_ESTOQUE';
 
-
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 
     coDelimitador = '§';
   end;
+
+  TOnErroRede = function(e: Exception): Boolean of object;
 
   TRFClientDataSet = class(TClientDataSet)
   private
@@ -63,17 +64,28 @@ type
     FValores: TList<Variant>;
 
     FRFApplyAutomatico: Boolean;
+    FPerdeuConexao: Boolean;
+    FOnTratarErroRede: TOnErroRede;
     procedure SetRFApplyAutomatico(const Value: Boolean);
+    procedure SetPerdeuConexao(const Value: Boolean);
+    procedure SetOnTratarErroRede(const Value: TOnErroRede);
   protected
     procedure InternalDelete; override;
+    procedure pprChecarReconexao;
+
+    procedure InternalRefresh; override;
+    procedure SetActive(Value: Boolean); override;
+
   public
     property Parametros: TList<string> read FParametros;
     property ValoresParametros: TList<Variant> read FValores;
+    property PerdeuConexao: Boolean read FPerdeuConexao write SetPerdeuConexao;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     procedure Post; override;
+    function ApplyUpdates(MaxErrors: Integer): Integer; override;
 
     procedure ppuDataRequest(const ipParametros: Array of string; ipValores: Array of Variant; ipOperador: string;
       ipLimparParametros: Boolean); overload;
@@ -90,6 +102,7 @@ type
 
   published
     property RFApplyAutomatico: Boolean read FRFApplyAutomatico write SetRFApplyAutomatico default true;
+    property OnTratarErroRede: TOnErroRede read FOnTratarErroRede write SetOnTratarErroRede;
   end;
 
 procedure Register;
@@ -102,6 +115,23 @@ begin
 end;
 
 { TRFClientDataSet }
+
+function TRFClientDataSet.ApplyUpdates(MaxErrors: Integer): Integer;
+begin
+  // pprChecarReconexao;
+  try
+    Result := inherited;
+  except
+    on e: Exception do
+      begin
+        if not OnTratarErroRede(e) then
+          raise
+        else
+          Result := ApplyUpdates(MaxErrors);
+      end;
+  end;
+
+end;
 
 constructor TRFClientDataSet.Create(AOwner: TComponent);
 begin
@@ -120,9 +150,28 @@ end;
 
 procedure TRFClientDataSet.InternalDelete;
 begin
+  try
+    inherited;
+
+    if FRFApplyAutomatico and (ChangeCount > 0) then
+      ApplyUpdates(0);
+  except
+    on e: Exception do
+      begin
+        if not OnTratarErroRede(e) then
+          raise
+        else
+          InternalDelete;
+      end;
+  end;
+
+end;
+
+procedure TRFClientDataSet.InternalRefresh;
+begin
+  pprChecarReconexao;
   inherited;
-  if FRFApplyAutomatico and (ChangeCount > 0) then
-    ApplyUpdates(0);
+
 end;
 
 procedure TRFClientDataSet.Post;
@@ -130,6 +179,15 @@ begin
   inherited;
   if FRFApplyAutomatico and (ChangeCount > 0) then
     ApplyUpdates(0);
+end;
+
+procedure TRFClientDataSet.pprChecarReconexao;
+begin
+  if FPerdeuConexao then
+    begin
+      ppuDataRequest();
+      FPerdeuConexao := false;
+    end;
 end;
 
 procedure TRFClientDataSet.ppuAddParametro(ipParametro: string; ipValor: Variant; ipOperador: String; ipLimparParametros: Boolean);
@@ -243,6 +301,33 @@ procedure TRFClientDataSet.ppuLimparParametros;
 begin
   FParametros.Clear;
   FValores.Clear;
+end;
+
+procedure TRFClientDataSet.SetActive(Value: Boolean);
+begin
+  pprChecarReconexao;
+  try
+    inherited;
+  except
+    on e: Exception do
+      begin
+        if not OnTratarErroRede(e) then
+          raise
+        else
+          SetActive(Value);
+      end;
+  end;
+
+end;
+
+procedure TRFClientDataSet.SetOnTratarErroRede(const Value: TOnErroRede);
+begin
+  FOnTratarErroRede := Value;
+end;
+
+procedure TRFClientDataSet.SetPerdeuConexao(const Value: Boolean);
+begin
+  FPerdeuConexao := Value;
 end;
 
 procedure TRFClientDataSet.SetRFApplyAutomatico(const Value: Boolean);

@@ -74,7 +74,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure execute; override;
+    procedure Execute; override;
   end;
 
 implementation
@@ -223,22 +223,24 @@ end;
 
 procedure TThreadBackup.execute;
 var
-  vaHoraAtual, vaProximoBkp: TDateTime;
+  vaDataAtual, vaProximoBkp: TDateTime;
   vaMinutoAtual: Integer;
+  vaHoraAtual:TTime;
 begin
   inherited;
   while not Terminated do
     begin
       try
-        vaHoraAtual := now;
-        if (DataUltimoBackup = 0) or (DayOf(DataUltimoBackup) <> DayOf(vaHoraAtual)) or
-          (HourOf(DataUltimoBackup) <> HourOf(vaHoraAtual)) then
+        vaDataAtual := now;
+        vaHoraAtual := Time;
+        if (DataUltimoBackup = 0) or (DayOf(DataUltimoBackup) <> DayOf(vaDataAtual)) or
+          (HourOf(DataUltimoBackup) <> HourOf(vaDataAtual)) then
           begin
-            vaMinutoAtual := MinuteOf(vaHoraAtual);
-            if (HourOf(vaHoraAtual) = HourOf(HoraBackup)) then
+            vaMinutoAtual := MinuteOf(vaDataAtual);
+            if (HourOf(vaDataAtual) = HourOf(HoraBackup)) then
               begin
-                if (vaMinutoAtual >= MinuteOf(IncMinute(HoraBackup, -5))) and
-                  (vaMinutoAtual <= MinuteOf(IncMinute(HoraBackup, 5))) then
+                if (vaMinutoAtual >= MinuteOf(IncMinute(HoraBackup,-2))) and
+                  (vaMinutoAtual <= MinuteOf(IncMinute(HoraBackup, 2))) then
                   begin
                     if Assigned(FOnStartBackup) then
                       Synchronize(FOnStartBackup);
@@ -253,7 +255,9 @@ begin
                       Synchronize(FOnFinishBackup);
 
                     FEvent.WaitFor(MilliSecondsBetween(vaProximoBkp, DataUltimoBackup)); // 23 hr e 58 min
-                  end;
+                  end
+                else
+                  FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));
               end
             else
               FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));

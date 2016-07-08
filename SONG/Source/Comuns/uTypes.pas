@@ -174,6 +174,18 @@ type
     property Solicitante:String read FSolicitante write SetSolicitante;
   end;
 
+    TPessoa = class(TModelo)
+  private
+    FDataNascimento: TDateTime;
+    FNome: string;
+    procedure SetDataNascimento(const Value: TDateTime);
+    procedure SetNome(const Value: string);
+
+  public
+    property Nome: string read FNome write SetNome;
+    property DataNascimento:TDateTime read FDataNascimento write SetDataNascimento;
+  end;
+
   TNotificacao = class
   private
     FId: Integer;
@@ -231,7 +243,7 @@ type
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
   TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
-    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra);
+    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario);
 
 const
   // mensagens customizadas do windows
@@ -255,7 +267,7 @@ const
 
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
-    'Atividade vencendo prazo de execução', 'Solicitação de Compra');
+    'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários');
 
 implementation
 
@@ -474,6 +486,18 @@ end;
 procedure TSolicitacaoCompra.SetStatus(const Value: Integer);
 begin
   FStatus := Value;
+end;
+
+{ TPessoa }
+
+procedure TPessoa.SetDataNascimento(const Value: TDateTime);
+begin
+  FDataNascimento := Value;
+end;
+
+procedure TPessoa.SetNome(const Value: string);
+begin
+  FNome := Value;
 end;
 
 end.

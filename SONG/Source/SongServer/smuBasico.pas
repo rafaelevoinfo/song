@@ -17,7 +17,6 @@ type
     qAux: TRFQuery;
     procedure DSServerModuleCreate(Sender: TObject);
   private
-    FScriptsOriginais: TDictionary<String, String>;
     FConnection: TFDConnection;
 
     function fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): OleVariant;
@@ -57,14 +56,12 @@ var
   I: integer;
   vaDataSet: TFDQuery;
 begin
-  FScriptsOriginais := TDictionary<String, String>.Create;
   for I := 0 to ComponentCount - 1 do
     begin
       if Components[I] is TFDQuery then
         begin
           vaDataSet := TFDQuery(Components[I]);
           vaDataSet.Connection := Connection;
-          FScriptsOriginais.Add(vaDataSet.Name, vaDataSet.SQL.Text);
 
           pprCriarProvider(vaDataSet);
         end;

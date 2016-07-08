@@ -238,9 +238,6 @@ begin
 end;
 
 procedure TEnviarEmail.Execute;
-var
-  vaDestinations, vaCC, vaCCo, vaResposta, vaAnexo, vaTextoCorpo: TStringList;
-  i: Integer;
 begin
   ppvEnviar_Email;
 end;

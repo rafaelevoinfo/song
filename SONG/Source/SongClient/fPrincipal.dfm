@@ -35,8 +35,9 @@ inherited frmPrincipal: TfrmPrincipal
       object TileControl: TdxTileControl
         Left = 0
         Top = 25
-        Width = 778
+        Width = 478
         Height = 332
+        BorderStyle = cxcbsDefault
         OptionsBehavior.ItemCheckMode = tcicmNone
         OptionsView.CenterContentHorz = True
         OptionsView.GroupIndent = 30
@@ -48,138 +49,13 @@ inherited frmPrincipal: TfrmPrincipal
         OptionsView.ItemWidth = 200
         Style.FocusedColor = clBlack
         TabOrder = 0
-        object dxTileControl1Item1: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Size = tcisSmall
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem2: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Size = tcisLarge
-          Style.BorderColor = clNone
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem1: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem3: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem4: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem5: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem6: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem8: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem9: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem10: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem11: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem7: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Size = tcisLarge
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem12: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem13: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem14: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
-        object TileControlItem15: TdxTileControlItem
-          GroupIndex = -1
-          IndexInGroup = -1
-          Text1.AssignedValues = []
-          Text2.AssignedValues = []
-          Text3.AssignedValues = []
-          Text4.AssignedValues = []
-        end
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clDefault
+        Title.Font.Height = -16
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
+        Title.Text = 'Notifica'#231#245'es Diversas'
+        ExplicitWidth = 778
       end
       object btnAtualizar: TButton
         Left = 0
@@ -192,16 +68,35 @@ inherited frmPrincipal: TfrmPrincipal
         TabStop = False
         OnClick = btnAtualizarClick
       end
+      object TileControlAniversario: TdxTileControl
+        Left = 478
+        Top = 25
+        Width = 300
+        Height = 332
+        Align = alRight
+        BorderStyle = cxcbsDefault
+        OptionsBehavior.ItemCheckMode = tcicmNone
+        OptionsView.CenterContentHorz = True
+        OptionsView.GroupIndent = 30
+        OptionsView.GroupLayout = glVertical
+        OptionsView.GroupMaxRowCount = 2
+        OptionsView.IndentHorz = 10
+        OptionsView.IndentVert = 10
+        OptionsView.ItemIndent = 4
+        OptionsView.ItemWidth = 200
+        Style.FocusedColor = clBlack
+        TabOrder = 2
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clDefault
+        Title.Font.Height = -16
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
+        Title.IndentVert = 2
+        Title.Text = 'Anivers'#225'rios'
+        ExplicitLeft = 484
+        ExplicitTop = 31
+      end
     end
-  end
-  object Button1: TButton
-    Left = 248
-    Top = 64
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 1
-    OnClick = Button1Click
   end
   object mmMenuPrincipal: TMainMenu
     Left = 32

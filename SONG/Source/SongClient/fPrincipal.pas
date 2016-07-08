@@ -99,26 +99,10 @@ type
     Ac_Camara_Fria: TAction;
     CmaraFria1: TMenuItem;
     TileControl: TdxTileControl;
-    dxTileControl1Item1: TdxTileControlItem;
     btnAtualizar: TButton;
-    TileControlItem2: TdxTileControlItem;
     tmrAtualizacoes: TTimer;
-    TileControlItem1: TdxTileControlItem;
-    TileControlItem3: TdxTileControlItem;
-    TileControlItem4: TdxTileControlItem;
-    TileControlItem5: TdxTileControlItem;
-    TileControlItem6: TdxTileControlItem;
-    TileControlItem8: TdxTileControlItem;
-    TileControlItem9: TdxTileControlItem;
-    TileControlItem10: TdxTileControlItem;
-    TileControlItem11: TdxTileControlItem;
-    TileControlItem7: TdxTileControlItem;
-    TileControlItem12: TdxTileControlItem;
-    TileControlItem13: TdxTileControlItem;
-    TileControlItem14: TdxTileControlItem;
-    TileControlItem15: TdxTileControlItem;
     AlertWindowManager: TdxAlertWindowManager;
-    Button1: TButton;
+    TileControlAniversario: TdxTileControl;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -158,7 +142,6 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure AlertWindowManagerClick(Sender: TObject;
       AAlertWindow: TdxAlertWindow);
-    procedure Button1Click(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -425,13 +408,6 @@ begin
   ppuCarregarNotificacoes(false);
 end;
 
-procedure TfrmPrincipal.Button1Click(Sender: TObject);
-begin
-  inherited;
-  dmPrincipal.DataSnapConn.Close;
-  dmPrincipal.DataSnapConn.Open;
-end;
-
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
 begin
   inherited;
@@ -487,7 +463,9 @@ begin
   else if TTipoNotificacao(ipItem.Group.Tag) in [tnAtividadeCadastrada, tnAtividadeAlterada, tnAtividadeVencendo] then
     vaForm := TfrmAtividade.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnSolicitacaoCompra then
-    vaForm := TfrmSolicitacaoCompra.Create(nil);
+    vaForm := TfrmSolicitacaoCompra.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnAniversario then
+    vaForm := TfrmPessoa.Create(nil);
 
   if not Assigned(vaForm) then
     raise Exception.Create('Notificação ainda não suportada completamente.');
@@ -521,6 +499,7 @@ var
   vaFundo: TFundo;
   vaAtividade: TAtividade;
   vaSolicitacao: TSolicitacaoCompra;
+  vaPessoa: TPessoa;
   vaTotalNotificacoes: Integer;
   vaFrame: TdxTileControlItemFrame;
 begin
@@ -528,6 +507,9 @@ begin
 
   TileControl.Items.Clear;
   TileControl.Groups.Clear;
+
+  TileControlAniversario.Items.Clear;
+  TileControlAniversario.Groups.Clear;
 
   vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false);
   for vaNotificacao in vaNotificacoes do
@@ -544,13 +526,22 @@ begin
 
       if not Assigned(vaGrupo) then
         begin
-          vaGrupo := TileControl.Groups.Add;
+          if vaNotificacao.Tipo = Ord(tnAniversario) then
+            vaGrupo := TileControlAniversario.Groups.Add
+          else
+            vaGrupo := TileControl.Groups.Add;
           vaGrupo.Tag := vaNotificacao.Tipo;
-          vaGrupo.Caption.Text := TiposNotificacao[TTipoNotificacao(vaNotificacao.Tipo)];
-          vaGrupo.Caption.Font.Size := 12;
+          if (vaNotificacao.Tipo <> Ord(tnAniversario)) then
+            begin
+              vaGrupo.Caption.Text := TiposNotificacao[TTipoNotificacao(vaNotificacao.Tipo)];
+              vaGrupo.Caption.Font.Size := 12;
+            end;
         end;
 
-      vaItem := TileControl.Items.Add;
+      if vaNotificacao.Tipo = Ord(tnAniversario) then
+        vaItem := TileControlAniversario.Items.Add
+      else
+        vaItem := TileControl.Items.Add;
       vaItem.Tag := vaNotificacao.Id;
       vaItem.Size := tcisRegular;
       vaItem.OnClick := ppvOnClickItem;
@@ -608,6 +599,16 @@ begin
             if vaAtividade.DataVencimento <> 0 then
               vaItem.Text3.Value := 'Data Final: ' + DateToStr(vaAtividade.DataVencimento);
           end;
+        tnAniversario:
+          begin
+            vaPessoa := vaNotificacao.Info as TPessoa;
+            vaItem.Style.GradientBeginColor := $00D65612;
+
+            vaItem.Text2.Value := vaPessoa.Nome;
+            vaItem.Text2.Font.Size := 12;
+            vaItem.Text2.Alignment := taCenter;
+            vaItem.Text2.Font.Style := [fsBold];
+          end;
         tnSolicitacaoCompra:
           begin
             vaSolicitacao := vaNotificacao.Info as TSolicitacaoCompra;
@@ -616,7 +617,7 @@ begin
             vaFrame.Text1.Value := vaSolicitacao.Solicitante;
             vaFrame.Text2.Value := DateToStr(vaSolicitacao.DataSolicitacao);
             if vaSolicitacao.Status <> Ord(sscSolicitacada) then
-              vaFrame.Text4.Value := 'Data da Análise: '+DateToStr(vaSolicitacao.DataSolicitacao);
+              vaFrame.Text4.Value := 'Data da Análise: ' + DateToStr(vaSolicitacao.DataSolicitacao);
 
             vaFrame.Text3.Align := oaMiddleCenter;
             vaFrame.Text3.Font.Style := [fsBold];

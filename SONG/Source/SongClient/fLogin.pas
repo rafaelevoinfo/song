@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, fBasico, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, dxGDIPlusClasses, cxImage, Vcl.StdCtrls, Vcl.Menus, cxButtons,
-  cxTextEdit, dmuPrincipal, uMensagem, uExceptions, uUtils, uControleAcesso;
+  cxTextEdit, dmuPrincipal, uMensagem, uExceptions, uUtils, uControleAcesso,
+  uTypes;
 
 type
   TfrmLogin = class(TfrmBasico)

@@ -223,3 +223,16 @@ inner join Projeto on (Projeto.Id = Projeto_Rubrica.Id_Projeto)
 left join View_Valores_Rubrica_Projeto on (View_Valores_Rubrica_Projeto.Id_Projeto = Projeto_Rubrica.Id_Projeto and View_Valores_Rubrica_Projeto.Id_Rubrica = Projeto_Rubrica.Id_Rubrica)
 ;
 
+
+
+ALTER TABLE SOLICITACAO_COMPRA
+ADD CONSTRAINT FK_SOLICITACAO_COMPRA_1
+FOREIGN KEY (ID_PESSOA_SOLICITOU)
+REFERENCES PESSOA(ID)
+ON UPDATE CASCADE;
+
+ALTER TABLE SOLICITACAO_COMPRA
+ADD CONSTRAINT FK_SOLICITACAO_COMPRA_2
+FOREIGN KEY (ID_PESSOA_ANALISOU)
+REFERENCES PESSOA(ID)
+ON UPDATE CASCADE;

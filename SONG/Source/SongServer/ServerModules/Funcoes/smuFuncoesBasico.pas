@@ -19,6 +19,7 @@ type
   public
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao:Boolean;
   end;
 
 var
@@ -47,6 +48,11 @@ begin
   qId.Open();
 
   Result := qIdID.AsInteger;
+end;
+
+function TsmFuncoesBasico.fpuTestarConexao: Boolean;
+begin
+  Result := true;
 end;
 
 procedure TsmFuncoesBasico.pprEnviarEmail(ipAssunto, ipMsg,

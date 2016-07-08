@@ -122,7 +122,7 @@ uses smuAdministrativo, smuFuncoesGeral, smuLookup, smuFuncoesAdministrativo,
 procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject;
   E: Exception);
 begin
-  frmPrincipal.ppuAdicionarErroLog(e);
+  frmPrincipal.ppuAdicionarErroLog(E);
 end;
 
 procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
@@ -169,7 +169,15 @@ begin
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
+var
+  vaConn: TFDConnection;
 begin
+  for vaConn in FConnections.Values do
+    begin
+      vaConn.Close;
+      vaConn.Free;
+    end;
+
   FConnections.Clear;
   FConnections.Free;
 
@@ -444,6 +452,7 @@ procedure TdmPrincipal.ServerTransportDisconnect(Event: TDSTCPDisconnectEventObj
 var
   vaConn: TFDConnection;
 begin
+  // TODO:Rever porque nao esta echando nada no dictionary
   FSyncro.BeginWrite;
   try
     if FConnections.TryGetValue(TDSSessionManager.GetThreadSession.Id, vaConn) then

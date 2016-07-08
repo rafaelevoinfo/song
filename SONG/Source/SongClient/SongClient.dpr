@@ -59,7 +59,8 @@ uses
   fFamilia_Botanica in 'Viveiro\fFamilia_Botanica.pas' {frmFamiliaBotanica},
   dmuSistema in 'Sistema\dmuSistema.pas' {dmSistema: TDataModule},
   fNotificacao in 'Sistema\fNotificacao.pas' {frmNotificacao},
-  fCamara_Fria in 'Viveiro\fCamara_Fria.pas' {frmCamaraFria};
+  fCamara_Fria in 'Viveiro\fCamara_Fria.pas' {frmCamaraFria},
+  fReconexao in 'Geral\fReconexao.pas' {frmReconexao};
 
 {$R Localization.RES}
   {$R *.res}

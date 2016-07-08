@@ -90,7 +90,7 @@ var
           end;
 
         vaMsg := vaMsg + 'A conta ' + vaDataSet.FieldByName('DESCRICAO').AsString + ' no valor de ' +
-          FormatFloat('R$ ,0.00', vaConta.Valor);
+          FormatFloat('R$ ,0.00', vaDataSet.FieldByName('VALOR').AsFloat);
         if Date > vaDataSet.FieldByName('VENCIMENTO').AsDateTime then
           vaMsg := vaMsg + ' venceu na data ' + vaDataSet.FieldByName('VENCIMENTO').AsString + ' e não foi paga.'
         else
@@ -143,7 +143,7 @@ var
           end;
 
         vaMsg := vaMsg + 'A conta ' + vaDataSet.FieldByName('DESCRICAO').AsString + ' no valor de ' +
-          FormatFloat('R$ ,0.00', vaConta.Valor) + ' venceu na data ' + vaDataSet.FieldByName('VENCIMENTO').AsString +
+          FormatFloat('R$ ,0.00', vaDataSet.FieldByName('VALOR').AsFloat) + ' venceu na data ' + vaDataSet.FieldByName('VENCIMENTO').AsString +
           ' e não foi recebida.' + '<br/><br/>';
 
         vaDataSet.next;
@@ -264,6 +264,7 @@ var
   procedure plVerificarAtividade(ipTipoNotificacao: TTipoNotificacao);
   var
     vaAtividade: TAtividade;
+    vaDataSetEnvolvidos: TRFQuery;
   begin
     vaDataSet.close;
     vaDataSet.SQL.Text := 'select Atividade.Id,' +
@@ -291,37 +292,62 @@ var
 
     vaDataSet.Open;
     vaMsg := '';
-    while not vaDataSet.Eof do
+    if not vaDataSet.Eof then
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
-          begin
-            vaNotificacao := TNotificacao.Create;
+        pprCriarDataSet(vaDataSetEnvolvidos);
+        try
+          vaDataSetEnvolvidos.SQL.Text := ' select Atividade.Id_Solicitante,' +
+            '       Atividade.Id_Responsavel,' +
+            '       Atividade_pessoa.id_pessoa as ID_PESSOA_ENVOLVIDA' +
+            ' from atividade' +
+            ' left join atividade_pessoa on (atividade.id = atividade_pessoa.id_pessoa)' +
+            ' where atividade.id = :ID';
 
-            vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
-            vaNotificacao.Tipo := Ord(ipTipoNotificacao);
+          while not vaDataSet.Eof do
+            begin
+              vaDataSetEnvolvidos.close;
+              vaDataSetEnvolvidos.ParamByName('ID').AsInteger := vaDataSet.FieldByName('ID').AsInteger;
+              vaDataSetEnvolvidos.Open();
 
-            vaAtividade := TAtividade.Create;
-            vaAtividade.Id := vaDataSet.FieldByName('ID').AsInteger;
-            vaAtividade.Nome := vaDataSet.FieldByName('NOME').AsString;
-            vaAtividade.NomeProjeto := vaDataSet.FieldByName('NOME_PROJETO').AsString;
-            vaAtividade.Status := vaDataSet.FieldByName('STATUS').AsInteger;
+              if vaDataSetEnvolvidos.Locate('ID_SOLICITANTE', vaDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger, []) or
+                vaDataSetEnvolvidos.Locate('ID_RESPONSAVEL', vaDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger, []) or
+                vaDataSetEnvolvidos.Locate('ID_PESSOA_ENVOLVIDA', vaDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger, []) then
+                begin
 
-            vaNotificacao.Info := vaAtividade;
+                  if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+                    begin
+                      vaNotificacao := TNotificacao.Create;
 
-            Result.Add(vaNotificacao);
-          end;
+                      vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
+                      vaNotificacao.Tipo := Ord(ipTipoNotificacao);
 
-        if ipTipoNotificacao = tnAtividadeVencendo then
-          vaMsg := vaMsg + 'A atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
-            vaDataSet.FieldByName('NOME_PROJETO').AsString + ' está prestes a vencer seu prazo de execução. <br/><br/>'
-        else if ipTipoNotificacao = tnAtividadeAlterada then
-          vaMsg := vaMsg + 'Houve modificações na atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
-            vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>'
-        else
-          vaMsg := vaMsg + 'Foi cadastrada a atividade ' + vaDataSet.FieldByName('NOME').AsString + ' para o projeto ' +
-            vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>';
+                      vaAtividade := TAtividade.Create;
+                      vaAtividade.Id := vaDataSet.FieldByName('ID').AsInteger;
+                      vaAtividade.Nome := vaDataSet.FieldByName('NOME').AsString;
+                      vaAtividade.NomeProjeto := vaDataSet.FieldByName('NOME_PROJETO').AsString;
+                      vaAtividade.Status := vaDataSet.FieldByName('STATUS').AsInteger;
 
-        vaDataSet.next;
+                      vaNotificacao.Info := vaAtividade;
+
+                      Result.Add(vaNotificacao);
+                    end;
+
+                  if ipTipoNotificacao = tnAtividadeVencendo then
+                    vaMsg := vaMsg + 'A atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
+                      vaDataSet.FieldByName('NOME_PROJETO').AsString + ' está prestes a vencer seu prazo de execução. <br/><br/>'
+                  else if ipTipoNotificacao = tnAtividadeAlterada then
+                    vaMsg := vaMsg + 'Houve modificações na atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
+                      vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>'
+                  else
+                    vaMsg := vaMsg + 'Foi cadastrada a atividade ' + vaDataSet.FieldByName('NOME').AsString + ' para o projeto ' +
+                      vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>';
+                end;
+              vaDataSet.next;
+            end;
+        finally
+          vaDataSetEnvolvidos.close;
+          vaDataSetEnvolvidos.Free;
+        end;
       end;
 
     if vaMsg <> '' then
@@ -336,19 +362,19 @@ var
     vaDataSet.close;
     vaDataSet.SQL.Text := ' select Solicitacao_Compra.id, ' +
       '       Solicitacao_Compra.Data,' +
-      '       Pessoa.nome as Solicitante, '+
+      '       Pessoa.nome as Solicitante, ' +
       '       Solicitacao_Compra.Status,' +
       '       Solicitacao_Compra.Data_Analise, ' +
       '       list(coalesce(Especie.Nome, Item.Nome), '', '') as Itens' +
       ' from Solicitacao_Compra' +
       ' inner join Solicitacao_Compra_Item on (Solicitacao_Compra.Id = Solicitacao_Compra_Item.Id_Solicitacao_Compra)' +
-      ' inner join pessoa on (pessoa.id = Solicitacao_Compra.id_pessoa_solicitou) '+
+      ' inner join pessoa on (pessoa.id = Solicitacao_Compra.id_pessoa_solicitou) ' +
       ' inner join Item on (Item.Id = Solicitacao_Compra_Item.Id_Item)' +
-      ' left join Especie on (Especie.Id = Solicitacao_Compra_Item.Id_Especie)'+
+      ' left join Especie on (Especie.Id = Solicitacao_Compra_Item.Id_Especie)' +
       ' where ((Solicitacao_Compra.Status = 0) and' +
-      '         (dateadd(day, :Dias, Solicitacao_Compra.Data) >= current_date)) or '+
+      '         (dateadd(day, :Dias, Solicitacao_Compra.Data) >= current_date)) or ' +
       '       ((Solicitacao_Compra.Status <> 0) and' +
-      '        (dateadd(day, :Dias, Solicitacao_Compra.Data_Analise) >= current_date))'+
+      '        (dateadd(day, :Dias, Solicitacao_Compra.Data_Analise) >= current_date))' +
       ' group by Solicitacao_Compra.id, Solicitacao_Compra.Data, Pessoa.nome, Solicitacao_Compra.Status, Solicitacao_Compra.Data_Analise ';
 
     vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger;
@@ -391,6 +417,50 @@ var
 
   end;
 
+  procedure plVerificarAniversarios();
+  var
+    vaPessoa: TPessoa;
+  begin
+    vaDataSet.close;
+    vaDataSet.SQL.Text := ' select Pessoa.Id,' +
+      '       Pessoa.Nome,' +
+      '       Pessoa.Data_Nascimento' +
+      ' from Pessoa' +
+      ' where Pessoa.Tipo in (' + Ord(trpFuncionario).ToString + ',' + Ord(trpMembroDiretoria).ToString + ','
+      + Ord(trpParceiro).ToString + ',' + Ord(trpEstagiario).ToString + ',' + Ord(trpVoluntario).ToString + ') and' +
+    // func, membro diretoria, estagiario
+      '       extract(day from current_date) = extract(day from Pessoa.Data_Nascimento) and' +
+      '       extract(month from current_date) = extract(month from Pessoa.Data_Nascimento)';
+    vaDataSet.Open;
+    vaMsg := '';
+    while not vaDataSet.Eof do
+      begin
+        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+          begin
+            vaNotificacao := TNotificacao.Create;
+
+            vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
+            vaNotificacao.Tipo := Ord(tnAniversario);
+
+            vaPessoa := TPessoa.Create;
+            vaPessoa.Id := vaDataSet.FieldByName('ID').AsInteger;
+            vaPessoa.Nome := vaDataSet.FieldByName('NOME').AsString;
+            vaPessoa.DataNascimento := vaDataSet.FieldByName('DATA_NASCIMENTO').AsDateTime;
+
+            vaNotificacao.Info := vaPessoa;
+
+            Result.Add(vaNotificacao);
+          end;
+
+        vaMsg := vaMsg + 'Hoje é aniversário do ' + vaDataSet.FieldByName('NOME').AsString + '. <br/><br/>';
+        vaDataSet.next;
+      end;
+
+    if vaMsg <> '' then
+      plEnviarEmails(tnAniversario, vaMsg);
+
+  end;
+
 begin
   Result := TadsObjectlist<TNotificacao>.Create;
 
@@ -410,7 +480,8 @@ begin
         if (ipTipo = -1) or (vaDataSetNotificacao.FieldByName('TIPO').AsInteger = ipTipo) then
           begin
             vaDataSetNotificacaoPessoa.close;
-            vaDataSetNotificacaoPessoa.SQL.Text := 'Select  Notificacao_Pessoa.Notificacao_Sistema,' +
+            vaDataSetNotificacaoPessoa.SQL.Text := 'Select Notificacao_Pessoa.id_pessoa, ' +
+              '        Notificacao_Pessoa.Notificacao_Sistema,' +
               '        Notificacao_Pessoa.Notificacao_Email,' +
               '        Pessoa.Email ' +
               ' from notificacao_pessoa ' +
@@ -443,6 +514,8 @@ begin
                     plVerificarAtividade(vaTipoNotificacao);
                   tnSolicitacaoCompra:
                     plVerificarSolicitacaoCompra;
+                  tnAniversario:
+                    plVerificarAniversarios;
                 end;
               end;
           end;

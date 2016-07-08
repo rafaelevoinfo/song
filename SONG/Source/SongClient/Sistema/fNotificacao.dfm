@@ -107,7 +107,6 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 0
             Visible = False
-            ExplicitTop = 42
             object Label6: TLabel
               Left = 0
               Top = 2
@@ -142,7 +141,6 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 1
             Visible = False
-            ExplicitTop = 1
             object Label4: TLabel
               Left = 0
               Top = 2
@@ -176,7 +174,6 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 2
             Visible = False
-            ExplicitTop = 63
             object Label9: TLabel
               Left = 0
               Top = 2
@@ -205,7 +202,6 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 3
             Visible = False
-            ExplicitTop = 21
             object lb1: TLabel
               Left = 0
               Top = 3
@@ -232,7 +228,6 @@ inherited frmNotificacao: TfrmNotificacao
             BevelOuter = bvNone
             TabOrder = 4
             Visible = False
-            ExplicitTop = 84
             object Label8: TLabel
               Left = 0
               Top = 4
@@ -314,18 +309,35 @@ inherited frmNotificacao: TfrmNotificacao
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
-        inline frameUsuarios: TframeGrids
+        object Label10: TLabel
           Left = 0
           Top = 0
           Width = 976
-          Height = 398
+          Height = 13
+          Align = alTop
+          Caption = 
+            'Notifica'#231#245'es de atividades somente ser'#227'o enviadas as pessoas env' +
+            'olvidas e configuradas aqui.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitWidth = 534
+        end
+        inline frameUsuarios: TframeGrids
+          Left = 0
+          Top = 13
+          Width = 976
+          Height = 385
           Align = alClient
           TabOrder = 0
           ExplicitWidth = 976
           ExplicitHeight = 398
           inherited gpGrids: TGridPanel
             Width = 976
-            Height = 379
+            Height = 366
             ControlCollection = <
               item
                 Column = 0

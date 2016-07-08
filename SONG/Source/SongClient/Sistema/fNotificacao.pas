@@ -56,6 +56,7 @@ type
     pnDiasSolicitacao: TPanel;
     lb2: TLabel;
     EditDiasAposSolicitacao: TcxDBSpinEdit;
+    Label10: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cbTipoPropertiesEditValueChanged(Sender: TObject);
   private
@@ -110,7 +111,6 @@ end;
 procedure TfrmNotificacao.FormCreate(Sender: TObject);
 var
   vaTipo: TTipoNotificacao;
-  I: Integer;
   vaItem: TcxImageComboBoxItem;
 begin
   dmSistema := TdmSistema.Create(Self);

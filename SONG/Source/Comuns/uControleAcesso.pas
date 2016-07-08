@@ -34,14 +34,6 @@ type
     destructor Destroy; override;
   end;
 
-  TPessoa = class(TModelo)
-  private
-    FNome: string;
-    procedure SetNome(const Value: string);
-  public
-    property Nome: string read FNome write SetNome;
-  end;
-
   TUsuario = class(TPessoa)
   private
     FPermissoes: TClientDataSet;
@@ -264,13 +256,6 @@ end;
 procedure TPermissao.SetPermissao(const Value: string);
 begin
   FPermissao := Value;
-end;
-
-{ TPessoa }
-
-procedure TPessoa.SetNome(const Value: string);
-begin
-  FNome := Value;
 end;
 
 { TUsuario }

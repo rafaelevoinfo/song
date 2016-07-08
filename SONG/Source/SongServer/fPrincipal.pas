@@ -120,7 +120,6 @@ type
     FThreadBackup: TThreadBackup;
     FUltimaData: TDate;
     FHoraUltimoBackup: TDateTime;
-    FEfetuandoBackup: Boolean;
     procedure ppvIniciarFinalizarServidor(ipIniciar: Boolean);
 
     procedure ppvAtualizarStatus;
@@ -359,7 +358,6 @@ end;
 procedure TfrmPrincipal.tmrTempoTimer(Sender: TObject);
 var
   vaHoraAtual: TDateTime;
-  vaMinutoAtual: Integer;
 
 begin
   vaHoraAtual := Now;
@@ -371,72 +369,40 @@ begin
 
   FUltimaData := vaHoraAtual;
 
-//  if chkHabilitarBackup.Checked then
-//    begin
-//      if FEfetuandoBackup then
-//        Exit;
-//
-//      if (EditHoraBackup.Time <> 0) and (EditEnderecoBackup.Text <> '') and
-//        ((FHoraUltimoBackup = 0) or (DayOf(FHoraUltimoBackup) <> DayOf(vaHoraAtual)) or (HourOf(FHoraUltimoBackup) <> HourOf(vaHoraAtual)))
-//      then
-//        begin
-//          vaMinutoAtual := MinuteOf(vaHoraAtual);
-//          if (HourOf(vaHoraAtual) = HourOf(EditHoraBackup.Time)) then
-//            begin
-//              if (vaMinutoAtual >= MinuteOf(IncMinute(EditHoraBackup.Time, -5))) and
-//                (vaMinutoAtual <= MinuteOf(IncMinute(EditHoraBackup.Time, 5))) then
-//                begin
-//                  ppvEfetuarBackup;
-//                end;
-//            end;
-//        end;
-//    end;
-
 end;
 
 procedure TfrmPrincipal.ppvEfetuarBackup;
 var
   vaBackup: TBackup;
-  vaConn: TFDConnection;
 begin
-  FEfetuandoBackup := true;
   try
     statusBar.Panels[0].Text := 'Efetuando backup...';
     Application.ProcessMessages;
-    vaConn := TFDConnection.Create(nil);
+    vaBackup := TBackup.Create(dmPrincipal.conSong, dmPrincipal.FDPhysFBDriverLink1);
     try
-      vaConn.Params.Assign(dmPrincipal.conSong.Params);
-      vaBackup := TBackup.Create(dmPrincipal.conSong, dmPrincipal.FDPhysFBDriverLink1);
       try
-        try
-          vaBackup.EnderecoBackup := EditEnderecoBackup.Text;
-          vaBackup.EnderecoBackupRede := EditEnderecoBackupRede.Text;
-          if EditHostFtp.Text <> '' then
-            begin
-              vaBackup.Ftp.Host := EditHostFtp.Text;
-              vaBackup.Ftp.usuario := EditUsuarioFTP.Text;
-              vaBackup.Ftp.Senha := EditSenhaFTP.Text;
-              vaBackup.Ftp.Pasta := EditEnderecoBackupFTP.Text;
-            end;
+        vaBackup.EnderecoBackup := EditEnderecoBackup.Text;
+        vaBackup.EnderecoBackupRede := EditEnderecoBackupRede.Text;
+        if EditHostFtp.Text <> '' then
+          begin
+            vaBackup.Ftp.Host := EditHostFtp.Text;
+            vaBackup.Ftp.usuario := EditUsuarioFTP.Text;
+            vaBackup.Ftp.Senha := EditSenhaFTP.Text;
+            vaBackup.Ftp.Pasta := EditEnderecoBackupFTP.Text;
+          end;
 
-          vaBackup.ppuRealizarBackup;
+        vaBackup.ppuRealizarBackup;
 
-          FHoraUltimoBackup := Now;
-          lbHoraUltimoBackup.Caption := FormatDateTime('dd/mm/yyy hh:nn', FHoraUltimoBackup);
-        except
-          on E: Exception do
-            ppuAdicionarErroLog('Erro ao realizar o backup. Detalhes: ' + E.Message);
-        end;
-      finally
-        vaBackup.Free;
+        FHoraUltimoBackup := Now;
+        lbHoraUltimoBackup.Caption := FormatDateTime('dd/mm/yyy hh:nn', FHoraUltimoBackup);
+      except
+        on E: Exception do
+          ppuAdicionarErroLog('Erro ao realizar o backup. Detalhes: ' + E.Message);
       end;
     finally
-      vaConn.Close;
-      vaConn.Free;
+      vaBackup.Free;
     end;
   finally
-    FEfetuandoBackup := false;
-
     statusBar.Panels[0].Text := '';
     Application.ProcessMessages;
   end;
