@@ -12,7 +12,7 @@ uses
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
   Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList,
-  cxLocalization, uProvider;
+  cxLocalization, uProvider, System.Rtti, uProxyGenerator, Datasnap.DSProxy;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -43,18 +43,33 @@ type
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
   private
+    FInterceptorFuncoesGeral: TVirtualMethodInterceptor;
     FFuncoesGeral: TsmFuncoesGeralClient;
+
+    FInterceptorFuncoesAdministrativo: TVirtualMethodInterceptor;
     FFuncoesAdministrativo: TsmFuncoesAdministrativoClient;
+
+    FInterceptorFuncoesViveiro: TVirtualMethodInterceptor;
     FFuncoesViveiro: TSMFuncoesViveiroClient;
+
+    FInterceptorFuncoesFinanceiro: TVirtualMethodInterceptor;
     FFuncoesFinanceiro: TSMFuncoesFinanceiroClient;
+
+    FInterceptorFuncoesEstoque: TVirtualMethodInterceptor;
     FFuncoesEstoque: TSMFuncoesEstoqueClient;
+
+    FInterceptorFuncoesRelatorio: TVirtualMethodInterceptor;
     FFuncoesRelatorio: TsmFuncoesRelatorioClient;
+
+    FInterceptorFuncoesSistema: TVirtualMethodInterceptor;
     FFuncoesSistema: TsmFuncoesSistemaClient;
+
     procedure SetFuncoesSistema(const Value: TsmFuncoesSistemaClient);
+    function fpvGetProxyByClassName(ipClassName: String): TDSAdminClient;
 
     { Private declarations }
   public
-    procedure ppuConfigurarConexao( ipUsuario, ipSenha: String);
+    procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
@@ -70,6 +85,9 @@ var
 
 implementation
 
+uses
+  fReconexao;
+
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
@@ -79,7 +97,7 @@ implementation
 procedure TdmPrincipal.ApplicationEvents1Exception(Sender: TObject; E: Exception);
 begin
   if E is TPararExecucaoException then
-    Exit   //vamos ignorar, exception criada apenas parar o fluxo do programa
+    Exit // vamos ignorar, exception criada apenas parar o fluxo do programa
   else if E is TControlException then
     begin
       TUtils.fpuFocar(TControlException(E).Control);
@@ -98,18 +116,78 @@ begin
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
+var
+  vaProcOnException: TInterceptExceptionNotify;
 begin
   // desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
 
   cxLocalizer1.Active := True;
   cxLocalizer1.Locale := 1046; // Portugues Brasil
+
+
+  FInterceptorFuncoesGeral := TVirtualMethodInterceptor.Create(TsmFuncoesGeralClient);
+  FInterceptorFuncoesAdministrativo := TVirtualMethodInterceptor.Create(TsmFuncoesAdministrativoClient);
+  FInterceptorFuncoesViveiro := TVirtualMethodInterceptor.Create(TSMFuncoesViveiroClient);
+  FInterceptorFuncoesFinanceiro := TVirtualMethodInterceptor.Create(TSMFuncoesFinanceiroClient);
+  FInterceptorFuncoesEstoque := TVirtualMethodInterceptor.Create(TSMFuncoesEstoqueClient);
+  FInterceptorFuncoesRelatorio := TVirtualMethodInterceptor.Create(TsmFuncoesRelatorioClient);
+  FInterceptorFuncoesSistema := TVirtualMethodInterceptor.Create(TsmFuncoesSistemaClient);
+
+  vaProcOnException := procedure(Instance: TObject; Method: TRttiMethod; const Args: TArray<TValue>;
+      out RaiseException: Boolean; TheException: Exception; out Result: TValue)
+  var
+    vaClassName:String;
+    begin
+      if TfrmReconexao.fpuDetectarPerdaConexao(TheException) then
+        begin
+          vaClassName := Instance.ClassName;
+          TfrmReconexao.ppuIniciarReconexao;
+          RaiseException := false; // nao vai propagar a exception
+          Result := Method.Invoke(fpvGetProxyByClassName(vaClassName), Args); // chama o metodo novamente
+        end;
+    end;
+
+  FInterceptorFuncoesGeral.OnException := vaProcOnException;
+  FInterceptorFuncoesAdministrativo.OnException := vaProcOnException;
+  FInterceptorFuncoesViveiro.OnException := vaProcOnException;
+  FInterceptorFuncoesFinanceiro.OnException := vaProcOnException;
+  FInterceptorFuncoesEstoque.OnException := vaProcOnException;
+  FInterceptorFuncoesRelatorio.OnException := vaProcOnException;
+  FInterceptorFuncoesSistema.OnException := vaProcOnException;
+end;
+
+function TdmPrincipal.fpvGetProxyByClassName(ipClassName: String): TDSAdminClient;
+begin
+  if ipClassName = FFuncoesGeral.ClassName then
+    Result := FFuncoesGeral
+  else if ipClassName = FFuncoesAdministrativo.ClassName then
+    Result := FFuncoesAdministrativo
+  else if ipClassName = FFuncoesViveiro.ClassName then
+    Result := FFuncoesViveiro
+  else if ipClassName = FFuncoesFinanceiro.ClassName then
+    Result := FFuncoesFinanceiro
+  else if ipClassName = FFuncoesEstoque.ClassName then
+    Result := FFuncoesEstoque
+  else if ipClassName = FFuncoesRelatorio.ClassName then
+    Result := FFuncoesRelatorio
+  else if ipClassName = FFuncoesSistema.ClassName then
+    Result := FFuncoesSistema;
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 begin
   // volta o Beep do windows
   SystemParametersInfo(SPI_SETBEEP, 1, nil, SPIF_SENDWININICHANGE);
+
+  FInterceptorFuncoesGeral.Free;
+  FInterceptorFuncoesAdministrativo.Free;
+  FInterceptorFuncoesViveiro.Free;
+  FInterceptorFuncoesFinanceiro.Free;
+  FInterceptorFuncoesEstoque.Free;
+  FInterceptorFuncoesRelatorio.Free;
+  FInterceptorFuncoesSistema.Free;
+
   TInfoLogin.fpuGetInstance.Free;
   TModulos.fpuGetInstance.Free;
 end;
@@ -121,33 +199,61 @@ begin
   FFuncoesViveiro := TSMFuncoesViveiroClient.Create(DataSnapConn.DBXConnection);
   FFuncoesFinanceiro := TSMFuncoesFinanceiroClient.Create(DataSnapConn.DBXConnection);
   FFuncoesEstoque := TSMFuncoesEstoqueClient.Create(DataSnapConn.DBXConnection);
-  FFuncoesRelatorio := TSMFuncoesRelatorioClient.Create(DataSnapConn.DBXConnection);
-  FFuncoesSistema := TSMFuncoesSistemaClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesRelatorio := TsmFuncoesRelatorioClient.Create(DataSnapConn.DBXConnection);
+  FFuncoesSistema := TsmFuncoesSistemaClient.Create(DataSnapConn.DBXConnection);
 
+  FInterceptorFuncoesGeral.Proxify(FFuncoesGeral);
+  FInterceptorFuncoesAdministrativo.Proxify(FFuncoesAdministrativo);
+  FInterceptorFuncoesViveiro.Proxify(FFuncoesViveiro);
+  FInterceptorFuncoesFinanceiro.Proxify(FFuncoesFinanceiro);
+  FInterceptorFuncoesEstoque.Proxify(FFuncoesEstoque);
+  FInterceptorFuncoesRelatorio.Proxify(FFuncoesRelatorio);
+  FInterceptorFuncoesSistema.Proxify(FFuncoesSistema);
 end;
 
 procedure TdmPrincipal.DataSnapConnAfterDisconnect(Sender: TObject);
 begin
   if Assigned(FFuncoesGeral) then
-    FreeAndNil(FFuncoesGeral);
+    begin
+      FInterceptorFuncoesGeral.Unproxify(FFuncoesGeral);
+      FreeAndNil(FFuncoesGeral);
+    end;
 
   if Assigned(FFuncoesAdministrativo) then
-    FreeAndNil(FFuncoesAdministrativo);
+    begin
+      FInterceptorFuncoesAdministrativo.Unproxify(FFuncoesAdministrativo);
+      FreeAndNil(FFuncoesAdministrativo);
+    end;
 
   if Assigned(FFuncoesViveiro) then
-    FreeAndNil(FFuncoesViveiro);
+    begin
+      FInterceptorFuncoesViveiro.Unproxify(FFuncoesViveiro);
+      FreeAndNil(FFuncoesViveiro);
+    end;
 
   if Assigned(FFuncoesFinanceiro) then
-    FreeAndNil(FFuncoesFinanceiro);
+    begin
+      FInterceptorFuncoesFinanceiro.Unproxify(FFuncoesFinanceiro);
+      FreeAndNil(FFuncoesFinanceiro);
+    end;
 
   if Assigned(FFuncoesEstoque) then
-    FreeAndNil(FFuncoesEstoque);
+    begin
+      FInterceptorFuncoesEstoque.Unproxify(FFuncoesEstoque);
+      FreeAndNil(FFuncoesEstoque);
+    end;
 
   if Assigned(FFuncoesRelatorio) then
-    FreeAndNil(FFuncoesRelatorio);
+    begin
+      FInterceptorFuncoesRelatorio.Unproxify(FFuncoesRelatorio);
+      FreeAndNil(FFuncoesRelatorio);
+    end;
 
   if Assigned(FFuncoesSistema) then
-    FreeAndNil(FFuncoesSistema);
+    begin
+      FInterceptorFuncoesSistema.Unproxify(FFuncoesSistema);
+      FreeAndNil(FFuncoesSistema);
+    end;
 end;
 
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);

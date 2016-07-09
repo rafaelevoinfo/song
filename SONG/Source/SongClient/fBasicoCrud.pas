@@ -155,7 +155,7 @@ var
 implementation
 
 uses
-  fPessoa;
+  fPessoa, fReconexao;
 
 {$R *.dfm}
 
@@ -403,7 +403,7 @@ begin
   FModelo := ipModelo;
   { TODO -orafae -c :   Implementar comportamentos diferentes para cada tipo de modo de execucao 26/02/2016 23:14:38 }
   case ipModo of
-    meNormal,mePesquisaRealizada :
+    meNormal, mePesquisaRealizada:
       begin
         btnIncluir.Visible := True;
         btnUtilizar.Visible := False;

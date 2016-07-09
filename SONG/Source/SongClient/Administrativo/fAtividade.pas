@@ -221,7 +221,7 @@ var
 implementation
 
 uses
-  fProjeto;
+  fProjeto, fReconexao;
 
 {$R *.dfm}
 

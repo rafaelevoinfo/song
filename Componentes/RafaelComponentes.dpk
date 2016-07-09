@@ -39,12 +39,17 @@ requires
   DbxCommonDriver,
   dbexpress,
   DbxClientDriver,
-  DataSnapProviderClient;
+  DataSnapProviderClient,
+  vcl,
+  DataSnapClient,
+  DataSnapNativeClient,
+  CodeSiteExpressPkg;
 
 contains
   uClientDataSet in 'uClientDataSet.pas',
   uQuery in 'uQuery.pas',
   uConnection in 'uConnection.pas',
-  uProvider in 'uProvider.pas';
+  uProvider in 'uProvider.pas',
+  uProxyGenerator in 'uProxyGenerator.pas';
 
 end.

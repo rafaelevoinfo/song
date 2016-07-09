@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 08/07/2016 00:31:05
+// 09/07/2016 00:32:38
 //
 
 unit uFuncoes;
@@ -18,8 +18,8 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure qProjeto_RubricaCalcFields(DataSet: TDataSet); virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesGeralClient = class(TDSAdminClient)
@@ -34,12 +34,12 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuVerificarNovaVersao(ipVersaoAtual: string): string;
-    function fpuBaixarAtualizacao(ipVersao: string): TStream;
-    function fpuGetId(ipTabela: string): Integer;
-    function fpuDataHoraAtual: string;
-    function fpuTestarConexao: Boolean;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuVerificarNovaVersao(ipVersaoAtual: string): string; virtual;
+    function fpuBaixarAtualizacao(ipVersao: string): TStream; virtual;
+    function fpuGetId(ipTabela: string): Integer; virtual;
+    function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao: Boolean; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmLookupClient = class(TDSAdminClient)
@@ -49,7 +49,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesAdministrativoClient = class(TDSAdminClient)
@@ -69,17 +69,17 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuPermissoesUsuario(ipLogin: string): OleVariant;
-    function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipCpfCnpj: string): Boolean;
-    function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean;
-    function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean;
-    function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
-    function fpuInfoPessoa(ipLogin: string): TPessoa;
-    procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer);
-    function fpuValidarNomeCpfPessoa(ipIdPessoa: Integer; ipNome: string; ipCpf: string): Boolean;
-    function fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
-    function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: Integer): Double;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuPermissoesUsuario(ipLogin: string): OleVariant; virtual;
+    function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipCpfCnpj: string): Boolean; virtual;
+    function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean; virtual;
+    function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean; virtual;
+    function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean; virtual;
+    function fpuInfoPessoa(ipLogin: string): TPessoa; virtual;
+    procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer); virtual;
+    function fpuValidarNomeCpfPessoa(ipIdPessoa: Integer; ipNome: string; ipCpf: string): Boolean; virtual;
+    function fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double; virtual;
+    function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: Integer): Double; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFinanceiroClient = class(TDSAdminClient)
@@ -89,7 +89,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmViveiroClient = class(TDSAdminClient)
@@ -99,7 +99,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesViveiroClient = class(TDSAdminClient)
@@ -122,20 +122,20 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean;
-    function fpuValidarNomeCanteiro(ipId: Integer; ipNome: string): Boolean;
-    function fpuvalidarNomeCamaraFria(ipId: Integer; ipNome: string): Boolean;
-    procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
-    function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
-    function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
-    function fpuBuscarLotesSementes(ipIdCompra: Integer): string;
-    function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer;
-    procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
-    function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant;
-    function fpuGetId(ipTabela: string): Integer;
-    function fpuDataHoraAtual: string;
-    function fpuTestarConexao: Boolean;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean; virtual;
+    function fpuValidarNomeCanteiro(ipId: Integer; ipNome: string): Boolean; virtual;
+    function fpuvalidarNomeCamaraFria(ipId: Integer; ipNome: string): Boolean; virtual;
+    procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double); virtual;
+    function fpuBuscarLotesMudas(ipIdCompra: Integer): string; virtual;
+    function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer; virtual;
+    function fpuBuscarLotesSementes(ipIdCompra: Integer): string; virtual;
+    function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer; virtual;
+    procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer); virtual;
+    function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant; virtual;
+    function fpuGetId(ipTabela: string): Integer; virtual;
+    function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao: Boolean; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesFinanceiroClient = class(TDSAdminClient)
@@ -160,22 +160,22 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean;
-    function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean;
-    function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string;
-    function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string;
-    procedure ppuQuitarParcela(ipIdParcela: Integer; ipDataPagamento: string);
-    procedure ppuReabrirParcela(ipIdParcela: Integer);
-    procedure ppuReabrirTodasParcelasContaPagar(ipIdContaPagar: Integer);
-    procedure ppuReceberParcela(ipIdParcela: Integer);
-    procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer);
-    procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
-    function fpuSaldoRealRubrica(ipIdProjeto: Integer; ipIdRubrica: Integer): Double;
-    function fpuValidarCadastroRubricaProjeto(ipIdIgnorar: Integer; ipIdProjeto: Integer; ipIdRubrica: Integer): Boolean;
-    function fpuGetId(ipTabela: string): Integer;
-    function fpuDataHoraAtual: string;
-    function fpuTestarConexao: Boolean;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuVerificarDependenciasPlanoConta(ipIdentificador: string): Boolean; virtual;
+    function fpuVerificarDependenciasRubrica(ipIdentificador: string): Boolean; virtual;
+    function fpuGerarIdentificadorPlanoContas(ipIdConta: Integer): string; virtual;
+    function fpuGerarIdentificadorRubrica(ipIdRubrica: Integer): string; virtual;
+    procedure ppuQuitarParcela(ipIdParcela: Integer; ipDataPagamento: string); virtual;
+    procedure ppuReabrirParcela(ipIdParcela: Integer); virtual;
+    procedure ppuReabrirTodasParcelasContaPagar(ipIdContaPagar: Integer); virtual;
+    procedure ppuReceberParcela(ipIdParcela: Integer); virtual;
+    procedure ppuCancelarRecebimentoParcela(ipIdParcela: Integer); virtual;
+    procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer); virtual;
+    function fpuSaldoRealRubrica(ipIdProjeto: Integer; ipIdRubrica: Integer): Double; virtual;
+    function fpuValidarCadastroRubricaProjeto(ipIdIgnorar: Integer; ipIdProjeto: Integer; ipIdRubrica: Integer): Boolean; virtual;
+    function fpuGetId(ipTabela: string): Integer; virtual;
+    function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao: Boolean; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmEstoqueClient = class(TDSAdminClient)
@@ -188,10 +188,10 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure qSaida_ItemCalcFields(DataSet: TDataSet);
-    procedure qVenda_ItemCalcFields(DataSet: TDataSet);
-    procedure DSServerModuleDestroy(Sender: TObject);
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure qSaida_ItemCalcFields(DataSet: TDataSet); virtual;
+    procedure qVenda_ItemCalcFields(DataSet: TDataSet); virtual;
+    procedure DSServerModuleDestroy(Sender: TObject); virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesEstoqueClient = class(TDSAdminClient)
@@ -214,20 +214,20 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuValidarNomeItem(ipIdItem: Integer; ipNome: string): Boolean;
-    function fpuValidarNomeLocalUso(ipIdLocalUso: Integer; ipNome: string): Boolean;
-    function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean;
-    function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean;
-    function fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean;
-    function fpuBuscarItensEntrada(ipIdCompra: Integer): string;
-    function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer;
-    function fpuBuscarItensSaida(ipIdVenda: Integer): string;
-    function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
-    procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double);
-    function fpuGetId(ipTabela: string): Integer;
-    function fpuDataHoraAtual: string;
-    function fpuTestarConexao: Boolean;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuValidarNomeItem(ipIdItem: Integer; ipNome: string): Boolean; virtual;
+    function fpuValidarNomeLocalUso(ipIdLocalUso: Integer; ipNome: string): Boolean; virtual;
+    function fpuVerificarComprasJaGerada(ipIdSolicitacao: Integer): Boolean; virtual;
+    function fpuVerificarContaPagarJaGerada(ipIdCompra: Integer): Boolean; virtual;
+    function fpuVerificarContaReceberJaGerada(ipIdVenda: Integer): Boolean; virtual;
+    function fpuBuscarItensEntrada(ipIdCompra: Integer): string; virtual;
+    function fpuBuscarItemEntrada(ipIdCompraItem: Integer): Integer; virtual;
+    function fpuBuscarItensSaida(ipIdVenda: Integer): string; virtual;
+    function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer; virtual;
+    procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double); virtual;
+    function fpuGetId(ipTabela: string): Integer; virtual;
+    function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao: Boolean; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmRelatorioClient = class(TDSAdminClient)
@@ -237,7 +237,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesRelatorioClient = class(TDSAdminClient)
@@ -252,12 +252,12 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant;
-    function fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant;
-    function fpuGetId(ipTabela: string): Integer;
-    function fpuDataHoraAtual: string;
-    function fpuTestarConexao: Boolean;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant; virtual;
+    function fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant; virtual;
+    function fpuGetId(ipTabela: string): Integer; virtual;
+    function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao: Boolean; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmSistemaClient = class(TDSAdminClient)
@@ -267,7 +267,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure DSServerModuleCreate(Sender: TObject);
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesSistemaClient = class(TDSAdminClient)
@@ -282,12 +282,12 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean;
-    function fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>;
-    function fpuGetId(ipTabela: string): Integer;
-    function fpuDataHoraAtual: string;
-    function fpuTestarConexao: Boolean;
-    procedure DSServerModuleCreate(Sender: TObject);
+    function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean; virtual;
+    function fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>; virtual;
+    function fpuGetId(ipTabela: string): Integer; virtual;
+    function fpuDataHoraAtual: string; virtual;
+    function fpuTestarConexao: Boolean; virtual;
+    procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
 implementation

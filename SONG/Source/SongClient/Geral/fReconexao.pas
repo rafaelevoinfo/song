@@ -15,7 +15,6 @@ type
     lbQtdeTentativas: TLabel;
     btnFechar: TButton;
     tmrTempo: TTimer;
-    procedure FormShow(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure tmrTempoTimer(Sender: TObject);
   private
@@ -57,12 +56,6 @@ begin
   Abort;
 end;
 
-procedure TfrmReconexao.FormShow(Sender: TObject);
-begin
-  inherited;
-  lbQtdeTentativas.Caption := FQuantidadeTentativas.ToString;
-end;
-
 class function TfrmReconexao.fpuDetectarPerdaConexao(e: Exception): Boolean;
 begin
   Result := false;
@@ -80,6 +73,7 @@ end;
 
 procedure TfrmReconexao.pprAfterShow(var ipMsg: TMessage);
 begin
+  Application.ProcessMessages;
   ppvReconectar;
 end;
 
@@ -111,13 +105,13 @@ begin
     end;
 
     DMPrincipal.DataSnapConn.Open;
-    if DMPrincipal.FuncoesGeral.fpuTestarConexao then
-      Close
-    else
-      tmrTempo.Enabled := true;
+    DMPrincipal.FuncoesGeral.fpuTestarConexao;
+    Close
+
 
   except
     Inc(FQuantidadeTentativas);
+    lbQtdeTentativas.Caption := FQuantidadeTentativas.ToString();
     tmrTempo.Enabled := true;
   end;
 end;

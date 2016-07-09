@@ -48,14 +48,16 @@ inherited frmReconexao: TfrmReconexao
     Margins.Top = 20
     Align = alTop
     Alignment = taCenter
-    Caption = 'Quantidade de tentativas j'#225' realizadas'
+    Caption = 
+      'Quantidade de tentativas j'#225' realizadas (A cada 10 segundos '#233' fei' +
+      'ta uma nova tentativa)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitWidth = 206
+    ExplicitWidth = 480
   end
   object lbQtdeTentativas: TLabel
     Left = 0

@@ -30,7 +30,7 @@ object dmPrincipal: TdmPrincipal
   object ProxyGenerator: TDSProxyGenerator
     MetaDataProvider = DSConnectionMetaDataProvider1
     TargetUnitName = 'uFuncoes'
-    Writer = 'Object Pascal DBX'
+    Writer = 'Object Pascal DBX Customizado'
     Left = 152
     Top = 48
   end

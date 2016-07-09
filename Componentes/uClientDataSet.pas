@@ -185,8 +185,8 @@ procedure TRFClientDataSet.pprChecarReconexao;
 begin
   if FPerdeuConexao then
     begin
-      ppuDataRequest();
       FPerdeuConexao := false;
+      ppuDataRequest();
     end;
 end;
 
@@ -305,7 +305,9 @@ end;
 
 procedure TRFClientDataSet.SetActive(Value: Boolean);
 begin
-  pprChecarReconexao;
+  if Value then
+    pprChecarReconexao;
+
   try
     inherited;
   except
