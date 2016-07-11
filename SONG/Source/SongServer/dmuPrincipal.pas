@@ -172,11 +172,16 @@ procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 var
   vaConn: TFDConnection;
 begin
-  for vaConn in FConnections.Values do
-    begin
-      vaConn.Close;
-      vaConn.Free;
-    end;
+  FSyncro.BeginWrite;
+  try
+    for vaConn in FConnections.Values do
+      begin
+        vaConn.Close;
+        vaConn.Free;
+      end;
+  finally
+    FSyncro.EndWrite;
+  end;
 
   FConnections.Clear;
   FConnections.Free;

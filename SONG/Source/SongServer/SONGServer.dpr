@@ -1,6 +1,9 @@
 program SongServer;
 
 uses
+  {$IFDEF DEBUG}
+  FastMM4,
+  {$ENDIF}
   Vcl.Forms,
   Web.WebReq,
   IdHTTPWebBrokerBridge,
@@ -35,11 +38,12 @@ uses
 
 {$R *.res}
 
+{$IFDEF DEBUG}
+{$INCLUDE FastMM4Options.inc}
+{$ENDIF}
+
 
 begin
-{$IFDEF DEBUG}
-  ReportMemoryLeaksOnShutdown := true;
-{$ENDIF}
   Application.Initialize;
   Application.MainFormOnTaskbar := true;
   Application.CreateForm(TdmPrincipal, dmPrincipal);

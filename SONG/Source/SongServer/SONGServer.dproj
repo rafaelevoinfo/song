@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>SongServer.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -88,7 +88,6 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_ExeOutput>.\</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -97,7 +96,6 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Keys>FileVersion=1.0.2.17;ProductVersion=1.0.0.0</VerInfo_Keys>
         <VerInfo_Build>17</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -109,21 +107,17 @@
         </DelphiCompile>
         <DCCReference Include="fPrincipal.pas">
             <Form>frmPrincipal</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="dmuPrincipal.pas">
             <Form>dmPrincipal</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="smuBasico.pas">
             <Form>smBasico</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\smuAdministrativo.pas">
             <Form>smAdministrativo</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uTypes.pas"/>
@@ -131,84 +125,68 @@
         <DCCReference Include="..\Comuns\uRoles.pas"/>
         <DCCReference Include="ServerModules\smuLookup.pas">
             <Form>smLookup</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uUtils.pas"/>
         <DCCReference Include="ServerModules\smuFinanceiro.pas">
             <Form>smFinanceiro</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uControleAcesso.pas"/>
         <DCCReference Include="ServerModules\smuViveiro.pas">
             <Form>smViveiro</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uMensagem.pas">
             <Form>Mensagem</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="fAtualizacao.pas">
             <Form>frmAtualizacao</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesAdministrativo.pas">
             <Form>smFuncoesAdministrativo</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesBasico.pas">
             <Form>smFuncoesBasico</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesFinanceiro.pas">
             <Form>smFuncoesFinanceiro</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesGeral.pas">
             <Form>smFuncoesGeral</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesViveiro.pas">
             <Form>smFuncoesViveiro</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\smuEstoque.pas">
             <Form>smEstoque</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesEstoque.pas">
             <Form>smFuncoesEstoque</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\smuRelatorio.pas">
             <Form>smRelatorio</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesRelatorio.pas">
             <Form>smFuncoesRelatorio</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\aduna_ds_list.pas"/>
         <DCCReference Include="uBackup.pas"/>
         <DCCReference Include="ServerModules\smuSistema.pas">
             <Form>smSistema</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerModules\Funcoes\smuFuncoesSistema.pas">
             <Form>smFuncoesSistema</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uEnviarEmail.pas"/>
@@ -630,9 +608,9 @@
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
             </Deployment>
             <Platforms>
                 <Platform value="Win32">True</Platform>

@@ -6,7 +6,6 @@ inherited frmPrincipal: TfrmPrincipal
   Position = poMainFormCenter
   WindowState = wsMaximized
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   ExplicitWidth = 801
   ExplicitHeight = 446
   PixelsPerInch = 96
@@ -55,7 +54,6 @@ inherited frmPrincipal: TfrmPrincipal
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Text = 'Notifica'#231#245'es Diversas'
-        ExplicitWidth = 778
       end
       object btnAtualizar: TButton
         Left = 0
@@ -93,8 +91,6 @@ inherited frmPrincipal: TfrmPrincipal
         Title.Font.Style = []
         Title.IndentVert = 2
         Title.Text = 'Anivers'#225'rios'
-        ExplicitLeft = 484
-        ExplicitTop = 31
       end
     end
   end

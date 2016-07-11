@@ -202,7 +202,7 @@ end;
 procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   store.StoreTo();
-  ppvFinalizarThreadBackup;
+  ppvIniciarFinalizarServidor(false);
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);

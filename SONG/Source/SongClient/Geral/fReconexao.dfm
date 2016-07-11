@@ -1,10 +1,10 @@
 inherited frmReconexao: TfrmReconexao
   BorderIcons = []
   Caption = 'Reconectando...'
-  ClientHeight = 140
+  ClientHeight = 182
   ClientWidth = 533
   ExplicitWidth = 549
-  ExplicitHeight = 179
+  ExplicitHeight = 221
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -48,16 +48,14 @@ inherited frmReconexao: TfrmReconexao
     Margins.Top = 20
     Align = alTop
     Alignment = taCenter
-    Caption = 
-      'Quantidade de tentativas j'#225' realizadas (A cada 10 segundos '#233' fei' +
-      'ta uma nova tentativa)'
+    Caption = 'Quantidade de tentativas j'#225' realizadas'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitWidth = 480
+    ExplicitWidth = 206
   end
   object lbQtdeTentativas: TLabel
     Left = 0
@@ -67,11 +65,53 @@ inherited frmReconexao: TfrmReconexao
     Align = alTop
     Alignment = taCenter
     Caption = '00'
-    ExplicitWidth = 12
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ExplicitWidth = 14
+  end
+  object lbStatus: TLabel
+    AlignWithMargins = True
+    Left = 3
+    Top = 97
+    Width = 527
+    Height = 14
+    Margins.Top = 10
+    Align = alTop
+    Alignment = taCenter
+    Caption = 'Pr'#243'xima tentativa em'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    ExplicitLeft = 0
+    ExplicitTop = 87
+    ExplicitWidth = 116
+  end
+  object lbTempo: TLabel
+    Left = 0
+    Top = 111
+    Width = 533
+    Height = 13
+    Align = alTop
+    Alignment = taCenter
+    Caption = '10'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ExplicitWidth = 14
   end
   object btnFechar: TButton
-    Left = 200
-    Top = 90
+    Left = 202
+    Top = 134
     Width = 129
     Height = 45
     Caption = 'Fechar Sistema'
@@ -82,7 +122,6 @@ inherited frmReconexao: TfrmReconexao
   end
   object tmrTempo: TTimer
     Enabled = False
-    Interval = 10000
     OnTimer = tmrTempoTimer
     Left = 408
     Top = 88

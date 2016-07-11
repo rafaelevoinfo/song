@@ -139,7 +139,6 @@ type
     procedure Ac_Camara_FriaExecute(Sender: TObject);
     procedure btnAtualizarClick(Sender: TObject);
     procedure tmrAtualizacoesTimer(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure AlertWindowManagerClick(Sender: TObject;
       AAlertWindow: TdxAlertWindow);
   private
@@ -416,20 +415,12 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
-  dmLookup := TdmLookup.Create(nil);
+  dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
 
-  inherited;
-{$IFDEF DEBUG}
-  ReportMemoryLeaksOnShutdown := True;
-{$ENDIF}
-  Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
-end;
 
-procedure TfrmPrincipal.FormDestroy(Sender: TObject);
-begin
   inherited;
-  dmLookup.Free;
+  Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
 end;
 
 procedure TfrmPrincipal.pprAfterShow(var ipMsg: TMessage);

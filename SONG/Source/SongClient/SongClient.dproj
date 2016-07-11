@@ -111,29 +111,23 @@
         </DelphiCompile>
         <DCCReference Include="fPrincipal.pas">
             <Form>frmPrincipal</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="fBasico.pas">
             <Form>frmBasico</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="dmuPrincipal.pas">
             <Form>dmPrincipal</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="dmuBasico.pas">
             <Form>dmBasico</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="fSplash.pas">
             <Form>frmSplash</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="fLogin.pas">
             <Form>frmLogin</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\Comuns\uTypes.pas"/>
         <DCCReference Include="..\Comuns\uUsuario.pas"/>
@@ -142,189 +136,145 @@
         <DCCReference Include="..\Comuns\uExceptions.pas"/>
         <DCCReference Include="fBasicoCrud.pas">
             <Form>frmBasicoCrud</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="fBasicoCrudMasterDetail.pas">
             <Form>frmBasicoCrudMasterDetail</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Administrativo\fPerfil.pas">
             <Form>frmPerfil</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Administrativo\dmuAdministrativo.pas">
             <Form>dmAdministrativo</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uControleAcesso.pas"/>
         <DCCReference Include="Geral\dmuLookup.pas">
             <Form>dmLookup</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Administrativo\fPessoa.pas">
             <Form>frmPessoa</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Frames\fmGrids.pas">
             <Form>frameGrids</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="Administrativo\fOrganizacao.pas">
             <Form>frmOrganizacao</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Administrativo\fProjeto.pas">
             <Form>frmProjeto</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\dmuFinanceiro.pas">
             <Form>dmFinanceiro</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Financeiro\fBanco.pas">
             <Form>frmBanco</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Administrativo\fAtividade.pas">
             <Form>frmAtividade</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fEspecie.pas">
             <Form>frmEspecie</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\dmuViveiro.pas">
             <Form>dmViveiro</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Comuns\uMensagem.pas">
             <Form>Mensagem</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fFinanciador.pas">
             <Form>frmFinanciador</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fFornecedor.pas">
             <Form>frmFornecedor</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fMatriz.pas">
             <Form>frmMatriz</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fLote_Semente.pas">
             <Form>frmLoteSemente</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fCanteiro.pas">
             <Form>frmCanteiro</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fLote_Muda.pas">
             <Form>frmLoteMuda</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fPlano_Contas.pas">
             <Form>frmPlanoContas</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fRubrica.pas">
             <Form>frmRubrica</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fConta_Pagar.pas">
             <Form>frmContaPagar</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fConta_Receber.pas">
             <Form>frmContaReceber</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fCliente.pas">
             <Form>frmCliente</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Estoque\dmuEstoque.pas">
             <Form>dmEstoque</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Estoque\fItem.pas">
             <Form>frmItem</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Estoque\fEntrada.pas">
             <Form>frmEntrada</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Estoque\fCompra.pas">
             <Form>frmCompra</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Estoque\fSolicitacaoCompra.pas">
             <Form>frmSolicitacaoCompra</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Relatorios\fRelatorioBasico.pas">
             <Form>frmRelatorioBasico</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Relatorios\fRelatorioFinanceiro.pas">
             <Form>frmRelatorioFinanceiro</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Relatorios\dmuRelatorio.pas">
             <Form>dmRelatorio</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Estoque\fSaida.pas">
             <Form>frmSaida</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Financeiro\fTransferenciaFinanceira.pas">
             <Form>frmTransferenciaFinanceira</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Estoque\fVenda.pas">
             <Form>frmVenda</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fRelatorioViveiro.pas">
             <Form>frmRelatorioViveiro</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Estoque\fLocalUso.pas">
             <Form>frmLocalUso</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\Comuns\aduna_ds_list.pas"/>
         <DCCReference Include="Viveiro\fFamilia_Botanica.pas">
             <Form>frmFamiliaBotanica</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Sistema\dmuSistema.pas">
             <Form>dmSistema</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Sistema\fNotificacao.pas">
             <Form>frmNotificacao</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Viveiro\fCamara_Fria.pas">
             <Form>frmCamaraFria</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Geral\fReconexao.pas">
             <Form>frmReconexao</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -740,13 +690,13 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
             </Deployment>
             <Platforms>
                 <Platform value="Win32">True</Platform>

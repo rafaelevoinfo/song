@@ -118,7 +118,7 @@ end;
 
 function TRFClientDataSet.ApplyUpdates(MaxErrors: Integer): Integer;
 begin
-  // pprChecarReconexao;
+  pprChecarReconexao;
   try
     Result := inherited;
   except
@@ -186,7 +186,13 @@ begin
   if FPerdeuConexao then
     begin
       FPerdeuConexao := false;
-      ppuDataRequest();
+      if FParametros.Count > 0 then
+        ppuDataRequest()
+      else
+        begin
+          Close;
+          Open;
+        end;
     end;
 end;
 

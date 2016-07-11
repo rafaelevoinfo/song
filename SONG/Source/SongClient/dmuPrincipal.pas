@@ -105,7 +105,9 @@ begin
     end
   else
     begin
-      if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
+      if TfrmReconexao.fpuDetectarPerdaConexao(e) then
+        TfrmReconexao.ppuIniciarReconexao
+      else if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
         begin
           TMensagem.ppuShowException('Houve uma violação de chave estrangeira.' +
             'Caso esteja excluindo isso significa que o registro a ser excluído possui dependências, e por isso não pode ser excluído.', E);
@@ -179,6 +181,8 @@ procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 begin
   // volta o Beep do windows
   SystemParametersInfo(SPI_SETBEEP, 1, nil, SPIF_SENDWININICHANGE);
+
+  DataSnapConn.Close;
 
   FInterceptorFuncoesGeral.Free;
   FInterceptorFuncoesAdministrativo.Free;

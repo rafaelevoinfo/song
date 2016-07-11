@@ -15,6 +15,8 @@ type
     lbQtdeTentativas: TLabel;
     btnFechar: TButton;
     tmrTempo: TTimer;
+    lbStatus: TLabel;
+    lbTempo: TLabel;
     procedure btnFecharClick(Sender: TObject);
     procedure tmrTempoTimer(Sender: TObject);
   private
@@ -83,6 +85,10 @@ var
   vaProvider: TRFProviderConnection;
 begin
   inherited;
+  tmrTempo.Enabled := false;
+  lbTempo.Caption := 'Reconectando...';
+
+  Application.ProcessMessages;
   try
     for I := 0 to DMPrincipal.ComponentCount - 1 do
       begin
@@ -106,12 +112,12 @@ begin
 
     DMPrincipal.DataSnapConn.Open;
     DMPrincipal.FuncoesGeral.fpuTestarConexao;
-    Close
-
+    Close;
 
   except
     Inc(FQuantidadeTentativas);
     lbQtdeTentativas.Caption := FQuantidadeTentativas.ToString();
+    lbTempo.Caption := '10';
     tmrTempo.Enabled := true;
   end;
 end;
@@ -134,10 +140,19 @@ begin
 end;
 
 procedure TfrmReconexao.tmrTempoTimer(Sender: TObject);
+var
+  vaTempo: Integer;
 begin
   inherited;
-  tmrTempo.Enabled := false;
-  ppvReconectar;
+  vaTempo := StrToIntDef(lbTempo.Caption, 0);
+  if vaTempo = 0 then
+    ppvReconectar
+  else
+    begin
+      vaTempo := vaTempo - 1;
+      lbTempo.Caption := vaTempo.ToString();
+    end;
+
 end;
 
 end.
