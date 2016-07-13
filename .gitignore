@@ -35,3 +35,4 @@ SONG/Source/SongClient/SongClient.stat
 *.fbk
 *.tvsconfig
 SONG/Source/SongClient/SongClient_MemoryManager_EventLog.txt
+SONG/Source/SongServer/SongServer.rsm

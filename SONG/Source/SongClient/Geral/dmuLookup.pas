@@ -228,6 +228,10 @@ type
     dslkCamara_Fria: TDataSource;
     repLcbCamaraFria: TcxEditRepositoryLookupComboBoxItem;
     cdslkEspeciePESO_MEDIO_SEMENTE: TBCDField;
+    cdslkAgenda: TRFClientDataSet;
+    cdslkAgendaID: TIntegerField;
+    cdslkAgendaNOME: TStringField;
+    cdslkAgendaTIPO: TSmallintField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

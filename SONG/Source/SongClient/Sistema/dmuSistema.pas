@@ -21,6 +21,21 @@ type
     cdsNotificacao_PessoaNOTIFICACAO_EMAIL: TSmallintField;
     dsNotificacao: TDataSource;
     cdsNotificacaoVALOR_GATILHO: TBCDField;
+    cdsAgenda: TRFClientDataSet;
+    cdsAgendaID: TIntegerField;
+    cdsAgendaNOME: TStringField;
+    cdsAgendaTIPO: TSmallintField;
+    cdsAgendaID_PROJETO: TIntegerField;
+    cdsAgendaPROJETO: TStringField;
+    cdsAgenda_Pessoa: TRFClientDataSet;
+    cdsAgenda_PessoaID: TIntegerField;
+    cdsAgenda_PessoaID_AGENDA: TIntegerField;
+    cdsAgenda_PessoaID_PESSOA: TIntegerField;
+    cdsAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField;
+    cdsAgenda_PessoaNOME_PESSOA: TStringField;
+    dsAgenda: TDataSource;
+    cdsAgendaATIVO: TSmallintField;
+    cdsAgenda_Registro: TRFClientDataSet;
   private
     { Private declarations }
   public

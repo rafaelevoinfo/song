@@ -9,6 +9,7 @@ type
   TBancoDados = class
   public const
     coMacroWhere: string = 'WHERE';
+    coMacroAnd: string = 'AND';
     // campos comuns
     coId = 'ID';
     coNome = 'NOME';
@@ -171,10 +172,10 @@ type
     property DataAnalise: TDateTime read FDataAnalise write SetDataAnalise;
     property Status: Integer read FStatus write SetStatus;
     property Itens: String read FItens write SetItens;
-    property Solicitante:String read FSolicitante write SetSolicitante;
+    property Solicitante: String read FSolicitante write SetSolicitante;
   end;
 
-    TPessoa = class(TModelo)
+  TPessoa = class(TModelo)
   private
     FDataNascimento: TDateTime;
     FNome: string;
@@ -183,7 +184,7 @@ type
 
   public
     property Nome: string read FNome write SetNome;
-    property DataNascimento:TDateTime read FDataNascimento write SetDataNascimento;
+    property DataNascimento: TDateTime read FDataNascimento write SetDataNascimento;
   end;
 
   TNotificacao = class
@@ -244,6 +245,8 @@ type
 
   TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
     tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario);
+
+  TTipoAgenda = (taPessoal, taOutra);
 
 const
   // mensagens customizadas do windows

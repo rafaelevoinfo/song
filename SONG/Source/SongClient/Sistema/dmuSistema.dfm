@@ -7,8 +7,8 @@ inherited dmSistema: TdmSistema
     Params = <>
     ProviderName = 'dspqNotificacao'
     RemoteServer = dmPrincipal.ProviderSistema
-    Left = 200
-    Top = 112
+    Left = 296
+    Top = 48
     object cdsNotificacaoID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -46,7 +46,7 @@ inherited dmSistema: TdmSistema
     ProviderName = 'dspqNotificacao_Pessoa'
     RemoteServer = dmPrincipal.ProviderSistema
     RFApplyAutomatico = False
-    Left = 216
+    Left = 288
     Top = 192
     object cdsNotificacao_PessoaID: TIntegerField
       FieldName = 'ID'
@@ -84,5 +84,95 @@ inherited dmSistema: TdmSistema
     DataSet = cdsNotificacao
     Left = 288
     Top = 112
+  end
+  object cdsAgenda: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqAgenda'
+    RemoteServer = dmPrincipal.ProviderSistema
+    Left = 72
+    Top = 64
+    object cdsAgendaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsAgendaNOME: TStringField
+      DisplayLabel = 'Nome da Agenda'
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsAgendaTIPO: TSmallintField
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      Required = True
+    end
+    object cdsAgendaID_PROJETO: TIntegerField
+      DisplayLabel = 'Id do Projeto'
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsAgendaPROJETO: TStringField
+      DisplayLabel = 'Projeto'
+      FieldName = 'PROJETO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsAgendaATIVO: TSmallintField
+      DisplayLabel = 'Ativo'
+      FieldName = 'ATIVO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object cdsAgenda_Pessoa: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_AGENDA'
+    MasterFields = 'ID'
+    MasterSource = dsAgenda
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqAgenda_Pessoa'
+    RemoteServer = dmPrincipal.ProviderSistema
+    Left = 72
+    Top = 192
+    object cdsAgenda_PessoaID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsAgenda_PessoaID_AGENDA: TIntegerField
+      DisplayLabel = 'Id da Agenda'
+      FieldName = 'ID_AGENDA'
+      Required = True
+    end
+    object cdsAgenda_PessoaID_PESSOA: TIntegerField
+      DisplayLabel = 'Id da Pessoa'
+      FieldName = 'ID_PESSOA'
+      Required = True
+    end
+    object cdsAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Apenas Visualiza'#231#227'o'
+      FieldName = 'SOMENTE_VISUALIZACAO'
+      Required = True
+    end
+    object cdsAgenda_PessoaNOME_PESSOA: TStringField
+      DisplayLabel = 'Nome da Pessoa'
+      FieldName = 'NOME_PESSOA'
+      Size = 100
+    end
+  end
+  object dsAgenda: TDataSource
+    DataSet = cdsAgenda
+    Left = 72
+    Top = 128
+  end
+  object cdsAgenda_Registro: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqAgenda_Registro'
+    RemoteServer = dmPrincipal.ProviderSistema
+    Left = 168
+    Top = 208
   end
 end

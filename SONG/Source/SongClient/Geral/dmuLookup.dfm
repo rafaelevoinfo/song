@@ -1,6 +1,5 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
-  OnCreate = DataModuleCreate
   Height = 905
   Width = 1015
   object Repositorio: TcxEditRepository
@@ -1777,5 +1776,36 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkCamara_Fria
     Left = 440
     Top = 792
+  end
+  object cdslkAgenda: TRFClientDataSet
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_PESSOA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqlkAgenda'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 536
+    Top = 776
+    object cdslkAgendaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkAgendaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdslkAgendaTIPO: TSmallintField
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = []
+      Required = True
+    end
   end
 end

@@ -75,7 +75,7 @@ type
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda,vivFamiliaBotanica,vivCamaraFria);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
   estSaida, estVenda, estLocalUso);
-  TPermissaoSistema = (sisNotificacao);
+  TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento);
 
 implementation
 
@@ -161,6 +161,8 @@ begin
 
   vaPermissoes := TList<TPermissao>.Create;
   plAddSistema(sisNotificacao, 'Notificações');
+  plAddSistema(sisAgenda, 'Cadastro de Agendas');
+  plAddSistema(sisAgendamento, 'Agendas');
   FItems.Add('Sistema', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;

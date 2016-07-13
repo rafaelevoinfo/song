@@ -76,6 +76,7 @@ type
     procedure Ac_AlterarUpdate(Sender: TObject);
     procedure Ac_ExcluirUpdate(Sender: TObject);
   private
+    FPesquisaRealizada:Boolean;
     FPesquisaPadrao: Integer;
     FModoExecucao: TModoExecucao;
     FIdEscolhido: Integer;
@@ -335,13 +336,11 @@ begin
 
   inherited;
   // se for mePesquisa significa que ja fez a pesquisa antes de dar show na tela
-  if ModoExecucao <> mePesquisaRealizada then
+  if not FPesquisaRealizada then
     begin
       pprRealizarPesquisaInicial;
       if FModoExecucao = meSomenteCadastro then
-        ppuIncluir
-      else if (FModoExecucao = meSomenteEdicao) and Assigned(FModelo) then
-        ppuAlterar(FModelo.Id);
+        ppuIncluir;
     end;
 
   FShowExecutado := True;
@@ -716,6 +715,8 @@ begin
   pprValidarPesquisa;
   pprCarregarParametrosPesquisa(dsMaster.DataSet as TRFClientDataSet);
   pprEfetuarPesquisa;
+
+  FPesquisaRealizada := true;
 end;
 
 procedure TfrmBasicoCrud.ppuRetornar(ipAtualizar: Boolean);

@@ -1,11 +1,17 @@
 inherited frmOrganizacao: TfrmOrganizacao
-  ActiveControl = cbPessoa
+  ActiveControl = EditNome
   Caption = 'Organiza'#231#245'es'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox

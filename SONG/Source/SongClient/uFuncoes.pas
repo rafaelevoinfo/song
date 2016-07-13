@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 09/07/2016 00:32:38
+// 13/07/2016 00:35:44
 //
 
 unit uFuncoes;
@@ -274,6 +274,7 @@ type
   private
     FfpuValidarTipoNotificacaoCommand: TDBXCommand;
     FfpuVerificarNotificacoesCommand: TDBXCommand;
+    FppuCriarAgendaPessoalCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -284,6 +285,7 @@ type
     destructor Destroy; override;
     function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean; virtual;
     function fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipEnviarEmail: Boolean): TadsObjectlist<uTypes.TNotificacao>; virtual;
+    procedure ppuCriarAgendaPessoal(ipIdPessoa: Integer); virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -1926,6 +1928,19 @@ begin
     Result := nil;
 end;
 
+procedure TsmFuncoesSistemaClient.ppuCriarAgendaPessoal(ipIdPessoa: Integer);
+begin
+  if FppuCriarAgendaPessoalCommand = nil then
+  begin
+    FppuCriarAgendaPessoalCommand := FDBXConnection.CreateCommand;
+    FppuCriarAgendaPessoalCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuCriarAgendaPessoalCommand.Text := 'TsmFuncoesSistema.ppuCriarAgendaPessoal';
+    FppuCriarAgendaPessoalCommand.Prepare;
+  end;
+  FppuCriarAgendaPessoalCommand.Parameters[0].Value.SetInt32(ipIdPessoa);
+  FppuCriarAgendaPessoalCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesSistemaClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -2008,6 +2023,7 @@ destructor TsmFuncoesSistemaClient.Destroy;
 begin
   FfpuValidarTipoNotificacaoCommand.DisposeOf;
   FfpuVerificarNotificacoesCommand.DisposeOf;
+  FppuCriarAgendaPessoalCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

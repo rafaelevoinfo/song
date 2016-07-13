@@ -19,7 +19,8 @@ uses
   cxNavigator, cxGridCardView, cxGridDBCardView, dxLayoutContainer,
   cxGridCustomView, cxGridCustomTableView, cxGridCustomLayoutView,
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
-  dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup;
+  dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
+  fAgendamento;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -103,6 +104,10 @@ type
     tmrAtualizacoes: TTimer;
     AlertWindowManager: TdxAlertWindowManager;
     TileControlAniversario: TdxTileControl;
+    Ac_Agenda: TAction;
+    Agendas1: TMenuItem;
+    Ac_Agendamento: TAction;
+    Agendas2: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -141,6 +146,8 @@ type
     procedure tmrAtualizacoesTimer(Sender: TObject);
     procedure AlertWindowManagerClick(Sender: TObject;
       AAlertWindow: TdxAlertWindow);
+    procedure Ac_AgendaExecute(Sender: TObject);
+    procedure Ac_AgendamentoExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -165,6 +172,18 @@ procedure TfrmPrincipal.Ac_Plano_ContasExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmPlanoContas>(pcPrincipal, TfrmPlanoContas, frmPlanoContas);
+end;
+
+procedure TfrmPrincipal.Ac_AgendaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmAgenda>(pcPrincipal, TFrmAgenda, frmAgenda);
+end;
+
+procedure TfrmPrincipal.Ac_AgendamentoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmAgendamento>(pcPrincipal, TfrmAgendamento, frmAgendamento);
 end;
 
 procedure TfrmPrincipal.Ac_AtividadeExecute(Sender: TObject);
@@ -313,6 +332,10 @@ begin
     vaPessoa.Nome := TInfoLogin.fpuGetInstance.Usuario.Nome;
 
     vaFrmPessoa.ppuConfigurarModoExecucao(meSomenteEdicao, vaPessoa);
+    vaFrmPessoa.ppuConfigurarPesquisa(Ord(tppId),vaPessoa.Id.ToString());
+    vaFrmPessoa.ppuPesquisar;
+
+    vaFrmPessoa.ppuAlterar(vaPessoa.Id);
     vaFrmPessoa.ShowModal;
 
   finally

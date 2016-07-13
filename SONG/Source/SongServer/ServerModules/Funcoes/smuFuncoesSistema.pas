@@ -17,6 +17,7 @@ type
   public
     function fpuValidarTipoNotificacao(ipIdNotificacao, ipTipo: integer): Boolean;
     function fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipEnviarEmail: Boolean): TadsObjectlist<TNotificacao>;
+    procedure ppuCriarAgendaPessoal(ipIdPessoa: integer);
   end;
 
 var
@@ -531,6 +532,37 @@ begin
     vaDataSet.close;
     vaDataSet.Free;
   end;
+end;
+
+procedure TsmFuncoesSistema.ppuCriarAgendaPessoal(ipIdPessoa: integer);
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    var
+      vaId: integer;
+    begin
+      ipDataSet.SQL.Text := 'select Pessoa.Nome, ' +
+        '                           Agenda.Nome as Nome_Agenda, ' +
+        '                           Agenda.Tipo ' +
+        ' from Pessoa ' +
+        ' left join Agenda_Pessoa on (Agenda_Pessoa.Id_Pessoa = Pessoa.Id) ' +
+        ' left join Agenda on (Agenda.Id = Agenda_Pessoa.Id_Agenda) ' +
+        ' where Pessoa.Id = :Id_Pessoa';
+      ipDataSet.ParamByName('ID_PESSOA').AsInteger := ipIdPessoa;
+      ipDataSet.Open;
+
+      if not ipDataSet.Locate('TIPO', Ord(taPessoal), []) then
+        begin
+          vaId := fpuGetId('AGENDA');
+
+          Connection.ExecSQL('insert into Agenda (Agenda.Id, Agenda.Nome, Agenda.Tipo, Agenda.ativo) ' +
+            'values (:ID, :NOME, :TIPO,0)', [vaId, 'Agenda Pessoal - ' + ipDataSet.FieldByName('NOME').AsString, Ord(taPessoal)]);
+
+          Connection.ExecSQL('insert into Agenda_Pessoa (Agenda_Pessoa.Id, Agenda_Pessoa.Id_Agenda, Agenda_Pessoa.Id_Pessoa) '+
+            'values (next value for Gen_Agenda_Pessoa, :Id_Agenda, :Id_Pessoa)', [vaId, ipIdPessoa]);
+        end;
+
+    end);
 end;
 
 function TsmFuncoesSistema.fpuValidarTipoNotificacao(ipIdNotificacao,

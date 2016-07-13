@@ -142,7 +142,7 @@ begin
   inherited;
   if dmAdministrativo.cdsPessoa.Active and (dmAdministrativo.cdsPessoa.RecordCount > 0) then
     begin
-      if dmAdministrativo.cdsPessoaATIVO.AsInteger = 0 then
+      if dmAdministrativo.cdsPessoaATIVO.AsInteger = coRegistroAtivo then
         AViewInfo.Text := 'Inativar'
       else
         AViewInfo.Text := 'Ativar';
@@ -163,6 +163,8 @@ begin
 
   dmLookup.cdslkPerfil.Open;
   ppvCarregarTipos;
+  if not dmPrincipal.cdslkCidade.Active then
+    dmPrincipal.cdslkCidade.Open;
 
   ppvConfigurarGrids;
 end;

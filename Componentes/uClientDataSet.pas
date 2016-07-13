@@ -11,6 +11,7 @@ type
   public const
     coTodos: string = 'TODOS';
     coID: string = 'ID';
+    coIdPai: string = 'ID_PAI';
     coNome: string = 'NOME';
     coData: string = 'DATA';
     coActive: string = 'ACTIVE';

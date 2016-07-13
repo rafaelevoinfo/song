@@ -13,6 +13,8 @@ uses
   uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery, System.Variants, uUtils;
 
 type
+  TTipoMacro = (tmWhere, tmAnd);
+
   TsmBasico = class(TDSServerModule)
     qAux: TRFQuery;
     procedure DSServerModuleCreate(Sender: TObject);
@@ -27,7 +29,7 @@ type
   protected
     procedure pprCriarProvider(ipDataSet: TFDQuery); virtual;
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; virtual;
-    function fprAjustarWhere(ipWhere: string): string; virtual;
+    function fprAjustarValorMacro(ipValor: string; ipTipo: TTipoMacro): string; virtual;
     function fprGetNomeTabela(ipProvider: TDataSetProvider): string;
 
     procedure pprCriarDataSet(var opDataSet: TRFQuery);
@@ -35,7 +37,7 @@ type
     procedure pprEncapsularConsulta(ipProc: TProc<TRFQuery>);
 
     function fprValidarCampoUnico(ipTabela, ipCampo: string; ipIdIgnorar: integer; ipValor: String): Boolean;
-    function fprValidarCamposUnicos(ipTabela:String; ipCampos,ipValores: TArray<String>; ipIdIgnorar: integer): Boolean;
+    function fprValidarCamposUnicos(ipTabela: String; ipCampos, ipValores: TArray<String>; ipIdIgnorar: integer): Boolean;
 
   public
     property Connection: TFDConnection read GetConnection write SetConnection;
@@ -124,8 +126,9 @@ function TsmBasico.fpvOnDataRequest(ipSender: TObject; ipInput: OleVariant): Ole
 var
   vaParams: TParams;
   vaDataSet: TFDQuery;
-  vaWhere, vaTabela, vaNomeMacro: string;
-  vaMacroWhere: TFDMacro;
+  vaValorMacro, vaTabela: string;
+  vaMacro: TFDMacro;
+  vaAchouMacro: Boolean;
 begin
   vaParams := TParams.Create;
   try
@@ -135,20 +138,32 @@ begin
       // voltando o SQL Original
       if ipSender is TDataSetProvider and Assigned(TDataSetProvider(ipSender).DataSet) then
         begin
+          vaAchouMacro := false;
           vaDataSet := TDataSetProvider(ipSender).DataSet as TFDQuery;
-          vaMacroWhere := vaDataSet.FindMacro(TBancoDados.coMacroWhere);
-          if Assigned(vaMacroWhere) then // and FScriptsOriginais.TryGetValue(vaDataSet.Name, vaScript) then
-            begin
-              vaNomeMacro := vaMacroWhere.Name;
-              // vaDataSet.SQL.Text := vaScript;
-              vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
-              vaWhere := fpvMontarWhere(vaTabela, vaParams);
 
-              vaWhere := fprAjustarWhere(vaWhere);
-              // estou usando o MacroByName para tentar evitar o bug do AV
-              vaDataSet.MacroByName(vaNomeMacro).AsRaw := vaWhere;
-              vaDataSet.Prepare;
+          vaTabela := fprGetNomeTabela(TDataSetProvider(ipSender)).ToUpper;
+          vaMacro := vaDataSet.FindMacro(TBancoDados.coMacroWhere);
+          if Assigned(vaMacro) then
+            begin
+              vaAchouMacro := true;
+              vaValorMacro := fpvMontarWhere(vaTabela, vaParams);
+
+              vaValorMacro := fprAjustarValorMacro(vaValorMacro, tmWhere);
+              vaMacro.AsRaw := vaValorMacro;
             end;
+
+          vaMacro := vaDataSet.FindMacro(TBancoDados.coMacroAnd);
+          if Assigned(vaMacro) then
+            begin
+              vaAchouMacro := true;
+              vaValorMacro := fpvMontarWhere(vaTabela, vaParams);
+
+              vaValorMacro := fprAjustarValorMacro(vaValorMacro, tmAnd);
+              vaMacro.AsRaw := vaValorMacro;
+            end;
+
+          if vaAchouMacro then
+            vaDataSet.Prepare;
         end;
     except
       on E: Exception do
@@ -171,14 +186,23 @@ begin
   Result := FConnection;
 end;
 
-function TsmBasico.fprAjustarWhere(ipWhere: string): string;
+function TsmBasico.fprAjustarValorMacro(ipValor: string; ipTipo: TTipoMacro): string;
 begin
-  Result := ipWhere;
-  if ipWhere.Trim <> '' then
+  Result := ipValor;
+  if ipValor.Trim <> '' then
     begin
-      // vamos adicionar o where e remover o ultimo and
-      if not TRegEx.IsMatch(ipWhere, 'where ', [roIgnoreCase]) then
-        Result := ' where ' + ipWhere;
+      if ipTipo = tmWhere then
+        begin
+          // vamos adicionar o where e remover o ultimo and
+          if not TRegEx.IsMatch(ipValor, 'where ', [roIgnoreCase]) then
+            Result := ' where ' + ipValor;
+        end
+      else
+        begin
+          // vamos adicionar o where e remover o ultimo and
+          if not TRegEx.IsMatch(ipValor, 'and ', [roIgnoreCase]) then
+            Result := ' and ' + ipValor;
+        end;
       // remove o ultimo AND ou OR
       Result := TRegEx.Replace(Result, '((and)|(or))\s*$', '', [roIgnoreCase]);
     end;
@@ -224,7 +248,7 @@ begin
     end;
 end;
 
-function TsmBasico.fprValidarCamposUnicos(ipTabela:String; ipCampos,ipValores: TArray<String>;
+function TsmBasico.fprValidarCamposUnicos(ipTabela: String; ipCampos, ipValores: TArray<String>;
   ipIdIgnorar: integer): Boolean;
 var
   vaResult: Boolean;
@@ -238,7 +262,7 @@ begin
       ipDataSet.SQL.Text := 'select ID ' +
         ' from  ' + ipTabela +
         ' where ID <> :ID ';
-        
+
       for I := 0 to High(ipCampos) do
         begin
           ipDataSet.SQL.Text := ipDataSet.SQL.Text + ' and ' + ipCampos[I] + ' = ' + QuotedStr(ipValores[I]);

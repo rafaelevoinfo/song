@@ -143,6 +143,10 @@ type
     qlkCamara_FriaID: TIntegerField;
     qlkCamara_FriaNOME: TStringField;
     qlkEspeciePESO_MEDIO_SEMENTE: TBCDField;
+    qlkAgenda: TRFQuery;
+    qlkAgendaID: TIntegerField;
+    qlkAgendaNOME: TStringField;
+    qlkAgendaTIPO: TSmallintField;
   private
     { Private declarations }
   protected

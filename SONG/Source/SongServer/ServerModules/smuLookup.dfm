@@ -1117,4 +1117,43 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkAgenda: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Agenda.Id,'
+      '                Agenda.Nome,'
+      '                Agenda.Tipo'
+      'from Agenda'
+      'left join Agenda_Pessoa on (Agenda_Pessoa.Id_Agenda = Agenda.Id)'
+      
+        'where (Agenda_Pessoa.Id_Pessoa = :Id_Pessoa) or (Agenda.Tipo = 0' +
+        ')  ')
+    Left = 616
+    Top = 360
+    ParamData = <
+      item
+        Name = 'ID_PESSOA'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qlkAgendaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkAgendaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qlkAgendaTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
 end

@@ -205,11 +205,17 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object Sistema1: TMenuItem
       Caption = 'Sistema'
-      object MeusDados1: TMenuItem
-        Action = Ac_Meus_Dados
+      object Agendas1: TMenuItem
+        Action = Ac_Agenda
+      end
+      object Agendas2: TMenuItem
+        Action = Ac_Agendamento
       end
       object ConfiguraodeNotificaes1: TMenuItem
         Action = Ac_Notificacao
+      end
+      object MeusDados1: TMenuItem
+        Action = Ac_Meus_Dados
       end
     end
   end
@@ -375,6 +381,16 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Viveiro'
       Caption = 'C'#226'mara Fria'
       OnExecute = Ac_Camara_FriaExecute
+    end
+    object Ac_Agenda: TAction
+      Category = 'Sistema'
+      Caption = 'Cadastro de Agendas'
+      OnExecute = Ac_AgendaExecute
+    end
+    object Ac_Agendamento: TAction
+      Category = 'Sistema'
+      Caption = 'Agendamentos'
+      OnExecute = Ac_AgendamentoExecute
     end
   end
   object dxSkinController1: TdxSkinController
