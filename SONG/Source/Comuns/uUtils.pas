@@ -44,9 +44,11 @@ type
     class function fpuValidarCpf(ipCpf: string): Boolean;
     class function fpuValidarCnpj(ipCnpj: string): Boolean;
 
-    class function fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer):Double;
+    class function fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer): Double;
 
-    class function fpuEncapsularPanelForm(ipCaption:string; ipPanel:TPanel):TForm;
+    class function fpuEncapsularPanelForm(ipCaption: string; ipPanel: TPanel): TForm;
+
+    class function fpuMontarDataBetween(ipDataInicial, ipDataFinal: TDateTime): String;
   end;
 
 const
@@ -56,7 +58,6 @@ const
 implementation
 
 { TUtils }
-
 
 class function TUtils.fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer): Double;
 var
@@ -104,7 +105,7 @@ var
 begin
   opOperador := TOperadores.coAnd;
 
-  vaArray := TRegEx.Split(ipInput, ipDelimitador);
+  vaArray := TRegex.Split(ipInput, ipDelimitador);
   opValor := vaArray[0];
   if Length(vaArray) > 1 then
     opOperador := vaArray[1];
@@ -115,7 +116,7 @@ class procedure TUtils.ppuExtrairValorParametro(ipInput: string;
 var
   vaArray: TArray<string>;
 begin
-  vaArray := TRegEx.Split(ipInput, ipDelimitador);
+  vaArray := TRegex.Split(ipInput, ipDelimitador);
   opValor := vaArray[0];
 end;
 
@@ -124,7 +125,7 @@ var
   vaArray: TArray<string>;
   I: Integer;
 begin
-  vaArray := TRegEx.Split(ipValor, coDelimitadorPadrao);
+  vaArray := TRegex.Split(ipValor, coDelimitadorPadrao);
   SetLength(Result, Length(vaArray));
   for I := 0 to High(vaArray) do
     begin
@@ -250,22 +251,22 @@ end;
 
 class function TUtils.fpuValidarCnpj(ipCnpj: string): Boolean;
 begin
-  Result := TRegEx.IsMatch(ipCnpj,coRegexCNPJ);
+  Result := TRegex.IsMatch(ipCnpj, coRegexCNPJ);
 end;
 
 class function TUtils.fpuValidarCpf(ipCpf: string): Boolean;
 begin
-  Result := TRegEx.IsMatch(ipCpf,coRegexCPF);
+  Result := TRegex.IsMatch(ipCpf, coRegexCPF);
 end;
 
 class function TUtils.fpuValidarCpfCnpj(ipCpfCnpj: string): Boolean;
 begin
-  Result := TRegEx.IsMatch(ipCpfCnpj, '(' + coRegexCPF + ')|(' + coRegexCNPJ + ')');
+  Result := TRegex.IsMatch(ipCpfCnpj, '(' + coRegexCPF + ')|(' + coRegexCNPJ + ')');
 end;
 
 class function TUtils.fpuValidarEmail(ipEmail: String): Boolean;
 begin
-  Result := TRegEx.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
+  Result := TRegex.IsMatch(ipEmail, '^([0-9a-zA-Z][-\._0-9a-zA-Z]*@' +
     '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$');
 end;
 
@@ -334,13 +335,13 @@ begin
 
 end;
 
-class function TUtils.fpuEncapsularPanelForm(ipCaption:string;ipPanel: TPanel): TForm;
+class function TUtils.fpuEncapsularPanelForm(ipCaption: string; ipPanel: TPanel): TForm;
 begin
   Result := TForm.Create(nil);
   Result.Caption := ipCaption;
-  Result.KeyPreview := True;
+  Result.KeyPreview := true;
   ipPanel.Parent := Result;
-  ipPanel.Visible := True;
+  ipPanel.Visible := true;
   ipPanel.Top := 0;
   ipPanel.Left := 0;
   ipPanel.bevelOuter := bvNone;
@@ -359,7 +360,7 @@ ipPosicao: Integer): TDateTime;
 var
   vaDatas: TArray<string>;
 begin
-  vaDatas := TRegEx.Split(ipDateString, ';', [roIgnoreCase]);
+  vaDatas := TRegex.Split(ipDateString, ';', [roIgnoreCase]);
   if ipPosicao < Length(vaDatas) then
     begin
       if not TryStrToDateTime(vaDatas[ipPosicao], Result) then
@@ -367,6 +368,11 @@ begin
     end
   else
     raise Exception.Create('Posição inválida.');
+end;
+
+class function TUtils.fpuMontarDataBetween(ipDataInicial, ipDataFinal: TDateTime): String;
+begin
+  Result := DateToStr(ipDataInicial) + ';' + DateToStr(ipDataFinal);
 end;
 
 class function TUtils.fpuExtrairValoresCheckComboBox(ipCheckBox: TcxCheckComboBox): string;
@@ -383,7 +389,7 @@ begin
         vaCodigosProjetos.Delimiter := coDelimitadorPadrao;
         vaCodigosProjetos.StrictDelimiter := true;
 
-        vaIndices := TRegEx.Split(Copy(ipCheckBox.EditValue, Pos(';', ipCheckBox.EditValue) + 1, Length(ipCheckBox.EditValue)), ',', [roIgnoreCase]);
+        vaIndices := TRegex.Split(Copy(ipCheckBox.EditValue, Pos(';', ipCheckBox.EditValue) + 1, Length(ipCheckBox.EditValue)), ',', [roIgnoreCase]);
         for I := 0 to High(vaIndices) do
           begin
             vaCodigosProjetos.Add(ipCheckBox.Properties.Items[vaIndices[I].ToInteger].Tag.ToString());
@@ -405,7 +411,7 @@ begin
   Result := '';
   for I := Low(ipValor) to High(ipValor) do
     begin
-      if TRegEx.IsMatch(ipValor[I], '\d', []) then
+      if TRegex.IsMatch(ipValor[I], '\d', []) then
         Result := Result + ipValor[I];
     end;
 end;

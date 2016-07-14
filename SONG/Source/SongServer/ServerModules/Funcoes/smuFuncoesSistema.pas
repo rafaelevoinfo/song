@@ -556,10 +556,10 @@ begin
           vaId := fpuGetId('AGENDA');
 
           Connection.ExecSQL('insert into Agenda (Agenda.Id, Agenda.Nome, Agenda.Tipo, Agenda.ativo) ' +
-            'values (:ID, :NOME, :TIPO,0)', [vaId, 'Agenda Pessoal - ' + ipDataSet.FieldByName('NOME').AsString, Ord(taPessoal)]);
+            'values (:ID, :NOME, :TIPO,0)', [vaId, 'Agenda Pessoal', Ord(taPessoal)]);
 
-          Connection.ExecSQL('insert into Agenda_Pessoa (Agenda_Pessoa.Id, Agenda_Pessoa.Id_Agenda, Agenda_Pessoa.Id_Pessoa) '+
-            'values (next value for Gen_Agenda_Pessoa, :Id_Agenda, :Id_Pessoa)', [vaId, ipIdPessoa]);
+          Connection.ExecSQL('insert into Agenda_Pessoa (Agenda_Pessoa.Id, Agenda_Pessoa.Id_Agenda, Agenda_Pessoa.Id_Pessoa, Agenda_Pessoa.Somente_Visualizacao) '+
+            'values (next value for Gen_Agenda_Pessoa, :Id_Agenda, :Id_Pessoa, 0)', [vaId, ipIdPessoa]);
         end;
 
     end);

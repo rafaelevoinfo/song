@@ -41,16 +41,17 @@ type
     qAgenda_RegistroID_AGENDA: TIntegerField;
     qAgenda_RegistroTITULO: TStringField;
     qAgenda_RegistroDESCRICAO: TStringField;
-    qAgenda_RegistroDATA_INICIO: TDateField;
-    qAgenda_RegistroDATA_FIM: TDateField;
-    qAgenda_RegistroHORA_INICIO: TTimeField;
-    qAgenda_RegistroHORA_FIM: TIntegerField;
     qAgenda_RegistroRECURRENCE_INDEX: TIntegerField;
     qAgenda_RegistroRECURRENCE_INFO: TBlobField;
     qAgenda_RegistroPARENT_ID: TIntegerField;
     qAgenda_RegistroEVENT_TYPE: TIntegerField;
     qAgenda_RegistroLABEL_COLOR: TIntegerField;
     qAgendaATIVO: TSmallintField;
+    qAgenda_RegistroDATA_INICIO: TSQLTimeStampField;
+    qAgenda_RegistroDATA_FIM: TSQLTimeStampField;
+    qAgenda_RegistroACTUAL_START: TIntegerField;
+    qAgenda_RegistroACTUAL_FINISH: TIntegerField;
+    qAgenda_RegistroOPTIONS: TIntegerField;
   private
     { Private declarations }
   protected
@@ -81,7 +82,7 @@ begin
   if ipTabela = 'AGENDA' then
     begin
       if ipParam.Name = TParametros.coTipo then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor, vaOperador);
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador);
     end
   else if ipTabela = 'AGENDA_REGISTRO' then
     begin

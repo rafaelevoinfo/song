@@ -36,6 +36,21 @@ type
     dsAgenda: TDataSource;
     cdsAgendaATIVO: TSmallintField;
     cdsAgenda_Registro: TRFClientDataSet;
+    cdsAgenda_RegistroID: TIntegerField;
+    cdsAgenda_RegistroID_AGENDA: TIntegerField;
+    cdsAgenda_RegistroTITULO: TStringField;
+    cdsAgenda_RegistroDESCRICAO: TStringField;
+    cdsAgenda_RegistroRECURRENCE_INDEX: TIntegerField;
+    cdsAgenda_RegistroRECURRENCE_INFO: TBlobField;
+    cdsAgenda_RegistroPARENT_ID: TIntegerField;
+    cdsAgenda_RegistroEVENT_TYPE: TIntegerField;
+    cdsAgenda_RegistroLABEL_COLOR: TIntegerField;
+    cdsAgenda_RegistroDATA_INICIO: TSQLTimeStampField;
+    cdsAgenda_RegistroDATA_FIM: TSQLTimeStampField;
+    cdsAgenda_RegistroACTUAL_START: TIntegerField;
+    cdsAgenda_RegistroACTUAL_FINISH: TIntegerField;
+    cdsAgenda_RegistroOPTIONS: TIntegerField;
+    procedure cdsAgenda_RegistroBeforePost(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -47,8 +62,16 @@ var
 
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
+
+
+procedure TdmSistema.cdsAgenda_RegistroBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  if cdsAgenda_RegistroID.IsNull then
+    cdsAgenda_RegistroID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('AGENDA_REGISTRO');
+end;
 
 end.

@@ -230,13 +230,14 @@ inherited smSistema: TsmSistema
       '       Agenda_Registro.Descricao,'
       '       Agenda_Registro.Data_Inicio,'
       '       Agenda_Registro.Data_Fim,'
-      '       Agenda_Registro.Hora_Inicio,'
-      '       Agenda_Registro.Hora_Fim,'
       '       Agenda_Registro.Recurrence_Index,'
       '       Agenda_Registro.Recurrence_Info,'
       '       Agenda_Registro.Parent_Id,'
       '       Agenda_Registro.Event_Type,'
-      '       Agenda_Registro.Label_Color'
+      '       Agenda_Registro.Label_Color,'
+      '       Agenda_Registro.Actual_Start,'
+      '       Agenda_Registro.Actual_Finish,'
+      '       Agenda_Registro.Options'
       'from Agenda_Registro'
       '&WHERE')
     Left = 392
@@ -250,7 +251,6 @@ inherited smSistema: TsmSistema
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
     end
     object qAgenda_RegistroID_AGENDA: TIntegerField
       FieldName = 'ID_AGENDA'
@@ -270,28 +270,6 @@ inherited smSistema: TsmSistema
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
-    end
-    object qAgenda_RegistroDATA_INICIO: TDateField
-      FieldName = 'DATA_INICIO'
-      Origin = 'DATA_INICIO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qAgenda_RegistroDATA_FIM: TDateField
-      FieldName = 'DATA_FIM'
-      Origin = 'DATA_FIM'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qAgenda_RegistroHORA_INICIO: TTimeField
-      FieldName = 'HORA_INICIO'
-      Origin = 'HORA_INICIO'
-      ProviderFlags = [pfInUpdate]
-    end
-    object qAgenda_RegistroHORA_FIM: TIntegerField
-      FieldName = 'HORA_FIM'
-      Origin = 'HORA_FIM'
-      ProviderFlags = [pfInUpdate]
     end
     object qAgenda_RegistroRECURRENCE_INDEX: TIntegerField
       FieldName = 'RECURRENCE_INDEX'
@@ -316,6 +294,33 @@ inherited smSistema: TsmSistema
     object qAgenda_RegistroLABEL_COLOR: TIntegerField
       FieldName = 'LABEL_COLOR'
       Origin = 'LABEL_COLOR'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAgenda_RegistroDATA_INICIO: TSQLTimeStampField
+      FieldName = 'DATA_INICIO'
+      Origin = 'DATA_INICIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAgenda_RegistroDATA_FIM: TSQLTimeStampField
+      FieldName = 'DATA_FIM'
+      Origin = 'DATA_FIM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qAgenda_RegistroACTUAL_START: TIntegerField
+      FieldName = 'ACTUAL_START'
+      Origin = 'ACTUAL_START'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAgenda_RegistroACTUAL_FINISH: TIntegerField
+      FieldName = 'ACTUAL_FINISH'
+      Origin = 'ACTUAL_FINISH'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAgenda_RegistroOPTIONS: TIntegerField
+      FieldName = 'OPTIONS'
+      Origin = 'OPTIONS'
       ProviderFlags = [pfInUpdate]
     end
   end

@@ -172,7 +172,57 @@ inherited dmSistema: TdmSistema
     Params = <>
     ProviderName = 'dspqAgenda_Registro'
     RemoteServer = dmPrincipal.ProviderSistema
+    BeforePost = cdsAgenda_RegistroBeforePost
     Left = 168
     Top = 208
+    object cdsAgenda_RegistroID: TIntegerField
+      FieldName = 'ID'
+    end
+    object cdsAgenda_RegistroID_AGENDA: TIntegerField
+      FieldName = 'ID_AGENDA'
+      Required = True
+    end
+    object cdsAgenda_RegistroTITULO: TStringField
+      FieldName = 'TITULO'
+      Required = True
+      Size = 150
+    end
+    object cdsAgenda_RegistroDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Size = 1000
+    end
+    object cdsAgenda_RegistroRECURRENCE_INDEX: TIntegerField
+      FieldName = 'RECURRENCE_INDEX'
+    end
+    object cdsAgenda_RegistroRECURRENCE_INFO: TBlobField
+      FieldName = 'RECURRENCE_INFO'
+    end
+    object cdsAgenda_RegistroPARENT_ID: TIntegerField
+      FieldName = 'PARENT_ID'
+    end
+    object cdsAgenda_RegistroEVENT_TYPE: TIntegerField
+      FieldName = 'EVENT_TYPE'
+    end
+    object cdsAgenda_RegistroLABEL_COLOR: TIntegerField
+      FieldName = 'LABEL_COLOR'
+    end
+    object cdsAgenda_RegistroDATA_INICIO: TSQLTimeStampField
+      FieldName = 'DATA_INICIO'
+      Required = True
+    end
+    object cdsAgenda_RegistroDATA_FIM: TSQLTimeStampField
+      FieldName = 'DATA_FIM'
+      Required = True
+    end
+    object cdsAgenda_RegistroACTUAL_START: TIntegerField
+      FieldName = 'ACTUAL_START'
+    end
+    object cdsAgenda_RegistroACTUAL_FINISH: TIntegerField
+      FieldName = 'ACTUAL_FINISH'
+    end
+    object cdsAgenda_RegistroOPTIONS: TIntegerField
+      FieldName = 'OPTIONS'
+      ProviderFlags = [pfInUpdate]
+    end
   end
 end
