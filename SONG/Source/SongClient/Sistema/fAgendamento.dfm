@@ -16,9 +16,13 @@ inherited frmAgendamento: TfrmAgendamento
     DateNavigator.OnPeriodChanged = CalendarioDateNavigatorPeriodChanged
     ViewDay.Active = True
     Align = alClient
-    ContentPopupMenu.Items = [cpmiNewEvent, cpmiNewAllDayEvent, cpmiNewReccuringEvent, cpmiToday]
+    ContentPopupMenu.Items = []
     ControlBox.Visible = False
     EventOperations.InplaceEditing = False
+    EventOperations.Intersection = False
+    EventOperations.MovingBetweenResources = False
+    EventOperations.Moving = False
+    EventOperations.Sizing = False
     EventPopupMenu.PopupMenu = PopupMenu1
     EventPopupMenu.UseBuiltInPopupMenu = False
     Font.Charset = DEFAULT_CHARSET
@@ -58,8 +62,6 @@ inherited frmAgendamento: TfrmAgendamento
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitLeft = 5
-      ExplicitTop = 4
       ExplicitHeight = 13
     end
     object cbAgenda: TcxLookupComboBox
@@ -78,8 +80,6 @@ inherited frmAgendamento: TfrmAgendamento
       Properties.ListSource = dslkAgenda
       Properties.OnEditValueChanged = cbAgendaPropertiesEditValueChanged
       TabOrder = 0
-      ExplicitLeft = 49
-      ExplicitHeight = 21
       Width = 237
     end
     object btnIncluir: TButton
@@ -91,9 +91,42 @@ inherited frmAgendamento: TfrmAgendamento
       Align = alLeft
       Images = dmPrincipal.imgIcons_16
       TabOrder = 1
-      ExplicitLeft = 408
-      ExplicitTop = 0
-      ExplicitHeight = 25
+      ExplicitLeft = 250
+    end
+    object btnAlterar: TButton
+      Left = 362
+      Top = 1
+      Width = 75
+      Height = 24
+      Action = Ac_Alterar
+      Align = alLeft
+      Images = dmPrincipal.imgIcons_16
+      TabOrder = 2
+      ExplicitLeft = 287
+    end
+    object btnExcluir: TButton
+      Left = 437
+      Top = 1
+      Width = 75
+      Height = 24
+      Action = Ac_Excluir
+      Align = alLeft
+      Images = dmPrincipal.imgIcons_16
+      TabOrder = 3
+      ExplicitLeft = 495
+      ExplicitTop = -4
+    end
+    object btnAtualizar: TButton
+      Left = 512
+      Top = 1
+      Width = 75
+      Height = 24
+      Action = Ac_Atualizar
+      Align = alLeft
+      Images = dmPrincipal.imgIcons_16
+      TabOrder = 4
+      ExplicitLeft = 557
+      ExplicitTop = -4
     end
   end
   object StorageAgendamento: TcxSchedulerDBStorage
@@ -101,6 +134,9 @@ inherited frmAgendamento: TfrmAgendamento
     CustomFields = <
       item
         FieldName = 'ID_AGENDA'
+      end
+      item
+        FieldName = 'ID'
       end>
     DataSource = dsAgenda_Registro
     FieldNames.ActualFinish = 'ACTUAL_FINISH'
@@ -138,6 +174,23 @@ inherited frmAgendamento: TfrmAgendamento
       Caption = 'Incluir'
       ImageIndex = 3
       OnExecute = Ac_IncluirExecute
+    end
+    object Ac_Alterar: TAction
+      Caption = 'Alterar'
+      ImageIndex = 1
+      OnExecute = Ac_AlterarExecute
+      OnUpdate = Ac_AlterarUpdate
+    end
+    object Ac_Excluir: TAction
+      Caption = 'Excluir'
+      ImageIndex = 2
+      OnExecute = Ac_ExcluirExecute
+      OnUpdate = Ac_AlterarUpdate
+    end
+    object Ac_Atualizar: TAction
+      Caption = 'Atualizar'
+      ImageIndex = 17
+      OnExecute = Ac_AtualizarExecute
     end
   end
   object PopupMenu1: TPopupMenu

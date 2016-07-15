@@ -223,6 +223,7 @@ inherited smSistema: TsmSistema
   end
   object qAgenda_Registro: TRFQuery
     Connection = dmPrincipal.conSong
+    UpdateOptions.UpdateTableName = 'AGENDA_REGISTRO'
     SQL.Strings = (
       'select Agenda_Registro.Id,'
       '       Agenda_Registro.Id_Agenda,'
@@ -237,15 +238,66 @@ inherited smSistema: TsmSistema
       '       Agenda_Registro.Label_Color,'
       '       Agenda_Registro.Actual_Start,'
       '       Agenda_Registro.Actual_Finish,'
-      '       Agenda_Registro.Options'
+      '       Agenda_Registro.Options,'
+      '       0 as Tipo'
       'from Agenda_Registro'
-      '&WHERE')
+      'where Agenda_Registro.Id_Agenda = :Id_AGENDA and'
+      
+        '      ((Agenda_Registro.Data_Inicio between :Data_Inicial and :D' +
+        'ata_Final) or '
+      
+        '       (Agenda_Registro.Data_Fim between :Data_Inicial and :Data' +
+        '_Final) or '
+      '       (Agenda_Registro.Event_Type = 1))'
+      ''
+      'union all'
+      ''
+      'select cast(Atividade.Id*-1 as integer) as ID,'
+      '       Agenda.Id,'
+      '       Atividade.Nome,'
+      '       Atividade.Descricao,'
+      '       Atividade.Data_Inicial,'
+      '       Atividade.Data_Final,'
+      '       -1 as recurrence_index,'
+      '       null as Recurrence_Info,'
+      '       null as Parent_id,'
+      '       0 as Event_Type,'
+      '       null as Label_Color,'
+      '       null as Actual_Start,'
+      '       null as Actual_Finish,'
+      '       3 as Options,'
+      '       1 as Tipo'
+      'from Agenda'
+      
+        'inner join Atividade on (Atividade.Id_Projeto = Agenda.Id_Projet' +
+        'o)'
+      'where Agenda.Id = :ID_AGENDA and'
+      
+        '      ((Atividade.Data_Inicial between :Data_Inicial and :Data_F' +
+        'inal) or '
+      
+        '      (Atividade.Data_Final between :Data_Inicial and :Data_Fina' +
+        'l))    ')
     Left = 392
     Top = 152
-    MacroData = <
+    ParamData = <
       item
+        Name = 'ID_AGENDA'
+        DataType = ftInteger
+        ParamType = ptInput
         Value = Null
-        Name = 'WHERE'
+      end
+      item
+        Name = 'DATA_INICIAL'
+        DataType = ftDateTime
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'DATA_FINAL'
+        DataType = ftDateTime
+        ParamType = ptInput
+        Value = Null
       end>
     object qAgenda_RegistroID: TIntegerField
       FieldName = 'ID'
@@ -262,7 +314,6 @@ inherited smSistema: TsmSistema
       FieldName = 'TITULO'
       Origin = 'TITULO'
       ProviderFlags = [pfInUpdate]
-      Required = True
       Size = 150
     end
     object qAgenda_RegistroDESCRICAO: TStringField
@@ -322,6 +373,12 @@ inherited smSistema: TsmSistema
       FieldName = 'OPTIONS'
       Origin = 'OPTIONS'
       ProviderFlags = [pfInUpdate]
+    end
+    object qAgenda_RegistroTIPO: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
     end
   end
 end

@@ -52,6 +52,7 @@ type
     qAgenda_RegistroACTUAL_START: TIntegerField;
     qAgenda_RegistroACTUAL_FINISH: TIntegerField;
     qAgenda_RegistroOPTIONS: TIntegerField;
+    qAgenda_RegistroTIPO: TIntegerField;
   private
     { Private declarations }
   protected

@@ -169,7 +169,22 @@ inherited dmSistema: TdmSistema
   end
   object cdsAgenda_Registro: TRFClientDataSet
     Aggregates = <>
-    Params = <>
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'ID_AGENDA'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftDateTime
+        Name = 'DATA_INICIAL'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftDateTime
+        Name = 'DATA_FINAL'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqAgenda_Registro'
     RemoteServer = dmPrincipal.ProviderSistema
     BeforePost = cdsAgenda_RegistroBeforePost
@@ -184,7 +199,6 @@ inherited dmSistema: TdmSistema
     end
     object cdsAgenda_RegistroTITULO: TStringField
       FieldName = 'TITULO'
-      Required = True
       Size = 150
     end
     object cdsAgenda_RegistroDESCRICAO: TStringField
@@ -223,6 +237,11 @@ inherited dmSistema: TdmSistema
     object cdsAgenda_RegistroOPTIONS: TIntegerField
       FieldName = 'OPTIONS'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsAgenda_RegistroTIPO: TIntegerField
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = []
     end
   end
 end

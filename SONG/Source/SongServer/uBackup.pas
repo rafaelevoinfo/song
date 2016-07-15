@@ -5,7 +5,7 @@ interface
 uses
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBWrapper, System.Classes,
   System.SysUtils, System.IOUtils, FireDAC.Phys.IBBase, Winapi.Windows,
-  System.DateUtils, IdFTP, System.SyncObjs;
+  System.DateUtils, IdFTP, System.SyncObjs, IdFTPCommon;
 
 type
   TFtp = record
@@ -141,23 +141,34 @@ end;
 procedure TBackup.ppvEnviarParaFTP(ipArquivo: String);
 var
   vaFtp: TIdFTP;
+  vaNomeArquivo:String;
 begin
   vaFtp := TIdFTP.Create(nil);
   try
     vaFtp.Host := Ftp.Host;
     vaFtp.UserName := Ftp.Usuario;
     vaFtp.Password := Ftp.Senha;
+    vaFtp.Passive := true;
 
     vaFtp.Connect;
     if vaFtp.Connected then
       begin
         vaFtp.ChangeDir(Ftp.Pasta);
-        vaFtp.Put(ipArquivo, TPath.GetFileName(ipArquivo));
+        //muito importante. Sem isso o arquivo fica corrompido.
+        vaFtp.TransferType := ftBinary;
+
+        vaNomeArquivo := TPath.GetFileName(ipArquivo);
+        vaFtp.Put(ipArquivo, vaNomeArquivo);
+
+        //FTP da oreades parece nao ter suporte para verificacao, mas deixei caso futuramente passe a ter.
+        if vaFtp.SupportsVerification and (not vaFtp.VerifyFile(ipArquivo,vaNomeArquivo)) then
+          raise Exception.Create('O arquivo que foi carregado para o FTP não confere com o arquivo local.');
       end
     else
       raise Exception.Create('Não foi possível conectar no FTP.');
   finally
     vaFtp.Disconnect;
+    vaFtp.Free;
   end;
 end;
 
