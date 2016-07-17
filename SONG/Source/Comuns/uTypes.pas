@@ -3,7 +3,7 @@ unit uTypes;
 interface
 
 uses
-  Winapi.Messages, System.Classes, System.SysUtils;
+  Winapi.Messages, System.Classes, System.SysUtils, aduna_ds_list;
 
 type
   TBancoDados = class
@@ -187,6 +187,33 @@ type
     property DataNascimento: TDateTime read FDataNascimento write SetDataNascimento;
   end;
 
+  TEventoAgenda = class(TModelo)
+  private
+    FTitulo: String;
+    FDataHoraFim: TDateTime;
+    FDataHoraInicio: TDateTime;
+    procedure SetDataHoraFim(const Value: TDateTime);
+    procedure SetDataHoraInicio(const Value: TDateTime);
+    procedure SetTitulo(const Value: String);
+  public
+    property Titulo: String read FTitulo write SetTitulo;
+    property DataHoraInicio: TDateTime read FDataHoraInicio write SetDataHoraInicio;
+    property DataHoraFim: TDateTime read FDataHoraFim write SetDataHoraFim;
+  end;
+
+  TAgenda = class(TModelo)
+  private
+    FEventos: TadsObjectlist<TEventoAgenda>;
+    FNome: String;
+    procedure SetNome(const Value: String);
+    procedure SetEventos(const Value: TadsObjectlist<TEventoAgenda>);
+  public
+    constructor Create();
+    destructor Destroy; override;
+    property Nome: String read FNome write SetNome;
+    property Eventos: TadsObjectlist<TEventoAgenda> read FEventos write SetEventos;
+  end;
+
   TNotificacao = class
   private
     FId: Integer;
@@ -244,9 +271,10 @@ type
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
   TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
-    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario);
+    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario, tnEventoAgendaPessoal, tnEventoAgendaCompartilhada);
 
   TTipoAgenda = (taPessoal, taOutra);
+  TTipoEvento = (teEventoAgenda, teEventoAtividade);
 
 const
   // mensagens customizadas do windows
@@ -270,7 +298,7 @@ const
 
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
-    'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários');
+    'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Agenda Pessoal', 'Agenda Compartilhada(Projetos)');
 
 implementation
 
@@ -501,6 +529,46 @@ end;
 procedure TPessoa.SetNome(const Value: string);
 begin
   FNome := Value;
+end;
+
+{ TEventoAgenda }
+
+procedure TEventoAgenda.SetDataHoraFim(const Value: TDateTime);
+begin
+  FDataHoraFim := Value;
+end;
+
+procedure TEventoAgenda.SetDataHoraInicio(const Value: TDateTime);
+begin
+  FDataHoraInicio := Value;
+end;
+
+procedure TEventoAgenda.SetTitulo(const Value: String);
+begin
+  FTitulo := Value;
+end;
+
+{ TAgenda }
+
+constructor TAgenda.Create;
+begin
+  FEventos := TadsObjectlist<TEventoAgenda>.Create;
+end;
+
+destructor TAgenda.Destroy;
+begin
+  FEventos.Free;
+  inherited;
+end;
+
+procedure TAgenda.SetNome(const Value: String);
+begin
+  FNome := Value;
+end;
+
+procedure TAgenda.SetEventos(const Value: TadsObjectlist<TEventoAgenda>);
+begin
+  FEventos := Value;
 end;
 
 end.

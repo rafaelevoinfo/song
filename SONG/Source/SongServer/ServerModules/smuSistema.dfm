@@ -239,6 +239,7 @@ inherited smSistema: TsmSistema
       '       Agenda_Registro.Actual_Start,'
       '       Agenda_Registro.Actual_Finish,'
       '       Agenda_Registro.Options,'
+      '       Agenda_Registro.Local,'
       '       0 as Tipo'
       'from Agenda_Registro'
       'where Agenda_Registro.Id_Agenda = :Id_AGENDA and'
@@ -266,6 +267,7 @@ inherited smSistema: TsmSistema
       '       null as Actual_Start,'
       '       null as Actual_Finish,'
       '       3 as Options,'
+      '       '#39#39' as Local,'
       '       1 as Tipo'
       'from Agenda'
       
@@ -379,6 +381,12 @@ inherited smSistema: TsmSistema
       FieldName = 'TIPO'
       Origin = 'TIPO'
       ProviderFlags = []
+    end
+    object qAgenda_RegistroLOCAL: TStringField
+      FieldName = 'LOCAL'
+      Origin = 'LOCAL'
+      ProviderFlags = [pfInUpdate]
+      Size = 150
     end
   end
 end

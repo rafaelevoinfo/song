@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, aduna_ds_list,
-  uTypes, uEnviarEmail;
+  uTypes, uEnviarEmail, uUtils;
 
 type
   TsmFuncoesSistema = class(TsmFuncoesBasico)
@@ -462,6 +462,74 @@ var
 
   end;
 
+  procedure plVerificarAgendaPessoal();
+  var
+    vaAgenda: TAgenda;
+    vaEvento: TEventoAgenda;
+  begin
+    vaDataSet.close;
+    vaDataSet.SQL.Text := ' select Agenda.id, ' +
+      '       Agenda_Registro.Id as ID_Evento, ' +
+      '       Agenda.Nome as Nome_Agenda,' +
+      '       Agenda_Registro.Titulo,' +
+      '       Agenda_Registro.Data_Inicio,' +
+      '       Agenda_Registro.Data_Fim' +
+      ' from Agenda_Registro' +
+      ' inner join Agenda on (Agenda.Id = Agenda_Registro.Id_Agenda)' +
+      ' where Agenda.Tipo = 0 and' +
+      '      (current_date between dateadd(day, :Dias, Agenda_Registro.Data_Inicio) and Agenda_Registro.Data_fim) and '+
+      '      ((select count(*)' +
+      '        from Agenda_Pessoa' +
+      '        where Agenda_Pessoa.Id_Agenda = Agenda.Id and' +
+      '              Agenda_Pessoa.Id_Pessoa = :Id_Pessoa) > 0) ';
+    vaDataSet.ParamByName('ID_PESSOA').AsInteger := ipIdPessoa;
+    vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger*-1;
+    vaDataSet.Open;
+    vaMsg := '';
+
+    TODO:Pensar em como fazer para que o songserver consiga usar essa funcao para enviar os email
+    if not vaDataSet.Eof then
+      begin
+        vaMsg := 'Os seguintes eventos da sua agenda pessoal estão próximos: '+coQuebraLinhaHtml;
+        vaAgenda := TAgenda.Create;
+        vaNotificacao := TNotificacao.Create;
+
+        vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
+        vaNotificacao.Tipo := Ord(tnEventoAgendaPessoal);
+
+        vaAgenda.Id := vaDataSet.FieldByName('ID').AsInteger;
+        vaAgenda.Nome := vaDataSet.FieldByName('NOME_AGENDA').AsString;
+
+        vaNotificacao.Info := vaAgenda;
+        Result.Add(vaNotificacao);
+
+        while not vaDataSet.Eof do
+          begin
+            if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+              begin
+
+                vaEvento := TEventoAgenda.Create;
+                vaEvento.Id := vaDataSet.FieldByName('ID_EVENTO').AsInteger;
+                vaEvento.Titulo := vaDataSet.FieldByName('TITULO').AsString;
+                vaEvento.DataHoraInicio := vaDataSet.FieldByName('Data_Inicio').AsDateTime;
+                vaEvento.DataHoraFim := vaDataSet.FieldByName('Data_Fim').AsDateTime;
+
+                vaAgenda.Eventos.Add(vaEvento);
+
+              end;
+
+            vaMsg := vaMsg + 'Titulo: '+vaDataSet.FieldByName('TITULO').AsString + coQuebraLinhaHtml+
+              ' De '+DateTimeToStr(vaDataSet.FieldByName('Data_Inicio').AsDateTime) +
+              ' até '+DateTimeToStr(vaDataSet.FieldByName('Data_Fim').AsDateTime)+coQuebraLinhaHtml;
+            vaDataSet.next;
+          end;
+      end;
+
+    if vaMsg <> '' then
+      plEnviarEmails(tnEventoAgendaPessoal, vaMsg);
+
+  end;
+
 begin
   Result := TadsObjectlist<TNotificacao>.Create;
 
@@ -517,6 +585,8 @@ begin
                     plVerificarSolicitacaoCompra;
                   tnAniversario:
                     plVerificarAniversarios;
+                  tnEventoAgendaPessoal:
+                    plVerificarAgendaPessoal;
                 end;
               end;
           end;
@@ -558,7 +628,8 @@ begin
           Connection.ExecSQL('insert into Agenda (Agenda.Id, Agenda.Nome, Agenda.Tipo, Agenda.ativo) ' +
             'values (:ID, :NOME, :TIPO,0)', [vaId, 'Agenda Pessoal', Ord(taPessoal)]);
 
-          Connection.ExecSQL('insert into Agenda_Pessoa (Agenda_Pessoa.Id, Agenda_Pessoa.Id_Agenda, Agenda_Pessoa.Id_Pessoa, Agenda_Pessoa.Somente_Visualizacao) '+
+          Connection.ExecSQL
+            ('insert into Agenda_Pessoa (Agenda_Pessoa.Id, Agenda_Pessoa.Id_Agenda, Agenda_Pessoa.Id_Pessoa, Agenda_Pessoa.Somente_Visualizacao) ' +
             'values (next value for Gen_Agenda_Pessoa, :Id_Agenda, :Id_Pessoa, 0)', [vaId, ipIdPessoa]);
         end;
 

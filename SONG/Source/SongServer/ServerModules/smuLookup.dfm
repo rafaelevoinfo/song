@@ -1125,9 +1125,8 @@ inherited smLookup: TsmLookup
       '                Agenda.Tipo'
       'from Agenda'
       'left join Agenda_Pessoa on (Agenda_Pessoa.Id_Agenda = Agenda.Id)'
-      
-        'where (Agenda_Pessoa.Id_Pessoa = :Id_Pessoa) or (Agenda.Tipo = 0' +
-        ')  ')
+      'where (Agenda_Pessoa.Id_Pessoa = :Id_Pessoa)'
+      'order by Agenda.Nome')
     Left = 616
     Top = 360
     ParamData = <
@@ -1152,6 +1151,48 @@ inherited smLookup: TsmLookup
     object qlkAgendaTIPO: TSmallintField
       FieldName = 'TIPO'
       Origin = 'TIPO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object qlkAgenda_Pessoa: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Agenda_Pessoa.Id,'
+      '       Agenda_Pessoa.Id_Agenda,'
+      '       Agenda_Pessoa.Id_Pessoa,'
+      '       Agenda_Pessoa.Somente_Visualizacao'
+      'from Agenda_Pessoa'
+      'where Agenda_Pessoa.Id_Agenda = :Id_Agenda   ')
+    Left = 744
+    Top = 360
+    ParamData = <
+      item
+        Name = 'ID_AGENDA'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qlkAgenda_PessoaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkAgenda_PessoaID_AGENDA: TIntegerField
+      FieldName = 'ID_AGENDA'
+      Origin = 'ID_AGENDA'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkAgenda_PessoaID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField
+      FieldName = 'SOMENTE_VISUALIZACAO'
+      Origin = 'SOMENTE_VISUALIZACAO'
       ProviderFlags = []
       Required = True
     end

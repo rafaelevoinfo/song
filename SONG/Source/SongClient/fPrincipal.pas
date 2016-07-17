@@ -177,7 +177,7 @@ end;
 procedure TfrmPrincipal.Ac_AgendaExecute(Sender: TObject);
 begin
   inherited;
-  TUtils.ppuAbrirFormAba<TfrmAgenda>(pcPrincipal, TFrmAgenda, frmAgenda);
+  TUtils.ppuAbrirFormAba<TfrmAgenda>(pcPrincipal, TfrmAgenda, frmAgenda);
 end;
 
 procedure TfrmPrincipal.Ac_AgendamentoExecute(Sender: TObject);
@@ -332,7 +332,7 @@ begin
     vaPessoa.Nome := TInfoLogin.fpuGetInstance.Usuario.Nome;
 
     vaFrmPessoa.ppuConfigurarModoExecucao(meSomenteEdicao, vaPessoa);
-    vaFrmPessoa.ppuConfigurarPesquisa(Ord(tppId),vaPessoa.Id.ToString());
+    vaFrmPessoa.ppuConfigurarPesquisa(Ord(tppId), vaPessoa.Id.ToString());
     vaFrmPessoa.ppuPesquisar;
 
     vaFrmPessoa.ppuAlterar(vaPessoa.Id);
@@ -441,7 +441,6 @@ begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
 
-
   inherited;
   Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
 end;
@@ -464,6 +463,7 @@ end;
 procedure TfrmPrincipal.ppvOnClickItem(ipItem: TdxTileControlItem);
 var
   vaForm: TfrmBasicoCrud;
+  vaFrmAgenda: TfrmAgendamento;
 begin
   vaForm := nil;
   if TTipoNotificacao(ipItem.Group.Tag) = tnContaPagarVencendo then
@@ -479,7 +479,18 @@ begin
   else if TTipoNotificacao(ipItem.Group.Tag) = tnSolicitacaoCompra then
     vaForm := TfrmSolicitacaoCompra.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnAniversario then
-    vaForm := TfrmPessoa.Create(nil);
+    vaForm := TfrmPessoa.Create(nil)
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnEventoAgendaPessoal then
+    begin
+      vaFrmAgenda := TfrmAgendamento.Create(nil);
+      try
+        vaFrmAgenda.ppuCarregarAgendamentos;
+        vaFrmAgenda.ShowModal;
+      finally
+        vaFrmAgenda.Free;
+      end;
+      Exit;
+    end;
 
   if not Assigned(vaForm) then
     raise Exception.Create('Notificação ainda não suportada completamente.');
@@ -514,6 +525,8 @@ var
   vaAtividade: TAtividade;
   vaSolicitacao: TSolicitacaoCompra;
   vaPessoa: TPessoa;
+  vaAgenda: TAgenda;
+  vaEvento: TEventoAgenda;
   vaTotalNotificacoes: Integer;
   vaFrame: TdxTileControlItemFrame;
 begin
@@ -646,6 +659,36 @@ begin
             vaFrame := vaItem.Frames.Add;
             vaFrame.Text1.WordWrap := True;
             vaFrame.Text1.Value := vaSolicitacao.Itens;
+
+          end;
+        tnEventoAgendaPessoal:
+          begin
+            vaAgenda := vaNotificacao.Info as TAgenda;
+            vaFrame := vaItem.Frames.Add;
+
+            vaFrame.Text2.Align := oaMiddleCenter;
+            vaFrame.Text2.WordWrap := True;
+            vaFrame.Text2.Font.Size := 12;
+            vaFrame.Text2.Font.Style := [fsBold];
+            vaFrame.Text2.Value := vaAgenda.Nome;
+
+            vaFrame.Text4.Value := 'Qtde. de eventos: ' + vaAgenda.Eventos.Count.ToString;
+
+            for vaEvento in vaAgenda.Eventos do
+              begin
+                vaFrame := vaItem.Frames.Add;
+                vaFrame.Text1.WordWrap := True;
+                vaFrame.Text1.Align := oaMiddleCenter;
+                vaFrame.Text1.Font.Size := 10;
+                vaFrame.Text1.Font.Style := [fsBold];
+                vaFrame.Text1.Value := vaEvento.Titulo;
+
+                vaFrame.Text3.Align := oaTopLeft;
+                vaFrame.Text3.Value := DateTimeToStr(vaEvento.DataHoraInicio);
+
+                vaFrame.Text4.Align := oaBottomLeft;
+                vaFrame.Text4.Value := DateTimeToStr(vaEvento.DataHoraFim);
+              end;
 
           end;
       end;

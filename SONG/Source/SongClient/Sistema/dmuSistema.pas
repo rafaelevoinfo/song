@@ -51,6 +51,7 @@ type
     cdsAgenda_RegistroACTUAL_FINISH: TIntegerField;
     cdsAgenda_RegistroOPTIONS: TIntegerField;
     cdsAgenda_RegistroTIPO: TIntegerField;
+    cdsAgenda_RegistroLOCAL: TStringField;
     procedure cdsAgenda_RegistroBeforePost(DataSet: TDataSet);
   private
     { Private declarations }
@@ -71,8 +72,8 @@ implementation
 procedure TdmSistema.cdsAgenda_RegistroBeforePost(DataSet: TDataSet);
 begin
   inherited;
-//  if cdsAgenda_RegistroID.IsNull then
-//    cdsAgenda_RegistroID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('AGENDA_REGISTRO');
+  if cdsAgenda_RegistroID.IsNull then
+    cdsAgenda_RegistroID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('AGENDA_REGISTRO');
 end;
 
 end.

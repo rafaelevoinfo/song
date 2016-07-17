@@ -232,6 +232,12 @@ type
     cdslkAgendaID: TIntegerField;
     cdslkAgendaNOME: TStringField;
     cdslkAgendaTIPO: TSmallintField;
+    cdslkAgenda_Pessoa: TRFClientDataSet;
+    dslkAgenda: TDataSource;
+    cdslkAgenda_PessoaID: TIntegerField;
+    cdslkAgenda_PessoaID_AGENDA: TIntegerField;
+    cdslkAgenda_PessoaID_PESSOA: TIntegerField;
+    cdslkAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

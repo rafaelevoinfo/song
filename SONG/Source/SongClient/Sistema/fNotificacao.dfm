@@ -333,8 +333,9 @@ inherited frmNotificacao: TfrmNotificacao
           Height = 385
           Align = alClient
           TabOrder = 0
+          ExplicitTop = 13
           ExplicitWidth = 976
-          ExplicitHeight = 398
+          ExplicitHeight = 385
           inherited gpGrids: TGridPanel
             Width = 976
             Height = 366
@@ -355,15 +356,20 @@ inherited frmNotificacao: TfrmNotificacao
                 Row = 0
               end>
             ExplicitWidth = 976
-            ExplicitHeight = 379
+            ExplicitHeight = 366
             inherited cxGrid1: TcxGrid
+              Width = 457
+              Height = 364
               ExplicitWidth = 457
-              ExplicitHeight = 377
+              ExplicitHeight = 364
             end
             inherited pnBotoes: TPanel
+              Left = 458
+              Width = 48
+              Height = 364
               ExplicitLeft = 458
               ExplicitWidth = 48
-              ExplicitHeight = 377
+              ExplicitHeight = 364
               inherited btnAdd: TButton
                 ExplicitWidth = 48
               end
@@ -378,9 +384,12 @@ inherited frmNotificacao: TfrmNotificacao
               end
             end
             inherited cxGrid2: TcxGrid
+              Left = 506
+              Width = 469
+              Height = 364
               ExplicitLeft = 506
               ExplicitWidth = 469
-              ExplicitHeight = 377
+              ExplicitHeight = 364
               inherited viewDireita: TcxGridDBTableView
                 OptionsData.Editing = True
               end
@@ -405,11 +414,14 @@ inherited frmNotificacao: TfrmNotificacao
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 112
+                Height = 15
                 Caption = 'Pessoas dispon'#237'veis'
                 ExplicitWidth = 112
               end
               inherited lbInfoGridDireita: TLabel
+                Left = 505
                 Width = 206
+                Height = 15
                 Caption = 'Pessoas que receber'#227'o a notifica'#231#227'o'
                 ExplicitLeft = 505
                 ExplicitWidth = 206

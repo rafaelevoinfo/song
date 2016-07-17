@@ -1808,4 +1808,41 @@ inherited dmLookup: TdmLookup
       Required = True
     end
   end
+  object cdslkAgenda_Pessoa: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_AGENDA'
+    MasterFields = 'ID'
+    MasterSource = dslkAgenda
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqlkAgenda_Pessoa'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 640
+    Top = 792
+    object cdslkAgenda_PessoaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkAgenda_PessoaID_AGENDA: TIntegerField
+      FieldName = 'ID_AGENDA'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkAgenda_PessoaID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField
+      FieldName = 'SOMENTE_VISUALIZACAO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object dslkAgenda: TDataSource
+    DataSet = cdslkAgenda
+    Left = 536
+    Top = 840
+  end
 end

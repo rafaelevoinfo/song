@@ -162,7 +162,7 @@ begin
   vaPermissoes := TList<TPermissao>.Create;
   plAddSistema(sisNotificacao, 'Notificações');
   plAddSistema(sisAgenda, 'Cadastro de Agendas');
-  plAddSistema(sisAgendamento, 'Agendas');
+  plAddSistema(sisAgendamento, 'Agendamentos');
   FItems.Add('Sistema', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;

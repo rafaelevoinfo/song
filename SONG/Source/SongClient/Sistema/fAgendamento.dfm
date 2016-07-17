@@ -9,20 +9,21 @@ inherited frmAgendamento: TfrmAgendamento
   TextHeight = 13
   object Calendario: TcxScheduler
     Left = 0
-    Top = 26
+    Top = 45
     Width = 884
-    Height = 411
+    Height = 392
     DateNavigator.ColCount = 6
     DateNavigator.OnPeriodChanged = CalendarioDateNavigatorPeriodChanged
     ViewDay.Active = True
+    ViewDay.EventShadows = False
+    ViewDay.TimeRulerMinutes = True
+    ViewDay.TimeRulerPopupMenu.Items = [rpmi60min, rpmi30min, rpmi15min, rpmi10min, rpmi6min, rpmi5min]
     Align = alClient
     ContentPopupMenu.Items = []
     ControlBox.Visible = False
     EventOperations.InplaceEditing = False
-    EventOperations.Intersection = False
     EventOperations.MovingBetweenResources = False
     EventOperations.Moving = False
-    EventOperations.Sizing = False
     EventPopupMenu.PopupMenu = PopupMenu1
     EventPopupMenu.UseBuiltInPopupMenu = False
     Font.Charset = DEFAULT_CHARSET
@@ -35,98 +36,100 @@ inherited frmAgendamento: TfrmAgendamento
     OptionsView.WorkFinish = 0.750000000000000000
     Storage = StorageAgendamento
     TabOrder = 0
-    Selection = 1
+    OnBeforeDeleting = CalendarioBeforeDeleting
+    OnBeforeEditing = CalendarioBeforeEditing
+    OnBeforeSizingEvent = CalendarioBeforeSizingEvent
+    ExplicitTop = 26
+    ExplicitHeight = 411
     Splitters = {
       010000007E0000007303000083000000DF02000001000000E40200007E000000}
-    StoredClientBounds = {0100000001000000730300009A010000}
+    StoredClientBounds = {01000000010000007303000087010000}
   end
   object pnControlBox: TPanel
     Left = 0
     Top = 0
     Width = 884
-    Height = 26
+    Height = 45
     Align = alTop
     TabOrder = 1
-    object Label1: TLabel
-      AlignWithMargins = True
-      Left = 4
-      Top = 6
-      Width = 43
-      Height = 19
-      Margins.Top = 5
-      Align = alLeft
-      Caption = 'Agenda'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-      ExplicitHeight = 13
-    end
-    object cbAgenda: TcxLookupComboBox
-      Left = 50
-      Top = 1
-      Align = alLeft
-      Properties.DropDownListStyle = lsFixedList
-      Properties.DropDownSizeable = True
-      Properties.ImmediatePost = True
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListColumns = <
-        item
-          FieldName = 'NOME'
-        end>
-      Properties.ListOptions.SyncMode = True
-      Properties.ListSource = dslkAgenda
-      Properties.OnEditValueChanged = cbAgendaPropertiesEditValueChanged
-      TabOrder = 0
-      Width = 237
-    end
     object btnIncluir: TButton
-      Left = 287
+      Left = 7
       Top = 1
-      Width = 75
-      Height = 24
+      Width = 98
+      Height = 40
       Action = Ac_Incluir
-      Align = alLeft
-      Images = dmPrincipal.imgIcons_16
-      TabOrder = 1
-      ExplicitLeft = 250
+      Images = dmPrincipal.imgIcons_32
+      TabOrder = 0
     end
     object btnAlterar: TButton
-      Left = 362
+      Left = 106
       Top = 1
-      Width = 75
-      Height = 24
+      Width = 98
+      Height = 40
       Action = Ac_Alterar
-      Align = alLeft
-      Images = dmPrincipal.imgIcons_16
-      TabOrder = 2
-      ExplicitLeft = 287
+      Images = dmPrincipal.imgIcons_32
+      TabOrder = 1
     end
     object btnExcluir: TButton
-      Left = 437
+      Left = 205
       Top = 1
-      Width = 75
-      Height = 24
+      Width = 90
+      Height = 40
       Action = Ac_Excluir
-      Align = alLeft
-      Images = dmPrincipal.imgIcons_16
-      TabOrder = 3
-      ExplicitLeft = 495
-      ExplicitTop = -4
+      Images = dmPrincipal.imgIcons_32
+      TabOrder = 2
     end
-    object btnAtualizar: TButton
-      Left = 512
+    object pnPesquisa: TPanel
+      Left = 522
       Top = 1
-      Width = 75
-      Height = 24
-      Action = Ac_Atualizar
-      Align = alLeft
-      Images = dmPrincipal.imgIcons_16
-      TabOrder = 4
-      ExplicitLeft = 557
-      ExplicitTop = -4
+      Width = 361
+      Height = 43
+      Align = alRight
+      AutoSize = True
+      BevelOuter = bvNone
+      TabOrder = 3
+      ExplicitLeft = 520
+      object Label1: TLabel
+        AlignWithMargins = True
+        Left = 3
+        Top = 2
+        Width = 43
+        Height = 13
+        Margins.Top = 5
+        Caption = 'Agenda'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object cbAgenda: TcxLookupComboBox
+        Left = 3
+        Top = 19
+        Properties.DropDownListStyle = lsFixedList
+        Properties.DropDownSizeable = True
+        Properties.ImmediatePost = True
+        Properties.KeyFieldNames = 'ID'
+        Properties.ListColumns = <
+          item
+            FieldName = 'NOME'
+          end>
+        Properties.ListOptions.SyncMode = True
+        Properties.ListSource = dmLookup.dslkAgenda
+        Properties.OnEditValueChanged = cbAgendaPropertiesEditValueChanged
+        TabOrder = 0
+        Width = 237
+      end
+      object btnAtualizar: TButton
+        Left = 246
+        Top = 0
+        Width = 115
+        Height = 40
+        Action = Ac_Pesquisar
+        Images = dmPrincipal.imgIcons_32
+        TabOrder = 1
+      end
     end
   end
   object StorageAgendamento: TcxSchedulerDBStorage
@@ -136,7 +139,7 @@ inherited frmAgendamento: TfrmAgendamento
         FieldName = 'ID_AGENDA'
       end
       item
-        FieldName = 'ID'
+        FieldName = 'TIPO'
       end>
     DataSource = dsAgenda_Registro
     FieldNames.ActualFinish = 'ACTUAL_FINISH'
@@ -146,6 +149,7 @@ inherited frmAgendamento: TfrmAgendamento
     FieldNames.Finish = 'DATA_FIM'
     FieldNames.ID = 'ID'
     FieldNames.LabelColor = 'LABEL_COLOR'
+    FieldNames.Location = 'LOCAL'
     FieldNames.Message = 'DESCRICAO'
     FieldNames.Options = 'OPTIONS'
     FieldNames.ParentID = 'PARENT_ID'
@@ -155,11 +159,6 @@ inherited frmAgendamento: TfrmAgendamento
     OnEventInserted = StorageAgendamentoEventInserted
     Left = 488
     Top = 344
-  end
-  object dslkAgenda: TDataSource
-    DataSet = dmLookup.cdslkAgenda
-    Left = 440
-    Top = 224
   end
   object dsAgenda_Registro: TDataSource
     DataSet = dmSistema.cdsAgenda_Registro
@@ -174,6 +173,7 @@ inherited frmAgendamento: TfrmAgendamento
       Caption = 'Incluir'
       ImageIndex = 3
       OnExecute = Ac_IncluirExecute
+      OnUpdate = Ac_IncluirUpdate
     end
     object Ac_Alterar: TAction
       Caption = 'Alterar'
@@ -187,10 +187,10 @@ inherited frmAgendamento: TfrmAgendamento
       OnExecute = Ac_ExcluirExecute
       OnUpdate = Ac_AlterarUpdate
     end
-    object Ac_Atualizar: TAction
-      Caption = 'Atualizar'
-      ImageIndex = 17
-      OnExecute = Ac_AtualizarExecute
+    object Ac_Pesquisar: TAction
+      Caption = 'Pesquisar'
+      ImageIndex = 0
+      OnExecute = Ac_PesquisarExecute
     end
   end
   object PopupMenu1: TPopupMenu

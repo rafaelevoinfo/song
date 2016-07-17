@@ -63,7 +63,8 @@ uses
   fCamara_Fria in 'Viveiro\fCamara_Fria.pas' {frmCamaraFria},
   fReconexao in 'Geral\fReconexao.pas' {frmReconexao},
   fAgenda in 'Sistema\fAgenda.pas' {frmAgenda},
-  fAgendamento in 'Sistema\fAgendamento.pas' {frmAgendamento};
+  fAgendamento in 'Sistema\fAgendamento.pas' {frmAgendamento},
+  fAgendamento_Cadastro in 'Sistema\fAgendamento_Cadastro.pas' {frmAgendamentoCadastro};
 
 {$R Localization.RES}
 {$R *.res}

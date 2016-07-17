@@ -147,6 +147,11 @@ type
     qlkAgendaID: TIntegerField;
     qlkAgendaNOME: TStringField;
     qlkAgendaTIPO: TSmallintField;
+    qlkAgenda_Pessoa: TRFQuery;
+    qlkAgenda_PessoaID: TIntegerField;
+    qlkAgenda_PessoaID_AGENDA: TIntegerField;
+    qlkAgenda_PessoaID_PESSOA: TIntegerField;
+    qlkAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField;
   private
     { Private declarations }
   protected

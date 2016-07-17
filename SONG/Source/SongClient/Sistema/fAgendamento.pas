@@ -16,16 +16,15 @@ uses
   cxContainer, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, Vcl.StdCtrls, uControleAcesso, uTypes,
   System.TypInfo, dmuLookup, dmuSistema, uClientDataSet, dmuPrincipal, Data.DB,
-  uUtils, System.Actions, Vcl.ActnList, uMensagem, fAtividade;
+  uUtils, System.Actions, Vcl.ActnList, uMensagem, fAtividade,
+  cxSchedulerEditorFormManager,
+  fAgendamento_Cadastro; // fAgendamento_Cadastro sempre deve vir por ultimo
 
 type
   TfrmAgendamento = class(TfrmBasico)
     pnControlBox: TPanel;
     Calendario: TcxScheduler;
     StorageAgendamento: TcxSchedulerDBStorage;
-    cbAgenda: TcxLookupComboBox;
-    Label1: TLabel;
-    dslkAgenda: TDataSource;
     dsAgenda_Registro: TDataSource;
     btnIncluir: TButton;
     ActionList1: TActionList;
@@ -35,8 +34,11 @@ type
     btnExcluir: TButton;
     Ac_Alterar: TAction;
     Ac_Excluir: TAction;
+    Ac_Pesquisar: TAction;
+    pnPesquisa: TPanel;
+    Label1: TLabel;
+    cbAgenda: TcxLookupComboBox;
     btnAtualizar: TButton;
-    Ac_Atualizar: TAction;
     procedure FormCreate(Sender: TObject);
     procedure CalendarioDateNavigatorPeriodChanged(Sender: TObject;
       const AStart, AFinish: TDateTime);
@@ -47,10 +49,20 @@ type
     procedure Ac_AlterarExecute(Sender: TObject);
     procedure Ac_ExcluirExecute(Sender: TObject);
     procedure Ac_AlterarUpdate(Sender: TObject);
-    procedure Ac_AtualizarExecute(Sender: TObject);
+    procedure Ac_PesquisarExecute(Sender: TObject);
+    procedure CalendarioBeforeEditing(Sender: TcxCustomScheduler;
+      AEvent: TcxSchedulerControlEvent; AInplace: Boolean; var Allow: Boolean);
+    procedure CalendarioBeforeSizingEvent(Sender: TcxCustomScheduler;
+      AEvent: TcxSchedulerControlEvent; X, Y: Integer; var Allow: Boolean);
+    procedure CalendarioBeforeDeleting(Sender: TcxCustomScheduler;
+      AEvent: TcxSchedulerControlEvent; var Allow: Boolean);
+    procedure Ac_IncluirUpdate(Sender: TObject);
   private
     dmLookup: TdmLookup;
     dmSistema: TdmSistema;
+    FInserindo: Boolean;
+    FEditando: Boolean;
+    FDeletando: Boolean;
     FDataInicial: TDate;
     FDataFinal: TDate;
     FCodigoAgenda: Integer;
@@ -79,43 +91,46 @@ begin
   if Calendario.SelectedEventCount > 0 then
     begin
       vaEvent := Calendario.SelectedEvents[0];
-      vaId := vaEvent.GetCustomFieldValueByName('ID');
-      if dmSistema.cdsAgenda_Registro.Locate(TBancoDados.coId, vaId, []) then
-        begin
-          if dmSistema.cdsAgenda_RegistroTIPO.AsInteger = 0 then
-            begin
-              Calendario.EditEventUsingDialog(vaEvent)
-            end
-          else if TMensagem.fpuPerguntar('O evento selecionado é uma atividade do projeto vinculado a esta agenda. Deseja alterar a atividade?',
-            ppSimNao) = rpSim then
-            begin
-              // os codigos das atividades estao com valor negativo pra nao conflitar
-              vaId := Abs(vaId);
-              vaFrmAtividade := TfrmAtividade.Create(nil);
-              try
-                vaFrmAtividade.ppuConfigurarPesquisa(Ord(tppId), vaId.ToString());
-                vaFrmAtividade.ppuPesquisar;
-                vaFrmAtividade.ppuConfigurarModoExecucao(meSomenteEdicao);
 
-                vaFrmAtividade.ppuAlterar(vaId);
-                vaFrmAtividade.ShowModal;
-                if vaFrmAtividade.IdEscolhido <> 0 then
-                  ppvCarregarRegistros(true);
-              finally
-                vaFrmAtividade.free;
-              end;
-            end;
+      if vaEvent.GetCustomFieldValueByName('TIPO') = Ord(teEventoAgenda) then
+        begin
+          FEditando := true;
+          try
+            Calendario.EditEventUsingDialog(vaEvent);
+          finally
+            FEditando := false;
+          end;
+        end
+      else if TMensagem.fpuPerguntar('O evento selecionado é uma atividade do projeto vinculado a esta agenda. Deseja alterar a atividade?',
+        ppSimNao) = rpSim then
+        begin
+          // os codigos das atividades estao com valor negativo pra nao conflitar
+          vaId := Abs(VarToStr(vaEvent.ID).ToInteger());
+          vaFrmAtividade := TfrmAtividade.Create(nil);
+          try
+            vaFrmAtividade.ppuConfigurarPesquisa(Ord(tppId), vaId.ToString());
+            vaFrmAtividade.ppuPesquisar;
+            vaFrmAtividade.ppuConfigurarModoExecucao(meSomenteEdicao);
+
+            vaFrmAtividade.ppuAlterar(vaId);
+            vaFrmAtividade.ShowModal;
+            if vaFrmAtividade.IdEscolhido <> 0 then
+              ppvCarregarRegistros(true);
+          finally
+            vaFrmAtividade.free;
+          end;
         end;
+
     end;
 end;
 
 procedure TfrmAgendamento.Ac_AlterarUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := Calendario.SelectedEventCount > 0;
+  TAction(Sender).Enabled := (Calendario.SelectedEventCount > 0) and (not Calendario.EventOperations.ReadOnly);
 end;
 
-procedure TfrmAgendamento.Ac_AtualizarExecute(Sender: TObject);
+procedure TfrmAgendamento.Ac_PesquisarExecute(Sender: TObject);
 begin
   inherited;
   ppvCarregarRegistros;
@@ -131,34 +146,36 @@ begin
   if Calendario.SelectedEventCount > 0 then
     begin
       vaEvent := Calendario.SelectedEvents[0];
-      vaId := vaEvent.GetCustomFieldValueByName('ID');
-      if dmSistema.cdsAgenda_Registro.Locate(TBancoDados.coId, vaId, []) then
+      if TMensagem.fpuPerguntar('Confirma a exclusão?', ppSimNao) = rpSim then
         begin
-          if TMensagem.fpuPerguntar('Confirma a exclusão?', ppSimNao) = rpSim then
+          if vaEvent.GetCustomFieldValueByName('TIPO') = Ord(teEventoAgenda) then
             begin
-              if dmSistema.cdsAgenda_RegistroTIPO.AsInteger = 0 then
-                begin
-                  Calendario.DeleteEvent(vaEvent);
-                end
-              else if TMensagem.fpuPerguntar
-                ('O evento selecionado é uma atividade do projeto vinculado a esta agenda. Tem certeza que deseja excluir a atividade?',
-                ppSimNao) = rpSim then
-                begin
-                  // os codigos das atividades estao com valor negativo pra nao conflitar
-                  vaId := Abs(vaId);
-                  vaFrmAtividade := TfrmAtividade.Create(nil);
-                  try
-                    vaFrmAtividade.ModoSilencioso := true;
-                    vaFrmAtividade.ppuConfigurarPesquisa(Ord(tppId), vaId.ToString());
-                    vaFrmAtividade.ppuPesquisar;
+              FDeletando := true;
+              try
+                Calendario.DeleteEvent(vaEvent);
+              finally
+                FDeletando := false;
+              end;
+            end
+          else if TMensagem.fpuPerguntar
+            ('O evento selecionado é uma atividade do projeto vinculado a esta agenda. Tem certeza que deseja excluir a atividade?',
+            ppSimNao) = rpSim then
+            begin
+              // os codigos das atividades estao com valor negativo pra nao conflitar
+              vaId := Abs(VarToStr(vaEvent.ID).ToInteger());
+              vaFrmAtividade := TfrmAtividade.Create(nil);
+              try
+                vaFrmAtividade.ModoSilencioso := true;
+                vaFrmAtividade.ppuConfigurarPesquisa(Ord(tppId), vaId.ToString());
+                vaFrmAtividade.ppuPesquisar;
 
-                    if vaFrmAtividade.fpuExcluir([vaId]) then
-                      ppvCarregarRegistros(true);
-                  finally
-                    vaFrmAtividade.free;
-                  end;
-                end;
+                if vaFrmAtividade.fpuExcluir([vaId]) then
+                  ppvCarregarRegistros(true);
+              finally
+                vaFrmAtividade.free;
+              end;
             end;
+
         end;
     end;
 end;
@@ -166,7 +183,49 @@ end;
 procedure TfrmAgendamento.Ac_IncluirExecute(Sender: TObject);
 begin
   inherited;
-  Calendario.CreateEventUsingDialog();
+  FInserindo := true;
+  try
+    Calendario.CreateEventUsingDialog();
+  finally
+    FInserindo := false;
+  end;
+end;
+
+procedure TfrmAgendamento.Ac_IncluirUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := not Calendario.EventOperations.ReadOnly;
+end;
+
+procedure TfrmAgendamento.CalendarioBeforeDeleting(Sender: TcxCustomScheduler;
+  AEvent: TcxSchedulerControlEvent; var Allow: Boolean);
+begin
+  inherited;
+  if not FDeletando then
+    begin
+      Allow := false;
+      Ac_Excluir.Execute;
+    end;
+end;
+
+procedure TfrmAgendamento.CalendarioBeforeEditing(Sender: TcxCustomScheduler;
+  AEvent: TcxSchedulerControlEvent; AInplace: Boolean; var Allow: Boolean);
+begin
+  inherited;
+  if (not FInserindo) and (not FEditando) then
+    begin
+      Allow := false;
+      Ac_Alterar.Execute;
+    end;
+end;
+
+procedure TfrmAgendamento.CalendarioBeforeSizingEvent(
+  Sender: TcxCustomScheduler; AEvent: TcxSchedulerControlEvent; X, Y: Integer;
+  var Allow: Boolean);
+begin
+  inherited;
+  // qualquer coisa diferente de 0 significa que não é da tabela agenda_registro
+  Allow := AEvent.GetCustomFieldValueByName('TIPO') = Ord(teEventoAgenda);
 end;
 
 procedure TfrmAgendamento.CalendarioDateNavigatorPeriodChanged(Sender: TObject;
@@ -212,15 +271,22 @@ begin
 
   cbAgenda.LockChangeEvents(true);
   try
+    dmLookup.cdslkAgenda.Locate(dmLookup.cdslkAgendaTIPO.FieldName,Ord(taPessoal),[]);
+
     cbAgenda.EditValue := dmLookup.cdslkAgendaID.AsInteger;
     cbAgenda.PostEditValue;
   finally
     cbAgenda.LockChangeEvents(false, false);
   end;
+
+  cxSchedulerEditorManager.CurrentEditorFormStyle := TRFShedulerCustomizadoEventEditorFormStyleInfo.coEditorEventoCustomizado;
 end;
 
 procedure TfrmAgendamento.ppvCarregarRegistros(ipForcar: Boolean);
+var
+  vaEvent: TcxSchedulerEvent;
 begin
+  dmLookup.cdslkAgenda_Pessoa.Close;
   if VarIsNull(cbAgenda.EditValue) then
     begin
       dmSistema.cdsAgenda_Registro.Close;
@@ -241,9 +307,25 @@ begin
         dmSistema.cdsAgenda_Registro.ParamByName('DATA_INICIAL').AsDateTime := FDataInicial;
         dmSistema.cdsAgenda_Registro.ParamByName('DATA_FINAL').AsDateTime := FDataFinal;
         dmSistema.cdsAgenda_Registro.Open;
+
+        dmSistema.cdsAgenda_Registro.First;
+        while not dmSistema.cdsAgenda_Registro.Eof do
+          begin
+            vaEvent := StorageAgendamento.GetEventByID(dmSistema.cdsAgenda_RegistroID.AsInteger);
+            if Assigned(vaEvent) then
+              vaEvent.SetCustomFieldValueByName('TIPO', dmSistema.cdsAgenda_RegistroTIPO.AsInteger);
+            dmSistema.cdsAgenda_Registro.Next;
+          end;
       finally
         StorageAgendamento.EndUpdate;
       end;
+
+      dmLookup.cdslkAgenda_Pessoa.Open;
+      if dmLookup.cdslkAgenda_Pessoa.Locate(dmLookup.cdslkAgenda_PessoaID_PESSOA.FieldName, TInfoLogin.fpuGetInstance.Usuario.ID, []) then
+        begin
+          Calendario.EventOperations.ReadOnly := dmLookup.cdslkAgenda_PessoaSOMENTE_VISUALIZACAO.AsInteger = 1;
+        end;
+
     end;
 
 end;
@@ -253,7 +335,8 @@ procedure TfrmAgendamento.StorageAgendamentoEventInserted(Sender: TObject;
 begin
   inherited;
   AEvent.SetCustomFieldValueByName('ID_AGENDA', FCodigoAgenda);
-  AEvent.SetCustomFieldValueByName('ID', dmPrincipal.FuncoesGeral.fpuGetId('AGENDA_REGISTRO'));
+  AEvent.SetCustomFieldValueByName('TIPO', Ord(teEventoAgenda));
+  // AEvent.SetCustomFieldValueByName('ID', dmPrincipal.FuncoesGeral.fpuGetId('AGENDA_REGISTRO'));
 
 end;
 

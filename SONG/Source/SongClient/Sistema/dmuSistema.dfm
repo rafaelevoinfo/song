@@ -243,5 +243,11 @@ inherited dmSistema: TdmSistema
       FieldName = 'TIPO'
       ProviderFlags = []
     end
+    object cdsAgenda_RegistroLOCAL: TStringField
+      DisplayLabel = 'Local'
+      FieldName = 'LOCAL'
+      ProviderFlags = [pfInUpdate]
+      Size = 150
+    end
   end
 end
