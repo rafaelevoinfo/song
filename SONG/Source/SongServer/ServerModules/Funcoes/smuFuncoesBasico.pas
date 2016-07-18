@@ -61,6 +61,7 @@ var
   vaEnviarEmail: TEnviarEmail;
 begin
   vaEnviarEmail := TEnviarEmail.Create(true);
+  vaEnviarEmail.FreeOnTerminate := true;
   vaEnviarEmail.ExibirMensagens := false;
   vaEnviarEmail.EMail.Remetente.Nome := 'SONG';
   vaEnviarEmail.EMail.Remetente.EMail := 'song@oreades.org.br';

@@ -8,15 +8,20 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, aduna_ds_list,
-  uTypes, uEnviarEmail, uUtils;
+  uTypes, uEnviarEmail, uUtils, System.Generics.Collections;
 
 type
   TsmFuncoesSistema = class(TsmFuncoesBasico)
   private
+    function fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean;
+      ipDataSetNotificacao, ipDataSetNotificacaoPessoa: TRFQuery): TList<TNotificacao>;
+    procedure ppvEnviarEmailTodosConfigurados(ipTipo: TTipoNotificacao;
+      ipMsg: String; ipDataSetNoficiacaoPessoa: TRFQuery);
     { Private declarations }
   public
     function fpuValidarTipoNotificacao(ipIdNotificacao, ipTipo: integer): Boolean;
-    function fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipEnviarEmail: Boolean): TadsObjectlist<TNotificacao>;
+    function fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
+      : TadsObjectlist<TNotificacao>;
     procedure ppuCriarAgendaPessoal(ipIdPessoa: integer);
   end;
 
@@ -29,16 +34,33 @@ implementation
 
 { TsmFuncoesSistema }
 
-function TsmFuncoesSistema.fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipEnviarEmail: Boolean): TadsObjectlist<TNotificacao>;
+procedure TsmFuncoesSistema.ppvEnviarEmailTodosConfigurados(ipTipo: TTipoNotificacao; ipMsg: String; ipDataSetNoficiacaoPessoa: TRFQuery);
+begin
+  ipDataSetNoficiacaoPessoa.First;
+  while not ipDataSetNoficiacaoPessoa.Eof do
+    begin
+      if (ipDataSetNoficiacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
+        (ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString <> '') then
+        begin
+          pprEnviarEmail(TiposNotificacao[ipTipo], ipMsg, ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString);
+        end;
+      ipDataSetNoficiacaoPessoa.next;
+    end;
+
+end;
+
+function TsmFuncoesSistema.fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
+  : TadsObjectlist<TNotificacao>;
 var
   vaDataSetNotificacao, vaDataSetNotificacaoPessoa, vaDataSet: TRFQuery;
   vaNotificacao: TNotificacao;
+  vaNotificacoes: TList<TNotificacao>;
   vaTipoNotificacao: TTipoNotificacao;
   vaMsg: String;
 
   procedure plEnviarEmails(ipTipo: TTipoNotificacao; ipMsg: String);
   begin
-    if ipEnviarEmail then
+    if ipNotificacaoEmail then
       begin
         vaDataSetNotificacaoPessoa.First;
         while not vaDataSetNotificacaoPessoa.Eof do
@@ -462,74 +484,6 @@ var
 
   end;
 
-  procedure plVerificarAgendaPessoal();
-  var
-    vaAgenda: TAgenda;
-    vaEvento: TEventoAgenda;
-  begin
-    vaDataSet.close;
-    vaDataSet.SQL.Text := ' select Agenda.id, ' +
-      '       Agenda_Registro.Id as ID_Evento, ' +
-      '       Agenda.Nome as Nome_Agenda,' +
-      '       Agenda_Registro.Titulo,' +
-      '       Agenda_Registro.Data_Inicio,' +
-      '       Agenda_Registro.Data_Fim' +
-      ' from Agenda_Registro' +
-      ' inner join Agenda on (Agenda.Id = Agenda_Registro.Id_Agenda)' +
-      ' where Agenda.Tipo = 0 and' +
-      '      (current_date between dateadd(day, :Dias, Agenda_Registro.Data_Inicio) and Agenda_Registro.Data_fim) and '+
-      '      ((select count(*)' +
-      '        from Agenda_Pessoa' +
-      '        where Agenda_Pessoa.Id_Agenda = Agenda.Id and' +
-      '              Agenda_Pessoa.Id_Pessoa = :Id_Pessoa) > 0) ';
-    vaDataSet.ParamByName('ID_PESSOA').AsInteger := ipIdPessoa;
-    vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger*-1;
-    vaDataSet.Open;
-    vaMsg := '';
-
-    TODO:Pensar em como fazer para que o songserver consiga usar essa funcao para enviar os email
-    if not vaDataSet.Eof then
-      begin
-        vaMsg := 'Os seguintes eventos da sua agenda pessoal estão próximos: '+coQuebraLinhaHtml;
-        vaAgenda := TAgenda.Create;
-        vaNotificacao := TNotificacao.Create;
-
-        vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
-        vaNotificacao.Tipo := Ord(tnEventoAgendaPessoal);
-
-        vaAgenda.Id := vaDataSet.FieldByName('ID').AsInteger;
-        vaAgenda.Nome := vaDataSet.FieldByName('NOME_AGENDA').AsString;
-
-        vaNotificacao.Info := vaAgenda;
-        Result.Add(vaNotificacao);
-
-        while not vaDataSet.Eof do
-          begin
-            if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
-              begin
-
-                vaEvento := TEventoAgenda.Create;
-                vaEvento.Id := vaDataSet.FieldByName('ID_EVENTO').AsInteger;
-                vaEvento.Titulo := vaDataSet.FieldByName('TITULO').AsString;
-                vaEvento.DataHoraInicio := vaDataSet.FieldByName('Data_Inicio').AsDateTime;
-                vaEvento.DataHoraFim := vaDataSet.FieldByName('Data_Fim').AsDateTime;
-
-                vaAgenda.Eventos.Add(vaEvento);
-
-              end;
-
-            vaMsg := vaMsg + 'Titulo: '+vaDataSet.FieldByName('TITULO').AsString + coQuebraLinhaHtml+
-              ' De '+DateTimeToStr(vaDataSet.FieldByName('Data_Inicio').AsDateTime) +
-              ' até '+DateTimeToStr(vaDataSet.FieldByName('Data_Fim').AsDateTime)+coQuebraLinhaHtml;
-            vaDataSet.next;
-          end;
-      end;
-
-    if vaMsg <> '' then
-      plEnviarEmails(tnEventoAgendaPessoal, vaMsg);
-
-  end;
-
 begin
   Result := TadsObjectlist<TNotificacao>.Create;
 
@@ -585,8 +539,17 @@ begin
                     plVerificarSolicitacaoCompra;
                   tnAniversario:
                     plVerificarAniversarios;
-                  tnEventoAgendaPessoal:
-                    plVerificarAgendaPessoal;
+                  tnEventoAgenda:
+                    begin
+                      vaNotificacoes := fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa, ipNotificacaoEmail, ipNotificacaoSistema,
+                        vaDataSetNotificacao, vaDataSetNotificacaoPessoa);
+
+                      if Assigned(vaNotificacoes) then
+                        begin
+                          Result.AddRange(vaNotificacoes);
+                          vaNotificacoes.Free;
+                        end;
+                    end;
                 end;
               end;
           end;
@@ -601,6 +564,152 @@ begin
 
     vaDataSet.close;
     vaDataSet.Free;
+  end;
+end;
+
+function TsmFuncoesSistema.fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean;
+  ipDataSetNotificacao, ipDataSetNotificacaoPessoa: TRFQuery)
+  : TList<TNotificacao>;
+var
+  vaDataSetAgenda, vaDataSetAgendaRegistro, vaDataSetAgendaPessoa: TRFQuery;
+  vaNotificacao: TNotificacao;
+  vaAgenda: TAgenda;
+  vaEvento: TEventoAgenda;
+  vaMsg: String;
+begin
+  Result := nil;
+  if ipNotificacaoSistema then
+    Result := TList<TNotificacao>.Create;
+
+  pprCriarDataSet(vaDataSetAgenda);
+  pprCriarDataSet(vaDataSetAgendaRegistro);
+  pprCriarDataSet(vaDataSetAgendaPessoa);
+  try
+    vaDataSetAgendaPessoa.SQL.Text := 'Select agenda_pessoa.id ' +
+      '                                   from agenda_pessoa' +
+      '                                where agenda_pessoa.id_agenda = :ID_AGENDA and' +
+      '                                      agenda_pessoa.id_pessoa = :ID_PESSOA';
+
+    vaDataSetAgendaRegistro.SQL.Text := ' select Agenda_Registro.Id, ' +
+      '       Agenda_Registro.Titulo,' +
+      '       Agenda_Registro.Data_Inicio,' +
+      '       Agenda_Registro.Data_Fim' +
+      ' from Agenda_Registro' +
+      ' where Agenda_Registro.id_agenda = :ID_AGENDA and ' +
+      '       ((Agenda_Registro.Event_Type = 1) or ' +
+      '        (current_date between dateadd(day, :Dias, Agenda_Registro.Data_Inicio) and Agenda_Registro.Data_fim)) ' +
+      ' UNION ALL ' +
+      ' select cast(Atividade.Id*-1 as integer) as ID,' +
+      '        Atividade.Nome as titulo,' +
+      '        Atividade.Data_Inicial as data_inicio,' +
+      '        Atividade.Data_Final as data_fim' +
+      ' from Agenda' +
+      ' inner join Atividade on (Atividade.Id_Projeto = Agenda.Id_Projeto)' +
+      ' where Agenda.Id = :ID_AGENDA and' +
+      '       (current_date between dateadd(day, :Dias, Atividade.Data_Inicial) and Atividade.Data_Final) ';
+
+    vaDataSetAgenda.SQL.Text := 'select Agenda.Id,' +
+      '       Agenda.Nome, ' +
+      '       Agenda.tipo ' +
+      ' from Agenda' +
+      ' where ((:Id_Pessoa is null) or ((select count(*)' +
+      '                                 from Agenda_Pessoa' +
+      '                                 where Agenda_Pessoa.Id_Agenda = Agenda.Id and' +
+      '                                       Agenda_Pessoa.Id_Pessoa = :Id_Pessoa) > 0))';
+    if ipIdPessoa <> -1 then
+      vaDataSetAgenda.ParamByName('ID_PESSOA').AsInteger := ipIdPessoa
+    else
+      vaDataSetAgenda.ParamByName('ID_PESSOA').Clear;
+    vaDataSetAgenda.Open;
+    while not vaDataSetAgenda.Eof do
+      begin
+        vaDataSetAgendaRegistro.close;
+        vaDataSetAgendaRegistro.ParamByName('ID_AGENDA').AsInteger := vaDataSetAgenda.FieldByName('ID').AsInteger;
+        vaDataSetAgendaRegistro.ParamByName('DIAS').AsInteger := ipDataSetNotificacao.FieldByName('Tempo_Antecedencia').AsInteger * -1;
+        vaDataSetAgendaRegistro.Open();
+
+        if not vaDataSetAgendaRegistro.Eof then
+          begin
+            if ipNotificacaoSistema and (ipDataSetNotificacaoPessoa.FieldByName('NOTIFICACAO_SISTEMA').AsInteger = 1) then
+              begin
+                vaNotificacao := TNotificacao.Create;
+                vaNotificacao.Id := vaDataSetAgenda.FieldByName('ID').AsInteger;
+                vaNotificacao.Tipo := Ord(tnEventoAgenda);
+
+                vaAgenda := TAgenda.Create;
+                vaAgenda.Id := vaDataSetAgenda.FieldByName('ID').AsInteger;
+                vaAgenda.Nome := vaDataSetAgenda.FieldByName('NOME').AsString;
+
+                while not vaDataSetAgendaRegistro.Eof do
+                  begin
+                    vaEvento := TEventoAgenda.Create;
+                    vaEvento.Id := vaDataSetAgendaRegistro.FieldByName('ID').AsInteger;
+                    vaEvento.Titulo := vaDataSetAgendaRegistro.FieldByName('TITULO').AsString;
+                    vaEvento.DataHoraInicio := vaDataSetAgendaRegistro.FieldByName('DATA_INICIO').AsDateTime;
+                    vaEvento.DataHoraFim := vaDataSetAgendaRegistro.FieldByName('DATA_FIM').AsDateTime;
+                    vaAgenda.Eventos.Add(vaEvento);
+
+                    vaDataSetAgendaRegistro.next;
+                  end;
+
+                vaNotificacao.Info := vaAgenda;
+                Result.Add(vaNotificacao);
+              end;
+
+            if ipNotificacaoEmail then
+              begin
+                vaMsg := 'Os seguintes eventos da agenda <b>' + vaDataSetAgenda.FieldByName('NOME').AsString + '</b> estão próximos: ' +
+                  coQuebraLinhaHtml;
+                vaDataSetAgendaRegistro.First;
+                while not vaDataSetAgendaRegistro.Eof do
+                  begin
+                    vaMsg := vaMsg + vaDataSetAgendaRegistro.FieldByName('TITULO').AsString + coQuebraLinhaHtml;
+                    vaMsg := vaMsg + 'De ' + vaDataSetAgendaRegistro.FieldByName('DATA_INICIO').AsString + ' até ' +
+                      vaDataSetAgendaRegistro.FieldByName('DATA_FIM').AsString + coQuebraLinhaHtml + coQuebraLinhaHtml;
+
+                    vaDataSetAgendaRegistro.next;
+                  end;
+
+                ipDataSetNotificacaoPessoa.First;
+                while not ipDataSetNotificacaoPessoa.Eof do
+                  begin
+                    if (ipDataSetNotificacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
+                      (ipDataSetNotificacaoPessoa.FieldByName('Email').AsString <> '') then
+                      begin
+                        //se diferente de -1 significa que no proprio select da agenda ja foi feito o filtro para garantir
+                        //que somente pessoas autorizadas vejam o agendamento
+                        if ipIdPessoa = -1 then
+                          begin
+                            vaDataSetAgendaPessoa.close;
+                            vaDataSetAgendaPessoa.ParamByName('ID_AGENDA').AsInteger := vaDataSetAgenda.FieldByName('ID').AsInteger;
+                            vaDataSetAgendaPessoa.ParamByName('ID_PESSOA').AsInteger := ipDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger;
+                            vaDataSetAgendaPessoa.Open;
+                          end;
+
+                        // se for o server q estiver solicitanto o envio de email eu irei enviar somente os eventos das agendas
+                        // publicas e da propria agenda pessoal
+                        if (ipIdPessoa <> -1) or (not vaDataSetAgendaPessoa.Eof) then
+                          pprEnviarEmail(TiposNotificacao[tnEventoAgenda], vaMsg, ipDataSetNotificacaoPessoa.FieldByName('Email').AsString);
+                      end;
+                    ipDataSetNotificacaoPessoa.next;
+                  end;
+
+              end;
+
+          end;
+
+        vaDataSetAgenda.next;
+      end;
+
+  finally
+    vaDataSetAgenda.close;
+    vaDataSetAgenda.Free;
+
+    vaDataSetAgendaRegistro.close;
+    vaDataSetAgendaRegistro.Free;
+
+    vaDataSetAgendaPessoa.close;
+    vaDataSetAgendaPessoa.Free;
   end;
 end;
 

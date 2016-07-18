@@ -2190,6 +2190,10 @@ object frmPrincipal: TfrmPrincipal
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3

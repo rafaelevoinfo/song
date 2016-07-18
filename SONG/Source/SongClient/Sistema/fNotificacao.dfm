@@ -1,6 +1,7 @@
 inherited frmNotificacao: TfrmNotificacao
   ActiveControl = nil
   Caption = 'Notifica'#231#245'es'
+  ExplicitWidth = 320
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -414,14 +415,12 @@ inherited frmNotificacao: TfrmNotificacao
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 112
-                Height = 15
                 Caption = 'Pessoas dispon'#237'veis'
                 ExplicitWidth = 112
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 206
-                Height = 15
                 Caption = 'Pessoas que receber'#227'o a notifica'#231#227'o'
                 ExplicitLeft = 505
                 ExplicitWidth = 206

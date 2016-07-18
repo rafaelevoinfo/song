@@ -88,7 +88,7 @@ begin
   inherited;
   if Not VarIsNull(cbTipo.EditValue) then
     begin
-      pnDiasAntecedencia.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnContaPagarVencendo, tnAtividadeVencendo, tnEventoAgendaPessoal];
+      pnDiasAntecedencia.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnContaPagarVencendo, tnAtividadeVencendo, tnEventoAgenda];
       pnDiasAtividades.Visible := TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) in [tnAtividadeCadastrada, tnAtividadeAlterada];
       pnDiasProcedencia.Visible := (not pnDiasAntecedencia.Visible) and
         (TTipoNotificacao(VarToStr(cbTipo.EditValue).ToInteger) = tnContaReceberVencida);

@@ -480,7 +480,7 @@ begin
     vaForm := TfrmSolicitacaoCompra.Create(nil)
   else if TTipoNotificacao(ipItem.Group.Tag) = tnAniversario then
     vaForm := TfrmPessoa.Create(nil)
-  else if TTipoNotificacao(ipItem.Group.Tag) = tnEventoAgendaPessoal then
+  else if TTipoNotificacao(ipItem.Group.Tag) = tnEventoAgenda then
     begin
       vaFrmAgenda := TfrmAgendamento.Create(nil);
       try
@@ -538,7 +538,7 @@ begin
   TileControlAniversario.Items.Clear;
   TileControlAniversario.Groups.Clear;
 
-  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false);
+  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false,true);
   for vaNotificacao in vaNotificacoes do
     begin
       vaGrupo := nil;
@@ -661,7 +661,7 @@ begin
             vaFrame.Text1.Value := vaSolicitacao.Itens;
 
           end;
-        tnEventoAgendaPessoal:
+        tnEventoAgenda:
           begin
             vaAgenda := vaNotificacao.Info as TAgenda;
             vaFrame := vaItem.Frames.Add;

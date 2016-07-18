@@ -271,7 +271,7 @@ type
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
   TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
-    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario, tnEventoAgendaPessoal, tnEventoAgendaCompartilhada);
+    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario, tnEventoAgenda);
 
   TTipoAgenda = (taPessoal, taOutra);
   TTipoEvento = (teEventoAgenda, teEventoAtividade);
@@ -298,7 +298,7 @@ const
 
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
-    'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Agenda Pessoal', 'Agenda Compartilhada(Projetos)');
+    'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Eventos de Agendas');
 
 implementation
 
