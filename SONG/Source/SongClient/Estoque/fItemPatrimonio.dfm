@@ -1,11 +1,8 @@
-inherited frmItem: TfrmItem
-  ActiveControl = EditNome
-  Caption = 'Itens'
-  ExplicitWidth = 1000
+inherited frmItemPatrimonio: TfrmItemPatrimonio
+  Caption = 'Itens do Patrim'#244'nio'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -26,35 +23,34 @@ inherited frmItem: TfrmItem
                 Value = 3
               end>
           end
+          inherited rgStatus: TcxRadioGroup
+            Visible = True
+          end
         end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
+          ExplicitTop = 2
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
             end
-            object viewRegistrosTIPO: TcxGridDBColumn [1]
-              DataBinding.FieldName = 'TIPO'
-              RepositoryItem = dmLookup.repIcbTipoItem
-              Options.Editing = False
-              Width = 117
-            end
-            object viewRegistrosNOME: TcxGridDBColumn [2]
+            object viewRegistrosNOME: TcxGridDBColumn [1]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
-              Width = 434
+              Width = 485
             end
-            object viewRegistrosCALC_SALDO: TcxGridDBColumn [3]
-              DataBinding.FieldName = 'CALC_SALDO'
+            object viewRegistrosTAXA_DEPRECIACAO_ANUAL: TcxGridDBColumn [2]
+              DataBinding.FieldName = 'TAXA_DEPRECIACAO_ANUAL'
               Options.Editing = False
-              Width = 132
+              Width = 193
             end
-            object viewRegistrosUNIDADE: TcxGridDBColumn [4]
-              DataBinding.FieldName = 'UNIDADE'
-              Visible = False
-              Options.Editing = False
+            inherited ColumnExcluir: TcxGridDBColumn
+              Caption = 'Ativar/Inativar'
+              MinWidth = 80
+              Width = 80
+              OnCustomDrawHeader = ColumnExcluirCustomDrawHeader
             end
           end
         end
@@ -74,13 +70,13 @@ inherited frmItem: TfrmItem
           Caption = 'Nome do Item'
           FocusControl = EditNome
         end
-        object lbl1: TLabel
-          Left = 304
-          Top = 1
-          Width = 134
+        object Label4: TLabel
+          Left = 306
+          Top = 0
+          Width = 168
           Height = 13
-          Caption = 'Unidade de armazenamento'
-          FocusControl = EditUnidade
+          Caption = 'Taxa Padr'#227'o de Deprecia'#231#227'o Anual'
+          FocusControl = EditTaxaDepreciacao
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -90,18 +86,20 @@ inherited frmItem: TfrmItem
           TabOrder = 0
           Width = 296
         end
-        object EditUnidade: TcxDBTextEdit
-          Left = 302
+        object EditTaxaDepreciacao: TcxDBSpinEdit
+          Left = 306
           Top = 16
-          DataBinding.DataField = 'UNIDADE'
+          DataBinding.DataField = 'TAXA_DEPRECIACAO_ANUAL'
           DataBinding.DataSource = dsMaster
+          Properties.DisplayFormat = '0 %'
+          Properties.MaxValue = 100.000000000000000000
           TabOrder = 1
-          Width = 137
+          Width = 87
         end
       end
     end
   end
   inherited dsMaster: TDataSource
-    DataSet = dmEstoque.cdsItem
+    DataSet = dmEstoque.cdsItem_Patrimonio
   end
 end

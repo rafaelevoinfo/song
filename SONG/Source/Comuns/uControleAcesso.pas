@@ -72,10 +72,11 @@ type
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
     finContaPagar, finContaReceber, finCliente, finTransferencia, finAutorizarUsoFundo);
-  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda,vivFamiliaBotanica,vivCamaraFria);
+  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica, vivCamaraFria);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
-  estSaida, estVenda, estLocalUso);
+    estSaida, estVenda, estLocalUso);
   TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento);
+  TPermissaoPatrimonio = (patItem, patPatrimonio);
 
 implementation
 
@@ -122,6 +123,14 @@ var
     vaPermissao: TPermissao;
   begin
     vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoSistema), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
+  procedure plAddPatrimonio(ipPermissao: TPermissaoPatrimonio; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoPatrimonio), Ord(ipPermissao)), ipDescricao);
     vaPermissoes.Add(vaPermissao);
   end;
 
@@ -175,6 +184,12 @@ begin
   plAddEstoque(estVenda, 'Vendas');
   plAddEstoque(estLocalUso, 'Locais de Uso');
   FItems.Add('Estoque', vaPermissoes);
+
+  //patrimonio
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddPatrimonio(patItem, 'Itens do Patrimônio');
+  plAddPatrimonio(patPatrimonio, 'Patrimônio');
+  FItems.Add('Patrimônio', vaPermissoes);
 
 end;
 

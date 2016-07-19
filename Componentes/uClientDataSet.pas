@@ -54,6 +54,10 @@ type
 
     coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
 
+    coIdentificacao = 'IDENTIFICACAO';
+    coLocalizacao = 'LOCALIZACAO';
+    coNotaFiscal = 'NOTA_FISCAL';
+
     coDelimitador = '§';
   end;
 

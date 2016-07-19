@@ -233,4 +233,52 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
     end
   end
+  object cdsPatrimonio: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqPatrimonio'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 336
+    Top = 112
+    object cdsPatrimonioIDENTIFICACAO: TStringField
+      FieldName = 'IDENTIFICACAO'
+      ProviderFlags = []
+    end
+    object cdsPatrimonioNOME_ITEM: TStringField
+      FieldName = 'NOME_ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsPatrimonioDATA_AQUISICAO: TSQLTimeStampField
+      FieldName = 'DATA_AQUISICAO'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsPatrimonioVALOR_INICIAL: TBCDField
+      FieldName = 'VALOR_INICIAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsPatrimonioLOCALIZACAO: TStringField
+      FieldName = 'LOCALIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsPatrimonioSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      ProviderFlags = []
+    end
+    object cdsPatrimonioCALC_VALOR_ATUAL: TBCDField
+      FieldName = 'CALC_VALOR_ATUAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = []
+    end
+  end
 end

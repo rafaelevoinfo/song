@@ -64,7 +64,8 @@ uses
   fReconexao in 'Geral\fReconexao.pas' {frmReconexao},
   fAgenda in 'Sistema\fAgenda.pas' {frmAgenda},
   fAgendamento in 'Sistema\fAgendamento.pas' {frmAgendamento},
-  fAgendamento_Cadastro in 'Sistema\fAgendamento_Cadastro.pas' {frmAgendamentoCadastro};
+  fAgendamento_Cadastro in 'Sistema\fAgendamento_Cadastro.pas' {frmAgendamentoCadastro},
+  fItemPatrimonio in 'Estoque\fItemPatrimonio.pas' {frmItemPatrimonio};
 
 {$R Localization.RES}
 {$R *.res}

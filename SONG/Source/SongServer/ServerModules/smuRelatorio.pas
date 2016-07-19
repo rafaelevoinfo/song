@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery,
-  Datasnap.DBClient, uClientDataSet, uUtils;
+  Datasnap.DBClient, uClientDataSet, uUtils, uSQLGenerator;
 
 type
   TsmRelatorio = class(TsmBasico)
@@ -42,11 +42,21 @@ type
     qTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     qTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField;
     qTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField;
+    qPatrimonio: TRFQuery;
+    qPatrimonioIDENTIFICACAO: TStringField;
+    qPatrimonioNOME_ITEM: TStringField;
+    qPatrimonioDATA_AQUISICAO: TSQLTimeStampField;
+    qPatrimonioVALOR_INICIAL: TBCDField;
+    qPatrimonioLOCALIZACAO: TStringField;
+    qPatrimonioSTATUS: TSmallintField;
+    qPatrimonioCALC_VALOR_ATUAL: TBCDField;
+    qPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   protected
+    function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; override;
 
-    
   end;
 
 var
@@ -61,8 +71,31 @@ uses
 
 {$R *.dfm}
 
+function TsmRelatorio.fprMontarWhere(ipTabela, ipWhere: string;
+  ipParam: TParam): string;
+var
+  vaValor, vaOperador: string;
+begin
+  Result := inherited;
+  TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+  if (ipTabela = 'PATRIMONIO') then
+    begin
+      if ipParam.Name = TParametros.coItem then
+        Result := TSQLGenerator.fpuFilterString(Result, 'ITEM_PATRIMONIO', 'NOME_ITEM', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_AQUISICAO', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador)
+      else if ipParam.Name = TParametros.coIdentificacao then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICACAO', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coStatus then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador);
+    end;
+end;
 
-
-
+procedure TsmRelatorio.qPatrimonioCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime,qPatrimonioVALOR_INICIAL.AsFloat,qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
+end;
 
 end.

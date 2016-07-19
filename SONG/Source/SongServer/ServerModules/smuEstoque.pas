@@ -122,6 +122,24 @@ type
     qSaidaLOCAL_USO: TStringField;
     dspqSaida: TDataSetProvider;
     dspqSaida_Item: TDataSetProvider;
+    qItem_Patrimonio: TRFQuery;
+    qPatrimonio: TRFQuery;
+    qItem_PatrimonioID: TIntegerField;
+    qItem_PatrimonioNOME: TStringField;
+    qItem_PatrimonioATIVO: TSmallintField;
+    qItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    qPatrimonioID: TIntegerField;
+    qPatrimonioID_ITEM_PATRIMONIO: TIntegerField;
+    qPatrimonioNOME_ITEM: TStringField;
+    qPatrimonioDATA_AQUISICAO: TSQLTimeStampField;
+    qPatrimonioIDENTIFICACAO: TStringField;
+    qPatrimonioMARCA: TStringField;
+    qPatrimonioVALOR_INICIAL: TBCDField;
+    qPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    qPatrimonioLOCALIZACAO: TStringField;
+    qPatrimonioNOTA_FISCAL: TStringField;
+    qPatrimonioSTATUS: TSmallintField;
+    qPatrimonioCALC_VALOR_ATUAL: TBCDField;
     procedure qSaida_ItemCalcFields(DataSet: TDataSet);
     procedure qVenda_ItemCalcFields(DataSet: TDataSet);
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
@@ -133,6 +151,7 @@ type
     procedure dspqSaida_ItemAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
+    procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     FIdsEspecies: TList<Integer>;
   protected
@@ -204,7 +223,7 @@ procedure TsmEstoque.dspqSaida_ItemAfterUpdateRecord(Sender: TObject;
 begin
   inherited;
   if ((Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').NewValue)) and (DeltaDS.FieldByName('ID_ESPECIE').NewValue <> Unassigned)) or
-     ((Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').OldValue)) and (DeltaDS.FieldByName('ID_ESPECIE').OldValue <> Unassigned)) 
+    ((Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').OldValue)) and (DeltaDS.FieldByName('ID_ESPECIE').OldValue <> Unassigned))
   then
     begin
       if (UpdateKind = ukModify) and (Not VarIsNull(DeltaDS.FieldByName('ID_ESPECIE').NewValue)) and
@@ -298,7 +317,34 @@ begin
       else if ipParam.Name = TParametros.coItem then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'SAIDA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador);
 
-    end;
+    end
+  else if (ipTabela = 'ITEM_PATRIMONIO') then
+    begin
+      if ipParam.Name = TParametros.coNome then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME', vaValor, vaOperador);
+    end
+  else if (ipTabela = 'PATRIMONIO') then
+    begin
+      if ipParam.Name = TParametros.coItem then
+        Result := TSQLGenerator.fpuFilterString(Result, 'ITEM_PATRIMONIO', 'NOME_ITEM', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_AQUISICAO', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador)
+      else if ipParam.Name = TParametros.coIdentificacao then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICACAO', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coStatus then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coLocalizacao then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'LOCALIZACAO', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coNotaFiscal then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOTA_FISCAL', vaValor, vaOperador)
+    end
+end;
+
+procedure TsmEstoque.qPatrimonioCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime,qPatrimonioVALOR_INICIAL.AsFloat,qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
 end;
 
 procedure TsmEstoque.qSaida_ItemCalcFields(DataSet: TDataSet);

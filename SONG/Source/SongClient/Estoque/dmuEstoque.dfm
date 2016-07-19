@@ -730,4 +730,115 @@ inherited dmEstoque: TdmEstoque
       Size = 100
     end
   end
+  object cdsItem_Patrimonio: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqItem_Patrimonio'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 432
+    Top = 232
+    object cdsItem_PatrimonioID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsItem_PatrimonioNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsItem_PatrimonioATIVO: TSmallintField
+      DisplayLabel = 'Ativo'
+      FieldName = 'ATIVO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      DisplayLabel = 'Taxa Padr'#227'o de Deprecia'#231#227'o Anual'
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = '0 %'
+    end
+  end
+  object cdsPatrimonio: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqPatrimonio'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 560
+    Top = 240
+    object cdsPatrimonioID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsPatrimonioID_ITEM_PATRIMONIO: TIntegerField
+      DisplayLabel = 'Id do Item do Patrim'#244'nio'
+      FieldName = 'ID_ITEM_PATRIMONIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsPatrimonioNOME_ITEM: TStringField
+      DisplayLabel = 'Nome do Item'
+      FieldName = 'NOME_ITEM'
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsPatrimonioDATA_AQUISICAO: TSQLTimeStampField
+      DisplayLabel = 'Data da Aquisi'#231#227'o'
+      FieldName = 'DATA_AQUISICAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsPatrimonioIDENTIFICACAO: TStringField
+      DisplayLabel = 'N'#250'mero de Identifica'#231#227'o'
+      FieldName = 'IDENTIFICACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPatrimonioMARCA: TStringField
+      DisplayLabel = 'Marca do Item'
+      FieldName = 'MARCA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsPatrimonioVALOR_INICIAL: TBCDField
+      DisplayLabel = 'Valor Inicial'
+      FieldName = 'VALOR_INICIAL'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      DisplayLabel = 'Taxa de Deprecia'#231#227'o Anual'
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPatrimonioLOCALIZACAO: TStringField
+      DisplayLabel = 'Localiza'#231#227'o'
+      FieldName = 'LOCALIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsPatrimonioNOTA_FISCAL: TStringField
+      DisplayLabel = 'Nr'#186' da Nota Fiscal'
+      FieldName = 'NOTA_FISCAL'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object cdsPatrimonioSTATUS: TSmallintField
+      DisplayLabel = 'Status'
+      FieldName = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPatrimonioCALC_VALOR_ATUAL: TBCDField
+      DisplayLabel = 'Valor Atual'
+      FieldName = 'CALC_VALOR_ATUAL'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+  end
 end

@@ -20,7 +20,7 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridCustomLayoutView,
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
-  fAgendamento;
+  fAgendamento, fItemPatrimonio, uMensagem;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -108,6 +108,11 @@ type
     Agendas1: TMenuItem;
     Ac_Agendamento: TAction;
     Agendas2: TMenuItem;
+    Patrimnio1: TMenuItem;
+    Ac_Item_Patrimonio: TAction;
+    ItensdoPatrimnio1: TMenuItem;
+    Ac_Sair: TAction;
+    Sair1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -148,6 +153,8 @@ type
       AAlertWindow: TdxAlertWindow);
     procedure Ac_AgendaExecute(Sender: TObject);
     procedure Ac_AgendamentoExecute(Sender: TObject);
+    procedure Ac_Item_PatrimonioExecute(Sender: TObject);
+    procedure Ac_SairExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -268,6 +275,12 @@ procedure TfrmPrincipal.Ac_ItemExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmItem>(pcPrincipal, TfrmItem, frmItem);
+end;
+
+procedure TfrmPrincipal.Ac_Item_PatrimonioExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmItemPatrimonio>(pcPrincipal, TfrmItemPatrimonio, frmItemPatrimonio);
 end;
 
 procedure TfrmPrincipal.Ac_Local_UsoExecute(Sender: TObject);
@@ -397,6 +410,13 @@ procedure TfrmPrincipal.Ac_SaidaExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmSaida>(pcPrincipal, TfrmSaida, frmSaida);
+end;
+
+procedure TfrmPrincipal.Ac_SairExecute(Sender: TObject);
+begin
+  inherited;
+  if TMensagem.fpuPerguntar('Realmente deseja sair do sistema?', ppSimNao) = rpSim then
+    Close;
 end;
 
 procedure TfrmPrincipal.Ac_Solicitacao_CompraExecute(Sender: TObject);
@@ -538,7 +558,7 @@ begin
   TileControlAniversario.Items.Clear;
   TileControlAniversario.Groups.Clear;
 
-  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false,true);
+  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false, True);
   for vaNotificacao in vaNotificacoes do
     begin
       vaGrupo := nil;

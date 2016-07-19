@@ -7,7 +7,7 @@ uses
   Datasnap.DBClient, IdHashSHA, System.RegularExpressions,
   System.Types, Winapi.Windows, uTypes, System.Classes, Data.DB,
   System.Generics.Collections, cxCheckComboBox, System.Variants, System.Math,
-  Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.StdCtrls, Vcl.ExtCtrls, System.DateUtils;
 
 type
   TUtils = class
@@ -49,6 +49,8 @@ type
     class function fpuEncapsularPanelForm(ipCaption: string; ipPanel: TPanel): TForm;
 
     class function fpuMontarDataBetween(ipDataInicial, ipDataFinal: TDateTime): String;
+
+    class function fpuCalcularDepreciacao(ipDataAquisicao: TDateTime; ipValorInicial: Double; ipTaxaDepreciacaoAnual: Integer): Double;
   end;
 
 const
@@ -119,6 +121,25 @@ var
 begin
   vaArray := TRegex.Split(ipInput, ipDelimitador);
   opValor := vaArray[0];
+end;
+
+class function TUtils.fpuCalcularDepreciacao(ipDataAquisicao: TDateTime;
+  ipValorInicial: Double; ipTaxaDepreciacaoAnual: Integer): Double;
+var
+  vaDifAnos: Integer;
+begin
+  Result := 0;
+  if (ipValorInicial > 0) and (ipTaxaDepreciacaoAnual > 0) then
+    begin
+      vaDifAnos := YearsBetween(now, ipDataAquisicao);
+      if vaDifAnos > 0 then
+        begin
+          Result := ipValorInicial - ((ipValorInicial * (ipTaxaDepreciacaoAnual / 100)) * vaDifAnos);
+          if Result < 0 then
+            Result := 0;
+        end;
+    end;
+
 end;
 
 class function TUtils.fpuConverterStringToArrayInteger(ipValor: string; ipDelimitador: string): TArray<Integer>;

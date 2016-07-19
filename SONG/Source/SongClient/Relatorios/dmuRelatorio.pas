@@ -44,6 +44,15 @@ type
     cdsTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField;
     cdsTaxas_EspecieQTDE_SEMENTE_KILO: TIntegerField;
     cdsSaldo_Semente_MudaCALC_TOTAL_MUDA: TIntegerField;
+    cdsPatrimonio: TRFClientDataSet;
+    cdsPatrimonioIDENTIFICACAO: TStringField;
+    cdsPatrimonioNOME_ITEM: TStringField;
+    cdsPatrimonioDATA_AQUISICAO: TSQLTimeStampField;
+    cdsPatrimonioVALOR_INICIAL: TBCDField;
+    cdsPatrimonioLOCALIZACAO: TStringField;
+    cdsPatrimonioSTATUS: TSmallintField;
+    cdsPatrimonioCALC_VALOR_ATUAL: TBCDField;
+    cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

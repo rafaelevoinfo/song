@@ -281,4 +281,78 @@ inherited smRelatorio: TsmRelatorio
       ProviderFlags = []
     end
   end
+  object qPatrimonio: TRFQuery
+    OnCalcFields = qPatrimonioCalcFields
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Patrimonio.Identificacao,'
+      '       Item_Patrimonio.Nome as Nome_Item,'
+      '       Patrimonio.Data_Aquisicao,'
+      '       Patrimonio.Valor_Inicial,'
+      '       Patrimonio.Localizacao,'
+      '       Patrimonio.Taxa_Depreciacao_Anual,'
+      '       Patrimonio.Status'
+      'from Patrimonio'
+      
+        'inner join Item_Patrimonio on (Item_Patrimonio.Id = Patrimonio.I' +
+        'd_Item_Patrimonio) '
+      '&WHERE'
+      'Order by Item_Patrimonio.Nome')
+    Left = 336
+    Top = 160
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qPatrimonioIDENTIFICACAO: TStringField
+      FieldName = 'IDENTIFICACAO'
+      Origin = 'IDENTIFICACAO'
+      ProviderFlags = []
+    end
+    object qPatrimonioNOME_ITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ITEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qPatrimonioDATA_AQUISICAO: TSQLTimeStampField
+      FieldName = 'DATA_AQUISICAO'
+      Origin = 'DATA_AQUISICAO'
+      ProviderFlags = []
+      Required = True
+    end
+    object qPatrimonioVALOR_INICIAL: TBCDField
+      FieldName = 'VALOR_INICIAL'
+      Origin = 'VALOR_INICIAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qPatrimonioLOCALIZACAO: TStringField
+      FieldName = 'LOCALIZACAO'
+      Origin = 'LOCALIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qPatrimonioSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = []
+    end
+    object qPatrimonioCALC_VALOR_ATUAL: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_ATUAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+      Calculated = True
+    end
+    object qPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      Origin = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = []
+    end
+  end
 end

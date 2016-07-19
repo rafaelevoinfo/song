@@ -1,9 +1,9 @@
 inherited smEstoque: TsmEstoque
   OldCreateOrder = True
   OnDestroy = DSServerModuleDestroy
-  Height = 374
-  Width = 628
-  object qItem: TRFQuery [0]
+  Height = 462
+  Width = 841
+  object qItem: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'Select item.id,'
@@ -54,7 +54,7 @@ inherited smEstoque: TsmEstoque
       Size = 2
     end
   end
-  object qEntrada: TRFQuery [1]
+  object qEntrada: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Entrada.Id,      '
@@ -102,7 +102,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object qSolicitacao_Compra: TRFQuery [2]
+  object qSolicitacao_Compra: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Solicitacao_Compra.Id,'
@@ -187,7 +187,7 @@ inherited smEstoque: TsmEstoque
       Size = 1000
     end
   end
-  object qSolicitacao_Compra_Item: TRFQuery [3]
+  object qSolicitacao_Compra_Item: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Solicitacao_Compra_Item.Id,'
@@ -260,7 +260,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object qCompra: TRFQuery [4]
+  object qCompra: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Compra.Id,'
@@ -371,7 +371,7 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qCompra_Item: TRFQuery [5]
+  object qCompra_Item: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Compra_Item.Id,'
@@ -456,7 +456,7 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = []
     end
   end
-  object qEntrada_Item: TRFQuery [6]
+  object qEntrada_Item: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Entrada_Item.Id,'
@@ -516,7 +516,7 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qSaida: TRFQuery [7]
+  object qSaida: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Saida.Id,'
@@ -569,7 +569,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object qSaida_Item: TRFQuery [8]
+  object qSaida_Item: TRFQuery
     OnCalcFields = qSaida_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -691,7 +691,7 @@ inherited smEstoque: TsmEstoque
       Calculated = True
     end
   end
-  object qVenda: TRFQuery [9]
+  object qVenda: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Venda.Id,'
@@ -769,7 +769,7 @@ inherited smEstoque: TsmEstoque
       Precision = 18
     end
   end
-  object qVenda_Item: TRFQuery [10]
+  object qVenda_Item: TRFQuery
     OnCalcFields = qVenda_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -894,7 +894,7 @@ inherited smEstoque: TsmEstoque
       Calculated = True
     end
   end
-  object qLocal_Uso: TRFQuery [11]
+  object qLocal_Uso: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'Select Local_Uso.Id,'
@@ -922,7 +922,7 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
-  object dspqSaida: TDataSetProvider [12]
+  object dspqSaida: TDataSetProvider
     DataSet = qSaida
     Options = []
     UpdateMode = upWhereKeyOnly
@@ -931,12 +931,155 @@ inherited smEstoque: TsmEstoque
     Left = 376
     Top = 168
   end
-  object dspqSaida_Item: TDataSetProvider [13]
+  object dspqSaida_Item: TDataSetProvider
     DataSet = qSaida_Item
     Options = []
     UpdateMode = upWhereKeyOnly
     AfterUpdateRecord = dspqSaida_ItemAfterUpdateRecord
     Left = 376
     Top = 232
+  end
+  object qItem_Patrimonio: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Item_Patrimonio.Id,'
+      '       Item_Patrimonio.Nome,'
+      '       Item_Patrimonio.Ativo,'
+      '       Item_Patrimonio.Taxa_Depreciacao_Anual'
+      'from Item_Patrimonio '
+      '&WHERE')
+    Left = 64
+    Top = 288
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qItem_PatrimonioID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qItem_PatrimonioNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qItem_PatrimonioATIVO: TSmallintField
+      FieldName = 'ATIVO'
+      Origin = 'ATIVO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      Origin = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object qPatrimonio: TRFQuery
+    OnCalcFields = qPatrimonioCalcFields
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Patrimonio.Id,'
+      '       Patrimonio.Id_Item_Patrimonio,'
+      '       Item_Patrimonio.Nome as Nome_Item,'
+      '       Patrimonio.Data_Aquisicao,'
+      '       Patrimonio.Identificacao,'
+      '       Patrimonio.Marca,'
+      '       Patrimonio.Valor_Inicial,'
+      '       Patrimonio.Taxa_Depreciacao_Anual,'
+      '       Patrimonio.Localizacao,'
+      '       Patrimonio.Nota_Fiscal,'
+      '       Patrimonio.Status'
+      'from Patrimonio'
+      
+        'inner join Item_Patrimonio on (Item_Patrimonio.Id = Patrimonio.I' +
+        'd_Item_Patrimonio)'
+      '&WHERE')
+    Left = 64
+    Top = 368
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qPatrimonioID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qPatrimonioID_ITEM_PATRIMONIO: TIntegerField
+      FieldName = 'ID_ITEM_PATRIMONIO'
+      Origin = 'ID_ITEM_PATRIMONIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qPatrimonioNOME_ITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_ITEM'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = True
+      Size = 100
+    end
+    object qPatrimonioDATA_AQUISICAO: TSQLTimeStampField
+      FieldName = 'DATA_AQUISICAO'
+      Origin = 'DATA_AQUISICAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qPatrimonioIDENTIFICACAO: TStringField
+      FieldName = 'IDENTIFICACAO'
+      Origin = 'IDENTIFICACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPatrimonioMARCA: TStringField
+      FieldName = 'MARCA'
+      Origin = 'MARCA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qPatrimonioVALOR_INICIAL: TBCDField
+      FieldName = 'VALOR_INICIAL'
+      Origin = 'VALOR_INICIAL'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
+    end
+    object qPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      Origin = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPatrimonioLOCALIZACAO: TStringField
+      FieldName = 'LOCALIZACAO'
+      Origin = 'LOCALIZACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qPatrimonioNOTA_FISCAL: TStringField
+      FieldName = 'NOTA_FISCAL'
+      Origin = 'NOTA_FISCAL'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object qPatrimonioSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPatrimonioCALC_VALOR_ATUAL: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_ATUAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+      Calculated = True
+    end
   end
 end

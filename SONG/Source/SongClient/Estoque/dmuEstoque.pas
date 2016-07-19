@@ -121,6 +121,24 @@ type
     cdsLocal_UsoNOME: TStringField;
     cdsSaidaID_LOCAL_USO: TIntegerField;
     cdsSaidaLOCAL_USO: TStringField;
+    cdsItem_Patrimonio: TRFClientDataSet;
+    cdsItem_PatrimonioID: TIntegerField;
+    cdsItem_PatrimonioNOME: TStringField;
+    cdsItem_PatrimonioATIVO: TSmallintField;
+    cdsItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    cdsPatrimonio: TRFClientDataSet;
+    cdsPatrimonioID: TIntegerField;
+    cdsPatrimonioID_ITEM_PATRIMONIO: TIntegerField;
+    cdsPatrimonioNOME_ITEM: TStringField;
+    cdsPatrimonioDATA_AQUISICAO: TSQLTimeStampField;
+    cdsPatrimonioIDENTIFICACAO: TStringField;
+    cdsPatrimonioMARCA: TStringField;
+    cdsPatrimonioVALOR_INICIAL: TBCDField;
+    cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    cdsPatrimonioLOCALIZACAO: TStringField;
+    cdsPatrimonioNOTA_FISCAL: TStringField;
+    cdsPatrimonioSTATUS: TSmallintField;
+    cdsPatrimonioCALC_VALOR_ATUAL: TBCDField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
