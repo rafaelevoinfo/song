@@ -65,7 +65,9 @@ uses
   fAgenda in 'Sistema\fAgenda.pas' {frmAgenda},
   fAgendamento in 'Sistema\fAgendamento.pas' {frmAgendamento},
   fAgendamento_Cadastro in 'Sistema\fAgendamento_Cadastro.pas' {frmAgendamentoCadastro},
-  fItemPatrimonio in 'Estoque\fItemPatrimonio.pas' {frmItemPatrimonio};
+  fItemPatrimonio in 'Estoque\fItemPatrimonio.pas' {frmItemPatrimonio},
+  fPatrimonio in 'Estoque\fPatrimonio.pas' {frmPatrimonio},
+  fRelatorioPatrimonio in 'Relatorios\fRelatorioPatrimonio.pas' {frmRelatorioPatrimonio};
 
 {$R Localization.RES}
 {$R *.res}

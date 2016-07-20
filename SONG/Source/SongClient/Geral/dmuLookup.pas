@@ -238,6 +238,13 @@ type
     cdslkAgenda_PessoaID_AGENDA: TIntegerField;
     cdslkAgenda_PessoaID_PESSOA: TIntegerField;
     cdslkAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField;
+    cdslkItem_Patrimonio: TRFClientDataSet;
+    cdslkItem_PatrimonioID: TIntegerField;
+    cdslkItem_PatrimonioNOME: TStringField;
+    cdslkItem_PatrimonioATIVO: TSmallintField;
+    cdslkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    repLcbItemPatrimonio: TcxEditRepositoryLookupComboBoxItem;
+    dslkItem_Patrimonio: TDataSource;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
   private

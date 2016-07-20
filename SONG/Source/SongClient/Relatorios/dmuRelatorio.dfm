@@ -78,7 +78,6 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <
       item
@@ -242,31 +241,37 @@ inherited dmRelatorio: TdmRelatorio
     Top = 112
     object cdsPatrimonioIDENTIFICACAO: TStringField
       FieldName = 'IDENTIFICACAO'
+      Origin = 'IDENTIFICACAO'
       ProviderFlags = []
     end
     object cdsPatrimonioNOME_ITEM: TStringField
       FieldName = 'NOME_ITEM'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsPatrimonioDATA_AQUISICAO: TSQLTimeStampField
       FieldName = 'DATA_AQUISICAO'
+      Origin = 'DATA_AQUISICAO'
       ProviderFlags = []
       Required = True
     end
     object cdsPatrimonioVALOR_INICIAL: TBCDField
       FieldName = 'VALOR_INICIAL'
+      Origin = 'VALOR_INICIAL'
       ProviderFlags = []
       Precision = 18
       Size = 2
     end
     object cdsPatrimonioLOCALIZACAO: TStringField
       FieldName = 'LOCALIZACAO'
+      Origin = 'LOCALIZACAO'
       ProviderFlags = []
       Size = 100
     end
     object cdsPatrimonioSTATUS: TSmallintField
       FieldName = 'STATUS'
+      Origin = 'STATUS'
       ProviderFlags = []
     end
     object cdsPatrimonioCALC_VALOR_ATUAL: TBCDField
@@ -278,7 +283,14 @@ inherited dmRelatorio: TdmRelatorio
     end
     object cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
       FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      Origin = 'TAXA_DEPRECIACAO_ANUAL'
       ProviderFlags = []
+    end
+    object cdsPatrimonioID_ITEM_PATRIMONIO: TIntegerField
+      FieldName = 'ID_ITEM_PATRIMONIO'
+      Origin = 'ID_ITEM_PATRIMONIO'
+      ProviderFlags = []
+      Required = True
     end
   end
 end

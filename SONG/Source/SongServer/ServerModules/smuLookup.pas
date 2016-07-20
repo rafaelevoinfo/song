@@ -152,6 +152,11 @@ type
     qlkAgenda_PessoaID_AGENDA: TIntegerField;
     qlkAgenda_PessoaID_PESSOA: TIntegerField;
     qlkAgenda_PessoaSOMENTE_VISUALIZACAO: TSmallintField;
+    qlkItem_Patrimonio: TRFQuery;
+    qlkItem_PatrimonioID: TIntegerField;
+    qlkItem_PatrimonioNOME: TStringField;
+    qlkItem_PatrimonioATIVO: TSmallintField;
+    qlkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
   private
     { Private declarations }
   protected
@@ -297,7 +302,7 @@ begin
     begin
       if ipParam.Name = TParametros.coProjeto then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PROJETO', vaValor.ToInteger, vaOperador)
-    end
+    end;
 end;
 
 end.

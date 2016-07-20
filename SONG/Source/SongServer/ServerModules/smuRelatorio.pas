@@ -51,6 +51,7 @@ type
     qPatrimonioSTATUS: TSmallintField;
     qPatrimonioCALC_VALOR_ATUAL: TBCDField;
     qPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    qPatrimonioID_ITEM_PATRIMONIO: TIntegerField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -80,14 +81,7 @@ begin
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
   if (ipTabela = 'PATRIMONIO') then
     begin
-      if ipParam.Name = TParametros.coItem then
-        Result := TSQLGenerator.fpuFilterString(Result, 'ITEM_PATRIMONIO', 'NOME_ITEM', vaValor, vaOperador)
-      else if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_AQUISICAO', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
-          vaOperador)
-      else if ipParam.Name = TParametros.coIdentificacao then
-        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICACAO', vaValor, vaOperador)
-      else if ipParam.Name = TParametros.coStatus then
+      if ipParam.Name = TParametros.coStatus then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador);
     end;
 end;

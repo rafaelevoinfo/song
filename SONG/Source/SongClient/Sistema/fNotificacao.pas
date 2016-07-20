@@ -135,6 +135,7 @@ begin
       vaItem.Description := TiposNotificacao[vaTipo];
     end;
 
+  dmLookup.repIcbTipoNotificacao.Properties.DropDownRows := dmLookup.repIcbTipoNotificacao.Properties.Items.Count;
 end;
 
 function TfrmNotificacao.fprGetPermissao: String;

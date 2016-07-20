@@ -128,7 +128,7 @@ class function TUtils.fpuCalcularDepreciacao(ipDataAquisicao: TDateTime;
 var
   vaDifAnos: Integer;
 begin
-  Result := 0;
+  Result := ipValorInicial;
   if (ipValorInicial > 0) and (ipTaxaDepreciacaoAnual > 0) then
     begin
       vaDifAnos := YearsBetween(now, ipDataAquisicao);

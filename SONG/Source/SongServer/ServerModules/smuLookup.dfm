@@ -1,7 +1,7 @@
 inherited smLookup: TsmLookup
   OldCreateOrder = True
-  Height = 414
-  Width = 1025
+  Height = 444
+  Width = 1021
   object qlkPerfil: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -1195,6 +1195,47 @@ inherited smLookup: TsmLookup
       Origin = 'SOMENTE_VISUALIZACAO'
       ProviderFlags = []
       Required = True
+    end
+  end
+  object qlkItem_Patrimonio: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Item_Patrimonio.Id,'
+      '       Item_Patrimonio.Nome,'
+      '       Item_Patrimonio.Ativo,'
+      '       Item_Patrimonio.taxa_depreciacao_anual'
+      'from Item_Patrimonio  '
+      '&WHERE')
+    Left = 880
+    Top = 368
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkItem_PatrimonioID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkItem_PatrimonioNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qlkItem_PatrimonioATIVO: TSmallintField
+      FieldName = 'ATIVO'
+      Origin = 'ATIVO'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      Origin = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = []
     end
   end
 end

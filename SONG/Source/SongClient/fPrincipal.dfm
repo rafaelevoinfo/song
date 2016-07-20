@@ -171,6 +171,12 @@ inherited frmPrincipal: TfrmPrincipal
       object ItensdoPatrimnio1: TMenuItem
         Action = Ac_Item_Patrimonio
       end
+      object Patrimnio2: TMenuItem
+        Action = Ac_Patrimonio
+      end
+      object Relatrio1: TMenuItem
+        Action = Ac_Relatorio_Patrimonio
+      end
     end
     object miRecursosHumanos: TMenuItem
       Caption = 'Recursos Humanos'
@@ -402,6 +408,7 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_AgendamentoExecute
     end
     object Ac_Item_Patrimonio: TAction
+      Category = 'Patrimonio'
       Caption = 'Itens do Patrim'#244'nio'
       OnExecute = Ac_Item_PatrimonioExecute
     end
@@ -409,6 +416,16 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Sistema'
       Caption = 'Sair'
       OnExecute = Ac_SairExecute
+    end
+    object Ac_Patrimonio: TAction
+      Category = 'Patrimonio'
+      Caption = 'Patrim'#244'nio'
+      OnExecute = Ac_PatrimonioExecute
+    end
+    object Ac_Relatorio_Patrimonio: TAction
+      Category = 'Patrimonio'
+      Caption = 'Relat'#243'rio'
+      OnExecute = Ac_Relatorio_PatrimonioExecute
     end
   end
   object dxSkinController1: TdxSkinController

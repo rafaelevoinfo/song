@@ -1,8 +1,11 @@
 inherited frmItemPatrimonio: TfrmItemPatrimonio
+  ActiveControl = EditNome
   Caption = 'Itens do Patrim'#244'nio'
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -30,7 +33,6 @@ inherited frmItemPatrimonio: TfrmItemPatrimonio
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          ExplicitTop = 2
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'

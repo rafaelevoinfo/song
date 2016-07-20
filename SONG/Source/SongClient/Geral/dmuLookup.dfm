@@ -754,6 +754,16 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkCamara_Fria
     end
+    object repLcbItemPatrimonio: TcxEditRepositoryLookupComboBoxItem
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkItem_Patrimonio
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1844,5 +1854,39 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkAgenda
     Left = 536
     Top = 840
+  end
+  object cdslkItem_Patrimonio: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkItem_Patrimonio'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 784
+    Top = 792
+    object cdslkItem_PatrimonioID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkItem_PatrimonioNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdslkItem_PatrimonioATIVO: TSmallintField
+      FieldName = 'ATIVO'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField
+      FieldName = 'TAXA_DEPRECIACAO_ANUAL'
+      ProviderFlags = []
+    end
+  end
+  object dslkItem_Patrimonio: TDataSource
+    DataSet = cdslkItem_Patrimonio
+    Left = 488
+    Top = 440
   end
 end

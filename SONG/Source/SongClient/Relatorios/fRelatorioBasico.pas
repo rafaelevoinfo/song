@@ -9,7 +9,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, Data.DB, uClientDataSet,
-  uTypes, cxCheckBox;
+  uTypes, cxCheckBox, dmuRelatorio;
 
 type
   TfrmRelatorioBasico = class(TfrmBasico)
@@ -30,6 +30,7 @@ type
 
   protected
     dmLookup: TdmLookup;
+    dmRelatorio: TdmRelatorio;
     function fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
   end;
 
@@ -73,6 +74,10 @@ procedure TfrmRelatorioBasico.FormCreate(Sender: TObject);
 begin
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';
+
+  dmRelatorio := TdmRelatorio.Create(Self);
+  dmRelatorio.Name := '';
+
   inherited;
 
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);;

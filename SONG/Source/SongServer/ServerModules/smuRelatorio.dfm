@@ -286,6 +286,7 @@ inherited smRelatorio: TsmRelatorio
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Patrimonio.Identificacao,'
+      '       Patrimonio.ID_ITEM_PATRIMONIO,'
       '       Item_Patrimonio.Nome as Nome_Item,'
       '       Patrimonio.Data_Aquisicao,'
       '       Patrimonio.Valor_Inicial,'
@@ -297,7 +298,7 @@ inherited smRelatorio: TsmRelatorio
         'inner join Item_Patrimonio on (Item_Patrimonio.Id = Patrimonio.I' +
         'd_Item_Patrimonio) '
       '&WHERE'
-      'Order by Item_Patrimonio.Nome')
+      'Order by Patrimonio.ID_ITEM_PATRIMONIO, Patrimonio.Identificacao')
     Left = 336
     Top = 160
     MacroData = <
@@ -353,6 +354,12 @@ inherited smRelatorio: TsmRelatorio
       FieldName = 'TAXA_DEPRECIACAO_ANUAL'
       Origin = 'TAXA_DEPRECIACAO_ANUAL'
       ProviderFlags = []
+    end
+    object qPatrimonioID_ITEM_PATRIMONIO: TIntegerField
+      FieldName = 'ID_ITEM_PATRIMONIO'
+      Origin = 'ID_ITEM_PATRIMONIO'
+      ProviderFlags = []
+      Required = True
     end
   end
 end

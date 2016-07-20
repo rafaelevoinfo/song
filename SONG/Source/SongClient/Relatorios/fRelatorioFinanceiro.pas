@@ -194,7 +194,6 @@ type
     procedure chkTodosProjetoRubricasPropertiesEditValueChanged(
       Sender: TObject);
   private
-    dmRelatorio: TdmRelatorio;
   public
     { Public declarations }
   end;
@@ -310,9 +309,6 @@ end;
 
 procedure TfrmRelatorioFinanceiro.FormCreate(Sender: TObject);
 begin
-
-  dmRelatorio := TdmRelatorio.Create(Self);
-  dmRelatorio.Name := '';
   inherited;
 
   pcPrincipal.ActivePage := tabSaldos;

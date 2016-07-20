@@ -808,6 +808,7 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Valor Inicial'
       FieldName = 'VALOR_INICIAL'
       ProviderFlags = [pfInUpdate]
+      currency = True
       Precision = 18
       Size = 2
     end
@@ -837,6 +838,7 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Valor Atual'
       FieldName = 'CALC_VALOR_ATUAL'
       ReadOnly = True
+      currency = True
       Precision = 18
       Size = 2
     end

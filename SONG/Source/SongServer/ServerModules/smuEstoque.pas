@@ -326,7 +326,7 @@ begin
   else if (ipTabela = 'PATRIMONIO') then
     begin
       if ipParam.Name = TParametros.coItem then
-        Result := TSQLGenerator.fpuFilterString(Result, 'ITEM_PATRIMONIO', 'NOME_ITEM', vaValor, vaOperador)
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ITEM_PATRIMONIO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
         Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA_AQUISICAO', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
           vaOperador)

@@ -53,6 +53,7 @@ type
     cdsPatrimonioSTATUS: TSmallintField;
     cdsPatrimonioCALC_VALOR_ATUAL: TBCDField;
     cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    cdsPatrimonioID_ITEM_PATRIMONIO: TIntegerField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

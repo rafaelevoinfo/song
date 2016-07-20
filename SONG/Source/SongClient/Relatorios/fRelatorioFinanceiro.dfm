@@ -219,9 +219,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
   end
-  inherited pnOrganizacao: TPanel
-    ExplicitLeft = 5
-  end
   inherited ActionList: TActionList
     Left = 504
     Top = 192
@@ -476,8 +473,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Sortable = False
     end
     object DBPipeMovimentacaoppField16: TppField
-      FieldAlias = 'DESCRICAO_FORMA_PAGAMENTO'
-      FieldName = 'DESCRICAO_FORMA_PAGAMENTO'
+      FieldAlias = 'DATA_PAGAMENTO_RECEBIMENTO'
+      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -486,8 +483,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Sortable = False
     end
     object DBPipeMovimentacaoppField17: TppField
-      FieldAlias = 'DATA_PAGAMENTO_RECEBIMENTO'
-      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+      FieldAlias = 'DESCRICAO_FORMA_PAGAMENTO'
+      FieldName = 'DESCRICAO_FORMA_PAGAMENTO'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0

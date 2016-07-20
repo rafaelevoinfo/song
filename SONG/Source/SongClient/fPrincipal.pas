@@ -20,7 +20,7 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridCustomLayoutView,
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
-  fAgendamento, fItemPatrimonio, uMensagem;
+  fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -113,6 +113,10 @@ type
     ItensdoPatrimnio1: TMenuItem;
     Ac_Sair: TAction;
     Sair1: TMenuItem;
+    Ac_Patrimonio: TAction;
+    Patrimnio2: TMenuItem;
+    Ac_Relatorio_Patrimonio: TAction;
+    Relatrio1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -155,6 +159,8 @@ type
     procedure Ac_AgendamentoExecute(Sender: TObject);
     procedure Ac_Item_PatrimonioExecute(Sender: TObject);
     procedure Ac_SairExecute(Sender: TObject);
+    procedure Ac_PatrimonioExecute(Sender: TObject);
+    procedure Ac_Relatorio_PatrimonioExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -370,6 +376,12 @@ begin
   TUtils.ppuAbrirFormAba<TfrmOrganizacao>(pcPrincipal, TfrmOrganizacao, frmOrganizacao);
 end;
 
+procedure TfrmPrincipal.Ac_PatrimonioExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmPatrimonio>(pcPrincipal, TfrmPatrimonio, frmPatrimonio);
+end;
+
 procedure TfrmPrincipal.Ac_PerfisExecute(Sender: TObject);
 begin
   inherited;
@@ -392,6 +404,12 @@ procedure TfrmPrincipal.Ac_Relatorio_FinanceiroExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmRelatorioFinanceiro>(pcPrincipal, TfrmRelatorioFinanceiro, frmRelatorioFinanceiro);
+end;
+
+procedure TfrmPrincipal.Ac_Relatorio_PatrimonioExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmRelatorioPatrimonio>(pcPrincipal, TfrmRelatorioPatrimonio, frmRelatorioPatrimonio);
 end;
 
 procedure TfrmPrincipal.Ac_Relatorio_ViveiroExecute(Sender: TObject);
