@@ -990,11 +990,13 @@ inherited smEstoque: TsmEstoque
       '       Patrimonio.Data_Aquisicao,'
       '       Patrimonio.Identificacao,'
       '       Patrimonio.Marca,'
+      '       Patrimonio.Modelo,'
       '       Patrimonio.Valor_Inicial,'
       '       Patrimonio.Taxa_Depreciacao_Anual,'
       '       Patrimonio.Localizacao,'
       '       Patrimonio.Nota_Fiscal,'
-      '       Patrimonio.Status'
+      '       Patrimonio.Status,'
+      '       Patrimonio.Observacao'
       'from Patrimonio'
       
         'inner join Item_Patrimonio on (Item_Patrimonio.Id = Patrimonio.I' +
@@ -1080,6 +1082,18 @@ inherited smEstoque: TsmEstoque
       Precision = 18
       Size = 2
       Calculated = True
+    end
+    object qPatrimonioMODELO: TStringField
+      FieldName = 'MODELO'
+      Origin = 'MODELO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qPatrimonioOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

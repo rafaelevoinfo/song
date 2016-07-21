@@ -30,7 +30,6 @@ type
     FBackup: TFDIBBackup;
     FEnderecoBackupRede: String;
     FEnderecoBackup: String;
-    FNomePadrao: String;
     FFtp: TFtp;
     procedure SetEnderecoBackup(const Value: String);
     procedure SetEnderecoBackupRede(const Value: String);
@@ -95,8 +94,6 @@ begin
   FBackup.Password := ipConn.Params.Values['Password'];
   FBackup.Host := ipConn.Params.Values['server'];
 
-  FNomePadrao := 'song_' + DayOf(now).ToString + '.fbk';
-
 end;
 
 destructor TBackup.Destroy;
@@ -106,30 +103,37 @@ begin
 end;
 
 procedure TBackup.ppuRealizarBackup;
+var
+  vaBackupFile, vaNomeArquivo: String;
 begin
   if EnderecoBackup = '' then
     raise Exception.Create('Informe um endereço de backup.');
 
-  FBackup.BackupFiles.Add(FEnderecoBackup);
-  if TFile.Exists(FEnderecoBackup) then
-    TFile.Delete(FEnderecoBackup);
+  FBackup.BackupFiles.Clear;
+
+  vaNomeArquivo := 'song_' + DayOf(now).ToString + '.fbk';
+  vaBackupFile := FEnderecoBackup + vaNomeArquivo;
+  FBackup.BackupFiles.Add(vaBackupFile);
+
+  if TFile.Exists(vaBackupFile) then
+    TFile.Delete(vaBackupFile);
 
   FBackup.Backup;
-  if not TFile.Exists(FEnderecoBackup) then
+  if not TFile.Exists(vaBackupFile) then
     raise Exception.Create('O backup falhou. Detalhes: Não foi gerado o arquivo .fbk');
 
   if FEnderecoBackupRede.Trim <> '' then
     begin
-      CopyFile(PChar(FEnderecoBackup), PChar(FEnderecoBackupRede), false);
+      CopyFile(PChar(vaBackupFile), PChar(FEnderecoBackupRede + vaNomeArquivo), false);
 
-      if not TFile.Exists(FEnderecoBackupRede) then
+      if not TFile.Exists(FEnderecoBackupRede + vaNomeArquivo) then
         frmPrincipal.ppuAdicionarErroLog('O arquivo de backup não foi copiado para a pasta na rede');
     end;
 
   if Ftp.Host.Trim <> '' then
     begin
       try
-        ppvEnviarParaFTP(FEnderecoBackup);
+        ppvEnviarParaFTP(vaBackupFile);
       except
         on E: Exception do
           frmPrincipal.ppuAdicionarErroLog('Erro ao enviar o arquivo para o FTP. Detalhes: ' + E.Message);
@@ -141,7 +145,7 @@ end;
 procedure TBackup.ppvEnviarParaFTP(ipArquivo: String);
 var
   vaFtp: TIdFTP;
-  vaNomeArquivo:String;
+  vaNomeArquivo: String;
 begin
   vaFtp := TIdFTP.Create(nil);
   try
@@ -154,14 +158,14 @@ begin
     if vaFtp.Connected then
       begin
         vaFtp.ChangeDir(Ftp.Pasta);
-        //muito importante. Sem isso o arquivo fica corrompido.
+        // muito importante. Sem isso o arquivo fica corrompido.
         vaFtp.TransferType := ftBinary;
 
         vaNomeArquivo := TPath.GetFileName(ipArquivo);
         vaFtp.Put(ipArquivo, vaNomeArquivo);
 
-        //FTP da oreades parece nao ter suporte para verificacao, mas deixei caso futuramente passe a ter.
-        if vaFtp.SupportsVerification and (not vaFtp.VerifyFile(ipArquivo,vaNomeArquivo)) then
+        // FTP da oreades parece nao ter suporte para verificacao, mas deixei caso futuramente passe a ter.
+        if vaFtp.SupportsVerification and (not vaFtp.VerifyFile(ipArquivo, vaNomeArquivo)) then
           raise Exception.Create('O arquivo que foi carregado para o FTP não confere com o arquivo local.');
       end
     else
@@ -174,19 +178,12 @@ end;
 
 procedure TBackup.SetEnderecoBackup(const Value: String);
 begin
-  if Value.Trim <> '' then
-    FEnderecoBackup := IncludeTrailingBackslash(Value) + FNomePadrao
-  else
-    FEnderecoBackup := FNomePadrao;
+  FEnderecoBackup := IncludeTrailingBackslash(Value);
 end;
 
 procedure TBackup.SetEnderecoBackupRede(const Value: String);
 begin
-  if Value.Trim <> '' then
-    FEnderecoBackupRede := IncludeTrailingBackslash(Value) + FNomePadrao
-  else
-    FEnderecoBackupRede := '';
-
+  FEnderecoBackupRede := IncludeTrailingBackslash(Value);
 end;
 
 procedure TBackup.SetFtp(const Value: TFtp);
@@ -232,11 +229,22 @@ begin
   inherited;
 end;
 
-procedure TThreadBackup.execute;
+procedure TThreadBackup.Execute;
 var
   vaDataAtual, vaProximoBkp: TDateTime;
-  vaMinutoAtual: Integer;
-  vaHoraAtual:TTime;
+  vaMinutoAtual, vaTempoEspera: Integer;
+  vaHoraAtual: TTime;
+
+  procedure plCalcularTempoEspera;
+  begin
+    // vamos acordar 5 minuto antes para ter uma folga caso o servidor trava por algum motivo
+    vaTempoEspera := MilliSecondsBetween(vaHoraAtual, HoraBackup) - 300000;
+    if vaTempoEspera < 0 then
+      vaTempoEspera := 1000;
+
+    FEvent.WaitFor(vaTempoEspera);
+  end;
+
 begin
   inherited;
   while not Terminated do
@@ -250,8 +258,7 @@ begin
             vaMinutoAtual := MinuteOf(vaDataAtual);
             if (HourOf(vaDataAtual) = HourOf(HoraBackup)) then
               begin
-                if (vaMinutoAtual >= MinuteOf(IncMinute(HoraBackup,-2))) and
-                  (vaMinutoAtual <= MinuteOf(IncMinute(HoraBackup, 2))) then
+                if (vaMinutoAtual = MinuteOf(HoraBackup)) then
                   begin
                     if Assigned(FOnStartBackup) then
                       Synchronize(FOnStartBackup);
@@ -260,21 +267,21 @@ begin
 
                     DataUltimoBackup := now;
                     vaProximoBkp := IncHour(DataUltimoBackup, 23);
-                    vaProximoBkp := IncMinute(vaProximoBkp, 58);
+                    vaProximoBkp := IncMinute(vaProximoBkp, 55);
 
                     if Assigned(FOnFinishBackup) then
                       Synchronize(FOnFinishBackup);
 
-                    FEvent.WaitFor(MilliSecondsBetween(vaProximoBkp, DataUltimoBackup)); // 23 hr e 58 min
+                    FEvent.WaitFor(MilliSecondsBetween(vaProximoBkp, DataUltimoBackup)); // 23 hr e 55 min
                   end
                 else
                   FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));
               end
             else
-              FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));
+              plCalcularTempoEspera
           end
         else
-          FEvent.WaitFor(MilliSecondsBetween(vaHoraAtual, HoraBackup));
+          plCalcularTempoEspera;
       except
         on E: Exception do
           begin

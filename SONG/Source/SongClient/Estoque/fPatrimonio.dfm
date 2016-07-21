@@ -1,9 +1,11 @@
 inherited frmPatrimonio: TfrmPatrimonio
+  ActiveControl = cbItem
   Caption = 'Patrim'#244'nio'
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -172,8 +174,8 @@ inherited frmPatrimonio: TfrmPatrimonio
           FocusControl = cbItem
         end
         object Label4: TLabel
-          Left = 269
-          Top = 42
+          Left = 267
+          Top = 47
           Width = 86
           Height = 13
           Caption = 'Data de Aquisi'#231#227'o'
@@ -188,16 +190,16 @@ inherited frmPatrimonio: TfrmPatrimonio
           FocusControl = EditMarca
         end
         object Label6: TLabel
-          Left = 6
-          Top = 42
+          Left = 411
+          Top = 47
           Width = 54
           Height = 13
           Caption = 'Valor Inicial'
           FocusControl = EditValorInicial
         end
         object Label7: TLabel
-          Left = 416
-          Top = 42
+          Left = 553
+          Top = 47
           Width = 131
           Height = 13
           Caption = 'Taxa de Deprecia'#231#227'o Anual'
@@ -205,27 +207,43 @@ inherited frmPatrimonio: TfrmPatrimonio
         end
         object lb1: TLabel
           Left = 6
-          Top = 85
+          Top = 93
           Width = 54
           Height = 13
           Caption = 'Localiza'#231#227'o'
           FocusControl = EditLocalizacao
         end
         object lb2: TLabel
-          Left = 557
-          Top = 42
+          Left = 692
+          Top = 47
           Width = 52
           Height = 13
           Caption = 'Nota Fiscal'
           FocusControl = EditNotaFiscal
         end
         object lb3: TLabel
-          Left = 557
-          Top = 2
+          Left = 6
+          Top = 47
           Width = 187
           Height = 13
           Caption = 'N'#250'mero de Identifica'#231#227'o (Nr'#186' da Placa)'
           FocusControl = EditIdentifiacao
+        end
+        object lb4: TLabel
+          Left = 555
+          Top = 2
+          Width = 34
+          Height = 13
+          Caption = 'Modelo'
+          FocusControl = EditModelo
+        end
+        object Label8: TLabel
+          Left = 6
+          Top = 136
+          Width = 58
+          Height = 13
+          Caption = 'Observa'#231#227'o'
+          FocusControl = EditObservacao
         end
         object cbItem: TcxDBLookupComboBox
           Left = 4
@@ -250,8 +268,8 @@ inherited frmPatrimonio: TfrmPatrimonio
           TabStop = False
         end
         object EditDataAquisicao: TcxDBDateEdit
-          Left = 267
-          Top = 58
+          Left = 265
+          Top = 63
           DataBinding.DataField = 'DATA_AQUISICAO'
           DataBinding.DataSource = dsMaster
           TabOrder = 5
@@ -266,47 +284,64 @@ inherited frmPatrimonio: TfrmPatrimonio
           Width = 282
         end
         object EditValorInicial: TcxDBCurrencyEdit
-          Left = 4
-          Top = 58
+          Left = 409
+          Top = 63
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_INICIAL'
           DataBinding.DataSource = dsMaster
-          TabOrder = 4
-          Width = 231
+          TabOrder = 6
+          Width = 138
         end
         object EditTaxaDepreciacao: TcxDBSpinEdit
-          Left = 416
-          Top = 58
+          Left = 553
+          Top = 63
           DataBinding.DataField = 'TAXA_DEPRECIACAO_ANUAL'
           DataBinding.DataSource = dsMaster
           Properties.DisplayFormat = '0 %'
           Properties.MaxValue = 100.000000000000000000
-          TabOrder = 6
+          TabOrder = 7
           Width = 131
         end
         object EditLocalizacao: TcxDBTextEdit
           Left = 4
-          Top = 101
+          Top = 109
           DataBinding.DataField = 'LOCALIZACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 8
-          Width = 231
+          TabOrder = 9
+          Width = 255
         end
         object EditNotaFiscal: TcxDBTextEdit
-          Left = 555
-          Top = 58
+          Left = 690
+          Top = 63
           DataBinding.DataField = 'NOTA_FISCAL'
           DataBinding.DataSource = dsMaster
-          TabOrder = 7
-          Width = 282
+          TabOrder = 8
+          Width = 145
         end
         object EditIdentifiacao: TcxDBTextEdit
-          Left = 555
-          Top = 18
+          Left = 4
+          Top = 63
           DataBinding.DataField = 'IDENTIFICACAO'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 4
+          Width = 255
+        end
+        object EditModelo: TcxDBTextEdit
+          Left = 553
+          Top = 18
+          DataBinding.DataField = 'MODELO'
           DataBinding.DataSource = dsMaster
           TabOrder = 3
           Width = 282
+        end
+        object EditObservacao: TcxDBMemo
+          Left = 4
+          Top = 152
+          DataBinding.DataField = 'OBSERVACAO'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 10
+          Height = 73
+          Width = 831
         end
       end
     end

@@ -842,5 +842,15 @@ inherited dmEstoque: TdmEstoque
       Precision = 18
       Size = 2
     end
+    object cdsPatrimonioMODELO: TStringField
+      DisplayLabel = 'Modelo'
+      FieldName = 'MODELO'
+      Size = 100
+    end
+    object cdsPatrimonioOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      Size = 1000
+    end
   end
 end

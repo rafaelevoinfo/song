@@ -219,6 +219,11 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
   end
+  inherited pnOrganizacao: TPanel
+    inherited chkTodasOrganizacoes: TcxCheckBox
+      ExplicitHeight = 19
+    end
+  end
   inherited ActionList: TActionList
     Left = 504
     Top = 192

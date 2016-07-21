@@ -206,8 +206,6 @@ implementation
 {$R *.dfm}
 
 
-
-
 procedure TfrmRelatorioFinanceiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
   vaIdOrganizacao, vaIdProjeto, vaIdFundo: Integer;
@@ -239,15 +237,14 @@ begin
       ppLabelDescricao.Visible := ppDetailBandMovimentacao.Visible;
 
       if cgbData.CheckBox.Checked then
-        ppLbTituloMovimentacaoFinanceira.Caption := 'Movimentação Financeira - '+FormatDateTime('dd/mm/yyyy',EditDataInicial.Date)+ ' a '+FormatDateTime('dd/mm/yyyy',EditDataFinal.Date)
+        ppLbTituloMovimentacaoFinanceira.Caption := 'Movimentação Financeira - ' + FormatDateTime('dd/mm/yyyy', EditDataInicial.Date) + ' a ' +
+          FormatDateTime('dd/mm/yyyy', EditDataFinal.Date)
       else
         ppLbTituloMovimentacaoFinanceira.Caption := 'Movimentação Financeira';
 
-
       ppMovimentacao.PrintReport;
     end
-  else
-    if pcPrincipal.ActivePage = tabSaldos then
+  else if pcPrincipal.ActivePage = tabSaldos then
     begin
       vaIdProjeto := fprExtrairValor(chkTodosProjetosSaldo, cbProjetoSaldo, 'Informe o projeto, ou marque o todos.');
       vaIdFundo := fprExtrairValor(chkTodosFundoSaldos, cbFundoSaldo, 'Informe o fundo, ou marque o todos.');

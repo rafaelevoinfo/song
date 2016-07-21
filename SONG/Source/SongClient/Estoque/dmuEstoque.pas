@@ -139,6 +139,8 @@ type
     cdsPatrimonioNOTA_FISCAL: TStringField;
     cdsPatrimonioSTATUS: TSmallintField;
     cdsPatrimonioCALC_VALOR_ATUAL: TBCDField;
+    cdsPatrimonioMODELO: TStringField;
+    cdsPatrimonioOBSERVACAO: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

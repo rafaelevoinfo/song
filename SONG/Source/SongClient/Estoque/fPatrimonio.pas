@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuEstoque, uTypes, uControleAcesso, System.TypInfo,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, fItemPatrimonio,
   uClientDataSet, dmuLookup, cxCurrencyEdit, cxDBEdit, cxSpinEdit, uMensagem,
-  uExceptions;
+  uExceptions, cxMemo, uUtils;
 
 type
   TfrmPatrimonio = class(TfrmBasicoCrud)
@@ -53,6 +53,10 @@ type
     Ac_Baixar: TAction;
     Ac_Reativar: TAction;
     cbPesquisaItem: TcxLookupComboBox;
+    lb4: TLabel;
+    EditModelo: TcxDBTextEdit;
+    EditObservacao: TcxDBMemo;
+    Label8: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cbItemKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Ac_Adicionar_ItemExecute(Sender: TObject);
@@ -241,6 +245,8 @@ begin
           begin
             cbItem.Editvalue := vaFrmItemPatrimonio.IdEscolhido;
             cbItem.PostEditValue;
+
+            TUtils.fpuFocar(cbItem);
           end;
       end;
   finally

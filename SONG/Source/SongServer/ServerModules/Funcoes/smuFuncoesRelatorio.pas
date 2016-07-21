@@ -148,8 +148,8 @@ begin
                 vaRecNo := vaCds.RecNo;
                 while vaRecNo <= vaCds.RecordCount do
                   begin
-                    vaValorPerc := TUtils.fpuTruncTo(vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat * vaPerc,2);
-                    if vaRecNo = vaCds.RecordCount then//ultimo registro, entao vamos jogar os quebrados pra ele
+                    vaValorPerc := TUtils.fpuTruncTo(vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat * vaPerc, 2);
+                    if vaRecNo = vaCds.RecordCount then // ultimo registro, entao vamos jogar os quebrados pra ele
                       vaValorPerc := vaCds.FieldByName(qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO.FieldName).AsFloat - vaSomaValorPerc
                     else
                       vaSomaValorPerc := vaSomaValorPerc + vaValorPerc;
@@ -278,8 +278,7 @@ begin
     vaCdsClone.Next;
     while not vaCdsClone.Eof do
       begin
-        if vaCdsClone.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger <> ipCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger
-        then
+        if vaCdsClone.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger <> ipCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger then
           begin
             while (ipCds.RecNo <= vaCdsClone.RecNo) and (not ipCds.Eof) do
               begin

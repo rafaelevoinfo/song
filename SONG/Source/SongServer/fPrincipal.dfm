@@ -2190,10 +2190,6 @@ object frmPrincipal: TfrmPrincipal
     object tabConfiguracoes: TcxTabSheet
       Caption = 'Configura'#231#245'es'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbBanco: TcxGroupBox
         Left = 0
         Top = 3
@@ -2306,10 +2302,6 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -2345,10 +2337,6 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25
@@ -2681,7 +2669,7 @@ object frmPrincipal: TfrmPrincipal
         Properties.Strings = (
           'Caption')
       end>
-    StorageName = 'configuracoes'
+    StorageName = 'configuracoes.ini'
     Left = 480
     Top = 88
   end
