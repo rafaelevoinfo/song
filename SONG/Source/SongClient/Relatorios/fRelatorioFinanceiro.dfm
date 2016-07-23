@@ -1066,7 +1066,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabelProjetoFundo: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'LabelProjetoFundo'
-          Caption = 'Projeto/Fundo'
+          Caption = 'Projeto/Conta'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
@@ -1075,10 +1075,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           FormField = False
           TextAlignment = taCentered
           Transparent = True
-          mmHeight = 2645
-          mmLeft = 5023
-          mmTop = 8468
-          mmWidth = 14552
+          mmHeight = 2646
+          mmLeft = 4763
+          mmTop = 8467
+          mmWidth = 14022
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3

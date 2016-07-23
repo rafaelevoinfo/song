@@ -67,7 +67,8 @@ uses
   fAgendamento_Cadastro in 'Sistema\fAgendamento_Cadastro.pas' {frmAgendamentoCadastro},
   fItemPatrimonio in 'Estoque\fItemPatrimonio.pas' {frmItemPatrimonio},
   fPatrimonio in 'Estoque\fPatrimonio.pas' {frmPatrimonio},
-  fRelatorioPatrimonio in 'Relatorios\fRelatorioPatrimonio.pas' {frmRelatorioPatrimonio};
+  fRelatorioPatrimonio in 'Relatorios\fRelatorioPatrimonio.pas' {frmRelatorioPatrimonio},
+  fDoacao in 'Financeiro\fDoacao.pas' {frmDoacao};
 
 {$R Localization.RES}
 {$R *.res}

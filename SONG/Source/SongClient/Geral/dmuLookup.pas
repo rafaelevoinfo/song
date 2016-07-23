@@ -245,8 +245,15 @@ type
     cdslkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
     repLcbItemPatrimonio: TcxEditRepositoryLookupComboBoxItem;
     dslkItem_Patrimonio: TDataSource;
+    repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
+    cdslkDoador: TRFClientDataSet;
+    cdslkDoadorID_PESSOA_DOADORA: TIntegerField;
+    cdslkDoadorNOME: TStringField;
+    cdslkDoadorTOTAL: TBCDField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
+    procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;
+      var OwnerData: OleVariant);
   private
 
     { Private declarations }
@@ -284,7 +291,7 @@ begin
       cdslkPessoa.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
 
     for vaTipo in ipTipos do
-      vaTipos.Add(Ord(vaTipo).ToString());;
+      vaTipos.Add(Ord(vaTipo).ToString());
 
     // recusado, cancelado, executado
     cdslkPessoa.ppuDataRequest([TParametros.coTipo], [vaTipos.DelimitedText]);
@@ -352,6 +359,14 @@ begin
   inherited;
   cdslkConta_CorrenteCALC_BANCO_CONTA.AsString := cdslkConta_CorrenteNOME.AsString + ' - ' + cdslkConta_CorrenteAGENCIA.AsString + '/' +
     cdslkConta_CorrenteCONTA.AsString;
+end;
+
+procedure TdmLookup.cdslkDoadorBeforeApplyUpdates(Sender: TObject;
+  var OwnerData: OleVariant);
+begin
+  inherited;
+  //apenas para garantir que nenhum apply seja feito
+  raise Exception.Create('Não é permitido inserir registros neste CDS');
 end;
 
 procedure TdmLookup.DataModuleCreate(Sender: TObject);

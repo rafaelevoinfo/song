@@ -69,9 +69,8 @@ type
     class function fpuGetInstance: TInfoLogin;
   end;
 
-  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade);
-  TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finRubrica,
-    finContaPagar, finContaReceber, finCliente, finTransferencia, finAutorizarUsoFundo);
+  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade, admRubrica);
+  TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finContaPagar, finContaReceber, finCliente, finTransferencia, finAutorizarUsoFundo, finDoacao);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica, vivCamaraFria);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
     estSaida, estVenda, estLocalUso);
@@ -144,6 +143,7 @@ begin
   plAddAdministrativo(admPerfil, 'Gerenciamento de Perfis');
   plAddAdministrativo(admOrganizacao, 'Organizações');
   plAddAdministrativo(admProjeto, 'Projetos');
+  plAddAdministrativo(admRubrica, 'Rubricas');
   FItems.Add('Administrativo', vaPermissoes);
   // Financeiro
   vaPermissoes := TList<TPermissao>.Create;
@@ -153,10 +153,10 @@ begin
   plAddFinanceiro(finContaReceber, 'Contas a Receber');
   plAddFinanceiro(finFinanciador, 'Financiadores');
   plAddFinanceiro(finFornecedor, 'Fornecedores');
-  plAddFinanceiro(finRubrica, 'Rubricas');
   plAddFinanceiro(finPlanoConta, 'Plano de Contas');
   plAddFinanceiro(finTransferencia, 'Transferência Financeira');
   plAddFinanceiro(finAutorizarUsoFundo, 'Autorizar uso de Conta');
+  plAddFinanceiro(finAutorizarUsoFundo, 'Doação');
   FItems.Add('Financeiro', vaPermissoes);
   // Viveiro
   vaPermissoes := TList<TPermissao>.Create;
@@ -185,7 +185,7 @@ begin
   plAddEstoque(estLocalUso, 'Locais de Uso');
   FItems.Add('Estoque', vaPermissoes);
 
-  //patrimonio
+  // patrimonio
   vaPermissoes := TList<TPermissao>.Create;
   plAddPatrimonio(patItem, 'Itens do Patrimônio');
   plAddPatrimonio(patPatrimonio, 'Patrimônio');

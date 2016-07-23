@@ -1020,6 +1020,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Transferencia_Financeira.Id_Projeto_Rubrica_Destino,'
       '       Rubrica_Destino.Nome as Rubrica_Destino,'
       '       Transferencia_Financeira.Valor,'
+      '       Transferencia_Financeira.Tipo,'
       
         '       coalesce(Fundo_Origem.nome, Projeto_origem.nome || '#39' - '#39'|' +
         '|rubrica_origem.nome) as Origem,'
@@ -1162,6 +1163,12 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qTransferencia_FinanceiraTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object dspqTransferencia_Financeira: TDataSetProvider
     DataSet = qTransferencia_Financeira
@@ -1214,6 +1221,101 @@ inherited smFinanceiro: TsmFinanceiro
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+  end
+  object qDoacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Doacao.Id,'
+      '       Doacao.Id_Pessoa_Doadora,'
+      '       doador.nome as Nome_Doador,'
+      '       Doacao.Id_Pessoa_Recebeu,'
+      '       funcionario.nome as Nome_Funcionario,'
+      '       Doacao.Id_Fundo,'
+      '       Fundo.nome as Fundo_Destino,'
+      '       Doacao.Valor,'
+      '       Doacao.Data,'
+      '       Doacao.Observacao'
+      'from Doacao  '
+      
+        'inner join pessoa doador on (doador.id = doacao.id_pessoa_doador' +
+        'a)'
+      
+        'inner join pessoa funcionario on (funcionario.id = doacao.id_pes' +
+        'soa_recebeu)'
+      'inner join fundo on (fundo.id = doacao.id_fundo)'
+      '&WHERE')
+    Left = 616
+    Top = 256
+    MacroData = <
+      item
+        Value = 'where doacao.id = 0'
+        Name = 'WHERE'
+      end>
+    object qDoacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qDoacaoID_PESSOA_DOADORA: TIntegerField
+      FieldName = 'ID_PESSOA_DOADORA'
+      Origin = 'ID_PESSOA_DOADORA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qDoacaoNOME_DOADOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_DOADOR'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qDoacaoID_PESSOA_RECEBEU: TIntegerField
+      FieldName = 'ID_PESSOA_RECEBEU'
+      Origin = 'ID_PESSOA_RECEBEU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qDoacaoNOME_FUNCIONARIO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_FUNCIONARIO'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qDoacaoID_FUNDO: TIntegerField
+      FieldName = 'ID_FUNDO'
+      Origin = 'ID_FUNDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qDoacaoFUNDO_DESTINO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FUNDO_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qDoacaoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qDoacaoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qDoacaoOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

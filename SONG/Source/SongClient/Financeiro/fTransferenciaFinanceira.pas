@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuFinanceiro, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, uClientDataSet, System.TypInfo, uControleAcesso,
   uExceptions, dmuLookup, uTypes, cxCurrencyEdit, cxDBEdit, dmuPrincipal,
-  Datasnap.DBClient, System.DateUtils;
+  Datasnap.DBClient, System.DateUtils, cxCheckBox, cxCheckComboBox, uUtils;
 
 type
   TfrmTransferenciaFinanceira = class(TfrmBasicoCrud)
@@ -67,6 +67,11 @@ type
     cdsLocalRubricasDestinoNOME_RUBRICA: TStringField;
     cdsLocalRubricasOrigemSALDO_REAL: TFMTBCDField;
     cdsLocalRubricasDestinoSALDO_REAL: TFMTBCDField;
+    Label5: TLabel;
+    cbTipoTransferencia: TcxDBImageComboBox;
+    viewRegistrosTIPO: TcxGridDBColumn;
+    Label6: TLabel;
+    cbTipoTransferenciaPesquisa: TcxCheckComboBox;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
     procedure cbProjetoDestinoPropertiesEditValueChanged(Sender: TObject);
@@ -137,6 +142,9 @@ begin
 end;
 
 procedure TfrmTransferenciaFinanceira.FormCreate(Sender: TObject);
+var
+  vaTipo: TcxCheckComboBoxItem;
+  i:integer;
 begin
   dmFinanceiro := TdmFinanceiro.Create(Self);
   dmFinanceiro.Name := '';
@@ -156,6 +164,15 @@ begin
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
 
   dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+
+  cbTipoTransferenciaPesquisa.Properties.Items.Clear;
+  for I := 0 to dmLookup.repIcbTipoTransferencia.Properties.Items.Count - 1 do
+    begin
+      vaTipo := cbTipoTransferenciaPesquisa.Properties.Items.Add;
+      vaTipo.Tag := dmLookup.repIcbTipoTransferencia.Properties.Items[i].Value;
+      vaTipo.Description := dmLookup.repIcbTipoTransferencia.Properties.Items[i].Description;
+    end;
+
 end;
 
 function TfrmTransferenciaFinanceira.fprConfigurarControlesPesquisa: TWinControl;
@@ -214,8 +231,14 @@ end;
 
 procedure TfrmTransferenciaFinanceira.pprCarregarParametrosPesquisa(
   ipCds: TRFClientDataSet);
+var
+  vaCodigos: string;
 begin
   inherited;
+  vaCodigos := TUtils.fpuExtrairValoresCheckComboBox(cbTipoTransferenciaPesquisa);
+  if vaCodigos <> '' then
+    ipCds.ppuAddParametro(TParametros.coTipo, vaCodigos);
+
   if cbPesquisarPor.EditValue = coPesquisaFundo then
     ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaProjeto then

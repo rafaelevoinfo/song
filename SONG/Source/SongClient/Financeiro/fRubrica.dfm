@@ -1,11 +1,9 @@
 inherited frmRubrica: TfrmRubrica
-  ActiveControl = EditNome
   Caption = 'Rubricas'
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -65,17 +63,13 @@ inherited frmRubrica: TfrmRubrica
               DataBinding.FieldName = 'ID'
               Options.Editing = False
             end
-            object viewRegistrosIDENTIFICADOR: TcxGridDBColumn [1]
-              DataBinding.FieldName = 'IDENTIFICADOR'
+            object viewRegistrosNOME: TcxGridDBColumn [1]
+              DataBinding.FieldName = 'NOME'
               Options.Editing = False
               SortIndex = 0
               SortOrder = soAscending
             end
-            object viewRegistrosNOME: TcxGridDBColumn [2]
-              DataBinding.FieldName = 'NOME'
-              Options.Editing = False
-            end
-            object viewRegistrosID_RUBRICA_PAI: TcxGridDBColumn [3]
+            object viewRegistrosID_RUBRICA_PAI: TcxGridDBColumn [2]
               DataBinding.FieldName = 'ID_RUBRICA_PAI'
               Visible = False
               Options.Editing = False

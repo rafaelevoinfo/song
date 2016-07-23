@@ -9,16 +9,23 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
-          Left = 564
-          Width = 411
-          ExplicitLeft = 564
-          ExplicitWidth = 411
+          Left = 436
+          Width = 539
+          ExplicitLeft = 435
+          ExplicitWidth = 539
           inherited Label1: TLabel
-            Left = 4
-            ExplicitLeft = 4
+            Left = 132
+            ExplicitLeft = 132
           end
-          object cbPesquisaFundo: TcxLookupComboBox [1]
-            Left = 137
+          object Label6: TLabel [1]
+            Left = 4
+            Top = 4
+            Width = 113
+            Height = 13
+            Caption = 'Tipos de Transfer'#234'ncia:'
+          end
+          object cbPesquisaFundo: TcxLookupComboBox [2]
+            Left = 265
             Top = 20
             RepositoryItem = dmLookup.repLcbFundo
             Properties.ListColumns = <>
@@ -26,15 +33,15 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             Width = 175
           end
           inherited pnData: TPanel
-            Left = 183
-            ExplicitLeft = 183
+            Left = 311
+            ExplicitLeft = 311
           end
           inherited EditPesquisa: TcxButtonEdit
-            Left = 135
-            ExplicitLeft = 135
+            Left = 263
+            ExplicitLeft = 263
           end
           inherited cbPesquisarPor: TcxImageComboBox
-            Left = 2
+            Left = 130
             Properties.Items = <
               item
                 Description = 'Todos'
@@ -58,20 +65,20 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
                 Description = 'Data'
                 Value = 4
               end>
-            ExplicitLeft = 2
+            ExplicitLeft = 130
           end
           inherited btnPesquisar: TButton
-            Left = 311
-            ExplicitLeft = 311
+            Left = 439
+            ExplicitLeft = 439
           end
           inherited rgStatus: TcxRadioGroup
-            Left = 3
-            Top = 34
-            ExplicitLeft = 3
-            ExplicitTop = 34
+            Left = 128
+            Top = 33
+            ExplicitLeft = 128
+            ExplicitTop = 33
           end
           object cbPesquisaProjeto: TcxLookupComboBox
-            Left = 136
+            Left = 264
             Top = 20
             RepositoryItem = dmLookup.repLcbProjeto
             Properties.ListColumns = <>
@@ -79,76 +86,95 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             Visible = False
             Width = 176
           end
+          object cbTipoTransferenciaPesquisa: TcxCheckComboBox
+            Left = 2
+            Top = 20
+            Properties.EmptySelectionText = 'Todos'
+            Properties.DropDownSizeable = True
+            Properties.EditValueFormat = cvfIndices
+            Properties.Items = <
+              item
+              end>
+            TabOrder = 7
+            Width = 126
+          end
         end
         inherited pnBotoes: TPanel
-          Width = 563
+          Width = 435
           ExplicitWidth = 563
         end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
-            object viewRegistrosID: TcxGridDBColumn [0]
+            object viewRegistrosTIPO: TcxGridDBColumn [0]
+              DataBinding.FieldName = 'TIPO'
+              RepositoryItem = dmLookup.repIcbTipoTransferencia
+              Options.Editing = False
+              Width = 127
+            end
+            object viewRegistrosID: TcxGridDBColumn [1]
               DataBinding.FieldName = 'ID'
+              Visible = False
               Options.Editing = False
               Width = 36
             end
-            object viewRegistrosRESPONSAVEL: TcxGridDBColumn [1]
+            object viewRegistrosRESPONSAVEL: TcxGridDBColumn [2]
               DataBinding.FieldName = 'RESPONSAVEL'
               Options.Editing = False
-              Width = 170
+              Width = 141
             end
-            object viewRegistrosORIGEM: TcxGridDBColumn [2]
+            object viewRegistrosORIGEM: TcxGridDBColumn [3]
               DataBinding.FieldName = 'ORIGEM'
               Options.Editing = False
               Width = 240
             end
-            object viewRegistrosDESTINO: TcxGridDBColumn [3]
+            object viewRegistrosDESTINO: TcxGridDBColumn [4]
               DataBinding.FieldName = 'DESTINO'
               Options.Editing = False
               Width = 240
             end
-            object viewRegistrosVALOR: TcxGridDBColumn [4]
+            object viewRegistrosVALOR: TcxGridDBColumn [5]
               DataBinding.FieldName = 'VALOR'
               Options.Editing = False
               Width = 123
             end
-            object viewRegistrosID_FUNDO_ORIGEM: TcxGridDBColumn [5]
+            object viewRegistrosID_FUNDO_ORIGEM: TcxGridDBColumn [6]
               DataBinding.FieldName = 'ID_FUNDO_ORIGEM'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_FUNDO_DESTINO: TcxGridDBColumn [6]
+            object viewRegistrosID_FUNDO_DESTINO: TcxGridDBColumn [7]
               DataBinding.FieldName = 'ID_FUNDO_DESTINO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_PROJETO_RUBRICA_ORIGEM: TcxGridDBColumn [7]
+            object viewRegistrosID_PROJETO_RUBRICA_ORIGEM: TcxGridDBColumn [8]
               DataBinding.FieldName = 'ID_PROJETO_RUBRICA_ORIGEM'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_PROJETO_RUBRICA_DESTINO: TcxGridDBColumn [8]
+            object viewRegistrosID_PROJETO_RUBRICA_DESTINO: TcxGridDBColumn [9]
               DataBinding.FieldName = 'ID_PROJETO_RUBRICA_DESTINO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosFUNDO_ORIGEM: TcxGridDBColumn [9]
+            object viewRegistrosFUNDO_ORIGEM: TcxGridDBColumn [10]
               DataBinding.FieldName = 'FUNDO_ORIGEM'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosFUNDO_DESTINO: TcxGridDBColumn [10]
+            object viewRegistrosFUNDO_DESTINO: TcxGridDBColumn [11]
               DataBinding.FieldName = 'FUNDO_DESTINO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosRUBRICA_ORIGEM: TcxGridDBColumn [11]
+            object viewRegistrosRUBRICA_ORIGEM: TcxGridDBColumn [12]
               DataBinding.FieldName = 'RUBRICA_ORIGEM'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosRUBRICA_DESTINO: TcxGridDBColumn [12]
+            object viewRegistrosRUBRICA_DESTINO: TcxGridDBColumn [13]
               DataBinding.FieldName = 'RUBRICA_DESTINO'
               Visible = False
               Options.Editing = False
@@ -174,49 +200,33 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
+        object Label5: TLabel
+          Left = 152
+          Top = 71
+          Width = 104
+          Height = 13
+          Caption = 'Tipo de Transfer'#234'ncia'
+          FocusControl = cbTipoTransferencia
+        end
         object Label8: TLabel
-          Left = 834
-          Top = 69
+          Left = 357
+          Top = 71
           Width = 24
           Height = 13
           Caption = 'Valor'
           FocusControl = EditValor
         end
-        object rgTipoTransferencia: TcxRadioGroup
-          Left = 4
-          Top = 6
-          Caption = 'Tipo de Transfer'#234'ncia'
-          Properties.Columns = 2
-          Properties.Items = <
-            item
-              Caption = 'Projeto para Conta'
-              Value = 0
-            end
-            item
-              Caption = 'Projeto para Projeto'
-              Value = 1
-            end
-            item
-              Caption = 'Conta para Projeto'
-              Value = 2
-            end
-            item
-              Caption = 'Conta para Conta'
-              Value = 3
-            end>
-          Properties.OnEditValueChanged = rgTipoTransferenciaPropertiesEditValueChanged
-          ItemIndex = 0
-          TabOrder = 0
-          Height = 59
-          Width = 296
-        end
         object gbOrigem: TcxGroupBox
-          Left = 4
-          Top = 71
+          Left = 148
+          Top = 6
           Caption = 'Origem'
           TabOrder = 1
-          Height = 102
+          Height = 62
           Width = 410
           object pnOrigemProjeto: TPanel
             Left = 3
@@ -306,18 +316,36 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             end
           end
         end
-        object EditValor: TcxDBCurrencyEdit
-          Left = 833
-          Top = 85
-          RepositoryItem = dmLookup.repCurPadrao
-          DataBinding.DataField = 'VALOR'
-          DataBinding.DataSource = dsMaster
-          TabOrder = 3
-          Width = 136
+        object rgTipoTransferencia: TcxRadioGroup
+          Left = 4
+          Top = 6
+          Caption = 'Tipo de Transfer'#234'ncia'
+          Properties.Items = <
+            item
+              Caption = 'Projeto para Conta'
+              Value = 0
+            end
+            item
+              Caption = 'Projeto para Projeto'
+              Value = 1
+            end
+            item
+              Caption = 'Conta para Projeto'
+              Value = 2
+            end
+            item
+              Caption = 'Conta para Conta'
+              Value = 3
+            end>
+          Properties.OnEditValueChanged = rgTipoTransferenciaPropertiesEditValueChanged
+          ItemIndex = 0
+          TabOrder = 0
+          Height = 102
+          Width = 142
         end
         object gbDestino: TcxGroupBox
-          Left = 417
-          Top = 71
+          Left = 561
+          Top = 6
           Caption = 'Destino'
           TabOrder = 2
           Height = 102
@@ -409,6 +437,25 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
               Width = 199
             end
           end
+        end
+        object cbTipoTransferencia: TcxDBImageComboBox
+          Left = 152
+          Top = 87
+          RepositoryItem = dmLookup.repIcbTipoTransferencia
+          DataBinding.DataField = 'TIPO'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 3
+          Width = 199
+        end
+        object EditValor: TcxDBCurrencyEdit
+          Left = 355
+          Top = 87
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'VALOR'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 4
+          Width = 136
         end
       end
     end

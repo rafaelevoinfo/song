@@ -20,7 +20,8 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridCustomLayoutView,
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
-  fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio;
+  fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
+  fDoacao;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -62,7 +63,6 @@ type
     Ac_Plano_Contas: TAction;
     readeCusto1: TMenuItem;
     Ac_Rubricas: TAction;
-    Rubricas1: TMenuItem;
     Ac_Conta_Pagar: TAction;
     ContasaPagar1: TMenuItem;
     Ac_Conta_Receber: TAction;
@@ -117,6 +117,9 @@ type
     Patrimnio2: TMenuItem;
     Ac_Relatorio_Patrimonio: TAction;
     Relatrio1: TMenuItem;
+    Ac_Doacao: TAction;
+    Doaes1: TMenuItem;
+    Rubricas2: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -161,6 +164,7 @@ type
     procedure Ac_SairExecute(Sender: TObject);
     procedure Ac_PatrimonioExecute(Sender: TObject);
     procedure Ac_Relatorio_PatrimonioExecute(Sender: TObject);
+    procedure Ac_DoacaoExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -245,6 +249,12 @@ procedure TfrmPrincipal.Ac_Conta_ReceberExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmContaReceber>(pcPrincipal, TfrmContaReceber, frmContaReceber);
+end;
+
+procedure TfrmPrincipal.Ac_DoacaoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmDoacao>(pcPrincipal, TfrmDoacao, frmDoacao);
 end;
 
 procedure TfrmPrincipal.Ac_EntradaExecute(Sender: TObject);

@@ -764,6 +764,23 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkItem_Patrimonio
     end
+    object repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Overhead'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Empr'#233'stimo'
+          Value = 1
+        end
+        item
+          Description = 'Devolu'#231#227'o de Empr'#233'stimo'
+          Value = 2
+        end>
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1888,5 +1905,31 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkItem_Patrimonio
     Left = 488
     Top = 440
+  end
+  object cdslkDoador: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkDoador'
+    RemoteServer = dmPrincipal.ProviderLookup
+    BeforeApplyUpdates = cdslkDoadorBeforeApplyUpdates
+    RFApplyAutomatico = False
+    Left = 864
+    Top = 600
+    object cdslkDoadorID_PESSOA_DOADORA: TIntegerField
+      DisplayLabel = 'Id do Doador'
+      FieldName = 'ID_PESSOA_DOADORA'
+      Required = True
+    end
+    object cdslkDoadorNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Size = 100
+    end
+    object cdslkDoadorTOTAL: TBCDField
+      DisplayLabel = 'Total j'#225' doado'
+      FieldName = 'TOTAL'
+      Precision = 18
+      Size = 2
+    end
   end
 end

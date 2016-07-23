@@ -1238,4 +1238,39 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
     end
   end
+  object qlkDoador: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select first 10 Doacao.Id_Pessoa_Doadora,'
+      '                Pessoa.Nome,'
+      '                sum(Doacao.Valor) as Total'
+      'from Doacao'
+      'inner join Pessoa on (Pessoa.Id = Doacao.Id_Pessoa_Doadora)'
+      'group by Doacao.Id_Pessoa_Doadora, Pessoa.Nome'
+      'having sum(Doacao.Valor) > 0'
+      'order by sum(Doacao.Valor) desc ')
+    Left = 48
+    Top = 376
+    object qlkDoadorID_PESSOA_DOADORA: TIntegerField
+      FieldName = 'ID_PESSOA_DOADORA'
+      Origin = 'ID_PESSOA_DOADORA'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkDoadorNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkDoadorTOTAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+  end
 end

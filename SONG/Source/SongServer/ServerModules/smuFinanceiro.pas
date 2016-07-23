@@ -154,6 +154,18 @@ type
     qConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField;
     qConta_Pagar_VinculoID_FUNDO_ALOCADO: TIntegerField;
     qConta_Pagar_VinculoNOME_FUNDO_ALOCADO: TStringField;
+    qTransferencia_FinanceiraTIPO: TSmallintField;
+    qDoacao: TRFQuery;
+    qDoacaoID: TIntegerField;
+    qDoacaoID_PESSOA_DOADORA: TIntegerField;
+    qDoacaoNOME_DOADOR: TStringField;
+    qDoacaoID_PESSOA_RECEBEU: TIntegerField;
+    qDoacaoNOME_FUNCIONARIO: TStringField;
+    qDoacaoID_FUNDO: TIntegerField;
+    qDoacaoFUNDO_DESTINO: TStringField;
+    qDoacaoVALOR: TBCDField;
+    qDoacaoDATA: TSQLTimeStampField;
+    qDoacaoOBSERVACAO: TStringField;
     procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -194,6 +206,7 @@ end;
 function TsmFinanceiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
+  vaCodigos:TArray<integer>;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -256,9 +269,9 @@ begin
       else if ipParam.Name = TParametros.coStatus then
         begin
           if vaValor = '0' then
-            Result := Result + ' ((' + ipTabela + '_PARCELA.status is null) or ('+ipTabela+'_PARCELA.status = 0)) ' + vaOperador
+            Result := Result + ' ((' + ipTabela + '_PARCELA.status is null) or (' + ipTabela + '_PARCELA.status = 0)) ' + vaOperador
           else
-            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela+'_PARCELA', 'STATUS', vaValor.ToInteger, vaOperador)
+            Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela + '_PARCELA', 'STATUS', vaValor.ToInteger, vaOperador)
         end
       else
         begin
@@ -298,6 +311,11 @@ begin
         begin
           Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0),
             TUtils.fpuExtrairData(vaValor, 1), vaOperador);
+        end
+      else if ipParam.Name = TParametros.coTipo then
+        begin
+          vaCodigos := TUtils.fpuConverterStringToArrayInteger(vaValor);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaCodigos,vaOperador);
         end
     end
 

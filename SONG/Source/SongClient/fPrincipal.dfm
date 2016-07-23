@@ -132,6 +132,9 @@ inherited frmPrincipal: TfrmPrincipal
       object ContasaReceber1: TMenuItem
         Action = Ac_Conta_Receber
       end
+      object Doaes1: TMenuItem
+        Action = Ac_Doacao
+      end
       object ransfernciadeRecursos1: TMenuItem
         Action = Ac_Transferencia
       end
@@ -147,9 +150,6 @@ inherited frmPrincipal: TfrmPrincipal
       object readeCusto1: TMenuItem
         Action = Ac_Plano_Contas
       end
-      object Rubricas1: TMenuItem
-        Action = Ac_Rubricas
-      end
       object Relatrios1: TMenuItem
         Action = Ac_Relatorio_Financeiro
       end
@@ -164,6 +164,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object Projetos1: TMenuItem
         Action = Ac_Projeto
+      end
+      object Rubricas2: TMenuItem
+        Action = Ac_Rubricas
       end
     end
     object Patrimnio1: TMenuItem
@@ -426,6 +429,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'Patrimonio'
       Caption = 'Relat'#243'rio'
       OnExecute = Ac_Relatorio_PatrimonioExecute
+    end
+    object Ac_Doacao: TAction
+      Category = 'Financeiro'
+      Caption = 'Doa'#231#245'es'
+      OnExecute = Ac_DoacaoExecute
     end
   end
   object dxSkinController1: TdxSkinController

@@ -151,6 +151,18 @@ type
     cdsConta_Pagar_AutorizacaoPESSOA_AUTORIZOU: TStringField;
     cdsConta_Pagar_VinculoID_FUNDO_ALOCADO: TIntegerField;
     cdsConta_Pagar_VinculoNOME_FUNDO_ALOCADO: TStringField;
+    cdsTransferencia_FinanceiraTIPO: TSmallintField;
+    cdsDoacao: TRFClientDataSet;
+    cdsDoacaoID: TIntegerField;
+    cdsDoacaoID_PESSOA_DOADORA: TIntegerField;
+    cdsDoacaoNOME_DOADOR: TStringField;
+    cdsDoacaoID_PESSOA_RECEBEU: TIntegerField;
+    cdsDoacaoNOME_FUNCIONARIO: TStringField;
+    cdsDoacaoID_FUNDO: TIntegerField;
+    cdsDoacaoFUNDO_DESTINO: TStringField;
+    cdsDoacaoVALOR: TBCDField;
+    cdsDoacaoDATA: TSQLTimeStampField;
+    cdsDoacaoOBSERVACAO: TStringField;
   private
     { Private declarations }
   public

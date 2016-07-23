@@ -850,13 +850,20 @@ inherited dmFinanceiro: TdmFinanceiro
       Required = True
     end
     object cdsTransferencia_FinanceiraRESPONSAVEL: TStringField
-      DisplayLabel = 'Respons'#225'vel pela Transfer'#234'ncia'
+      DisplayLabel = 'Respons'#225'vel'
       FieldName = 'RESPONSAVEL'
       Size = 100
     end
     object cdsTransferencia_FinanceiraDATA: TSQLTimeStampField
       DisplayLabel = 'Data e Hora da Transfer'#234'ncia'
       FieldName = 'DATA'
+      Required = True
+    end
+    object cdsTransferencia_FinanceiraTIPO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Tipo'
+      FieldName = 'TIPO'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
   end
@@ -889,6 +896,76 @@ inherited dmFinanceiro: TdmFinanceiro
       DisplayLabel = 'Pessoa que Autorizou'
       FieldName = 'PESSOA_AUTORIZOU'
       Size = 100
+    end
+  end
+  object cdsDoacao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqDoacao'
+    RemoteServer = dmPrincipal.ProviderFinanceiro
+    Left = 576
+    Top = 216
+    object cdsDoacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsDoacaoID_PESSOA_DOADORA: TIntegerField
+      DisplayLabel = 'Id do Doador'
+      FieldName = 'ID_PESSOA_DOADORA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsDoacaoNOME_DOADOR: TStringField
+      DisplayLabel = 'Doador'
+      FieldName = 'NOME_DOADOR'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsDoacaoID_PESSOA_RECEBEU: TIntegerField
+      DisplayLabel = 'Id da Pessoa Recebeu'
+      FieldName = 'ID_PESSOA_RECEBEU'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsDoacaoNOME_FUNCIONARIO: TStringField
+      DisplayLabel = 'Nome da Pessoa que Recebeu'
+      FieldName = 'NOME_FUNCIONARIO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsDoacaoID_FUNDO: TIntegerField
+      DisplayLabel = 'Id da Conta'
+      FieldName = 'ID_FUNDO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsDoacaoFUNDO_DESTINO: TStringField
+      DisplayLabel = 'Conta'
+      FieldName = 'FUNDO_DESTINO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object cdsDoacaoVALOR: TBCDField
+      DisplayLabel = 'Valor'
+      FieldName = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsDoacaoDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsDoacaoOBSERVACAO: TStringField
+      DisplayLabel = 'Observa'#231#227'o'
+      FieldName = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

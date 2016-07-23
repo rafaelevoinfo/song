@@ -25,7 +25,6 @@ type
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosNOME: TcxGridDBColumn;
     viewRegistrosID_RUBRICA_PAI: TcxGridDBColumn;
-    viewRegistrosIDENTIFICADOR: TcxGridDBColumn;
     btnIncluirSubItem: TButton;
     Ac_Incluir_Item: TAction;
     procedure FormCreate(Sender: TObject);
@@ -88,7 +87,7 @@ end;
 
 function TfrmRubrica.fprGetPermissao: string;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finRubrica));
+  Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admRubrica));
 end;
 
 function TfrmRubrica.fpuExcluir(ipIds: TArray<Integer>): Boolean;

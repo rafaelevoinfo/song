@@ -157,6 +157,10 @@ type
     qlkItem_PatrimonioNOME: TStringField;
     qlkItem_PatrimonioATIVO: TSmallintField;
     qlkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
+    qlkDoador: TRFQuery;
+    qlkDoadorID_PESSOA_DOADORA: TIntegerField;
+    qlkDoadorNOME: TStringField;
+    qlkDoadorTOTAL: TBCDField;
   private
     { Private declarations }
   protected

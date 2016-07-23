@@ -11,7 +11,7 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
@@ -27,7 +27,7 @@ inherited frmContaPagar: TfrmContaPagar
         inherited pnEditsPesquisa: TPanel
           Left = 367
           Width = 618
-          ExplicitLeft = 366
+          ExplicitLeft = 367
           ExplicitWidth = 618
           inherited Label1: TLabel
             Left = 203
@@ -184,7 +184,7 @@ inherited frmContaPagar: TfrmContaPagar
         end
         inherited pnBotoes: TPanel
           Width = 366
-          ExplicitWidth = 552
+          ExplicitWidth = 366
         end
       end
       inherited pnGrid: TPanel
@@ -195,8 +195,6 @@ inherited frmContaPagar: TfrmContaPagar
         inherited cxGridRegistros: TcxGrid
           Width = 984
           Height = 223
-          ExplicitLeft = 0
-          ExplicitTop = 2
           ExplicitWidth = 984
           ExplicitHeight = 223
           inherited viewRegistros: TcxGridDBTableView
@@ -1017,6 +1015,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Properties.OnEditValueChanged = rgRecursoAlocadoPropertiesEditValueChanged
                 ItemIndex = 0
                 TabOrder = 2
+                Visible = False
                 Height = 41
                 Width = 111
               end
@@ -1037,6 +1036,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Properties.OnEditValueChanged = rgRecursoAlocadoPropertiesEditValueChanged
                 ItemIndex = 0
                 TabOrder = 3
+                Visible = False
                 Height = 41
                 Width = 144
               end
