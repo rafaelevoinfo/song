@@ -1,11 +1,12 @@
 inherited frmContaReceber: TfrmContaReceber
-  ActiveControl = EditDescricao
+  ActiveControl = btnIncluir
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -67,7 +68,7 @@ inherited frmContaReceber: TfrmContaReceber
                 Value = 4
               end
               item
-                Description = 'Fundo'
+                Description = 'Conta'
                 Value = 8
               end>
             TabOrder = 2
@@ -112,6 +113,15 @@ inherited frmContaReceber: TfrmContaReceber
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = 'R$ ,0.00'
+                Kind = skSum
+                FieldName = 'VALOR_TOTAL'
+                Column = viewRegistrosVALOR_TOTAL
+              end>
+            OptionsView.Footer = True
+            OptionsView.FooterAutoHeight = True
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
@@ -126,6 +136,7 @@ inherited frmContaReceber: TfrmContaReceber
               DataBinding.FieldName = 'VALOR_TOTAL'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
+              Width = 179
             end
             object viewRegistrosFORMA_PAGTO: TcxGridDBColumn [3]
               DataBinding.FieldName = 'FORMA_PAGTO'
@@ -172,9 +183,12 @@ inherited frmContaReceber: TfrmContaReceber
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabVinculos
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -198,6 +212,15 @@ inherited frmContaReceber: TfrmContaReceber
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   OnCustomDrawCell = viewRegistrosDetailCustomDrawCell
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'VALOR'
+                      Column = viewRegistrosDetailVALOR
+                    end>
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
                     Options.Editing = False
@@ -215,6 +238,7 @@ inherited frmContaReceber: TfrmContaReceber
                     DataBinding.FieldName = 'VALOR'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 178
                   end
                   object viewRegistrosDetailSTATUS: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'STATUS'
@@ -242,10 +266,6 @@ inherited frmContaReceber: TfrmContaReceber
             object tabVinculos: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -258,13 +278,21 @@ inherited frmContaReceber: TfrmContaReceber
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsVinculos
                   DataController.Summary.DefaultGroupSummaryItems = <>
-                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'VALOR'
+                      Column = viewPesquisaVinculoVALOR
+                    end>
                   DataController.Summary.SummaryGroups = <>
                   OptionsData.CancelOnExit = False
                   OptionsData.Deleting = False
                   OptionsData.DeletingConfirmation = False
                   OptionsData.Editing = False
                   OptionsData.Inserting = False
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
                   OptionsView.GroupByBox = False
                   object viewPesquisaVinculoID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
@@ -288,6 +316,7 @@ inherited frmContaReceber: TfrmContaReceber
                     DataBinding.FieldName = 'VALOR'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 212
                   end
                 end
                 object level2: TcxGridLevel

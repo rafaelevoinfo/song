@@ -11,7 +11,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabMovimentacao
+      Properties.ActivePage = tabSaldos
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
@@ -20,75 +20,65 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos'
         ImageIndex = 0
-        object Label2: TLabel
-          Left = 7
-          Top = 3
-          Width = 35
-          Height = 13
-          Caption = 'Projeto'
-        end
-        object Label4: TLabel
-          Left = 7
-          Top = 44
-          Width = 30
-          Height = 13
-          Caption = 'Fundo'
-        end
-        object cbProjetoSaldo: TcxLookupComboBox
+        ExplicitLeft = 0
+        ExplicitTop = 27
+        object cgbProjetoSaldo: TdxCheckGroupBox
           Left = 4
-          Top = 19
-          RepositoryItem = dmLookup.repLcbProjeto
-          Properties.ListColumns = <>
+          Top = 3
+          Caption = 'Projeto'
           TabOrder = 0
-          Width = 225
+          Height = 51
+          Width = 285
+          object cbProjetoSaldo: TcxLookupComboBox
+            Left = 4
+            Top = 19
+            RepositoryItem = dmLookup.repLcbProjeto
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 225
+          end
+          object chkTodosProjetosSaldo: TcxCheckBox
+            Left = 229
+            Top = 20
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkSaldoTodosProjetoPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
         end
-        object chkTodosProjetosSaldo: TcxCheckBox
-          Left = 229
-          Top = 20
-          Caption = 'Todos'
-          Properties.OnEditValueChanged = chkSaldoTodosProjetoPropertiesEditValueChanged
-          TabOrder = 1
-          Transparent = True
-          Width = 69
-        end
-        object chkTodosFundoSaldos: TcxCheckBox
-          Left = 229
-          Top = 60
-          Caption = 'Todos'
-          Properties.OnEditValueChanged = chkSaldoTodosFundoPropertiesEditValueChanged
-          TabOrder = 2
-          Transparent = True
-          Width = 69
-        end
-        object cbFundoSaldo: TcxLookupComboBox
+        object cgbFundoSaldo: TdxCheckGroupBox
           Left = 4
           Top = 59
-          RepositoryItem = dmLookup.repLcbFundo
-          Properties.ListColumns = <>
-          TabOrder = 3
-          Width = 225
+          Caption = 'Fundo'
+          TabOrder = 1
+          Height = 52
+          Width = 285
+          object cbFundoSaldo: TcxLookupComboBox
+            Left = 3
+            Top = 19
+            RepositoryItem = dmLookup.repLcbFundo
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 225
+          end
+          object chkTodosFundoSaldos: TcxCheckBox
+            Left = 228
+            Top = 21
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkSaldoTodosFundoPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
         end
       end
       object tabMovimentacao: TcxTabSheet
         Caption = 'Movimenta'#231#227'o Financeira'
         ImageIndex = 2
-        object Label3: TLabel
-          Left = 7
-          Top = 5
-          Width = 35
-          Height = 13
-          Caption = 'Projeto'
-        end
-        object Label5: TLabel
-          Left = 7
-          Top = 46
-          Width = 30
-          Height = 13
-          Caption = 'Fundo'
-        end
         object cgbData: TdxCheckGroupBox
           Left = 4
-          Top = 87
+          Top = 118
           Caption = 'Filtrar por Per'#237'odo'
           TabOrder = 0
           Height = 61
@@ -120,73 +110,89 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Width = 135
           end
         end
-        object cbProjetoMovimentacao: TcxLookupComboBox
-          Left = 4
-          Top = 21
-          RepositoryItem = dmLookup.repLcbProjeto
-          Properties.ListColumns = <>
-          TabOrder = 1
-          Width = 280
-        end
-        object chkTodosProjetosMovimentacao: TcxCheckBox
-          Left = 283
-          Top = 23
-          Caption = 'Todos'
-          Properties.OnEditValueChanged = chkTodosSaldosProjetosPropertiesEditValueChanged
-          TabOrder = 2
-          Transparent = True
-          Width = 69
-        end
-        object cbFundoMovimentacao: TcxLookupComboBox
-          Left = 4
-          Top = 60
-          RepositoryItem = dmLookup.repLcbFundo
-          Properties.ListColumns = <>
-          TabOrder = 3
-          Width = 280
-        end
-        object chkTodosFundoMovimentacao: TcxCheckBox
-          Left = 283
-          Top = 61
-          Caption = 'Todos'
-          Properties.OnEditValueChanged = chkTodosFundoMovimentacaoPropertiesEditValueChanged
-          TabOrder = 4
-          Transparent = True
-          Width = 69
-        end
         object chkReceitas: TcxCheckBox
           Left = 4
-          Top = 154
+          Top = 185
           Caption = 'Receitas'
           State = cbsChecked
-          TabOrder = 5
+          TabOrder = 1
           Transparent = True
           Width = 69
         end
         object chkDespesas: TcxCheckBox
           Left = 4
-          Top = 179
+          Top = 210
           Caption = 'Despesas'
           State = cbsChecked
-          TabOrder = 6
+          TabOrder = 2
           Transparent = True
           Width = 69
         end
         object chkSomenteTotais: TcxCheckBox
           Left = 4
-          Top = 204
+          Top = 235
           Caption = 'Somente Totais'
-          TabOrder = 7
+          TabOrder = 3
           Transparent = True
           Width = 130
         end
         object chkSomenteRegistrosAbertos: TcxCheckBox
           Left = 4
-          Top = 229
+          Top = 257
           Caption = 'Somente Receitas/Despesas em Aberto'
-          TabOrder = 8
+          TabOrder = 4
           Transparent = True
           Width = 222
+        end
+        object cgbProjetoMovimentacao: TdxCheckGroupBox
+          Left = 4
+          Top = 3
+          Caption = 'Projeto'
+          TabOrder = 5
+          Height = 51
+          Width = 341
+          object cbProjetoMovimentacao: TcxLookupComboBox
+            Left = 4
+            Top = 21
+            RepositoryItem = dmLookup.repLcbProjeto
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 280
+          end
+          object chkTodosProjetosMovimentacao: TcxCheckBox
+            Left = 286
+            Top = 22
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkTodosSaldosProjetosPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
+        end
+        object cgbFundoMovimentacao: TdxCheckGroupBox
+          Left = 4
+          Top = 60
+          Caption = 'Fundo'
+          TabOrder = 6
+          Height = 52
+          Width = 341
+          object cbFundoMovimentacao: TcxLookupComboBox
+            Left = 3
+            Top = 18
+            RepositoryItem = dmLookup.repLcbFundo
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 281
+          end
+          object chkTodosFundoMovimentacao: TcxCheckBox
+            Left = 286
+            Top = 19
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkTodosFundoMovimentacaoPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
         end
       end
       object tabSaldoRubrica: TcxTabSheet
@@ -217,11 +223,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Width = 69
         end
       end
-    end
-  end
-  inherited pnOrganizacao: TPanel
-    inherited chkTodasOrganizacoes: TcxCheckBox
-      ExplicitHeight = 19
     end
   end
   inherited ActionList: TActionList
@@ -320,6 +321,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField
       FieldName = 'DESCRICAO_FORMA_PAGAMENTO'
       Size = 60
+    end
+    object cdsMovimentacaoTIPO_ORIGEM: TIntegerField
+      FieldName = 'TIPO_ORIGEM'
     end
   end
   object DBPipeMovimentacao: TppDBPipeline
@@ -680,7 +684,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmHeight = 3175
         mmLeft = 29368
         mmTop = 0
-        mmWidth = 43391
+        mmWidth = 40746
         BandType = 4
         LayerName = BandLayer3
       end
@@ -757,9 +761,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
         mmHeight = 3175
-        mmLeft = 73820
+        mmLeft = 71965
         mmTop = 0
-        mmWidth = 15875
+        mmWidth = 19050
         BandType = 4
         LayerName = BandLayer3
       end
@@ -1139,7 +1143,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           FormField = False
           Transparent = True
           mmHeight = 2646
-          mmLeft = 73819
+          mmLeft = 71968
           mmTop = 8467
           mmWidth = 16404
           BandType = 3

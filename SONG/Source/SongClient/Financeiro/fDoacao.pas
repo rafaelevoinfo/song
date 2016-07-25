@@ -14,7 +14,8 @@ uses
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, System.TypInfo, uTypes, uControleAcesso, dmuFinanceiro,
   dmuLookup, uClientDataSet, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  cxMemo, cxDBEdit, cxCurrencyEdit, System.DateUtils;
+  cxMemo, cxDBEdit, cxCurrencyEdit, System.DateUtils, System.Types,
+  System.Math, uExceptions;
 
 type
   TfrmDoacao = class(TfrmBasicoCrud)
@@ -42,6 +43,9 @@ type
     Label7: TLabel;
     EditObservacao: TcxDBMemo;
     dslkDoador: TDataSource;
+    Label8: TLabel;
+    cbFormaPagamento: TcxDBImageComboBox;
+    viewRegistrosFORMA_PAGTO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Pesquisar_DoadorExecute(Sender: TObject);
     procedure cbPessoaDoadoraKeyDown(Sender: TObject; var Key: Word;
@@ -54,6 +58,7 @@ type
 
   protected
     function fprGetPermissao: String; override;
+    procedure pprValidarDados;override;
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: integer); override;
@@ -113,6 +118,13 @@ end;
 procedure TfrmDoacao.Ac_Pesquisar_DoadorExecute(Sender: TObject);
 begin
   ppvPesquisarDaoador;
+end;
+
+procedure TfrmDoacao.pprValidarDados;
+begin
+  inherited;
+  if CompareValue(dmFinanceiro.cdsDoacaoVALOR.AsFloat, 0) = EqualsValue then
+    raise TControlException.Create('Informe um valor superior a zero.',EditValor);
 end;
 
 procedure TfrmDoacao.ppuAlterar(ipId: integer);

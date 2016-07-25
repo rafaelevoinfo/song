@@ -221,6 +221,9 @@ begin
   Connection.ExecSQL('update item ' +
     ' set item.saldo = coalesce(item.saldo,0) - :qtde_substrair + :qtde_somar ' +
     ' where item.id = :id', [ipQtdeSubtrair, ipQtdeSomar, ipIdItem]);
+
+  if Connection.InTransaction then
+    Connection.Commit;
 end;
 
 end.

@@ -9,7 +9,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, Data.DB, uClientDataSet,
-  uTypes, cxCheckBox, dmuRelatorio;
+  uTypes, cxCheckBox, dmuRelatorio, cxGroupBox, dxCheckGroupBox;
 
 type
   TfrmRelatorioBasico = class(TfrmBasico)
@@ -45,7 +45,9 @@ implementation
 function TfrmRelatorioBasico.fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
 begin
   Result := 0;
-  if not ipChkTodos.Checked then
+  if Assigned(ipLookup.Parent) and (ipLookup.Parent is TdxCheckGroupBox) and (not TdxCheckGroupBox(ipLookup.Parent).CheckBox.Checked) then
+    Result := -1
+  else if not ipChkTodos.Checked then
     begin
       if VarIsNull(ipLookup.EditValue) then
         raise Exception.Create(ipMsgErro);

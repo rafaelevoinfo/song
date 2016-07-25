@@ -9,7 +9,7 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, dmuPrincipal,
   Datasnap.Provider, uUtils, uClientDataSet, uSQLGenerator, uTypes,
-  Datasnap.DBClient;
+  Datasnap.DBClient, System.Math, System.Types;
 
 type
   TsmFinanceiro = class(TsmBasico)
@@ -166,9 +166,14 @@ type
     qDoacaoVALOR: TBCDField;
     qDoacaoDATA: TSQLTimeStampField;
     qDoacaoOBSERVACAO: TStringField;
+    dspqDoacao: TDataSetProvider;
+    qDoacaoFORMA_PAGTO: TSmallintField;
     procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
+    procedure dspqDoacaoBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind;
+      var Applied: Boolean);
   private
     { Private declarations }
   protected
@@ -186,9 +191,62 @@ implementation
 
 { TsmFinanceiro }
 
+procedure TsmFinanceiro.dspqDoacaoBeforeUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind;
+  var Applied: Boolean);
+var
+  vaDataSet: TRFQuery;
+  vaSaldo, vaValor: Double;
+begin
+  inherited;
+  vaSaldo := 0;
+  vaValor := -1;
+  if UpdateKind = ukInsert then
+    vaValor := DeltaDS.FieldByName('VALOR').NewValue
+  else if UpdateKind in [ukDelete, ukModify] then
+    begin
+      pprEncapsularConsulta(
+        procedure(ipDataSet: TRFQuery)
+        begin
+          ipDataSet.SQL.Text := 'select Fundo.Saldo from Fundo where Fundo.Id = :Id';
+          ipDataSet.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID_FUNDO').OldValue;
+          ipDataSet.Open;
+          vaSaldo := ipDataSet.FieldByName('SALDO').AsFloat;
+        end);
+
+      if UpdateKind = ukDelete then
+        begin
+          if CompareValue(vaSaldo, DeltaDS.FieldByName('VALOR').OldValue) = LessThanValue then
+            begin
+              Applied := false;
+              raise Exception.Create('A doação não pode ser excluida pois a conta não possui saldo suficiente para realizar a devolução.');
+            end;
+          vaValor := DeltaDS.FieldByName('VALOR').OldValue*-1;//multiplica por -1 pra ficar negativo e deduzir do saldo
+        end
+      else if (not VarIsNull(DeltaDS.FieldByName('VALOR').NewValue)) and (DeltaDS.FieldByName('VALOR').NewValue <> Unassigned) then
+        begin
+          vaValor := DeltaDS.FieldByName('VALOR').NewValue - DeltaDS.FieldByName('VALOR').OldValue;
+          if CompareValue((vaSaldo + vaValor), 0) = LessThanValue then
+            begin
+              Applied := false;
+              raise Exception.Create('A doação não pode ser modificada pois a conta não possui saldo suficiente para realizar a devolução.');
+            end;
+        end;
+    end;
+
+  if (vaValor <> -1) then
+    begin
+      Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
+        [vaValor, DeltaDS.FieldByName('ID_FUNDO').OldValue]);
+
+      if Connection.InTransaction then
+        Connection.Commit;
+    end;
+end;
+
 procedure TsmFinanceiro.dspqTransferencia_FinanceiraAfterUpdateRecord(
   Sender: TObject; SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
-  UpdateKind: TUpdateKind);
+UpdateKind: TUpdateKind);
 begin
   inherited;
   if UpdateKind = ukInsert then
@@ -200,13 +258,16 @@ begin
       if Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue) then
         Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
           [DeltaDS.FieldByName('VALOR').NewValue, DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue]);
+
+      if Connection.InTransaction then
+        Connection.Commit;
     end;
 end;
 
 function TsmFinanceiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
-  vaCodigos:TArray<integer>;
+  vaCodigos: TArray<integer>;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -232,14 +293,14 @@ begin
         end
       else if ipParam.Name = TParametros.coIdentificadorPlanoContasRubrica then
         begin
-          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, false, vaOperador)
         end;
     end
   else if ipTabela = 'RUBRICA' then
     begin
       if ipParam.Name = TParametros.coIdentificadorPlanoContasRubrica then
         begin
-          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, False, vaOperador)
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, false, vaOperador)
         end;
     end
   else if (ipTabela = 'CONTA_PAGAR') OR (ipTabela = 'CONTA_RECEBER') then
@@ -252,7 +313,7 @@ begin
         end
       else if ipParam.Name = TParametros.coDescricao then
         begin
-          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'DESCRICAO', vaValor, True, False, vaOperador)
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'DESCRICAO', vaValor, True, false, vaOperador)
         end
       else if ipParam.Name = TParametros.coFornecedor then
         begin
@@ -315,7 +376,7 @@ begin
       else if ipParam.Name = TParametros.coTipo then
         begin
           vaCodigos := TUtils.fpuConverterStringToArrayInteger(vaValor);
-          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaCodigos,vaOperador);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaCodigos, vaOperador);
         end
     end
 

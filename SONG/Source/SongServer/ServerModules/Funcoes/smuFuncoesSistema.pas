@@ -740,6 +740,9 @@ begin
           Connection.ExecSQL
             ('insert into Agenda_Pessoa (Agenda_Pessoa.Id, Agenda_Pessoa.Id_Agenda, Agenda_Pessoa.Id_Pessoa, Agenda_Pessoa.Somente_Visualizacao) ' +
             'values (next value for Gen_Agenda_Pessoa, :Id_Agenda, :Id_Pessoa, 0)', [vaId, ipIdPessoa]);
+
+          if Connection.InTransaction then
+            Connection.Commit;
         end;
 
     end);

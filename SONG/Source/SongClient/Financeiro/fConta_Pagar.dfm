@@ -4,6 +4,7 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
+  ExplicitTop = -48
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -11,7 +12,7 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
@@ -156,10 +157,6 @@ inherited frmContaPagar: TfrmContaPagar
                 Value = 8
               end
               item
-                Description = 'Projeto Alocado'
-                Value = 9
-              end
-              item
                 Description = 'Rubrica de Origem do Recurso'
                 Value = 10
               end
@@ -198,6 +195,15 @@ inherited frmContaPagar: TfrmContaPagar
           ExplicitWidth = 984
           ExplicitHeight = 223
           inherited viewRegistros: TcxGridDBTableView
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = 'R$ ,0.00'
+                Kind = skSum
+                FieldName = 'VALOR_TOTAL'
+                Column = viewRegistrosVALOR_TOTAL
+              end>
+            OptionsView.Footer = True
+            OptionsView.FooterAutoHeight = True
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
@@ -227,6 +233,7 @@ inherited frmContaPagar: TfrmContaPagar
               DataBinding.FieldName = 'VALOR_TOTAL'
               RepositoryItem = dmLookup.repCurPadrao
               Options.Editing = False
+              Width = 164
             end
             object viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn [6]
               DataBinding.FieldName = 'NOME_RESPONSAVEL'
@@ -285,7 +292,6 @@ inherited frmContaPagar: TfrmContaPagar
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
-            Properties.ActivePage = tabVinculoPesquisa
             ExplicitWidth = 982
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
@@ -321,6 +327,15 @@ inherited frmContaPagar: TfrmContaPagar
                 ExplicitWidth = 975
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   OnCustomDrawCell = viewRegistrosDetailCustomDrawCell
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'VALOR'
+                      Column = viewRegistrosDetailVALOR
+                    end>
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
                     Options.Editing = False
@@ -338,6 +353,7 @@ inherited frmContaPagar: TfrmContaPagar
                     DataBinding.FieldName = 'VALOR'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 177
                   end
                   object viewRegistrosDetailSTATUS: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'STATUS'
@@ -377,7 +393,13 @@ inherited frmContaPagar: TfrmContaPagar
                   Navigator.Buttons.CustomButtons = <>
                   DataController.DataSource = dsVinculo
                   DataController.Summary.DefaultGroupSummaryItems = <>
-                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'VALOR'
+                      Column = cxGridDBTableView1VALOR
+                    end>
                   DataController.Summary.SummaryGroups = <>
                   OptionsCustomize.ColumnsQuickCustomization = True
                   OptionsData.CancelOnExit = False
@@ -385,6 +407,8 @@ inherited frmContaPagar: TfrmContaPagar
                   OptionsData.DeletingConfirmation = False
                   OptionsData.Editing = False
                   OptionsData.Inserting = False
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
                   OptionsView.GroupByBox = False
                   object cxGridDBTableView1ID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
@@ -409,7 +433,7 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object cxGridDBTableView1NOME_FUNDO: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_FUNDO'
-                    Width = 81
+                    Width = 116
                   end
                   object cxGridDBTableView1ID_PROJETO_ORIGEM: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_PROJETO_ORIGEM'
@@ -417,7 +441,7 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object cxGridDBTableView1PROJETO_ORIGEM: TcxGridDBColumn
                     DataBinding.FieldName = 'PROJETO_ORIGEM'
-                    Width = 149
+                    Width = 178
                   end
                   object cxGridDBTableView1ID_ATIVIDADE_ORIGEM: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_ATIVIDADE_ORIGEM'
@@ -441,55 +465,17 @@ inherited frmContaPagar: TfrmContaPagar
                   end
                   object cxGridDBTableView1AREA_ATUACAO_ORIGEM: TcxGridDBColumn
                     DataBinding.FieldName = 'AREA_ATUACAO_ORIGEM'
-                    Visible = False
                     Width = 195
-                  end
-                  object cxGridDBTableView1ID_PROJETO_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_PROJETO_ALOCADO'
-                    Visible = False
                   end
                   object cxGridDBTableView1VALOR: TcxGridDBColumn
                     DataBinding.FieldName = 'VALOR'
                     RepositoryItem = dmLookup.repCurPadrao
-                    Width = 106
-                  end
-                  object cxGridDBTableView1PROJETO_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'PROJETO_ALOCADO'
-                    Width = 81
-                  end
-                  object cxGridDBTableView1ID_ATIVIDADE_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_ATIVIDADE_ALOCADO'
-                    Visible = False
-                  end
-                  object cxGridDBTableView1ATIVIDADE_ALOCADA: TcxGridDBColumn
-                    DataBinding.FieldName = 'ATIVIDADE_ALOCADA'
-                    Width = 94
-                  end
-                  object cxGridDBTableView1ID_RUBRICA_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_RUBRICA_ALOCADO'
-                    Visible = False
-                  end
-                  object cxGridDBTableView1RUBRICA_ALOCADA: TcxGridDBColumn
-                    DataBinding.FieldName = 'RUBRICA_ALOCADA'
-                    Visible = False
-                    Width = 82
-                  end
-                  object cxGridDBTableView1ID_AREA_ATUACAO_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_AREA_ATUACAO_ALOCADO'
-                    Visible = False
+                    Width = 143
                   end
                   object cxGridDBTableView1AREA_ATUACAO_ALOCADA: TcxGridDBColumn
                     DataBinding.FieldName = 'AREA_ATUACAO_ALOCADA'
                     Visible = False
                     Width = 139
-                  end
-                  object cxGridDBTableView1ID_FUNDO_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'ID_FUNDO_ALOCADO'
-                    Visible = False
-                  end
-                  object cxGridDBTableView1NOME_FUNDO_ALOCADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'NOME_FUNDO_ALOCADO'
-                    Width = 150
                   end
                 end
                 object cxGridLevel2: TcxGridLevel
@@ -1056,7 +1042,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 68
                 Align = alTop
                 TabOrder = 0
-                Properties.ActivePage = tabRecursoNaoAlocado
+                Properties.ActivePage = tabRecursoAlocado
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 63
                 ClientRectLeft = 2
@@ -1149,7 +1135,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 69
                 Align = alClient
                 TabOrder = 0
-                Properties.ActivePage = tabAlocadoFundo
+                Properties.ActivePage = tabAlocadoProjeto
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 64
                 ClientRectLeft = 2
@@ -1527,8 +1513,8 @@ inherited frmContaPagar: TfrmContaPagar
     end
   end
   inherited ActionList1: TActionList
-    Left = 240
-    Top = 328
+    Left = 280
+    Top = 224
     object Ac_Gerar_Parcelas: TAction
       Category = 'Detail'
       Caption = 'Gerar Parcelas'
@@ -1573,8 +1559,8 @@ inherited frmContaPagar: TfrmContaPagar
   end
   inherited dsDetail: TDataSource
     DataSet = dmFinanceiro.cdsConta_Pagar_Parcela
-    Left = 304
-    Top = 304
+    Left = 384
+    Top = 216
   end
   object dsVinculos: TDataSource
     Left = 600

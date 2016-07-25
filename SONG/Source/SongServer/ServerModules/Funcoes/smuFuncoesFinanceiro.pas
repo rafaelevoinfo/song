@@ -436,7 +436,7 @@ begin
           begin
 
             if not ipDataSetParcela.Locate(TBancoDados.coId, ipIdParcela, []) then
-              raise Exception.Create('Erro ao atualizar o saldo do Fundo. Detalhes: Parcela de id ' + ipIdParcela.ToString + ' não encontrada.');
+              raise Exception.Create('Erro ao atualizar o saldo da Conta. Detalhes: Parcela de id ' + ipIdParcela.ToString + ' não encontrada.');
 
             vaSomaPercentuais := 0;
             ipDataSetVinculo.First;

@@ -86,6 +86,7 @@ var
 
 begin
   qMovimentacao.Close;
+  qMovimentacao.ParamByName('TODAS_DATAS').Clear;
   if TryStrToDateTime(ipDataInicial, vaDataInicial) and TryStrToDateTime(ipDataFinal, vaDataFinal) then
     begin
       qMovimentacao.ParamByName('DATA_INICIAL').AsDateTime := vaDataInicial;
@@ -129,8 +130,8 @@ begin
       begin
         if not vaCds.FieldByName(coProcessado).AsBoolean then
           begin
-            vaCds.Filter := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName)
-              .AsString + ' and  ' +
+            vaCds.Filter := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ' = ' +
+              vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName).AsString + ' and  ' +
               qMovimentacaoID_MOVIMENTACAO.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_MOVIMENTACAO.FieldName).AsString;
             vaCds.Filtered := True;
 

@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
-  dmuPrincipal, uMensagem, cxImage, cxCheckBox;
+  dmuPrincipal, uMensagem, cxImage, cxCheckBox, Datasnap.DBClient;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)
@@ -85,10 +85,21 @@ type
     EditDescricaoFundo: TcxDBMemo;
     chkRequerAutorizacao: TcxDBCheckBox;
     viewFundoREQUER_AUTORIZACAO: TcxGridDBColumn;
+    btnAjustarSaldo: TButton;
+    Ac_Ajustar_Saldo: TAction;
+    cdsLocalSaldo: TClientDataSet;
+    cdsLocalSaldoID_ORGANIZACAO: TIntegerField;
+    cdsLocalSaldoNOME_ORGANIZACAO: TStringField;
+    cdsLocalSaldoID_PROJETO_FUNDO: TIntegerField;
+    cdsLocalSaldoNOME_PROJETO_FUNDO: TStringField;
+    cdsLocalSaldoSALDO: TBCDField;
+    cdsLocalSaldoSALDO_GERAL: TBCDField;
+    cdsLocalSaldoTIPO_ORIGEM: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_CarregarImagemExecute(Sender: TObject);
     procedure Ac_LimparExecute(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
+    procedure Ac_Ajustar_SaldoExecute(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -116,6 +127,26 @@ implementation
 {$R *.dfm}
 
 { TfrmOrganizacao }
+
+procedure TfrmOrganizacao.Ac_Ajustar_SaldoExecute(Sender: TObject);
+begin
+  inherited;
+  if TMensagem.fpuPerguntar('Tem certeza que deseja ajustar o saldo agora? Isto poderá demorar algum tempo.', ppSimNao) = rpSim then
+    begin
+      cdsLocalSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(dmAdministrativo.cdsOrganizacaoID.AsInteger, -1, dmAdministrativo.cdsFundoID.AsInteger);
+      if cdsLocalSaldo.Locate(cdsLocalSaldoID_PROJETO_FUNDO.FieldName + ';' + cdsLocalSaldoTIPO_ORIGEM.FieldName,
+        VarArrayOf([dmAdministrativo.cdsFundoID.AsInteger, Ord(oriFundo)]), []) then
+        begin
+          dmAdministrativo.cdsFundo.Edit;
+          dmAdministrativo.cdsFundoSALDO.AsFloat := cdsLocalSaldoSALDO.AsFloat;
+          dmAdministrativo.cdsFundo.Post;
+          if dmAdministrativo.cdsFundo.ChangeCount > 0 then
+            dmAdministrativo.cdsFundo.ApplyUpdates(0);
+        end
+      else
+        raise Exception.Create('Não foi encontrado nenhuma informação sobre a conta selecionada.');
+    end;
+end;
 
 procedure TfrmOrganizacao.Ac_CarregarImagemExecute(Sender: TObject);
 begin
@@ -152,7 +183,7 @@ begin
   inherited;
   PesquisaPadrao := Ord(tppTodos);
 
-  dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
+  dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   if not dmPrincipal.cdslkCidade.Active then
     dmPrincipal.cdslkCidade.Open;
   // Essa tela tela é um caso especial, por isso precisei fazer isso

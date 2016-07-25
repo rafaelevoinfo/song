@@ -163,6 +163,7 @@ type
     cdsDoacaoVALOR: TBCDField;
     cdsDoacaoDATA: TSQLTimeStampField;
     cdsDoacaoOBSERVACAO: TStringField;
+    cdsDoacaoFORMA_PAGTO: TSmallintField;
   private
     { Private declarations }
   public

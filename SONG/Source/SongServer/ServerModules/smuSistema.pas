@@ -75,7 +75,6 @@ function TsmSistema.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
-  vaCodigos: TArray<Integer>;
   vaDataInicial, vaDataFinal: TDateTime;
 begin
   Result := inherited;

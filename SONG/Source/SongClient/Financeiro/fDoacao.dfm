@@ -1,15 +1,16 @@
 inherited frmDoacao: TfrmDoacao
-  ActiveControl = cbPessoaRecebeu
   Caption = 'Doa'#231#227'o'
+  ExplicitTop = -9
+  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -55,11 +56,21 @@ inherited frmDoacao: TfrmDoacao
         end
         inherited pnBotoes: TPanel
           Width = 563
+          ExplicitWidth = 563
         end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = 'R$ ,0.00'
+                Kind = skSum
+                FieldName = 'VALOR'
+                Column = viewRegistrosVALOR
+              end>
+            OptionsView.Footer = True
+            OptionsView.FooterAutoHeight = True
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Visible = False
@@ -105,6 +116,11 @@ inherited frmDoacao: TfrmDoacao
               Options.Editing = False
               Width = 100
             end
+            object viewRegistrosFORMA_PAGTO: TcxGridDBColumn [9]
+              DataBinding.FieldName = 'FORMA_PAGTO'
+              Visible = False
+              Width = 107
+            end
           end
         end
       end
@@ -136,8 +152,8 @@ inherited frmDoacao: TfrmDoacao
           FocusControl = cbFundo
         end
         object Label5: TLabel
-          Left = 733
-          Top = 6
+          Left = 225
+          Top = 46
           Width = 24
           Height = 13
           Caption = 'Valor'
@@ -153,11 +169,18 @@ inherited frmDoacao: TfrmDoacao
         end
         object Label7: TLabel
           Left = 6
-          Top = 48
+          Top = 88
           Width = 58
           Height = 13
           Caption = 'Observa'#231#227'o'
           FocusControl = EditObservacao
+        end
+        object Label8: TLabel
+          Left = 6
+          Top = 45
+          Width = 156
+          Height = 13
+          Caption = 'Forma de Pagamento da Doa'#231#227'o'
         end
         object cbPessoaRecebeu: TcxDBLookupComboBox
           Left = 4
@@ -206,15 +229,15 @@ inherited frmDoacao: TfrmDoacao
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 4
-          Width = 150
+          Width = 189
         end
         object EditValor: TcxDBCurrencyEdit
-          Left = 732
-          Top = 21
+          Left = 224
+          Top = 61
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR'
           DataBinding.DataSource = dsMaster
-          TabOrder = 5
+          TabOrder = 6
           Width = 121
         end
         object EditDataDoacao: TcxDBDateEdit
@@ -227,12 +250,22 @@ inherited frmDoacao: TfrmDoacao
         end
         object EditObservacao: TcxDBMemo
           Left = 4
-          Top = 64
+          Top = 104
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 6
+          TabOrder = 7
           Height = 89
           Width = 849
+        end
+        object cbFormaPagamento: TcxDBImageComboBox
+          Left = 4
+          Top = 61
+          RepositoryItem = dmLookup.repIcbFormaPagamento
+          DataBinding.DataField = 'FORMA_PAGTO'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 5
+          Width = 214
         end
       end
     end

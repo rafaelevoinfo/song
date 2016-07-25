@@ -1,12 +1,11 @@
 inherited frmOrganizacao: TfrmOrganizacao
-  ActiveControl = EditNome
+  ActiveControl = btnIncluir
   Caption = 'Organiza'#231#245'es'
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -105,6 +104,16 @@ inherited frmOrganizacao: TfrmOrganizacao
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
                 end
+                object btnAjustarSaldo: TButton
+                  Left = 82
+                  Top = 1
+                  Width = 101
+                  Height = 23
+                  Action = Ac_Ajustar_Saldo
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 1
+                end
               end
               object cxGridFundo: TcxGrid
                 Left = 0
@@ -123,7 +132,13 @@ inherited frmOrganizacao: TfrmOrganizacao
                   Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsDetailFundo
                   DataController.Summary.DefaultGroupSummaryItems = <>
-                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'SALDO'
+                      Column = viewFundoSALDO
+                    end>
                   DataController.Summary.SummaryGroups = <>
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
@@ -133,6 +148,8 @@ inherited frmOrganizacao: TfrmOrganizacao
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
                   OptionsView.GroupByBox = False
                   object viewFundoID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
@@ -141,12 +158,13 @@ inherited frmOrganizacao: TfrmOrganizacao
                   object viewFundoNOME: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME'
                     Options.Editing = False
-                    Width = 475
+                    Width = 394
                   end
                   object viewFundoSALDO: TcxGridDBColumn
                     DataBinding.FieldName = 'SALDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 191
                   end
                   object viewFundoREQUER_AUTORIZACAO: TcxGridDBColumn
                     DataBinding.FieldName = 'REQUER_AUTORIZACAO'
@@ -200,6 +218,10 @@ inherited frmOrganizacao: TfrmOrganizacao
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Contatos da Organiza'#231#227'o'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 156
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -479,10 +501,6 @@ inherited frmOrganizacao: TfrmOrganizacao
     object tabCadastroFundo: TcxTabSheet
       Caption = 'tabCadastroFundo'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroFundo: TPanel
         Left = 0
         Top = 0
@@ -593,6 +611,13 @@ inherited frmOrganizacao: TfrmOrganizacao
       ImageIndex = 5
       OnExecute = Ac_LimparExecute
     end
+    object Ac_Ajustar_Saldo: TAction
+      Category = 'Detail'
+      Caption = 'Ajustar Saldo'
+      ImageIndex = 17
+      OnExecute = Ac_Ajustar_SaldoExecute
+      OnUpdate = Ac_Alterar_DetailUpdate
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmAdministrativo.cdsOrganizacao
@@ -611,5 +636,41 @@ inherited frmOrganizacao: TfrmOrganizacao
     DataSet = dmAdministrativo.cdsFundo
     Left = 560
     Top = 232
+  end
+  object cdsLocalSaldo: TClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ORGANIZACAO'
+    Params = <>
+    Left = 712
+    Top = 168
+    object cdsLocalSaldoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object cdsLocalSaldoNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsLocalSaldoID_PROJETO_FUNDO: TIntegerField
+      FieldName = 'ID_PROJETO_FUNDO'
+      ProviderFlags = []
+    end
+    object cdsLocalSaldoNOME_PROJETO_FUNDO: TStringField
+      FieldName = 'NOME_PROJETO_FUNDO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsLocalSaldoSALDO: TBCDField
+      FieldName = 'SALDO'
+      ProviderFlags = []
+    end
+    object cdsLocalSaldoSALDO_GERAL: TBCDField
+      FieldName = 'SALDO_GERAL'
+      ProviderFlags = []
+    end
+    object cdsLocalSaldoTIPO_ORIGEM: TIntegerField
+      FieldName = 'TIPO_ORIGEM'
+    end
   end
 end

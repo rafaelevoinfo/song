@@ -967,5 +967,10 @@ inherited dmFinanceiro: TdmFinanceiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object cdsDoacaoFORMA_PAGTO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Forma de Pagamento'
+      FieldName = 'FORMA_PAGTO'
+    end
   end
 end

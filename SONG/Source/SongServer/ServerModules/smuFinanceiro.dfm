@@ -1235,6 +1235,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Fundo.nome as Fundo_Destino,'
       '       Doacao.Valor,'
       '       Doacao.Data,'
+      '       Doacao.Forma_Pagto,'
       '       Doacao.Observacao'
       'from Doacao  '
       
@@ -1317,5 +1318,18 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object qDoacaoFORMA_PAGTO: TSmallintField
+      FieldName = 'FORMA_PAGTO'
+      Origin = 'FORMA_PAGTO'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object dspqDoacao: TDataSetProvider
+    DataSet = qDoacao
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    BeforeUpdateRecord = dspqDoacaoBeforeUpdateRecord
+    Left = 616
+    Top = 320
   end
 end

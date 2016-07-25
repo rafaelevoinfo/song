@@ -259,14 +259,15 @@ type
 
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
-  TOrigemRecurso = (orProjeto, orFundo, orFinanciamento);
+  TOrigemRecurso = (orProjeto, orFundo, orFinanciamento, orDoacao);
   TOrigem = (oriProjeto, oriFundo);
 
   TTipoMovimentacao = (tmDespesa, tmReceita);
 
   TTipoSaida = (tsVenda, tsConsumo, tsPerda, tsPlantio, tsOutro);
 
-  TFormaPagamento = (fpTransferencia, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro, fpOutro);
+  //ficou errado quando foi feito, para nao ter q fazer update no banco inteiro vamos começar com o valor 1
+  TFormaPagamento = (fpTransferencia=1, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro,fpBoleto, fpOutro);
 
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
@@ -294,7 +295,7 @@ const
   TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário', 'Membro da Diretoria', 'Cliente', 'Fornecedor',
     'Financiador', 'Parceiro', 'Estagiário', 'Voluntário', 'Outro');
   FormaPagamennto: array [TFormaPagamento] of string = ('Transferência Bancária', 'Débito em Conta', 'Cartão de Crédito', 'Cartão de Débito',
-    'Cheque', 'Dinheiro', 'Outro');
+    'Cheque', 'Dinheiro', 'Boleto', 'Outro');
 
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',

@@ -169,13 +169,6 @@ type
     cxGridDBTableView1RUBRICA_ORIGEM: TcxGridDBColumn;
     cxGridDBTableView1ID_AREA_ATUACAO_ORIGEM: TcxGridDBColumn;
     cxGridDBTableView1AREA_ATUACAO_ORIGEM: TcxGridDBColumn;
-    cxGridDBTableView1ID_PROJETO_ALOCADO: TcxGridDBColumn;
-    cxGridDBTableView1PROJETO_ALOCADO: TcxGridDBColumn;
-    cxGridDBTableView1ID_ATIVIDADE_ALOCADO: TcxGridDBColumn;
-    cxGridDBTableView1ATIVIDADE_ALOCADA: TcxGridDBColumn;
-    cxGridDBTableView1ID_RUBRICA_ALOCADO: TcxGridDBColumn;
-    cxGridDBTableView1RUBRICA_ALOCADA: TcxGridDBColumn;
-    cxGridDBTableView1ID_AREA_ATUACAO_ALOCADO: TcxGridDBColumn;
     cxGridDBTableView1AREA_ATUACAO_ALOCADA: TcxGridDBColumn;
     cxGridDBTableView1VALOR: TcxGridDBColumn;
     cbPesquisaProjeto: TcxLookupComboBox;
@@ -229,8 +222,6 @@ type
     cbFundoAlocado: TcxLookupComboBox;
     lb3: TLabel;
     viewVinculosNOME_FUNDO_ALOCADO: TcxGridDBColumn;
-    cxGridDBTableView1ID_FUNDO_ALOCADO: TcxGridDBColumn;
-    cxGridDBTableView1NOME_FUNDO_ALOCADO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -1029,8 +1020,9 @@ end;
 
 procedure TfrmContaPagar.ppvConfigurarControles;
 begin
-  rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
-  rgAlocadoPara.Visible := rgRecursoAlocado.Visible;
+// Lembre-se: Foi solicitado que o recurso alocado fosse desabilitado.
+//  rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+//  rgAlocadoPara.Visible := rgRecursoAlocado.Visible;
 
   if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
     pcOrigemRecurso.ActivePage := tabProjeto

@@ -48,9 +48,6 @@ type
     ppParameterList3: TppParameterList;
     cdsMovimentacaoVALOR: TBCDField;
     cdsMovimentacaoSALDO_GERAL: TBCDField;
-    Label3: TLabel;
-    cbProjetoMovimentacao: TcxLookupComboBox;
-    chkTodosProjetosMovimentacao: TcxCheckBox;
     ppHeaderBand3: TppHeaderBand;
     ppLbTituloMovimentacaoFinanceira: TppLabel;
     ppDBImage3: TppDBImage;
@@ -113,21 +110,12 @@ type
     cdsSaldoNOME_PROJETO_FUNDO: TStringField;
     cdsSaldoSALDO: TBCDField;
     cdsSaldoSALDO_GERAL: TBCDField;
-    cbFundoMovimentacao: TcxLookupComboBox;
-    chkTodosFundoMovimentacao: TcxCheckBox;
     DBPipeSaldo: TppDBPipeline;
     dsSaldo: TDataSource;
-    cbProjetoSaldo: TcxLookupComboBox;
-    chkTodosProjetosSaldo: TcxCheckBox;
-    chkTodosFundoSaldos: TcxCheckBox;
-    cbFundoSaldo: TcxLookupComboBox;
     ppDBCalc4: TppDBCalc;
     ppLabelProjetoFundo: TppLabel;
     ppDBText27: TppDBText;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
-    Label2: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
     chkReceitas: TcxCheckBox;
     chkDespesas: TcxCheckBox;
     chkSomenteTotais: TcxCheckBox;
@@ -184,6 +172,19 @@ type
     ppDBText10: TppDBText;
     ppDBText11: TppDBText;
     cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField;
+    cgbProjetoMovimentacao: TdxCheckGroupBox;
+    cbProjetoMovimentacao: TcxLookupComboBox;
+    chkTodosProjetosMovimentacao: TcxCheckBox;
+    cgbFundoMovimentacao: TdxCheckGroupBox;
+    cbFundoMovimentacao: TcxLookupComboBox;
+    chkTodosFundoMovimentacao: TcxCheckBox;
+    cgbProjetoSaldo: TdxCheckGroupBox;
+    cbProjetoSaldo: TcxLookupComboBox;
+    chkTodosProjetosSaldo: TcxCheckBox;
+    cgbFundoSaldo: TdxCheckGroupBox;
+    cbFundoSaldo: TcxLookupComboBox;
+    chkTodosFundoSaldos: TcxCheckBox;
+    cdsMovimentacaoTIPO_ORIGEM: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -228,9 +229,9 @@ begin
         cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '',
           chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
 
-      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' + cdsMovimentacaoTIPO_ORIGEM_RECURSO.FieldName + ';' +
-        cdsMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
-        cdsMovimentacaoTIPO.FieldName;
+      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' +
+        cdsMovimentacaoTIPO.FieldName + ';' + cdsMovimentacaoTIPO_ORIGEM_RECURSO.FieldName + ';' +
+        cdsMovimentacaoTIPO_ORIGEM.FieldName + ';' + cdsMovimentacaoID_ORIGEM_RECURSO.FieldName;
 
       ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
       ppLabelProjetoFundo.Visible := ppDetailBandMovimentacao.Visible;
