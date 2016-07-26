@@ -453,7 +453,12 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 250
           FieldName = 'NOME'
+        end
+        item
+          Width = 150
+          FieldName = 'SALDO_REAL'
         end>
       Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkRubrica_Atividade
@@ -779,6 +784,14 @@ inherited dmLookup: TdmLookup
         item
           Description = 'Devolu'#231#227'o de Empr'#233'stimo'
           Value = 2
+        end
+        item
+          Description = 'Remanejamento'
+          Value = 3
+        end
+        item
+          Description = 'Doa'#231#227'o'
+          Value = 4
         end>
     end
   end
@@ -1369,16 +1382,20 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Required = True
     end
-    object cdslkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField
-      FieldName = 'ID_RUBRICA_PAI'
-      ProviderFlags = []
-    end
     object cdslkRubrica_AtividadeNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = []
       ReadOnly = True
       Size = 123
+    end
+    object cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO_REAL'
+      ReadOnly = True
+      currency = True
+      Precision = 18
+      Size = 6
     end
   end
   object cdslkProjeto_Area: TRFClientDataSet

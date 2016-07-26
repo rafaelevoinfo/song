@@ -4,7 +4,6 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
-  ExplicitTop = -48
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -12,7 +11,7 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
@@ -1042,7 +1041,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 68
                 Align = alTop
                 TabOrder = 0
-                Properties.ActivePage = tabRecursoAlocado
+                Properties.ActivePage = tabRecursoNaoAlocado
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 63
                 ClientRectLeft = 2

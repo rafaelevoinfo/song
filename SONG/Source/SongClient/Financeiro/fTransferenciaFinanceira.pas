@@ -283,8 +283,8 @@ begin
           if VarIsNull(cbRubricaDestino.EditValue) then
             raise TControlException.Create('Informe a rubrica de destino do recurso.', cbRubricaDestino);
 
-          if cbProjetoOrigem.EditValue = cbProjetoDestino.EditValue then
-            raise Exception.Create('O projeto de origem não pode ser o mesmo de destino.');
+          if (cbProjetoOrigem.EditValue = cbProjetoDestino.EditValue) and (cbRubricaOrigem.EditValue=cbRubricaDestino.EditValue) then
+            raise Exception.Create('O projeto e a rubrica de origem não podem ser os mesmos de destino.');
         end;
 
       if cdsLocalRubricasOrigem.Locate(TBancoDados.coId, cbRubricaOrigem.EditValue, []) then

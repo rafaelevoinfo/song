@@ -658,18 +658,19 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select distinct Rubrica.Id,'
-      '       Rubrica.Id_Rubrica_Pai,'
-      '       Rubrica.Nome'
+      '       Rubrica.Nome,'
+      '       view_rubrica_projeto.saldo_real'
       'from Rubrica'
       
         'left join projeto_rubrica on (projeto_rubrica.id_rubrica = rubri' +
         'ca.id)'
       
-        'left join atividade_projeto on (projeto_rubrica.id_projeto = ati' +
-        'vidade_projeto.id_projeto)'
-      
         'left join atividade on (projeto_rubrica.id_projeto = atividade.i' +
         'd_projeto)'
+      
+        'left join view_rubrica_projeto on (view_rubrica_projeto.id_rubri' +
+        'ca = rubrica.id and view_rubrica_projeto.id_projeto = projeto_ru' +
+        'brica.id_projeto)'
       '&WHERE'
       'order by Rubrica.Nome')
     Left = 624
@@ -740,9 +741,6 @@ inherited smLookup: TsmLookup
       '       Projeto_Area.Nome'
       'from Projeto_Area'
       'inner join Projeto on (Projeto.Id = Projeto_Area.Id_Projeto)'
-      
-        'left join atividade_projeto on (atividade_projeto.id_projeto = p' +
-        'rojeto.id)'
       'left join atividade on (atividade.id_projeto = projeto.id)'
       '&where')
     Left = 872

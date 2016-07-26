@@ -249,7 +249,9 @@ begin
   else if ipTabela = 'RUBRICA_ATIVIDADE' then
     begin
       if ipParam.Name = TParametros.coAtividade then
-        Result := Result + ' ((atividade_projeto.id_atividade =' + vaValor + ') or (atividade.id = ' + vaValor + '))';
+        Result := TSQLGenerator.fpuFilterInteger(Result,'ATIVIDADE','ID',vaValor.ToInteger,vaOperador)
+      else if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterInteger(Result,'PROJETO_RUBRICA','ID_PROJETO',vaValor.ToInteger,vaOperador);
     end
   else if ipTabela = 'PROJETO_AREA' then
     begin
@@ -259,7 +261,7 @@ begin
   else if ipTabela = 'PROJETO_AREA_ATIVIDADE' then
     begin
       if ipParam.Name = TParametros.coAtividade then
-        Result := Result + ' ((atividade_projeto.id_atividade =' + vaValor + ') or (atividade.id = ' + vaValor + '))';
+        Result := Result + '(atividade.id = ' + vaValor + ')';
     end
   else if ipTabela = 'COMPRA' then
     begin

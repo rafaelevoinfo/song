@@ -122,7 +122,6 @@ type
     cdslkItemUNIDADE: TStringField;
     cdslkRubrica_Atividade: TRFClientDataSet;
     cdslkRubrica_AtividadeID: TIntegerField;
-    cdslkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField;
     cdslkRubrica_AtividadeNOME: TStringField;
     cdslkProjeto_Area: TRFClientDataSet;
     cdslkProjeto_AreaID: TIntegerField;
@@ -250,6 +249,7 @@ type
     cdslkDoadorID_PESSOA_DOADORA: TIntegerField;
     cdslkDoadorNOME: TStringField;
     cdslkDoadorTOTAL: TBCDField;
+    cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;
