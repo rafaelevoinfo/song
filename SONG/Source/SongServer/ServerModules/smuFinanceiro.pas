@@ -168,12 +168,12 @@ type
     qDoacaoOBSERVACAO: TStringField;
     dspqDoacao: TDataSetProvider;
     qDoacaoFORMA_PAGTO: TSmallintField;
-    procedure dspqTransferencia_FinanceiraAfterUpdateRecord(Sender: TObject;
-      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
-      UpdateKind: TUpdateKind);
     procedure dspqDoacaoBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind;
       var Applied: Boolean);
+    procedure dspqTransferencia_FinanceiraBeforeUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind; var Applied: Boolean);
   private
     { Private declarations }
   protected
@@ -196,78 +196,142 @@ procedure TsmFinanceiro.dspqDoacaoBeforeUpdateRecord(Sender: TObject;
   var Applied: Boolean);
 var
   vaDataSet: TRFQuery;
-  vaSaldo, vaValor: Double;
+  vaCommit: Boolean;
 begin
   inherited;
-  vaSaldo := 0;
-  vaValor := -1;
-  if UpdateKind = ukInsert then
-    vaValor := DeltaDS.FieldByName('VALOR').NewValue
-  else if UpdateKind in [ukDelete, ukModify] then
-    begin
-      pprEncapsularConsulta(
-        procedure(ipDataSet: TRFQuery)
-        begin
-          ipDataSet.SQL.Text := 'select Fundo.Saldo from Fundo where Fundo.Id = :Id';
-          ipDataSet.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID_FUNDO').OldValue;
-          ipDataSet.Open;
-          vaSaldo := ipDataSet.FieldByName('SALDO').AsFloat;
-        end);
+  try
+    vaCommit := false;
+    if UpdateKind = ukInsert then
+      begin
+        Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
+          [DeltaDS.FieldByName('VALOR').NewValue, DeltaDS.FieldByName('ID_FUNDO').NewValue]);
 
-      if UpdateKind = ukDelete then
-        begin
-          if CompareValue(vaSaldo, DeltaDS.FieldByName('VALOR').OldValue) = LessThanValue then
+        vaCommit := true;
+      end
+    else if UpdateKind = ukDelete then
+      begin
+        pprCriarDataSet(vaDataSet);
+        try
+          vaDataSet.SQL.Text := 'select Fundo.Saldo from Fundo where Fundo.Id = :Id';
+          vaDataSet.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID_FUNDO').OldValue;
+          vaDataSet.open;
+
+          if CompareValue(vaDataSet.FieldByName('SALDO').AsFloat, DeltaDS.FieldByName('VALOR').OldValue) = LessThanValue then
             begin
               Applied := false;
               raise Exception.Create('A doação não pode ser excluida pois a conta não possui saldo suficiente para realizar a devolução.');
             end;
-          vaValor := DeltaDS.FieldByName('VALOR').OldValue*-1;//multiplica por -1 pra ficar negativo e deduzir do saldo
-        end
-      else if (not VarIsNull(DeltaDS.FieldByName('VALOR').NewValue)) and (DeltaDS.FieldByName('VALOR').NewValue <> Unassigned) then
-        begin
-          vaValor := DeltaDS.FieldByName('VALOR').NewValue - DeltaDS.FieldByName('VALOR').OldValue;
-          if CompareValue((vaSaldo + vaValor), 0) = LessThanValue then
-            begin
-              Applied := false;
-              raise Exception.Create('A doação não pode ser modificada pois a conta não possui saldo suficiente para realizar a devolução.');
-            end;
+
+          Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO',
+            [DeltaDS.FieldByName('VALOR').OldValue, DeltaDS.FieldByName('ID_FUNDO').OldValue]);
+
+          vaCommit := true;
+        finally
+          vaDataSet.Close;
+          vaDataSet.Free;
         end;
-    end;
+      end;
 
-  if (vaValor <> -1) then
-    begin
-      Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
-        [vaValor, DeltaDS.FieldByName('ID_FUNDO').OldValue]);
+    if vaCommit and Connection.InTransaction then
+      Connection.Commit;
+  except
+    if vaCommit and Connection.InTransaction then
+      Connection.Rollback;
 
-      if Connection.InTransaction then
-        Connection.Commit;
-    end;
+    raise;
+  end;
 end;
 
-procedure TsmFinanceiro.dspqTransferencia_FinanceiraAfterUpdateRecord(
+procedure TsmFinanceiro.dspqTransferencia_FinanceiraBeforeUpdateRecord(
   Sender: TObject; SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
-UpdateKind: TUpdateKind);
+  UpdateKind: TUpdateKind; var Applied: Boolean);
+var
+  vaValor: Double;
+  vaDataSet: TRFQuery;
+  vaCommit: Boolean;
 begin
   inherited;
-  if UpdateKind = ukInsert then
-    begin
-      if Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue) then
-        Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO',
-          [DeltaDS.FieldByName('VALOR').NewValue, DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue]);
+  pprCriarDataSet(vaDataSet);
+  try
+    try
+      vaCommit := false;
+      vaDataSet.SQL.Text := 'select Fundo.Saldo from Fundo where Fundo.Id = :Id';
 
-      if Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue) then
-        Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
-          [DeltaDS.FieldByName('VALOR').NewValue, DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue]);
+      if (UpdateKind = ukInsert) then
+        begin
+          vaValor := DeltaDS.FieldByName('VALOR').NewValue;
+          if (Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue)) and
+            (DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue <> Unassigned) then
+            begin
+              vaDataSet.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue;
+              vaDataSet.open;
 
-      if Connection.InTransaction then
+              if CompareValue(vaDataSet.FieldByName('SALDO').AsFloat, vaValor) = LessThanValue then
+                raise Exception.Create('Não é possível fazer a inclusão pois a conta de origem não possui saldo suficiente.');
+
+              Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO',
+                [vaValor, DeltaDS.FieldByName('ID_FUNDO_ORIGEM').NewValue]);
+
+              vaCommit := true;
+            end;
+
+          if (Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue)) and
+            (DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue <> Unassigned) then
+            begin
+              Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
+                [vaValor, DeltaDS.FieldByName('ID_FUNDO_DESTINO').NewValue]);
+
+              vaCommit := true;
+            end;
+        end
+      else if (UpdateKind = ukDelete) then
+        begin
+          vaValor := DeltaDS.FieldByName('VALOR').OldValue;
+
+          if (Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_DESTINO').OldValue)) and
+            (DeltaDS.FieldByName('ID_FUNDO_DESTINO').OldValue <> Unassigned) then
+            begin
+              vaDataSet.ParamByName('ID').AsInteger := DeltaDS.FieldByName('ID_FUNDO_DESTINO').OldValue;
+              vaDataSet.open;
+              if CompareValue(vaDataSet.FieldByName('SALDO').AsFloat, vaValor) = LessThanValue then
+                raise Exception.Create('Não é possível fazer a exclusão pois a conta de destino não possui saldo suficiente para realizar a devolução.');
+
+              Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo - :VALOR Where fundo.id = :ID_FUNDO',
+                [vaValor, DeltaDS.FieldByName('ID_FUNDO_DESTINO').OldValue]);
+
+              vaCommit := true;
+            end;
+
+          if (Not VarIsNull(DeltaDS.FieldByName('ID_FUNDO_ORIGEM').OldValue)) and
+            (DeltaDS.FieldByName('ID_FUNDO_ORIGEM').OldValue <> Unassigned) then
+            begin
+              Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
+                [vaValor, DeltaDS.FieldByName('ID_FUNDO_ORIGEM').OldValue]);
+
+              vaCommit := true;
+            end;
+        end;
+
+      if vaCommit and Connection.InTransaction then
         Connection.Commit;
+
+    except
+      Applied := false;
+      if vaCommit and Connection.InTransaction then
+        Connection.Rollback;
+
+      raise;
     end;
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+  end;
 end;
 
 function TsmFinanceiro.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
-  vaCodigos: TArray<integer>;
+  vaCodigos: TArray<Integer>;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -293,14 +357,14 @@ begin
         end
       else if ipParam.Name = TParametros.coIdentificadorPlanoContasRubrica then
         begin
-          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, false, vaOperador)
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, true, false, vaOperador)
         end;
     end
   else if ipTabela = 'RUBRICA' then
     begin
       if ipParam.Name = TParametros.coIdentificadorPlanoContasRubrica then
         begin
-          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, True, false, vaOperador)
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'IDENTIFICADOR', vaValor, true, false, vaOperador)
         end;
     end
   else if (ipTabela = 'CONTA_PAGAR') OR (ipTabela = 'CONTA_RECEBER') then
@@ -313,7 +377,7 @@ begin
         end
       else if ipParam.Name = TParametros.coDescricao then
         begin
-          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'DESCRICAO', vaValor, True, false, vaOperador)
+          Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'DESCRICAO', vaValor, true, false, vaOperador)
         end
       else if ipParam.Name = TParametros.coFornecedor then
         begin

@@ -83,7 +83,6 @@ type
     qlkProjeto_AreaID_PROJETO: TIntegerField;
     qlkProjeto_AreaNOME: TStringField;
     qlkRubrica_AtividadeID: TIntegerField;
-    qlkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField;
     qlkRubrica_AtividadeNOME: TStringField;
     qlkCompra: TRFQuery;
     qlkCompraID: TIntegerField;
@@ -161,6 +160,7 @@ type
     qlkDoadorID_PESSOA_DOADORA: TIntegerField;
     qlkDoadorNOME: TStringField;
     qlkDoadorTOTAL: TBCDField;
+    qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
   private
     { Private declarations }
   protected

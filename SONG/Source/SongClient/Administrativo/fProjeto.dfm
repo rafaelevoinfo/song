@@ -1,6 +1,7 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitTop = -33
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -139,7 +140,7 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailFinanciador
+            Properties.ActivePage = tabDetailRubrica
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
@@ -341,13 +342,13 @@ inherited frmProjeto: TfrmProjeto
                     item
                       Format = 'R$ ,0.00'
                       Kind = skSum
-                      FieldName = 'CALC_SALDO_REAL'
+                      FieldName = 'SALDO_REAL'
                       Column = ColumnRubricasCALC_SALDO_REAL
                     end
                     item
                       Format = 'R$ ,0.00'
                       Kind = skSum
-                      FieldName = 'CALC_SALDO_PREVISTO'
+                      FieldName = 'SALDO_PREVISTO'
                       Column = ColumnRubricasCALC_SALDO_PREVISTO
                     end>
                   DataController.Summary.SummaryGroups = <>
@@ -397,14 +398,14 @@ inherited frmProjeto: TfrmProjeto
                     Options.Editing = False
                     Width = 128
                   end
-                  object viewRubricasAPROVISIONADO: TcxGridDBColumn
-                    DataBinding.FieldName = 'APROVISIONADO'
+                  object ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn
+                    DataBinding.FieldName = 'SALDO_REAL'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                     Width = 128
                   end
-                  object ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn
-                    DataBinding.FieldName = 'SALDO_REAL'
+                  object viewRubricasAPROVISIONADO: TcxGridDBColumn
+                    DataBinding.FieldName = 'APROVISIONADO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                     Width = 128

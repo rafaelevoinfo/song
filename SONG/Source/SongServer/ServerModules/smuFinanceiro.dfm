@@ -1172,7 +1172,9 @@ inherited smFinanceiro: TsmFinanceiro
   end
   object dspqTransferencia_Financeira: TDataSetProvider
     DataSet = qTransferencia_Financeira
-    AfterUpdateRecord = dspqTransferencia_FinanceiraAfterUpdateRecord
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    BeforeUpdateRecord = dspqTransferencia_FinanceiraBeforeUpdateRecord
     Left = 416
     Top = 256
   end

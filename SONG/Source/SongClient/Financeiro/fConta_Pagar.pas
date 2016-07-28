@@ -316,6 +316,8 @@ begin
   EditQtdeParcelas.Value := 1;
   EditVencimentoParcela.Clear;
 
+  EditValorVinculo.Clear;
+
   cbProjetoOrigem.Clear;
   cbProjetoAlocado.Clear;
 
@@ -366,6 +368,8 @@ begin
   tabVinculo.Enabled := True;
   viewParcelasVALOR.Options.Editing := True;
   FParcelasQuitadas := False;
+
+  EditValorVinculo.Clear;
 end;
 
 procedure TfrmContaPagar.pprCarregarDadosModelo;
@@ -611,8 +615,8 @@ begin
             raise Exception.Create('Conta não encontrada.');
           end;
 
-        if not chkSemVinculo.Checked then
-          plValidarInformacoesAlocado;
+//        if not chkSemVinculo.Checked then
+//          plValidarInformacoesAlocado;
       end;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM.AsInteger := vaIdOrganizacao;
@@ -1030,8 +1034,9 @@ begin
     pcOrigemRecurso.ActivePage := tabFundo;
 
   gbOrigem.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
-  gbAlocado.Visible := ((rgTipoOrigemRecurso.EditValue = coOrigemFundo) and (not chkSemVinculo.Checked)) or
-    ((rgTipoOrigemRecurso.EditValue = coOrigemProjeto) and (rgRecursoAlocado.EditValue = coSim));
+  gbAlocado.Visible := false;
+//  gbAlocado.Visible := ((rgTipoOrigemRecurso.EditValue = coOrigemFundo) and (not chkSemVinculo.Checked)) or
+//    ((rgTipoOrigemRecurso.EditValue = coOrigemProjeto) and (rgRecursoAlocado.EditValue = coSim));
 
   if rgRecursoAlocado.EditValue = coSim then
     pcRecursoAlocado.ActivePage := tabRecursoAlocado

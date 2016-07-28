@@ -293,4 +293,48 @@ inherited dmRelatorio: TdmRelatorio
       Required = True
     end
   end
+  object cdsGasto_Area_Atuacao: TRFClientDataSet
+    Active = True
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'TODAS_DATAS'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftDateTime
+        Name = 'DATA_INICIAL'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftDateTime
+        Name = 'DATA_FINAL'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqGasto_Area_Atuacao'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 480
+    Top = 120
+    object cdsGasto_Area_AtuacaoGASTO: TBCDField
+      FieldName = 'GASTO'
+      Origin = 'GASTO'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO_ORIGEM'
+      Origin = 'ID_AREA_ATUACAO_ORIGEM'
+      ProviderFlags = []
+    end
+    object cdsGasto_Area_AtuacaoAREA_ATUACAO: TStringField
+      FieldName = 'AREA_ATUACAO'
+      Origin = 'AREA_ATUACAO'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

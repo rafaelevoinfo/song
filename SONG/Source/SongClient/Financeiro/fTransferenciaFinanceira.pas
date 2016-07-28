@@ -87,7 +87,6 @@ type
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
     function fprHabilitarAlterar: Boolean; override;
-    function fprHabilitarExcluir: Boolean; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -194,11 +193,6 @@ begin
 end;
 
 function TfrmTransferenciaFinanceira.fprHabilitarAlterar: Boolean;
-begin
-  Result := false;
-end;
-
-function TfrmTransferenciaFinanceira.fprHabilitarExcluir: Boolean;
 begin
   Result := false;
 end;

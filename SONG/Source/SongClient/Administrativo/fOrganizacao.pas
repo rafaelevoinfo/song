@@ -142,6 +142,8 @@ begin
           dmAdministrativo.cdsFundo.Post;
           if dmAdministrativo.cdsFundo.ChangeCount > 0 then
             dmAdministrativo.cdsFundo.ApplyUpdates(0);
+
+          TMensagem.ppuShowMessage('Ajuste realizado com sucesso.');
         end
       else
         raise Exception.Create('Não foi encontrado nenhuma informação sobre a conta selecionada.');

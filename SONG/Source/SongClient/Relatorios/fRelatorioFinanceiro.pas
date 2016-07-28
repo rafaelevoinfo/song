@@ -185,6 +185,37 @@ type
     cbFundoSaldo: TcxLookupComboBox;
     chkTodosFundoSaldos: TcxCheckBox;
     cdsMovimentacaoTIPO_ORIGEM: TIntegerField;
+    tabGastoAreaAtuacao: TcxTabSheet;
+    cgbDataGasto: TdxCheckGroupBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    EditDataFinalGasto: TcxDateEdit;
+    EditDataInicialGasto: TcxDateEdit;
+    DBPipeGastoAreaAtuacao: TppDBPipeline;
+    ppGastoAreaAtuacao: TppReport;
+    ppParameterList2: TppParameterList;
+    dsGasto_Area_Atuacao: TDataSource;
+    ppHeaderBand2: TppHeaderBand;
+    ppLabel12: TppLabel;
+    ppDBImage2: TppDBImage;
+    ppSystemVariable4: TppSystemVariable;
+    ppSystemVariable5: TppSystemVariable;
+    ppDetailBand2: TppDetailBand;
+    ppDBText13: TppDBText;
+    ppDBText14: TppDBText;
+    ppFooterBand2: TppFooterBand;
+    ppLabel13: TppLabel;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppSystemVariable6: TppSystemVariable;
+    raCodeModule4: TraCodeModule;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppSummaryBand1: TppSummaryBand;
+    ppLabel14: TppLabel;
+    ppDBCalc1: TppDBCalc;
+    ppLabel15: TppLabel;
+    ppLabel16: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -195,6 +226,7 @@ type
     procedure chkTodosProjetoRubricasPropertiesEditValueChanged(
       Sender: TObject);
   private
+    procedure ppvGerarRelatorioGastoAreaAtuacao;
   public
     { Public declarations }
   end;
@@ -267,7 +299,32 @@ begin
       dmRelatorio.cdsSaldo_Rubrica.Open;
 
       ppSaldoRubrica.PrintReport;
+    end
+  else if pcPrincipal.ActivePage = tabGastoAreaAtuacao then
+    begin
+      ppvGerarRelatorioGastoAreaAtuacao;
     end;
+end;
+
+procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoAreaAtuacao;
+begin
+
+  dmRelatorio.cdsGasto_Area_Atuacao.Close;
+  dmRelatorio.cdsGasto_Area_Atuacao.ParamByName('TODAS_DATAS').Clear;
+  dmRelatorio.cdsGasto_Area_Atuacao.ParamByName('DATA_INICIAL').Clear;
+  dmRelatorio.cdsGasto_Area_Atuacao.ParamByName('DATA_FINAL').Clear;
+
+  if cgbDataGasto.CheckBox.Checked then
+    begin
+      dmRelatorio.cdsGasto_Area_Atuacao.ParamByName('DATA_INICIAL').AsDateTime := EditDataInicialGasto.Date;
+      dmRelatorio.cdsGasto_Area_Atuacao.ParamByName('DATA_FINAL').AsDateTime := EditDataFinalGasto.Date;
+    end
+  else
+    dmRelatorio.cdsGasto_Area_Atuacao.ParamByName('TODAS_DATAS').AsInteger := 1;
+
+  dmRelatorio.cdsGasto_Area_Atuacao.Open;
+
+  ppGastoAreaAtuacao.PrintReport;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkSaldoTodosFundoPropertiesEditValueChanged(
@@ -316,6 +373,9 @@ begin
 
   EditDataInicial.Date := IncDay(now, -30);
   EditDataFinal.Date := now;
+
+  EditDataInicialGasto.Date := IncDay(now, -30);
+  EditDataFinalGasto.Date := now;
 
   if dmLookup.cdslkProjeto.RecordCount > 0 then
     begin

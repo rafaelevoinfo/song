@@ -687,11 +687,6 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
     end
-    object qlkRubrica_AtividadeID_RUBRICA_PAI: TIntegerField
-      FieldName = 'ID_RUBRICA_PAI'
-      Origin = 'ID_RUBRICA_PAI'
-      ProviderFlags = []
-    end
     object qlkRubrica_AtividadeNOME: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'NOME'
@@ -699,6 +694,15 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 123
+    end
+    object qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_REAL'
+      Origin = 'SALDO_REAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
     end
   end
   object qlkProjeto_Area: TRFQuery

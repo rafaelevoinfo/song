@@ -59,6 +59,7 @@ type
   protected
     function fprGetPermissao: String; override;
     procedure pprValidarDados;override;
+    function fprHabilitarAlterar: Boolean; override;
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: integer); override;
@@ -171,6 +172,11 @@ end;
 function TfrmDoacao.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finDoacao));
+end;
+
+function TfrmDoacao.fprHabilitarAlterar: Boolean;
+begin
+  Result := false;
 end;
 
 end.

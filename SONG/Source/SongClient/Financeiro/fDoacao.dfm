@@ -1,6 +1,5 @@
 inherited frmDoacao: TfrmDoacao
   Caption = 'Doa'#231#227'o'
-  ExplicitTop = -9
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
@@ -121,11 +120,18 @@ inherited frmDoacao: TfrmDoacao
               Visible = False
               Width = 107
             end
+            inherited ColumnAlterar: TcxGridDBColumn
+              Visible = False
+            end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 6

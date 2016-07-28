@@ -362,4 +362,67 @@ inherited smRelatorio: TsmRelatorio
       Required = True
     end
   end
+  object qGasto_Area_Atuacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select sum(Conta_Pagar_Parcela.Valor) as Gasto,'
+      '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,'
+      '       Projeto_Area.Nome as Area_Atuacao'
+      'from Conta_Pagar_Parcela'
+      
+        'inner join Conta_Pagar on (Conta_Pagar_Parcela.Id_Conta_Pagar = ' +
+        'Conta_Pagar.Id)'
+      
+        'inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Conta_' +
+        'Pagar = Conta_Pagar.Id)'
+      
+        'inner join Projeto_Area on (Projeto_Area.Id = Conta_Pagar_Vincul' +
+        'o.Id_Area_Atuacao_Origem)'
+      
+        'where (:Todas_Datas = 1) or (Conta_Pagar_Parcela.Vencimento betw' +
+        'een :Data_Inicial and :Data_Final)'
+      
+        'group by Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem, Projeto_Are' +
+        'a.Nome')
+    Left = 152
+    Top = 176
+    ParamData = <
+      item
+        Name = 'TODAS_DATAS'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'DATA_INICIAL'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'DATA_FINAL'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qGasto_Area_AtuacaoGASTO: TBCDField
+      FieldName = 'GASTO'
+      Origin = 'GASTO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO_ORIGEM'
+      Origin = 'ID_AREA_ATUACAO_ORIGEM'
+      ProviderFlags = []
+    end
+    object qGasto_Area_AtuacaoAREA_ATUACAO: TStringField
+      FieldName = 'AREA_ATUACAO'
+      Origin = 'AREA_ATUACAO'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

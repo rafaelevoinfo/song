@@ -4,6 +4,7 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
+  ExplicitTop = -95
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -912,7 +913,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Width = 407
                 Height = 73
                 TabOrder = 1
-                Properties.ActivePage = tabFundo
+                Properties.ActivePage = tabProjeto
                 Properties.CustomButtons.Buttons = <>
                 ClientRectBottom = 68
                 ClientRectLeft = 2
@@ -979,6 +980,7 @@ inherited frmContaPagar: TfrmContaPagar
                     Caption = 'Sem V'#237'nculo com Projeto'
                     Properties.OnEditValueChanged = chkSemVinculoPropertiesEditValueChanged
                     TabOrder = 1
+                    Visible = False
                     Width = 143
                   end
                 end
@@ -1327,7 +1329,6 @@ inherited frmContaPagar: TfrmContaPagar
                 end
                 object viewVinculosATIVIDADE_ORIGEM: TcxGridDBColumn
                   DataBinding.FieldName = 'ATIVIDADE_ORIGEM'
-                  Visible = False
                   Options.Editing = False
                   Width = 164
                 end
@@ -1338,13 +1339,14 @@ inherited frmContaPagar: TfrmContaPagar
                 end
                 object viewVinculosAREA_ATUACAO_ORIGEM: TcxGridDBColumn
                   DataBinding.FieldName = 'AREA_ATUACAO_ORIGEM'
-                  Visible = False
                   Options.Editing = False
                   Width = 207
                 end
                 object viewVinculosPROJETO_ALOCADO: TcxGridDBColumn
                   DataBinding.FieldName = 'PROJETO_ALOCADO'
+                  Visible = False
                   Options.Editing = False
+                  VisibleForCustomization = False
                   Width = 126
                 end
                 object viewVinculosATIVIDADE_ALOCADA: TcxGridDBColumn
@@ -1355,7 +1357,9 @@ inherited frmContaPagar: TfrmContaPagar
                 end
                 object viewVinculosRUBRICA_ALOCADA: TcxGridDBColumn
                   DataBinding.FieldName = 'RUBRICA_ALOCADA'
+                  Visible = False
                   Options.Editing = False
+                  VisibleForCustomization = False
                   Width = 91
                 end
                 object viewVinculosAREA_ATUACAO_ALOCADA: TcxGridDBColumn
@@ -1421,6 +1425,8 @@ inherited frmContaPagar: TfrmContaPagar
                 end
                 object viewVinculosNOME_FUNDO_ALOCADO: TcxGridDBColumn
                   DataBinding.FieldName = 'NOME_FUNDO_ALOCADO'
+                  Visible = False
+                  VisibleForCustomization = False
                   Width = 200
                 end
                 object ColumnDeletarVinculo: TcxGridDBColumn

@@ -1,17 +1,16 @@
 inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
   ActiveControl = nil
-  Caption = 'Transfer'#234'ncia de Saldos'
+  Caption = 'Transfer'#234'ncia de Recursos'
   ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 436
           Width = 539
-          ExplicitLeft = 435
+          ExplicitLeft = 436
           ExplicitWidth = 539
           inherited Label1: TLabel
             Left = 132
@@ -101,7 +100,7 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
         end
         inherited pnBotoes: TPanel
           Width = 435
-          ExplicitWidth = 563
+          ExplicitWidth = 435
         end
       end
       inherited pnGrid: TPanel
@@ -182,15 +181,12 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
             inherited ColumnAlterar: TcxGridDBColumn
               Visible = False
             end
-            inherited ColumnExcluir: TcxGridDBColumn
-              Visible = False
-            end
-            object viewRegistrosID_PESSOA: TcxGridDBColumn
+            object viewRegistrosID_PESSOA: TcxGridDBColumn [15]
               DataBinding.FieldName = 'ID_PESSOA'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosDATA: TcxGridDBColumn
+            object viewRegistrosDATA: TcxGridDBColumn [16]
               DataBinding.FieldName = 'DATA'
               Options.Editing = False
               Width = 150
