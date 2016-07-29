@@ -53,9 +53,10 @@ type
     qPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
     qPatrimonioID_ITEM_PATRIMONIO: TIntegerField;
     qGasto_Area_Atuacao: TRFQuery;
-    qGasto_Area_AtuacaoGASTO: TBCDField;
     qGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField;
     qGasto_Area_AtuacaoAREA_ATUACAO: TStringField;
+    qGasto_Area_AtuacaoGASTO: TFMTBCDField;
+    qGasto_Area_AtuacaoPROJETO: TStringField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

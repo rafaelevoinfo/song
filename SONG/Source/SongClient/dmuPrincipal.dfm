@@ -6,6 +6,7 @@ object dmPrincipal: TdmPrincipal
   Width = 783
   object DataSnapConn: TRFSQLConnection
     DriverName = 'DataSnap'
+    KeepConnection = False
     LoginPrompt = False
     Params.Strings = (
       'DriverUnit=Data.DBXDataSnap'

@@ -521,7 +521,13 @@ inherited frmProjeto: TfrmProjeto
                     Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                     DataController.DataSource = dsFinanciador
                     DataController.Summary.DefaultGroupSummaryItems = <>
-                    DataController.Summary.FooterSummaryItems = <>
+                    DataController.Summary.FooterSummaryItems = <
+                      item
+                        Format = 'R$ ,0.00'
+                        Kind = skSum
+                        FieldName = 'VALOR_FINANCIADO'
+                        Column = viewProjetoFinanciadorVALOR_FINANCIADO
+                      end>
                     DataController.Summary.SummaryGroups = <>
                     FilterRow.Visible = True
                     OptionsCustomize.ColumnsQuickCustomization = True
@@ -532,6 +538,8 @@ inherited frmProjeto: TfrmProjeto
                     OptionsSelection.MultiSelect = True
                     OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
                     OptionsView.ShowEditButtons = gsebAlways
+                    OptionsView.Footer = True
+                    OptionsView.FooterAutoHeight = True
                     OptionsView.GroupByBox = False
                     object viewProjetoFinanciadorID: TcxGridDBColumn
                       DataBinding.FieldName = 'ID'
@@ -544,13 +552,13 @@ inherited frmProjeto: TfrmProjeto
                       RepositoryItem = dmLookup.repLcbFinanciador
                       Options.Editing = False
                       Options.ShowEditButtons = isebNever
-                      Width = 193
+                      Width = 155
                     end
                     object viewProjetoFinanciadorVALOR_FINANCIADO: TcxGridDBColumn
                       DataBinding.FieldName = 'VALOR_FINANCIADO'
                       RepositoryItem = dmLookup.repCurPadrao
                       Options.Editing = False
-                      Width = 88
+                      Width = 162
                     end
                     object ColumnAlterarDetailFinanciador: TcxGridDBColumn
                       Caption = 'Alterar'
@@ -563,13 +571,14 @@ inherited frmProjeto: TfrmProjeto
                         end>
                       Properties.Images = dmPrincipal.imgIcons_16
                       Properties.ViewStyle = vsButtonsOnly
-                      MinWidth = 64
+                      MinWidth = 45
                       Options.Filtering = False
                       Options.ShowEditButtons = isebAlways
                       Options.GroupFooters = False
                       Options.Grouping = False
                       Options.HorzSizing = False
                       Options.Moving = False
+                      Width = 45
                     end
                     object ColumnExcluirDetailFinanciador: TcxGridDBColumn
                       Caption = 'Excluir'
@@ -582,13 +591,14 @@ inherited frmProjeto: TfrmProjeto
                         end>
                       Properties.Images = dmPrincipal.imgIcons_16
                       Properties.ViewStyle = vsButtonsOnly
-                      MinWidth = 64
+                      MinWidth = 45
                       Options.Filtering = False
                       Options.ShowEditButtons = isebAlways
                       Options.GroupFooters = False
                       Options.Grouping = False
                       Options.HorzSizing = False
                       Options.Moving = False
+                      Width = 45
                     end
                   end
                   object cxGridLevel3: TcxGridLevel
@@ -613,7 +623,19 @@ inherited frmProjeto: TfrmProjeto
                   Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
                   DataController.DataSource = dsFinanciador_Pagto
                   DataController.Summary.DefaultGroupSummaryItems = <>
-                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'VALOR'
+                      Column = viewPagamentosVALOR
+                    end
+                    item
+                      Format = '0 %'
+                      Kind = skSum
+                      FieldName = 'PERCENTUAL'
+                      Column = viewPagamentosPERCENTUAL
+                    end>
                   DataController.Summary.SummaryGroups = <>
                   FilterRow.Visible = True
                   OptionsCustomize.ColumnsQuickCustomization = True
@@ -623,6 +645,8 @@ inherited frmProjeto: TfrmProjeto
                   OptionsData.Inserting = False
                   OptionsSelection.MultiSelect = True
                   OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.Footer = True
+                  OptionsView.FooterAutoHeight = True
                   OptionsView.GroupByBox = False
                   object viewPagamentosID: TcxGridDBColumn
                     DataBinding.FieldName = 'ID'
@@ -631,24 +655,25 @@ inherited frmProjeto: TfrmProjeto
                   end
                   object viewPagamentosNOME_ORGANIZACAO: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_ORGANIZACAO'
-                    Width = 197
+                    Width = 145
                   end
                   object viewPagamentosDATA: TcxGridDBColumn
                     DataBinding.FieldName = 'DATA'
                     Options.Editing = False
-                    Width = 147
+                    Width = 117
                   end
                   object viewPagamentosVALOR: TcxGridDBColumn
                     DataBinding.FieldName = 'VALOR'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                    Width = 184
                   end
                   object viewPagamentosPERCENTUAL: TcxGridDBColumn
                     DataBinding.FieldName = 'PERCENTUAL'
                     PropertiesClassName = 'TcxCalcEditProperties'
                     Properties.DisplayFormat = ',0.00 %'
                     Options.Editing = False
-                    Width = 63
+                    Width = 78
                   end
                 end
                 object cxGridLevel2: TcxGridLevel

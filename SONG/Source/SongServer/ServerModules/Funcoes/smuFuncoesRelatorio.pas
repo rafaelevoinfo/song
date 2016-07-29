@@ -124,15 +124,27 @@ begin
       qMovimentacaoID_ORIGEM_RECURSO.FieldName + ';' +
       qMovimentacaoID.FieldName + ';' +
       qMovimentacaoID_ORGANIZACAO.FieldName;
-    // vamos percorrer todos os registros agora para entao calcular o valor de cada organizacao
+    // vamos calcular o valor pago para cada vinculo
     vaCds.First;
     while not vaCds.Eof do
       begin
         if not vaCds.FieldByName(coProcessado).AsBoolean then
           begin
-            vaCds.Filter := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ' = ' +
-              vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName).AsString + ' and  ' +
-              qMovimentacaoID_MOVIMENTACAO.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_MOVIMENTACAO.FieldName).AsString;
+            // 0 e 1 são despesas vindas do contas a pagar. nesse caso nao posso adicionar o ID_IDENTIFICACAO_TABELA no filtro pq senao podera
+            // separar os vinculos de uma mesma conta a pagar. Entretanto tive que colocar o TIPO no filter para evitar que o ID_MOVIMENTACAO
+            //coincida com outro de outra tabela
+            if vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName).AsInteger in [0, 1] then
+              begin
+                vaCds.Filter := qMovimentacaoTIPO.FieldName +' = '+coDespesa.ToString+ ' and '+ qMovimentacaoID_MOVIMENTACAO.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_MOVIMENTACAO.FieldName).AsString
+              end
+            else
+              begin
+                // Nesse caso tenho que considerar o ID_IDENTIFICACAO_TABELA para evitar problema de ID de tabelas diferentes se coincidirem e entao
+                // achar que fazem parte de um mesma conta e entao fazer os calculos dos percentuais errados.
+                vaCds.Filter := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ' = ' +
+                  vaCds.FieldByName(qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName).AsString + ' and  ' +
+                  qMovimentacaoID_MOVIMENTACAO.FieldName + ' = ' + vaCds.FieldByName(qMovimentacaoID_MOVIMENTACAO.FieldName).AsString;
+              end;
             vaCds.Filtered := True;
 
             // possui mais de um vinculo
@@ -281,7 +293,7 @@ begin
       begin
         if vaCdsClone.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger <> ipCds.FieldByName(qMovimentacaoID_ORGANIZACAO.FieldName).AsInteger then
           begin
-            while (ipCds.RecNo <= vaCdsClone.RecNo) and (not ipCds.Eof) do
+            while (ipCds.RecNo < vaCdsClone.RecNo) and (not ipCds.Eof) do
               begin
                 ipCds.Edit;
                 ipCds.FieldByName(coSaldoGeral).AsFloat := vaSoma;

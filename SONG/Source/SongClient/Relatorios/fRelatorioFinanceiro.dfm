@@ -224,8 +224,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabGastoAreaAtuacao: TcxTabSheet
         Caption = 'Gasto por '#193'rea de Atua'#231#227'o'
         ImageIndex = 3
-        ExplicitLeft = -59
-        ExplicitTop = -79
         object cgbDataGasto: TdxCheckGroupBox
           Left = 1
           Top = 3
@@ -2499,6 +2497,13 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       DisplayWidth = 100
       Position = 2
     end
+    object DBPipeGastoAreaAtuacaoppField4: TppField
+      FieldAlias = 'PROJETO'
+      FieldName = 'PROJETO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 3
+    end
   end
   object ppGastoAreaAtuacao: TppReport
     AutoStop = False
@@ -2647,7 +2652,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         FormField = False
         Transparent = True
         mmHeight = 4234
-        mmLeft = 2117
+        mmLeft = 49745
         mmTop = 25135
         mmWidth = 28046
         BandType = 0
@@ -2671,6 +2676,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         BandType = 0
         LayerName = BandLayer6
       end
+      object ppLabel18: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label18'
+        Caption = 'Projeto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4234
+        mmLeft = 2381
+        mmTop = 25135
+        mmWidth = 12171
+        BandType = 0
+        LayerName = BandLayer6
+      end
     end
     object ppDetailBand2: TppDetailBand
       Background1.Brush.Style = bsClear
@@ -2691,9 +2714,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Transparent = True
         DataPipelineName = 'DBPipeGastoAreaAtuacao'
         mmHeight = 4763
-        mmLeft = 2117
+        mmLeft = 49742
         mmTop = 529
-        mmWidth = 130969
+        mmWidth = 83344
         BandType = 4
         LayerName = BandLayer6
       end
@@ -2715,6 +2738,25 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmLeft = 134673
         mmTop = 529
         mmWidth = 61383
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText17: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText17'
+        DataField = 'PROJETO'
+        DataPipeline = DBPipeGastoAreaAtuacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeGastoAreaAtuacao'
+        mmHeight = 4763
+        mmLeft = 2381
+        mmTop = 529
+        mmWidth = 45244
         BandType = 4
         LayerName = BandLayer6
       end

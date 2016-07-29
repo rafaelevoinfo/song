@@ -316,13 +316,12 @@ inherited dmRelatorio: TdmRelatorio
     RemoteServer = dmPrincipal.ProviderRelatorio
     Left = 480
     Top = 120
-    object cdsGasto_Area_AtuacaoGASTO: TBCDField
+    object cdsGasto_Area_AtuacaoGASTO: TFMTBCDField
       FieldName = 'GASTO'
       Origin = 'GASTO'
-      ProviderFlags = []
       currency = True
       Precision = 18
-      Size = 2
+      Size = 6
     end
     object cdsGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField
       FieldName = 'ID_AREA_ATUACAO_ORIGEM'
@@ -332,6 +331,13 @@ inherited dmRelatorio: TdmRelatorio
     object cdsGasto_Area_AtuacaoAREA_ATUACAO: TStringField
       FieldName = 'AREA_ATUACAO'
       Origin = 'AREA_ATUACAO'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsGasto_Area_AtuacaoPROJETO: TStringField
+      FieldName = 'PROJETO'
+      Origin = 'PROJETO'
       ProviderFlags = []
       Required = True
       Size = 100

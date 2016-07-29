@@ -365,9 +365,13 @@ inherited smRelatorio: TsmRelatorio
   object qGasto_Area_Atuacao: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select sum(Conta_Pagar_Parcela.Valor) as Gasto,'
+      
+        'select coalesce(round(sum(Conta_Pagar_Vinculo.Valor * coalesce((' +
+        'Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total), 0)),2), 0)' +
+        ' as Gasto,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,'
-      '       Projeto_Area.Nome as Area_Atuacao'
+      '       Projeto_Area.Nome as Area_Atuacao,'
+      '       Projeto.nome as Projeto'
       'from Conta_Pagar_Parcela'
       
         'inner join Conta_Pagar on (Conta_Pagar_Parcela.Id_Conta_Pagar = ' +
@@ -378,12 +382,16 @@ inherited smRelatorio: TsmRelatorio
       
         'inner join Projeto_Area on (Projeto_Area.Id = Conta_Pagar_Vincul' +
         'o.Id_Area_Atuacao_Origem)'
+      'inner join projeto on (projeto.id = projeto_area.id_projeto)'
+      'where (Conta_Pagar_Parcela.Status = 1) and'
       
-        'where (:Todas_Datas = 1) or (Conta_Pagar_Parcela.Vencimento betw' +
-        'een :Data_Inicial and :Data_Final)'
+        '      ((:Todas_Datas = 1) or (Conta_Pagar_Parcela.Vencimento bet' +
+        'ween :Data_Inicial and :Data_Final))'
       
         'group by Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem, Projeto_Are' +
-        'a.Nome')
+        'a.Nome,Projeto.nome'
+      'order by Projeto.Nome'
+      '  ')
     Left = 152
     Top = 176
     ParamData = <
@@ -405,12 +413,11 @@ inherited smRelatorio: TsmRelatorio
         ParamType = ptInput
         Value = Null
       end>
-    object qGasto_Area_AtuacaoGASTO: TBCDField
+    object qGasto_Area_AtuacaoGASTO: TFMTBCDField
       FieldName = 'GASTO'
       Origin = 'GASTO'
-      ProviderFlags = []
       Precision = 18
-      Size = 2
+      Size = 6
     end
     object qGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField
       FieldName = 'ID_AREA_ATUACAO_ORIGEM'
@@ -420,6 +427,13 @@ inherited smRelatorio: TsmRelatorio
     object qGasto_Area_AtuacaoAREA_ATUACAO: TStringField
       FieldName = 'AREA_ATUACAO'
       Origin = 'AREA_ATUACAO'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qGasto_Area_AtuacaoPROJETO: TStringField
+      FieldName = 'PROJETO'
+      Origin = 'PROJETO'
       ProviderFlags = []
       Required = True
       Size = 100

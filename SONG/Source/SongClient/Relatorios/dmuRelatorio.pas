@@ -55,9 +55,10 @@ type
     cdsPatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
     cdsPatrimonioID_ITEM_PATRIMONIO: TIntegerField;
     cdsGasto_Area_Atuacao: TRFClientDataSet;
-    cdsGasto_Area_AtuacaoGASTO: TBCDField;
     cdsGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField;
     cdsGasto_Area_AtuacaoAREA_ATUACAO: TStringField;
+    cdsGasto_Area_AtuacaoGASTO: TFMTBCDField;
+    cdsGasto_Area_AtuacaoPROJETO: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
