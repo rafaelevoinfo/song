@@ -13,7 +13,8 @@ uses
   cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, cxDropDownEdit,
   cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC,
   cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem, MidasLib,
-  cxGroupBox, cxRadioGroup, cxLocalization;
+  cxGroupBox, cxRadioGroup, cxLocalization, Vcl.ExtDlgs, cxGridExportLink,
+  System.Generics.Collections;
 
 type
   TfrmBasicoCrudMasterDetail = class(TfrmBasicoCrud)
@@ -43,6 +44,8 @@ type
     Ac_Salvar_Incluir_Detail: TAction;
     btnUtilizarDetailSelecionado: TButton;
     Ac_Utilizar_Detail_Selecionado: TAction;
+    Ac_Exportar_Excel_Detail: TAction;
+    btnExportar_Excel_Detail: TButton;
     procedure Ac_Incluir_DetailExecute(Sender: TObject);
     procedure Ac_Alterar_DetailExecute(Sender: TObject);
     procedure Ac_Excluir_DetailExecute(Sender: TObject);
@@ -56,9 +59,11 @@ type
     procedure Ac_Utilizar_Detail_SelecionadoExecute(Sender: TObject);
     procedure Ac_Alterar_DetailUpdate(Sender: TObject);
     procedure Ac_Excluir_DetailUpdate(Sender: TObject);
+    procedure Ac_Exportar_Excel_DetailExecute(Sender: TObject);
   private
     FIdDetailEscolhido: Integer;
     procedure SetIdDetailEscolhido(const Value: Integer);
+    function fpvProcurarGridFilhoAtual(ipControl: TWinControl): TcxGrid;
 
   protected
     procedure pprBeforeSalvarDetail; virtual;
@@ -139,6 +144,61 @@ begin
     TAction(Sender).Enabled := fprHabilitarExcluirDetail();
 end;
 
+function TfrmBasicoCrudMasterDetail.fpvProcurarGridFilhoAtual(ipControl: TWinControl): TcxGrid;
+var
+  i: Integer;
+begin
+  Result := nil;
+  for i := 0 to ipControl.ControlCount-1 do
+    begin
+      if ipControl.Controls[i] is TcxGrid then
+        Result := ipControl.Controls[i] as TcxGrid
+      else if ipControl.Controls[i] is TPanel then
+        Result := fpvProcurarGridFilhoAtual(ipControl.Controls[i] as TPanel);
+    end;
+end;
+
+procedure TfrmBasicoCrudMasterDetail.Ac_Exportar_Excel_DetailExecute(
+  Sender: TObject);
+var
+  vaColumns: TDictionary<TcxGridDBColumn, Boolean>;
+  vaGrid: TcxGrid;
+  i: Integer;
+  vaColumn: TcxGridDBColumn;
+begin
+  inherited;
+  vaGrid := fpvProcurarGridFilhoAtual(pcDetails.ActivePage);
+  if Assigned(vaGrid) then
+    begin
+      if fdExportDialog.Execute then
+        begin
+          vaColumns := TDictionary<TcxGridDBColumn, Boolean>.Create;
+          try
+            for i := 0 to TcxGridDBTableView(vaGrid.ActiveView).ColumnCount - 1 do
+              begin
+                vaColumn := TcxGridDBTableView(vaGrid.ActiveView).Columns[i];
+                if vaColumn.PropertiesClass = TcxButtonEditProperties then
+                  begin
+                    vaColumns.Add(vaColumn, vaColumn.Visible);
+                    vaColumn.Visible := False;
+                  end;
+              end;
+
+            ExportGridToXLSX(fdExportDialog.FileName, vaGrid);
+
+          finally
+            for vaColumn in vaColumns.Keys do
+              begin
+                vaColumn.Visible := vaColumns.Items[vaColumn];
+              end;
+            vaColumns.Free;
+          end;
+        end;
+    end
+  else
+    raise Exception.Create('Não foi encontrado nenhum grid para ser exportado.');
+end;
+
 procedure TfrmBasicoCrudMasterDetail.Ac_Incluir_DetailExecute(Sender: TObject);
 begin
   inherited;
@@ -190,6 +250,7 @@ procedure TfrmBasicoCrudMasterDetail.FormCreate(Sender: TObject);
 begin
   inherited;
   pcDetails.ActivePageIndex := 0;
+  btnExportar_Excel_Detail.Left := pnDetail.Width-(btnExportar_Excel_Detail.Width+5);
 end;
 
 function TfrmBasicoCrudMasterDetail.fprHabilitarAlterarDetail: Boolean;

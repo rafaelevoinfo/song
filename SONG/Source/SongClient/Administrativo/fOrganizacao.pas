@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
-  dmuPrincipal, uMensagem, cxImage, cxCheckBox, Datasnap.DBClient;
+  dmuPrincipal, uMensagem, cxImage, cxCheckBox, Datasnap.DBClient, Vcl.ExtDlgs;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)

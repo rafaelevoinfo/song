@@ -3,6 +3,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -179,7 +180,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           end
           object btnUtilizar: TButton
             AlignWithMargins = True
-            Left = 86
+            Left = 188
             Top = 1
             Width = 100
             Height = 40
@@ -192,6 +193,24 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Images = dmPrincipal.imgIcons_32
             TabOrder = 1
             Visible = False
+            WordWrap = True
+            ExplicitLeft = 86
+          end
+          object btnExportarExcel: TButton
+            AlignWithMargins = True
+            Left = 86
+            Top = 1
+            Width = 100
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Exportar_Excel
+            Align = alLeft
+            ImageIndex = 18
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 2
             WordWrap = True
           end
         end
@@ -284,10 +303,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
@@ -394,9 +409,21 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       ImageIndex = 6
       OnExecute = Ac_Utilizar_SelecionadoExecute
     end
+    object Ac_Exportar_Excel: TAction
+      Category = 'Master'
+      Caption = 'Exportar para Excel'
+      OnExecute = Ac_Exportar_ExcelExecute
+      OnUpdate = Ac_AlterarUpdate
+    end
   end
   object dsMaster: TDataSource
     Left = 256
     Top = 152
+  end
+  object fdExportDialog: TSaveTextFileDialog
+    DefaultExt = '.xlsx (Microsoft Excel)'
+    Filter = 'Microsoft Excel (*.xlsx)|*.xlsx'
+    Left = 488
+    Top = 240
   end
 end

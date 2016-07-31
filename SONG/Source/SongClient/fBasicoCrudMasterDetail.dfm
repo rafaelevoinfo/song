@@ -20,11 +20,16 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               end>
           end
         end
+        inherited pnBotoes: TPanel
+          inherited btnUtilizar: TButton
+            ExplicitLeft = 188
+          end
+        end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           Height = 169
-          ExplicitHeight = 208
+          ExplicitHeight = 169
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
           end
@@ -36,7 +41,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           Height = 6
           AlignSplitter = salBottom
           Control = pnDetail
-          ExplicitTop = 209
         end
         object pnDetail: TPanel
           Left = 1
@@ -45,6 +49,9 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           Height = 227
           Align = alBottom
           TabOrder = 2
+          DesignSize = (
+            974
+            227)
           object pcDetails: TcxPageControl
             Left = 1
             Top = 1
@@ -54,7 +61,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             TabOrder = 0
             Properties.ActivePage = tabDetail
             Properties.CustomButtons.Buttons = <>
-            ExplicitHeight = 186
             ClientRectBottom = 220
             ClientRectLeft = 2
             ClientRectRight = 967
@@ -62,7 +68,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
-              ExplicitHeight = 156
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
@@ -96,6 +101,8 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   TabOrder = 1
                   Visible = False
                   WordWrap = True
+                  ExplicitLeft = 322
+                  ExplicitTop = 0
                 end
               end
               object cxGridRegistrosDetail: TcxGrid
@@ -109,7 +116,6 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitHeight = 131
                 object viewRegistrosDetail: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -172,14 +178,23 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               end
             end
           end
+          object btnExportar_Excel_Detail: TButton
+            Left = 834
+            Top = 1
+            Width = 134
+            Height = 21
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Exportar_Excel_Detail
+            Anchors = [akTop, akRight]
+            Images = dmPrincipal.imgIcons_16
+            TabOrder = 1
+            WordWrap = True
+          end
         end
       end
-    end
-    inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
     end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
@@ -282,6 +297,13 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       Caption = 'Utilizar Selecionado'
       ImageIndex = 6
       OnExecute = Ac_Utilizar_Detail_SelecionadoExecute
+    end
+    object Ac_Exportar_Excel_Detail: TAction
+      Category = 'Detail'
+      Caption = 'Exportar para Excel'
+      ImageIndex = 18
+      OnExecute = Ac_Exportar_Excel_DetailExecute
+      OnUpdate = Ac_Alterar_DetailUpdate
     end
   end
   object dsDetail: TDataSource

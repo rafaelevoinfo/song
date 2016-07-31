@@ -14,7 +14,8 @@ uses
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
-  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup;
+  uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup,
+  cxGridExportLink, Vcl.ExtDlgs;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -57,6 +58,9 @@ type
     Ac_Salvar_Incluir: TAction;
     btnUtilizar: TButton;
     Ac_Utilizar_Selecionado: TAction;
+    btnExportarExcel: TButton;
+    Ac_Exportar_Excel: TAction;
+    fdExportDialog: TSaveTextFileDialog;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -75,8 +79,9 @@ type
     procedure Ac_Utilizar_SelecionadoExecute(Sender: TObject);
     procedure Ac_AlterarUpdate(Sender: TObject);
     procedure Ac_ExcluirUpdate(Sender: TObject);
+    procedure Ac_Exportar_ExcelExecute(Sender: TObject);
   private
-    FPesquisaRealizada:Boolean;
+    FPesquisaRealizada: Boolean;
     FPesquisaPadrao: Integer;
     FModoExecucao: TModoExecucao;
     FIdEscolhido: Integer;
@@ -197,6 +202,27 @@ begin
   inherited;
   if Sender is TAction then
     TAction(Sender).Enabled := fprHabilitarExcluir();
+end;
+
+procedure TfrmBasicoCrud.Ac_Exportar_ExcelExecute(Sender: TObject);
+var
+  vaAlterar, vaExcluir: Boolean;
+begin
+  inherited;
+  if fdExportDialog.Execute then
+    begin
+      vaAlterar := ColumnAlterar.Visible;
+      vaExcluir := ColumnExcluir.Visible;
+
+      ColumnAlterar.Visible := False;
+      ColumnExcluir.Visible := False;
+      try
+        ExportGridToXLSX(fdExportDialog.FileName, cxGridRegistros);
+      finally
+        ColumnAlterar.Visible := vaAlterar;
+        ColumnExcluir.Visible := vaExcluir;
+      end;
+    end;
 end;
 
 procedure TfrmBasicoCrud.Ac_IncluirExecute(Sender: TObject);
@@ -716,7 +742,7 @@ begin
   pprCarregarParametrosPesquisa(dsMaster.DataSet as TRFClientDataSet);
   pprEfetuarPesquisa;
 
-  FPesquisaRealizada := true;
+  FPesquisaRealizada := True;
 end;
 
 procedure TfrmBasicoCrud.ppuRetornar(ipAtualizar: Boolean);

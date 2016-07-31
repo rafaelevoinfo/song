@@ -16,7 +16,7 @@ uses
   System.DateUtils, uClientDataSet, uControleAcesso, System.TypInfo, cxMemo,
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCurrencyEdit,
   uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda, fConta_Pagar,
-  dmuPrincipal, System.RegularExpressions, fLote_Semente;
+  dmuPrincipal, System.RegularExpressions, fLote_Semente, Vcl.ExtDlgs;
 
 type
   TCompra = class(TModelo)

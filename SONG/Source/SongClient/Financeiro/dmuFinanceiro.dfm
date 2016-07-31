@@ -809,13 +809,13 @@ inherited dmFinanceiro: TdmFinanceiro
       Size = 2
     end
     object cdsTransferencia_FinanceiraFUNDO_ORIGEM: TStringField
-      DisplayLabel = 'Fundo de Origem'
+      DisplayLabel = 'Conta de Origem'
       FieldName = 'FUNDO_ORIGEM'
       ProviderFlags = []
       Size = 100
     end
     object cdsTransferencia_FinanceiraFUNDO_DESTINO: TStringField
-      DisplayLabel = 'Fundo de Destino'
+      DisplayLabel = 'Conta de Destino'
       FieldName = 'FUNDO_DESTINO'
       ProviderFlags = []
       Size = 100

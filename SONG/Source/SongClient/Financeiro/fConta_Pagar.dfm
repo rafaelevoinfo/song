@@ -4,7 +4,6 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
-  ExplicitTop = -95
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -12,14 +11,11 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -191,9 +187,9 @@ inherited frmContaPagar: TfrmContaPagar
         ExplicitHeight = 419
         inherited cxGridRegistros: TcxGrid
           Width = 984
-          Height = 223
+          Height = 184
           ExplicitWidth = 984
-          ExplicitHeight = 223
+          ExplicitHeight = 184
           inherited viewRegistros: TcxGridDBTableView
             DataController.Summary.FooterSummaryItems = <
               item
@@ -280,15 +276,15 @@ inherited frmContaPagar: TfrmContaPagar
           end
         end
         inherited cxSplitter1: TcxSplitter
-          Top = 224
+          Top = 185
           Width = 984
-          ExplicitTop = 224
+          ExplicitTop = 185
           ExplicitWidth = 984
         end
         inherited pnDetail: TPanel
-          Top = 230
+          Top = 191
           Width = 984
-          ExplicitTop = 230
+          ExplicitTop = 191
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
@@ -296,10 +292,7 @@ inherited frmContaPagar: TfrmContaPagar
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
               ExplicitWidth = 975
-              ExplicitHeight = 156
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -310,6 +303,7 @@ inherited frmContaPagar: TfrmContaPagar
                   Left = 183
                   TabOrder = 2
                   ExplicitLeft = 183
+                  ExplicitTop = 2
                 end
                 object btnQuitarReabrir: TButton
                   Left = 82
@@ -385,7 +379,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Left = 0
                 Top = 0
                 Width = 975
-                Height = 156
+                Height = 195
                 Align = alClient
                 TabOrder = 0
                 TabStop = False
@@ -508,7 +502,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Left = 0
                 Top = 25
                 Width = 975
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -571,12 +565,14 @@ inherited frmContaPagar: TfrmContaPagar
               end
             end
           end
+          inherited btnExportar_Excel_Detail: TButton
+            Left = 779
+            ExplicitLeft = 779
+          end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -1453,8 +1449,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel
