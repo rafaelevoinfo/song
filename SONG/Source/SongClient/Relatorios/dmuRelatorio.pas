@@ -59,7 +59,28 @@ type
     cdsGasto_Area_AtuacaoAREA_ATUACAO: TStringField;
     cdsGasto_Area_AtuacaoGASTO: TFMTBCDField;
     cdsGasto_Area_AtuacaoPROJETO: TStringField;
+    cdsTrasnferencia_Financeira: TRFClientDataSet;
+    cdsTrasnferencia_FinanceiraID: TIntegerField;
+    cdsTrasnferencia_FinanceiraID_PESSOA: TIntegerField;
+    cdsTrasnferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField;
+    cdsTrasnferencia_FinanceiraFUNDO_ORIGEM: TStringField;
+    cdsTrasnferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField;
+    cdsTrasnferencia_FinanceiraFUNDO_DESTINO: TStringField;
+    cdsTrasnferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField;
+    cdsTrasnferencia_FinanceiraPROJETO_ORIGEM: TStringField;
+    cdsTrasnferencia_FinanceiraRUBRICA_ORIGEM: TStringField;
+    cdsTrasnferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField;
+    cdsTrasnferencia_FinanceiraPROJETO_DESTINO: TStringField;
+    cdsTrasnferencia_FinanceiraRUBRICA_DESTINO: TStringField;
+    cdsTrasnferencia_FinanceiraVALOR: TBCDField;
+    cdsTrasnferencia_FinanceiraDATA: TSQLTimeStampField;
+    cdsTrasnferencia_FinanceiraTIPO: TSmallintField;
+    cdsTrasnferencia_FinanceiraORIGEM: TStringField;
+    cdsTrasnferencia_FinanceiraDESTINO: TStringField;
+    cdsTrasnferencia_FinanceiraCALC_TIPO: TStringField;
+    cdsTrasnferencia_FinanceiraRESPONSAVEL: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
+    procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -71,17 +92,34 @@ var
 
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
+
 
 procedure TdmRelatorio.cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE.AsString := FormatFloat(',0.00',cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE.AsFloat);
-  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO.AsInteger);
-  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA.AsString := FormatFloat(',0',cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger);
-  cdsSaldo_Semente_MudaCALC_TOTAL_MUDA.AsInteger := cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsInteger+ cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger;
+  cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE.AsString := FormatFloat(',0.00', cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE.AsFloat);
+  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsString := FormatFloat(',0', cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO.AsInteger);
+  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA.AsString := FormatFloat(',0', cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger);
+  cdsSaldo_Semente_MudaCALC_TOTAL_MUDA.AsInteger := cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsInteger +
+    cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger;
+end;
+
+procedure TdmRelatorio.cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
+var
+  i: Integer;
+begin
+  inherited;
+  for i := 0 to dmPrincipal.repIcbTipoTransferencia.Properties.Items.Count - 1 do
+    begin
+      if dmPrincipal.repIcbTipoTransferencia.Properties.Items[i].Value = cdsTrasnferencia_FinanceiraTIPO.AsInteger then
+        begin
+          cdsTrasnferencia_FinanceiraCALC_TIPO.AsString := dmPrincipal.repIcbTipoTransferencia.Properties.Items[i].Description;
+          break;
+        end;
+    end;
 end;
 
 end.

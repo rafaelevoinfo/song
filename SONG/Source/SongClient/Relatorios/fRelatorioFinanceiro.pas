@@ -17,7 +17,7 @@ uses
   System.Bindings.Expression, System.Bindings.NotifierContracts, System.Bindings.NotifierDefaults,
   System.Bindings.Helper, ppChrt, ppChrtDP, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, cxGroupBox, dxCheckGroupBox, Datasnap.DBClient, ppModule, raCodMod,
-  System.DateUtils, cxRadioGroup;
+  System.DateUtils, cxRadioGroup, cxImageComboBox, uTypes, uUtils;
 
 type
   TfrmRelatorioFinanceiro = class(TfrmRelatorioBasico)
@@ -218,6 +218,55 @@ type
     ppLabel16: TppLabel;
     ppLabel18: TppLabel;
     ppDBText17: TppDBText;
+    tabTransferenciaRecurso: TcxTabSheet;
+    cgbDataTransferenciaRecurso: TdxCheckGroupBox;
+    lb3: TLabel;
+    lb4: TLabel;
+    EditDataInicialTransfRecurso: TcxDateEdit;
+    EditDataFinalTransfRecurso: TcxDateEdit;
+    cbTipoTransferencia: TcxImageComboBox;
+    Label5: TLabel;
+    chkTodosTransferencia: TcxCheckBox;
+    DBPipeTransferencia: TppDBPipeline;
+    dsTransferencia: TDataSource;
+    ppTransferencia: TppReport;
+    ppParameterList5: TppParameterList;
+    Label4: TLabel;
+    cbPessoaTransferencia: TcxLookupComboBox;
+    ppHeaderBand5: TppHeaderBand;
+    ppLabel19: TppLabel;
+    ppDBImage5: TppDBImage;
+    ppSystemVariable13: TppSystemVariable;
+    ppSystemVariable14: TppSystemVariable;
+    ppDetailBand3: TppDetailBand;
+    ppDBText31: TppDBText;
+    ppDBText32: TppDBText;
+    ppDBText33: TppDBText;
+    ppDBText37: TppDBText;
+    ppDBText38: TppDBText;
+    ppFooterBand5: TppFooterBand;
+    ppLabel27: TppLabel;
+    ppDBText34: TppDBText;
+    ppDBText35: TppDBText;
+    ppSystemVariable15: TppSystemVariable;
+    ppSummaryBand2: TppSummaryBand;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand3: TppGroupHeaderBand;
+    ppShape4: TppShape;
+    ppDBText36: TppDBText;
+    ppLabel26: TppLabel;
+    ppLabel21: TppLabel;
+    ppLabel25: TppLabel;
+    ppLabel29: TppLabel;
+    ppLabel30: TppLabel;
+    ppGroupFooterBand3: TppGroupFooterBand;
+    ppLabel28: TppLabel;
+    ppDBCalc6: TppDBCalc;
+    raCodeModule5: TraCodeModule;
+    ppDesignLayers5: TppDesignLayers;
+    ppDesignLayer5: TppDesignLayer;
+    ppLabel31: TppLabel;
+    ppDBCalc7: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -227,8 +276,11 @@ type
       Sender: TObject);
     procedure chkTodosProjetoRubricasPropertiesEditValueChanged(
       Sender: TObject);
+    procedure chkTodosTransferenciaPropertiesEditValueChanged(Sender: TObject);
+    procedure tabTransferenciaRecursoShow(Sender: TObject);
   private
     procedure ppvGerarRelatorioGastoAreaAtuacao;
+    procedure ppvGerarRelatorioTransferenciaRecurso;
   public
     { Public declarations }
   end;
@@ -305,7 +357,30 @@ begin
   else if pcPrincipal.ActivePage = tabGastoAreaAtuacao then
     begin
       ppvGerarRelatorioGastoAreaAtuacao;
+    end
+  else if pcPrincipal.ActivePage = tabTransferenciaRecurso then
+    begin
+      ppvGerarRelatorioTransferenciaRecurso;
     end;
+end;
+
+procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioTransferenciaRecurso;
+begin
+  dmRelatorio.cdsTrasnferencia_Financeira.ppuLimparParametros;
+  if cgbDataTransferenciaRecurso.CheckBox.Checked then
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coData,TUtils.fpuMontarDataBetween(EditDataInicialTransfRecurso.Date,EditDataFinalTransfRecurso.Date))
+  else
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coData,TUtils.fpuMontarDataBetween(0,EncodeDate(9999,12,31)));
+
+  if (not chkTodosTransferencia.Checked) and (Not VarIsNull(cbTipoTransferencia.EditValue)) then
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coTipo,cbTipoTransferencia.EditValue);
+
+  if (Not VarIsNull(cbPessoaTransferencia.EditValue)) then
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coPessoa,cbPessoaTransferencia.EditValue);
+
+  dmRelatorio.cdsTrasnferencia_Financeira.ppuDataRequest();
+  ppTransferencia.PrintReport;
+
 end;
 
 procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoAreaAtuacao;
@@ -327,6 +402,13 @@ begin
   dmRelatorio.cdsGasto_Area_Atuacao.Open;
 
   ppGastoAreaAtuacao.PrintReport;
+end;
+
+procedure TfrmRelatorioFinanceiro.tabTransferenciaRecursoShow(Sender: TObject);
+begin
+  inherited;
+  if not dmLookup.cdslkPessoa.Active then
+    dmLookup.ppuCarregarPessoas(0,[trpFuncionario,trpMembroDiretoria]);
 end;
 
 procedure TfrmRelatorioFinanceiro.chkSaldoTodosFundoPropertiesEditValueChanged(
@@ -364,6 +446,13 @@ begin
   cbProjetoMovimentacao.Enabled := not chkTodosProjetosMovimentacao.Checked;
 end;
 
+procedure TfrmRelatorioFinanceiro.chkTodosTransferenciaPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbTipoTransferencia.Enabled := not chkTodosTransferencia.Checked;
+end;
+
 procedure TfrmRelatorioFinanceiro.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -378,6 +467,9 @@ begin
 
   EditDataInicialGasto.Date := IncDay(now, -30);
   EditDataFinalGasto.Date := now;
+
+  EditDataInicialTransfRecurso.Date := IncDay(now, -30);
+  EditDataFinalTransfRecurso.Date := now;
 
   if dmLookup.cdslkProjeto.RecordCount > 0 then
     begin

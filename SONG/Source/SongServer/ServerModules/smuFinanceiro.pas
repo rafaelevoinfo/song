@@ -199,8 +199,8 @@ var
   vaCommit: Boolean;
 begin
   inherited;
+  vaCommit := false;
   try
-    vaCommit := false;
     if UpdateKind = ukInsert then
       begin
         Connection.ExecSQL('update fundo set fundo.saldo = fundo.saldo + :VALOR Where fundo.id = :ID_FUNDO',
@@ -251,10 +251,10 @@ var
   vaCommit: Boolean;
 begin
   inherited;
+  vaCommit := false;
   pprCriarDataSet(vaDataSet);
   try
     try
-      vaCommit := false;
       vaDataSet.SQL.Text := 'select Fundo.Saldo from Fundo where Fundo.Id = :Id';
 
       if (UpdateKind = ukInsert) then

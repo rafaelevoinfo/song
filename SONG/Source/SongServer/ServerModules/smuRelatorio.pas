@@ -57,6 +57,25 @@ type
     qGasto_Area_AtuacaoAREA_ATUACAO: TStringField;
     qGasto_Area_AtuacaoGASTO: TFMTBCDField;
     qGasto_Area_AtuacaoPROJETO: TStringField;
+    qTransferencia_Financeira: TRFQuery;
+    qTransferencia_FinanceiraID: TIntegerField;
+    qTransferencia_FinanceiraID_PESSOA: TIntegerField;
+    qTransferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField;
+    qTransferencia_FinanceiraFUNDO_ORIGEM: TStringField;
+    qTransferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField;
+    qTransferencia_FinanceiraFUNDO_DESTINO: TStringField;
+    qTransferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField;
+    qTransferencia_FinanceiraPROJETO_ORIGEM: TStringField;
+    qTransferencia_FinanceiraRUBRICA_ORIGEM: TStringField;
+    qTransferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField;
+    qTransferencia_FinanceiraPROJETO_DESTINO: TStringField;
+    qTransferencia_FinanceiraRUBRICA_DESTINO: TStringField;
+    qTransferencia_FinanceiraVALOR: TBCDField;
+    qTransferencia_FinanceiraDATA: TSQLTimeStampField;
+    qTransferencia_FinanceiraTIPO: TSmallintField;
+    qTransferencia_FinanceiraORIGEM: TStringField;
+    qTransferencia_FinanceiraDESTINO: TStringField;
+    qTransferencia_FinanceiraRESPONSAVEL: TStringField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -88,6 +107,15 @@ begin
     begin
       if ipParam.Name = TParametros.coStatus then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador);
+    end
+  else if (ipTabela = 'TRANSFERENCIA_FINANCEIRA') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
+      else if ipParam.Name = TParametros.coTipo then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coPessoa then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PESSOA', vaValor.ToInteger, vaOperador)
     end;
 end;
 

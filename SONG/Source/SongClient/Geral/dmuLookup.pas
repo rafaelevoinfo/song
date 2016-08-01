@@ -244,7 +244,6 @@ type
     cdslkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL: TIntegerField;
     repLcbItemPatrimonio: TcxEditRepositoryLookupComboBoxItem;
     dslkItem_Patrimonio: TDataSource;
-    repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
     cdslkDoador: TRFClientDataSet;
     cdslkDoadorID_PESSOA_DOADORA: TIntegerField;
     cdslkDoadorNOME: TStringField;

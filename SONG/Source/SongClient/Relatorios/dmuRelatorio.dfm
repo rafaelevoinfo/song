@@ -294,7 +294,6 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsGasto_Area_Atuacao: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <
       item
@@ -340,6 +339,136 @@ inherited dmRelatorio: TdmRelatorio
       Origin = 'PROJETO'
       ProviderFlags = []
       Required = True
+      Size = 100
+    end
+  end
+  object cdsTrasnferencia_Financeira: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'DATA'
+    Params = <>
+    ProviderName = 'dspqTransferencia_Financeira'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    OnCalcFields = cdsTrasnferencia_FinanceiraCalcFields
+    Left = 472
+    Top = 184
+    object cdsTrasnferencia_FinanceiraID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsTrasnferencia_FinanceiraID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsTrasnferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField
+      FieldName = 'ID_FUNDO_ORIGEM'
+      Origin = 'ID_FUNDO_ORIGEM'
+      ProviderFlags = []
+    end
+    object cdsTrasnferencia_FinanceiraFUNDO_ORIGEM: TStringField
+      FieldName = 'FUNDO_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsTrasnferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField
+      FieldName = 'ID_FUNDO_DESTINO'
+      Origin = 'ID_FUNDO_DESTINO'
+      ProviderFlags = []
+    end
+    object cdsTrasnferencia_FinanceiraFUNDO_DESTINO: TStringField
+      FieldName = 'FUNDO_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsTrasnferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA_ORIGEM'
+      Origin = 'ID_PROJETO_RUBRICA_ORIGEM'
+      ProviderFlags = []
+    end
+    object cdsTrasnferencia_FinanceiraPROJETO_ORIGEM: TStringField
+      FieldName = 'PROJETO_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsTrasnferencia_FinanceiraRUBRICA_ORIGEM: TStringField
+      FieldName = 'RUBRICA_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsTrasnferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA_DESTINO'
+      Origin = 'ID_PROJETO_RUBRICA_DESTINO'
+      ProviderFlags = []
+    end
+    object cdsTrasnferencia_FinanceiraPROJETO_DESTINO: TStringField
+      FieldName = 'PROJETO_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsTrasnferencia_FinanceiraRUBRICA_DESTINO: TStringField
+      FieldName = 'RUBRICA_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsTrasnferencia_FinanceiraVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsTrasnferencia_FinanceiraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsTrasnferencia_FinanceiraTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsTrasnferencia_FinanceiraORIGEM: TStringField
+      FieldName = 'ORIGEM'
+      Origin = 'ORIGEM'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 203
+    end
+    object cdsTrasnferencia_FinanceiraDESTINO: TStringField
+      FieldName = 'DESTINO'
+      Origin = 'DESTINO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 203
+    end
+    object cdsTrasnferencia_FinanceiraCALC_TIPO: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_TIPO'
+      Size = 100
+      Calculated = True
+    end
+    object cdsTrasnferencia_FinanceiraRESPONSAVEL: TStringField
+      FieldName = 'RESPONSAVEL'
+      ProviderFlags = []
+      ReadOnly = True
       Size = 100
     end
   end

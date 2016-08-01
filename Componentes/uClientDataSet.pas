@@ -58,6 +58,8 @@ type
     coLocalizacao = 'LOCALIZACAO';
     coNotaFiscal = 'NOTA_FISCAL';
 
+    coPessoa = 'PESSOA';
+
     coDelimitador = '§';
   end;
 

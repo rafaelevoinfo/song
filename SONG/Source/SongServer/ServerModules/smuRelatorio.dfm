@@ -439,4 +439,192 @@ inherited smRelatorio: TsmRelatorio
       Size = 100
     end
   end
+  object qTransferencia_Financeira: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Transferencia_Financeira.Id,'
+      '       Transferencia_Financeira.Id_Pessoa,'
+      '       Pessoa.Nome as Responsavel,'
+      '       Transferencia_Financeira.Id_Fundo_Origem,'
+      '       Fundo_Origem.Nome as Fundo_Origem,'
+      '       Transferencia_Financeira.Id_Fundo_Destino,'
+      '       Fundo_Destino.Nome as Fundo_Destino,'
+      '       Transferencia_Financeira.Id_Projeto_Rubrica_Origem,'
+      '       Projeto_Origem.Nome as Projeto_Origem,'
+      '       Rubrica_Origem.Nome as Rubrica_Origem,'
+      '       Transferencia_Financeira.Id_Projeto_Rubrica_Destino,'
+      '       Projeto_Destino.Nome as Projeto_Destino,'
+      '       Rubrica_Destino.Nome as Rubrica_Destino,'
+      '       Transferencia_Financeira.Valor,'
+      '       Transferencia_Financeira.Data,'
+      '       Transferencia_Financeira.Tipo,'
+      
+        '       coalesce(Fundo_Origem.Nome, Projeto_Origem.Nome || '#39' - '#39' ' +
+        '|| Rubrica_Origem.Nome) as Origem,'
+      
+        '       coalesce(Fundo_Destino.Nome, Projeto_Destino.Nome || '#39' - ' +
+        #39' || Rubrica_Destino.Nome) as Destino'
+      'from Transferencia_Financeira'
+      
+        'inner join pessoa on (pessoa.id = Transferencia_Financeira.Id_Pe' +
+        'ssoa)'
+      
+        'left join Projeto_Rubrica Projeto_Rubrica_Origem on (Projeto_Rub' +
+        'rica_Origem.Id = Transferencia_Financeira.Id_Projeto_Rubrica_Ori' +
+        'gem)'
+      
+        'left join Projeto Projeto_Origem on (Projeto_Origem.Id = Projeto' +
+        '_Rubrica_Origem.Id_Projeto)'
+      
+        'left join Rubrica Rubrica_Origem on (Rubrica_Origem.Id = Projeto' +
+        '_Rubrica_Origem.Id_Rubrica)'
+      
+        'left join Projeto_Rubrica Projeto_Rubrica_Destino on (Projeto_Ru' +
+        'brica_Destino.Id = Transferencia_Financeira.Id_Projeto_Rubrica_D' +
+        'estino)'
+      
+        'left join Projeto Projeto_Destino on (Projeto_Destino.Id = Proje' +
+        'to_Rubrica_Destino.Id_Projeto)'
+      
+        'left join Rubrica Rubrica_Destino on (Rubrica_Destino.Id = Proje' +
+        'to_Rubrica_Destino.Id_Rubrica)'
+      
+        'left join Fundo Fundo_Origem on (Fundo_Origem.Id = Transferencia' +
+        '_Financeira.Id_Fundo_Origem)'
+      
+        'left join Fundo Fundo_Destino on (Fundo_Destino.Id = Transferenc' +
+        'ia_Financeira.Id_Fundo_Destino)  '
+      '&WHERE')
+    Left = 296
+    Top = 240
+    MacroData = <
+      item
+        Value = 'where Transferencia_Financeira.id = 0'
+        Name = 'WHERE'
+      end>
+    object qTransferencia_FinanceiraID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qTransferencia_FinanceiraID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+      ProviderFlags = []
+      Required = True
+    end
+    object qTransferencia_FinanceiraID_FUNDO_ORIGEM: TIntegerField
+      FieldName = 'ID_FUNDO_ORIGEM'
+      Origin = 'ID_FUNDO_ORIGEM'
+      ProviderFlags = []
+    end
+    object qTransferencia_FinanceiraFUNDO_ORIGEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FUNDO_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qTransferencia_FinanceiraID_FUNDO_DESTINO: TIntegerField
+      FieldName = 'ID_FUNDO_DESTINO'
+      Origin = 'ID_FUNDO_DESTINO'
+      ProviderFlags = []
+    end
+    object qTransferencia_FinanceiraFUNDO_DESTINO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FUNDO_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qTransferencia_FinanceiraID_PROJETO_RUBRICA_ORIGEM: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA_ORIGEM'
+      Origin = 'ID_PROJETO_RUBRICA_ORIGEM'
+      ProviderFlags = []
+    end
+    object qTransferencia_FinanceiraPROJETO_ORIGEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PROJETO_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qTransferencia_FinanceiraRUBRICA_ORIGEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA_ORIGEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qTransferencia_FinanceiraID_PROJETO_RUBRICA_DESTINO: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA_DESTINO'
+      Origin = 'ID_PROJETO_RUBRICA_DESTINO'
+      ProviderFlags = []
+    end
+    object qTransferencia_FinanceiraPROJETO_DESTINO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PROJETO_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qTransferencia_FinanceiraRUBRICA_DESTINO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA_DESTINO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qTransferencia_FinanceiraVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qTransferencia_FinanceiraDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = []
+      Required = True
+    end
+    object qTransferencia_FinanceiraTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+      Required = True
+    end
+    object qTransferencia_FinanceiraORIGEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ORIGEM'
+      Origin = 'ORIGEM'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 203
+    end
+    object qTransferencia_FinanceiraDESTINO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'DESTINO'
+      Origin = 'DESTINO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 203
+    end
+    object qTransferencia_FinanceiraRESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+  end
 end

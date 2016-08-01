@@ -12,7 +12,8 @@ uses
   Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
   Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList,
-  cxLocalization, uProvider, System.Rtti, uProxyGenerator, Datasnap.DSProxy;
+  cxLocalization, uProvider, System.Rtti, uProxyGenerator, Datasnap.DSProxy,
+  cxEditRepositoryItems;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -32,6 +33,7 @@ type
     cdslkCidadeNOME: TStringField;
     Repositorio: TcxEditRepository;
     repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
+	repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
     dslkCidade: TDataSource;
     cxLocalizer1: TcxLocalizer;
     ProviderEstoque: TRFProviderConnection;

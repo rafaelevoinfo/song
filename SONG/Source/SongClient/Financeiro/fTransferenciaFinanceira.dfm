@@ -1,7 +1,6 @@
 inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
   ActiveControl = nil
   Caption = 'Transfer'#234'ncia de Recursos'
-  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -101,6 +100,9 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
         inherited pnBotoes: TPanel
           Width = 435
           ExplicitWidth = 435
+          inherited btnUtilizar: TButton
+            ExplicitLeft = 188
+          end
         end
       end
       inherited pnGrid: TPanel
@@ -108,7 +110,7 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosTIPO: TcxGridDBColumn [0]
               DataBinding.FieldName = 'TIPO'
-              RepositoryItem = dmLookup.repIcbTipoTransferencia
+              RepositoryItem = dmPrincipal.repIcbTipoTransferencia
               Options.Editing = False
               Width = 127
             end
@@ -437,7 +439,7 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
         object cbTipoTransferencia: TcxDBImageComboBox
           Left = 152
           Top = 87
-          RepositoryItem = dmLookup.repIcbTipoTransferencia
+          RepositoryItem = dmPrincipal.repIcbTipoTransferencia
           DataBinding.DataField = 'TIPO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
@@ -459,6 +461,9 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
   inherited ActionList1: TActionList
     Left = 104
     Top = 288
+    inherited Ac_Exportar_Excel: TAction
+      OnUpdate = Ac_Exportar_ExcelUpdate
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmFinanceiro.cdsTransferencia_Financeira

@@ -15,7 +15,8 @@ uses
   Vcl.ExtCtrls, cxPC, dmuFinanceiro, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, uClientDataSet, System.TypInfo, uControleAcesso,
   uExceptions, dmuLookup, uTypes, cxCurrencyEdit, cxDBEdit, dmuPrincipal,
-  Datasnap.DBClient, System.DateUtils, cxCheckBox, cxCheckComboBox, uUtils;
+  Datasnap.DBClient, System.DateUtils, cxCheckBox, cxCheckComboBox, uUtils,
+  Vcl.ExtDlgs;
 
 type
   TfrmTransferenciaFinanceira = class(TfrmBasicoCrud)
@@ -76,6 +77,7 @@ type
     procedure cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
     procedure cbProjetoDestinoPropertiesEditValueChanged(Sender: TObject);
     procedure rgTipoTransferenciaPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Exportar_ExcelUpdate(Sender: TObject);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -109,11 +111,17 @@ implementation
 
 { TfrmTransferenciaFinanceira }
 
+procedure TfrmTransferenciaFinanceira.Ac_Exportar_ExcelUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := dmFinanceiro.cdsTransferencia_Financeira.active and (dmFinanceiro.cdsTransferencia_Financeira.Recordcount > 0);
+end;
+
 procedure TfrmTransferenciaFinanceira.cbProjetoDestinoPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  if cdsLocalRubricasDestino.Active then
+  if cdsLocalRubricasDestino.active then
     cdsLocalRubricasDestino.EmptyDataSet;
 
   if not VarIsNull(cbProjetoDestino.EditValue) then
@@ -129,7 +137,7 @@ procedure TfrmTransferenciaFinanceira.cbProjetoOrigemPropertiesEditValueChanged(
   Sender: TObject);
 begin
   inherited;
-  if cdsLocalRubricasOrigem.Active then
+  if cdsLocalRubricasOrigem.active then
     cdsLocalRubricasOrigem.EmptyDataSet;
 
   if not VarIsNull(cbProjetoOrigem.EditValue) then
@@ -143,7 +151,7 @@ end;
 procedure TfrmTransferenciaFinanceira.FormCreate(Sender: TObject);
 var
   vaTipo: TcxCheckComboBoxItem;
-  i:integer;
+  i: integer;
 begin
   dmFinanceiro := TdmFinanceiro.Create(Self);
   dmFinanceiro.Name := '';
@@ -165,11 +173,11 @@ begin
   dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 
   cbTipoTransferenciaPesquisa.Properties.Items.Clear;
-  for I := 0 to dmLookup.repIcbTipoTransferencia.Properties.Items.Count - 1 do
+  for i := 0 to dmPrincipal.repIcbTipoTransferencia.Properties.Items.Count - 1 do
     begin
       vaTipo := cbTipoTransferenciaPesquisa.Properties.Items.Add;
-      vaTipo.Tag := dmLookup.repIcbTipoTransferencia.Properties.Items[i].Value;
-      vaTipo.Description := dmLookup.repIcbTipoTransferencia.Properties.Items[i].Description;
+      vaTipo.Tag := dmPrincipal.repIcbTipoTransferencia.Properties.Items[i].Value;
+      vaTipo.Description := dmPrincipal.repIcbTipoTransferencia.Properties.Items[i].Description;
     end;
 
 end;
@@ -277,7 +285,7 @@ begin
           if VarIsNull(cbRubricaDestino.EditValue) then
             raise TControlException.Create('Informe a rubrica de destino do recurso.', cbRubricaDestino);
 
-          if (cbProjetoOrigem.EditValue = cbProjetoDestino.EditValue) and (cbRubricaOrigem.EditValue=cbRubricaDestino.EditValue) then
+          if (cbProjetoOrigem.EditValue = cbProjetoDestino.EditValue) and (cbRubricaOrigem.EditValue = cbRubricaDestino.EditValue) then
             raise Exception.Create('O projeto e a rubrica de origem não podem ser os mesmos de destino.');
         end;
 

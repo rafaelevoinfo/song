@@ -768,32 +768,7 @@ inherited dmLookup: TdmLookup
           FieldName = 'NOME'
         end>
       Properties.ListSource = dslkItem_Patrimonio
-    end
-    object repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem
-      Properties.ImmediatePost = True
-      Properties.Items = <
-        item
-          Description = 'Overhead'
-          ImageIndex = 0
-          Value = 0
-        end
-        item
-          Description = 'Empr'#233'stimo'
-          Value = 1
-        end
-        item
-          Description = 'Devolu'#231#227'o de Empr'#233'stimo'
-          Value = 2
-        end
-        item
-          Description = 'Remanejamento'
-          Value = 3
-        end
-        item
-          Description = 'Doa'#231#227'o'
-          Value = 4
-        end>
-    end
+    end    
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
