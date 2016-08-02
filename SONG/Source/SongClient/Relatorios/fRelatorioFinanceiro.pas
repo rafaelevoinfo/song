@@ -68,7 +68,6 @@ type
     ppDBText20: TppDBText;
     ppGroupTipo: TppGroup;
     ppGroupHeaderBand4: TppGroupHeaderBand;
-    EditDescricaoTipo: TppDBText;
     ppLabelDescricao: TppLabel;
     ppLabelValorPagoRecebido: TppLabel;
     ppGroupFooterBand4: TppGroupFooterBand;
@@ -113,8 +112,6 @@ type
     DBPipeSaldo: TppDBPipeline;
     dsSaldo: TDataSource;
     ppDBCalc4: TppDBCalc;
-    ppLabelProjetoFundo: TppLabel;
-    ppDBText27: TppDBText;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
     chkReceitas: TcxCheckBox;
     chkDespesas: TcxCheckBox;
@@ -167,8 +164,8 @@ type
     ppLabel3: TppLabel;
     ppShape2: TppShape;
     cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField;
-    ppLabel10: TppLabel;
-    ppLabel11: TppLabel;
+    lbDataPagamentoRecebimento: TppLabel;
+    lbFormaPagamento: TppLabel;
     ppDBText10: TppDBText;
     ppDBText11: TppDBText;
     cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField;
@@ -267,6 +264,11 @@ type
     ppDesignLayer5: TppDesignLayer;
     ppLabel31: TppLabel;
     ppDBCalc7: TppDBCalc;
+    ppGroup3: TppGroup;
+    ppGroupHeaderBand6: TppGroupHeaderBand;
+    EditOrigemRecurso: TppGroupFooterBand;
+    EditOrigemRecurso1: TppDBText;
+    ppDBText27: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -316,11 +318,12 @@ begin
           chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
 
       cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' +
-        cdsMovimentacaoTIPO.FieldName + ';' + cdsMovimentacaoTIPO_ORIGEM_RECURSO.FieldName + ';' +
-        cdsMovimentacaoTIPO_ORIGEM.FieldName + ';' + cdsMovimentacaoID_ORIGEM_RECURSO.FieldName;
+        cdsMovimentacaoORIGEM_RECURSO.FieldName+';'+ cdsMovimentacaoTIPO.FieldName + ';' +
+        cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO.FieldName;
 
       ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
-      ppLabelProjetoFundo.Visible := ppDetailBandMovimentacao.Visible;
+      lbFormaPagamento.Visible := ppDetailBandMovimentacao.Visible;
+      lbDataPagamentoRecebimento.Visible := ppDetailBandMovimentacao.Visible;
       ppLabelDescricao.Visible := ppDetailBandMovimentacao.Visible;
 
       if cgbData.CheckBox.Checked then

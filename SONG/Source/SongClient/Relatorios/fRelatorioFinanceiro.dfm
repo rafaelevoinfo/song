@@ -2,11 +2,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
   PixelsPerInch = 96
   TextHeight = 13
-  inherited pnBotoes: TPanel
-    inherited btnGerarRelatorio: TButton
-      ExplicitLeft = 2
-    end
-  end
   inherited pnConfiguracoes: TPanel
     object pcPrincipal: TcxPageControl
       Left = 0
@@ -824,7 +819,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Transparent = True
         DataPipelineName = 'DBPipeMovimentacao'
         mmHeight = 3175
-        mmLeft = 29368
+        mmLeft = 5554
         mmTop = 0
         mmWidth = 40746
         BandType = 4
@@ -847,25 +842,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmLeft = 119589
         mmTop = 0
         mmWidth = 25000
-        BandType = 4
-        LayerName = BandLayer3
-      end
-      object ppDBText27: TppDBText
-        DesignLayer = ppDesignLayer3
-        UserName = 'DBText27'
-        DataField = 'ORIGEM_RECURSO'
-        DataPipeline = DBPipeMovimentacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 6
-        Font.Style = []
-        Transparent = True
-        DataPipelineName = 'DBPipeMovimentacao'
-        mmHeight = 3175
-        mmLeft = 5024
-        mmTop = 0
-        mmWidth = 23019
         BandType = 4
         LayerName = BandLayer3
       end
@@ -1020,6 +996,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
       OutlineSettings.CreateNode = True
+      NewPage = True
       StartOnOddPage = False
       UserName = 'GroupOrganizacao'
       mmNewColumnThreshold = 0
@@ -1113,6 +1090,53 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         end
       end
     end
+    object ppGroup3: TppGroup
+      BreakName = 'ID_ORIGEM_RECURSO'
+      DataPipeline = DBPipeMovimentacao
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      OutlineSettings.CreateNode = True
+      NewPage = True
+      StartOnOddPage = False
+      UserName = 'Group3'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeMovimentacao'
+      NewFile = False
+      object ppGroupHeaderBand6: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 6615
+        mmPrintPosition = 0
+        object EditOrigemRecurso1: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'EditOrigemRecurso1'
+          DataField = 'ORIGEM_RECURSO'
+          DataPipeline = DBPipeMovimentacao
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4763
+          mmLeft = 4762
+          mmTop = 1588
+          mmWidth = 191559
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer3
+        end
+      end
+      object EditOrigemRecurso: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
+    end
     object ppGroupTipo: TppGroup
       BreakName = 'TIPO'
       DataPipeline = DBPipeMovimentacao
@@ -1128,28 +1152,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppGroupHeaderBand4: TppGroupHeaderBand
         Background.Brush.Style = bsClear
         mmBottomOffset = 0
-        mmHeight = 13229
+        mmHeight = 12965
         mmPrintPosition = 0
-        object EditDescricaoTipo: TppDBText
-          DesignLayer = ppDesignLayer3
-          UserName = 'EditDescricaoTipo'
-          DataField = 'DESCRICAO_TIPO'
-          DataPipeline = DBPipeMovimentacao
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = [fsBold]
-          Transparent = True
-          DataPipelineName = 'DBPipeMovimentacao'
-          mmHeight = 4763
-          mmLeft = 5289
-          mmTop = 1589
-          mmWidth = 191559
-          BandType = 3
-          GroupNo = 2
-          LayerName = BandLayer3
-        end
         object ppLabelDescricao: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'LabelDescricao'
@@ -1163,8 +1167,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 2645
-          mmLeft = 29369
-          mmTop = 8468
+          mmLeft = 5555
+          mmTop = 6613
           mmWidth = 9525
           BandType = 3
           GroupNo = 2
@@ -1183,7 +1187,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           mmHeight = 2645
           mmLeft = 145517
-          mmTop = 8468
+          mmTop = 6613
           mmWidth = 10584
           BandType = 3
           GroupNo = 2
@@ -1203,28 +1207,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           mmHeight = 2645
           mmLeft = 119588
-          mmTop = 8468
+          mmTop = 6613
           mmWidth = 5027
-          BandType = 3
-          GroupNo = 2
-          LayerName = BandLayer3
-        end
-        object ppLabelProjetoFundo: TppLabel
-          DesignLayer = ppDesignLayer3
-          UserName = 'LabelProjetoFundo'
-          Caption = 'Projeto/Conta'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 6
-          Font.Style = [fsBold]
-          FormField = False
-          TextAlignment = taCentered
-          Transparent = True
-          mmHeight = 2646
-          mmLeft = 4763
-          mmTop = 8467
-          mmWidth = 14022
           BandType = 3
           GroupNo = 2
           LayerName = BandLayer3
@@ -1243,7 +1227,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           mmHeight = 2645
           mmLeft = 171447
-          mmTop = 8468
+          mmTop = 6613
           mmWidth = 8731
           BandType = 3
           GroupNo = 1
@@ -1255,7 +1239,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Weight = 0.750000000000000000
           mmHeight = 1058
           mmLeft = 2117
-          mmTop = 7133
+          mmTop = 6083
           mmWidth = 194734
           BandType = 3
           GroupNo = 1
@@ -1267,15 +1251,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Weight = 0.750000000000000000
           mmHeight = 1058
           mmLeft = 1852
-          mmTop = 12170
+          mmTop = 10315
           mmWidth = 194998
           BandType = 3
           GroupNo = 1
           LayerName = BandLayer3
         end
-        object ppLabel10: TppLabel
+        object lbDataPagamentoRecebimento: TppLabel
           DesignLayer = ppDesignLayer3
-          UserName = 'LabelDescricao1'
+          UserName = 'lbDataPagamentoRecebimento'
           Caption = 'Data Pgto/Receb'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -1286,15 +1270,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           mmHeight = 2646
           mmLeft = 71968
-          mmTop = 8467
+          mmTop = 6612
           mmWidth = 16404
           BandType = 3
           GroupNo = 1
           LayerName = BandLayer3
         end
-        object ppLabel11: TppLabel
+        object lbFormaPagamento: TppLabel
           DesignLayer = ppDesignLayer3
-          UserName = 'Label11'
+          UserName = 'lbFormaPagamento'
           Caption = 'Forma de Pagamento'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -1306,10 +1290,30 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           mmHeight = 2645
           mmLeft = 91812
-          mmTop = 8468
+          mmTop = 6613
           mmWidth = 20902
           BandType = 3
           GroupNo = 1
+          LayerName = BandLayer3
+        end
+        object ppDBText27: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBText2'
+          DataField = 'DESCRICAO_TIPO'
+          DataPipeline = DBPipeMovimentacao
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeMovimentacao'
+          mmHeight = 4763
+          mmLeft = 4763
+          mmTop = 793
+          mmWidth = 191559
+          BandType = 3
+          GroupNo = 2
           LayerName = BandLayer3
         end
       end
@@ -1403,7 +1407,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         202756616C6F7220526563656269646F273B0D0A0D0A656E643B0D0A0D436F6D
         706F6E656E744E616D6506164C6162656C56616C6F725061676F526563656269
         646F094576656E744E616D6506094F6E47657454657874074576656E74494402
-        35084361726574506F730102150207000000}
+        35084361726574506F730102200204000000}
     end
     object ppDesignLayers3: TppDesignLayers
       object ppDesignLayer3: TppDesignLayer
