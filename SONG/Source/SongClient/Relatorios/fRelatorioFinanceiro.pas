@@ -269,6 +269,7 @@ type
     EditOrigemRecurso: TppGroupFooterBand;
     EditOrigemRecurso1: TppDBText;
     ppDBText27: TppDBText;
+    cdsMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -280,6 +281,7 @@ type
       Sender: TObject);
     procedure chkTodosTransferenciaPropertiesEditValueChanged(Sender: TObject);
     procedure tabTransferenciaRecursoShow(Sender: TObject);
+    procedure cgbProjetoSaldoPropertiesEditValueChanged(Sender: TObject);
   private
     procedure ppvGerarRelatorioGastoAreaAtuacao;
     procedure ppvGerarRelatorioTransferenciaRecurso;
@@ -318,7 +320,7 @@ begin
           chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
 
       cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' +
-        cdsMovimentacaoORIGEM_RECURSO.FieldName+';'+ cdsMovimentacaoTIPO.FieldName + ';' +
+        cdsMovimentacaoID_UNICO_ORIGEM_RECURSO.FieldName+';'+ cdsMovimentacaoTIPO.FieldName + ';' +
         cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO.FieldName;
 
       ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
@@ -412,6 +414,26 @@ begin
   inherited;
   if not dmLookup.cdslkPessoa.Active then
     dmLookup.ppuCarregarPessoas(0,[trpFuncionario,trpMembroDiretoria]);
+end;
+
+procedure TfrmRelatorioFinanceiro.cgbProjetoSaldoPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  i:Integer;
+begin
+  inherited;
+  if Sender is TdxCheckGroupBox then
+    begin
+      if TdxCheckGroupBox(Sender).CheckBox.Checked then
+        begin
+          for I := 0 to TdxCheckGroupBox(Sender).ControlCount-1 do
+            begin
+              //vamos desmacar o checkTdos pq o combo acabou de ser habilitado pelo TdxCheckGroupBox
+              if TdxCheckGroupBox(Sender).Controls[i] is TcxCheckBox then
+                TcxCheckBox(TdxCheckGroupBox(Sender).Controls[i]).Checked := false;
+            end;
+        end;
+    end;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkSaldoTodosFundoPropertiesEditValueChanged(

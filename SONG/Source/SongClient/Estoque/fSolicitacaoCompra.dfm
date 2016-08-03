@@ -1,11 +1,17 @@
 inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
   ActiveControl = nil
   Caption = 'Solicita'#231#227'o de Compras'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 462
@@ -118,12 +124,15 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Width = 461
           ExplicitWidth = 461
           inherited btnUtilizar: TButton
-            Left = 353
-            ExplicitLeft = 353
+            Left = 455
+            ExplicitLeft = 455
+          end
+          inherited btnExportarExcel: TButton
+            TabOrder = 5
           end
           object btnAprovar: TButton
             AlignWithMargins = True
-            Left = 86
+            Left = 188
             Top = 1
             Width = 83
             Height = 40
@@ -139,7 +148,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           end
           object btnNegar: TButton
             AlignWithMargins = True
-            Left = 171
+            Left = 273
             Top = 1
             Width = 78
             Height = 40
@@ -155,7 +164,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           end
           object btnGerarCompras: TButton
             AlignWithMargins = True
-            Left = 251
+            Left = 353
             Top = 1
             Width = 100
             Height = 40
@@ -223,6 +232,16 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -350,13 +369,13 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         object lbl1: TLabel
           Left = 7
           Top = 8
-          Width = 22
+          Width = 45
           Height = 13
-          Caption = 'Item'
+          Caption = 'Item (F2)'
           FocusControl = cbItem
         end
         object lbl2: TLabel
-          Left = 222
+          Left = 241
           Top = 8
           Width = 36
           Height = 13
@@ -364,7 +383,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           FocusControl = cbEspecie
         end
         object Label7: TLabel
-          Left = 434
+          Left = 453
           Top = 8
           Width = 56
           Height = 13
@@ -372,7 +391,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           FocusControl = EditQtde
         end
         object lbUnidade: TLabel
-          Left = 555
+          Left = 574
           Top = 31
           Width = 19
           Height = 13
@@ -387,10 +406,11 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Properties.ListColumns = <>
           Properties.OnEditValueChanged = cbItemPropertiesEditValueChanged
           TabOrder = 0
+          OnKeyDown = cbItemKeyDown
           Width = 209
         end
         object cbEspecie: TcxDBLookupComboBox
-          Left = 219
+          Left = 238
           Top = 24
           RepositoryItem = dmLookup.repLcbEspecie
           DataBinding.DataField = 'ID_ESPECIE'
@@ -401,13 +421,23 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Width = 209
         end
         object EditQtde: TcxDBCalcEdit
-          Left = 432
+          Left = 451
           Top = 24
           RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE'
           DataBinding.DataSource = dsDetail
           TabOrder = 2
           Width = 121
+        end
+        object btnAdicionarItem: TButton
+          Left = 213
+          Top = 24
+          Width = 22
+          Height = 21
+          Action = Ac_Incluir_Item
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 3
+          TabStop = False
         end
       end
     end
@@ -433,6 +463,11 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       ImageIndex = 12
       OnExecute = Ac_Gerar_ComprasExecute
       OnUpdate = Ac_Gerar_ComprasUpdate
+    end
+    object Ac_Incluir_Item: TAction
+      Category = 'Detail'
+      ImageIndex = 3
+      OnExecute = Ac_Incluir_ItemExecute
     end
   end
   inherited dsMaster: TDataSource

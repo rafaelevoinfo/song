@@ -13,6 +13,7 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
       '       View_Movimentacao_Financeira.Nome_Organizacao,'
       '       View_Movimentacao_Financeira.Tipo_Origem_Recurso,'
       '       View_Movimentacao_Financeira.Id_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Id_Unico_Origem_Recurso,'
       '       View_Movimentacao_Financeira.Origem_Recurso,'
       '       View_Movimentacao_Financeira.Tipo_origem,'
       '       View_Movimentacao_Financeira.Tipo,'
@@ -149,6 +150,11 @@ inherited smFuncoesRelatorio: TsmFuncoesRelatorio
     object qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO: TSmallintField
       FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
       Origin = 'FORMA_PAGAMENTO_RECEBIMENTO'
+    end
+    object qMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      Origin = 'ID_UNICO_ORIGEM_RECURSO'
+      Size = 19
     end
   end
   object cdsSaldo: TClientDataSet

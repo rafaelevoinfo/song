@@ -16,7 +16,8 @@ uses
   System.DateUtils, uClientDataSet, uControleAcesso, System.TypInfo, cxMemo,
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCurrencyEdit,
   uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda, fConta_Pagar,
-  dmuPrincipal, System.RegularExpressions, fLote_Semente, Vcl.ExtDlgs;
+  dmuPrincipal, System.RegularExpressions, fLote_Semente, Vcl.ExtDlgs, fItem,
+  fFornecedor;
 
 type
   TCompra = class(TModelo)
@@ -82,6 +83,10 @@ type
     Label6: TLabel;
     btnGerarContaPagar: TButton;
     Ac_Gerar_Conta_Pagar: TAction;
+    btnAdicionarItem: TButton;
+    Ac_Adicionar_Item: TAction;
+    btnAdicionarFornecedor: TButton;
+    Ac_Adicionar_Fornecedor: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Produto_EntregueUpdate(Sender: TObject);
     procedure Ac_Produto_EntregueExecute(Sender: TObject);
@@ -90,6 +95,11 @@ type
       AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Gerar_Conta_PagarExecute(Sender: TObject);
+    procedure Ac_Adicionar_ItemExecute(Sender: TObject);
+    procedure Ac_Adicionar_FornecedorExecute(Sender: TObject);
+    procedure cbItemKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure cbFornecedorKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -101,6 +111,10 @@ type
     procedure ppvExcluirLotesMuda(ipIds: TArray<Integer>);
     procedure ppvExcluirLotesSemente(ipIds: TArray<Integer>);
     procedure ppvExcluirItensEntrada(ipIds: TArray<Integer>);
+    procedure ppvAdicionarItem;
+    procedure ppvCarregarItens;
+    procedure ppvAdicionarFornecedor;
+    procedure ppvCarregarFornecedores;
 
   protected
     function fprGetPermissao: string; override;
@@ -133,6 +147,18 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmCompra.Ac_Adicionar_FornecedorExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarFornecedor;
+end;
+
+procedure TfrmCompra.Ac_Adicionar_ItemExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarItem;
+end;
 
 procedure TfrmCompra.Ac_Gerar_Conta_PagarExecute(Sender: TObject);
 begin
@@ -211,6 +237,76 @@ begin
   TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsCompraSTATUS_ENTREGA.AsInteger <> Ord(sepEntregue));
 end;
 
+procedure TfrmCompra.cbFornecedorKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarFornecedor;
+end;
+
+procedure TfrmCompra.cbItemKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarItem;
+end;
+
+procedure TfrmCompra.ppvCarregarItens();
+begin
+  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+end;
+
+procedure TfrmCompra.ppvCarregarFornecedores;
+begin
+  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+end;
+
+procedure TfrmCompra.ppvAdicionarFornecedor;
+var
+  vaFrmFornecedor: TfrmFornecedor;
+begin
+  vaFrmFornecedor := TfrmFornecedor.Create(nil);
+  try
+    vaFrmFornecedor.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmFornecedor.ShowModal;
+    if vaFrmFornecedor.IdEscolhido <> 0 then
+      begin
+        ppvCarregarFornecedores;
+        if dmLookup.cdslkFornecedor.Locate(TBancoDados.coId, vaFrmFornecedor.IdEscolhido, []) then
+          begin
+            cbFornecedor.EditValue := vaFrmFornecedor.IdEscolhido;
+            cbFornecedor.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmFornecedor.Free;
+  end;
+end;
+
+procedure TfrmCompra.ppvAdicionarItem;
+var
+  vaFrmItem: TfrmItem;
+begin
+  vaFrmItem := TfrmItem.Create(nil);
+  try
+    vaFrmItem.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmItem.ShowModal;
+    if vaFrmItem.IdEscolhido <> 0 then
+      begin
+        ppvCarregarItens;
+        if dmLookup.cdslkItem.Locate(TBancoDados.coId, vaFrmItem.IdEscolhido, []) then
+          begin
+            cbItem.EditValue := vaFrmItem.IdEscolhido;
+            cbItem.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmItem.Free;
+  end;
+end;
+
 procedure TfrmCompra.cbItemPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
@@ -234,9 +330,9 @@ begin
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
-  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+  ppvCarregarItens;
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
-  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+  ppvCarregarFornecedores;
 
 end;
 

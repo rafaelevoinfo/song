@@ -39,6 +39,7 @@ type
     qMovimentacaoDATA: TDateField;
     qMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField;
     qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO: TSmallintField;
+    qMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField;
   private
     procedure ppvCalcularSaldoGeral(ipCds: TClientDataSet);
     { Private declarations }

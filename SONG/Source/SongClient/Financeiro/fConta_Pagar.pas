@@ -17,7 +17,7 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
   System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
-  cxCheckBox, Vcl.ExtDlgs;
+  cxCheckBox, Vcl.ExtDlgs, fFornecedor;
 
 type
   TContaPagar = class(TModelo)
@@ -222,6 +222,8 @@ type
     cbFundoAlocado: TcxLookupComboBox;
     lb3: TLabel;
     viewVinculosNOME_FUNDO_ALOCADO: TcxGridDBColumn;
+    btnAdicionarFornecedor: TButton;
+    Ac_Adicionar_Fornecedor: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -241,6 +243,9 @@ type
     procedure chkSemVinculoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_AutorizarExecute(Sender: TObject);
     procedure Ac_Excluir_AutorizacaoExecute(Sender: TObject);
+    procedure Ac_Adicionar_FornecedorExecute(Sender: TObject);
+    procedure cbFornecedorKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -253,6 +258,8 @@ type
     procedure ppvReabrirParcela;
     procedure ppvConfigurarControles;
     function fpvContaSemPagamentos: Boolean;
+    procedure ppvAdicionarFornecedor;
+    procedure ppvCarregarFornecedores;
     // procedure ppvValidarSaldos;
   protected
     function fprGetPermissao: string; override;
@@ -415,7 +422,7 @@ begin
   else if cbPesquisarPor.EditValue = coPesquisaFundo then
     ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue);
 
-  if rgStatus.EditValue <> 2 then//ambos
+  if rgStatus.EditValue <> 2 then // ambos
     ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.EditValue);
 
 end;
@@ -539,7 +546,7 @@ procedure TfrmContaPagar.ppvAddVinculo();
     else
       begin
         if VarIsNull(cbFundoAlocado.EditValue) then
-          raise TControlException.Create('Informe a conta para qual foi alocado o recurso.',cbFundoAlocado);
+          raise TControlException.Create('Informe a conta para qual foi alocado o recurso.', cbFundoAlocado);
 
         dmFinanceiro.cdsConta_Pagar_VinculoID_FUNDO_ALOCADO.AsInteger := cbFundoAlocado.EditValue;
         dmFinanceiro.cdsConta_Pagar_VinculoNOME_FUNDO_ALOCADO.AsString := cbFundoAlocado.Text;
@@ -615,8 +622,8 @@ begin
             raise Exception.Create('Conta não encontrada.');
           end;
 
-//        if not chkSemVinculo.Checked then
-//          plValidarInformacoesAlocado;
+        // if not chkSemVinculo.Checked then
+        // plValidarInformacoesAlocado;
       end;
 
     dmFinanceiro.cdsConta_Pagar_VinculoID_ORGANIZACAO_ORIGEM.AsInteger := vaIdOrganizacao;
@@ -647,6 +654,39 @@ begin
     dmFinanceiro.cdsConta_Pagar_Parcela.RecNo := vaRecNo;
     dmFinanceiro.cdsConta_Pagar_Parcela.EnableControls;
   end;
+end;
+
+procedure TfrmContaPagar.Ac_Adicionar_FornecedorExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarFornecedor;
+end;
+
+procedure TfrmContaPagar.ppvAdicionarFornecedor;
+var
+  vaFrmFornecedor: TfrmFornecedor;
+begin
+  vaFrmFornecedor := TfrmFornecedor.Create(nil);
+  try
+    vaFrmFornecedor.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmFornecedor.ShowModal;
+    if vaFrmFornecedor.IdEscolhido <> 0 then
+      begin
+        ppvCarregarFornecedores;
+        if dmLookup.cdslkFornecedor.Locate(TBancoDados.coId, vaFrmFornecedor.IdEscolhido, []) then
+          begin
+            cbFornecedor.EditValue := vaFrmFornecedor.IdEscolhido;
+            cbFornecedor.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmFornecedor.Free;
+  end;
+end;
+
+procedure TfrmContaPagar.ppvCarregarFornecedores;
+begin
+  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 end;
 
 procedure TfrmContaPagar.Ac_AutorizarExecute(Sender: TObject);
@@ -941,6 +981,14 @@ begin
     end;
 end;
 
+procedure TfrmContaPagar.cbFornecedorKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarFornecedor;
+end;
+
 procedure TfrmContaPagar.cbProjetoAlocadoPropertiesEditValueChanged(
   Sender: TObject);
 begin
@@ -1024,9 +1072,9 @@ end;
 
 procedure TfrmContaPagar.ppvConfigurarControles;
 begin
-// Lembre-se: Foi solicitado que o recurso alocado fosse desabilitado.
-//  rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
-//  rgAlocadoPara.Visible := rgRecursoAlocado.Visible;
+  // Lembre-se: Foi solicitado que o recurso alocado fosse desabilitado.
+  // rgRecursoAlocado.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
+  // rgAlocadoPara.Visible := rgRecursoAlocado.Visible;
 
   if rgTipoOrigemRecurso.EditValue = coOrigemProjeto then
     pcOrigemRecurso.ActivePage := tabProjeto
@@ -1034,9 +1082,9 @@ begin
     pcOrigemRecurso.ActivePage := tabFundo;
 
   gbOrigem.Visible := rgTipoOrigemRecurso.EditValue = coOrigemProjeto;
-  gbAlocado.Visible := false;
-//  gbAlocado.Visible := ((rgTipoOrigemRecurso.EditValue = coOrigemFundo) and (not chkSemVinculo.Checked)) or
-//    ((rgTipoOrigemRecurso.EditValue = coOrigemProjeto) and (rgRecursoAlocado.EditValue = coSim));
+  gbAlocado.Visible := False;
+  // gbAlocado.Visible := ((rgTipoOrigemRecurso.EditValue = coOrigemFundo) and (not chkSemVinculo.Checked)) or
+  // ((rgTipoOrigemRecurso.EditValue = coOrigemProjeto) and (rgRecursoAlocado.EditValue = coSim));
 
   if rgRecursoAlocado.EditValue = coSim then
     pcRecursoAlocado.ActivePage := tabRecursoAlocado
@@ -1064,7 +1112,7 @@ begin
 
   FIdsParcelasCancelar := TList<Integer>.Create;;
 
-  rgStatus.EditValue := 2;//ambos
+  rgStatus.EditValue := 2; // ambos
   rgStatus.PostEditValue;
 
   pcRecursoAlocado.Properties.HideTabs := True;
@@ -1087,7 +1135,7 @@ begin
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
-  dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+  ppvCarregarFornecedores;
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);;

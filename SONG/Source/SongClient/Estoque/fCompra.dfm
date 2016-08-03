@@ -1,9 +1,12 @@
 inherited frmCompra: TfrmCompra
+  ActiveControl = cbFornecedor
   Caption = 'Compras'
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -216,6 +219,12 @@ inherited frmCompra: TfrmCompra
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -259,9 +268,13 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
-          Left = 176
+          Left = 200
           Top = 8
           Width = 53
           Height = 13
@@ -269,7 +282,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = cbComprador
         end
         object lbl2: TLabel
-          Left = 389
+          Left = 413
           Top = 8
           Width = 78
           Height = 13
@@ -277,7 +290,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditDataCompra
         end
         object lbl3: TLabel
-          Left = 640
+          Left = 664
           Top = 8
           Width = 87
           Height = 13
@@ -295,13 +308,13 @@ inherited frmCompra: TfrmCompra
         object lbl5: TLabel
           Left = 9
           Top = 8
-          Width = 55
+          Width = 78
           Height = 13
-          Caption = 'Fornecedor'
+          Caption = 'Fornecedor (F2)'
           FocusControl = cbFornecedor
         end
         object Label3: TLabel
-          Left = 512
+          Left = 536
           Top = 8
           Width = 68
           Height = 13
@@ -309,7 +322,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditValorFrete
         end
         object Label6: TLabel
-          Left = 789
+          Left = 813
           Top = 8
           Width = 91
           Height = 13
@@ -317,7 +330,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditCodigoRastreio
         end
         object cbComprador: TcxDBLookupComboBox
-          Left = 175
+          Left = 199
           Top = 24
           RepositoryItem = dmLookup.repLcbPessoa
           DataBinding.DataField = 'ID_PESSOA_COMPROU'
@@ -327,7 +340,7 @@ inherited frmCompra: TfrmCompra
           Width = 209
         end
         object EditDataCompra: TcxDBDateEdit
-          Left = 387
+          Left = 411
           Top = 24
           RepositoryItem = dmLookup.repDateDataPadrao
           DataBinding.DataField = 'DATA'
@@ -336,7 +349,7 @@ inherited frmCompra: TfrmCompra
           Width = 121
         end
         object cbStatusEntrega: TcxDBImageComboBox
-          Left = 638
+          Left = 662
           Top = 24
           RepositoryItem = dmLookup.repIcbStatusEntrega
           DataBinding.DataField = 'STATUS_ENTREGA'
@@ -362,10 +375,11 @@ inherited frmCompra: TfrmCompra
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 0
+          OnKeyDown = cbFornecedorKeyDown
           Width = 165
         end
         object EditValorFrete: TcxDBCurrencyEdit
-          Left = 511
+          Left = 535
           Top = 24
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_FRETE'
@@ -374,12 +388,22 @@ inherited frmCompra: TfrmCompra
           Width = 121
         end
         object EditCodigoRastreio: TcxDBTextEdit
-          Left = 789
+          Left = 813
           Top = 24
           DataBinding.DataField = 'CODIGO_RASTREIO'
           DataBinding.DataSource = dsMaster
           TabOrder = 5
-          Width = 180
+          Width = 156
+        end
+        object btnAdicionarFornecedor: TButton
+          Left = 172
+          Top = 24
+          Width = 22
+          Height = 21
+          Action = Ac_Adicionar_Fornecedor
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 7
+          TabStop = False
         end
       end
     end
@@ -392,13 +416,13 @@ inherited frmCompra: TfrmCompra
         object Label4: TLabel
           Left = 7
           Top = 8
-          Width = 22
+          Width = 45
           Height = 13
-          Caption = 'Item'
+          Caption = 'Item (F2)'
           FocusControl = cbItem
         end
         object Label5: TLabel
-          Left = 222
+          Left = 246
           Top = 8
           Width = 36
           Height = 13
@@ -406,7 +430,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = cbEspecie
         end
         object Label7: TLabel
-          Left = 555
+          Left = 579
           Top = 8
           Width = 56
           Height = 13
@@ -414,14 +438,14 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditQtde
         end
         object lbUnidade: TLabel
-          Left = 676
+          Left = 700
           Top = 31
           Width = 19
           Height = 13
           Caption = 'Und'
         end
         object lbl6: TLabel
-          Left = 431
+          Left = 455
           Top = 8
           Width = 64
           Height = 13
@@ -437,10 +461,11 @@ inherited frmCompra: TfrmCompra
           Properties.ListColumns = <>
           Properties.OnEditValueChanged = cbItemPropertiesEditValueChanged
           TabOrder = 0
+          OnKeyDown = cbItemKeyDown
           Width = 212
         end
         object cbEspecie: TcxDBLookupComboBox
-          Left = 219
+          Left = 243
           Top = 24
           RepositoryItem = dmLookup.repLcbEspecie
           DataBinding.DataField = 'ID_ESPECIE'
@@ -451,7 +476,7 @@ inherited frmCompra: TfrmCompra
           Width = 209
         end
         object EditQtde: TcxDBCalcEdit
-          Left = 553
+          Left = 577
           Top = 24
           RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE'
@@ -460,13 +485,23 @@ inherited frmCompra: TfrmCompra
           Width = 121
         end
         object EditValorUnitario: TcxDBCurrencyEdit
-          Left = 430
+          Left = 454
           Top = 24
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_UNITARIO'
           DataBinding.DataSource = dsDetail
           TabOrder = 2
           Width = 121
+        end
+        object btnAdicionarItem: TButton
+          Left = 217
+          Top = 24
+          Width = 22
+          Height = 21
+          Action = Ac_Adicionar_Item
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 4
+          TabStop = False
         end
       end
     end
@@ -485,6 +520,16 @@ inherited frmCompra: TfrmCompra
       ImageIndex = 14
       OnExecute = Ac_Gerar_Conta_PagarExecute
       OnUpdate = Ac_AlterarUpdate
+    end
+    object Ac_Adicionar_Item: TAction
+      Category = 'Detail'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_ItemExecute
+    end
+    object Ac_Adicionar_Fornecedor: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_FornecedorExecute
     end
   end
   inherited dsMaster: TDataSource

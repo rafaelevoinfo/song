@@ -24,6 +24,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Left = 4
           Top = 3
           Caption = 'Projeto'
+          Properties.OnEditValueChanged = cgbProjetoSaldoPropertiesEditValueChanged
           TabOrder = 0
           Height = 51
           Width = 285
@@ -49,6 +50,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Left = 4
           Top = 59
           Caption = 'Fundo'
+          Properties.OnEditValueChanged = cgbProjetoSaldoPropertiesEditValueChanged
           TabOrder = 1
           Height = 52
           Width = 285
@@ -146,6 +148,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Left = 4
           Top = 3
           Caption = 'Projeto'
+          Properties.OnEditValueChanged = cgbProjetoSaldoPropertiesEditValueChanged
           TabOrder = 5
           Height = 51
           Width = 341
@@ -171,6 +174,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Left = 4
           Top = 60
           Caption = 'Fundo'
+          Properties.OnEditValueChanged = cgbProjetoSaldoPropertiesEditValueChanged
           TabOrder = 6
           Height = 52
           Width = 341
@@ -451,6 +455,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object cdsMovimentacaoTIPO_ORIGEM: TIntegerField
       FieldName = 'TIPO_ORIGEM'
+    end
+    object cdsMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      Size = 16
     end
   end
   object DBPipeMovimentacao: TppDBPipeline

@@ -16,7 +16,7 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uTypes, System.DateUtils,
   cxSplitter, dmuEstoque, cxMemo, cxDBEdit, cxCalc, uClientDataSet,
   uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils, fCompra,
-  dmuPrincipal;
+  dmuPrincipal, Vcl.ExtDlgs, fItem;
 
 type
   TfrmSolicitacaoCompra = class(TfrmBasicoCrudMasterDetail)
@@ -59,6 +59,8 @@ type
     lbUnidade: TLabel;
     cbPessoa: TcxLookupComboBox;
     cbItemPesquisa: TcxLookupComboBox;
+    btnAdicionarItem: TButton;
+    Ac_Incluir_Item: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_AprovarExecute(Sender: TObject);
     procedure Ac_NegarExecute(Sender: TObject);
@@ -70,12 +72,16 @@ type
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Gerar_ComprasExecute(Sender: TObject);
     procedure Ac_Gerar_ComprasUpdate(Sender: TObject);
+    procedure Ac_Incluir_ItemExecute(Sender: TObject);
+    procedure cbItemKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     dmLookup: TdmLookup;
     dmEstoque: TdmEstoque;
     procedure ppvGerarRegistroCompras;
     procedure ppvValidarAprovacaoNegacao;
     procedure ppvAprovarNegar(ipStatus: TStatusSolicitacaoCompra);
+    procedure ppvAdicionarItem;
+    procedure ppvCarregarItens;
   protected
     function fprGetPermissao: string; override;
     procedure pprBeforeSalvar; override;
@@ -90,7 +96,7 @@ type
 
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterarDetail; override;
-    procedure pprBeforeExcluirDetail(ipId:Integer);override;
+    procedure pprBeforeExcluirDetail(ipId: Integer); override;
 
   public
     procedure ppuIncluir; override;
@@ -136,6 +142,40 @@ begin
     (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada));
 end;
 
+procedure TfrmSolicitacaoCompra.Ac_Incluir_ItemExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarItem;
+end;
+
+procedure TfrmSolicitacaoCompra.ppvAdicionarItem;
+var
+  vaFrmItem: TfrmItem;
+begin
+  vaFrmItem := TfrmItem.Create(nil);
+  try
+    vaFrmItem.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmItem.ShowModal;
+    if vaFrmItem.IdEscolhido <> 0 then
+      begin
+        ppvCarregarItens;
+        if dmLookup.cdslkItem.Locate(TBancoDados.coId, vaFrmItem.IdEscolhido, []) then
+          begin
+            cbItem.EditValue := vaFrmItem.IdEscolhido;
+            cbItem.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmItem.Free;
+  end;
+
+end;
+
+procedure TfrmSolicitacaoCompra.ppvCarregarItens();
+begin
+  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+end;
+
 procedure TfrmSolicitacaoCompra.Ac_NegarExecute(Sender: TObject);
 begin
   inherited;
@@ -161,6 +201,14 @@ procedure TfrmSolicitacaoCompra.Ac_NegarUpdate(Sender: TObject);
 begin
   inherited;
   TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger <> Ord(sscNegada));
+end;
+
+procedure TfrmSolicitacaoCompra.cbItemKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarItem;
 end;
 
 procedure TfrmSolicitacaoCompra.cbItemPropertiesEditValueChanged(
@@ -263,7 +311,7 @@ begin
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
-  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+  ppvCarregarItens;
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 
 end;

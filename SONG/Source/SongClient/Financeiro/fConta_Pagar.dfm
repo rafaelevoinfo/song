@@ -11,11 +11,14 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
+    Properties.ActivePage = tabCadastro
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -292,7 +295,10 @@ inherited frmContaPagar: TfrmContaPagar
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
               ExplicitWidth = 975
+              ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -573,6 +579,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -592,7 +600,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabVinculo
+          Properties.ActivePage = tabInfoGeral
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -628,9 +636,9 @@ inherited frmContaPagar: TfrmContaPagar
             object Label4: TLabel
               Left = 213
               Top = 2
-              Width = 55
+              Width = 78
               Height = 13
-              Caption = 'Fornecedor'
+              Caption = 'Fornecedor (F2)'
               FocusControl = cbFornecedor
             end
             object Label17: TLabel
@@ -708,7 +716,8 @@ inherited frmContaPagar: TfrmContaPagar
               DataBinding.DataSource = dsMaster
               Properties.ListColumns = <>
               TabOrder = 1
-              Width = 220
+              OnKeyDown = cbFornecedorKeyDown
+              Width = 198
             end
             object cbContaCorrente: TcxDBLookupComboBox
               Left = 655
@@ -869,6 +878,16 @@ inherited frmContaPagar: TfrmContaPagar
               Properties.ListColumns = <>
               TabOrder = 4
               Width = 204
+            end
+            object btnAdicionarFornecedor: TButton
+              Left = 409
+              Top = 18
+              Width = 22
+              Height = 21
+              Action = Ac_Adicionar_Fornecedor
+              Images = dmPrincipal.imgIcons_16
+              TabOrder = 10
+              TabStop = False
             end
           end
           object tabVinculo: TcxTabSheet
@@ -1449,6 +1468,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel
@@ -1550,6 +1571,11 @@ inherited frmContaPagar: TfrmContaPagar
       ImageIndex = 2
       OnExecute = Ac_Excluir_AutorizacaoExecute
     end
+    object Ac_Adicionar_Fornecedor: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_FornecedorExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmFinanceiro.cdsConta_Pagar
@@ -1588,8 +1614,8 @@ inherited frmContaPagar: TfrmContaPagar
   object cdsLocalRubricas: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 432
-    Top = 64
+    Left = 424
+    Top = 40
     object cdsLocalRubricasID: TIntegerField
       FieldName = 'ID'
     end
