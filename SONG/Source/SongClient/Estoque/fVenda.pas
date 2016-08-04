@@ -16,7 +16,7 @@ uses
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc,
   cxCurrencyEdit, uTypes, System.DateUtils, uClientDataSet, uControleAcesso,
   System.TypInfo, uExceptions, dmuPrincipal, uMensagem, fSaida,
-  System.RegularExpressions, fConta_Receber;
+  System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa;
 
 type
   TfrmVenda = class(TfrmBasicoCrudMasterDetail)
@@ -74,11 +74,16 @@ type
     viewRegistrosDetailLOTE_MUDA: TcxGridDBColumn;
     viewRegistrosDetailUNIDADE: TcxGridDBColumn;
     viewRegistrosDetailCALC_QTDE: TcxGridDBColumn;
+    btnAdicionarCliente: TButton;
+    Ac_Adicionar_Cliente: TAction;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
     procedure Ac_Gerar_Conta_ReceberExecute(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Adicionar_ClienteExecute(Sender: TObject);
+    procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -88,6 +93,8 @@ type
     procedure ppvGerarContaReceber;
     procedure ppvGerarSaida;
     procedure ppvCarregarPrecoPadrao;
+    procedure ppvAdicionarCliente;
+    procedure ppvCarregarClientes;
 
   protected
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -115,6 +122,9 @@ var
   frmVenda: TfrmVenda;
 
 implementation
+
+uses
+  fCliente;
 
 {$R *.dfm}
 
@@ -265,6 +275,34 @@ begin
     Result := cbPesquisaCliente;
 end;
 
+procedure TfrmVenda.Ac_Adicionar_ClienteExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarCliente;
+end;
+
+procedure TfrmVenda.ppvAdicionarCliente;
+var
+  vaFrmCliente: TfrmCliente;
+begin
+  vaFrmCliente := TfrmCliente.Create(nil);
+  try
+    vaFrmCliente.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmCliente.ShowModal;
+    if vaFrmCliente.IdEscolhido <> 0 then
+      begin
+        ppvCarregarClientes;
+        if dmLookup.cdslkFin_For_Cli.Locate(TBancoDados.coId, vaFrmCliente.IdEscolhido, []) then
+          begin
+            cbCliente.EditValue := vaFrmCliente.IdEscolhido;
+            cbCliente.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmCliente.Free;
+  end;
+end;
+
 procedure TfrmVenda.Ac_Gerar_Conta_ReceberExecute(Sender: TObject);
 begin
   inherited;
@@ -372,6 +410,14 @@ begin
   else
     raise Exception.Create('Já existe itens de saídas vinculados a esta venda.');
 
+end;
+
+procedure TfrmVenda.cbClienteKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if key = VK_F2 then
+    ppvAdicionarCliente;
 end;
 
 procedure TfrmVenda.cbEspeciePropertiesEditValueChanged(Sender: TObject);
@@ -490,8 +536,13 @@ begin
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
   dmLookup.cdslkItem.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
-  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
 
+  ppvCarregarClientes;
+end;
+
+procedure TfrmVenda.ppvCarregarClientes;
+begin
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
 end;
 
 end.

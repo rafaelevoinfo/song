@@ -79,6 +79,14 @@ type
     cdsTrasnferencia_FinanceiraDESTINO: TStringField;
     cdsTrasnferencia_FinanceiraCALC_TIPO: TStringField;
     cdsTrasnferencia_FinanceiraRESPONSAVEL: TStringField;
+    cdsGasto_Fornecedor: TRFClientDataSet;
+    cdsGasto_FornecedorVALOR_PAGO: TBCDField;
+    cdsGasto_FornecedorID_FORNECEDOR: TIntegerField;
+    cdsGasto_FornecedorNOME_FANTASIA: TStringField;
+    cdsGasto_FornecedorRAZAO_SOCIAL: TStringField;
+    cdsGasto_FornecedorCPF_CNPJ: TStringField;
+    cdsGasto_FornecedorVALOR_TOTAL: TBCDField;
+    cdsGasto_FornecedorDATA_PAGAMENTO: TDateField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
   private

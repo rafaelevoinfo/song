@@ -16,7 +16,9 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uTypes, System.DateUtils,
   cxSplitter, dmuEstoque, cxMemo, cxDBEdit, cxCalc, uClientDataSet,
   uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils, fCompra,
-  dmuPrincipal, Vcl.ExtDlgs, fItem;
+  dmuPrincipal, Vcl.ExtDlgs, fItem, ppDB, ppDBPipe, ppParameter, ppDesignLayer,
+  ppModule, raCodMod, ppCtrls, ppBands, ppVar, ppPrnabl, ppClass, ppCache,
+  ppComm, ppRelatv, ppProd, ppReport, ppStrtch, ppMemo;
 
 type
   TfrmSolicitacaoCompra = class(TfrmBasicoCrudMasterDetail)
@@ -61,19 +63,50 @@ type
     cbItemPesquisa: TcxLookupComboBox;
     btnAdicionarItem: TButton;
     Ac_Incluir_Item: TAction;
+    ColumnImprimir: TcxGridDBColumn;
+    Ac_Imprimir_Autorizacao: TAction;
+    ppAutorizacao: TppReport;
+    ppHeaderBand2: TppHeaderBand;
+    ppLabel12: TppLabel;
+    ppDBImage2: TppDBImage;
+    ppSystemVariable4: TppSystemVariable;
+    ppSystemVariable5: TppSystemVariable;
+    ppLabel15: TppLabel;
+    ppLabel18: TppLabel;
+    ppDetailBand2: TppDetailBand;
+    ppDBText14: TppDBText;
+    ppDBText17: TppDBText;
+    ppFooterBand2: TppFooterBand;
+    ppLabel13: TppLabel;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppSystemVariable6: TppSystemVariable;
+    ppSummaryBand1: TppSummaryBand;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppParameterList2: TppParameterList;
+    DBPipeSolicitacao: TppDBPipeline;
+    DBPipeItensSolicitacao: TppDBPipeline;
+    ppDBText1: TppDBText;
+    ppLine1: TppLine;
+    raCodeModule1: TraCodeModule;
+    DBPipeOrganizacao: TppDBPipeline;
+    ppDBMemo1: TppDBMemo;
+    ppLabel1: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_AprovarExecute(Sender: TObject);
     procedure Ac_NegarExecute(Sender: TObject);
     procedure Ac_AprovarUpdate(Sender: TObject);
     procedure Ac_NegarUpdate(Sender: TObject);
-    procedure viewRegistrosCustomDrawCell(Sender: TcxCustomGridTableView;
-      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
-      var ADone: Boolean);
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Gerar_ComprasExecute(Sender: TObject);
     procedure Ac_Gerar_ComprasUpdate(Sender: TObject);
     procedure Ac_Incluir_ItemExecute(Sender: TObject);
     procedure cbItemKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Ac_Imprimir_AutorizacaoExecute(Sender: TObject);
+    procedure viewRegistrosSTATUSCustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
   private
     dmLookup: TdmLookup;
     dmEstoque: TdmEstoque;
@@ -140,6 +173,27 @@ begin
   inherited;
   TAction(Sender).Enabled := dmEstoque.cdsSolicitacao_Compra.Active and (dmEstoque.cdsSolicitacao_Compra.RecordCount > 0) and
     (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada));
+end;
+
+procedure TfrmSolicitacaoCompra.Ac_Imprimir_AutorizacaoExecute(Sender: TObject);
+begin
+  inherited;
+  if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger <> Ord(sscAprovada) then
+    raise Exception.Create('So é possivel imprimir a autorização de compra para solicitações aprovadas.');
+
+  // TODO: se houver mais de uma organizacao fazer aparecer uma tela para o ususario escolher a desejada
+  if not dmLookup.cdslkOrganizacao.Active then
+    dmLookup.cdslkOrganizacao.Open;
+
+  //Precisa desabilitar os controles pq senao da um erro de parameter incorrect ao desenhar o cxGrid
+  dmEstoque.cdsSolicitacao_Compra.DisableControls;
+  dmEstoque.cdsSolicitacao_Compra_Item.DisableControls;
+  try
+    ppAutorizacao.PrintReport;
+  finally
+    dmEstoque.cdsSolicitacao_Compra_Item.EnableControls;
+    dmEstoque.cdsSolicitacao_Compra.EnableControls;
+  end;
 end;
 
 procedure TfrmSolicitacaoCompra.Ac_Incluir_ItemExecute(Sender: TObject);
@@ -273,29 +327,6 @@ begin
     end;
 end;
 
-procedure TfrmSolicitacaoCompra.viewRegistrosCustomDrawCell(
-  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
-  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
-begin
-  inherited;
-  if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscAprovada) then
-    begin
-      ACanvas.Font.Color := clWhite;
-      if AViewInfo.GridRecord.Selected then
-        ACanvas.Brush.Color := $00274F00
-      else
-        ACanvas.Brush.Color := clGreen;
-    end
-  else if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscNegada) then
-    begin
-      ACanvas.Font.Color := clWhite;
-      if AViewInfo.GridRecord.Selected then
-        ACanvas.Brush.Color := clMaroon
-      else
-        ACanvas.Brush.Color := clRed;
-    end;
-end;
-
 procedure TfrmSolicitacaoCompra.FormCreate(Sender: TObject);
 begin
   dmLookup := TdmLookup.Create(Self);
@@ -414,7 +445,30 @@ begin
     raise Exception.Create('Não é possível aprovar ou negar uma solicitação que não contenha nenhum item.');
 end;
 
-procedure TfrmSolicitacaoCompra.pprValidarDados;
+procedure TfrmSolicitacaoCompra.viewRegistrosSTATUSCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+  inherited;
+     if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscAprovada) then
+       begin
+         ACanvas.Font.Color := clWhite;
+         if AViewInfo.GridRecord.Selected then
+           ACanvas.Brush.Color := $00274F00
+         else
+           ACanvas.Brush.Color := clGreen;
+       end
+     else if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscNegada) then
+       begin
+         ACanvas.Font.Color := clWhite;
+         if AViewInfo.GridRecord.Selected then
+           ACanvas.Brush.Color := clMaroon
+         else
+           ACanvas.Brush.Color := clRed;
+       end;
+   end;
+
+   procedure TfrmSolicitacaoCompra.pprValidarDados;
 begin
   inherited;
   if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger in [Ord(sscAprovada), Ord(sscNegada)] then

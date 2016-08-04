@@ -76,6 +76,14 @@ type
     qTransferencia_FinanceiraORIGEM: TStringField;
     qTransferencia_FinanceiraDESTINO: TStringField;
     qTransferencia_FinanceiraRESPONSAVEL: TStringField;
+    qGasto_Fornecedor: TRFQuery;
+    qGasto_FornecedorVALOR_PAGO: TBCDField;
+    qGasto_FornecedorID_FORNECEDOR: TIntegerField;
+    qGasto_FornecedorNOME_FANTASIA: TStringField;
+    qGasto_FornecedorRAZAO_SOCIAL: TStringField;
+    qGasto_FornecedorCPF_CNPJ: TStringField;
+    qGasto_FornecedorVALOR_TOTAL: TBCDField;
+    qGasto_FornecedorDATA_PAGAMENTO: TDateField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -116,6 +124,13 @@ begin
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coPessoa then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PESSOA', vaValor.ToInteger, vaOperador)
+    end
+  else if (ipTabela = 'GASTO_FORNECEDOR') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, 'CONTA_PAGAR_PARCELA', 'DATA_PAGAMENTO', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
+      else if ipParam.Name = TParametros.coFornecedor then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR', 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador);
     end;
 end;
 

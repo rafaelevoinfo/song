@@ -16,7 +16,7 @@ uses
   dmuViveiro, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
   uTypes, uClientDataSet, System.DateUtils, cxCalc, cxDBEdit, cxSpinEdit,
   cxMemo, fPessoa, dmuPrincipal, uUtils, uExceptions, fBasicoCrud,
-  fBasicoCrudMasterDetail, fCanteiro;
+  fBasicoCrudMasterDetail, fCanteiro, Vcl.ExtDlgs;
 
 type
   TLoteMuda = class(TLote)
@@ -68,7 +68,6 @@ type
     viewRegistrosTAXA_CLASSIFICACAO: TcxGridDBColumn;
     Label4: TLabel;
     EditQtdeInicial: TcxDBSpinEdit;
-    cxGroupBox1: TcxGroupBox;
     viewRegistrosID_COMPRA_ITEM: TcxGridDBColumn;
     viewRegistrosID_LOTE_SEMENTE: TcxGridDBColumn;
     viewRegistrosSALDO: TcxGridDBColumn;

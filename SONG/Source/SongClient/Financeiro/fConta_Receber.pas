@@ -16,7 +16,8 @@ uses
   System.TypInfo, uTypes, dmuLookup, cxMemo, cxDBEdit, dmuPrincipal,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
-  System.Math, System.DateUtils, uMensagem, System.Generics.Collections;
+  System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
+  Vcl.ExtDlgs, fCliente;
 
 type
   TContaReceber = class(TModelo)
@@ -115,6 +116,8 @@ type
     viewPesquisaVinculoVALOR: TcxGridDBColumn;
     viewPesquisaVinculoFUNDO: TcxGridDBColumn;
     cbPesquisaFundo: TcxLookupComboBox;
+    btnAdicionarCliente: TButton;
+    Ac_Adicionar_Cliente: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -125,6 +128,9 @@ type
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
     procedure FormDestroy(Sender: TObject);
+    procedure Ac_Adicionar_ClienteExecute(Sender: TObject);
+    procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
 
     dmFinanceiro: TdmFinanceiro;
@@ -136,6 +142,8 @@ type
       ipValor: Double);
     procedure ppvReceberParcela;
     procedure ppvCancelarRecebimento;
+    procedure ppvAdicionarCliente;
+    procedure ppvCarregarClientes;
   protected
     function fprGetPermissao: string; override;
     procedure pprExecutarSalvar; override;
@@ -167,6 +175,9 @@ var
   frmContaReceber: TfrmContaReceber;
 
 implementation
+
+uses
+  fPessoa;
 
 {$R *.dfm}
 
@@ -437,6 +448,47 @@ begin
   ppvAddVinculo;
 end;
 
+procedure TfrmContaReceber.cbClienteKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if key = VK_F2 then
+    ppvAdicionarCliente;
+end;
+
+procedure TfrmContaReceber.Ac_Adicionar_ClienteExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarCliente;
+end;
+
+procedure TfrmContaReceber.ppvAdicionarCliente;
+var
+  vaFrmCliente: TfrmCliente;
+begin
+  vaFrmCliente := TfrmCliente.Create(nil);
+  try
+    vaFrmCliente.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmCliente.ShowModal;
+    if vaFrmCliente.IdEscolhido <> 0 then
+      begin
+        ppvCarregarClientes;
+        if dmLookup.cdslkFin_For_Cli.Locate(TBancoDados.coId, vaFrmCliente.IdEscolhido, []) then
+          begin
+            cbCliente.EditValue := vaFrmCliente.IdEscolhido;
+            cbCliente.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmCliente.Free;
+  end;
+end;
+
+procedure TfrmContaReceber.ppvCarregarClientes;
+begin
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
+end;
+
 procedure TfrmContaReceber.Ac_Baixar_ReabrirExecute(Sender: TObject);
 begin
   inherited;
@@ -535,7 +587,7 @@ begin
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
 
-  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
+  ppvCarregarClientes;
   dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcReceita)], TOperadores.coAnd, True);
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
 

@@ -294,6 +294,7 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsGasto_Area_Atuacao: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <
       item
@@ -470,6 +471,48 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
       ReadOnly = True
       Size = 100
+    end
+  end
+  object cdsGasto_Fornecedor: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqGasto_Fornecedor'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 320
+    Top = 200
+    object cdsGasto_FornecedorVALOR_PAGO: TBCDField
+      FieldName = 'VALOR_PAGO'
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_FornecedorID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      Required = True
+    end
+    object cdsGasto_FornecedorNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
+      Size = 100
+    end
+    object cdsGasto_FornecedorRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      Required = True
+      Size = 100
+    end
+    object cdsGasto_FornecedorCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      Required = True
+      Size = 18
+    end
+    object cdsGasto_FornecedorVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      Required = True
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_FornecedorDATA_PAGAMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO'
     end
   end
 end

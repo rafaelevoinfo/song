@@ -1,11 +1,12 @@
 inherited frmPessoa: TfrmPessoa
-  ActiveControl = btnIncluir
+  ActiveControl = EditNome
   Caption = 'Pessoas'
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -173,7 +174,13 @@ inherited frmPessoa: TfrmPessoa
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]

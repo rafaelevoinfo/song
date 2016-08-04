@@ -188,8 +188,8 @@ type
     Label3: TLabel;
     EditDataFinalGasto: TcxDateEdit;
     EditDataInicialGasto: TcxDateEdit;
-    DBPipeGastoAreaAtuacao: TppDBPipeline;
-    ppGastoAreaAtuacao: TppReport;
+    DBPipeGasto_Area_Atuacao: TppDBPipeline;
+    ppGasto_Area_Atuacao: TppReport;
     ppParameterList2: TppParameterList;
     dsGasto_Area_Atuacao: TDataSource;
     ppHeaderBand2: TppHeaderBand;
@@ -270,6 +270,47 @@ type
     EditOrigemRecurso1: TppDBText;
     ppDBText27: TppDBText;
     cdsMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField;
+    tabGastoFornecedor: TcxTabSheet;
+    cbFornecedor: TcxLookupComboBox;
+    chkTodosFornecedor: TcxCheckBox;
+    cgbDataGastoFornecedor: TdxCheckGroupBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    EditDataInicialFornecedor: TcxDateEdit;
+    EditDataFinalFornecedor: TcxDateEdit;
+    Label8: TLabel;
+    DBPipeGasto_Fornecedor: TppDBPipeline;
+    dsGasto_Fornecedor: TDataSource;
+    ppGasto_Fornecedor: TppReport;
+    ppHeaderBand6: TppHeaderBand;
+    ppLabel10: TppLabel;
+    ppDBImage6: TppDBImage;
+    ppSystemVariable16: TppSystemVariable;
+    ppSystemVariable17: TppSystemVariable;
+    ppLabel11: TppLabel;
+    ppLabel32: TppLabel;
+    ppLabel33: TppLabel;
+    ppDetailBand5: TppDetailBand;
+    ppDBText39: TppDBText;
+    ppDBText40: TppDBText;
+    ppDBText41: TppDBText;
+    ppFooterBand6: TppFooterBand;
+    ppLabel34: TppLabel;
+    ppDBText42: TppDBText;
+    ppDBText43: TppDBText;
+    ppSystemVariable18: TppSystemVariable;
+    ppSummaryBand3: TppSummaryBand;
+    ppLabel35: TppLabel;
+    ppDBCalc8: TppDBCalc;
+    raCodeModule6: TraCodeModule;
+    ppDesignLayers6: TppDesignLayers;
+    ppDesignLayer6: TppDesignLayer;
+    ppParameterList6: TppParameterList;
+    ppGroup4: TppGroup;
+    ppGroupHeaderBand7: TppGroupHeaderBand;
+    ppGroupFooterBand6: TppGroupFooterBand;
+    ppLabel36: TppLabel;
+    ppDBText44: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -282,9 +323,12 @@ type
     procedure chkTodosTransferenciaPropertiesEditValueChanged(Sender: TObject);
     procedure tabTransferenciaRecursoShow(Sender: TObject);
     procedure cgbProjetoSaldoPropertiesEditValueChanged(Sender: TObject);
+    procedure chkTodosFornecedorPropertiesEditValueChanged(Sender: TObject);
+    procedure tabGastoFornecedorShow(Sender: TObject);
   private
     procedure ppvGerarRelatorioGastoAreaAtuacao;
     procedure ppvGerarRelatorioTransferenciaRecurso;
+    procedure ppvGerarlRelatorioGastoFornecedor;
   public
     { Public declarations }
   end;
@@ -320,7 +364,7 @@ begin
           chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
 
       cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' +
-        cdsMovimentacaoID_UNICO_ORIGEM_RECURSO.FieldName+';'+ cdsMovimentacaoTIPO.FieldName + ';' +
+        cdsMovimentacaoID_UNICO_ORIGEM_RECURSO.FieldName + ';' + cdsMovimentacaoTIPO.FieldName + ';' +
         cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO.FieldName;
 
       ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
@@ -366,22 +410,46 @@ begin
   else if pcPrincipal.ActivePage = tabTransferenciaRecurso then
     begin
       ppvGerarRelatorioTransferenciaRecurso;
+    end
+  else if pcPrincipal.ActivePage = tabGastoFornecedor then
+    ppvGerarlRelatorioGastoFornecedor;
+
+end;
+
+procedure TfrmRelatorioFinanceiro.ppvGerarlRelatorioGastoFornecedor;
+begin
+  dmRelatorio.cdsGasto_Fornecedor.ppuLimparParametros;
+  if cgbDataGastoFornecedor.CheckBox.Checked then
+    begin
+      dmRelatorio.cdsGasto_Fornecedor.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicialFornecedor.Date,
+        EditDataFinalFornecedor.Date));
     end;
+
+  if (not chkTodosFornecedor.Checked) and (Not VarIsNull(cbFornecedor.EditValue)) then
+    dmRelatorio.cdsGasto_Fornecedor.ppuAddParametro(TParametros.coFornecedor, cbFornecedor.EditValue);
+
+  if dmRelatorio.cdsGasto_Fornecedor.Parametros.Count = 0 then
+    dmRelatorio.cdsGasto_Fornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'])
+  else
+    dmRelatorio.cdsGasto_Fornecedor.ppuDataRequest();
+
+  ppGasto_Fornecedor.PrintReport;
 end;
 
 procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioTransferenciaRecurso;
 begin
   dmRelatorio.cdsTrasnferencia_Financeira.ppuLimparParametros;
   if cgbDataTransferenciaRecurso.CheckBox.Checked then
-    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coData,TUtils.fpuMontarDataBetween(EditDataInicialTransfRecurso.Date,EditDataFinalTransfRecurso.Date))
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicialTransfRecurso.Date,
+      EditDataFinalTransfRecurso.Date))
   else
-    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coData,TUtils.fpuMontarDataBetween(0,EncodeDate(9999,12,31)));
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(0, EncodeDate(9999, 12, 31)));
 
   if (not chkTodosTransferencia.Checked) and (Not VarIsNull(cbTipoTransferencia.EditValue)) then
-    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coTipo,cbTipoTransferencia.EditValue);
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coTipo, cbTipoTransferencia.EditValue);
 
   if (Not VarIsNull(cbPessoaTransferencia.EditValue)) then
-    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coPessoa,cbPessoaTransferencia.EditValue);
+    dmRelatorio.cdsTrasnferencia_Financeira.ppuAddParametro(TParametros.coPessoa, cbPessoaTransferencia.EditValue);
 
   dmRelatorio.cdsTrasnferencia_Financeira.ppuDataRequest();
   ppTransferencia.PrintReport;
@@ -406,29 +474,36 @@ begin
 
   dmRelatorio.cdsGasto_Area_Atuacao.Open;
 
-  ppGastoAreaAtuacao.PrintReport;
+  ppGasto_Area_Atuacao.PrintReport;
+end;
+
+procedure TfrmRelatorioFinanceiro.tabGastoFornecedorShow(Sender: TObject);
+begin
+  inherited;
+  if not dmLookup.cdslkFornecedor.Active then
+    dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, false);
 end;
 
 procedure TfrmRelatorioFinanceiro.tabTransferenciaRecursoShow(Sender: TObject);
 begin
   inherited;
   if not dmLookup.cdslkPessoa.Active then
-    dmLookup.ppuCarregarPessoas(0,[trpFuncionario,trpMembroDiretoria]);
+    dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpMembroDiretoria]);
 end;
 
 procedure TfrmRelatorioFinanceiro.cgbProjetoSaldoPropertiesEditValueChanged(
   Sender: TObject);
 var
-  i:Integer;
+  i: Integer;
 begin
   inherited;
   if Sender is TdxCheckGroupBox then
     begin
       if TdxCheckGroupBox(Sender).CheckBox.Checked then
         begin
-          for I := 0 to TdxCheckGroupBox(Sender).ControlCount-1 do
+          for i := 0 to TdxCheckGroupBox(Sender).ControlCount - 1 do
             begin
-              //vamos desmacar o checkTdos pq o combo acabou de ser habilitado pelo TdxCheckGroupBox
+              // vamos desmacar o checkTdos pq o combo acabou de ser habilitado pelo TdxCheckGroupBox
               if TdxCheckGroupBox(Sender).Controls[i] is TcxCheckBox then
                 TcxCheckBox(TdxCheckGroupBox(Sender).Controls[i]).Checked := false;
             end;
@@ -448,6 +523,13 @@ procedure TfrmRelatorioFinanceiro.chkSaldoTodosProjetoPropertiesEditValueChanged
 begin
   inherited;
   cbProjetoSaldo.Enabled := not chkTodosProjetosSaldo.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodosFornecedorPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbFornecedor.Enabled := not chkTodosFornecedor.Checked;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkTodosFundoMovimentacaoPropertiesEditValueChanged(
@@ -492,6 +574,9 @@ begin
 
   EditDataInicialGasto.Date := IncDay(now, -30);
   EditDataFinalGasto.Date := now;
+
+  EditDataInicialFornecedor.Date := IncDay(now, -30);
+  EditDataFinalFornecedor.Date := now;
 
   EditDataInicialTransfRecurso.Date := IncDay(now, -30);
   EditDataFinalTransfRecurso.Date := now;

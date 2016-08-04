@@ -16,7 +16,7 @@ uses
   uUtils, Datasnap.DBClient, fmGrids, uTypes, uClientDataSet,
   System.TypInfo, uControleAcesso, cxRadioGroup, dmuPrincipal, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, cxMemo, cxCheckBox,
-  cxCheckComboBox, Vcl.CustomizeDlg, cxLocalization;
+  cxCheckComboBox, Vcl.CustomizeDlg, cxLocalization, Vcl.ExtDlgs;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)

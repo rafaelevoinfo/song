@@ -200,7 +200,7 @@ begin
       else
         begin
           // vamos adicionar o where e remover o ultimo and
-          if not TRegEx.IsMatch(ipValor, 'and ', [roIgnoreCase]) then
+          if not TRegEx.IsMatch(ipValor, '^\s*and\s', [roIgnoreCase]) then
             Result := ' and ' + ipValor;
         end;
       // remove o ultimo AND ou OR

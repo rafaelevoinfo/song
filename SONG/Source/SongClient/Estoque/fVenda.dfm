@@ -1,11 +1,12 @@
 inherited frmVenda: TfrmVenda
-  ActiveControl = cbItem
+  ActiveControl = cbCliente
   Caption = 'Vendas'
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -102,12 +103,15 @@ inherited frmVenda: TfrmVenda
           Width = 563
           ExplicitWidth = 563
           inherited btnUtilizar: TButton
-            Left = 307
-            ExplicitLeft = 307
+            Left = 409
+            ExplicitLeft = 409
+          end
+          inherited btnExportarExcel: TButton
+            TabOrder = 4
           end
           object btnGerarContaReceber: TButton
             AlignWithMargins = True
-            Left = 188
+            Left = 290
             Top = 1
             Width = 117
             Height = 40
@@ -123,7 +127,7 @@ inherited frmVenda: TfrmVenda
           end
           object btnGerarSaida: TButton
             AlignWithMargins = True
-            Left = 86
+            Left = 188
             Top = 1
             Width = 100
             Height = 40
@@ -191,7 +195,13 @@ inherited frmVenda: TfrmVenda
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -283,13 +293,13 @@ inherited frmVenda: TfrmVenda
         object lbl5: TLabel
           Left = 9
           Top = 8
-          Width = 33
+          Width = 56
           Height = 13
-          Caption = 'Cliente'
+          Caption = 'Cliente (F2)'
           FocusControl = cbCliente
         end
         object lbl1: TLabel
-          Left = 176
+          Left = 200
           Top = 8
           Width = 46
           Height = 13
@@ -297,7 +307,7 @@ inherited frmVenda: TfrmVenda
           FocusControl = cbVendedor
         end
         object lbl2: TLabel
-          Left = 389
+          Left = 413
           Top = 8
           Width = 71
           Height = 13
@@ -320,10 +330,11 @@ inherited frmVenda: TfrmVenda
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 0
+          OnKeyDown = cbClienteKeyDown
           Width = 165
         end
         object cbVendedor: TcxDBLookupComboBox
-          Left = 175
+          Left = 199
           Top = 24
           RepositoryItem = dmLookup.repLcbPessoa
           DataBinding.DataField = 'ID_PESSOA_VENDEU'
@@ -333,7 +344,7 @@ inherited frmVenda: TfrmVenda
           Width = 209
         end
         object EditDataVenda: TcxDBDateEdit
-          Left = 387
+          Left = 411
           Top = 24
           RepositoryItem = dmLookup.repDateDataPadrao
           DataBinding.DataField = 'DATA'
@@ -349,6 +360,16 @@ inherited frmVenda: TfrmVenda
           TabOrder = 3
           Height = 62
           Width = 964
+        end
+        object btnAdicionarCliente: TButton
+          Left = 172
+          Top = 24
+          Width = 22
+          Height = 21
+          Action = Ac_Adicionar_Cliente
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 4
+          TabStop = False
         end
       end
     end
@@ -550,6 +571,11 @@ inherited frmVenda: TfrmVenda
       Caption = 'Gerar Sa'#237'da'
       ImageIndex = 13
       OnExecute = Ac_Gerar_SaidaExecute
+    end
+    object Ac_Adicionar_Cliente: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_ClienteExecute
     end
   end
   inherited dsMaster: TDataSource

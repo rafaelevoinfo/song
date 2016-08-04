@@ -627,4 +627,79 @@ inherited smRelatorio: TsmRelatorio
       Size = 100
     end
   end
+  object qGasto_Fornecedor: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select sum(Conta_Pagar_Parcela.Valor) as Valor_Pago,'
+      '       Conta_Pagar.Id_Fornecedor,'
+      '       Fin_For_Cli.Nome_Fantasia,'
+      '       Fin_For_Cli.Razao_Social,'
+      '       Fin_For_Cli.Cpf_Cnpj,'
+      '       Conta_Pagar.Valor_Total,'
+      '       Conta_Pagar_Parcela.Data_Pagamento'
+      'from Conta_Pagar_Parcela'
+      
+        'inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parcela.' +
+        'Id_Conta_Pagar)'
+      
+        'inner join Fin_For_Cli on (Fin_For_Cli.Id = Conta_Pagar.Id_Forne' +
+        'cedor)'
+      'where (Conta_Pagar_Parcela.Status = 1)'
+      '&AND'
+      'group by Conta_Pagar.Id_Fornecedor,'
+      '         Fin_For_Cli.Nome_Fantasia,'
+      '         Fin_For_Cli.Razao_Social,'
+      '         Fin_For_Cli.Cpf_Cnpj,'
+      '         Conta_Pagar.Valor_Total,'
+      '         Conta_Pagar_Parcela.Data_Pagamento'
+      
+        'order by Conta_Pagar.Id_Fornecedor,Conta_Pagar_Parcela.Data_Paga' +
+        'mento ')
+    Left = 136
+    Top = 256
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+    object qGasto_FornecedorVALOR_PAGO: TBCDField
+      FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
+      Precision = 18
+      Size = 2
+    end
+    object qGasto_FornecedorID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      Required = True
+    end
+    object qGasto_FornecedorNOME_FANTASIA: TStringField
+      FieldName = 'NOME_FANTASIA'
+      Origin = 'NOME_FANTASIA'
+      Size = 100
+    end
+    object qGasto_FornecedorRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
+      Required = True
+      Size = 100
+    end
+    object qGasto_FornecedorCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      Required = True
+      Size = 18
+    end
+    object qGasto_FornecedorVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qGasto_FornecedorDATA_PAGAMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO'
+      Origin = 'DATA_PAGAMENTO'
+    end
+  end
 end

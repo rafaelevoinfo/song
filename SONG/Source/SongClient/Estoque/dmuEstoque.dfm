@@ -96,57 +96,68 @@ inherited dmEstoque: TdmEstoque
     Top = 124
     object cdsSolicitacao_CompraID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsSolicitacao_CompraID_PESSOA_SOLICITOU: TIntegerField
       DisplayLabel = 'Id da Pessoa que Solicitou'
       FieldName = 'ID_PESSOA_SOLICITOU'
+      Origin = 'ID_PESSOA_SOLICITOU'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsSolicitacao_CompraID_PESSOA_ANALISOU: TIntegerField
       DisplayLabel = 'Id da Pessoa que Analisou'
       FieldName = 'ID_PESSOA_ANALISOU'
+      Origin = 'ID_PESSOA_ANALISOU'
       ProviderFlags = [pfInUpdate]
     end
     object cdsSolicitacao_CompraDATA: TSQLTimeStampField
       DisplayLabel = 'Data'
       FieldName = 'DATA'
+      Origin = '"DATA"'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsSolicitacao_CompraDATA_ANALISE: TSQLTimeStampField
       DisplayLabel = 'Data da An'#225'lise'
       FieldName = 'DATA_ANALISE'
+      Origin = 'DATA_ANALISE'
       ProviderFlags = [pfInUpdate]
     end
     object cdsSolicitacao_CompraSTATUS: TSmallintField
       Alignment = taLeftJustify
       DisplayLabel = 'Status'
       FieldName = 'STATUS'
+      Origin = 'STATUS'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsSolicitacao_CompraSOLICITANTE: TStringField
       DisplayLabel = 'Solicitante'
       FieldName = 'SOLICITANTE'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsSolicitacao_CompraRESPONSAVEL_ANALISE: TStringField
       DisplayLabel = 'Respons'#225'vel pela An'#225'lise'
       FieldName = 'RESPONSAVEL_ANALISE'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsSolicitacao_CompraOBSERVACAO: TStringField
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
       Size = 1000
     end
   end
   object cdsSolicitacao_Compra_Item: TRFClientDataSet
+    Active = True
     Aggregates = <>
     IndexFieldNames = 'ID_SOLICITACAO_COMPRA'
     MasterFields = 'ID'
@@ -159,29 +170,34 @@ inherited dmEstoque: TdmEstoque
     Top = 124
     object cdsSolicitacao_Compra_ItemID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsSolicitacao_Compra_ItemID_SOLICITACAO_COMPRA: TIntegerField
       DisplayLabel = 'Id da Solicita'#231#227'o de Compra'
       FieldName = 'ID_SOLICITACAO_COMPRA'
+      Origin = 'ID_SOLICITACAO_COMPRA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsSolicitacao_Compra_ItemID_ITEM: TIntegerField
       DisplayLabel = 'Id do Item'
       FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsSolicitacao_Compra_ItemID_ESPECIE: TIntegerField
       DisplayLabel = 'Id da Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]
     end
     object cdsSolicitacao_Compra_ItemQTDE: TBCDField
       DisplayLabel = 'Quantidade'
       FieldName = 'QTDE'
+      Origin = 'QTDE'
       ProviderFlags = [pfInUpdate]
       Required = True
       Precision = 18
@@ -190,12 +206,14 @@ inherited dmEstoque: TdmEstoque
     object cdsSolicitacao_Compra_ItemNOME_ITEM: TStringField
       DisplayLabel = 'Nome do Item'
       FieldName = 'NOME_ITEM'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsSolicitacao_Compra_ItemESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ESPECIE'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end

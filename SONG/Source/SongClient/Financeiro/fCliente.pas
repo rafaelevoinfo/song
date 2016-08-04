@@ -14,7 +14,7 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxRadioGroup,
   Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit,
   cxCalendar, Vcl.ExtCtrls, cxPC, uTypes, uControleAcesso, System.TypInfo,
-  uUtils, uExceptions, dmuPrincipal;
+  uUtils, uExceptions, dmuPrincipal, Vcl.ExtDlgs;
 
 type
   TfrmCliente = class(TfrmFinanciador)

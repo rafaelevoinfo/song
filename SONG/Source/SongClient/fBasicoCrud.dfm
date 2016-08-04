@@ -194,7 +194,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             TabOrder = 1
             Visible = False
             WordWrap = True
-            ExplicitLeft = 86
           end
           object btnExportarExcel: TButton
             AlignWithMargins = True
@@ -303,6 +302,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

@@ -18,7 +18,7 @@ uses
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.Components,
   Data.Bind.DBScope, fLote_Semente, fLote_Muda, dmuPrincipal, System.DateUtils,
   fBasicoCrudMasterDetail, cxSplitter, uUtils, System.Generics.Collections, System.Generics.Defaults,
-  uMensagem;
+  uMensagem, Vcl.ExtDlgs;
 
 type
 

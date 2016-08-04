@@ -1,12 +1,13 @@
 inherited frmContaReceber: TfrmContaReceber
-  ActiveControl = btnIncluir
+  ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -188,7 +189,7 @@ inherited frmContaReceber: TfrmContaReceber
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
                 inherited btnIncluirDetail: TButton
                   Visible = False
@@ -197,6 +198,7 @@ inherited frmContaReceber: TfrmContaReceber
                   Left = 183
                   TabOrder = 2
                   ExplicitLeft = 183
+                  ExplicitTop = 2
                 end
                 object btnBaixarReabrir: TButton
                   Left = 82
@@ -270,7 +272,7 @@ inherited frmContaReceber: TfrmContaReceber
                 Left = 0
                 Top = 0
                 Width = 965
-                Height = 156
+                Height = 195
                 Align = alClient
                 TabOrder = 0
                 TabStop = False
@@ -361,15 +363,15 @@ inherited frmContaReceber: TfrmContaReceber
         object Label4: TLabel
           Left = 213
           Top = 2
-          Width = 33
+          Width = 56
           Height = 13
-          Caption = 'Cliente'
+          Caption = 'Cliente (F2)'
           FocusControl = cbCliente
         end
         object Label5: TLabel
-          Left = 433
+          Left = 435
           Top = 2
-          Width = 78
+          Width = 76
           Height = 13
           Caption = 'Plano de Contas'
           FocusControl = cbPlanoContas
@@ -433,17 +435,18 @@ inherited frmContaReceber: TfrmContaReceber
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 1
-          Width = 220
+          OnKeyDown = cbClienteKeyDown
+          Width = 198
         end
         object cbPlanoContas: TcxDBLookupComboBox
-          Left = 432
+          Left = 434
           Top = 18
           RepositoryItem = dmLookup.repLcbPlano_Contas
           DataBinding.DataField = 'ID_PLANO_CONTAS'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 2
-          Width = 221
+          Width = 219
         end
         object cbFormaPagamento: TcxDBImageComboBox
           Left = 433
@@ -672,6 +675,16 @@ inherited frmContaReceber: TfrmContaReceber
           TabOrder = 6
           Width = 170
         end
+        object btnAdicionarCliente: TButton
+          Left = 409
+          Top = 18
+          Width = 22
+          Height = 21
+          Action = Ac_Adicionar_Cliente
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 10
+          TabStop = False
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
@@ -713,6 +726,11 @@ inherited frmContaReceber: TfrmContaReceber
       ImageIndex = 8
       OnExecute = Ac_Baixar_ReabrirExecute
       OnUpdate = Ac_Baixar_ReabrirUpdate
+    end
+    object Ac_Adicionar_Cliente: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_ClienteExecute
     end
   end
   inherited dsMaster: TDataSource

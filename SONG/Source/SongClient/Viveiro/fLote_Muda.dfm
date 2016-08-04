@@ -1,9 +1,15 @@
 inherited frmLoteMuda: TfrmLoteMuda
   Caption = 'Lotes de Mudas'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -169,9 +175,20 @@ inherited frmLoteMuda: TfrmLoteMuda
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabDetailCanteiros
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Classifica'#231#245'es'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -208,10 +225,6 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -219,7 +232,6 @@ inherited frmLoteMuda: TfrmLoteMuda
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirCanteiro: TButton
                   Left = 1
                   Top = 1
@@ -235,7 +247,7 @@ inherited frmLoteMuda: TfrmLoteMuda
                 Left = 0
                 Top = 25
                 Width = 965
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -411,7 +423,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           DataBinding.DataSource = dsMaster
           TabOrder = 5
           Height = 71
-          Width = 661
+          Width = 819
         end
         object EditQtdeInicial: TcxDBSpinEdit
           Left = 551
@@ -421,14 +433,6 @@ inherited frmLoteMuda: TfrmLoteMuda
           Properties.DisplayFormat = ',0'
           TabOrder = 3
           Width = 115
-        end
-        object cxGroupBox1: TcxGroupBox
-          Left = 7
-          Top = 135
-          Caption = 'Classifica'#231#227'o'
-          TabOrder = 6
-          Height = 146
-          Width = 659
         end
         object cbStatusMuda: TcxDBImageComboBox
           Left = 671
@@ -443,6 +447,10 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 5
@@ -528,10 +536,6 @@ inherited frmLoteMuda: TfrmLoteMuda
     object tabCadastroCanteiro: TcxTabSheet
       Caption = 'tabCadastroCanteiro'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lb1: TLabel
         Left = 5
         Top = 56
@@ -547,7 +551,6 @@ inherited frmLoteMuda: TfrmLoteMuda
         Height = 50
         Align = alTop
         TabOrder = 1
-        ExplicitTop = 8
         object btnSalvarCanteiro: TButton
           AlignWithMargins = True
           Left = 4

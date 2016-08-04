@@ -15,7 +15,8 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuEstoque, uTypes,
   System.DateUtils, System.TypInfo, uControleAcesso, dmuLookup, cxDBEdit,
   cxCalc, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uClientDataSet,
-  uExceptions, dmuPrincipal, uUtils, System.Generics.Collections, uMensagem;
+  uExceptions, dmuPrincipal, uUtils, System.Generics.Collections, uMensagem,
+  Vcl.ExtDlgs;
 
 type
   TSaida = class(TModelo)

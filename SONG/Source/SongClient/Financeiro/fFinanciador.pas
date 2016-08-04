@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuFinanceiro, dmuLookup, uTypes, uControleAcesso,
   System.TypInfo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit,
   dmuPrincipal, uExceptions, System.RegularExpressions, uClientDataSet, cxMemo,
-  uUtils;
+  uUtils, Vcl.ExtDlgs;
 
 type
   TfrmFinanciador = class(TfrmBasicoCrud)
