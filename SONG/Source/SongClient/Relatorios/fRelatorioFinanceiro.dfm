@@ -1,5 +1,6 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
+  ExplicitTop = -48
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnConfiguracoes: TPanel
@@ -411,6 +412,52 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Caption = 'Todos'
           Properties.OnEditValueChanged = chkTodosFornecedorPropertiesEditValueChanged
           TabOrder = 1
+          Transparent = True
+          Width = 69
+        end
+      end
+      object tabGastoAtividade: TcxTabSheet
+        Caption = 'Gasto por Atividade'
+        ImageIndex = 6
+        object Label9: TLabel
+          Left = 6
+          Top = 3
+          Width = 35
+          Height = 13
+          Caption = 'Projeto'
+        end
+        object lb5: TLabel
+          Left = 6
+          Top = 45
+          Width = 45
+          Height = 13
+          Caption = 'Atividade'
+        end
+        object cbProjetoGastoAtividade: TcxLookupComboBox
+          Left = 3
+          Top = 19
+          RepositoryItem = dmLookup.repLcbProjeto
+          Properties.ListColumns = <>
+          Properties.OnEditValueChanged = cbProjetoGastoAtividadePropertiesEditValueChanged
+          TabOrder = 0
+          Width = 225
+        end
+        object cbAtividadeGastoAtividade: TcxLookupComboBox
+          Left = 3
+          Top = 61
+          RepositoryItem = dmLookup.repLcbAtividade
+          Enabled = False
+          Properties.ListColumns = <>
+          TabOrder = 1
+          Width = 225
+        end
+        object chkTodasAtividades: TcxCheckBox
+          Left = 230
+          Top = 63
+          Caption = 'Todas'
+          Properties.OnEditValueChanged = chkTodasAtividadesPropertiesEditValueChanged
+          State = cbsChecked
+          TabOrder = 2
           Transparent = True
           Width = 69
         end
@@ -2250,6 +2297,26 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         BandType = 4
         LayerName = BandLayer5
       end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText18'
+        DataField = 'NOME_PROJETO'
+        DataPipeline = DBPipeRubrica
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeRubrica'
+        mmHeight = 4763
+        mmLeft = 0
+        mmTop = 5292
+        mmWidth = 193146
+        BandType = 4
+        LayerName = BandLayer5
+      end
     end
     object ppFooterBand1: TppFooterBand
       Background.Brush.Style = bsClear
@@ -2361,27 +2428,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           mmLeft = 1852
           mmTop = 529
           mmWidth = 194998
-          BandType = 3
-          GroupNo = 0
-          LayerName = BandLayer5
-        end
-        object ppDBText8: TppDBText
-          DesignLayer = ppDesignLayer1
-          UserName = 'DBText18'
-          DataField = 'NOME_PROJETO'
-          DataPipeline = DBPipeRubrica
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = [fsBold]
-          TextAlignment = taCentered
-          Transparent = True
-          DataPipelineName = 'DBPipeRubrica'
-          mmHeight = 4763
-          mmLeft = 2117
-          mmTop = 794
-          mmWidth = 193146
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2528,81 +2574,94 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 592
     Top = 312
     object DBPipeRubricappField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_RUBRICA'
       FieldName = 'ID_RUBRICA'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField2: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_PROJETO'
       FieldName = 'ID_PROJETO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField3: TppField
       FieldAlias = 'NOME_PROJETO'
       FieldName = 'NOME_PROJETO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField4: TppField
       FieldAlias = 'NOME_RUBRICA'
       FieldName = 'NOME_RUBRICA'
-      FieldLength = 123
-      DisplayWidth = 123
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField5: TppField
-      Alignment = taRightJustify
       FieldAlias = 'RECEBIDO'
       FieldName = 'RECEBIDO'
-      FieldLength = 4
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField6: TppField
-      Alignment = taRightJustify
       FieldAlias = 'GASTO'
       FieldName = 'GASTO'
-      FieldLength = 6
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField7: TppField
-      Alignment = taRightJustify
       FieldAlias = 'APROVISIONADO'
       FieldName = 'APROVISIONADO'
-      FieldLength = 6
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField8: TppField
-      Alignment = taRightJustify
       FieldAlias = 'SALDO_REAL'
       FieldName = 'SALDO_REAL'
-      FieldLength = 6
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeRubricappField9: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ORCAMENTO'
       FieldName = 'ORCAMENTO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
   end
   object DBPipeOrganizacao: TppDBPipeline
@@ -3835,9 +3894,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Alignment = taRightJustify
       FieldAlias = 'VALOR_PAGO'
       FieldName = 'VALOR_PAGO'
-      FieldLength = 0
+      FieldLength = 2
       DataType = dtDouble
-      DisplayWidth = 0
+      DisplayWidth = 19
       Position = 0
     end
     object DBPipeGasto_FornecedorppField2: TppField
@@ -4033,7 +4092,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Background1.Brush.Style = bsClear
       Background2.Brush.Color = clTeal
       mmBottomOffset = 0
-      mmHeight = 5292
+      mmHeight = 4763
       mmPrintPosition = 0
       object ppDBText39: TppDBText
         DesignLayer = ppDesignLayer6
@@ -4043,13 +4102,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 10
+        Font.Size = 8
         Font.Style = []
         Transparent = True
+        VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeGasto_Fornecedor'
         mmHeight = 4763
-        mmLeft = 112716
-        mmTop = 529
+        mmLeft = 66413
+        mmTop = 0
         mmWidth = 33338
         BandType = 4
         LayerName = BandLayer8
@@ -4063,52 +4123,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 10
+        Font.Size = 8
         Font.Style = []
         Transparent = True
+        VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeGasto_Fornecedor'
         mmHeight = 4763
         mmLeft = 148960
-        mmTop = 529
+        mmTop = 0
         mmWidth = 45773
-        BandType = 4
-        LayerName = BandLayer8
-      end
-      object ppDBText41: TppDBText
-        DesignLayer = ppDesignLayer6
-        UserName = 'DBText17'
-        DataField = 'NOME_FANTASIA'
-        DataPipeline = DBPipeGasto_Fornecedor
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        Transparent = True
-        DataPipelineName = 'DBPipeGasto_Fornecedor'
-        mmHeight = 4763
-        mmLeft = 2381
-        mmTop = 529
-        mmWidth = 49742
         BandType = 4
         LayerName = BandLayer8
       end
       object ppDBText44: TppDBText
         DesignLayer = ppDesignLayer6
         UserName = 'DBText44'
-        DataField = 'RAZAO_SOCIAL'
+        DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeGasto_Fornecedor
+        DisplayFormat = '$ ,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 10
+        Font.Size = 8
         Font.Style = []
         Transparent = True
+        VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeGasto_Fornecedor'
         mmHeight = 4763
-        mmLeft = 54240
-        mmTop = 529
-        mmWidth = 55827
+        mmLeft = 101865
+        mmTop = 0
+        mmWidth = 45773
         BandType = 4
         LayerName = BandLayer8
       end
@@ -4220,8 +4264,20 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppGroupHeaderBand7: TppGroupHeaderBand
         Background.Brush.Style = bsClear
         mmBottomOffset = 0
-        mmHeight = 5027
+        mmHeight = 9790
         mmPrintPosition = 0
+        object ppShape5: TppShape
+          DesignLayer = ppDesignLayer6
+          UserName = 'Shape5'
+          Brush.Color = clGray
+          mmHeight = 4763
+          mmLeft = 1852
+          mmTop = 529
+          mmWidth = 194998
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer8
+        end
         object ppLabel32: TppLabel
           DesignLayer = ppDesignLayer6
           UserName = 'Label16'
@@ -4229,14 +4285,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
+          Font.Size = 8
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 4233
-          mmLeft = 148166
-          mmTop = 794
-          mmWidth = 18785
+          mmHeight = 3705
+          mmLeft = 148167
+          mmTop = 6085
+          mmWidth = 15610
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer8
@@ -4248,52 +4304,54 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
+          Font.Size = 8
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 4233
-          mmLeft = 112717
-          mmTop = 794
-          mmWidth = 33338
+          mmHeight = 3705
+          mmLeft = 66411
+          mmTop = 6085
+          mmWidth = 27781
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer8
+        end
+        object ppDBText41: TppDBText
+          DesignLayer = ppDesignLayer6
+          UserName = 'EditNome'
+          DataField = 'NOME_FANTASIA'
+          DataPipeline = DBPipeGasto_Fornecedor
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          VerticalAlignment = avCenter
+          DataPipelineName = 'DBPipeGasto_Fornecedor'
+          mmHeight = 4763
+          mmLeft = 2117
+          mmTop = 529
+          mmWidth = 194734
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer8
         end
         object ppLabel33: TppLabel
           DesignLayer = ppDesignLayer6
-          UserName = 'Label18'
-          Caption = 'Nome Fantasia'
+          UserName = 'Label33'
+          Caption = 'Valor Total'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
+          Font.Size = 8
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 4233
-          mmLeft = 1588
-          mmTop = 794
-          mmWidth = 25135
-          BandType = 3
-          GroupNo = 0
-          LayerName = BandLayer8
-        end
-        object ppLabel36: TppLabel
-          DesignLayer = ppDesignLayer6
-          UserName = 'Label36'
-          Caption = 'Raz'#227'o Social'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = [fsBold]
-          FormField = False
-          Transparent = True
-          mmHeight = 4233
-          mmLeft = 54240
-          mmTop = 794
-          mmWidth = 22225
+          mmHeight = 3705
+          mmLeft = 101865
+          mmTop = 6085
+          mmWidth = 15610
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer8
@@ -4303,23 +4361,23 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Background.Brush.Style = bsClear
         HideWhenOneDetail = False
         mmBottomOffset = 0
-        mmHeight = 6085
+        mmHeight = 4498
         mmPrintPosition = 0
         object ppLabel35: TppLabel
           DesignLayer = ppDesignLayer6
           UserName = 'Label14'
-          Caption = 'Total:'
+          Caption = 'Total Pago:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 12
+          Font.Size = 10
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 5027
-          mmLeft = 134148
-          mmTop = 529
-          mmWidth = 11906
+          mmHeight = 4234
+          mmLeft = 123561
+          mmTop = 0
+          mmWidth = 19314
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer8
@@ -4333,14 +4391,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 12
+          Font.Size = 10
           Font.Style = [fsBold]
           ResetGroup = ppGroup4
           Transparent = True
           DataPipelineName = 'DBPipeGasto_Fornecedor'
           mmHeight = 4498
           mmLeft = 148166
-          mmTop = 529
+          mmTop = 0
           mmWidth = 46567
           BandType = 5
           GroupNo = 0
@@ -4349,7 +4407,20 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule6: TraCodeModule
-      ProgramStream = {00}
+      ProgramStream = {
+        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650611
+        456469744E6F6D654F6E476574546578740B50726F6772616D54797065070B74
+        7450726F63656475726506536F7572636506F670726F63656475726520456469
+        744E6F6D654F6E476574546578742876617220546578743A20537472696E6729
+        3B0D0A626567696E0D0A202054657874203A3D20444250697065476173746F5F
+        466F726E656365646F725B2752415A414F5F534F4349414C275D3B0D0A202069
+        6620444250697065476173746F5F466F726E656365646F725B274E4F4D455F46
+        414E5441534941275D203C3E202727207468656E20202020200D0A2020202054
+        657874203A3D2020546578742B20272028272B444250697065476173746F5F46
+        6F726E656365646F725B274E4F4D455F46414E5441534941275D2B2729273B0D
+        0A0D0A656E643B0D0A0D436F6D706F6E656E744E616D650608456469744E6F6D
+        65094576656E744E616D6506094F6E47657454657874074576656E7449440235
+        084361726574506F730102400205000000}
     end
     object ppDesignLayers6: TppDesignLayers
       object ppDesignLayer6: TppDesignLayer
@@ -4359,6 +4430,719 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object ppParameterList6: TppParameterList
+    end
+  end
+  object dsGasto_Atividade: TDataSource
+    DataSet = dmRelatorio.cdsGasto_Atividade
+    Left = 40
+    Top = 224
+  end
+  object DBPipeGasto_Atividade: TppDBPipeline
+    DataSource = dsGasto_Atividade
+    UserName = 'DBPipeGasto_Atividade'
+    Left = 32
+    Top = 296
+    object DBPipeGasto_AtividadeppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 0
+    end
+    object DBPipeGasto_AtividadeppField2: TppField
+      FieldAlias = 'NOME'
+      FieldName = 'NOME'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 1
+    end
+    object DBPipeGasto_AtividadeppField3: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_SOLICITANTE'
+      FieldName = 'ID_SOLICITANTE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 2
+    end
+    object DBPipeGasto_AtividadeppField4: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_RESPONSAVEL'
+      FieldName = 'ID_RESPONSAVEL'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 3
+    end
+    object DBPipeGasto_AtividadeppField5: TppField
+      FieldAlias = 'SOLICITANTE'
+      FieldName = 'SOLICITANTE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 4
+    end
+    object DBPipeGasto_AtividadeppField6: TppField
+      FieldAlias = 'RESPONSAVEL'
+      FieldName = 'RESPONSAVEL'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 5
+    end
+    object DBPipeGasto_AtividadeppField7: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'STATUS'
+      FieldName = 'STATUS'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 6
+    end
+    object DBPipeGasto_AtividadeppField8: TppField
+      FieldAlias = 'DATA_INICIAL'
+      FieldName = 'DATA_INICIAL'
+      FieldLength = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
+      Position = 7
+    end
+    object DBPipeGasto_AtividadeppField9: TppField
+      FieldAlias = 'DATA_FINAL'
+      FieldName = 'DATA_FINAL'
+      FieldLength = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
+      Position = 8
+    end
+    object DBPipeGasto_AtividadeppField10: TppField
+      FieldAlias = 'DESCRICAO'
+      FieldName = 'DESCRICAO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 9
+    end
+    object DBPipeGasto_AtividadeppField11: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VALOR'
+      FieldName = 'VALOR'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 10
+    end
+    object DBPipeGasto_AtividadeppField12: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VALOR_PAGO'
+      FieldName = 'VALOR_PAGO'
+      FieldLength = 6
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 11
+    end
+    object DBPipeGasto_AtividadeppField13: TppField
+      FieldAlias = 'CALC_STATUS'
+      FieldName = 'CALC_STATUS'
+      FieldLength = 60
+      DisplayWidth = 60
+      Position = 12
+    end
+  end
+  object ppGasto_Atividade: TppReport
+    AutoStop = False
+    DataPipeline = DBPipeGasto_Atividade
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    Units = utMillimeters
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 40
+    Top = 368
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeGasto_Atividade'
+    object ppHeaderBand7: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 23283
+      mmPrintPosition = 0
+      object ppLabel36: TppLabel
+        DesignLayer = ppDesignLayer7
+        UserName = 'Label1'
+        Caption = 'Gasto por Atividade'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 15
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 6350
+        mmLeft = 63765
+        mmTop = 8202
+        mmWidth = 49741
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppDBImage7: TppDBImage
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 1588
+        mmTop = 794
+        mmWidth = 30692
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppSystemVariable19: TppSystemVariable
+        DesignLayer = ppDesignLayer7
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 182562
+        mmTop = 14552
+        mmWidth = 14287
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppSystemVariable20: TppSystemVariable
+        DesignLayer = ppDesignLayer7
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 185209
+        mmTop = 18521
+        mmWidth = 11113
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppLbProjetoGastoAtividade: TppLabel
+        DesignLayer = ppDesignLayer7
+        UserName = 'LbProjetoGastoAtividade'
+        Caption = 'Projeto: Guaraciaba'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 34396
+        mmTop = 17198
+        mmWidth = 79111
+        BandType = 0
+        LayerName = BandLayer9
+      end
+    end
+    object ppDetailBand6: TppDetailBand
+      mmBottomOffset = 0
+      mmHeight = 4763
+      mmPrintPosition = 0
+      object ppDBText45: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText13'
+        DataField = 'DESCRICAO'
+        DataPipeline = DBPipeGasto_Atividade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeGasto_Atividade'
+        mmHeight = 4763
+        mmLeft = 20378
+        mmTop = 0
+        mmWidth = 41010
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText46: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText14'
+        DataField = 'VALOR_PAGO'
+        DataPipeline = DBPipeGasto_Atividade
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeGasto_Atividade'
+        mmHeight = 4763
+        mmLeft = 162721
+        mmTop = 0
+        mmWidth = 31485
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText47: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText44'
+        DataField = 'VALOR'
+        DataPipeline = DBPipeGasto_Atividade
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeGasto_Atividade'
+        mmHeight = 4763
+        mmLeft = 127530
+        mmTop = 0
+        mmWidth = 34396
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText51: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText51'
+        DataField = 'RESPONSAVEL'
+        DataPipeline = DBPipeGasto_Atividade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeGasto_Atividade'
+        mmHeight = 4763
+        mmLeft = 62457
+        mmTop = 0
+        mmWidth = 35719
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText52: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText52'
+        DataField = 'CALC_STATUS'
+        DataPipeline = DBPipeGasto_Atividade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeGasto_Atividade'
+        mmHeight = 4763
+        mmLeft = 99748
+        mmTop = 0
+        mmWidth = 26988
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText53: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText53'
+        DataField = 'DATA_INICIAL'
+        DataPipeline = DBPipeGasto_Atividade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeGasto_Atividade'
+        mmHeight = 4763
+        mmLeft = 1588
+        mmTop = 0
+        mmWidth = 18256
+        BandType = 4
+        LayerName = BandLayer9
+      end
+    end
+    object ppFooterBand7: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+      object ppLabel37: TppLabel
+        DesignLayer = ppDesignLayer7
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 81227
+        mmTop = 794
+        mmWidth = 7409
+        BandType = 8
+        LayerName = BandLayer9
+      end
+      object ppDBText48: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText7'
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 89435
+        mmTop = 265
+        mmWidth = 41275
+        BandType = 8
+        LayerName = BandLayer9
+      end
+      object ppDBText49: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText1'
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 2111
+        mmTop = 0
+        mmWidth = 76994
+        BandType = 8
+        LayerName = BandLayer9
+      end
+      object ppSystemVariable21: TppSystemVariable
+        DesignLayer = ppDesignLayer7
+        UserName = 'SystemVariable2'
+        VarType = vtPageNo
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 193146
+        mmTop = 529
+        mmWidth = 1588
+        BandType = 8
+        LayerName = BandLayer9
+      end
+    end
+    object ppSummaryBand4: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+    end
+    object ppGroup5: TppGroup
+      BreakName = 'ID'
+      DataPipeline = DBPipeGasto_Atividade
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      KeepTogether = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group4'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeGasto_Atividade'
+      NewFile = False
+      object ppGroupHeaderBand8: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 9790
+        mmPrintPosition = 0
+        object ppShape6: TppShape
+          DesignLayer = ppDesignLayer7
+          UserName = 'Shape5'
+          Brush.Color = clGray
+          mmHeight = 4763
+          mmLeft = 1852
+          mmTop = 529
+          mmWidth = 194998
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppLabel38: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label16'
+          Caption = 'Valor Pago'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3705
+          mmLeft = 163513
+          mmTop = 6085
+          mmWidth = 15610
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppLabel39: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label15'
+          Caption = 'Status'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 99748
+          mmTop = 6085
+          mmWidth = 9260
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppDBText50: TppDBText
+          DesignLayer = ppDesignLayer7
+          UserName = 'EditNome'
+          DataField = 'NOME'
+          DataPipeline = DBPipeGasto_Atividade
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          VerticalAlignment = avCenter
+          DataPipelineName = 'DBPipeGasto_Atividade'
+          mmHeight = 4763
+          mmLeft = 2117
+          mmTop = 529
+          mmWidth = 194734
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppLabel40: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label33'
+          Caption = 'Valor Total'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3705
+          mmLeft = 127795
+          mmTop = 6085
+          mmWidth = 15610
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppLabel42: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label42'
+          Caption = 'Descri'#231#227'o do Gasto'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3705
+          mmLeft = 20378
+          mmTop = 6085
+          mmWidth = 28046
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppLabel43: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label43'
+          Caption = 'Respons'#225'vel'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3705
+          mmLeft = 62457
+          mmTop = 6085
+          mmWidth = 18785
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppLabel44: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label44'
+          Caption = 'Data'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3705
+          mmLeft = 1588
+          mmTop = 6085
+          mmWidth = 6085
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+      end
+      object ppGroupFooterBand7: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 4498
+        mmPrintPosition = 0
+        object ppLabel41: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label14'
+          Caption = 'Total Pago:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4234
+          mmLeft = 137851
+          mmTop = 0
+          mmWidth = 19314
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+        object ppDBCalc9: TppDBCalc
+          DesignLayer = ppDesignLayer7
+          UserName = 'DBCalc1'
+          DataField = 'VALOR_PAGO'
+          DataPipeline = DBPipeGasto_Atividade
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup5
+          Transparent = True
+          DataPipelineName = 'DBPipeGasto_Atividade'
+          mmHeight = 4498
+          mmLeft = 162719
+          mmTop = 0
+          mmWidth = 31485
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer9
+        end
+      end
+    end
+    object ppDesignLayers7: TppDesignLayers
+      object ppDesignLayer7: TppDesignLayer
+        UserName = 'BandLayer9'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList7: TppParameterList
     end
   end
 end

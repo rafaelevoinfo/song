@@ -268,32 +268,42 @@ var
   i: Integer;
   vaParams: TParams;
 begin
-  vaParams := TParams.Create();
   try
-    // percorre todo o TList criando os parametros
-    for i := 0 to FParametros.Count - 1 do
-      begin
-        // parametros sem valores nao serao considerados
-        if VarToStrDef(FValores.Items[i], '').Trim <> '' then
-          vaParams.CreateParam(ftString, FParametros.Items[i], ptInput).AsString := FValores.Items[i];
-      end;
-    // se nenhum parametro foi passado entao passo o parametro active para evitar de carregar toda a tabela
-    if vaParams.Count = 0 then
-      vaParams.CreateParam(ftString, TParametros.coActive, ptInput).AsString := 'NAO_IMPORTA';
-    // fecho o cds
-    Close;
-    // faz a requisição para o server
+    vaParams := TParams.Create();
     try
-      DataRequest(PackageParams(vaParams));
-      // faz a requisição empacotando os parâmetros para OLE
-      Open;
+      // percorre todo o TList criando os parametros
+      for i := 0 to FParametros.Count - 1 do
+        begin
+          // parametros sem valores nao serao considerados
+          if VarToStrDef(FValores.Items[i], '').Trim <> '' then
+            vaParams.CreateParam(ftString, FParametros.Items[i], ptInput).AsString := FValores.Items[i];
+        end;
+      // se nenhum parametro foi passado entao passo o parametro active para evitar de carregar toda a tabela
+      if vaParams.Count = 0 then
+        vaParams.CreateParam(ftString, TParametros.coActive, ptInput).AsString := 'NAO_IMPORTA';
+      // fecho o cds
+      Close;
+      // faz a requisição para o server
+      try
+        DataRequest(PackageParams(vaParams));
+        // faz a requisição empacotando os parâmetros para OLE
+        Open;
+      finally
+        // limpo os TList
+        // FParametros.Clear;
+        // FValores.Clear;
+      end;
     finally
-      // limpo os TList
-      // FParametros.Clear;
-      // FValores.Clear;
+      vaParams.Free;
     end;
-  finally
-    vaParams.Free;
+  except
+    on e: Exception do
+      begin
+        if not OnTratarErroRede(e) then
+          raise
+        else
+          ppuDataRequest;
+      end;
   end;
 end;
 

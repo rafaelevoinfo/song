@@ -702,4 +702,178 @@ inherited smRelatorio: TsmRelatorio
       Origin = 'DATA_PAGAMENTO'
     end
   end
+  object qGasto_Atividade: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'with Pagamento'
+      
+        'as (select (sum(Conta_Pagar_Parcela.Valor) / Conta_Pagar.Valor_T' +
+        'otal) as Percentual,'
+      
+        '                                                                ' +
+        '      sum(Conta_Pagar_Parcela.Valor) as Valor_Pago,'
+      
+        '                                                                ' +
+        '      count(*) as Qtde_Parcela_Paga,'
+      
+        '                                                                ' +
+        '      Conta_Pagar_Parcela.Id_Conta_Pagar'
+      '    from Conta_Pagar_Parcela'
+      
+        '    inner join Conta_Pagar on (Conta_Pagar.Id = Conta_Pagar_Parc' +
+        'ela.Id_Conta_Pagar)'
+      '    where Conta_Pagar_Parcela.Status = 1'
+      
+        '    group by Conta_Pagar_Parcela.Id_Conta_Pagar, Conta_Pagar.Val' +
+        'or_Total'
+      ''
+      ')'
+      ''
+      'select Atividade.Id,'
+      '       Atividade.Nome,'
+      '       Atividade.Id_Solicitante,'
+      '       Atividade.Id_Responsavel,'
+      '       Solicitante.Nome as Solicitante,'
+      '       Responsavel.Nome as Responsavel,'
+      '       Atividade.Status,'
+      '       Atividade.Data_Inicial,'
+      '       Atividade.Data_Final,'
+      '       Conta_Pagar.Descricao,'
+      '       Conta_Pagar_Vinculo.Valor,'
+      '       case Pagamento.Percentual'
+      '         when 1 then Conta_Pagar_Vinculo.Valor'
+      '         else case'
+      
+        '                when Conta_Pagar_Vinculo.Id = (select first 1 Co' +
+        'nta_Pagar_Vinculo.Id'
+      
+        '                                               from Conta_Pagar_' +
+        'Vinculo'
+      
+        '                                               where Conta_Pagar' +
+        '_Vinculo.Id_Conta_Pagar = Conta_Pagar.Id'
+      
+        '                                               order by Conta_Pa' +
+        'gar_Vinculo.Id desc) then'
+      
+        '                    Pagamento.Valor_Pago - (trunc((select sum(Ct' +
+        'v.Valor * Pagamento.Percentual)'
+      
+        '                                                    from Conta_P' +
+        'agar_Vinculo Ctv'
+      
+        '                                                    where Ctv.Id' +
+        '_Conta_Pagar = Conta_Pagar.Id and'
+      
+        '                                                          Ctv.Id' +
+        ' <> Conta_Pagar_Vinculo.Id), 2))'
+      
+        '                else trunc(Conta_Pagar_Vinculo.Valor * Pagamento' +
+        '.Percentual, 2)'
+      '              end'
+      '       end as Valor_Pago'
+      ''
+      'from Atividade'
+      
+        'inner join Pessoa Solicitante on (Solicitante.Id = Atividade.Id_' +
+        'Solicitante)'
+      
+        'inner join Pessoa Responsavel on (Responsavel.Id = Atividade.Id_' +
+        'Responsavel)'
+      
+        'inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Ativid' +
+        'ade_Origem = Atividade.Id)'
+      
+        'inner join Conta_Pagar on (Conta_Pagar_Vinculo.Id_Conta_Pagar = ' +
+        'Conta_Pagar.Id)'
+      
+        'inner join Pagamento on (Conta_Pagar.Id = Pagamento.Id_Conta_Pag' +
+        'ar)'
+      '&WHERE'
+      'order by Atividade.Id ')
+    Left = 432
+    Top = 256
+    MacroData = <
+      item
+        Value = 'where atividade.id = 0'
+        Name = 'WHERE'
+      end>
+    object qGasto_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qGasto_AtividadeNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object qGasto_AtividadeID_SOLICITANTE: TIntegerField
+      FieldName = 'ID_SOLICITANTE'
+      Origin = 'ID_SOLICITANTE'
+      Required = True
+    end
+    object qGasto_AtividadeID_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+      Required = True
+    end
+    object qGasto_AtividadeSOLICITANTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'SOLICITANTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_AtividadeRESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_AtividadeSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      Required = True
+    end
+    object qGasto_AtividadeDATA_INICIAL: TSQLTimeStampField
+      FieldName = 'DATA_INICIAL'
+      Origin = 'DATA_INICIAL'
+    end
+    object qGasto_AtividadeDATA_FINAL: TSQLTimeStampField
+      FieldName = 'DATA_FINAL'
+      Origin = 'DATA_FINAL'
+    end
+    object qGasto_AtividadeDESCRICAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_AtividadeVALOR: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qGasto_AtividadeVALOR_PAGO: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+  end
 end

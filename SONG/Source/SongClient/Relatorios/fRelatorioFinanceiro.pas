@@ -289,7 +289,6 @@ type
     ppSystemVariable17: TppSystemVariable;
     ppLabel11: TppLabel;
     ppLabel32: TppLabel;
-    ppLabel33: TppLabel;
     ppDetailBand5: TppDetailBand;
     ppDBText39: TppDBText;
     ppDBText40: TppDBText;
@@ -309,8 +308,53 @@ type
     ppGroup4: TppGroup;
     ppGroupHeaderBand7: TppGroupHeaderBand;
     ppGroupFooterBand6: TppGroupFooterBand;
-    ppLabel36: TppLabel;
+    ppShape5: TppShape;
+    ppLabel33: TppLabel;
     ppDBText44: TppDBText;
+    tabGastoAtividade: TcxTabSheet;
+    cbProjetoGastoAtividade: TcxLookupComboBox;
+    Label9: TLabel;
+    cbAtividadeGastoAtividade: TcxLookupComboBox;
+    lb5: TLabel;
+    chkTodasAtividades: TcxCheckBox;
+    dsGasto_Atividade: TDataSource;
+    DBPipeGasto_Atividade: TppDBPipeline;
+    ppGasto_Atividade: TppReport;
+    ppHeaderBand7: TppHeaderBand;
+    ppLabel36: TppLabel;
+    ppDBImage7: TppDBImage;
+    ppSystemVariable19: TppSystemVariable;
+    ppSystemVariable20: TppSystemVariable;
+    ppDetailBand6: TppDetailBand;
+    ppDBText45: TppDBText;
+    ppDBText46: TppDBText;
+    ppDBText47: TppDBText;
+    ppFooterBand7: TppFooterBand;
+    ppLabel37: TppLabel;
+    ppDBText48: TppDBText;
+    ppDBText49: TppDBText;
+    ppSystemVariable21: TppSystemVariable;
+    ppSummaryBand4: TppSummaryBand;
+    ppGroup5: TppGroup;
+    ppGroupHeaderBand8: TppGroupHeaderBand;
+    ppShape6: TppShape;
+    ppLabel38: TppLabel;
+    ppLabel39: TppLabel;
+    ppDBText50: TppDBText;
+    ppLabel40: TppLabel;
+    ppGroupFooterBand7: TppGroupFooterBand;
+    ppLabel41: TppLabel;
+    ppDBCalc9: TppDBCalc;
+    ppDesignLayers7: TppDesignLayers;
+    ppDesignLayer7: TppDesignLayer;
+    ppParameterList7: TppParameterList;
+    ppLbProjetoGastoAtividade: TppLabel;
+    ppLabel42: TppLabel;
+    ppLabel43: TppLabel;
+    ppDBText51: TppDBText;
+    ppDBText52: TppDBText;
+    ppLabel44: TppLabel;
+    ppDBText53: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -325,10 +369,14 @@ type
     procedure cgbProjetoSaldoPropertiesEditValueChanged(Sender: TObject);
     procedure chkTodosFornecedorPropertiesEditValueChanged(Sender: TObject);
     procedure tabGastoFornecedorShow(Sender: TObject);
+    procedure chkTodasAtividadesPropertiesEditValueChanged(Sender: TObject);
+    procedure cbProjetoGastoAtividadePropertiesEditValueChanged(
+      Sender: TObject);
   private
     procedure ppvGerarRelatorioGastoAreaAtuacao;
     procedure ppvGerarRelatorioTransferenciaRecurso;
     procedure ppvGerarlRelatorioGastoFornecedor;
+    procedure ppvGerarRelatorioGastoAtividade;
   public
     { Public declarations }
   end;
@@ -412,8 +460,30 @@ begin
       ppvGerarRelatorioTransferenciaRecurso;
     end
   else if pcPrincipal.ActivePage = tabGastoFornecedor then
-    ppvGerarlRelatorioGastoFornecedor;
+    ppvGerarlRelatorioGastoFornecedor
+  else if pcPrincipal.ActivePage = tabGastoAtividade then
+    ppvGerarRelatorioGastoAtividade;
 
+end;
+
+procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoAtividade;
+var
+  vaIdAtividade: Integer;
+begin
+  if VarIsNull(cbProjetoGastoAtividade.EditValue) then
+    raise Exception.Create('Informe o projeto');
+
+  vaIdAtividade := fprExtrairValor(chkTodasAtividades, cbAtividadeGastoAtividade, 'Informe a atividade ou marque o todas.');
+
+  dmRelatorio.cdsGasto_Atividade.ppuLimparParametros;
+  dmRelatorio.cdsGasto_Atividade.ppuAddParametro(TParametros.coProjeto, cbProjetoGastoAtividade.EditValue);
+  if vaIdAtividade <> 0 then
+    dmRelatorio.cdsGasto_Atividade.ppuAddParametro(TParametros.coAtividade, vaIdAtividade);
+
+  dmRelatorio.cdsGasto_Atividade.ppuDataRequest();
+  ppLbProjetoGastoAtividade.Text := 'Projeto: '+cbProjetoGastoAtividade.Text;
+  
+  ppGasto_Atividade.PrintReport;
 end;
 
 procedure TfrmRelatorioFinanceiro.ppvGerarlRelatorioGastoFornecedor;
@@ -491,6 +561,15 @@ begin
     dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpMembroDiretoria]);
 end;
 
+procedure TfrmRelatorioFinanceiro.cbProjetoGastoAtividadePropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  dmLookup.cdslkAtividade.Close;
+  if not VarIsNull(cbProjetoGastoAtividade.EditValue) then
+    dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coProjeto], [cbProjetoGastoAtividade.EditValue], TOperadores.coAnd, true);
+end;
+
 procedure TfrmRelatorioFinanceiro.cgbProjetoSaldoPropertiesEditValueChanged(
   Sender: TObject);
 var
@@ -523,6 +602,13 @@ procedure TfrmRelatorioFinanceiro.chkSaldoTodosProjetoPropertiesEditValueChanged
 begin
   inherited;
   cbProjetoSaldo.Enabled := not chkTodosProjetosSaldo.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodasAtividadesPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbAtividadeGastoAtividade.Enabled := not chkTodasAtividades.Checked;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkTodosFornecedorPropertiesEditValueChanged(

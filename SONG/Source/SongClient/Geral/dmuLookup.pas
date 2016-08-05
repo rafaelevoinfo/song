@@ -49,8 +49,7 @@ type
     cdslkConta_CorrenteCONTA: TStringField;
     cdslkConta_CorrenteCALC_BANCO_CONTA: TStringField;
     repCurPadrao: TcxEditRepositoryCurrencyItem;
-    repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem;
-    repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem;
+    repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem;    
     repIcbTipoVinculo: TcxEditRepositoryImageComboBoxItem;
     cdslkProjeto: TRFClientDataSet;
     cdslkProjetoID: TIntegerField;

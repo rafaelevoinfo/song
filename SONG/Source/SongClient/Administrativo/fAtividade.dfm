@@ -1,11 +1,17 @@
 inherited frmAtividade: TfrmAtividade
   ActiveControl = nil
   Caption = 'Atividades'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailComentario
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 453
@@ -142,7 +148,7 @@ inherited frmAtividade: TfrmAtividade
               PropertiesClassName = 'TcxImageComboBoxProperties'
               Properties.Items = <>
               Properties.OnEditValueChanged = viewRegistrosSTATUSPropertiesEditValueChanged
-              RepositoryItem = dmLookup.repIcbStatusAtividade
+              RepositoryItem = dmPrincipal.repIcbStatusAtividade
               Options.ShowEditButtons = isebAlways
               Width = 129
             end
@@ -191,7 +197,7 @@ inherited frmAtividade: TfrmAtividade
                 Left = 0
                 Top = 25
                 Width = 965
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -287,7 +293,13 @@ inherited frmAtividade: TfrmAtividade
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -337,7 +349,7 @@ inherited frmAtividade: TfrmAtividade
                 Left = 0
                 Top = 25
                 Width = 965
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -443,7 +455,7 @@ inherited frmAtividade: TfrmAtividade
                 Left = 0
                 Top = 25
                 Width = 965
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -564,7 +576,7 @@ inherited frmAtividade: TfrmAtividade
                 Left = 0
                 Top = 25
                 Width = 965
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -789,7 +801,7 @@ inherited frmAtividade: TfrmAtividade
         object cbStatus: TcxDBImageComboBox
           Left = 427
           Top = 96
-          RepositoryItem = dmLookup.repIcbStatusAtividade
+          RepositoryItem = dmPrincipal.repIcbStatusAtividade
           DataBinding.DataField = 'STATUS'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
@@ -829,6 +841,10 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         TabOrder = 0
       end

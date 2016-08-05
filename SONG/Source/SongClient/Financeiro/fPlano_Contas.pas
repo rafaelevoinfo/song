@@ -14,7 +14,7 @@ uses
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuFinanceiro, uControleAcesso, System.TypInfo, cxDBEdit,
   uTypes, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
-  uClientDataSet, dmuPrincipal, uMensagem;
+  uClientDataSet, dmuPrincipal, uMensagem, Vcl.ExtDlgs;
 
 type
   TfrmPlanoContas = class(TfrmBasicoCrud)
@@ -26,7 +26,6 @@ type
     Label3: TLabel;
     cbContaPai: TcxDBLookupComboBox;
     Label4: TLabel;
-    viewRegistrosIDENTIFICADOR: TcxGridDBColumn;
     viewRegistrosTIPO: TcxGridDBColumn;
     btnIncluirSubItem: TButton;
     Ac_Incluir_Item: TAction;

@@ -1,11 +1,8 @@
 inherited frmPlanoContas: TfrmPlanoContas
-  ActiveControl = EditNome
   Caption = 'Plano de Contas'
-  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -38,12 +35,17 @@ inherited frmPlanoContas: TfrmPlanoContas
             ExplicitWidth = 105
           end
           inherited btnUtilizar: TButton
-            Left = 208
-            ExplicitLeft = 208
+            Left = 310
+            ExplicitLeft = 310
+          end
+          inherited btnExportarExcel: TButton
+            Left = 106
+            TabOrder = 3
+            ExplicitLeft = 106
           end
           object btnIncluirSubItem: TButton
             AlignWithMargins = True
-            Left = 106
+            Left = 208
             Top = 1
             Width = 100
             Height = 40
@@ -67,18 +69,14 @@ inherited frmPlanoContas: TfrmPlanoContas
               DataBinding.FieldName = 'ID'
               Options.Editing = False
             end
-            object viewRegistrosIDENTIFICADOR: TcxGridDBColumn [1]
-              DataBinding.FieldName = 'IDENTIFICADOR'
+            object viewRegistrosNOME: TcxGridDBColumn [1]
+              DataBinding.FieldName = 'NOME'
               Options.Editing = False
               SortIndex = 0
               SortOrder = soAscending
-            end
-            object viewRegistrosNOME: TcxGridDBColumn [2]
-              DataBinding.FieldName = 'NOME'
-              Options.Editing = False
               Width = 469
             end
-            object viewRegistrosTIPO: TcxGridDBColumn [3]
+            object viewRegistrosTIPO: TcxGridDBColumn [2]
               DataBinding.FieldName = 'TIPO'
               RepositoryItem = dmLookup.repIcbTipoPlanoConta
               Options.Editing = False

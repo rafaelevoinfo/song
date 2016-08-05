@@ -34,6 +34,7 @@ type
     Repositorio: TcxEditRepository;
     repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
 	repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
+	repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem;
     dslkCidade: TDataSource;
     cxLocalizer1: TcxLocalizer;
     ProviderEstoque: TRFProviderConnection;

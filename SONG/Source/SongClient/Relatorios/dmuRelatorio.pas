@@ -87,8 +87,23 @@ type
     cdsGasto_FornecedorCPF_CNPJ: TStringField;
     cdsGasto_FornecedorVALOR_TOTAL: TBCDField;
     cdsGasto_FornecedorDATA_PAGAMENTO: TDateField;
+    cdsGasto_Atividade: TRFClientDataSet;
+    cdsGasto_AtividadeID: TIntegerField;
+    cdsGasto_AtividadeNOME: TStringField;
+    cdsGasto_AtividadeID_SOLICITANTE: TIntegerField;
+    cdsGasto_AtividadeID_RESPONSAVEL: TIntegerField;
+    cdsGasto_AtividadeSOLICITANTE: TStringField;
+    cdsGasto_AtividadeRESPONSAVEL: TStringField;
+    cdsGasto_AtividadeSTATUS: TSmallintField;
+    cdsGasto_AtividadeDATA_INICIAL: TSQLTimeStampField;
+    cdsGasto_AtividadeDATA_FINAL: TSQLTimeStampField;
+    cdsGasto_AtividadeDESCRICAO: TStringField;
+    cdsGasto_AtividadeVALOR: TBCDField;
+    cdsGasto_AtividadeVALOR_PAGO: TFMTBCDField;
+    cdsGasto_AtividadeCALC_STATUS: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
+    procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -104,6 +119,21 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TdmRelatorio.cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
+var
+  i: Integer;
+begin
+  inherited;
+  for i := 0 to dmPrincipal.repIcbStatusAtividade.Properties.Items.Count - 1 do
+    begin
+      if dmPrincipal.repIcbStatusAtividade.Properties.Items[i].Value = cdsGasto_AtividadeSTATUS.AsInteger then
+        begin
+          cdsGasto_AtividadeCALC_STATUS.AsString := dmPrincipal.repIcbStatusAtividade.Properties.Items[i].Description;
+          break;
+        end;
+    end;
+end;
 
 procedure TdmRelatorio.cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
 begin

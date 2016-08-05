@@ -294,7 +294,6 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsGasto_Area_Atuacao: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <
       item
@@ -482,30 +481,36 @@ inherited dmRelatorio: TdmRelatorio
     Top = 200
     object cdsGasto_FornecedorVALOR_PAGO: TBCDField
       FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
       currency = True
       Precision = 18
       Size = 2
     end
     object cdsGasto_FornecedorID_FORNECEDOR: TIntegerField
       FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
       Required = True
     end
     object cdsGasto_FornecedorNOME_FANTASIA: TStringField
       FieldName = 'NOME_FANTASIA'
+      Origin = 'NOME_FANTASIA'
       Size = 100
     end
     object cdsGasto_FornecedorRAZAO_SOCIAL: TStringField
       FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
       Required = True
       Size = 100
     end
     object cdsGasto_FornecedorCPF_CNPJ: TStringField
       FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
       Required = True
       Size = 18
     end
     object cdsGasto_FornecedorVALOR_TOTAL: TBCDField
       FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
       Required = True
       currency = True
       Precision = 18
@@ -513,6 +518,101 @@ inherited dmRelatorio: TdmRelatorio
     end
     object cdsGasto_FornecedorDATA_PAGAMENTO: TDateField
       FieldName = 'DATA_PAGAMENTO'
+      Origin = 'DATA_PAGAMENTO'
+    end
+  end
+  object cdsGasto_Atividade: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqGasto_Atividade'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    OnCalcFields = cdsGasto_AtividadeCalcFields
+    Left = 184
+    Top = 184
+    object cdsGasto_AtividadeID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsGasto_AtividadeNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsGasto_AtividadeID_SOLICITANTE: TIntegerField
+      FieldName = 'ID_SOLICITANTE'
+      Origin = 'ID_SOLICITANTE'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsGasto_AtividadeID_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsGasto_AtividadeSOLICITANTE: TStringField
+      FieldName = 'SOLICITANTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_AtividadeRESPONSAVEL: TStringField
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_AtividadeSTATUS: TSmallintField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsGasto_AtividadeDATA_INICIAL: TSQLTimeStampField
+      FieldName = 'DATA_INICIAL'
+      Origin = 'DATA_INICIAL'
+      ProviderFlags = []
+    end
+    object cdsGasto_AtividadeDATA_FINAL: TSQLTimeStampField
+      FieldName = 'DATA_FINAL'
+      Origin = 'DATA_FINAL'
+      ProviderFlags = []
+    end
+    object cdsGasto_AtividadeDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_AtividadeVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_AtividadeVALOR_PAGO: TFMTBCDField
+      FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object cdsGasto_AtividadeCALC_STATUS: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_STATUS'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfHidden]
+      Size = 60
+      Calculated = True
     end
   end
 end

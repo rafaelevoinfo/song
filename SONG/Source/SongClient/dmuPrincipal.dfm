@@ -3545,6 +3545,35 @@ object dmPrincipal: TdmPrincipal
           Value = 4
         end>
     end
+	object repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem
+      Properties.ImmediatePost = True
+      Properties.Items = <
+        item
+          Description = 'Programada'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Atrasada para iniciar'
+          Value = 1
+        end
+        item
+          Description = 'Em execu'#231#227'o'
+          Value = 2
+        end
+        item
+          Description = 'Atrasada'
+          Value = 3
+        end
+        item
+          Description = 'Finalizada'
+          Value = 4
+        end
+        item
+          Description = 'Cancelada'
+          Value = 5
+        end>
+    end
   end
   object dslkCidade: TDataSource
     DataSet = cdslkCidade

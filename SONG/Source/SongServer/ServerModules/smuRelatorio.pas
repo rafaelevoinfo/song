@@ -84,6 +84,19 @@ type
     qGasto_FornecedorCPF_CNPJ: TStringField;
     qGasto_FornecedorVALOR_TOTAL: TBCDField;
     qGasto_FornecedorDATA_PAGAMENTO: TDateField;
+    qGasto_Atividade: TRFQuery;
+    qGasto_AtividadeID: TIntegerField;
+    qGasto_AtividadeNOME: TStringField;
+    qGasto_AtividadeID_SOLICITANTE: TIntegerField;
+    qGasto_AtividadeID_RESPONSAVEL: TIntegerField;
+    qGasto_AtividadeSOLICITANTE: TStringField;
+    qGasto_AtividadeRESPONSAVEL: TStringField;
+    qGasto_AtividadeSTATUS: TSmallintField;
+    qGasto_AtividadeDATA_INICIAL: TSQLTimeStampField;
+    qGasto_AtividadeDATA_FINAL: TSQLTimeStampField;
+    qGasto_AtividadeDESCRICAO: TStringField;
+    qGasto_AtividadeVALOR: TBCDField;
+    qGasto_AtividadeVALOR_PAGO: TFMTBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -131,6 +144,13 @@ begin
         Result := TSQLGenerator.fpuFilterData(Result, 'CONTA_PAGAR_PARCELA', 'DATA_PAGAMENTO', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
       else if ipParam.Name = TParametros.coFornecedor then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR', 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador);
+    end
+  else if (ipTabela = 'GASTO_ATIVIDADE') then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coAtividade then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID', vaValor.ToInteger, vaOperador)
     end;
 end;
 
