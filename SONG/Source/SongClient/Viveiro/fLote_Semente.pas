@@ -17,7 +17,7 @@ uses
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
   uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
   fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit,
-  fCanteiro, System.Generics.Collections;
+  fCanteiro, System.Generics.Collections, Vcl.ExtDlgs;
 
 type
   TLoteSemente = class(TLote)
@@ -132,6 +132,13 @@ type
     cbCamaraFria: TcxDBLookupComboBox;
     Label16: TLabel;
     viewRegistrosCAMARA_FRIA: TcxGridDBColumn;
+    tabDetailMatrizes: TcxTabSheet;
+    cxGrid2: TcxGrid;
+    viewMatrizes: TcxGridDBTableView;
+    cxGridLevel2: TcxGridLevel;
+    viewMatrizesID: TcxGridDBColumn;
+    viewMatrizesID_LOTE_SEMENTE: TcxGridDBColumn;
+    viewMatrizesID_MATRIZ: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -151,12 +158,16 @@ type
     procedure EditDataSemeaduraPropertiesEditValueChanged(Sender: TObject);
     procedure EditQtdeTubetePropertiesEditValueChanged(Sender: TObject);
     procedure frameMatrizesbtnAddClick(Sender: TObject);
+    procedure viewRegistrosFocusedRecordChanged(Sender: TcxCustomGridTableView;
+      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
+    procedure tabDetailMatrizesShow(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
 
     procedure ppvConfigurarGrids;
-    procedure ppvCarregarMatrizes;
+    procedure ppvCarregarMatrizes(ipAbaCadastro: Boolean = true);
     procedure ppvRemoverMatrizesOutrasEspecie;
 
     function fpvGerminacaoEmAndamento: Boolean;
@@ -455,6 +466,21 @@ begin
     btnFinalizarReiniciarGerminacao.Action := Ac_Reiniciar_Etapa_Germinacao;
 end;
 
+procedure TfrmLoteSemente.tabDetailMatrizesShow(Sender: TObject);
+begin
+  inherited;
+  ppvCarregarMatrizes(false);
+end;
+
+procedure TfrmLoteSemente.viewRegistrosFocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+  inherited;
+  ppvCarregarMatrizes(false);
+
+end;
+
 procedure TfrmLoteSemente.pcDetailsChange(Sender: TObject);
 begin
   inherited;
@@ -645,38 +671,51 @@ begin
     end
 end;
 
-procedure TfrmLoteSemente.ppvCarregarMatrizes;
+procedure TfrmLoteSemente.ppvCarregarMatrizes(ipAbaCadastro: Boolean);
 begin
-  cbEspecie.PostEditValue;
-
-  if cdsLocalMatrizes.Active then
-    cdsLocalMatrizes.EmptyDataSet
-  else
-    cdsLocalMatrizes.CreateDataSet;
-
-  if not VarIsNull(cbEspecie.EditValue) then
+  if ipAbaCadastro then
     begin
-      if (not dmLookup.cdslkMatriz.Active) or (dmLookup.cdslkMatrizID_ESPECIE.AsInteger <> cbEspecie.EditValue) then
-        begin
-          dmLookup.cdslkMatriz.ppuDataRequest([TParametros.coEspecie], [cbEspecie.EditValue], TOperadores.coAnd, true);
-        end;
+      cbEspecie.PostEditValue;
 
-      dmViveiro.cdsLote_Semente_Matriz.DisableControls;
-      try
-        TUtils.ppuPercorrerCds(dmLookup.cdslkMatriz,
-          procedure
-          begin
-            if not dmViveiro.cdsLote_Semente_Matriz.Locate(dmViveiro.cdsLote_Semente_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, [])
-            then
+      if cdsLocalMatrizes.Active then
+        cdsLocalMatrizes.EmptyDataSet
+      else
+        cdsLocalMatrizes.CreateDataSet;
+
+      if not VarIsNull(cbEspecie.EditValue) then
+        begin
+          if (not dmLookup.cdslkMatriz.Active) or (dmLookup.cdslkMatrizID_ESPECIE.AsInteger <> cbEspecie.EditValue) then
+            begin
+              dmLookup.cdslkMatriz.ppuDataRequest([TParametros.coEspecie], [cbEspecie.EditValue], TOperadores.coAnd, true);
+            end;
+
+          dmViveiro.cdsLote_Semente_Matriz.DisableControls;
+          try
+            TUtils.ppuPercorrerCds(dmLookup.cdslkMatriz,
+              procedure
               begin
-                cdsLocalMatrizes.Append;
-                cdsLocalMatrizesID.AsInteger := dmLookup.cdslkMatrizID.AsInteger;
-                cdsLocalMatrizes.Post;
-              end;
-          end);
-      finally
-        dmViveiro.cdsLote_Semente_Matriz.EnableControls;
-      end;
+                if not dmViveiro.cdsLote_Semente_Matriz.Locate(dmViveiro.cdsLote_Semente_MatrizID_MATRIZ.FieldName, dmLookup.cdslkMatrizID.AsInteger, [])
+                then
+                  begin
+                    cdsLocalMatrizes.Append;
+                    cdsLocalMatrizesID.AsInteger := dmLookup.cdslkMatrizID.AsInteger;
+                    cdsLocalMatrizes.Post;
+                  end;
+              end);
+          finally
+            dmViveiro.cdsLote_Semente_Matriz.EnableControls;
+          end;
+        end;
+    end
+  else // aba de pesquisa
+    begin
+      if dmViveiro.cdsLote_Semente.Active and (dmViveiro.cdsLote_Semente.RecordCount > 0) and (pcDetails.ActivePage = tabDetailMatrizes) then
+        begin
+          if (not dmLookup.cdslkMatriz.Active) or (dmLookup.cdslkMatrizID_ESPECIE.AsInteger <> dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger) then
+            begin
+              dmLookup.cdslkMatriz.ppuDataRequest([TParametros.coEspecie], [dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger], TOperadores.coAnd, true);
+            end;
+        end;
     end;
 end;
 

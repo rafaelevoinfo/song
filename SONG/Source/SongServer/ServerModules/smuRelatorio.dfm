@@ -1,7 +1,11 @@
 inherited smRelatorio: TsmRelatorio
   OldCreateOrder = True
   Height = 390
-  Width = 551
+  Width = 995
+  inherited qAux: TRFQuery
+    Left = 944
+    Top = 16
+  end
   object qSaldo_Rubrica: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -48,8 +52,8 @@ inherited smRelatorio: TsmRelatorio
         'order by view_rubrica_projeto.id_projeto,view_rubrica_projeto.id' +
         '_rubrica'
       '         ')
-    Left = 40
-    Top = 24
+    Left = 796
+    Top = 16
     ParamData = <
       item
         Name = 'ID_PROJETO'
@@ -131,8 +135,8 @@ inherited smRelatorio: TsmRelatorio
         'milia_botanica.id)'
       'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL'
       'order by Especie.Nome')
-    Left = 200
-    Top = 48
+    Left = 204
+    Top = 124
     ParamData = <
       item
         Name = 'ID_ESPECIE'
@@ -207,8 +211,8 @@ inherited smRelatorio: TsmRelatorio
       'where Especie.Tempo_Germinacao is not null and'
       '      Especie.Tempo_Desenvolvimento is not null'
       'group by 1,2,3,4,5,6,7,8,9,10')
-    Left = 344
-    Top = 48
+    Left = 56
+    Top = 124
     object qTaxas_EspecieID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -299,8 +303,8 @@ inherited smRelatorio: TsmRelatorio
         'd_Item_Patrimonio) '
       '&WHERE'
       'Order by Patrimonio.ID_ITEM_PATRIMONIO, Patrimonio.Identificacao')
-    Left = 336
-    Top = 160
+    Left = 648
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -392,8 +396,8 @@ inherited smRelatorio: TsmRelatorio
         'a.Nome,Projeto.nome'
       'order by Projeto.Nome'
       '  ')
-    Left = 152
-    Top = 176
+    Left = 204
+    Top = 16
     ParamData = <
       item
         Name = 'TODAS_DATAS'
@@ -495,8 +499,8 @@ inherited smRelatorio: TsmRelatorio
         'left join Fundo Fundo_Destino on (Fundo_Destino.Id = Transferenc' +
         'ia_Financeira.Id_Fundo_Destino)  '
       '&WHERE')
-    Left = 296
-    Top = 240
+    Left = 56
+    Top = 16
     MacroData = <
       item
         Value = 'where Transferencia_Financeira.id = 0'
@@ -655,8 +659,8 @@ inherited smRelatorio: TsmRelatorio
       
         'order by Conta_Pagar.Id_Fornecedor,Conta_Pagar_Parcela.Data_Paga' +
         'mento ')
-    Left = 136
-    Top = 256
+    Left = 500
+    Top = 16
     MacroData = <
       item
         Value = Null
@@ -733,6 +737,8 @@ inherited smRelatorio: TsmRelatorio
       '       Atividade.Nome,'
       '       Atividade.Id_Solicitante,'
       '       Atividade.Id_Responsavel,'
+      '       Atividade.Data_Inicial,'
+      '       Atividade.Data_Final,'
       '       Solicitante.Nome as Solicitante,'
       '       Responsavel.Nome as Responsavel,'
       '       Atividade.Status,'
@@ -791,8 +797,8 @@ inherited smRelatorio: TsmRelatorio
         'ar)'
       '&WHERE'
       'order by Atividade.Id ')
-    Left = 432
-    Top = 256
+    Left = 352
+    Top = 16
     MacroData = <
       item
         Value = 'where atividade.id = 0'
@@ -874,6 +880,79 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Precision = 18
       Size = 6
+    end
+  end
+  object qMatriz_Produtiva: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Semente.Id_Especie,'
+      '       Especie.Nome as Especie,'
+      '       Lote_Semente_Matriz.Id_Matriz,'
+      '       Matriz.Nome as Matriz,'
+      ''
+      
+        '       (sum((Lote_Semente.Taxa_Germinacao + Lote_Muda.Taxa_Class' +
+        'ificacao) / 2) / count(*)) as Taxa'
+      ''
+      'from Lote_Semente'
+      
+        'inner join Lote_Semente_Matriz on (Lote_Semente.Id = Lote_Sement' +
+        'e_Matriz.Id_Lote_Semente)'
+      
+        'inner join Lote_Muda on (Lote_Muda.Id_Lote_Semente = Lote_Sement' +
+        'e.Id)'
+      'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
+      'inner join Matriz on (Matriz.Id = Lote_Semente_Matriz.Id_Matriz)'
+      'where Lote_Semente.Status = 1 and'
+      '      Lote_Muda.Status = 1'
+      '&AND'
+      'group by Lote_Semente.Id_Especie,'
+      '       Especie.Nome,'
+      '       Lote_Semente_Matriz.Id_Matriz,'
+      '       Matriz.Nome')
+    Left = 336
+    Top = 128
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+    object qMatriz_ProdutivaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qMatriz_ProdutivaESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'ESPECIE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qMatriz_ProdutivaID_MATRIZ: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_MATRIZ'
+      Origin = 'ID_MATRIZ'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qMatriz_ProdutivaMATRIZ: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'MATRIZ'
+      Origin = 'MATRIZ'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qMatriz_ProdutivaTAXA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TAXA'
+      Origin = 'TAXA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
   end
 end

@@ -97,6 +97,12 @@ type
     qGasto_AtividadeDESCRICAO: TStringField;
     qGasto_AtividadeVALOR: TBCDField;
     qGasto_AtividadeVALOR_PAGO: TFMTBCDField;
+    qMatriz_Produtiva: TRFQuery;
+    qMatriz_ProdutivaID_ESPECIE: TIntegerField;
+    qMatriz_ProdutivaESPECIE: TStringField;
+    qMatriz_ProdutivaID_MATRIZ: TIntegerField;
+    qMatriz_ProdutivaMATRIZ: TStringField;
+    qMatriz_ProdutivaTAXA: TBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -151,6 +157,11 @@ begin
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID_PROJETO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coAtividade then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID', vaValor.ToInteger, vaOperador)
+    end
+  else if (ipTabela = 'MATRIZ_PRODUTIVA') then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'LOTE_SEMENTE', 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
     end;
 end;
 

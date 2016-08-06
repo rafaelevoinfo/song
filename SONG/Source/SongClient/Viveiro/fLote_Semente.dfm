@@ -1,6 +1,7 @@
 inherited frmLoteSemente: TfrmLoteSemente
   ActiveControl = cbPessoaSemeou
   Caption = 'Lotes de Sementes'
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -92,9 +93,12 @@ inherited frmLoteSemente: TfrmLoteSemente
         inherited pnBotoes: TPanel
           Width = 290
           ExplicitWidth = 290
+          inherited btnExportarExcel: TButton
+            TabOrder = 3
+          end
           object btnFinalizarReiniciarGerminacao: TButton
             AlignWithMargins = True
-            Left = 188
+            Left = 290
             Top = 1
             Width = 101
             Height = 40
@@ -113,6 +117,7 @@ inherited frmLoteSemente: TfrmLoteSemente
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
+            OnFocusedRecordChanged = viewRegistrosFocusedRecordChanged
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Options.Editing = False
@@ -191,14 +196,20 @@ inherited frmLoteSemente: TfrmLoteSemente
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabDetailGerminacao
+            Properties.ActivePage = tabDetailMatrizes
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Semeaduras'
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  ExplicitLeft = 82
+                  ExplicitTop = 2
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -277,7 +288,7 @@ inherited frmLoteSemente: TfrmLoteSemente
                 Left = 0
                 Top = 25
                 Width = 965
-                Height = 131
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -354,11 +365,67 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
             end
+            object tabDetailMatrizes: TcxTabSheet
+              Caption = 'Matrizes'
+              ImageIndex = 2
+              OnShow = tabDetailMatrizesShow
+              object cxGrid2: TcxGrid
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 195
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 0
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitTop = 25
+                ExplicitHeight = 170
+                object viewMatrizes: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsGerminacao
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewMatrizesID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                  end
+                  object viewMatrizesID_LOTE_SEMENTE: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_LOTE_SEMENTE'
+                    Visible = False
+                  end
+                  object viewMatrizesID_MATRIZ: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_MATRIZ'
+                    RepositoryItem = dmLookup.repLcbMatriz
+                    Width = 429
+                  end
+                end
+                object cxGridLevel2: TcxGridLevel
+                  GridView = viewMatrizes
+                end
+              end
+            end
           end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnMatrizes: TPanel
           Left = 1
@@ -905,7 +972,7 @@ inherited frmLoteSemente: TfrmLoteSemente
     Top = 288
   end
   object dsGerminacao: TDataSource
-    DataSet = dmViveiro.cdsGerminacao
+    DataSet = dmViveiro.cdsLote_Semente_Matriz
     Left = 488
     Top = 240
   end
