@@ -37,3 +37,4 @@ SONG/Source/SongClient/SongClient.stat
 SONG/Source/SongClient/SongClient_MemoryManager_EventLog.txt
 SONG/Source/SongServer/SongServer.rsm
 SONG/Source/SongServer/SongServer_MemoryManager_EventLog.txt
+SONG/Source/SongClient/Cache/

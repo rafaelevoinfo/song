@@ -1,6 +1,5 @@
 inherited frmEspecie: TfrmEspecie
   Caption = 'Esp'#233'cies Produzidas'
-  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl

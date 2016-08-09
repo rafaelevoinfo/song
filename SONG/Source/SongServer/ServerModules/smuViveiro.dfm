@@ -2,6 +2,10 @@ inherited smViveiro: TsmViveiro
   OldCreateOrder = True
   Height = 289
   Width = 787
+  inherited qAux: TRFQuery
+    Left = 104
+    Top = 80
+  end
   object qEspecie: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (

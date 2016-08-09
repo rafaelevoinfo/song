@@ -169,7 +169,6 @@ inherited dmLookup: TdmLookup
           Value = 8
         end>
     end
-    
     object repIcbTipoVinculo: TcxEditRepositoryImageComboBoxItem
       Properties.ImmediatePost = True
       Properties.Items = <
@@ -740,7 +739,7 @@ inherited dmLookup: TdmLookup
           FieldName = 'NOME'
         end>
       Properties.ListSource = dslkItem_Patrimonio
-    end    
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil

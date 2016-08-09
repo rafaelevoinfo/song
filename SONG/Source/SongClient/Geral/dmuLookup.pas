@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Classes, dmuBasico, cxEdit, cxEditRepositoryItems,
   cxClasses, Data.DB, Datasnap.DBClient, cxDBEditRepository,
   uClientDataSet, dmuPrincipal, uTypes, cxImageComboBox, uUtils,
-  cxDBLookupEdit, cxDBLookupComboBox;
+  cxDBLookupEdit, cxDBLookupComboBox, System.IOUtils,
+  System.RegularExpressions;
 
 type
   TdmLookup = class(TdmBasico)
@@ -49,7 +50,7 @@ type
     cdslkConta_CorrenteCONTA: TStringField;
     cdslkConta_CorrenteCALC_BANCO_CONTA: TStringField;
     repCurPadrao: TcxEditRepositoryCurrencyItem;
-    repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem;    
+    repIcbTipoPessoa: TcxEditRepositoryImageComboBoxItem;
     repIcbTipoVinculo: TcxEditRepositoryImageComboBoxItem;
     cdslkProjeto: TRFClientDataSet;
     cdslkProjetoID: TIntegerField;
@@ -259,6 +260,10 @@ type
     procedure ppuCarregarPessoasAvulsas(ipCds: TClientDataSet; ipFieldIdPessoa, ipFieldNomePessoa: String);
     procedure ppuCarregarPessoas(ipIdEspecifico: Integer; ipTipos: TRelacionamentosPessoa);
     procedure ppuPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox; ipTipos: TRelacionamentosPessoa);
+
+    procedure ppuAbrirCache(ipCds: TRFClientDataSet);
+  public const
+    coCache = '\Cache\';
   end;
 
   // var
@@ -273,6 +278,43 @@ uses
 
 {$R *.dfm}
 
+
+procedure TdmLookup.ppuAbrirCache(ipCds: TRFClientDataSet);
+var
+  vaTabela, vaDiretorio, vaFile: String;
+  vaUltimaAlteracao: TDateTime;
+begin
+  if ipCds.Active then
+    Exit;
+  try
+
+    vaDiretorio := TDirectory.GetCurrentDirectory + coCache;
+    vaFile := vaDiretorio + ipCds.Name;
+    if TFile.Exists(vaFile) and TRegex.IsMatch(ipCds.Name, '^cds.+', [roIgnoreCase]) then
+      begin
+        // verificando se houve alteracoes
+        vaUltimaAlteracao := TFile.GetLastWriteTime(vaFile);
+        vaTabela := TRegex.Replace(ipCds.Name, '^cds(lk)?', '', [roIgnoreCase]).ToUpper;
+        if dmPrincipal.FuncoesGeral.fpuVerificarAlteracao(vaTabela, DateTimeToStr(vaUltimaAlteracao)) then
+          ipCds.ppuDataRequest()
+        else
+          begin
+            ipCds.LoadFromFile(vaFile);
+            Exit;
+          end;
+      end
+    else
+      ipCds.ppuDataRequest();
+
+  except // qualquer erro que der irei assumir ser algum problema no arquivo, entao vou simplesmente carregar novamente do banco
+    ipCds.ppuDataRequest();
+  end;
+
+  if not TDirectory.Exists(vaDiretorio) then
+    TDirectory.CreateDirectory(vaDiretorio);
+
+  ipCds.SaveToFile(vaFile);
+end;
 
 procedure TdmLookup.ppuCarregarPessoas(ipIdEspecifico: Integer; ipTipos: TRelacionamentosPessoa);
 var
@@ -338,7 +380,8 @@ begin
     TUtils.ppuPercorrerCds(ipCds,
       procedure
       begin
-        if (not ipCds.FieldByName(ipFieldIdPessoa).IsNull) and (not cdslkPessoa.Locate(cdslkPessoaID.FieldName, ipCds.FieldByName(ipFieldIdPessoa).AsInteger, [])) then
+        if (not ipCds.FieldByName(ipFieldIdPessoa).IsNull) and (not cdslkPessoa.Locate(cdslkPessoaID.FieldName,
+          ipCds.FieldByName(ipFieldIdPessoa).AsInteger, [])) then
           begin
             cdslkPessoa.Append;
             cdslkPessoaID.AsInteger := ipCds.FieldByName(ipFieldIdPessoa).AsInteger;
@@ -360,17 +403,17 @@ begin
 end;
 
 procedure TdmLookup.cdslkDoadorBeforeApplyUpdates(Sender: TObject;
-  var OwnerData: OleVariant);
+var OwnerData: OleVariant);
 begin
   inherited;
-  //apenas para garantir que nenhum apply seja feito
+  // apenas para garantir que nenhum apply seja feito
   raise Exception.Create('Não é permitido inserir registros neste CDS');
 end;
 
 procedure TdmLookup.DataModuleCreate(Sender: TObject);
 var
   vaTipo: TTipoRelacionamentoPessoa;
-  vaTipoNotificacao:TTipoNotificacao;
+  vaTipoNotificacao: TTipoNotificacao;
   vaItem: TcxImageComboBoxItem;
 begin
   inherited;

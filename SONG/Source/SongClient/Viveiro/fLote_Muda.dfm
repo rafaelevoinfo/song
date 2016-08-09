@@ -1,15 +1,11 @@
 inherited frmLoteMuda: TfrmLoteMuda
+  ActiveControl = btnIncluir
   Caption = 'Lotes de Mudas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -184,12 +180,11 @@ inherited frmLoteMuda: TfrmLoteMuda
               ExplicitWidth = 965
               ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
+                Width = 964
               end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 964
+                Height = 172
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -225,6 +220,10 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
+              ExplicitLeft = 4
+              ExplicitTop = 24
+              ExplicitWidth = 964
+              ExplicitHeight = 197
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -232,6 +231,7 @@ inherited frmLoteMuda: TfrmLoteMuda
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 964
                 object btnIncluirCanteiro: TButton
                   Left = 1
                   Top = 1
@@ -254,6 +254,8 @@ inherited frmLoteMuda: TfrmLoteMuda
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 964
+                ExplicitHeight = 172
                 object viewCanteiros: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -333,10 +335,6 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -447,10 +445,6 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 5

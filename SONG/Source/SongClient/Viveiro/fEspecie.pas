@@ -14,7 +14,8 @@ uses
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
   cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc, cxCurrencyEdit,
-  dmuLookup, cxSpinEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox;
+  dmuLookup, cxSpinEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
+  Vcl.ExtDlgs;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)
@@ -112,7 +113,8 @@ begin
 
   PesquisaPadrao := Ord(tppNome);
 
-  dmLookup.cdslkFamilia_Botanica.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'],TOperadores.coAnd,true);
+  dmLookup.cdslkFamilia_Botanica.ppuAddParametro(TParametros.coTodos,'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkFamilia_Botanica);
 end;
 
 function TfrmEspecie.fprGetPermissao: String;

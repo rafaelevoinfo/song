@@ -10,7 +10,8 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, Datasnap.Provider, Datasnap.DBClient,
   System.Generics.Collections, uTypes, System.RegularExpressions,
-  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery, System.Variants, uUtils;
+  uSQLGenerator, dmuPrincipal, uClientDataSet, uQuery, System.Variants, uUtils,
+  Datasnap.DSSession;
 
 type
   TTipoMacro = (tmWhere, tmAnd);
@@ -26,6 +27,7 @@ type
     function GetConnection: TFDConnection;
     function fpvMontarWhere(ipTabela: string; ipParams: TParams): string; virtual;
 
+
   protected
     procedure pprCriarProvider(ipDataSet: TFDQuery); virtual;
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; virtual;
@@ -38,6 +40,9 @@ type
 
     function fprValidarCampoUnico(ipTabela, ipCampo: string; ipIdIgnorar: integer; ipValor: String): Boolean;
     function fprValidarCamposUnicos(ipTabela: String; ipCampos, ipValores: TArray<String>; ipIdIgnorar: integer): Boolean;
+
+    procedure pprAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
 
   public
     property Connection: TFDConnection read GetConnection write SetConnection;
@@ -94,6 +99,8 @@ begin
 
   if not Assigned(vaProvider.OnDataRequest) then
     vaProvider.OnDataRequest := fpvOnDataRequest;
+  if not Assigned(vaProvider.AfterUpdateRecord) then
+    vaProvider.AfterUpdateRecord := pprAfterUpdateRecord;
 end;
 
 procedure TsmBasico.pprEncapsularConsulta(ipProc: TProc<TRFQuery>);
@@ -112,6 +119,22 @@ end;
 procedure TsmBasico.SetConnection(const Value: TFDConnection);
 begin
   FConnection := Value;
+end;
+
+procedure TsmBasico.pprAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+var
+  vaTabela: String;
+  vaSessaoUsuario: TObject;
+begin
+  inherited;
+  vaSessaoUsuario := TDSSessionManager.GetThreadSession.GetObject(coKeySessaoUsuario);
+  if Assigned(vaSessaoUsuario) then
+    begin
+      vaTabela := fprGetNomeTabela(Sender as TDataSetProvider);
+      Connection.ExecSQL('insert into log(log.Id, log.Tabela, log.Operacao, log.Usuario, log.Data_Hora)' +
+        ' values (next value for Gen_Log, :TABELA, :OPERACAO, :USUARIO, current_timestamp) ',[vaTabela.ToUpper,Ord(UpdateKind),TSessaoUsuario(vaSessaoUsuario).Id]);
+    end;
 end;
 
 function TsmBasico.fprGetNomeTabela(ipProvider: TDataSetProvider): string;

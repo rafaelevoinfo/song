@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 17/07/2016 22:26:17
+// 08/08/2016 22:38:51
 //
 
 unit uFuncoes;
@@ -29,6 +29,7 @@ type
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -39,6 +40,7 @@ type
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -117,6 +119,7 @@ type
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -135,6 +138,7 @@ type
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -155,6 +159,7 @@ type
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -175,6 +180,7 @@ type
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -183,6 +189,7 @@ type
     FqSaida_ItemCalcFieldsCommand: TDBXCommand;
     FqVenda_ItemCalcFieldsCommand: TDBXCommand;
     FDSServerModuleDestroyCommand: TDBXCommand;
+    FqPatrimonioCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -191,6 +198,7 @@ type
     procedure qSaida_ItemCalcFields(DataSet: TDataSet); virtual;
     procedure qVenda_ItemCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleDestroy(Sender: TObject); virtual;
+    procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -209,6 +217,7 @@ type
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -227,16 +236,19 @@ type
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmRelatorioClient = class(TDSAdminClient)
   private
+    FqPatrimonioCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -247,6 +259,7 @@ type
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -257,6 +270,7 @@ type
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -278,6 +292,7 @@ type
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -289,6 +304,7 @@ type
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -420,6 +436,21 @@ begin
   Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
 end;
 
+function TsmFuncoesGeralClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesGeral.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesGeralClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -465,6 +496,7 @@ begin
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1011,6 +1043,21 @@ begin
   Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
 end;
 
+function TsmFuncoesViveiroClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesViveiro.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesViveiroClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1064,6 +1111,7 @@ begin
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1274,6 +1322,21 @@ begin
   Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
 end;
 
+function TsmFuncoesFinanceiroClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesFinanceiro.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesFinanceiroClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1329,6 +1392,7 @@ begin
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1384,6 +1448,19 @@ begin
   FDSServerModuleDestroyCommand.ExecuteUpdate;
 end;
 
+procedure TsmEstoqueClient.qPatrimonioCalcFields(DataSet: TDataSet);
+begin
+  if FqPatrimonioCalcFieldsCommand = nil then
+  begin
+    FqPatrimonioCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqPatrimonioCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqPatrimonioCalcFieldsCommand.Text := 'TsmEstoque.qPatrimonioCalcFields';
+    FqPatrimonioCalcFieldsCommand.Prepare;
+  end;
+  FqPatrimonioCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqPatrimonioCalcFieldsCommand.ExecuteUpdate;
+end;
+
 procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1427,6 +1504,7 @@ begin
   FqSaida_ItemCalcFieldsCommand.DisposeOf;
   FqVenda_ItemCalcFieldsCommand.DisposeOf;
   FDSServerModuleDestroyCommand.DisposeOf;
+  FqPatrimonioCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1614,6 +1692,21 @@ begin
   Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
 end;
 
+function TsmFuncoesEstoqueClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesEstoque.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1667,8 +1760,22 @@ begin
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
+end;
+
+procedure TsmRelatorioClient.qPatrimonioCalcFields(DataSet: TDataSet);
+begin
+  if FqPatrimonioCalcFieldsCommand = nil then
+  begin
+    FqPatrimonioCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqPatrimonioCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqPatrimonioCalcFieldsCommand.Text := 'TsmRelatorio.qPatrimonioCalcFields';
+    FqPatrimonioCalcFieldsCommand.Prepare;
+  end;
+  FqPatrimonioCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqPatrimonioCalcFieldsCommand.ExecuteUpdate;
 end;
 
 procedure TsmRelatorioClient.DSServerModuleCreate(Sender: TObject);
@@ -1711,6 +1818,7 @@ end;
 
 destructor TsmRelatorioClient.Destroy;
 begin
+  FqPatrimonioCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1792,6 +1900,21 @@ begin
   Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
 end;
 
+function TsmFuncoesRelatorioClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesRelatorio.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesRelatorioClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1837,6 +1960,7 @@ begin
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1982,6 +2106,21 @@ begin
   Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
 end;
 
+function TsmFuncoesSistemaClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesSistema.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesSistemaClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -2028,6 +2167,7 @@ begin
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

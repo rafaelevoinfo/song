@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuViveiro, cxDBEdit, System.TypInfo, uControleAcesso,
-  uTypes;
+  uTypes, Vcl.ExtDlgs, uUtils;
 
 type
   TfrmFamiliaBotanica = class(TfrmBasicoCrud)
@@ -45,6 +45,8 @@ begin
   dmViveiro.name := '';
 
   inherited;
+
+  PesquisaPadrao := Ord(tppNome);
 end;
 
 function TfrmFamiliaBotanica.fprGetPermissao: String;

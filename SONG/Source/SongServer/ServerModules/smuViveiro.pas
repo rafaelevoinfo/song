@@ -10,7 +10,8 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, dmuPrincipal, uUtils, uClientDataSet,
-  uSQLGenerator, Datasnap.Provider, Datasnap.DBClient;
+  uSQLGenerator, Datasnap.Provider, Datasnap.DBClient, Datasnap.DSAuth,
+  Datasnap.DSSession;
 
 type
   TsmViveiro = class(TsmBasico)
@@ -138,6 +139,7 @@ type
     procedure dspqClassificacaoAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
+
   private
     { Private declarations }
   protected
@@ -172,6 +174,8 @@ begin
 
   dmPrincipal.Connection.Commit;
 end;
+
+
 
 procedure TsmViveiro.dspqGerminacaoAfterUpdateRecord(Sender: TObject;
   SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);

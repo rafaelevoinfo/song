@@ -139,6 +139,7 @@ type
     viewMatrizesID: TcxGridDBColumn;
     viewMatrizesID_LOTE_SEMENTE: TcxGridDBColumn;
     viewMatrizesID_MATRIZ: TcxGridDBColumn;
+    dsLote_Semente_Matriz: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -180,6 +181,7 @@ type
 
     function fprHabilitarSalvar(): Boolean; override;
     procedure pprBeforeSalvar; override;
+    procedure pprBeforeSalvarDetail; override;
 
     procedure pprExecutarSalvar; override;
     function fprGetPermissao: String; override;
@@ -199,6 +201,8 @@ type
     procedure ppuIncluir; override;
     procedure ppuIncluirDetail; override;
     function fpuExcluirDetail(ipIds: TArray<Integer>): Boolean; override;
+
+    procedure ppuRetornar(ipAtualizar: Boolean); override;
 
   public const
     coLoteAberto = 0;
@@ -534,6 +538,26 @@ begin
   if dmViveiro.cdsLote_Semente.State = dsInsert then
     begin
       dmViveiro.cdsLote_SementeQTDE_ARMAZENADA.AsFloat := dmViveiro.cdsLote_SementeQTDE.AsFloat;
+      dmViveiro.cdsLote_SementeTAXA_GERMINACAO.AsInteger := 0;
+      dmViveiro.cdsLote_SementeTAXA_DESCARTE.AsInteger := 100;
+    end;
+
+  dmViveiro.cdsLote_SementeNOME_ESPECIE.AsString := cbEspecie.Text;
+  dmViveiro.cdsLote_SementePESSOA_COLETOU.AsString := cbPessoaColetou.Text;
+  dmViveiro.cdsLote_SementeCAMARA_FRIA.AsString := cbCamaraFria.Text;
+end;
+
+procedure TfrmLoteSemente.pprBeforeSalvarDetail;
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    begin
+      dmViveiro.cdsSemeaduraPESSOA_SEMEOU.AsString := cbPessoaSemeou.Text;
+      dmViveiro.cdsSemeaduraNOME_CANTEIRO.AsString := cbCanteiro.Text;
+    end
+  else if pcPrincipal.ActivePage = tabCadastroGerminacao then
+    begin
+      dmViveiro.cdsGerminacaoPESSOA_VERIFICOU.AsString := cbPessoaVerificou.Text;
     end;
 end;
 
@@ -640,6 +664,7 @@ end;
 
 procedure TfrmLoteSemente.pprExecutarSalvar;
 begin
+
   inherited;
 
   if (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0) then
@@ -669,6 +694,15 @@ begin
       if dmLookup.cdslkPessoa.Locate(TBancoDados.coId, TInfoLogin.fpuGetInstance.Usuario.Id, []) then
         dmViveiro.cdsGerminacaoID_PESSOA_VERIFICOU.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
     end
+end;
+
+procedure TfrmLoteSemente.ppuRetornar(ipAtualizar: Boolean);
+begin
+  // inherited;
+  if (pcPrincipal.ActivePage = tabCadastroGerminacao) then
+    inherited
+  else
+    pcPrincipal.ActivePage := tabPesquisa;
 end;
 
 procedure TfrmLoteSemente.ppvCarregarMatrizes(ipAbaCadastro: Boolean);
@@ -792,9 +826,14 @@ begin
   PesquisaPadrao := Ord(tppData);
 
   dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
-  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
-  dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
-  dmLookup.cdslkCamara_Fria.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkEspecie.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkEspecie);
+
+  dmLookup.cdslkCanteiro.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkCanteiro);
+
+  dmLookup.cdslkCamara_Fria.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkCamara_Fria);
 
   ppvConfigurarGrids;
 

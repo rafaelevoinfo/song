@@ -19,7 +19,8 @@ type
   public
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
-    function fpuTestarConexao:Boolean;
+    function fpuTestarConexao: Boolean;
+    function fpuVerificarAlteracao(ipTabela,ipUltimaSincronizacao: String): Boolean;
   end;
 
 var
@@ -53,6 +54,27 @@ end;
 function TsmFuncoesBasico.fpuTestarConexao: Boolean;
 begin
   Result := true;
+end;
+
+function TsmFuncoesBasico.fpuVerificarAlteracao(ipTabela: String; ipUltimaSincronizacao:String): Boolean;
+var
+  vaUltimaSincronizacao:TDateTime;
+  vaResult:Boolean;
+begin
+  vaUltimaSincronizacao := StrToDateTime(ipUltimaSincronizacao);
+
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'Select count(*) as qtde from log where log.tabela = :TABELA and log.data_hora > :ULTIMA_SYNC';
+      ipDataSet.ParamByName('TABELA').AsString := ipTabela;
+      ipDataSet.ParamByName('ULTIMA_SYNC').AsDateTime := vaUltimaSincronizacao;
+      ipDataSet.Open();
+
+      vaResult := ipDataSet.FieldByName('QTDE').AsInteger > 0;
+    end);
+
+  Result := vaResult;
 end;
 
 procedure TsmFuncoesBasico.pprEnviarEmail(ipAssunto, ipMsg,

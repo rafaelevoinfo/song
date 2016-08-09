@@ -125,6 +125,9 @@ type
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprCarregarDadosModelo; override;
 
+    procedure pprBeforeSalvar; override;
+    procedure pprBeforeSalvarDetail; override;
+
     // Detail
     procedure pprValidarDadosDetail; override;
     procedure pprDefinirTabDetailCadastro; override;
@@ -133,6 +136,7 @@ type
 
   public
     procedure ppuIncluir; override;
+    procedure ppuRetornar(ipAtualizar: Boolean); override;
 
   public const
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
@@ -177,8 +181,12 @@ begin
   EditDataFinalPesquisa.Date := Now;
 
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
-  dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
-  dmLookup.cdslkCanteiro.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+
+  dmLookup.cdslkEspecie.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkEspecie);
+
+  dmLookup.cdslkCanteiro.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkCanteiro);
 
 end;
 
@@ -202,6 +210,27 @@ begin
       dmLookup.ppuCarregarPessoasAvulsas(dmViveiro.cdsClassificacao, dmViveiro.cdsClassificacaoID_PESSOA_CLASSIFICOU.FieldName,
         dmViveiro.cdsClassificacaoPESSOA_CLASSIFICOU.FieldName);
     end;
+end;
+
+procedure TfrmLoteMuda.pprBeforeSalvar;
+begin
+  inherited;
+  dmViveiro.cdsLote_MudaNOME_ESPECIE.AsString := cbEspecie.Text;
+  if dmViveiro.cdsLote_Muda.State = dsInsert then
+    begin
+      dmViveiro.cdsLote_MudaTAXA_CLASSIFICACAO.AsInteger := 100;
+      dmViveiro.cdsLote_MudaSALDO.AsInteger := dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger;
+    end;
+
+end;
+
+procedure TfrmLoteMuda.pprBeforeSalvarDetail;
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    dmViveiro.cdsClassificacaoPESSOA_CLASSIFICOU.AsString := cbPessoaClassificou.Text
+  else if pcPrincipal.ActivePage = tabCadastroCanteiro then
+    dmViveiro.cdsLote_Muda_CanteiroNOME_CANTEIRO.AsString := cbCanteiro.Text;
 end;
 
 procedure TfrmLoteMuda.pprCarregarDadosModelo;
@@ -246,7 +275,7 @@ begin
       if (Modelo is TClassificacao) then
         begin
           vaClassificacao := TClassificacao(Modelo);
-          if not(dmViveiro.cdsClassificacao.state in [dsEdit, dsInsert]) then
+          if not(dmViveiro.cdsClassificacao.State in [dsEdit, dsInsert]) then
             dmViveiro.cdsClassificacao.Edit;
 
           if (vaClassificacao.Qtde <> 0) and (dmViveiro.cdsClassificacaoQTDE.AsInteger <> vaClassificacao.Qtde) then
@@ -265,7 +294,7 @@ begin
       else if Modelo is TCanteiro then
         begin
           vaCanteiro := TCanteiro(Modelo);
-          if not(dmViveiro.cdsLote_Muda_Canteiro.state in [dsEdit, dsInsert]) then
+          if not(dmViveiro.cdsLote_Muda_Canteiro.State in [dsEdit, dsInsert]) then
             dmViveiro.cdsLote_Muda_Canteiro.Edit;
 
           if (vaCanteiro.Id <> 0) and (dmViveiro.cdsLote_Muda_CanteiroID_CANTEIRO.AsInteger <> vaCanteiro.Id) then
@@ -336,8 +365,17 @@ begin
     dmViveiro.cdsLote_MudaSTATUS.AsInteger := Ord(smDesenvolvimento);
 
   if dmViveiro.cdsLote_MudaDATA.IsNull then
-    dmViveiro.cdsLote_MudaDATA.AsDateTime := now;
+    dmViveiro.cdsLote_MudaDATA.AsDateTime := Now;
 
+end;
+
+procedure TfrmLoteMuda.ppuRetornar(ipAtualizar: Boolean);
+begin
+  // inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    inherited
+  else
+    pcPrincipal.ActivePage := tabPesquisa;
 end;
 
 function TfrmLoteMuda.fprConfigurarControlesPesquisa: TWinControl;

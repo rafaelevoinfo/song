@@ -18,6 +18,14 @@ uses System.SysUtils, System.Classes,
   DbxCompressionFilter, MidasLib, Datasnap.Midas;
 
 type
+  TSessaoUsuario = class
+  private
+    FId: Integer;
+    procedure SetId(const Value: Integer);
+  public
+    property Id: Integer read FId write SetId;
+  end;
+
   TdmPrincipal = class(TDataModule)
     Server: TDSServer;
     ServerTransport: TDSTCPServerTransport;
@@ -107,6 +115,9 @@ type
 var
   dmPrincipal: TdmPrincipal;
 
+const
+  coKeySessaoUsuario = 'KEY_SESSAO_USUARIO';
+
 implementation
 
 {$R *.dfm}
@@ -127,6 +138,8 @@ end;
 
 procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string;
   var valid: Boolean; UserRoles: TStrings);
+var
+  vaSessao: TSessaoUsuario;
 begin
   valid := True;
   if (User <> '') or (Password <> '') then
@@ -138,6 +151,12 @@ begin
       qLogin.ParamByName('SENHA').AsString := Password;
       qLogin.Open();
       valid := not qLogin.Eof;
+      if valid then
+        begin
+          vaSessao := TSessaoUsuario.Create;
+          vaSessao.Id := qLogin.FieldByName('ID').AsInteger;
+          TDSSessionManager.GetThreadSession.PutObject(coKeySessaoUsuario, vaSessao);
+        end;
       // end;
     end;
 
@@ -470,6 +489,13 @@ begin
   finally
     FSyncro.EndWrite;
   end;
+end;
+
+{ TSessaoUsuario }
+
+procedure TSessaoUsuario.SetId(const Value: Integer);
+begin
+  FId := Value;
 end;
 
 end.
