@@ -1,6 +1,5 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
-  ExplicitTop = -48
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnConfiguracoes: TPanel
@@ -2170,7 +2169,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 5821
+      mmHeight = 5556
       mmPrintPosition = 0
       object ppDBText1: TppDBText
         DesignLayer = ppDesignLayer1
@@ -2297,26 +2296,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         BandType = 4
         LayerName = BandLayer5
       end
-      object ppDBText8: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText18'
-        DataField = 'NOME_PROJETO'
-        DataPipeline = DBPipeRubrica
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = [fsBold]
-        TextAlignment = taCentered
-        Transparent = True
-        DataPipelineName = 'DBPipeRubrica'
-        mmHeight = 4763
-        mmLeft = 0
-        mmTop = 5292
-        mmWidth = 193146
-        BandType = 4
-        LayerName = BandLayer5
-      end
     end
     object ppFooterBand1: TppFooterBand
       Background.Brush.Style = bsClear
@@ -2420,18 +2399,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmBottomOffset = 0
         mmHeight = 10054
         mmPrintPosition = 0
-        object ppShape2: TppShape
-          DesignLayer = ppDesignLayer1
-          UserName = 'Shape2'
-          Brush.Color = clGray
-          mmHeight = 4763
-          mmLeft = 1852
-          mmTop = 529
-          mmWidth = 194998
-          BandType = 3
-          GroupNo = 0
-          LayerName = BandLayer5
-        end
         object ppLabel4: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label4'
@@ -2542,6 +2509,39 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           mmLeft = 166950
           mmTop = 5821
           mmWidth = 14817
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppShape2: TppShape
+          DesignLayer = ppDesignLayer1
+          UserName = 'Shape2'
+          Brush.Color = clGray
+          mmHeight = 4763
+          mmLeft = 1852
+          mmTop = 529
+          mmWidth = 194998
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppDBText8: TppDBText
+          DesignLayer = ppDesignLayer1
+          UserName = 'DBText18'
+          DataField = 'NOME_PROJETO'
+          DataPipeline = DBPipeRubrica
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          TextAlignment = taCentered
+          Transparent = True
+          DataPipelineName = 'DBPipeRubrica'
+          mmHeight = 4763
+          mmLeft = 1588
+          mmTop = 529
+          mmWidth = 193146
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2675,7 +2675,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField
@@ -4703,6 +4703,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object ppDetailBand6: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
       mmBottomOffset = 0
       mmHeight = 4763
       mmPrintPosition = 0

@@ -903,6 +903,9 @@ inherited smRelatorio: TsmRelatorio
         'e.Id)'
       'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
       'inner join Matriz on (Matriz.Id = Lote_Semente_Matriz.Id_Matriz)'
+      
+        'left join log on (log.Tabela = '#39'LOTE_SEMENTE'#39' and log.Id_Tabela ' +
+        '= Lote_Semente.Id and log.Operacao = 1)'
       'where Lote_Semente.Status = 1 and'
       '      Lote_Muda.Status = 1'
       '&AND'

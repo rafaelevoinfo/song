@@ -542,6 +542,9 @@ begin
       dmViveiro.cdsLote_SementeTAXA_DESCARTE.AsInteger := 100;
     end;
 
+  if not (dmViveiro.cdsLote_Semente.State in [dsEdit, dsInsert]) then
+    dmViveiro.cdsLote_Semente.Edit;
+
   dmViveiro.cdsLote_SementeNOME_ESPECIE.AsString := cbEspecie.Text;
   dmViveiro.cdsLote_SementePESSOA_COLETOU.AsString := cbPessoaColetou.Text;
   dmViveiro.cdsLote_SementeCAMARA_FRIA.AsString := cbCamaraFria.Text;

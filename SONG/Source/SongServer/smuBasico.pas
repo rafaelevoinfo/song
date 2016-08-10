@@ -27,7 +27,6 @@ type
     function GetConnection: TFDConnection;
     function fpvMontarWhere(ipTabela: string; ipParams: TParams): string; virtual;
 
-
   protected
     procedure pprCriarProvider(ipDataSet: TFDQuery); virtual;
     function fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string; virtual;
@@ -126,14 +125,24 @@ procedure TsmBasico.pprAfterUpdateRecord(Sender: TObject;
 var
   vaTabela: String;
   vaSessaoUsuario: TObject;
+  vaFieldId: TField;
 begin
   inherited;
   vaSessaoUsuario := TDSSessionManager.GetThreadSession.GetObject(coKeySessaoUsuario);
   if Assigned(vaSessaoUsuario) then
     begin
-      vaTabela := fprGetNomeTabela(Sender as TDataSetProvider);
-      Connection.ExecSQL('insert into log(log.Id, log.Tabela, log.Operacao, log.Usuario, log.Data_Hora)' +
-        ' values (next value for Gen_Log, :TABELA, :OPERACAO, :USUARIO, current_timestamp) ',[vaTabela.ToUpper,Ord(UpdateKind),TSessaoUsuario(vaSessaoUsuario).Id]);
+      vaFieldId := DeltaDS.FindField(TBancoDados.coId);
+
+      if Assigned(vaFieldId) then
+        begin
+          vaTabela := fprGetNomeTabela(Sender as TDataSetProvider);
+
+          Connection.ExecSQL('insert into log(log.Id, log.id_tabela, log.Tabela, log.Operacao, log.Usuario, log.Data_Hora)' +
+            ' values (next value for Gen_Log,:ID_TABELA, :TABELA, :OPERACAO, :USUARIO, current_timestamp) ',
+            [vaFieldId.OldValue, vaTabela.ToUpper, Ord(UpdateKind), TSessaoUsuario(vaSessaoUsuario).Id]);
+
+          Connection.Commit;
+        end;
     end;
 end;
 
@@ -241,7 +250,7 @@ begin
   Result := ipWhere;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
 
-  if ipParam.Name = TParametros.coID then
+  if ipParam.Name = TParametros.coId then
     begin
       vaIdsString := TRegEx.split(vaValor, coDelimitadorPadrao);
       if Length(vaIdsString) > 1 then
@@ -250,15 +259,15 @@ begin
           for I := 0 to High(vaIdsString) do
             vaIds[I] := vaIdsString[I].ToInteger();
 
-          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaIds, vaOperador)
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coId, vaIds, vaOperador)
         end
       else
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, vaValor.ToInteger(), vaOperador)
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coId, vaValor.ToInteger(), vaOperador)
     end
   else if ipParam.Name = TParametros.coNome then
     Result := TSQLGenerator.fpuFilterString(Result, ipTabela, TBancoDados.coNome, vaValor, vaOperador)
   else if ipParam.Name = TParametros.coActive then
-    Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coID, -1, vaOperador)
+    Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, TBancoDados.coId, -1, vaOperador)
   else if ipParam.Name = TParametros.coAtivo then
     begin
       if vaValor.ToInteger <> coRegistroAtivo then

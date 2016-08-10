@@ -179,12 +179,7 @@ inherited frmLoteMuda: TfrmLoteMuda
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 964
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 964
-                Height = 172
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -220,10 +215,6 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
-              ExplicitLeft = 4
-              ExplicitTop = 24
-              ExplicitWidth = 964
-              ExplicitHeight = 197
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -231,7 +222,6 @@ inherited frmLoteMuda: TfrmLoteMuda
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 964
                 object btnIncluirCanteiro: TButton
                   Left = 1
                   Top = 1
@@ -254,8 +244,6 @@ inherited frmLoteMuda: TfrmLoteMuda
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitWidth = 964
-                ExplicitHeight = 172
                 object viewCanteiros: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -335,6 +323,10 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -530,6 +522,10 @@ inherited frmLoteMuda: TfrmLoteMuda
     object tabCadastroCanteiro: TcxTabSheet
       Caption = 'tabCadastroCanteiro'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lb1: TLabel
         Left = 5
         Top = 56

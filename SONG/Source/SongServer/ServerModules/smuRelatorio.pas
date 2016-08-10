@@ -162,6 +162,8 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'LOTE_SEMENTE', 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, 'LOG', 'DATA_HORA', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
     end;
 end;
 

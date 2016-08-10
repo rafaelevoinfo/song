@@ -615,4 +615,36 @@ inherited dmRelatorio: TdmRelatorio
       Calculated = True
     end
   end
+  object cdsMatriz_Produtiva: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqMatriz_Produtiva'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 616
+    Top = 48
+    object cdsMatriz_ProdutivaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+    object cdsMatriz_ProdutivaESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsMatriz_ProdutivaID_MATRIZ: TIntegerField
+      FieldName = 'ID_MATRIZ'
+      ReadOnly = True
+    end
+    object cdsMatriz_ProdutivaMATRIZ: TStringField
+      FieldName = 'MATRIZ'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsMatriz_ProdutivaTAXA: TBCDField
+      FieldName = 'TAXA'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+  end
 end

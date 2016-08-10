@@ -175,8 +175,6 @@ begin
   dmPrincipal.Connection.Commit;
 end;
 
-
-
 procedure TsmViveiro.dspqGerminacaoAfterUpdateRecord(Sender: TObject;
   SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
 begin
@@ -193,6 +191,8 @@ begin
     VarToStr(qAux.FieldByName('ID_ESPECIE').AsInteger) + ',0,1)');
 
   dmPrincipal.Connection.Commit;
+
+  pprAfterUpdateRecord(Sender, SourceDS, DeltaDS, UpdateKind);
 end;
 
 procedure TsmViveiro.dspqLote_MudaAfterUpdateRecord(Sender: TObject;
@@ -218,6 +218,8 @@ begin
       VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',1,0)');
 
   dmPrincipal.Connection.Commit;
+
+  pprAfterUpdateRecord(Sender, SourceDS, DeltaDS, UpdateKind);
 end;
 
 procedure TsmViveiro.dspqLote_SementeAfterUpdateRecord(Sender: TObject;
@@ -243,6 +245,8 @@ begin
       VarToStr(DeltaDS.FieldByName('ID_ESPECIE').OldValue) + ',0,1)');
 
   dmPrincipal.Connection.Commit;
+
+  pprAfterUpdateRecord(Sender, SourceDS, DeltaDS, UpdateKind);
 end;
 
 procedure TsmViveiro.dspqSemeaduraAfterUpdateRecord(Sender: TObject;
@@ -261,6 +265,8 @@ begin
     VarToStr(qAux.FieldByName('ID_ESPECIE').AsInteger) + ',0,1)');
 
   dmPrincipal.Connection.Commit;
+
+  pprAfterUpdateRecord(Sender, SourceDS, DeltaDS, UpdateKind);
 end;
 
 function TsmViveiro.fprMontarWhere(ipTabela, ipWhere: string;

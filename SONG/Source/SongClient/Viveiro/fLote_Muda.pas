@@ -215,13 +215,17 @@ end;
 procedure TfrmLoteMuda.pprBeforeSalvar;
 begin
   inherited;
-  dmViveiro.cdsLote_MudaNOME_ESPECIE.AsString := cbEspecie.Text;
+
   if dmViveiro.cdsLote_Muda.State = dsInsert then
     begin
       dmViveiro.cdsLote_MudaTAXA_CLASSIFICACAO.AsInteger := 100;
       dmViveiro.cdsLote_MudaSALDO.AsInteger := dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger;
     end;
 
+  if not (dmViveiro.cdsLote_Muda.State in [dsEdit, dsInsert]) then
+    dmViveiro.cdsLote_Muda.Edit;
+
+  dmViveiro.cdsLote_MudaNOME_ESPECIE.AsString := cbEspecie.Text;
 end;
 
 procedure TfrmLoteMuda.pprBeforeSalvarDetail;

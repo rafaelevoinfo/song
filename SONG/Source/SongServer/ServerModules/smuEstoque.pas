@@ -192,6 +192,7 @@ begin
         end;
     end;
 
+  pprAfterUpdateRecord(Sender, SourceDS, DeltaDS, UpdateKind);
 end;
 
 procedure TsmEstoque.dspqSaidaBeforeUpdateRecord(Sender: TObject;
@@ -245,6 +246,8 @@ begin
 
       dmPrincipal.Connection.Commit;
     end;
+
+  pprAfterUpdateRecord(Sender, SourceDS, DeltaDS, UpdateKind);
 end;
 
 procedure TsmEstoque.DSServerModuleDestroy(Sender: TObject);
@@ -346,7 +349,8 @@ end;
 procedure TsmEstoque.qPatrimonioCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime,qPatrimonioVALOR_INICIAL.AsFloat,qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
+  qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime, qPatrimonioVALOR_INICIAL.AsFloat,
+    qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
 end;
 
 procedure TsmEstoque.qSaida_ItemCalcFields(DataSet: TDataSet);

@@ -14,7 +14,8 @@ uses
   ppCache, ppComm, ppRelatv, ppProd, ppReport, uClientDataSet, uTypes,
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, uExceptions, System.DateUtils,
-  System.Generics.Collections, uUtils, aduna_ds_list;
+  System.Generics.Collections, uUtils, aduna_ds_list, cxGroupBox,
+  dxCheckGroupBox;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -121,11 +122,50 @@ type
     ppLabel14: TppLabel;
     ppDBCalc1: TppDBCalc;
     ppDBCalc2: TppDBCalc;
+    tabProducaoMatriz: TcxTabSheet;
+    lb1: TLabel;
+    cbEspecieProducaoMatriz: TcxLookupComboBox;
+    chkTodasEspecieProducaoMatriz: TcxCheckBox;
+    DBPipeMatrizProdutiva: TppDBPipeline;
+    ppMatrizProdutiva: TppReport;
+    ppHeaderBand2: TppHeaderBand;
+    pplbTituloMatrizProdutiva: TppLabel;
+    ppDBImage2: TppDBImage;
+    ppSystemVariable4: TppSystemVariable;
+    ppSystemVariable5: TppSystemVariable;
+    ppLabel16: TppLabel;
+    ppLabel21: TppLabel;
+    ppDetailBand2: TppDetailBand;
+    ppDBText13: TppDBText;
+    ppDBText17: TppDBText;
+    ppFooterBand2: TppFooterBand;
+    ppLabel22: TppLabel;
+    ppDBText18: TppDBText;
+    ppDBText19: TppDBText;
+    ppSystemVariable6: TppSystemVariable;
+    ppSummaryBand2: TppSummaryBand;
+    raCodeModule3: TraCodeModule;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppParameterList2: TppParameterList;
+    dsMatriz_Produtiva: TDataSource;
+    ppGroup1: TppGroup;
+    ppGroupHeaderBand1: TppGroupHeaderBand;
+    ppGroupFooterBand1: TppGroupFooterBand;
+    ppDBText20: TppDBText;
+    cgbDataMatrizProdutiva: TdxCheckGroupBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    EditDataInicialMatrizProdutiva: TcxDateEdit;
+    EditDataFinalMatrizProdutiva: TcxDateEdit;
+    ppShape2: TppShape;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Informacao_Previsao_ProducaoExecute(Sender: TObject);
     procedure tabPrevisaoProducaoShow(Sender: TObject);
+    procedure chkTodasEspecieProducaoMatrizPropertiesEditValueChanged(
+      Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
     procedure ppvConfigurarGrids;
@@ -161,7 +201,7 @@ begin
       vaEspecies.Add(vaEspecie);
     end);
 
-  cdsPrevisaoProducao.Data := dmPrincipal.FuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(vaEspecies,DateToStr(EditDataPrevisao.Date));
+  cdsPrevisaoProducao.Data := dmPrincipal.FuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(vaEspecies, DateToStr(EditDataPrevisao.Date));
 end;
 
 procedure TfrmRelatorioViveiro.Ac_GerarRelatorioExecute(Sender: TObject);
@@ -208,6 +248,33 @@ begin
       // dmRelatorio.cdsTaxas_Especie.Open;
       //
       // cdsEspecieSelecionada.Clear;
+    end
+  else if pcPrincipal.ActivePage = tabProducaoMatriz then
+    begin
+      vaIdEspecie := fprExtrairValor(chkTodasEspecieProducaoMatriz, cbEspecieProducaoMatriz, 'Informe a espécie desejada.');
+
+      dmRelatorio.cdsMatriz_Produtiva.ppuLimparParametros;
+
+      if vaIdEspecie > 0 then
+        dmRelatorio.cdsMatriz_Produtiva.ppuAddParametro(TParametros.coEspecie, vaIdEspecie);
+      if cgbDataMatrizProdutiva.CheckBox.Checked then
+        begin
+          if VarIsNull(EditDataInicialMatrizProdutiva.EditValue) or VarIsNull(EditDataFinalMatrizProdutiva.EditValue) then
+            raise Exception.Create('Informe uma data inicial e final para gerar o relatório.');
+
+          dmRelatorio.cdsMatriz_Produtiva.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicialMatrizProdutiva.Date, EditDataFinalMatrizProdutiva.Date));
+
+          pplbTituloMatrizProdutiva.Caption := 'Matrizes mais Produtivas (' +
+            DateToStr(EditDataInicialMatrizProdutiva.Date) + ' - ' +
+            DateToStr(EditDataFinalMatrizProdutiva.Date) + ')';
+        end
+      else
+        pplbTituloMatrizProdutiva.Caption := 'Matrizes mais Produtivas';
+
+      dmRelatorio.cdsMatriz_Produtiva.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+
+      dmRelatorio.cdsMatriz_Produtiva.ppuDataRequest;
+      ppMatrizProdutiva.PrintReport;
     end;
 end;
 
@@ -228,6 +295,13 @@ begin
   cbSaldoEspecie.Enabled := not chkSaldoTodasEspecies.Checked;
 end;
 
+procedure TfrmRelatorioViveiro.chkTodasEspecieProducaoMatrizPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbEspecieProducaoMatriz.Enabled := not chkTodasEspecieProducaoMatriz.Checked;
+end;
+
 procedure TfrmRelatorioViveiro.FormCreate(Sender: TObject);
 begin
   dmRelatorio := TdmRelatorio.Create(Self);
@@ -239,6 +313,9 @@ begin
   ppvConfigurarGrids;
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
   cdsEspecieSelecionada.CreateDataSet;
+
+  EditDataInicialMatrizProdutiva.Date := IncYear(now,-1);
+  EditDataFinalMatrizProdutiva.Date := now;
 end;
 
 procedure TfrmRelatorioViveiro.ppvConfigurarGrids;
@@ -258,14 +335,14 @@ begin
   frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_KILO.FieldName, false);
 
   // Direita
-  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId,false);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME.FieldName);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME_CIENTIFICO.FieldName, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieFAMILIA_BOTANICA.FieldName, false);
-  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_GERMINACAO.FieldName,true,true);
-  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName,true,true);
-  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName,true,true);
-  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName,true,true);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_GERMINACAO.FieldName, true, true);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTEMPO_DESENVOLVIMENTO.FieldName, true, true);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_CLASSIFICACAO.FieldName, true, true);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieTAXA_GERMINACAO.FieldName, true, true);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE.FieldName, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO.FieldName, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieQTDE_MUDA_PRONTA.FieldName, false);

@@ -19,7 +19,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabPrevisaoProducao
+      Properties.ActivePage = tabProducaoMatriz
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 421
       ClientRectLeft = 2
@@ -209,6 +209,75 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
             Top = 19
             TabOrder = 1
             Width = 152
+          end
+        end
+      end
+      object tabProducaoMatriz: TcxTabSheet
+        Caption = 'Matrizes mais Produtivas'
+        ImageIndex = 2
+        ExplicitLeft = 3
+        ExplicitTop = 27
+        object lb1: TLabel
+          Left = 5
+          Top = 3
+          Width = 36
+          Height = 13
+          Caption = 'Esp'#233'cie'
+        end
+        object cbEspecieProducaoMatriz: TcxLookupComboBox
+          Left = 2
+          Top = 19
+          RepositoryItem = dmLookup.repLcbEspecie
+          Properties.ListColumns = <>
+          TabOrder = 0
+          Width = 225
+        end
+        object chkTodasEspecieProducaoMatriz: TcxCheckBox
+          Left = 227
+          Top = 20
+          Caption = 'Todas'
+          Properties.OnEditValueChanged = chkTodasEspecieProducaoMatrizPropertiesEditValueChanged
+          TabOrder = 1
+          Transparent = True
+          Width = 69
+        end
+        object cgbDataMatrizProdutiva: TdxCheckGroupBox
+          Left = 3
+          Top = 43
+          Caption = 'Filtrar por Per'#237'odo'
+          CheckBox.Checked = False
+          TabOrder = 2
+          Height = 61
+          Width = 280
+          object Label6: TLabel
+            Left = 6
+            Top = 17
+            Width = 53
+            Height = 13
+            Caption = 'Data Inicial'
+          end
+          object Label7: TLabel
+            Left = 143
+            Top = 17
+            Width = 48
+            Height = 13
+            Caption = 'Data Final'
+          end
+          object EditDataInicialMatrizProdutiva: TcxDateEdit
+            Left = 4
+            Top = 30
+            Enabled = False
+            Properties.ShowTime = False
+            TabOrder = 0
+            Width = 135
+          end
+          object EditDataFinalMatrizProdutiva: TcxDateEdit
+            Left = 141
+            Top = 30
+            Enabled = False
+            Properties.ShowTime = False
+            TabOrder = 1
+            Width = 135
           end
         end
       end
@@ -802,8 +871,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object DBPipeSaldoEspecieppField1: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeSaldoEspecieppField2: TppField
@@ -889,7 +958,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 10
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField
@@ -1576,7 +1645,444 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   end
   object dsPrevisaoProducao: TDataSource
     DataSet = cdsPrevisaoProducao
-    Left = 440
-    Top = 184
+    Left = 512
+    Top = 192
+  end
+  object DBPipeMatrizProdutiva: TppDBPipeline
+    DataSource = dsMatriz_Produtiva
+    UserName = 'DBPipeMatrizProdutiva'
+    Left = 376
+    Top = 256
+    object DBPipeMatrizProdutivappField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_ESPECIE'
+      FieldName = 'ID_ESPECIE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeMatrizProdutivappField2: TppField
+      FieldAlias = 'ESPECIE'
+      FieldName = 'ESPECIE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 1
+    end
+    object DBPipeMatrizProdutivappField3: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_MATRIZ'
+      FieldName = 'ID_MATRIZ'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 2
+    end
+    object DBPipeMatrizProdutivappField4: TppField
+      FieldAlias = 'MATRIZ'
+      FieldName = 'MATRIZ'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 3
+    end
+    object DBPipeMatrizProdutivappField5: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'TAXA'
+      FieldName = 'TAXA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 4
+    end
+  end
+  object ppMatrizProdutiva: TppReport
+    AutoStop = False
+    DataPipeline = DBPipeMatrizProdutiva
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    Units = utMillimeters
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 376
+    Top = 328
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeMatrizProdutiva'
+    object ppHeaderBand2: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 21696
+      mmPrintPosition = 0
+      object pplbTituloMatrizProdutiva: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label1'
+        Caption = 'Matrizes mais Produtivas'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5028
+        mmLeft = 74613
+        mmTop = 15610
+        mmWidth = 50535
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppDBImage2: TppDBImage
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 1588
+        mmTop = 0
+        mmWidth = 30692
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppSystemVariable4: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 182562
+        mmTop = 13439
+        mmWidth = 14287
+        BandType = 0
+        LayerName = BandLayer3
+      end
+      object ppSystemVariable5: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 185209
+        mmTop = 16880
+        mmWidth = 11113
+        BandType = 0
+        LayerName = BandLayer3
+      end
+    end
+    object ppDetailBand2: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5821
+      mmPrintPosition = 0
+      object ppDBText13: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText101'
+        DataField = 'MATRIZ'
+        DataPipeline = DBPipeMatrizProdutiva
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMatrizProdutiva'
+        mmHeight = 4763
+        mmLeft = 2115
+        mmTop = 0
+        mmWidth = 165894
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText17: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText11'
+        DataField = 'TAXA'
+        DataPipeline = DBPipeMatrizProdutiva
+        DisplayFormat = ',0.00 %'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'DBPipeMatrizProdutiva'
+        mmHeight = 4763
+        mmLeft = 169862
+        mmTop = 0
+        mmWidth = 25665
+        BandType = 4
+        LayerName = BandLayer3
+      end
+    end
+    object ppFooterBand2: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+      object ppLabel22: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 81227
+        mmTop = 794
+        mmWidth = 7409
+        BandType = 8
+        LayerName = BandLayer3
+      end
+      object ppDBText18: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText7'
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 89435
+        mmTop = 265
+        mmWidth = 41275
+        BandType = 8
+        LayerName = BandLayer3
+      end
+      object ppDBText19: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText1'
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 2111
+        mmTop = 0
+        mmWidth = 76994
+        BandType = 8
+        LayerName = BandLayer3
+      end
+      object ppSystemVariable6: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable2'
+        VarType = vtPageNo
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 193939
+        mmTop = 529
+        mmWidth = 1587
+        BandType = 8
+        LayerName = BandLayer3
+      end
+    end
+    object ppSummaryBand2: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppGroup1: TppGroup
+      BreakName = 'ID_ESPECIE'
+      DataPipeline = DBPipeMatrizProdutiva
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      KeepTogether = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group1'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeMatrizProdutiva'
+      NewFile = False
+      object ppGroupHeaderBand1: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 9790
+        mmPrintPosition = 0
+        object ppShape2: TppShape
+          DesignLayer = ppDesignLayer2
+          UserName = 'Shape2'
+          Brush.Color = clGray
+          mmHeight = 4763
+          mmLeft = 1852
+          mmTop = 529
+          mmWidth = 194998
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppDBText20: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText5'
+          DataField = 'ESPECIE'
+          DataPipeline = DBPipeMatrizProdutiva
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 11
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeMatrizProdutiva'
+          mmHeight = 4763
+          mmLeft = 2383
+          mmTop = 529
+          mmWidth = 193940
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppLabel16: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label3'
+          Caption = 'Nome da Matriz'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 2117
+          mmTop = 5556
+          mmWidth = 22489
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+        object ppLabel21: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label9'
+          Caption = 'Taxa de Produ'#231#227'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taRightJustified
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 169863
+          mmTop = 5556
+          mmWidth = 25664
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer3
+        end
+      end
+      object ppGroupFooterBand1: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
+    end
+    object raCodeModule3: TraCodeModule
+      ProgramStream = {00}
+    end
+    object ppDesignLayers2: TppDesignLayers
+      object ppDesignLayer2: TppDesignLayer
+        UserName = 'BandLayer3'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList2: TppParameterList
+    end
+  end
+  object dsMatriz_Produtiva: TDataSource
+    DataSet = dmRelatorio.cdsMatriz_Produtiva
+    Left = 376
+    Top = 192
   end
 end

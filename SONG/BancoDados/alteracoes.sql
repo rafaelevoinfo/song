@@ -181,3 +181,65 @@ end^
 
 SET TERM ; ^
 
+
+
+ALTER TABLE "LOG"
+    ADD ID_TABELA INTEGER NOT NULL;
+
+alter table "LOG"
+alter ID position 1;
+
+alter table "LOG"
+alter ID_TABELA position 2;
+
+alter table "LOG"
+alter TABELA position 3;
+
+alter table "LOG"
+alter OPERACAO position 4;
+
+alter table "LOG"
+alter USUARIO position 5;
+
+alter table "LOG"
+alter DATA_HORA position 6;
+
+
+
+
+COMMENT ON COLUMN "LOG".TABELA IS
+'Tabela que sofreu a alteracao';
+
+
+
+COMMENT ON COLUMN "LOG".OPERACAO IS
+'Operacao realizada.
+Valores do enum TUpdateKind';
+
+
+
+COMMENT ON COLUMN "LOG".USUARIO IS
+'Usuario que realizou a acao';
+
+
+
+COMMENT ON COLUMN "LOG".DATA_HORA IS
+'Data e hora da acao';
+
+
+
+COMMENT ON COLUMN "LOG".ID_TABELA IS
+'ID da tabela que sofreu a acao';
+
+
+
+DROP INDEX LOG_IDX2;
+
+
+
+CREATE INDEX LOG_IDX3
+ON "LOG" (ID_TABELA,TABELA,OPERACAO);
+
+CREATE INDEX LOG_IDX2
+ON "LOG" (ID_TABELA,TABELA);
+

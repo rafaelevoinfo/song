@@ -101,6 +101,12 @@ type
     cdsGasto_AtividadeVALOR: TBCDField;
     cdsGasto_AtividadeVALOR_PAGO: TFMTBCDField;
     cdsGasto_AtividadeCALC_STATUS: TStringField;
+    cdsMatriz_Produtiva: TRFClientDataSet;
+    cdsMatriz_ProdutivaID_ESPECIE: TIntegerField;
+    cdsMatriz_ProdutivaESPECIE: TStringField;
+    cdsMatriz_ProdutivaID_MATRIZ: TIntegerField;
+    cdsMatriz_ProdutivaMATRIZ: TStringField;
+    cdsMatriz_ProdutivaTAXA: TBCDField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
