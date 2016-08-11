@@ -355,6 +355,51 @@ type
     ppDBText52: TppDBText;
     ppLabel44: TppLabel;
     ppDBText53: TppDBText;
+    tabGastoPlanoContas: TcxTabSheet;
+    cgbProjetoGastoPlanoConta: TdxCheckGroupBox;
+    cbProjetoPlanoConta: TcxLookupComboBox;
+    chkTodosProjetoPlanoContas: TcxCheckBox;
+    cgbFundoPlanoConta: TdxCheckGroupBox;
+    cbFundoPlanoConta: TcxLookupComboBox;
+    chkTodosFundoPlanoContas: TcxCheckBox;
+    cbPlanoConta: TcxLookupComboBox;
+    Label10: TLabel;
+    chkTodosPlanoConta: TcxCheckBox;
+    dsGasto_Plano_Contas: TDataSource;
+    DBPipeGasto_Plano_Contas: TppDBPipeline;
+    ppGasto_Plano_Contas: TppReport;
+    ppHeaderBand8: TppHeaderBand;
+    ppLabel45: TppLabel;
+    ppDBImage8: TppDBImage;
+    ppSystemVariable22: TppSystemVariable;
+    ppSystemVariable23: TppSystemVariable;
+    ppDetailBand7: TppDetailBand;
+    ppDBText54: TppDBText;
+    ppDBText55: TppDBText;
+    ppDBText56: TppDBText;
+    ppFooterBand8: TppFooterBand;
+    ppLabel47: TppLabel;
+    ppDBText60: TppDBText;
+    ppDBText61: TppDBText;
+    ppSystemVariable24: TppSystemVariable;
+    ppSummaryBand5: TppSummaryBand;
+    ppGroup6: TppGroup;
+    ppGroupHeaderBand9: TppGroupHeaderBand;
+    ppShape7: TppShape;
+    ppLabel48: TppLabel;
+    ppDBText62: TppDBText;
+    ppLabel53: TppLabel;
+    ppGroupFooterBand8: TppGroupFooterBand;
+    ppDBCalc10: TppDBCalc;
+    ppDesignLayers8: TppDesignLayers;
+    ppDesignLayer8: TppDesignLayer;
+    ppParameterList8: TppParameterList;
+    ppGroup7: TppGroup;
+    ppGroupHeaderBand10: TppGroupHeaderBand;
+    ppGroupFooterBand9: TppGroupFooterBand;
+    ppLabel50: TppLabel;
+    ppDBText63: TppDBText;
+    ppDBCalc11: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -372,11 +417,18 @@ type
     procedure chkTodasAtividadesPropertiesEditValueChanged(Sender: TObject);
     procedure cbProjetoGastoAtividadePropertiesEditValueChanged(
       Sender: TObject);
+    procedure chkTodosPlanoContaPropertiesEditValueChanged(Sender: TObject);
+    procedure chkTodosFundoPlanoContasPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure chkTodosProjetoPlanoContasPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure tabGastoPlanoContasShow(Sender: TObject);
   private
     procedure ppvGerarRelatorioGastoAreaAtuacao;
     procedure ppvGerarRelatorioTransferenciaRecurso;
     procedure ppvGerarlRelatorioGastoFornecedor;
     procedure ppvGerarRelatorioGastoAtividade;
+    procedure ppvGerarRelatorioGastoPlanoContas;
   public
     { Public declarations }
   end;
@@ -462,8 +514,42 @@ begin
   else if pcPrincipal.ActivePage = tabGastoFornecedor then
     ppvGerarlRelatorioGastoFornecedor
   else if pcPrincipal.ActivePage = tabGastoAtividade then
-    ppvGerarRelatorioGastoAtividade;
+    ppvGerarRelatorioGastoAtividade
+  else if pcPrincipal.ActivePage = tabGastoPlanoContas then
+    ppvGerarRelatorioGastoPlanoContas;
 
+end;
+
+procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoPlanoContas;
+var
+  vaIdProjeto, vaIdFundo, vaIdPlanoContas: Integer;
+begin
+  dmRelatorio.cdsGasto_Plano_Contas.ppuLimparParametros;
+
+  vaIdProjeto := fprExtrairValor(chkTodosProjetoPlanoContas, cbProjetoPlanoConta, 'Informe o projeto');
+  vaIdFundo := fprExtrairValor(chkTodosFundoPlanoContas, cbFundoPlanoConta, 'Informe a conta');
+
+  if (vaIdProjeto > 0) and (vaIdFundo > 0) then
+    dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametros([TParametros.coProjeto, TParametros.coFundo], [vaIdProjeto, vaIdFundo], TOperadores.coOR)
+  else
+    begin
+      if vaIdFundo <> 0 then
+        dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+
+      if (vaIdProjeto <> 0) then
+        dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
+    end;
+
+  vaIdPlanoContas := fprExtrairValor(chkTodosPlanoConta, cbPlanoConta, 'Informe o plano de contas');
+  if vaIdPlanoContas > 0 then
+    dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametro(TParametros.coPlanoConta, vaIdPlanoContas);
+
+  if dmRelatorio.cdsGasto_Plano_Contas.Parametros.Count = 0 then
+    dmRelatorio.cdsGasto_Plano_Contas.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'])
+  else
+    dmRelatorio.cdsGasto_Plano_Contas.ppuDataRequest();
+
+  ppGasto_Plano_Contas.PrintReport;
 end;
 
 procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoAtividade;
@@ -481,8 +567,8 @@ begin
     dmRelatorio.cdsGasto_Atividade.ppuAddParametro(TParametros.coAtividade, vaIdAtividade);
 
   dmRelatorio.cdsGasto_Atividade.ppuDataRequest();
-  ppLbProjetoGastoAtividade.Text := 'Projeto: '+cbProjetoGastoAtividade.Text;
-  
+  ppLbProjetoGastoAtividade.Text := 'Projeto: ' + cbProjetoGastoAtividade.Text;
+
   ppGasto_Atividade.PrintReport;
 end;
 
@@ -554,6 +640,13 @@ begin
     dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, false);
 end;
 
+procedure TfrmRelatorioFinanceiro.tabGastoPlanoContasShow(Sender: TObject);
+begin
+  inherited;
+  if not dmLookup.cdslkPlano_Contas.Active then
+    dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [0], TOperadores.coAnd, true); // tipo despesa
+end;
+
 procedure TfrmRelatorioFinanceiro.tabTransferenciaRecursoShow(Sender: TObject);
 begin
   inherited;
@@ -623,6 +716,27 @@ procedure TfrmRelatorioFinanceiro.chkTodosFundoMovimentacaoPropertiesEditValueCh
 begin
   inherited;
   cbFundoMovimentacao.Enabled := not chkTodosFundoMovimentacao.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodosFundoPlanoContasPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbFundoPlanoConta.Enabled := not chkTodosFundoPlanoContas.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodosPlanoContaPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbPlanoConta.Enabled := not chkTodosPlanoConta.Checked;
+end;
+
+procedure TfrmRelatorioFinanceiro.chkTodosProjetoPlanoContasPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbProjetoPlanoConta.Enabled := not chkTodosProjetoPlanoContas.Checked;
 end;
 
 procedure TfrmRelatorioFinanceiro.chkTodosProjetoRubricasPropertiesEditValueChanged(

@@ -107,9 +107,22 @@ type
     cdsMatriz_ProdutivaID_MATRIZ: TIntegerField;
     cdsMatriz_ProdutivaMATRIZ: TStringField;
     cdsMatriz_ProdutivaTAXA: TBCDField;
+    cdsGasto_Plano_Contas: TRFClientDataSet;
+    cdsGasto_Plano_ContasID: TIntegerField;
+    cdsGasto_Plano_ContasNOME: TStringField;
+    cdsGasto_Plano_ContasID_PROJETO: TIntegerField;
+    cdsGasto_Plano_ContasPROJETO: TStringField;
+    cdsGasto_Plano_ContasID_FUNDO: TIntegerField;
+    cdsGasto_Plano_ContasNOME_FUNDO: TStringField;
+    cdsGasto_Plano_ContasID_RUBRICA: TIntegerField;
+    cdsGasto_Plano_ContasRUBRICA: TStringField;
+    cdsGasto_Plano_ContasVALOR_TOTAL: TBCDField;
+    cdsGasto_Plano_ContasVALOR_PAGO: TBCDField;
+    cdsGasto_Plano_ContasCALC_ORIGEM: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
+    procedure cdsGasto_Plano_ContasCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -139,6 +152,16 @@ begin
           break;
         end;
     end;
+end;
+
+procedure TdmRelatorio.cdsGasto_Plano_ContasCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  if cdsGasto_Plano_ContasPROJETO.AsString <> '' then
+    cdsGasto_Plano_ContasCALC_ORIGEM.AsString := 'Projeto: '+cdsGasto_Plano_ContasPROJETO.AsString
+  else if cdsGasto_Plano_ContasNOME_FUNDO.AsString <> '' then
+    cdsGasto_Plano_ContasCALC_ORIGEM.AsString := 'Conta: '+cdsGasto_Plano_ContasNOME_FUNDO.AsString;
+
 end;
 
 procedure TdmRelatorio.cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);

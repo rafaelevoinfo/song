@@ -647,4 +647,87 @@ inherited dmRelatorio: TdmRelatorio
       Size = 2
     end
   end
+  object cdsGasto_Plano_Contas: TRFClientDataSet
+    Active = True
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqGasto_Plano_Contas'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    OnCalcFields = cdsGasto_Plano_ContasCalcFields
+    Left = 616
+    Top = 168
+    object cdsGasto_Plano_ContasID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsGasto_Plano_ContasNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsGasto_Plano_ContasID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object cdsGasto_Plano_ContasPROJETO: TStringField
+      FieldName = 'PROJETO'
+      Origin = 'PROJETO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_ContasID_FUNDO: TIntegerField
+      FieldName = 'ID_FUNDO'
+      Origin = 'ID_FUNDO'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object cdsGasto_Plano_ContasNOME_FUNDO: TStringField
+      FieldName = 'NOME_FUNDO'
+      Origin = 'NOME_FUNDO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_ContasID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object cdsGasto_Plano_ContasRUBRICA: TStringField
+      FieldName = 'RUBRICA'
+      Origin = 'RUBRICA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_ContasVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_Plano_ContasVALOR_PAGO: TBCDField
+      FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_Plano_ContasCALC_ORIGEM: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_ORIGEM'
+      Size = 200
+      Calculated = True
+    end
+  end
 end

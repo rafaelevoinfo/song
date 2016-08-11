@@ -958,4 +958,50 @@ inherited smRelatorio: TsmRelatorio
       Size = 2
     end
   end
+  object qGasto_Plano_Contas: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Plano_Contas.Id,'
+      '       Plano_Contas.Nome,'
+      '       Projeto.Id as Id_Projeto,'
+      '       Projeto.Nome as Projeto,'
+      '       Fundo.Id as Id_Fundo,'
+      '       Fundo.Nome as Nome_Fundo,'
+      '       Rubrica.Id as Id_Rubrica,'
+      '       Rubrica.Nome as Rubrica,'
+      '       sum(Conta_Pagar.Valor_Total) as Valor_Total,'
+      '       sum(Conta_Pagar_Parcela.Valor) as Valor_Pago'
+      'from Plano_Contas'
+      
+        'inner join Conta_Pagar on (Conta_Pagar.Id_Plano_Contas = Plano_C' +
+        'ontas.Id)'
+      
+        'inner join Conta_Pagar_Parcela on (Conta_Pagar_Parcela.Id_Conta_' +
+        'Pagar = Conta_Pagar.Id)'
+      
+        'inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Conta_' +
+        'Pagar = Conta_Pagar.Id)'
+      
+        'left join Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = Pr' +
+        'ojeto.Id)'
+      
+        'left join Rubrica on (Conta_Pagar_Vinculo.Id_Rubrica_Origem = Ru' +
+        'brica.Id)'
+      'left join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)'
+      'where ((Plano_Contas.Tipo = 0) or (Plano_Contas.Tipo is null))'
+      '&AND'
+      
+        'group by Plano_Contas.Id, Plano_Contas.Nome, Projeto.Id, Projeto' +
+        '.Nome, Rubrica.Id, Rubrica.Nome, Fundo.Id, Fundo.Nome'
+      
+        'order by Projeto.Nome, Fundo.Nome, Rubrica.Nome, Plano_Contas.No' +
+        'me')
+    Left = 472
+    Top = 136
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+  end
 end

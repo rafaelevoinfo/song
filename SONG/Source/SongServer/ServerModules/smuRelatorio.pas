@@ -103,6 +103,7 @@ type
     qMatriz_ProdutivaID_MATRIZ: TIntegerField;
     qMatriz_ProdutivaMATRIZ: TStringField;
     qMatriz_ProdutivaTAXA: TBCDField;
+    qGasto_Plano_Contas: TRFQuery;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -114,14 +115,13 @@ type
 var
   smRelatorio: TsmRelatorio;
 
-
-
 implementation
 
 uses
   dmuPrincipal;
 
 {$R *.dfm}
+
 
 function TsmRelatorio.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
@@ -138,7 +138,7 @@ begin
   else if (ipTabela = 'TRANSFERENCIA_FINANCEIRA') then
     begin
       if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
       else if ipParam.Name = TParametros.coTipo then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coPessoa then
@@ -147,7 +147,8 @@ begin
   else if (ipTabela = 'GASTO_FORNECEDOR') then
     begin
       if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, 'CONTA_PAGAR_PARCELA', 'DATA_PAGAMENTO', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
+        Result := TSQLGenerator.fpuFilterData(Result, 'CONTA_PAGAR_PARCELA', 'DATA_PAGAMENTO', TUtils.fpuExtrairData(vaValor, 0),
+          TUtils.fpuExtrairData(vaValor, 1), vaOperador)
       else if ipParam.Name = TParametros.coFornecedor then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR', 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador);
     end
@@ -163,14 +164,34 @@ begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'LOTE_SEMENTE', 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, 'LOG', 'DATA_HORA', TUtils.fpuExtrairData(vaValor,0),TUtils.fpuExtrairData(vaValor,1), vaOperador)
+        Result := TSQLGenerator.fpuFilterData(Result, 'LOG', 'DATA_HORA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
+    end
+  else if (ipTabela = 'GASTO_PLANO_CONTAS') then
+    begin
+      if ipParam.Name = TParametros.coProjeto then
+        begin
+          if vaValor.ToInteger = -1 then
+            Result := Result + ' (Projeto.id is null) '+vaOperador
+          else
+            Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO', 'ID', vaValor.ToInteger, vaOperador)
+        end
+      else if ipParam.Name = TParametros.coFundo then
+      begin
+        if vaValor.ToInteger = -1 then
+          Result := Result + ' (Fundo.id is null) ' + vaOperador
+        else
+          Result := TSQLGenerator.fpuFilterInteger(Result, 'FUNDO', 'ID', vaValor.ToInteger, vaOperador)
+      end
+      else if ipParam.Name = TParametros.coPlanoConta then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'PLANO_CONTAS', 'ID', vaValor.ToInteger, vaOperador);
     end;
 end;
 
 procedure TsmRelatorio.qPatrimonioCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime,qPatrimonioVALOR_INICIAL.AsFloat,qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
+  qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime, qPatrimonioVALOR_INICIAL.AsFloat,
+    qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
 end;
 
 end.
