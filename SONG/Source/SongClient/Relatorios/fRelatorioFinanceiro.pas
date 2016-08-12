@@ -299,7 +299,6 @@ type
     ppDBText43: TppDBText;
     ppSystemVariable18: TppSystemVariable;
     ppSummaryBand3: TppSummaryBand;
-    ppLabel35: TppLabel;
     ppDBCalc8: TppDBCalc;
     raCodeModule6: TraCodeModule;
     ppDesignLayers6: TppDesignLayers;
@@ -400,6 +399,7 @@ type
     ppLabel50: TppLabel;
     ppDBText63: TppDBText;
     ppDBCalc11: TppDBCalc;
+    ppDBCalc12: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);

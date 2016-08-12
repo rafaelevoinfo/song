@@ -7,7 +7,7 @@ uses
   cxClasses, Data.DB, Datasnap.DBClient, cxDBEditRepository,
   uClientDataSet, dmuPrincipal, uTypes, cxImageComboBox, uUtils,
   cxDBLookupEdit, cxDBLookupComboBox, System.IOUtils,
-  System.RegularExpressions;
+  System.RegularExpressions, Winapi.Windows;
 
 type
   TdmLookup = class(TdmBasico)

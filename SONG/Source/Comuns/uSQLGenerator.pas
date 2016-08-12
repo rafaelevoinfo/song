@@ -7,6 +7,8 @@ uses
 
 type
   TSQLGenerator = class
+  private
+
   public
     class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValor: Integer; ipOperador: String = ' And '): string; overload;
     class function fpuFilterInteger(ipWhere, ipTabela, ipCampo: string; ipValores: Array of Integer): string; overload;
@@ -19,7 +21,8 @@ type
       overload;
 
     class function fpuFilterData(ipWhere, ipTabela, ipCampo: string; ipDataInicial, ipDataFinal: TDateTime; ipOperador: String): string;
-
+    class function fpuFilterDataSemHora(ipWhere, ipTabela, ipCampo: string;
+      ipDataInicial, ipDataFinal: TDateTime; ipOperador: String): string;
   end;
 
 implementation
@@ -44,6 +47,21 @@ var
 begin
   vaDataInicial := QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', ipDataInicial));
   vaDataFinal := QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', ipDataFinal));
+
+  if ipWhere <> '' then
+    Result := Format('(%s (%s.%s between %s and %s)) %s', [ipWhere, ipTabela, ipCampo, vaDataInicial, vaDataFinal, ipOperador])
+  else
+    Result := Format('(%s.%s between %s and %s) %s', [ipTabela, ipCampo, vaDataInicial, vaDataFinal, ipOperador]);
+
+end;
+
+class function TSQLGenerator.fpuFilterDataSemHora(ipWhere, ipTabela, ipCampo: string;
+  ipDataInicial, ipDataFinal: TDateTime; ipOperador: String): string;
+var
+  vaDataInicial, vaDataFinal: string;
+begin
+  vaDataInicial := QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataInicial));
+  vaDataFinal := QuotedStr(FormatDateTime('dd.mm.yyyy', ipDataFinal));
 
   if ipWhere <> '' then
     Result := Format('(%s (%s.%s between %s and %s)) %s', [ipWhere, ipTabela, ipCampo, vaDataInicial, vaDataFinal, ipOperador])

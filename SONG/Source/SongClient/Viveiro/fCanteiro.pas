@@ -13,15 +13,15 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxGroupBox,
   cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit,
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuViveiro, cxDBEdit,
-  System.TypInfo, uControleAcesso, dmuPrincipal, uTypes;
+  System.TypInfo, uControleAcesso, dmuPrincipal, uTypes, Vcl.ExtDlgs;
 
 type
-    TCanteiro = class(TModelo)
+  TCanteiro = class(TModelo)
   private
     FNome: String;
     procedure SetNome(const Value: String);
-  published
-      property Nome:String read FNome write SetNome;
+  public
+    property Nome: String read FNome write SetNome;
   end;
 
   TfrmCanteiro = class(TfrmBasicoCrud)
@@ -31,10 +31,10 @@ type
     EditNome: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
   private
-    dmViveiro:TdmViveiro;
+    dmViveiro: TdmViveiro;
   protected
-    function fprGetPermissao: String;override;
-    procedure pprValidarDados;override;
+    function fprGetPermissao: String; override;
+    procedure pprValidarDados; override;
     { Private declarations }
   public
     { Public declarations }

@@ -6,6 +6,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   TextHeight = 13
   inherited pnConfiguracoes: TPanel
     Width = 899
+    ExplicitWidth = 899
     object pcPrincipal: TcxPageControl
       Left = 0
       Top = 0
@@ -14,9 +15,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabGastoPlanoContas
+      Properties.ActivePage = tabGastoFornecedor
       Properties.CustomButtons.Buttons = <>
-      ExplicitWidth = 855
       ClientRectBottom = 622
       ClientRectLeft = 2
       ClientRectRight = 894
@@ -24,7 +24,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos'
         ImageIndex = 0
-        ExplicitWidth = 848
         object cgbProjetoSaldo: TdxCheckGroupBox
           Left = 4
           Top = 3
@@ -81,7 +80,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabMovimentacao: TcxTabSheet
         Caption = 'Movimenta'#231#227'o Financeira'
         ImageIndex = 2
-        ExplicitWidth = 848
         object cgbData: TdxCheckGroupBox
           Left = 4
           Top = 118
@@ -206,7 +204,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabSaldoRubrica: TcxTabSheet
         Caption = 'Saldo de Rubricas'
         ImageIndex = 1
-        ExplicitWidth = 848
         object lb1: TLabel
           Left = 6
           Top = 3
@@ -235,7 +232,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabGastoAreaAtuacao: TcxTabSheet
         Caption = 'Gasto por '#193'rea de Atua'#231#227'o'
         ImageIndex = 3
-        ExplicitWidth = 848
         object cgbDataGasto: TdxCheckGroupBox
           Left = 1
           Top = 3
@@ -277,7 +273,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Caption = 'Transfer'#234'ncia de Recursos'
         ImageIndex = 4
         OnShow = tabTransferenciaRecursoShow
-        ExplicitWidth = 848
         object Label5: TLabel
           Left = 4
           Top = 72
@@ -362,7 +357,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Caption = 'Gastos por Fornecedor'
         ImageIndex = 5
         OnShow = tabGastoFornecedorShow
-        ExplicitWidth = 848
         object Label8: TLabel
           Left = 7
           Top = 8
@@ -395,6 +389,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           object EditDataInicialFornecedor: TcxDateEdit
             Left = 4
             Top = 30
+            Properties.SaveTime = False
             Properties.ShowTime = False
             TabOrder = 0
             Width = 135
@@ -428,7 +423,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object tabGastoAtividade: TcxTabSheet
         Caption = 'Gasto por Atividade'
         ImageIndex = 6
-        ExplicitWidth = 848
         object Label9: TLabel
           Left = 6
           Top = 3
@@ -476,8 +470,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Caption = 'Gastos por Plano de Contas'
         ImageIndex = 7
         OnShow = tabGastoPlanoContasShow
-        ExplicitLeft = 34
-        ExplicitTop = 65
         object Label10: TLabel
           Left = 7
           Top = 118
@@ -559,6 +551,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   end
   inherited pnOrganizacao: TPanel
     Width = 1025
+    ExplicitWidth = 1025
     inherited chkTodasOrganizacoes: TcxCheckBox
       ExplicitHeight = 19
     end
@@ -3539,7 +3532,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppDetailBand3: TppDetailBand
       Background1.Brush.Style = bsClear
-      Background2.Brush.Color = clTeal
       mmBottomOffset = 0
       mmHeight = 5292
       mmPrintPosition = 0
@@ -3986,42 +3978,50 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 312
     Top = 304
     object DBPipeGasto_FornecedorppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR_PAGO'
       FieldName = 'VALOR_PAGO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeGasto_FornecedorppField2: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_FORNECEDOR'
       FieldName = 'ID_FORNECEDOR'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeGasto_FornecedorppField3: TppField
       FieldAlias = 'NOME_FANTASIA'
       FieldName = 'NOME_FANTASIA'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeGasto_FornecedorppField4: TppField
       FieldAlias = 'RAZAO_SOCIAL'
       FieldName = 'RAZAO_SOCIAL'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeGasto_FornecedorppField5: TppField
       FieldAlias = 'CPF_CNPJ'
       FieldName = 'CPF_CNPJ'
-      FieldLength = 18
-      DisplayWidth = 18
+      FieldLength = 0
+      DisplayWidth = 0
       Position = 4
     end
     object DBPipeGasto_FornecedorppField6: TppField
@@ -4185,7 +4185,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppDetailBand5: TppDetailBand
       Background1.Brush.Style = bsClear
-      Background2.Brush.Color = clTeal
       mmBottomOffset = 0
       mmHeight = 4763
       mmPrintPosition = 0
@@ -4203,7 +4202,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeGasto_Fornecedor'
         mmHeight = 4763
-        mmLeft = 66413
+        mmLeft = 2114
         mmTop = 0
         mmWidth = 33338
         BandType = 4
@@ -4224,7 +4223,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeGasto_Fornecedor'
         mmHeight = 4763
-        mmLeft = 148960
+        mmLeft = 101332
         mmTop = 0
         mmWidth = 45773
         BandType = 4
@@ -4245,7 +4244,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeGasto_Fornecedor'
         mmHeight = 4763
-        mmLeft = 101865
+        mmLeft = 149493
         mmTop = 0
         mmWidth = 45773
         BandType = 4
@@ -4385,7 +4384,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           FormField = False
           Transparent = True
           mmHeight = 3705
-          mmLeft = 148167
+          mmLeft = 100539
           mmTop = 6085
           mmWidth = 15610
           BandType = 3
@@ -4404,7 +4403,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           FormField = False
           Transparent = True
           mmHeight = 3705
-          mmLeft = 66411
+          mmLeft = 2112
           mmTop = 6085
           mmWidth = 27781
           BandType = 3
@@ -4444,7 +4443,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           FormField = False
           Transparent = True
           mmHeight = 3705
-          mmLeft = 101865
+          mmLeft = 149493
           mmTop = 6085
           mmWidth = 15610
           BandType = 3
@@ -4458,25 +4457,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmBottomOffset = 0
         mmHeight = 4498
         mmPrintPosition = 0
-        object ppLabel35: TppLabel
-          DesignLayer = ppDesignLayer6
-          UserName = 'Label14'
-          Caption = 'Total Pago:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = [fsBold]
-          FormField = False
-          Transparent = True
-          mmHeight = 4234
-          mmLeft = 123561
-          mmTop = 0
-          mmWidth = 19314
-          BandType = 5
-          GroupNo = 0
-          LayerName = BandLayer8
-        end
         object ppDBCalc8: TppDBCalc
           DesignLayer = ppDesignLayer6
           UserName = 'DBCalc1'
@@ -4492,9 +4472,31 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Transparent = True
           DataPipelineName = 'DBPipeGasto_Fornecedor'
           mmHeight = 4498
-          mmLeft = 148166
+          mmLeft = 100538
           mmTop = 0
           mmWidth = 46567
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer8
+        end
+        object ppDBCalc12: TppDBCalc
+          DesignLayer = ppDesignLayer6
+          UserName = 'DBCalc12'
+          DataField = 'VALOR_TOTAL'
+          DataPipeline = DBPipeGasto_Fornecedor
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup4
+          Transparent = True
+          DataPipelineName = 'DBPipeGasto_Fornecedor'
+          mmHeight = 4498
+          mmLeft = 149490
+          mmTop = 0
+          mmWidth = 45244
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer8

@@ -147,7 +147,7 @@ begin
   else if (ipTabela = 'GASTO_FORNECEDOR') then
     begin
       if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, 'CONTA_PAGAR_PARCELA', 'DATA_PAGAMENTO', TUtils.fpuExtrairData(vaValor, 0),
+        Result := TSQLGenerator.fpuFilterDataSemHora(Result, 'CONTA_PAGAR_PARCELA', 'DATA_PAGAMENTO', TUtils.fpuExtrairData(vaValor, 0),
           TUtils.fpuExtrairData(vaValor, 1), vaOperador)
       else if ipParam.Name = TParametros.coFornecedor then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR', 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador);
