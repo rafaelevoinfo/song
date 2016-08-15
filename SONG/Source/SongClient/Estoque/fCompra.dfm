@@ -1,12 +1,12 @@
 inherited frmCompra: TfrmCompra
-  ActiveControl = cbItem
+  ActiveControl = cbFornecedor
   Caption = 'Compras'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -220,12 +220,14 @@ inherited frmCompra: TfrmCompra
               ExplicitWidth = 965
               ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
+                Width = 965
+                ExplicitWidth = 965
               end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
+                Height = 170
+                ExplicitWidth = 965
+                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -268,10 +270,6 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 200
@@ -289,8 +287,8 @@ inherited frmCompra: TfrmCompra
           Caption = 'Data da Compra'
           FocusControl = EditDataCompra
         end
-        object lbl3: TLabel
-          Left = 664
+        object lbStatusEntrega: TLabel
+          Left = 828
           Top = 8
           Width = 87
           Height = 13
@@ -322,7 +320,7 @@ inherited frmCompra: TfrmCompra
           FocusControl = EditValorFrete
         end
         object Label6: TLabel
-          Left = 813
+          Left = 661
           Top = 8
           Width = 91
           Height = 13
@@ -349,7 +347,7 @@ inherited frmCompra: TfrmCompra
           Width = 121
         end
         object cbStatusEntrega: TcxDBImageComboBox
-          Left = 662
+          Left = 826
           Top = 24
           RepositoryItem = dmLookup.repIcbStatusEntrega
           DataBinding.DataField = 'STATUS_ENTREGA'
@@ -359,7 +357,7 @@ inherited frmCompra: TfrmCompra
           Width = 145
         end
         object EditDescricao: TcxDBMemo
-          Left = 5
+          Left = 7
           Top = 67
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
@@ -388,7 +386,7 @@ inherited frmCompra: TfrmCompra
           Width = 121
         end
         object EditCodigoRastreio: TcxDBTextEdit
-          Left = 813
+          Left = 661
           Top = 24
           DataBinding.DataField = 'CODIGO_RASTREIO'
           DataBinding.DataSource = dsMaster

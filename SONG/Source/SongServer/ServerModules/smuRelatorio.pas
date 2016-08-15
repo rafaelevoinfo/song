@@ -104,6 +104,28 @@ type
     qMatriz_ProdutivaMATRIZ: TStringField;
     qMatriz_ProdutivaTAXA: TBCDField;
     qGasto_Plano_Contas: TRFQuery;
+    qLote_Muda_Comprado: TRFQuery;
+    qLote_Muda_CompradoID: TIntegerField;
+    qLote_Muda_CompradoNOME: TStringField;
+    qLote_Muda_CompradoID_ESPECIE: TIntegerField;
+    qLote_Muda_CompradoESPECIE: TStringField;
+    qLote_Muda_CompradoID_FORNECEDOR: TIntegerField;
+    qLote_Muda_CompradoFORNECEDOR: TStringField;
+    qLote_Muda_CompradoQTDE_INICIAL: TIntegerField;
+    qLote_Muda_CompradoVALOR_UNITARIO: TBCDField;
+    qLote_Muda_CompradoVALOR: TBCDField;
+    qLote_Muda_CompradoDATA: TDateField;
+    qLote_Semente_Comprado: TRFQuery;
+    qLote_Semente_CompradoID: TIntegerField;
+    qLote_Semente_CompradoNOME: TStringField;
+    qLote_Semente_CompradoID_ESPECIE: TIntegerField;
+    qLote_Semente_CompradoESPECIE: TStringField;
+    qLote_Semente_CompradoID_FORNECEDOR: TIntegerField;
+    qLote_Semente_CompradoFORNECEDOR: TStringField;
+    qLote_Semente_CompradoQTDE: TBCDField;
+    qLote_Semente_CompradoVALOR_UNITARIO: TBCDField;
+    qLote_Semente_CompradoVALOR: TBCDField;
+    qLote_Semente_CompradoDATA: TDateField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -126,7 +148,7 @@ uses
 function TsmRelatorio.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
 var
-  vaValor, vaOperador: string;
+  vaTabela, vaValor, vaOperador: string;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -171,19 +193,26 @@ begin
       if ipParam.Name = TParametros.coProjeto then
         begin
           if vaValor.ToInteger = -1 then
-            Result := Result + ' (Projeto.id is null) '+vaOperador
+            Result := Result + ' (Projeto.id is null) ' + vaOperador
           else
             Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO', 'ID', vaValor.ToInteger, vaOperador)
         end
       else if ipParam.Name = TParametros.coFundo then
-      begin
-        if vaValor.ToInteger = -1 then
-          Result := Result + ' (Fundo.id is null) ' + vaOperador
-        else
-          Result := TSQLGenerator.fpuFilterInteger(Result, 'FUNDO', 'ID', vaValor.ToInteger, vaOperador)
-      end
+        begin
+          if vaValor.ToInteger = -1 then
+            Result := Result + ' (Fundo.id is null) ' + vaOperador
+          else
+            Result := TSQLGenerator.fpuFilterInteger(Result, 'FUNDO', 'ID', vaValor.ToInteger, vaOperador)
+        end
       else if ipParam.Name = TParametros.coPlanoConta then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'PLANO_CONTAS', 'ID', vaValor.ToInteger, vaOperador);
+    end
+  else if (ipTabela = 'LOTE_SEMENTE_COMPRADO') or (ipTabela = 'LOTE_MUDA_COMPRADO') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, 'COMPRA', 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
+      else if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
     end;
 end;
 

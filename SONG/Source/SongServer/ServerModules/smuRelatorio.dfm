@@ -1004,4 +1004,222 @@ inherited smRelatorio: TsmRelatorio
         Name = 'AND'
       end>
   end
+  object qLote_Muda_Comprado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Muda.Id,'
+      '       Lote_Muda.Nome,'
+      '       Lote_Muda.Id_Especie,'
+      '       Especie.Nome as Especie,'
+      '       Compra.Id_Fornecedor,'
+      '       case'
+      
+        '         when Fin_For_Cli.Nome_Fantasia is null then Fin_For_Cli' +
+        '.Razao_Social'
+      
+        '         else Fin_For_Cli.Razao_Social || '#39' ('#39' || Fin_For_Cli.No' +
+        'me_Fantasia || '#39')'#39
+      '       end as Fornecedor,'
+      ''
+      '       Lote_Muda.Qtde_Inicial,'
+      '       compra_item.valor_unitario,'
+      '       (compra_item.valor_unitario * compra_item.qtde) as valor,'
+      '       Lote_Muda.Data'
+      'from Lote_Muda'
+      
+        'inner join Compra_Item on (Compra_Item.Id = Lote_Muda.Id_Compra_' +
+        'Item)'
+      'inner join Compra on (Compra.Id = Compra_Item.Id_Compra)'
+      'inner join Especie on (Lote_Muda.Id_Especie = Especie.Id)'
+      
+        'inner join Fin_For_Cli on (Compra.Id_Fornecedor = Fin_For_Cli.Id' +
+        ')'
+      'where Lote_Muda.Id_Compra_Item is not null'
+      '&AND'
+      'order by Lote_Muda.Id_Especie  ')
+    Left = 600
+    Top = 136
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+    object qLote_Muda_CompradoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLote_Muda_CompradoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object qLote_Muda_CompradoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qLote_Muda_CompradoESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qLote_Muda_CompradoID_FORNECEDOR: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qLote_Muda_CompradoFORNECEDOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FORNECEDOR'
+      Origin = 'FORNECEDOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 203
+    end
+    object qLote_Muda_CompradoQTDE_INICIAL: TIntegerField
+      FieldName = 'QTDE_INICIAL'
+      Origin = 'QTDE_INICIAL'
+      Required = True
+    end
+    object qLote_Muda_CompradoVALOR_UNITARIO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Muda_CompradoVALOR: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object qLote_Muda_CompradoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+  end
+  object qLote_Semente_Comprado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Semente.Id,'
+      '       Lote_Semente.Nome,'
+      '       Lote_Semente.Id_Especie,'
+      '       Especie.Nome as Especie,'
+      '       Compra.Id_Fornecedor,'
+      '       case'
+      
+        '         when Fin_For_Cli.Nome_Fantasia is null then Fin_For_Cli' +
+        '.Razao_Social'
+      
+        '         else Fin_For_Cli.Razao_Social || '#39' ('#39' || Fin_For_Cli.No' +
+        'me_Fantasia || '#39')'#39
+      '       end as Fornecedor,'
+      ''
+      '       Lote_Semente.qtde,'
+      '       compra_item.valor_unitario,'
+      '       (compra_item.valor_unitario * compra_item.qtde) as valor,'
+      '       Lote_Semente.Data'
+      'from Lote_Semente'
+      
+        'inner join Compra_Item on (Compra_Item.Id = Lote_Semente.Id_Comp' +
+        'ra_Item)'
+      'inner join Compra on (Compra.Id = Compra_Item.Id_Compra)'
+      'inner join Especie on (Lote_Semente.Id_Especie = Especie.Id)'
+      
+        'inner join Fin_For_Cli on (Compra.Id_Fornecedor = Fin_For_Cli.Id' +
+        ')'
+      'where Lote_Semente.Id_Compra_Item is not null '
+      '&AND'
+      'order by Lote_Semente.Id_Especie  ')
+    Left = 744
+    Top = 136
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+    object qLote_Semente_CompradoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLote_Semente_CompradoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 30
+    end
+    object qLote_Semente_CompradoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qLote_Semente_CompradoESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qLote_Semente_CompradoID_FORNECEDOR: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qLote_Semente_CompradoFORNECEDOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FORNECEDOR'
+      Origin = 'FORNECEDOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 203
+    end
+    object qLote_Semente_CompradoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Semente_CompradoVALOR_UNITARIO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Semente_CompradoVALOR: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object qLote_Semente_CompradoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+  end
 end

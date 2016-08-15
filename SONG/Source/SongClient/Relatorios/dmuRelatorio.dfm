@@ -1,7 +1,7 @@
 inherited dmRelatorio: TdmRelatorio
   OldCreateOrder = True
-  Height = 253
-  Width = 711
+  Height = 387
+  Width = 878
   object cdsSaldo_Rubrica: TRFClientDataSet
     Aggregates = <>
     Params = <
@@ -728,6 +728,116 @@ inherited dmRelatorio: TdmRelatorio
       FieldName = 'CALC_ORIGEM'
       Size = 200
       Calculated = True
+    end
+  end
+  object cdsLote_Muda_Comprado: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLote_Muda_Comprado'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 64
+    Top = 280
+    object cdsLote_Muda_CompradoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsLote_Muda_CompradoNOME: TStringField
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsLote_Muda_CompradoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+    object cdsLote_Muda_CompradoESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsLote_Muda_CompradoID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      ReadOnly = True
+    end
+    object cdsLote_Muda_CompradoFORNECEDOR: TStringField
+      FieldName = 'FORNECEDOR'
+      ReadOnly = True
+      Size = 203
+    end
+    object cdsLote_Muda_CompradoQTDE_INICIAL: TIntegerField
+      FieldName = 'QTDE_INICIAL'
+      Required = True
+    end
+    object cdsLote_Muda_CompradoVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Muda_CompradoVALOR: TBCDField
+      FieldName = 'VALOR'
+      ReadOnly = True
+      Precision = 18
+    end
+    object cdsLote_Muda_CompradoDATA: TDateField
+      FieldName = 'DATA'
+      Required = True
+    end
+  end
+  object cdsLote_Semente_Comprado: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLote_Semente_Comprado'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 208
+    Top = 272
+    object cdsLote_Semente_CompradoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsLote_Semente_CompradoNOME: TStringField
+      FieldName = 'NOME'
+      Required = True
+      Size = 30
+    end
+    object cdsLote_Semente_CompradoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+    object cdsLote_Semente_CompradoESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsLote_Semente_CompradoID_FORNECEDOR: TIntegerField
+      FieldName = 'ID_FORNECEDOR'
+      ReadOnly = True
+    end
+    object cdsLote_Semente_CompradoFORNECEDOR: TStringField
+      FieldName = 'FORNECEDOR'
+      ReadOnly = True
+      Size = 203
+    end
+    object cdsLote_Semente_CompradoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Semente_CompradoVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Semente_CompradoVALOR: TBCDField
+      FieldName = 'VALOR'
+      ReadOnly = True
+      Precision = 18
+    end
+    object cdsLote_Semente_CompradoDATA: TDateField
+      FieldName = 'DATA'
+      Required = True
     end
   end
 end

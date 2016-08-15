@@ -57,7 +57,7 @@ type
     cbComprador: TcxDBLookupComboBox;
     lbl2: TLabel;
     EditDataCompra: TcxDBDateEdit;
-    lbl3: TLabel;
+    lbStatusEntrega: TLabel;
     cbStatusEntrega: TcxDBImageComboBox;
     lbl4: TLabel;
     EditDescricao: TcxDBMemo;
@@ -115,6 +115,7 @@ type
     procedure ppvCarregarItens;
     procedure ppvAdicionarFornecedor;
     procedure ppvCarregarFornecedores;
+    procedure ppvConfigurarComponentes(ipIncluindo:Boolean);
 
   protected
     function fprGetPermissao: string; override;
@@ -130,6 +131,9 @@ type
 
     procedure pprCarregarDadosModelo; override;
     procedure pprCarregarDadosModeloDetail; override;
+
+    procedure pprBeforeIncluir;override;
+    procedure pprBeforeAlterar;override;
   public
     procedure ppuIncluir; override;
   public const
@@ -358,6 +362,18 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estCompra));
 end;
 
+procedure TfrmCompra.pprBeforeAlterar;
+begin
+  inherited;
+  ppvConfigurarComponentes(false);
+end;
+
+procedure TfrmCompra.ppvConfigurarComponentes(ipIncluindo:Boolean);
+begin
+  lbStatusEntrega.Visible := not ipIncluindo;
+  cbStatusEntrega.Visible := lbStatusEntrega.Visible;
+end;
+
 procedure TfrmCompra.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
 var
   vaIdsExcluir: String;
@@ -537,6 +553,13 @@ begin
 
         end;
     end;
+end;
+
+procedure TfrmCompra.pprBeforeIncluir;
+begin
+  inherited;
+  //nao vamos deixar alterar o valor padrao durante a insercao
+  ppvConfigurarComponentes(true);
 end;
 
 procedure TfrmCompra.pprBeforeSalvarDetail;

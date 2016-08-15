@@ -24,7 +24,7 @@ type
     Label2: TLabel;
     cbSaldoEspecie: TcxLookupComboBox;
     chkSaldoTodasEspecies: TcxCheckBox;
-    ppSaldoEspecie: TppReport;
+    ppSaldo_Especie: TppReport;
     ppParameterList4: TppParameterList;
     DBPipeSaldoEspecie: TppDBPipeline;
     ppHeaderBand4: TppHeaderBand;
@@ -70,7 +70,7 @@ type
     cdsEspecieSelecionadaTAXA_GERMINACAO: TBCDField;
     cdsEspecieSelecionadaQTDE_MUDA_PRONTA: TIntegerField;
     cdsEspecieSelecionadaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
-    ppPrevisaoProducao: TppReport;
+    ppPrevisao_Producao: TppReport;
     ppHeaderBand1: TppHeaderBand;
     ppLabel6: TppLabel;
     ppDBImage1: TppDBImage;
@@ -124,10 +124,10 @@ type
     ppDBCalc2: TppDBCalc;
     tabProducaoMatriz: TcxTabSheet;
     lb1: TLabel;
-    cbEspecieProducaoMatriz: TcxLookupComboBox;
-    chkTodasEspecieProducaoMatriz: TcxCheckBox;
+    cbEspecieMatrizProdutiva: TcxLookupComboBox;
+    chkTodasEspecieMatrizProdutiva: TcxCheckBox;
     DBPipeMatrizProdutiva: TppDBPipeline;
-    ppMatrizProdutiva: TppReport;
+    ppMatriz_Produtiva: TppReport;
     ppHeaderBand2: TppHeaderBand;
     pplbTituloMatrizProdutiva: TppLabel;
     ppDBImage2: TppDBImage;
@@ -159,6 +159,98 @@ type
     EditDataInicialMatrizProdutiva: TcxDateEdit;
     EditDataFinalMatrizProdutiva: TcxDateEdit;
     ppShape2: TppShape;
+    tabLoteMudaComprado: TcxTabSheet;
+    tabLoteSementeComprado: TcxTabSheet;
+    ppLote_Muda_Comprado: TppReport;
+    ppHeaderBand3: TppHeaderBand;
+    pplbTituloLoteMudaComprado: TppLabel;
+    ppDBImage3: TppDBImage;
+    ppSystemVariable7: TppSystemVariable;
+    ppSystemVariable8: TppSystemVariable;
+    ppLabel17: TppLabel;
+    ppLabel18: TppLabel;
+    ppLabel19: TppLabel;
+    ppLabel20: TppLabel;
+    ppLabel26: TppLabel;
+    ppDetailBand3: TppDetailBand;
+    ppDBText12: TppDBText;
+    ppDBText14: TppDBText;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppFooterBand3: TppFooterBand;
+    ppLabel27: TppLabel;
+    ppDBText23: TppDBText;
+    ppDBText24: TppDBText;
+    ppSystemVariable9: TppSystemVariable;
+    ppSummaryBand3: TppSummaryBand;
+    raCodeModule4: TraCodeModule;
+    ppDesignLayers3: TppDesignLayers;
+    ppDesignLayer3: TppDesignLayer;
+    ppParameterList3: TppParameterList;
+    DBPipeLote_Muda_Comprado: TppDBPipeline;
+    dsLote_Muda_Comprado: TDataSource;
+    ppDBText21: TppDBText;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand2: TppGroupHeaderBand;
+    ppGroupFooterBand2: TppGroupFooterBand;
+    ppDBText22: TppDBText;
+    ppShape1: TppShape;
+    Label4: TLabel;
+    cbEspecieLoteMudaComprada: TcxLookupComboBox;
+    cgbLoteMudaComprada: TdxCheckGroupBox;
+    Label5: TLabel;
+    Label8: TLabel;
+    EditDataInicialLoteMudaComprada: TcxDateEdit;
+    EditDataFinalLoteMudaComprada: TcxDateEdit;
+    chkTodosEspecieLoteMudaComprada: TcxCheckBox;
+    Label9: TLabel;
+    cbEspecieLoteSementeComprado: TcxLookupComboBox;
+    cgbLoteSementeComprado: TdxCheckGroupBox;
+    Label10: TLabel;
+    Label11: TLabel;
+    EditDataInicialLoteSementeComprado: TcxDateEdit;
+    EditDataFinalLoteSementeComprado: TcxDateEdit;
+    chkTodosEspecieLoteSementeComprado: TcxCheckBox;
+    ppDBCalc3: TppDBCalc;
+    ppDBCalc4: TppDBCalc;
+    ppLabel15: TppLabel;
+    ppLote_Semente_Comprado: TppReport;
+    ppHeaderBand5: TppHeaderBand;
+    ppLbTituloLoteSementeComprado: TppLabel;
+    ppDBImage5: TppDBImage;
+    ppSystemVariable13: TppSystemVariable;
+    ppSystemVariable14: TppSystemVariable;
+    ppDetailBand5: TppDetailBand;
+    ppDBText27: TppDBText;
+    ppDBText30: TppDBText;
+    ppDBText31: TppDBText;
+    ppDBText32: TppDBText;
+    ppDBText33: TppDBText;
+    ppFooterBand5: TppFooterBand;
+    ppLabel28: TppLabel;
+    ppDBText34: TppDBText;
+    ppDBText35: TppDBText;
+    ppSystemVariable15: TppSystemVariable;
+    ppSummaryBand4: TppSummaryBand;
+    ppDBCalc5: TppDBCalc;
+    ppLabel29: TppLabel;
+    ppGroup3: TppGroup;
+    ppGroupHeaderBand3: TppGroupHeaderBand;
+    ppShape3: TppShape;
+    ppLabel30: TppLabel;
+    ppLabel31: TppLabel;
+    ppLabel32: TppLabel;
+    ppLabel33: TppLabel;
+    ppLabel34: TppLabel;
+    ppDBText36: TppDBText;
+    ppGroupFooterBand3: TppGroupFooterBand;
+    ppDBCalc6: TppDBCalc;
+    raCodeModule5: TraCodeModule;
+    ppDesignLayers5: TppDesignLayers;
+    ppDesignLayer5: TppDesignLayer;
+    ppParameterList5: TppParameterList;
+    DBPipeLote_Semente_Comprado: TppDBPipeline;
+    dsLote_Semente_Comprado: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
@@ -166,10 +258,17 @@ type
     procedure tabPrevisaoProducaoShow(Sender: TObject);
     procedure chkTodasEspecieProducaoMatrizPropertiesEditValueChanged(
       Sender: TObject);
+    procedure chkTodosEspecieLoteMudaCompradaPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure chkTodosEspecieLoteSementeCompradoPropertiesEditValueChanged(
+      Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
     procedure ppvConfigurarGrids;
     procedure ppvGerarPrevisao;
+    procedure ppvGerarRelatorio(ipTitulo: String; ipReport: TppReport;
+      ipCds: TRFClientDataSet; ipCheckGroup: TdxCheckGroupBox; ipDataInicial, ipDataFinal: TcxDateEdit;
+      ipComboEspecie: TcxLookupComboBox; ipCheckTodas:TcxCheckBox; ipLabelTitulo: TppLabel);
   public
     { Public declarations }
   end;
@@ -224,7 +323,7 @@ begin
         dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').Clear;
 
       dmRelatorio.cdsSaldo_Semente_Muda.Open;
-      ppSaldoEspecie.PrintReport;
+      ppSaldo_Especie.PrintReport;
     end
   else if pcPrincipal.ActivePage = tabPrevisaoProducao then
     begin
@@ -242,7 +341,7 @@ begin
 
       ppvGerarPrevisao;
 
-      ppPrevisaoProducao.PrintReport;
+      ppPrevisao_Producao.PrintReport;
       // TODO:Repensar isso aqui, talvez seja melhor criar dois campos a mais pra guardar as quantidades do que ter q limpar toda vez q gerar o relatorio
       // dmRelatorio.cdsTaxas_Especie.Close;
       // dmRelatorio.cdsTaxas_Especie.Open;
@@ -251,31 +350,47 @@ begin
     end
   else if pcPrincipal.ActivePage = tabProducaoMatriz then
     begin
-      vaIdEspecie := fprExtrairValor(chkTodasEspecieProducaoMatriz, cbEspecieProducaoMatriz, 'Informe a espécie desejada.');
+      ppvGerarRelatorio('Matrizes mais Produtivas', ppMatriz_Produtiva, dmRelatorio.cdsMatriz_Produtiva, cgbDataMatrizProdutiva,
+        EditDataInicialMatrizProdutiva, EditDataFinalMatrizProdutiva, cbEspecieMatrizProdutiva, chkTodasEspecieMatrizProdutiva, pplbTituloMatrizProdutiva);
+    end
+  else if pcPrincipal.ActivePage = tabLoteMudaComprado then
+    ppvGerarRelatorio('Mudas Compradas', ppLote_Muda_Comprado, dmRelatorio.cdsLote_Muda_Comprado, cgbLoteMudaComprada,
+      EditDataInicialLoteMudaComprada, EditDataFinalLoteMudaComprada, cbEspecieLoteMudaComprada, chkTodosEspecieLoteMudaComprada, pplbTituloLoteMudaComprado)
+  else if pcPrincipal.ActivePage = tabLoteSementeComprado then
+    ppvGerarRelatorio('Sementes Compradas', ppLote_Semente_Comprado, dmRelatorio.cdsLote_Semente_Comprado, cgbLoteSementeComprado,
+      EditDataInicialLoteSementeComprado, EditDataFinalLoteSementeComprado, cbEspecieLoteSementeComprado, chkTodosEspecieLoteSementeComprado, ppLbTituloLoteSementeComprado);
+end;
 
-      dmRelatorio.cdsMatriz_Produtiva.ppuLimparParametros;
+procedure TfrmRelatorioViveiro.ppvGerarRelatorio(ipTitulo: String; ipReport: TppReport;
+ipCds: TRFClientDataSet; ipCheckGroup: TdxCheckGroupBox; ipDataInicial, ipDataFinal: TcxDateEdit;
+ipComboEspecie: TcxLookupComboBox; ipCheckTodas: TcxCheckBox; ipLabelTitulo: TppLabel);
+var
+  vaIdEspecie: Integer;
+begin
+  vaIdEspecie := fprExtrairValor(ipCheckTodas, ipComboEspecie, 'Informe a espécie desejada.');
 
-      if vaIdEspecie > 0 then
-        dmRelatorio.cdsMatriz_Produtiva.ppuAddParametro(TParametros.coEspecie, vaIdEspecie);
-      if cgbDataMatrizProdutiva.CheckBox.Checked then
-        begin
-          if VarIsNull(EditDataInicialMatrizProdutiva.EditValue) or VarIsNull(EditDataFinalMatrizProdutiva.EditValue) then
-            raise Exception.Create('Informe uma data inicial e final para gerar o relatório.');
+  ipCds.ppuLimparParametros;
 
-          dmRelatorio.cdsMatriz_Produtiva.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicialMatrizProdutiva.Date, EditDataFinalMatrizProdutiva.Date));
+  if vaIdEspecie > 0 then
+    ipCds.ppuAddParametro(TParametros.coEspecie, vaIdEspecie);
 
-          pplbTituloMatrizProdutiva.Caption := 'Matrizes mais Produtivas (' +
-            DateToStr(EditDataInicialMatrizProdutiva.Date) + ' - ' +
-            DateToStr(EditDataFinalMatrizProdutiva.Date) + ')';
-        end
-      else
-        pplbTituloMatrizProdutiva.Caption := 'Matrizes mais Produtivas';
+  if ipCheckGroup.CheckBox.Checked then
+    begin
+      if VarIsNull(ipDataInicial.EditValue) or VarIsNull(ipDataFinal.EditValue) then
+        raise Exception.Create('Informe uma data inicial e final para gerar o relatório.');
 
-      dmRelatorio.cdsMatriz_Produtiva.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+      ipCds.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(ipDataInicial.Date,
+        ipDataFinal.Date));
 
-      dmRelatorio.cdsMatriz_Produtiva.ppuDataRequest;
-      ppMatrizProdutiva.PrintReport;
-    end;
+      ipLabelTitulo.Caption := ipTitulo + ' (' + DateToStr(ipDataInicial.Date) + ' - ' + DateToStr(ipDataFinal.Date) + ')';
+    end
+  else
+    ipLabelTitulo.Caption := ipTitulo;
+
+  ipCds.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+
+  ipCds.ppuDataRequest;
+  ipReport.PrintReport;
 end;
 
 procedure TfrmRelatorioViveiro.Ac_Informacao_Previsao_ProducaoExecute(
@@ -299,7 +414,21 @@ procedure TfrmRelatorioViveiro.chkTodasEspecieProducaoMatrizPropertiesEditValueC
   Sender: TObject);
 begin
   inherited;
-  cbEspecieProducaoMatriz.Enabled := not chkTodasEspecieProducaoMatriz.Checked;
+  cbEspecieMatrizProdutiva.Enabled := not chkTodasEspecieMatrizProdutiva.Checked;
+end;
+
+procedure TfrmRelatorioViveiro.chkTodosEspecieLoteMudaCompradaPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbEspecieLoteMudaComprada.Enabled := not chkTodosEspecieLoteMudaComprada.Checked;
+end;
+
+procedure TfrmRelatorioViveiro.chkTodosEspecieLoteSementeCompradoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbEspecieLoteSementeComprado.Enabled := not chkTodosEspecieLoteSementeComprado.Checked;
 end;
 
 procedure TfrmRelatorioViveiro.FormCreate(Sender: TObject);
@@ -314,7 +443,7 @@ begin
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
   cdsEspecieSelecionada.CreateDataSet;
 
-  EditDataInicialMatrizProdutiva.Date := IncYear(now,-1);
+  EditDataInicialMatrizProdutiva.Date := IncYear(now, -1);
   EditDataFinalMatrizProdutiva.Date := now;
 end;
 

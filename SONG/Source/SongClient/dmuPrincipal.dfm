@@ -3545,7 +3545,7 @@ object dmPrincipal: TdmPrincipal
           Value = 4
         end>
     end
-	object repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem
+    object repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem
       Properties.ImmediatePost = True
       Properties.Items = <
         item
