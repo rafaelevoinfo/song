@@ -186,8 +186,7 @@ begin
   PesquisaPadrao := Ord(tppTodos);
 
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
-  if not dmPrincipal.cdslkCidade.Active then
-    dmPrincipal.cdslkCidade.Open;
+  dmLookup.ppuCarregarCidades;
   // Essa tela tela é um caso especial, por isso precisei fazer isso
   dsDetail.DataSet := dmAdministrativo.cdsFundo;
 end;

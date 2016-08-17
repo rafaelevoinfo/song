@@ -262,6 +262,7 @@ type
     procedure ppuPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox; ipTipos: TRelacionamentosPessoa);
 
     procedure ppuAbrirCache(ipCds: TRFClientDataSet);
+    procedure ppuCarregarCidades();
   public const
     coCache = '\Cache\';
   end;
@@ -314,6 +315,16 @@ begin
     TDirectory.CreateDirectory(vaDiretorio);
 
   ipCds.SaveToFile(vaFile);
+end;
+
+procedure TdmLookup.ppuCarregarCidades;
+begin
+  if dmPrincipal.cdslkCidade.Active then
+    Exit;
+
+  dmPrincipal.cdslkCidade.ppuLimparParametros;
+  dmPrincipal.cdslkCidade.ppuAddParametro(TParametros.coTodos,'NAO_IMPORTA');
+  ppuAbrirCache(dmPrincipal.cdslkCidade);
 end;
 
 procedure TdmLookup.ppuCarregarPessoas(ipIdEspecifico: Integer; ipTipos: TRelacionamentosPessoa);

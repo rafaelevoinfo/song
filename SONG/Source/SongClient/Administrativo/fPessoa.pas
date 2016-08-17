@@ -163,8 +163,8 @@ begin
 
   dmLookup.cdslkPerfil.Open;
   ppvCarregarTipos;
-  if not dmPrincipal.cdslkCidade.Active then
-    dmPrincipal.cdslkCidade.Open;
+
+  dmLookup.ppuCarregarCidades;
 
   ppvConfigurarGrids;
 end;

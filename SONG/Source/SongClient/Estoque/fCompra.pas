@@ -725,7 +725,7 @@ begin
             vaLoteSemente.Data := dmEstoque.cdsCompraDATA.AsDateTime;
             vaLoteSemente.IdItemCompra := dmEstoque.cdsCompra_ItemID.AsInteger;
             vaLoteSemente.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
-            vaLoteSemente.Nome := 'Compra de Semente';
+            vaLoteSemente.Nome := 'Lote (Comprado)';
             vaLoteSemente.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
             vaLoteSemente.IdPessoaColetouComprou := dmEstoque.cdsCompraID_PESSOA_COMPROU.AsInteger;
 
@@ -759,7 +759,7 @@ begin
             vaLoteMuda.Data := dmEstoque.cdsCompraDATA.AsDateTime;
             vaLoteMuda.IdItemCompra := dmEstoque.cdsCompra_ItemID.AsInteger;
             vaLoteMuda.IdEspecie := dmEstoque.cdsCompra_ItemID_ESPECIE.AsInteger;
-            vaLoteMuda.Nome := 'Compra de Muda';
+            vaLoteMuda.Nome := 'Lote (Comprado)';
             vaLoteMuda.Qtde := dmEstoque.cdsCompra_ItemQTDE.AsFloat;
             vaLoteMuda.Status := smProntaPlantio;
 

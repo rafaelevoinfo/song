@@ -165,6 +165,8 @@ begin
   inherited;
   PesquisaPadrao := Ord(tppTodos);
 
+  dmLookup.ppuCarregarCidades;
+
   pprCarregarPessoas();
 end;
 

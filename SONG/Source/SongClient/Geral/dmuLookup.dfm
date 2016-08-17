@@ -329,11 +329,11 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          Width = 150
+          Width = 200
           FieldName = 'RAZAO_SOCIAL'
         end
         item
-          Width = 150
+          Width = 200
           FieldName = 'NOME_FANTASIA'
         end>
       Properties.ListSource = dslkFornecedor

@@ -400,6 +400,46 @@ type
     ppDBText63: TppDBText;
     ppDBCalc11: TppDBCalc;
     ppDBCalc12: TppDBCalc;
+    chkGastoPlanoContasDetalhado: TcxCheckBox;
+    dsGasto_Plano_Contas_Detalhado: TDataSource;
+    DBPipeGasto_Plano_Contas_Detalhado: TppDBPipeline;
+    ppGasto_Plano_Contas_Detalhado: TppReport;
+    ppHeaderBand9: TppHeaderBand;
+    ppLabel35: TppLabel;
+    ppDBImage9: TppDBImage;
+    ppSystemVariable25: TppSystemVariable;
+    ppSystemVariable26: TppSystemVariable;
+    ppDetailBand8: TppDetailBand;
+    ppDBText57: TppDBText;
+    ppDBText58: TppDBText;
+    ppDBText59: TppDBText;
+    ppFooterBand9: TppFooterBand;
+    ppLabel46: TppLabel;
+    ppDBText64: TppDBText;
+    ppDBText65: TppDBText;
+    ppSystemVariable27: TppSystemVariable;
+    ppSummaryBand6: TppSummaryBand;
+    ppGroup8: TppGroup;
+    ppGroupHeaderBand11: TppGroupHeaderBand;
+    ppShape8: TppShape;
+    ppDBText66: TppDBText;
+    ppGroupFooterBand10: TppGroupFooterBand;
+    ppGroup9: TppGroup;
+    ppGroupHeaderBand12: TppGroupHeaderBand;
+    ppLabel49: TppLabel;
+    ppLabel51: TppLabel;
+    ppLabel52: TppLabel;
+    ppDBText67: TppDBText;
+    ppGroupFooterBand11: TppGroupFooterBand;
+    ppDBCalc13: TppDBCalc;
+    ppDBCalc14: TppDBCalc;
+    ppDesignLayers9: TppDesignLayers;
+    ppDesignLayer9: TppDesignLayer;
+    ppParameterList9: TppParameterList;
+    ppGroup10: TppGroup;
+    ppGroupHeaderBand13: TppGroupHeaderBand;
+    ppGroupFooterBand12: TppGroupFooterBand;
+    ppDBText68: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -523,33 +563,46 @@ end;
 procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoPlanoContas;
 var
   vaIdProjeto, vaIdFundo, vaIdPlanoContas: Integer;
+  vaCds: TRFClientDataSet;
+  vaReport: TppReport;
 begin
-  dmRelatorio.cdsGasto_Plano_Contas.ppuLimparParametros;
+  if chkGastoPlanoContasDetalhado.Checked then
+    begin
+      vaCds := dmRelatorio.cdsGasto_Plano_Contas_Detalhado;
+      vaReport := ppGasto_Plano_Contas_Detalhado;
+    end
+  else
+    begin
+      vaCds := dmRelatorio.cdsGasto_Plano_Contas;
+      vaReport := ppGasto_Plano_Contas;
+    end;
+
+  vaCds.ppuLimparParametros;
 
   vaIdProjeto := fprExtrairValor(chkTodosProjetoPlanoContas, cbProjetoPlanoConta, 'Informe o projeto');
   vaIdFundo := fprExtrairValor(chkTodosFundoPlanoContas, cbFundoPlanoConta, 'Informe a conta');
 
   if (vaIdProjeto > 0) and (vaIdFundo > 0) then
-    dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametros([TParametros.coProjeto, TParametros.coFundo], [vaIdProjeto, vaIdFundo], TOperadores.coOR)
+    vaCds.ppuAddParametros([TParametros.coProjeto, TParametros.coFundo], [vaIdProjeto, vaIdFundo], TOperadores.coOR)
   else
     begin
       if vaIdFundo <> 0 then
-        dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+        vaCds.ppuAddParametro(TParametros.coFundo, vaIdFundo);
 
       if (vaIdProjeto <> 0) then
-        dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
+        vaCds.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
     end;
 
   vaIdPlanoContas := fprExtrairValor(chkTodosPlanoConta, cbPlanoConta, 'Informe o plano de contas');
   if vaIdPlanoContas > 0 then
-    dmRelatorio.cdsGasto_Plano_Contas.ppuAddParametro(TParametros.coPlanoConta, vaIdPlanoContas);
+    vaCds.ppuAddParametro(TParametros.coPlanoConta, vaIdPlanoContas);
 
-  if dmRelatorio.cdsGasto_Plano_Contas.Parametros.Count = 0 then
-    dmRelatorio.cdsGasto_Plano_Contas.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'])
+  if vaCds.Parametros.Count = 0 then
+    vaCds.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'])
   else
-    dmRelatorio.cdsGasto_Plano_Contas.ppuDataRequest();
+    vaCds.ppuDataRequest();
 
-  ppGasto_Plano_Contas.PrintReport;
+  vaReport.PrintReport;
 end;
 
 procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoAtividade;

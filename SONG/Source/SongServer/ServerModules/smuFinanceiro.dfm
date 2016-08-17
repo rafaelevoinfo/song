@@ -333,7 +333,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar.Observacao,'
       '       Conta_Pagar.Numero_Documento,'
       '       Conta_Pagar.id_compra,'
-      '       fin_for_cli.nome_fantasia as fornecedor,'
+      '       fin_for_cli.razao_social as fornecedor,'
       '       plano_contas.nome as plano_contas,'
       
         '       (banco.nome || '#39' - '#39'|| banco_conta_corrente.agencia||'#39'/'#39'|' +

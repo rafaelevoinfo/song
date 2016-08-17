@@ -25,7 +25,6 @@ type
     cdsSaldo_Semente_MudaNOME_CIENTIFICO: TStringField;
     cdsSaldo_Semente_MudaFAMILIA_BOTANICA: TStringField;
     cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE: TBCDField;
-    cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE: TStringField;
     cdsTaxas_Especie: TRFClientDataSet;
     cdsTaxas_EspecieID: TIntegerField;
     cdsTaxas_EspecieNOME: TStringField;
@@ -37,8 +36,6 @@ type
     cdsTaxas_EspecieTAXA_GERMINACAO: TBCDField;
     cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField;
     cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
-    cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA: TStringField;
-    cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO: TStringField;
     cdsTaxas_EspecieQTDE_SEMENTE_ESTOQUE: TBCDField;
     cdsTaxas_EspecieQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     cdsTaxas_EspecieQTDE_MUDA_PRONTA: TIntegerField;
@@ -141,6 +138,19 @@ type
     cdsLote_Muda_CompradoVALOR_UNITARIO: TBCDField;
     cdsLote_Muda_CompradoVALOR: TBCDField;
     cdsLote_Muda_CompradoDATA: TDateField;
+    cdsGasto_Plano_Contas_Detalhado: TRFClientDataSet;
+    cdsGasto_Plano_Contas_DetalhadoID: TIntegerField;
+    cdsGasto_Plano_Contas_DetalhadoNOME: TStringField;
+    cdsGasto_Plano_Contas_DetalhadoID_PROJETO: TIntegerField;
+    cdsGasto_Plano_Contas_DetalhadoPROJETO: TStringField;
+    cdsGasto_Plano_Contas_DetalhadoID_FUNDO: TIntegerField;
+    cdsGasto_Plano_Contas_DetalhadoNOME_FUNDO: TStringField;
+    cdsGasto_Plano_Contas_DetalhadoID_RUBRICA: TIntegerField;
+    cdsGasto_Plano_Contas_DetalhadoRUBRICA: TStringField;
+    cdsGasto_Plano_Contas_DetalhadoDESCRICAO: TStringField;
+    cdsGasto_Plano_Contas_DetalhadoVALOR_TOTAL: TBCDField;
+    cdsGasto_Plano_Contas_DetalhadoVALOR_PAGO: TBCDField;
+    cdsGasto_Plano_Contas_DetalhadoCALC_ORIGEM: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
@@ -179,20 +189,17 @@ end;
 procedure TdmRelatorio.cdsGasto_Plano_ContasCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  if cdsGasto_Plano_ContasPROJETO.AsString <> '' then
-    cdsGasto_Plano_ContasCALC_ORIGEM.AsString := 'Projeto: '+cdsGasto_Plano_ContasPROJETO.AsString
-  else if cdsGasto_Plano_ContasNOME_FUNDO.AsString <> '' then
-    cdsGasto_Plano_ContasCALC_ORIGEM.AsString := 'Conta: '+cdsGasto_Plano_ContasNOME_FUNDO.AsString;
+  if DataSet.FieldByName(cdsGasto_Plano_ContasPROJETO.FieldName).AsString <> '' then
+    DataSet.FieldByName(cdsGasto_Plano_ContasCALC_ORIGEM.FieldName).AsString := 'Projeto: '+DataSet.FieldByName(cdsGasto_Plano_ContasPROJETO.FieldName).AsString
+  else if DataSet.FieldByName(cdsGasto_Plano_ContasNOME_FUNDO.FieldName).AsString <> '' then
+    DataSet.FieldByName(cdsGasto_Plano_ContasCALC_ORIGEM.FieldName).AsString := 'Conta: '+DataSet.FieldByName(cdsGasto_Plano_ContasNOME_FUNDO.FieldName).AsString;
 
 end;
 
 procedure TdmRelatorio.cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE.AsString := FormatFloat(',0.00', cdsSaldo_Semente_MudaQTDE_SEMENTE_ESTOQUE.AsFloat);
-  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsString := FormatFloat(',0', cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO.AsInteger);
-  cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA.AsString := FormatFloat(',0', cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger);
-  cdsSaldo_Semente_MudaCALC_TOTAL_MUDA.AsInteger := cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO.AsInteger +
+  cdsSaldo_Semente_MudaCALC_TOTAL_MUDA.AsInteger := cdsSaldo_Semente_MudaQTDE_MUDA_DESENVOLVIMENTO.AsInteger +
     cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA.AsInteger;
 end;
 

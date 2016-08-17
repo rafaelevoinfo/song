@@ -309,7 +309,6 @@ inherited frmContaPagar: TfrmContaPagar
                   Left = 183
                   TabOrder = 2
                   ExplicitLeft = 183
-                  ExplicitTop = 2
                 end
                 object btnQuitarReabrir: TButton
                   Left = 82
@@ -324,6 +323,7 @@ inherited frmContaPagar: TfrmContaPagar
               end
               inherited cxGridRegistrosDetail: TcxGrid
                 Width = 975
+                Height = 170
                 ExplicitWidth = 975
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   OnCustomDrawCell = viewRegistrosDetailCustomDrawCell
@@ -579,8 +579,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -600,7 +598,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabVinculo
+          Properties.ActivePage = tabInfoGeral
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2

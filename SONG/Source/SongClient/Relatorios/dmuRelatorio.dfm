@@ -115,12 +115,6 @@ inherited dmRelatorio: TdmRelatorio
       Precision = 18
       Size = 2
     end
-    object cdsSaldo_Semente_MudaCALC_QTDE_SEMENTE: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'CALC_QTDE_SEMENTE'
-      Size = 60
-      Calculated = True
-    end
     object cdsSaldo_Semente_MudaQTDE_MUDA_PRONTA: TIntegerField
       FieldName = 'QTDE_MUDA_PRONTA'
       Origin = 'QTDE_MUDA_PRONTA'
@@ -130,18 +124,6 @@ inherited dmRelatorio: TdmRelatorio
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = []
-    end
-    object cdsSaldo_Semente_MudaCALC_QTDE_MUDA_PRONTA: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'CALC_QTDE_MUDA_PRONTA'
-      Size = 60
-      Calculated = True
-    end
-    object cdsSaldo_Semente_MudaCALC_QTDE_MUDA_DESENVOLVIMENTO: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'CALC_QTDE_MUDA_DESENVOLVIMENTO'
-      Size = 60
-      Calculated = True
     end
     object cdsSaldo_Semente_MudaCALC_TOTAL_MUDA: TIntegerField
       DisplayLabel = 'Total de Mudas'
@@ -648,7 +630,6 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsGasto_Plano_Contas: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqGasto_Plano_Contas'
@@ -838,6 +819,74 @@ inherited dmRelatorio: TdmRelatorio
     object cdsLote_Semente_CompradoDATA: TDateField
       FieldName = 'DATA'
       Required = True
+    end
+  end
+  object cdsGasto_Plano_Contas_Detalhado: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqGasto_Plano_Contas_Detalhado'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    OnCalcFields = cdsGasto_Plano_ContasCalcFields
+    Left = 624
+    Top = 248
+    object cdsGasto_Plano_Contas_DetalhadoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsGasto_Plano_Contas_DetalhadoNOME: TStringField
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsGasto_Plano_Contas_DetalhadoID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      ReadOnly = True
+    end
+    object cdsGasto_Plano_Contas_DetalhadoPROJETO: TStringField
+      FieldName = 'PROJETO'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_Contas_DetalhadoID_FUNDO: TIntegerField
+      FieldName = 'ID_FUNDO'
+      ReadOnly = True
+    end
+    object cdsGasto_Plano_Contas_DetalhadoNOME_FUNDO: TStringField
+      FieldName = 'NOME_FUNDO'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_Contas_DetalhadoID_RUBRICA: TIntegerField
+      FieldName = 'ID_RUBRICA'
+      ReadOnly = True
+    end
+    object cdsGasto_Plano_Contas_DetalhadoRUBRICA: TStringField
+      FieldName = 'RUBRICA'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_Contas_DetalhadoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsGasto_Plano_Contas_DetalhadoVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_Plano_Contas_DetalhadoVALOR_PAGO: TBCDField
+      FieldName = 'VALOR_PAGO'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsGasto_Plano_Contas_DetalhadoCALC_ORIGEM: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_ORIGEM'
+      Size = 200
+      Calculated = True
     end
   end
 end

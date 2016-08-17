@@ -222,7 +222,7 @@ begin
       dmViveiro.cdsLote_MudaSALDO.AsInteger := dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger;
     end;
 
-  if not (dmViveiro.cdsLote_Muda.State in [dsEdit, dsInsert]) then
+  if not(dmViveiro.cdsLote_Muda.State in [dsEdit, dsInsert]) then
     dmViveiro.cdsLote_Muda.Edit;
 
   dmViveiro.cdsLote_MudaNOME_ESPECIE.AsString := cbEspecie.Text;
@@ -371,6 +371,13 @@ begin
   if dmViveiro.cdsLote_MudaDATA.IsNull then
     dmViveiro.cdsLote_MudaDATA.AsDateTime := Now;
 
+  if dmViveiro.cdsLote_MudaID.IsNull then
+    pprPreencherCamposPadroes(dmViveiro.cdsLote_Muda);
+
+  if dmViveiro.cdsLote_MudaNOME.AsString = '' then
+    dmViveiro.cdsLote_MudaNOME.AsString := 'Lote ' + dmViveiro.cdsLote_MudaID.AsString
+  else
+    dmViveiro.cdsLote_MudaNOME.AsString := dmViveiro.cdsLote_MudaNOME.AsString + ' ' + dmViveiro.cdsLote_MudaID.AsString;
 end;
 
 procedure TfrmLoteMuda.ppuRetornar(ipAtualizar: Boolean);

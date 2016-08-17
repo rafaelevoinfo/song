@@ -126,6 +126,18 @@ type
     qLote_Semente_CompradoVALOR_UNITARIO: TBCDField;
     qLote_Semente_CompradoVALOR: TBCDField;
     qLote_Semente_CompradoDATA: TDateField;
+    qGasto_Plano_Contas_Detalhado: TRFQuery;
+    qGasto_Plano_Contas_DetalhadoID: TIntegerField;
+    qGasto_Plano_Contas_DetalhadoNOME: TStringField;
+    qGasto_Plano_Contas_DetalhadoID_PROJETO: TIntegerField;
+    qGasto_Plano_Contas_DetalhadoPROJETO: TStringField;
+    qGasto_Plano_Contas_DetalhadoID_FUNDO: TIntegerField;
+    qGasto_Plano_Contas_DetalhadoNOME_FUNDO: TStringField;
+    qGasto_Plano_Contas_DetalhadoID_RUBRICA: TIntegerField;
+    qGasto_Plano_Contas_DetalhadoRUBRICA: TStringField;
+    qGasto_Plano_Contas_DetalhadoDESCRICAO: TStringField;
+    qGasto_Plano_Contas_DetalhadoVALOR_TOTAL: TBCDField;
+    qGasto_Plano_Contas_DetalhadoVALOR_PAGO: TBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
@@ -148,7 +160,7 @@ uses
 function TsmRelatorio.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
 var
-  vaTabela, vaValor, vaOperador: string;
+  vaValor, vaOperador: string;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -188,7 +200,7 @@ begin
       else if ipParam.Name = TParametros.coData then
         Result := TSQLGenerator.fpuFilterData(Result, 'LOG', 'DATA_HORA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
     end
-  else if (ipTabela = 'GASTO_PLANO_CONTAS') then
+  else if (ipTabela = 'GASTO_PLANO_CONTAS') or (ipTabela = 'GASTO_PLANO_CONTAS_DETALHADO') then
     begin
       if ipParam.Name = TParametros.coProjeto then
         begin

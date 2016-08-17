@@ -6,6 +6,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -256,12 +257,14 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
               ExplicitWidth = 965
               ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
+                Width = 965
+                ExplicitWidth = 965
               end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
+                Height = 170
+                ExplicitWidth = 965
+                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -303,10 +306,6 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 7
@@ -590,7 +589,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         MaintainAspectRatio = False
         Stretch = True
         DataField = 'LOGO'
-        DataPipeline = frmRelatorioFinanceiro.DBPipeOrganizacao
+        DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
         ParentDataPipeline = False
         DataPipelineName = 'DBPipeOrganizacao'
@@ -749,7 +748,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         DesignLayer = ppDesignLayer2
         UserName = 'DBText7'
         DataField = 'CNPJ'
-        DataPipeline = frmRelatorioFinanceiro.DBPipeOrganizacao
+        DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -770,7 +769,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         DesignLayer = ppDesignLayer2
         UserName = 'DBText1'
         DataField = 'NOME'
-        DataPipeline = frmRelatorioFinanceiro.DBPipeOrganizacao
+        DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'

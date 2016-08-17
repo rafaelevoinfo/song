@@ -291,6 +291,7 @@ inherited dmViveiro: TdmViveiro
       Size = 100
     end
     object cdsLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField
+      DisplayLabel = 'Id do Lote de Semente de Origem'
       FieldName = 'ID_LOTE_SEMENTE_ORIGEM'
       ProviderFlags = [pfInUpdate]
     end

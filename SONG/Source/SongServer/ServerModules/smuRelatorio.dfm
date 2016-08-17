@@ -976,8 +976,8 @@ inherited smRelatorio: TsmRelatorio
         'inner join Conta_Pagar on (Conta_Pagar.Id_Plano_Contas = Plano_C' +
         'ontas.Id)'
       
-        'inner join Conta_Pagar_Parcela on (Conta_Pagar_Parcela.Id_Conta_' +
-        'Pagar = Conta_Pagar.Id)'
+        'left join Conta_Pagar_Parcela on (Conta_Pagar_Parcela.Id_Conta_P' +
+        'agar = Conta_Pagar.Id and Conta_Pagar_Parcela.status = 1)'
       
         'inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Conta_' +
         'Pagar = Conta_Pagar.Id)'
@@ -1220,6 +1220,143 @@ inherited smRelatorio: TsmRelatorio
       FieldName = 'DATA'
       Origin = '"DATA"'
       Required = True
+    end
+  end
+  object qGasto_Plano_Contas_Detalhado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Plano_Contas.Id,'
+      '       Plano_Contas.Nome,'
+      '       Projeto.Id as Id_Projeto,'
+      '       Projeto.Nome as Projeto,'
+      '       Fundo.Id as Id_Fundo,'
+      '       Fundo.Nome as Nome_Fundo,'
+      '       Rubrica.Id as Id_Rubrica,'
+      '       Rubrica.Nome as Rubrica,'
+      '       Conta_Pagar.Descricao,'
+      '       Conta_Pagar.Valor_Total,'
+      '       sum(Conta_Pagar_Parcela.Valor) as Valor_Pago'
+      'from Plano_Contas'
+      
+        'inner join Conta_Pagar on (Conta_Pagar.Id_Plano_Contas = Plano_C' +
+        'ontas.Id)'
+      
+        'left join Conta_Pagar_Parcela on (Conta_Pagar_Parcela.Id_Conta_P' +
+        'agar = Conta_Pagar.Id and Conta_Pagar_Parcela.status = 1)'
+      
+        'inner join Conta_Pagar_Vinculo on (Conta_Pagar_Vinculo.Id_Conta_' +
+        'Pagar = Conta_Pagar.Id)'
+      
+        'left join Projeto on (Conta_Pagar_Vinculo.Id_Projeto_Origem = Pr' +
+        'ojeto.Id)'
+      
+        'left join Rubrica on (Conta_Pagar_Vinculo.Id_Rubrica_Origem = Ru' +
+        'brica.Id)'
+      'left join Fundo on (Fundo.Id = Conta_Pagar_Vinculo.Id_Fundo)'
+      'where ((Plano_Contas.Tipo = 0) or (Plano_Contas.Tipo is null))'
+      '&AND'
+      'group by Plano_Contas.Id,'
+      '         Plano_Contas.Nome,'
+      '         Projeto.Id,'
+      '         Projeto.Nome ,'
+      '         Fundo.Id,'
+      '         Fundo.Nome,'
+      '         Rubrica.Id,'
+      '         Rubrica.Nome,'
+      '         Conta_Pagar.Descricao,'
+      '         Conta_Pagar.Valor_Total'
+      
+        'order by Projeto.Nome, Fundo.Nome, Rubrica.Nome, Plano_Contas.No' +
+        'me')
+    Left = 472
+    Top = 216
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+    object qGasto_Plano_Contas_DetalhadoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qGasto_Plano_Contas_DetalhadoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object qGasto_Plano_Contas_DetalhadoID_PROJETO: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qGasto_Plano_Contas_DetalhadoPROJETO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PROJETO'
+      Origin = 'PROJETO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_Plano_Contas_DetalhadoID_FUNDO: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_FUNDO'
+      Origin = 'ID_FUNDO'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qGasto_Plano_Contas_DetalhadoNOME_FUNDO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_FUNDO'
+      Origin = 'NOME_FUNDO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_Plano_Contas_DetalhadoID_RUBRICA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_RUBRICA'
+      Origin = 'ID_RUBRICA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qGasto_Plano_Contas_DetalhadoRUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA'
+      Origin = 'RUBRICA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_Plano_Contas_DetalhadoDESCRICAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qGasto_Plano_Contas_DetalhadoVALOR_TOTAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qGasto_Plano_Contas_DetalhadoVALOR_PAGO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
   end
 end

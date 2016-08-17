@@ -616,7 +616,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         FormField = False
         Transparent = True
         mmHeight = 3704
-        mmLeft = 84929
+        mmLeft = 85724
         mmTop = 22225
         mmWidth = 21696
         BandType = 0
@@ -634,7 +634,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         FormField = False
         Transparent = True
         mmHeight = 3704
-        mmLeft = 151871
+        mmLeft = 152931
         mmTop = 22225
         mmWidth = 21961
         BandType = 0
@@ -664,7 +664,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3704
-        mmLeft = 108475
+        mmLeft = 108740
         mmTop = 22225
         mmWidth = 41540
         BandType = 0
@@ -682,7 +682,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         FormField = False
         Transparent = True
         mmHeight = 3704
-        mmLeft = 175150
+        mmLeft = 177800
         mmTop = 22225
         mmWidth = 17727
         BandType = 0
@@ -697,15 +697,16 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       mmPrintPosition = 0
       object ppDBText25: TppDBText
         DesignLayer = ppDesignLayer4
-        UserName = 'DBText9'
-        DataField = 'CALC_QTDE_MUDA_PRONTA'
+        UserName = 'DBQtdeMudaPronta'
+        DataField = 'QTDE_MUDA_PRONTA'
         DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0 Und'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taCentered
+        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
@@ -737,14 +738,15 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object ppDBText1: TppDBText
         DesignLayer = ppDesignLayer4
         UserName = 'DBText2'
-        DataField = 'CALC_QTDE_SEMENTE'
+        DataField = 'QTDE_SEMENTE_ESTOQUE'
         DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0.00 Kg'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taCentered
+        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
@@ -775,15 +777,16 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       end
       object ppDBText3: TppDBText
         DesignLayer = ppDesignLayer4
-        UserName = 'DBText4'
-        DataField = 'CALC_QTDE_MUDA_DESENVOLVIMENTO'
+        UserName = 'DBQtdeMudaDesenvolvimento'
+        DataField = 'QTDE_MUDA_DESENVOLVIMENTO'
         DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0 Und'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taCentered
+        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
@@ -798,12 +801,13 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText11'
         DataField = 'CALC_TOTAL_MUDA'
         DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0 Und'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taCentered
+        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
@@ -944,7 +948,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object ppDBCalc1: TppDBCalc
         DesignLayer = ppDesignLayer4
         UserName = 'DBCalc1'
-        DataField = 'CALC_QTDE_SEMENTE'
+        DataField = 'QTDE_SEMENTE_ESTOQUE'
         DataPipeline = DBPipeSaldoEspecie
         DisplayFormat = ',0.00 Kg'
         Font.Charset = DEFAULT_CHARSET
@@ -998,85 +1002,107 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   object DBPipeSaldoEspecie: TppDBPipeline
     DataSource = dmRelatorio.dsSaldo_Semente_Muda
     UserName = 'DBPipeSaldoEspecie'
-    Left = 512
-    Top = 256
+    Left = 504
+    Top = 264
     object DBPipeSaldoEspecieppField1: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
       FieldLength = 0
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField2: TppField
       FieldAlias = 'NOME_CIENTIFICO'
       FieldName = 'NOME_CIENTIFICO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField3: TppField
       FieldAlias = 'FAMILIA_BOTANICA'
       FieldName = 'FAMILIA_BOTANICA'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField4: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE_SEMENTE_ESTOQUE'
       FieldName = 'QTDE_SEMENTE_ESTOQUE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField5: TppField
       FieldAlias = 'CALC_QTDE_SEMENTE'
       FieldName = 'CALC_QTDE_SEMENTE'
-      FieldLength = 60
-      DisplayWidth = 60
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField6: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE_MUDA_PRONTA'
       FieldName = 'QTDE_MUDA_PRONTA'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField7: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE_MUDA_DESENVOLVIMENTO'
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField8: TppField
       FieldAlias = 'CALC_QTDE_MUDA_PRONTA'
       FieldName = 'CALC_QTDE_MUDA_PRONTA'
-      FieldLength = 60
-      DisplayWidth = 60
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField9: TppField
       FieldAlias = 'CALC_QTDE_MUDA_DESENVOLVIMENTO'
       FieldName = 'CALC_QTDE_MUDA_DESENVOLVIMENTO'
-      FieldLength = 60
-      DisplayWidth = 60
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSaldoEspecieppField10: TppField
-      Alignment = taRightJustify
       FieldAlias = 'CALC_TOTAL_MUDA'
       FieldName = 'CALC_TOTAL_MUDA'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
     end
   end
   object DBPipeOrganizacao: TppDBPipeline

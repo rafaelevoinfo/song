@@ -175,12 +175,6 @@ inherited frmPessoa: TfrmPessoa
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -202,10 +196,6 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object rgInfoPessoais: TcxGroupBox
           Left = 4
@@ -604,14 +594,14 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 98
-                Height = 15
+                Height = 13
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 98
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 108
-                Height = 15
+                Height = 13
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 108

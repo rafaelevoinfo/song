@@ -140,6 +140,9 @@ type
     viewMatrizesID_LOTE_SEMENTE: TcxGridDBColumn;
     viewMatrizesID_MATRIZ: TcxGridDBColumn;
     dsLote_Semente_Matriz: TDataSource;
+    viewRegistrosID_COMPRA_ITEM: TcxGridDBColumn;
+    viewRegistrosID_CAMARA_FRIA: TcxGridDBColumn;
+    viewRegistrosID_LOTE_SEMENTE_ORIGEM: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -228,12 +231,14 @@ begin
   vaLoteSemente := TLoteSemente.Create;
   try
     vaLoteSemente.Id := dmPrincipal.FuncoesGeral.fpuGetId('LOTE_SEMENTE');
-    vaLoteSemente.Nome := dmViveiro.cdsLote_SementeNOME.AsString;
+    if not dmViveiro.cdsLote_SementeID_COMPRA_ITEM.IsNull then
+      vaLoteSemente.Nome := 'Lote (Comprado)';
     vaLoteSemente.Qtde := ipQuantidadeInicial;
     vaLoteSemente.IdLoteOrigem := dmViveiro.cdsLote_SementeID.AsInteger;
     vaLoteSemente.IdPessoaColetouComprou := dmViveiro.cdsLote_SementeID_PESSOA_COLETOU.AsInteger;
     vaLoteSemente.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
     vaLoteSemente.IdCamaraFria := dmViveiro.cdsLote_SementeID_CAMARA_FRIA.AsInteger;
+    vaLoteSemente.IdItemCompra := dmViveiro.cdsLote_SementeID_COMPRA_ITEM.AsInteger;
     vaLoteSemente.Data := now;
 
     dmViveiro.cdsLote_Semente_Matriz.First;
@@ -359,7 +364,9 @@ begin
       begin
         vaLoteMuda.Data := dmViveiro.cdsGerminacaoDATA.AsDateTime;
         vaLoteMuda.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
-        vaLoteMuda.Nome := dmViveiro.cdsLote_SementeNOME.AsString;
+        vaLoteMuda.IdItemCompra := dmViveiro.cdsLote_SementeID_COMPRA_ITEM.AsInteger;
+        if vaLoteMuda.IdItemCompra <> 0 then
+          vaLoteMuda.Nome := 'Lote (Comprado)';
 
         try
           vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
@@ -542,7 +549,7 @@ begin
       dmViveiro.cdsLote_SementeTAXA_DESCARTE.AsInteger := 100;
     end;
 
-  if not (dmViveiro.cdsLote_Semente.State in [dsEdit, dsInsert]) then
+  if not(dmViveiro.cdsLote_Semente.State in [dsEdit, dsInsert]) then
     dmViveiro.cdsLote_Semente.Edit;
 
   dmViveiro.cdsLote_SementeNOME_ESPECIE.AsString := cbEspecie.Text;
@@ -687,6 +694,10 @@ begin
   inherited;
   pprPreencherCamposPadroes(dmViveiro.cdsLote_Semente);
   dmViveiro.cdsLote_SementeSTATUS.AsInteger := 0;
+  if dmViveiro.cdsLote_SementeNOME.AsString = '' then
+    dmViveiro.cdsLote_SementeNOME.AsString := 'Lote ' + dmViveiro.cdsLote_SementeID.AsString
+  else
+    dmViveiro.cdsLote_SementeNOME.AsString := dmViveiro.cdsLote_SementeNOME.AsString + ' ' + dmViveiro.cdsLote_SementeID.AsString;
 end;
 
 procedure TfrmLoteSemente.ppuIncluirDetail;

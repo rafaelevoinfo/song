@@ -1,12 +1,12 @@
 inherited frmCompra: TfrmCompra
-  ActiveControl = cbFornecedor
+  ActiveControl = btnIncluir
   Caption = 'Compras'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24

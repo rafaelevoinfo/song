@@ -272,7 +272,7 @@ inherited smEstoque: TsmEstoque
       '       Compra.Valor_Frete,'
       '       Compra.Codigo_Rastreio,'
       '       Compra.Descricao,'
-      '       fin_for_cli.nome_fantasia as fornecedor,'
+      '       fin_for_cli.razao_social as fornecedor,'
       '       pessoa.nome as pessoa_comprou,'
       
         '       (select Sum(coalesce(compra_item.valor_unitario*compra_it' +

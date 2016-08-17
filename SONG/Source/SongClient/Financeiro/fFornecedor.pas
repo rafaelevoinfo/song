@@ -14,7 +14,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls,
   cxPC, System.TypInfo, uControleAcesso, uTypes, uUtils, uExceptions,
-  dmuPrincipal;
+  dmuPrincipal, Vcl.ExtDlgs;
 
 type
   TfrmFornecedor = class(TfrmFinanciador)
@@ -59,7 +59,7 @@ end;
 
 function TfrmFornecedor.fprGetPermissao: string;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finFinanciador));
+  Result := GetEnumName(TypeInfo(TPermissaoFinanceiro), Ord(finFornecedor));
 end;
 
 function TfrmFornecedor.fprGetTipo: TTipoFinForCli;
