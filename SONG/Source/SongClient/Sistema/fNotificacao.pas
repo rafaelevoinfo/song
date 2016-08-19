@@ -15,7 +15,7 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuSistema, dmuLookup, cxDBEdit,
   cxSpinEdit, fmGrids, Datasnap.DBClient, uClientDataSet, uUtils,
   System.TypInfo, uTypes, uConnection, uControleAcesso, dmuPrincipal,
-  cxCurrencyEdit, cxCalc;
+  cxCurrencyEdit, cxCalc, Vcl.ExtDlgs;
 
 type
   TfrmNotificacao = class(TfrmBasicoCrudMasterDetail)

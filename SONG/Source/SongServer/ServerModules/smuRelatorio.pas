@@ -111,7 +111,6 @@ type
     qLote_Muda_CompradoESPECIE: TStringField;
     qLote_Muda_CompradoID_FORNECEDOR: TIntegerField;
     qLote_Muda_CompradoFORNECEDOR: TStringField;
-    qLote_Muda_CompradoQTDE_INICIAL: TIntegerField;
     qLote_Muda_CompradoVALOR_UNITARIO: TBCDField;
     qLote_Muda_CompradoVALOR: TBCDField;
     qLote_Muda_CompradoDATA: TDateField;
@@ -122,7 +121,6 @@ type
     qLote_Semente_CompradoESPECIE: TStringField;
     qLote_Semente_CompradoID_FORNECEDOR: TIntegerField;
     qLote_Semente_CompradoFORNECEDOR: TStringField;
-    qLote_Semente_CompradoQTDE: TBCDField;
     qLote_Semente_CompradoVALOR_UNITARIO: TBCDField;
     qLote_Semente_CompradoVALOR: TBCDField;
     qLote_Semente_CompradoDATA: TDateField;
@@ -138,6 +136,30 @@ type
     qGasto_Plano_Contas_DetalhadoDESCRICAO: TStringField;
     qGasto_Plano_Contas_DetalhadoVALOR_TOTAL: TBCDField;
     qGasto_Plano_Contas_DetalhadoVALOR_PAGO: TBCDField;
+    qLote_Semente_Vendido: TRFQuery;
+    qLote_Muda_Vendido: TRFQuery;
+    qLote_Muda_VendidoID: TIntegerField;
+    qLote_Muda_VendidoNOME: TStringField;
+    qLote_Muda_VendidoID_ESPECIE: TIntegerField;
+    qLote_Muda_VendidoESPECIE: TStringField;
+    qLote_Muda_VendidoID_CLIENTE: TIntegerField;
+    qLote_Muda_VendidoQTDE: TBCDField;
+    qLote_Muda_VendidoVALOR_UNITARIO: TBCDField;
+    qLote_Muda_VendidoVALOR: TBCDField;
+    qLote_Muda_VendidoDATA: TDateField;
+    qLote_Semente_VendidoID: TIntegerField;
+    qLote_Semente_VendidoNOME: TStringField;
+    qLote_Semente_VendidoID_ESPECIE: TIntegerField;
+    qLote_Semente_VendidoESPECIE: TStringField;
+    qLote_Semente_VendidoID_CLIENTE: TIntegerField;
+    qLote_Semente_VendidoQTDE: TBCDField;
+    qLote_Semente_VendidoVALOR_UNITARIO: TBCDField;
+    qLote_Semente_VendidoVALOR: TBCDField;
+    qLote_Semente_VendidoDATA: TDateField;
+    qLote_Muda_CompradoQTDE: TBCDField;
+    qLote_Semente_CompradoQTDE: TBCDField;
+    qLote_Muda_VendidoCLIENTE: TStringField;
+    qLote_Semente_VendidoCLIENTE: TStringField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

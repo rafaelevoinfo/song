@@ -95,7 +95,8 @@ inherited frmPrincipal: TfrmPrincipal
     end
   end
   object mmMenuPrincipal: TMainMenu
-    Left = 32
+    Images = dmPrincipal.imgIcons_32
+    Left = 40
     Top = 272
     object Estoque1: TMenuItem
       Caption = 'Estoque'
@@ -238,41 +239,49 @@ inherited frmPrincipal: TfrmPrincipal
     end
   end
   object ActionList1: TActionList
+    Images = dmPrincipal.imgIcons_32
     Left = 264
     Top = 272
     object Ac_Pessoas: TAction
       Category = 'Administrativo'
       Caption = 'Pessoas'
+      ImageIndex = 20
       OnExecute = Ac_PessoasExecute
     end
     object Ac_Perfis: TAction
       Category = 'Administrativo'
       Caption = 'Perfis de Usu'#225'rios'
+      ImageIndex = 21
       OnExecute = Ac_PerfisExecute
     end
     object Ac_Organizacao: TAction
       Category = 'Administrativo'
       Caption = 'Organiza'#231#245'es'
+      ImageIndex = 22
       OnExecute = Ac_OrganizacaoExecute
     end
     object Ac_Projeto: TAction
       Category = 'Administrativo'
       Caption = 'Projetos'
+      ImageIndex = 23
       OnExecute = Ac_ProjetoExecute
     end
     object Ac_Financiador: TAction
       Category = 'Financeiro'
       Caption = 'Financiadores'
+      ImageIndex = 29
       OnExecute = Ac_FinanciadorExecute
     end
     object Ac_Banco: TAction
       Category = 'Financeiro'
       Caption = 'Bancos'
+      ImageIndex = 30
       OnExecute = Ac_BancoExecute
     end
     object Ac_Atividade: TAction
       Category = 'Administrativo'
       Caption = 'Atividades'
+      ImageIndex = 24
       OnExecute = Ac_AtividadeExecute
     end
     object Ac_Especie: TAction
@@ -288,11 +297,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Matriz: TAction
       Category = 'Viveiro'
       Caption = 'Matrizes'
+      ImageIndex = 9
       OnExecute = Ac_MatrizExecute
     end
     object Ac_Lote_Semente: TAction
       Category = 'Viveiro'
       Caption = 'Lotes de Sementes'
+      ImageIndex = 33
       OnExecute = Ac_Lote_SementeExecute
     end
     object Ac_Canteiro: TAction
@@ -303,6 +314,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Lote_Muda: TAction
       Category = 'Viveiro'
       Caption = 'Lotes de Mudas'
+      ImageIndex = 11
       OnExecute = Ac_Lote_MudaExecute
     end
     object Ac_Plano_Contas: TAction
@@ -318,26 +330,31 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Conta_Pagar: TAction
       Category = 'Financeiro'
       Caption = 'Contas a Pagar'
+      ImageIndex = 14
       OnExecute = Ac_Conta_PagarExecute
     end
     object Ac_Conta_Receber: TAction
       Category = 'Financeiro'
       Caption = 'Contas a Receber'
+      ImageIndex = 31
       OnExecute = Ac_Conta_ReceberExecute
     end
     object Ac_Cliente: TAction
       Category = 'Financeiro'
       Caption = 'Clientes'
+      ImageIndex = 32
       OnExecute = Ac_ClienteExecute
     end
     object Ac_Item: TAction
       Category = 'Estoque'
       Caption = 'Itens'
+      ImageIndex = 25
       OnExecute = Ac_ItemExecute
     end
     object Ac_Entrada: TAction
       Category = 'Estoque'
       Caption = 'Entradas'
+      ImageIndex = 13
       OnExecute = Ac_EntradaExecute
     end
     object Ac_Solicitacao_Compra: TAction
@@ -348,21 +365,25 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Compra: TAction
       Category = 'Estoque'
       Caption = 'Compras'
+      ImageIndex = 12
       OnExecute = Ac_CompraExecute
     end
     object Ac_Meus_Dados: TAction
       Category = 'Sistema'
       Caption = 'Meus Dados'
+      ImageIndex = 35
       OnExecute = Ac_Meus_DadosExecute
     end
     object Ac_Relatorio_Financeiro: TAction
       Category = 'Financeiro'
       Caption = 'Relat'#243'rios'
+      ImageIndex = 15
       OnExecute = Ac_Relatorio_FinanceiroExecute
     end
     object Ac_Saida: TAction
       Category = 'Estoque'
       Caption = 'Sa'#237'das'
+      ImageIndex = 26
       OnExecute = Ac_SaidaExecute
     end
     object Ac_Transferencia: TAction
@@ -373,11 +394,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Venda: TAction
       Category = 'Estoque'
       Caption = 'Vendas'
+      ImageIndex = 27
       OnExecute = Ac_VendaExecute
     end
     object Ac_Relatorio_Viveiro: TAction
       Category = 'Viveiro'
       Caption = 'Relat'#243'rios'
+      ImageIndex = 15
       OnExecute = Ac_Relatorio_ViveiroExecute
     end
     object Ac_Local_Uso: TAction
@@ -393,6 +416,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Notificacao: TAction
       Category = 'Sistema'
       Caption = 'Configura'#231#227'o de Notifica'#231#245'es'
+      ImageIndex = 36
       OnExecute = Ac_NotificacaoExecute
     end
     object Ac_Camara_Fria: TAction
@@ -403,11 +427,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Agenda: TAction
       Category = 'Sistema'
       Caption = 'Cadastro de Agendas'
+      ImageIndex = 34
       OnExecute = Ac_AgendaExecute
     end
     object Ac_Agendamento: TAction
       Category = 'Sistema'
       Caption = 'Agendamentos'
+      ImageIndex = 28
       OnExecute = Ac_AgendamentoExecute
     end
     object Ac_Item_Patrimonio: TAction
@@ -418,6 +444,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Sair: TAction
       Category = 'Sistema'
       Caption = 'Sair'
+      ImageIndex = 5
       OnExecute = Ac_SairExecute
     end
     object Ac_Patrimonio: TAction
@@ -428,6 +455,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Relatorio_Patrimonio: TAction
       Category = 'Patrimonio'
       Caption = 'Relat'#243'rio'
+      ImageIndex = 15
       OnExecute = Ac_Relatorio_PatrimonioExecute
     end
     object Ac_Doacao: TAction

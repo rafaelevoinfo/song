@@ -1020,8 +1020,7 @@ inherited smRelatorio: TsmRelatorio
         '         else Fin_For_Cli.Razao_Social || '#39' ('#39' || Fin_For_Cli.No' +
         'me_Fantasia || '#39')'#39
       '       end as Fornecedor,'
-      ''
-      '       Lote_Muda.Qtde_Inicial,'
+      '       compra_item.qtde,'
       '       compra_item.valor_unitario,'
       '       (compra_item.valor_unitario * compra_item.qtde) as valor,'
       '       Lote_Muda.Data'
@@ -1084,11 +1083,6 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Size = 203
     end
-    object qLote_Muda_CompradoQTDE_INICIAL: TIntegerField
-      FieldName = 'QTDE_INICIAL'
-      Origin = 'QTDE_INICIAL'
-      Required = True
-    end
     object qLote_Muda_CompradoVALOR_UNITARIO: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'VALOR_UNITARIO'
@@ -1111,6 +1105,15 @@ inherited smRelatorio: TsmRelatorio
       Origin = '"DATA"'
       Required = True
     end
+    object qLote_Muda_CompradoQTDE: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
   end
   object qLote_Semente_Comprado: TRFQuery
     Connection = dmPrincipal.conSong
@@ -1129,7 +1132,7 @@ inherited smRelatorio: TsmRelatorio
         'me_Fantasia || '#39')'#39
       '       end as Fornecedor,'
       ''
-      '       Lote_Semente.qtde,'
+      '       compra_item.qtde,'
       '       compra_item.valor_unitario,'
       '       (compra_item.valor_unitario * compra_item.qtde) as valor,'
       '       Lote_Semente.Data'
@@ -1192,13 +1195,6 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Size = 203
     end
-    object qLote_Semente_CompradoQTDE: TBCDField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
-      Required = True
-      Precision = 18
-      Size = 2
-    end
     object qLote_Semente_CompradoVALOR_UNITARIO: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'VALOR_UNITARIO'
@@ -1220,6 +1216,15 @@ inherited smRelatorio: TsmRelatorio
       FieldName = 'DATA'
       Origin = '"DATA"'
       Required = True
+    end
+    object qLote_Semente_CompradoQTDE: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
   end
   object qGasto_Plano_Contas_Detalhado: TRFQuery
@@ -1357,6 +1362,195 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Precision = 18
       Size = 2
+    end
+  end
+  object qLote_Semente_Vendido: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Semente.Id,'
+      '       Lote_Semente.Nome,'
+      '       Lote_Semente.Id_Especie,'
+      '       Especie.Nome as Especie,'
+      '       Venda.Id_Cliente,'
+      '       case'
+      
+        '         when Fin_For_Cli.Nome_Fantasia is null then Fin_For_Cli' +
+        '.Razao_Social'
+      
+        '         else Fin_For_Cli.Razao_Social || '#39' ('#39' || Fin_For_Cli.No' +
+        'me_Fantasia || '#39')'#39
+      '       end as Cliente,'
+      ''
+      '       Venda_Item.Qtde,'
+      '       Venda_Item.Valor_Unitario,'
+      '       (Venda_Item.Valor_Unitario * Venda_Item.Qtde) as Valor,'
+      '       Lote_Semente.Data'
+      'from Venda_Item'
+      
+        'inner join Lote_Semente on (Venda_Item.Id_Lote_Semente = Lote_Se' +
+        'mente.Id)'
+      'inner join Venda on (Venda.Id = Venda_Item.Id_Venda)'
+      'inner join Especie on (Lote_Semente.Id_Especie = Especie.Id)'
+      'inner join Fin_For_Cli on (Venda.Id_Cliente = Fin_For_Cli.Id)'
+      '&WHERE'
+      'order by Lote_Semente.Id_Especie  ')
+    Left = 56
+    Top = 232
+    MacroData = <
+      item
+        Value = 'where venda_item.id = 0'
+        Name = 'WHERE'
+      end>
+    object qLote_Semente_VendidoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLote_Semente_VendidoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 30
+    end
+    object qLote_Semente_VendidoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qLote_Semente_VendidoESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      Origin = 'ESPECIE'
+      Required = True
+      Size = 100
+    end
+    object qLote_Semente_VendidoID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      Required = True
+    end
+    object qLote_Semente_VendidoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Semente_VendidoVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Semente_VendidoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      Required = True
+      Precision = 18
+    end
+    object qLote_Semente_VendidoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+    object qLote_Semente_VendidoCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      Origin = 'CLIENTE'
+      Size = 203
+    end
+  end
+  object qLote_Muda_Vendido: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Lote_Muda.Id,'
+      '       Lote_Muda.Nome,'
+      '       Lote_Muda.Id_Especie,'
+      '       Especie.Nome as Especie,'
+      '       Venda.Id_Cliente,'
+      '       case'
+      
+        '         when Fin_For_Cli.Nome_Fantasia is null then Fin_For_Cli' +
+        '.Razao_Social'
+      
+        '         else Fin_For_Cli.Razao_Social || '#39' ('#39' || Fin_For_Cli.No' +
+        'me_Fantasia || '#39')'#39
+      '       end as Cliente,'
+      '       Venda_Item.Qtde,'
+      '       Venda_Item.Valor_Unitario,'
+      '       (Venda_Item.Valor_Unitario * Venda_Item.Qtde) as Valor,'
+      '       Lote_Muda.Data'
+      'from Venda_Item'
+      'inner join Lote_Muda on (Venda_Item.Id_Lote_Muda = Lote_Muda.Id)'
+      'inner join Venda on (Venda.Id = Venda_Item.Id_Venda)'
+      'inner join Especie on (Lote_Muda.Id_Especie = Especie.Id)'
+      'inner join Fin_For_Cli on (Venda.Id_Cliente = Fin_For_Cli.Id)'
+      '&WHERE'
+      'order by Lote_Muda.Id_Especie')
+    Left = 216
+    Top = 232
+    MacroData = <
+      item
+        Value = 'where venda_item.id = 0'
+        Name = 'WHERE'
+      end>
+    object qLote_Muda_VendidoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qLote_Muda_VendidoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object qLote_Muda_VendidoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qLote_Muda_VendidoESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      Origin = 'ESPECIE'
+      Required = True
+      Size = 100
+    end
+    object qLote_Muda_VendidoID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      Required = True
+    end
+    object qLote_Muda_VendidoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Muda_VendidoVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qLote_Muda_VendidoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      Required = True
+      Precision = 18
+    end
+    object qLote_Muda_VendidoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+    object qLote_Muda_VendidoCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      Origin = 'CLIENTE'
+      Size = 203
     end
   end
 end

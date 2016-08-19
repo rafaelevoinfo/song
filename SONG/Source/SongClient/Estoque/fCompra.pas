@@ -87,6 +87,7 @@ type
     Ac_Adicionar_Item: TAction;
     btnAdicionarFornecedor: TButton;
     Ac_Adicionar_Fornecedor: TAction;
+    viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Produto_EntregueUpdate(Sender: TObject);
     procedure Ac_Produto_EntregueExecute(Sender: TObject);

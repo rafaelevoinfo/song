@@ -1,6 +1,7 @@
 inherited frmNotificacao: TfrmNotificacao
   ActiveControl = nil
   Caption = 'Notifica'#231#245'es'
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -46,8 +47,16 @@ inherited frmNotificacao: TfrmNotificacao
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                Width = 965
+                ExplicitWidth = 965
+              end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
+                Height = 170
+                ExplicitWidth = 965
+                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -84,10 +93,6 @@ inherited frmNotificacao: TfrmNotificacao
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnEditsVariaveis: TPanel
           Left = 216
@@ -259,14 +264,12 @@ inherited frmNotificacao: TfrmNotificacao
             object lb2: TLabel
               Left = 0
               Top = 4
-              Width = 345
+              Width = 315
               Height = 13
-              Caption = 
-                'Notificar solicita'#231#245'es feitas cadastradas/aprovadas/negadas nos ' +
-                #250'ltimos'
+              Caption = 'Notificar solicita'#231#245'es cadastradas/aprovadas/negadas nos '#250'ltimos'
             end
             object EditDiasAposSolicitacao: TcxDBSpinEdit
-              Left = 346
+              Left = 318
               Top = 0
               DataBinding.DataField = 'TEMPO_ANTECEDENCIA'
               DataBinding.DataSource = dsMaster
@@ -414,14 +417,12 @@ inherited frmNotificacao: TfrmNotificacao
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 112
-                Height = 15
                 Caption = 'Pessoas dispon'#237'veis'
                 ExplicitWidth = 112
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 206
-                Height = 15
                 Caption = 'Pessoas que receber'#227'o a notifica'#231#227'o'
                 ExplicitLeft = 505
                 ExplicitWidth = 206

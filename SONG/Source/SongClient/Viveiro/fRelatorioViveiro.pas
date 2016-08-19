@@ -15,7 +15,7 @@ uses
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, uExceptions, System.DateUtils,
   System.Generics.Collections, uUtils, aduna_ds_list, cxGroupBox,
-  dxCheckGroupBox;
+  dxCheckGroupBox, cxRadioGroup;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -251,6 +251,82 @@ type
     raCodeModule2: TraCodeModule;
     ppDesignLayers4: TppDesignLayers;
     ppDesignLayer4: TppDesignLayer;
+    dsLote_Semente_Vendido: TDataSource;
+    ppLote_Semente_Vendido: TppReport;
+    ppHeaderBand6: TppHeaderBand;
+    ppLbTituloLoteSementeVendia: TppLabel;
+    ppDBImage6: TppDBImage;
+    ppSystemVariable16: TppSystemVariable;
+    ppSystemVariable17: TppSystemVariable;
+    ppDetailBand6: TppDetailBand;
+    ppDBText37: TppDBText;
+    ppDBText38: TppDBText;
+    ppDBText39: TppDBText;
+    ppDBText40: TppDBText;
+    ppDBText41: TppDBText;
+    ppFooterBand6: TppFooterBand;
+    ppLabel35: TppLabel;
+    ppDBText42: TppDBText;
+    ppDBText43: TppDBText;
+    ppSystemVariable18: TppSystemVariable;
+    ppSummaryBand5: TppSummaryBand;
+    ppDBCalc7: TppDBCalc;
+    ppLabel36: TppLabel;
+    ppGroup4: TppGroup;
+    ppGroupHeaderBand4: TppGroupHeaderBand;
+    ppShape4: TppShape;
+    ppLabel37: TppLabel;
+    ppLabel38: TppLabel;
+    ppLabel39: TppLabel;
+    ppLabel40: TppLabel;
+    ppLabel41: TppLabel;
+    ppDBText44: TppDBText;
+    ppGroupFooterBand4: TppGroupFooterBand;
+    ppDBCalc8: TppDBCalc;
+    raCodeModule6: TraCodeModule;
+    ppDesignLayers6: TppDesignLayers;
+    ppDesignLayer6: TppDesignLayer;
+    ppParameterList6: TppParameterList;
+    DBPipeLote_Semente_Vendido: TppDBPipeline;
+    dsLote_Muda_Vendido: TDataSource;
+    DBPipeLote_Muda_Vendido: TppDBPipeline;
+    ppLote_Muda_Vendido: TppReport;
+    ppHeaderBand7: TppHeaderBand;
+    ppLbTituloLoteMudaVendida: TppLabel;
+    ppDBImage7: TppDBImage;
+    ppSystemVariable19: TppSystemVariable;
+    ppSystemVariable20: TppSystemVariable;
+    ppDetailBand7: TppDetailBand;
+    ppDBText45: TppDBText;
+    ppDBText46: TppDBText;
+    ppDBText47: TppDBText;
+    ppDBText48: TppDBText;
+    ppDBText49: TppDBText;
+    ppFooterBand7: TppFooterBand;
+    ppLabel43: TppLabel;
+    ppDBText50: TppDBText;
+    ppDBText51: TppDBText;
+    ppSystemVariable21: TppSystemVariable;
+    ppSummaryBand6: TppSummaryBand;
+    ppDBCalc9: TppDBCalc;
+    ppLabel44: TppLabel;
+    ppGroup5: TppGroup;
+    ppGroupHeaderBand5: TppGroupHeaderBand;
+    ppShape5: TppShape;
+    ppLabel45: TppLabel;
+    ppLabel46: TppLabel;
+    ppLabel47: TppLabel;
+    ppLabel48: TppLabel;
+    ppLabel49: TppLabel;
+    ppDBText52: TppDBText;
+    ppGroupFooterBand5: TppGroupFooterBand;
+    ppDBCalc10: TppDBCalc;
+    raCodeModule7: TraCodeModule;
+    ppDesignLayers7: TppDesignLayers;
+    ppDesignLayer7: TppDesignLayer;
+    ppParameterList7: TppParameterList;
+    rgCompraVendaMuda: TcxRadioGroup;
+    rgCompraVendaSemente: TcxRadioGroup;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
@@ -268,7 +344,7 @@ type
     procedure ppvGerarPrevisao;
     procedure ppvGerarRelatorio(ipTitulo: String; ipReport: TppReport;
       ipCds: TRFClientDataSet; ipCheckGroup: TdxCheckGroupBox; ipDataInicial, ipDataFinal: TcxDateEdit;
-      ipComboEspecie: TcxLookupComboBox; ipCheckTodas:TcxCheckBox; ipLabelTitulo: TppLabel);
+      ipComboEspecie: TcxLookupComboBox; ipCheckTodas: TcxCheckBox; ipLabelTitulo: TppLabel);
   public
     { Public declarations }
   end;
@@ -342,11 +418,6 @@ begin
       ppvGerarPrevisao;
 
       ppPrevisao_Producao.PrintReport;
-      // TODO:Repensar isso aqui, talvez seja melhor criar dois campos a mais pra guardar as quantidades do que ter q limpar toda vez q gerar o relatorio
-      // dmRelatorio.cdsTaxas_Especie.Close;
-      // dmRelatorio.cdsTaxas_Especie.Open;
-      //
-      // cdsEspecieSelecionada.Clear;
     end
   else if pcPrincipal.ActivePage = tabProducaoMatriz then
     begin
@@ -354,11 +425,35 @@ begin
         EditDataInicialMatrizProdutiva, EditDataFinalMatrizProdutiva, cbEspecieMatrizProdutiva, chkTodasEspecieMatrizProdutiva, pplbTituloMatrizProdutiva);
     end
   else if pcPrincipal.ActivePage = tabLoteMudaComprado then
-    ppvGerarRelatorio('Mudas Compradas', ppLote_Muda_Comprado, dmRelatorio.cdsLote_Muda_Comprado, cgbLoteMudaComprada,
-      EditDataInicialLoteMudaComprada, EditDataFinalLoteMudaComprada, cbEspecieLoteMudaComprada, chkTodosEspecieLoteMudaComprada, pplbTituloLoteMudaComprado)
+    begin
+      if rgCompraVendaMuda.ItemIndex = 0 then // compra
+        begin
+          ppvGerarRelatorio('Mudas Compradas', ppLote_Muda_Comprado, dmRelatorio.cdsLote_Muda_Comprado, cgbLoteMudaComprada,
+            EditDataInicialLoteMudaComprada, EditDataFinalLoteMudaComprada, cbEspecieLoteMudaComprada, chkTodosEspecieLoteMudaComprada,
+            pplbTituloLoteMudaComprado)
+        end
+      else
+        begin
+          ppvGerarRelatorio('Mudas Vendidas', ppLote_Muda_Vendido, dmRelatorio.cdsLote_Muda_Vendido, cgbLoteMudaComprada,
+            EditDataInicialLoteMudaComprada, EditDataFinalLoteMudaComprada, cbEspecieLoteMudaComprada, chkTodosEspecieLoteMudaComprada,
+            ppLbTituloLoteMudaVendida)
+        end;
+    end
   else if pcPrincipal.ActivePage = tabLoteSementeComprado then
-    ppvGerarRelatorio('Sementes Compradas', ppLote_Semente_Comprado, dmRelatorio.cdsLote_Semente_Comprado, cgbLoteSementeComprado,
-      EditDataInicialLoteSementeComprado, EditDataFinalLoteSementeComprado, cbEspecieLoteSementeComprado, chkTodosEspecieLoteSementeComprado, ppLbTituloLoteSementeComprado);
+    begin
+      if rgCompraVendaSemente.ItemIndex = 0 then
+        begin
+          ppvGerarRelatorio('Sementes Compradas', ppLote_Semente_Comprado, dmRelatorio.cdsLote_Semente_Comprado, cgbLoteSementeComprado,
+            EditDataInicialLoteSementeComprado, EditDataFinalLoteSementeComprado, cbEspecieLoteSementeComprado, chkTodosEspecieLoteSementeComprado,
+            ppLbTituloLoteSementeComprado);
+        end
+      else // venda
+        begin
+          ppvGerarRelatorio('Sementes Vendidas', ppLote_Semente_Vendido, dmRelatorio.cdsLote_Semente_Vendido, cgbLoteSementeComprado,
+            EditDataInicialLoteSementeComprado, EditDataFinalLoteSementeComprado, cbEspecieLoteSementeComprado, chkTodosEspecieLoteSementeComprado,
+            ppLbTituloLoteSementeVendia);
+        end;
+    end;
 end;
 
 procedure TfrmRelatorioViveiro.ppvGerarRelatorio(ipTitulo: String; ipReport: TppReport;

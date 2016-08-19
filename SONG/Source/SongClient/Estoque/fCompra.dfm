@@ -231,6 +231,7 @@ inherited frmCompra: TfrmCompra
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
+                    Visible = False
                     Options.Editing = False
                   end
                   object viewRegistrosDetailID_ITEM: TcxGridDBColumn [1]
@@ -241,7 +242,7 @@ inherited frmCompra: TfrmCompra
                   object viewRegistrosDetailITEM: TcxGridDBColumn [2]
                     DataBinding.FieldName = 'ITEM'
                     Options.Editing = False
-                    Width = 520
+                    Width = 441
                   end
                   object viewRegistrosDetailID_ESPECIE: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'ID_ESPECIE'
@@ -261,6 +262,9 @@ inherited frmCompra: TfrmCompra
                     DataBinding.FieldName = 'VALOR_UNITARIO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
+                  end
+                  object viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn [7]
+                    DataBinding.FieldName = 'CALC_VALOR_TOTAL'
                   end
                 end
               end
@@ -507,7 +511,7 @@ inherited frmCompra: TfrmCompra
   inherited ActionList1: TActionList
     object Ac_Produto_Entregue: TAction
       Category = 'Master'
-      Caption = 'Produto Entregue'
+      Caption = 'Entrar no Estoque'
       ImageIndex = 13
       OnExecute = Ac_Produto_EntregueExecute
       OnUpdate = Ac_Produto_EntregueUpdate

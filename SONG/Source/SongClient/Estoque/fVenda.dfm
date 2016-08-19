@@ -1,12 +1,12 @@
 inherited frmVenda: TfrmVenda
-  ActiveControl = cbCliente
+  ActiveControl = btnIncluir
   Caption = 'Vendas'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -197,16 +197,20 @@ inherited frmVenda: TfrmVenda
               ExplicitWidth = 965
               ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
+                Width = 965
+                ExplicitWidth = 965
               end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
+                Height = 170
+                ExplicitWidth = 965
+                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
+                    Visible = False
                     Options.Editing = False
+                    Width = 46
                   end
                   object viewRegistrosDetailID_VENDA: TcxGridDBColumn [1]
                     DataBinding.FieldName = 'ID_VENDA'
@@ -238,15 +242,14 @@ inherited frmVenda: TfrmVenda
                     Options.Editing = False
                     Width = 116
                   end
-                  object viewRegistrosDetailQTDE: TcxGridDBColumn [7]
-                    DataBinding.FieldName = 'QTDE'
-                    Visible = False
-                    Options.Editing = False
-                  end
-                  object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [8]
+                  object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [7]
                     DataBinding.FieldName = 'VALOR_UNITARIO'
                     Options.Editing = False
                     Width = 141
+                  end
+                  object viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn [8]
+                    DataBinding.FieldName = 'CALC_VALOR_TOTAL'
+                    Width = 113
                   end
                   object viewRegistrosDetailID_LOTE_SEMENTE: TcxGridDBColumn [9]
                     DataBinding.FieldName = 'ID_LOTE_SEMENTE'
@@ -285,10 +288,6 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9
@@ -563,13 +562,13 @@ inherited frmVenda: TfrmVenda
     object Ac_Gerar_Conta_Receber: TAction
       Category = 'Master'
       Caption = 'Gerar Conta a Receber'
-      ImageIndex = 14
+      ImageIndex = 31
       OnExecute = Ac_Gerar_Conta_ReceberExecute
     end
     object Ac_Gerar_Saida: TAction
       Category = 'Master'
-      Caption = 'Gerar Sa'#237'da'
-      ImageIndex = 13
+      Caption = 'Sair do Estoque'
+      ImageIndex = 26
       OnExecute = Ac_Gerar_SaidaExecute
     end
     object Ac_Adicionar_Cliente: TAction

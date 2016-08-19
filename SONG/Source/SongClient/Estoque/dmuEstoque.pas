@@ -141,7 +141,11 @@ type
     cdsPatrimonioCALC_VALOR_ATUAL: TBCDField;
     cdsPatrimonioMODELO: TStringField;
     cdsPatrimonioOBSERVACAO: TStringField;
+    cdsCompra_ItemCALC_VALOR_TOTAL: TBCDField;
+    cdsVenda_ItemCALC_VALOR_TOTAL: TBCDField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
+    procedure cdsCompra_ItemCalcFields(DataSet: TDataSet);
+    procedure cdsVenda_ItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -158,10 +162,22 @@ implementation
 {$R *.dfm}
 
 
+procedure TdmEstoque.cdsCompra_ItemCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  cdsCompra_ItemCALC_VALOR_TOTAL.AsFloat := cdsCompra_ItemQTDE.AsFloat * cdsCompra_ItemVALOR_UNITARIO.AsFloat;
+end;
+
 procedure TdmEstoque.cdsItemCalcFields(DataSet: TDataSet);
 begin
   inherited;
   cdsItemCALC_SALDO.AsString := FormatFloat(',0.00', cdsItemSALDO.AsFloat) + ' ' + cdsItemUNIDADE.AsString;
+end;
+
+procedure TdmEstoque.cdsVenda_ItemCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  cdsVenda_ItemCALC_VALOR_TOTAL.AsFloat := cdsVenda_ItemQTDE.AsFloat * cdsVenda_ItemVALOR_UNITARIO.AsFloat;
 end;
 
 end.

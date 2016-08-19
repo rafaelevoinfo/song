@@ -78,6 +78,7 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <
       item
@@ -712,6 +713,7 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsLote_Muda_Comprado: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqLote_Muda_Comprado'
@@ -720,49 +722,68 @@ inherited dmRelatorio: TdmRelatorio
     Top = 280
     object cdsLote_Muda_CompradoID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsLote_Muda_CompradoNOME: TStringField
       FieldName = 'NOME'
+      Origin = 'NOME'
       Required = True
       Size = 100
     end
     object cdsLote_Muda_CompradoID_ESPECIE: TIntegerField
       FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
       Required = True
     end
     object cdsLote_Muda_CompradoESPECIE: TStringField
       FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
       ReadOnly = True
       Size = 100
     end
     object cdsLote_Muda_CompradoID_FORNECEDOR: TIntegerField
       FieldName = 'ID_FORNECEDOR'
+      Origin = 'ID_FORNECEDOR'
+      ProviderFlags = []
       ReadOnly = True
     end
     object cdsLote_Muda_CompradoFORNECEDOR: TStringField
       FieldName = 'FORNECEDOR'
+      Origin = 'FORNECEDOR'
+      ProviderFlags = []
       ReadOnly = True
       Size = 203
     end
-    object cdsLote_Muda_CompradoQTDE_INICIAL: TIntegerField
-      FieldName = 'QTDE_INICIAL'
-      Required = True
-    end
     object cdsLote_Muda_CompradoVALOR_UNITARIO: TBCDField
       FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      ProviderFlags = []
       ReadOnly = True
       Precision = 18
       Size = 2
     end
     object cdsLote_Muda_CompradoVALOR: TBCDField
       FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
       ReadOnly = True
       Precision = 18
     end
     object cdsLote_Muda_CompradoDATA: TDateField
       FieldName = 'DATA'
+      Origin = '"DATA"'
       Required = True
+    end
+    object cdsLote_Muda_CompradoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
   end
   object cdsLote_Semente_Comprado: TRFClientDataSet
@@ -887,6 +908,116 @@ inherited dmRelatorio: TdmRelatorio
       FieldName = 'CALC_ORIGEM'
       Size = 200
       Calculated = True
+    end
+  end
+  object cdsLote_Semente_Vendido: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLote_Semente_Vendido'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 376
+    Top = 280
+    object cdsLote_Semente_VendidoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsLote_Semente_VendidoNOME: TStringField
+      FieldName = 'NOME'
+      Required = True
+      Size = 30
+    end
+    object cdsLote_Semente_VendidoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+    object cdsLote_Semente_VendidoESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      Required = True
+      Size = 100
+    end
+    object cdsLote_Semente_VendidoID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Required = True
+    end
+    object cdsLote_Semente_VendidoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Semente_VendidoVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Semente_VendidoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Required = True
+      Precision = 18
+    end
+    object cdsLote_Semente_VendidoDATA: TDateField
+      FieldName = 'DATA'
+      Required = True
+    end
+    object cdsLote_Semente_VendidoCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      Size = 203
+    end
+  end
+  object cdsLote_Muda_Vendido: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqLote_Muda_Vendido'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 496
+    Top = 288
+    object cdsLote_Muda_VendidoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsLote_Muda_VendidoNOME: TStringField
+      FieldName = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object cdsLote_Muda_VendidoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Required = True
+    end
+    object cdsLote_Muda_VendidoESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      Required = True
+      Size = 100
+    end
+    object cdsLote_Muda_VendidoID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Required = True
+    end
+    object cdsLote_Muda_VendidoQTDE: TBCDField
+      FieldName = 'QTDE'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Muda_VendidoVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsLote_Muda_VendidoVALOR: TBCDField
+      FieldName = 'VALOR'
+      Required = True
+      Precision = 18
+    end
+    object cdsLote_Muda_VendidoDATA: TDateField
+      FieldName = 'DATA'
+      Required = True
+    end
+    object cdsLote_Muda_VendidoCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      Size = 203
     end
   end
 end

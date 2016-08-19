@@ -21,7 +21,7 @@ uses
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
-  fDoacao;
+  fDoacao, dmuPrincipal;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -180,7 +180,7 @@ var
 implementation
 
 uses
-  dmuPrincipal, fBasicoCrud;
+  fBasicoCrud;
 
 {$R *.dfm}
 

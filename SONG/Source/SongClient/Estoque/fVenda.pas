@@ -31,7 +31,6 @@ type
     viewRegistrosDetailID_VENDA: TcxGridDBColumn;
     viewRegistrosDetailID_ITEM: TcxGridDBColumn;
     viewRegistrosDetailID_ESPECIE: TcxGridDBColumn;
-    viewRegistrosDetailQTDE: TcxGridDBColumn;
     viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn;
     viewRegistrosDetailITEM: TcxGridDBColumn;
     viewRegistrosDetailESPECIE: TcxGridDBColumn;
@@ -76,6 +75,7 @@ type
     viewRegistrosDetailCALC_QTDE: TcxGridDBColumn;
     btnAdicionarCliente: TButton;
     Ac_Adicionar_Cliente: TAction;
+    viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
