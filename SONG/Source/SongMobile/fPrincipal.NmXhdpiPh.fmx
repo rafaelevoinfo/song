@@ -1,0 +1,20 @@
+inherited frmPrincipal_NmXhdpiPh: TfrmPrincipal_NmXhdpiPh
+  ClientHeight = 615
+  ClientWidth = 400
+  DesignerMasterStyle = 3
+  inherited Label1: TLabel
+    Size.Width = 400.000000000000000000
+  end
+  inherited btnMatriz: TButton
+    Size.Width = 400.000000000000000000
+  end
+  inherited btnLotes: TButton
+    Size.Width = 400.000000000000000000
+    Text = 'Lotes de Semente'
+  end
+  inherited btnSincronizar: TButton
+    Size.Width = 400.000000000000000000
+    Size.Height = 48.000000000000000000
+    Text = 'Sincronizar Tudo'
+  end
+end

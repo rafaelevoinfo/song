@@ -1,0 +1,17 @@
+inherited Form1_SmXhdpiPh: TForm1_SmXhdpiPh
+  ClientHeight = 375
+  ClientWidth = 250
+  DesignerMasterStyle = 3
+  inherited Label1: TLabel
+    Size.Width = 250.000000000000000000
+  end
+  inherited btnMatriz: TButton
+    Size.Width = 250.000000000000000000
+  end
+  inherited btnLotes: TButton
+    Size.Width = 250.000000000000000000
+  end
+  inherited btnSincronizar: TButton
+    Size.Width = 250.000000000000000000
+  end
+end

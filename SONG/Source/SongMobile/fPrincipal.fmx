@@ -1,0 +1,47 @@
+object frmPrincipal: TfrmPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'Principal'
+  ClientHeight = 480
+  ClientWidth = 404
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 3
+  object Label1: TLabel
+    Align = Top
+    Size.Width = 404.000000000000000000
+    Size.Height = 41.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = 'SONG Mobile'
+  end
+  object btnMatriz: TButton
+    Align = Top
+    Position.Y = 41.000000000000000000
+    Size.Width = 404.000000000000000000
+    Size.Height = 44.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Text = 'Matrizes'
+    OnClick = btnMatrizClick
+  end
+  object btnLotes: TButton
+    Align = Top
+    Position.Y = 85.000000000000000000
+    Size.Width = 404.000000000000000000
+    Size.Height = 44.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Text = 'Matrizes'
+  end
+  object btnSincronizar: TButton
+    Align = Top
+    Position.Y = 129.000000000000000000
+    Size.Width = 404.000000000000000000
+    Size.Height = 44.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Lotes de Semente'
+  end
+end

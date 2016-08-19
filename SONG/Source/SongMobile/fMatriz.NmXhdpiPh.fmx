@@ -1,0 +1,25 @@
+inherited frmMatriz_NmXhdpiPh: TfrmMatriz_NmXhdpiPh
+  ClientHeight = 615
+  ClientWidth = 400
+  DesignerMasterStyle = 0
+  inherited pnPrincipal: TPanel
+    Size.Width = 400.000000000000000000
+    Size.Height = 615.000000000000000000
+    inherited tbAcao: TToolBar
+      Size.Width = 400.000000000000000000
+      Size.Height = 48.000000000000000000
+      inherited btnRetornar: TButton
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+      end
+      inherited btnIncluir: TButton
+        Size.Height = 48.000000000000000000
+      end
+      inherited btnSincronizar: TButton
+        Position.X = 304.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+      end
+    end
+  end
+end
