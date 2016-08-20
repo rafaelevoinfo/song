@@ -120,6 +120,7 @@ type
     Ac_Doacao: TAction;
     Doaes1: TMenuItem;
     Rubricas2: TMenuItem;
+    Ac_Atualizar_Notificacoes: TAction;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -154,7 +155,6 @@ type
     procedure Ac_Familia_BotanicaExecute(Sender: TObject);
     procedure Ac_NotificacaoExecute(Sender: TObject);
     procedure Ac_Camara_FriaExecute(Sender: TObject);
-    procedure btnAtualizarClick(Sender: TObject);
     procedure tmrAtualizacoesTimer(Sender: TObject);
     procedure AlertWindowManagerClick(Sender: TObject;
       AAlertWindow: TdxAlertWindow);
@@ -165,6 +165,7 @@ type
     procedure Ac_PatrimonioExecute(Sender: TObject);
     procedure Ac_Relatorio_PatrimonioExecute(Sender: TObject);
     procedure Ac_DoacaoExecute(Sender: TObject);
+    procedure Ac_Atualizar_NotificacoesExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -207,6 +208,12 @@ procedure TfrmPrincipal.Ac_AtividadeExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmAtividade>(pcPrincipal, TfrmAtividade, frmAtividade);
+end;
+
+procedure TfrmPrincipal.Ac_Atualizar_NotificacoesExecute(Sender: TObject);
+begin
+  inherited;
+  ppuCarregarNotificacoes(false);
 end;
 
 procedure TfrmPrincipal.Ac_BancoExecute(Sender: TObject);
@@ -470,12 +477,6 @@ procedure TfrmPrincipal.AlertWindowManagerClick(Sender: TObject;
 begin
   inherited;
   pcPrincipal.ActivePage := tabNotificacoes;
-end;
-
-procedure TfrmPrincipal.btnAtualizarClick(Sender: TObject);
-begin
-  inherited;
-  ppuCarregarNotificacoes(false);
 end;
 
 procedure TfrmPrincipal.dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);

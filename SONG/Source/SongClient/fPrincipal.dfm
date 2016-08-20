@@ -30,12 +30,12 @@ inherited frmPrincipal: TfrmPrincipal
     object tabNotificacoes: TcxTabSheet
       AllowCloseButton = False
       Caption = 'Notifica'#231#245'es'
-      ImageIndex = 0
+      ImageIndex = 36
       object TileControl: TdxTileControl
         Left = 0
-        Top = 25
+        Top = 33
         Width = 478
-        Height = 332
+        Height = 324
         BorderStyle = cxcbsDefault
         OptionsBehavior.ItemCheckMode = tcicmNone
         OptionsView.CenterContentHorz = True
@@ -54,23 +54,26 @@ inherited frmPrincipal: TfrmPrincipal
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Text = 'Notifica'#231#245'es Diversas'
+        ExplicitTop = 25
+        ExplicitHeight = 332
       end
       object btnAtualizar: TButton
         Left = 0
         Top = 0
         Width = 778
-        Height = 25
+        Height = 33
+        Action = Ac_Atualizar_Notificacoes
         Align = alTop
-        Caption = 'Atualizar'
+        ImageAlignment = iaCenter
+        Images = dmPrincipal.imgIcons_32
         TabOrder = 1
         TabStop = False
-        OnClick = btnAtualizarClick
       end
       object TileControlAniversario: TdxTileControl
         Left = 478
-        Top = 25
+        Top = 33
         Width = 300
-        Height = 332
+        Height = 324
         Align = alRight
         BorderStyle = cxcbsDefault
         OptionsBehavior.ItemCheckMode = tcicmNone
@@ -91,6 +94,8 @@ inherited frmPrincipal: TfrmPrincipal
         Title.Font.Style = []
         Title.IndentVert = 2
         Title.Text = 'Anivers'#225'rios'
+        ExplicitTop = 25
+        ExplicitHeight = 332
       end
     end
   end
@@ -287,11 +292,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Especie: TAction
       Category = 'Viveiro'
       Caption = 'Esp'#233'cies'
+      ImageIndex = 39
       OnExecute = Ac_EspecieExecute
     end
     object Ac_Fornecedor: TAction
       Category = 'Financeiro'
       Caption = 'Fornecedores'
+      ImageIndex = 45
       OnExecute = Ac_FornecedorExecute
     end
     object Ac_Matriz: TAction
@@ -309,6 +316,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Canteiro: TAction
       Category = 'Viveiro'
       Caption = 'Canteiros'
+      ImageIndex = 49
       OnExecute = Ac_CanteiroExecute
     end
     object Ac_Lote_Muda: TAction
@@ -320,11 +328,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Plano_Contas: TAction
       Category = 'Financeiro'
       Caption = 'Plano de Contas'
+      ImageIndex = 42
       OnExecute = Ac_Plano_ContasExecute
     end
     object Ac_Rubricas: TAction
-      Category = 'Financeiro'
+      Category = 'Administrativo'
       Caption = 'Rubricas'
+      ImageIndex = 43
       OnExecute = Ac_RubricasExecute
     end
     object Ac_Conta_Pagar: TAction
@@ -360,6 +370,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Solicitacao_Compra: TAction
       Category = 'Estoque'
       Caption = 'Solicita'#231#227'o de Compra'
+      ImageIndex = 47
       OnExecute = Ac_Solicitacao_CompraExecute
     end
     object Ac_Compra: TAction
@@ -389,6 +400,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Transferencia: TAction
       Category = 'Financeiro'
       Caption = 'Transfer'#234'ncia de Recursos'
+      ImageIndex = 48
       OnExecute = Ac_TransferenciaExecute
     end
     object Ac_Venda: TAction
@@ -406,11 +418,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Local_Uso: TAction
       Category = 'Estoque'
       Caption = 'Locais de Uso'
+      ImageIndex = 46
       OnExecute = Ac_Local_UsoExecute
     end
     object Ac_Familia_Botanica: TAction
       Category = 'Viveiro'
       Caption = 'Fam'#237'lia Bot'#226'nica'
+      ImageIndex = 40
       OnExecute = Ac_Familia_BotanicaExecute
     end
     object Ac_Notificacao: TAction
@@ -422,6 +436,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Camara_Fria: TAction
       Category = 'Viveiro'
       Caption = 'C'#226'mara Fria'
+      ImageIndex = 38
       OnExecute = Ac_Camara_FriaExecute
     end
     object Ac_Agenda: TAction
@@ -439,6 +454,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Item_Patrimonio: TAction
       Category = 'Patrimonio'
       Caption = 'Itens do Patrim'#244'nio'
+      ImageIndex = 37
       OnExecute = Ac_Item_PatrimonioExecute
     end
     object Ac_Sair: TAction
@@ -450,6 +466,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Patrimonio: TAction
       Category = 'Patrimonio'
       Caption = 'Patrim'#244'nio'
+      ImageIndex = 41
       OnExecute = Ac_PatrimonioExecute
     end
     object Ac_Relatorio_Patrimonio: TAction
@@ -461,7 +478,12 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Doacao: TAction
       Category = 'Financeiro'
       Caption = 'Doa'#231#245'es'
+      ImageIndex = 44
       OnExecute = Ac_DoacaoExecute
+    end
+    object Ac_Atualizar_Notificacoes: TAction
+      ImageIndex = 17
+      OnExecute = Ac_Atualizar_NotificacoesExecute
     end
   end
   object dxSkinController1: TdxSkinController

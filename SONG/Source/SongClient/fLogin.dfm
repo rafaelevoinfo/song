@@ -987,6 +987,8 @@ inherited frmLogin: TfrmLogin
     Width = 105
     Height = 44
     Caption = 'Logar'
+    ImageIndex = 50
+    Images = dmPrincipal.imgIcons_32
     TabOrder = 3
     OnClick = btnLogarClick
   end
