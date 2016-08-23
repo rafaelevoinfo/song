@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuViveiro, cxDBEdit, uTypes, uControleAcesso,
-  System.TypInfo, uExceptions, dmuPrincipal;
+  System.TypInfo, uExceptions, dmuPrincipal, Vcl.ExtDlgs;
 
 type
   TfrmCamaraFria = class(TfrmBasicoCrud)

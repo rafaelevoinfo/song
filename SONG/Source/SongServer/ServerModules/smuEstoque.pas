@@ -142,6 +142,7 @@ type
     qPatrimonioCALC_VALOR_ATUAL: TBCDField;
     qPatrimonioMODELO: TStringField;
     qPatrimonioOBSERVACAO: TStringField;
+    qSolicitacao_Compra_ItemUNIDADE: TStringField;
     procedure qSaida_ItemCalcFields(DataSet: TDataSet);
     procedure qVenda_ItemCalcFields(DataSet: TDataSet);
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;

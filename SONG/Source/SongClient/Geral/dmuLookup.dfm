@@ -804,6 +804,46 @@ inherited dmLookup: TdmLookup
       Origin = 'LOGO'
       ProviderFlags = []
     end
+    object cdslkOrganizacaoENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkOrganizacaoBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      ProviderFlags = []
+    end
+    object cdslkOrganizacaoCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkOrganizacaoTELEFONE: TStringField
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      ProviderFlags = []
+    end
+    object cdslkOrganizacaoSITE: TStringField
+      FieldName = 'SITE'
+      Origin = 'SITE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkOrganizacaoEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkOrganizacaoCIDADE: TStringField
+      FieldName = 'CIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 120
+    end
   end
   object cdslkFinanciador: TRFClientDataSet
     Aggregates = <>
@@ -1866,8 +1906,8 @@ inherited dmLookup: TdmLookup
   end
   object dslkItem_Patrimonio: TDataSource
     DataSet = cdslkItem_Patrimonio
-    Left = 488
-    Top = 440
+    Left = 432
+    Top = 408
   end
   object cdslkDoador: TRFClientDataSet
     Aggregates = <>

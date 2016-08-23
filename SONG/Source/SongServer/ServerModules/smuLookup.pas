@@ -161,6 +161,13 @@ type
     qlkDoadorNOME: TStringField;
     qlkDoadorTOTAL: TBCDField;
     qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
+    qlkOrganizacaoENDERECO: TStringField;
+    qlkOrganizacaoBAIRRO: TStringField;
+    qlkOrganizacaoCOMPLEMENTO: TStringField;
+    qlkOrganizacaoTELEFONE: TStringField;
+    qlkOrganizacaoSITE: TStringField;
+    qlkOrganizacaoEMAIL: TStringField;
+    qlkOrganizacaoCIDADE: TStringField;
   private
     { Private declarations }
   protected

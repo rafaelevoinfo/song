@@ -157,7 +157,6 @@ inherited dmEstoque: TdmEstoque
     end
   end
   object cdsSolicitacao_Compra_Item: TRFClientDataSet
-    Active = True
     Aggregates = <>
     IndexFieldNames = 'ID_SOLICITACAO_COMPRA'
     MasterFields = 'ID'
@@ -216,6 +215,11 @@ inherited dmEstoque: TdmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsSolicitacao_Compra_ItemUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      ProviderFlags = []
+      Size = 10
     end
   end
   object dsSolicitacao_Compra: TDataSource

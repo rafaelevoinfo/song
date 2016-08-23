@@ -1,9 +1,17 @@
 inherited frmOrganizacao: TfrmOrganizacao
+  ActiveControl = EditNome
   Caption = 'Organiza'#231#245'es'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           inherited cbPesquisarPor: TcxImageComboBox
@@ -80,10 +88,6 @@ inherited frmOrganizacao: TfrmOrganizacao
             object tabDetailFundo: TcxTabSheet [0]
               Caption = 'Contas'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetailFundo: TPanel
                 Left = 0
                 Top = 0
@@ -215,7 +219,19 @@ inherited frmOrganizacao: TfrmOrganizacao
             end
             inherited tabDetail: TcxTabSheet
               Caption = 'Contatos da Organiza'#231#227'o'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                Width = 965
+                ExplicitWidth = 965
+              end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
+                Height = 170
+                ExplicitWidth = 965
+                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -241,6 +257,7 @@ inherited frmOrganizacao: TfrmOrganizacao
     end
     inherited tabCadastro: TcxTabSheet
       inherited pnEditsCadastro: TPanel
+        ExplicitTop = 52
         object Label3: TLabel
           Left = 8
           Top = 6
@@ -278,6 +295,22 @@ inherited frmOrganizacao: TfrmOrganizacao
           Width = 23
           Height = 13
           Caption = 'Logo'
+        end
+        object Label16: TLabel
+          Left = 146
+          Top = 45
+          Width = 18
+          Height = 13
+          Caption = 'Site'
+          FocusControl = EditSite
+        end
+        object lb2: TLabel
+          Left = 411
+          Top = 45
+          Width = 28
+          Height = 13
+          Caption = 'E-Mail'
+          FocusControl = EditEmail
         end
         object EditNome: TcxDBTextEdit
           Left = 6
@@ -426,9 +459,29 @@ inherited frmOrganizacao: TfrmOrganizacao
           Images = dmPrincipal.imgIcons_16
           TabOrder = 7
         end
+        object EditSite: TcxDBTextEdit
+          Left = 144
+          Top = 59
+          DataBinding.DataField = 'SITE'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 8
+          Width = 259
+        end
+        object EditEmail: TcxDBTextEdit
+          Left = 409
+          Top = 59
+          DataBinding.DataField = 'EMAIL'
+          DataBinding.DataSource = dsMaster
+          TabOrder = 9
+          Width = 237
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label11: TLabel
           Left = 258
@@ -486,10 +539,6 @@ inherited frmOrganizacao: TfrmOrganizacao
     object tabCadastroFundo: TcxTabSheet
       Caption = 'tabCadastroFundo'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroFundo: TPanel
         Left = 0
         Top = 0

@@ -185,6 +185,8 @@ type
     cdsProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     cdsProjeto_RubricaCALC_VALOR_GASTO: TBCDField;
     cdsProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
+    cdsOrganizacaoSITE: TStringField;
+    cdsOrganizacaoEMAIL: TStringField;
   private
     { Private declarations }
   public

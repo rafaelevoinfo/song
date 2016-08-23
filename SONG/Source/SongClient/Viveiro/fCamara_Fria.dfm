@@ -1,6 +1,5 @@
 inherited frmCamaraFria: TfrmCamaraFria
   Caption = 'C'#226'mara Fria'
-  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -9,6 +8,7 @@ inherited frmCamaraFria: TfrmCamaraFria
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -39,6 +39,7 @@ inherited frmCamaraFria: TfrmCamaraFria
         end
         inherited pnBotoes: TPanel
           Width = 563
+          ExplicitWidth = 563
         end
       end
       inherited pnGrid: TPanel

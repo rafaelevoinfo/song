@@ -54,8 +54,6 @@ inherited frmPrincipal: TfrmPrincipal
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Text = 'Notifica'#231#245'es Diversas'
-        ExplicitTop = 25
-        ExplicitHeight = 332
       end
       object btnAtualizar: TButton
         Left = 0
@@ -94,8 +92,6 @@ inherited frmPrincipal: TfrmPrincipal
         Title.Font.Style = []
         Title.IndentVert = 2
         Title.Text = 'Anivers'#225'rios'
-        ExplicitTop = 25
-        ExplicitHeight = 332
       end
     end
   end
@@ -103,17 +99,26 @@ inherited frmPrincipal: TfrmPrincipal
     Images = dmPrincipal.imgIcons_32
     Left = 40
     Top = 272
-    object Estoque1: TMenuItem
-      Caption = 'Estoque'
-      object SolicitaodeCompra1: TMenuItem
+    object ComprasVendas1: TMenuItem
+      Caption = 'Compras e Vendas'
+      object SolicitaodeCompra2: TMenuItem
         Action = Ac_Solicitacao_Compra
       end
-      object Compras1: TMenuItem
+      object Compras2: TMenuItem
         Action = Ac_Compra
       end
-      object Vendas1: TMenuItem
+      object Vendas2: TMenuItem
         Action = Ac_Venda
       end
+      object Clientes2: TMenuItem
+        Action = Ac_Cliente
+      end
+      object Fornecedores2: TMenuItem
+        Action = Ac_Fornecedor
+      end
+    end
+    object Estoque1: TMenuItem
+      Caption = 'Estoque'
       object Entradas1: TMenuItem
         Action = Ac_Entrada
       end
@@ -144,14 +149,8 @@ inherited frmPrincipal: TfrmPrincipal
       object ransfernciadeRecursos1: TMenuItem
         Action = Ac_Transferencia
       end
-      object Clientes1: TMenuItem
-        Action = Ac_Cliente
-      end
       object Financiadores2: TMenuItem
         Action = Ac_Financiador
-      end
-      object Fornecedores1: TMenuItem
-        Action = Ac_Fornecedor
       end
       object readeCusto1: TMenuItem
         Action = Ac_Plano_Contas
@@ -162,6 +161,12 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object miGestao: TMenuItem
       Caption = 'Gest'#227'o'
+      object Agendas1: TMenuItem
+        Action = Ac_Agenda
+      end
+      object Agendas2: TMenuItem
+        Action = Ac_Agendamento
+      end
       object Atividades1: TMenuItem
         Action = Ac_Atividade
       end
@@ -226,12 +231,6 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object Sistema1: TMenuItem
       Caption = 'Sistema'
-      object Agendas1: TMenuItem
-        Action = Ac_Agenda
-      end
-      object Agendas2: TMenuItem
-        Action = Ac_Agendamento
-      end
       object ConfiguraodeNotificaes1: TMenuItem
         Action = Ac_Notificacao
       end
@@ -248,13 +247,13 @@ inherited frmPrincipal: TfrmPrincipal
     Left = 264
     Top = 272
     object Ac_Pessoas: TAction
-      Category = 'Administrativo'
+      Category = 'RecursosHumanos'
       Caption = 'Pessoas'
       ImageIndex = 20
       OnExecute = Ac_PessoasExecute
     end
     object Ac_Perfis: TAction
-      Category = 'Administrativo'
+      Category = 'RecursosHumanos'
       Caption = 'Perfis de Usu'#225'rios'
       ImageIndex = 21
       OnExecute = Ac_PerfisExecute
@@ -296,7 +295,7 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_EspecieExecute
     end
     object Ac_Fornecedor: TAction
-      Category = 'Financeiro'
+      Category = 'CompraVenda'
       Caption = 'Fornecedores'
       ImageIndex = 45
       OnExecute = Ac_FornecedorExecute
@@ -350,7 +349,7 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_Conta_ReceberExecute
     end
     object Ac_Cliente: TAction
-      Category = 'Financeiro'
+      Category = 'CompraVenda'
       Caption = 'Clientes'
       ImageIndex = 32
       OnExecute = Ac_ClienteExecute
@@ -368,13 +367,13 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_EntradaExecute
     end
     object Ac_Solicitacao_Compra: TAction
-      Category = 'Estoque'
+      Category = 'CompraVenda'
       Caption = 'Solicita'#231#227'o de Compra'
       ImageIndex = 47
       OnExecute = Ac_Solicitacao_CompraExecute
     end
     object Ac_Compra: TAction
-      Category = 'Estoque'
+      Category = 'CompraVenda'
       Caption = 'Compras'
       ImageIndex = 12
       OnExecute = Ac_CompraExecute
@@ -404,7 +403,7 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_TransferenciaExecute
     end
     object Ac_Venda: TAction
-      Category = 'Estoque'
+      Category = 'CompraVenda'
       Caption = 'Vendas'
       ImageIndex = 27
       OnExecute = Ac_VendaExecute
@@ -440,13 +439,13 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_Camara_FriaExecute
     end
     object Ac_Agenda: TAction
-      Category = 'Sistema'
+      Category = 'Administrativo'
       Caption = 'Cadastro de Agendas'
       ImageIndex = 34
       OnExecute = Ac_AgendaExecute
     end
     object Ac_Agendamento: TAction
-      Category = 'Sistema'
+      Category = 'Administrativo'
       Caption = 'Agendamentos'
       ImageIndex = 28
       OnExecute = Ac_AgendamentoExecute

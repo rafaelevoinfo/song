@@ -15,7 +15,8 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuAdministrativo, dmuLookup,
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
-  dmuPrincipal, uMensagem, cxImage, cxCheckBox, Datasnap.DBClient, Vcl.ExtDlgs;
+  dmuPrincipal, uMensagem, cxImage, cxCheckBox, Datasnap.DBClient, Vcl.ExtDlgs,
+  uExceptions;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)
@@ -95,6 +96,10 @@ type
     cdsLocalSaldoSALDO: TBCDField;
     cdsLocalSaldoSALDO_GERAL: TBCDField;
     cdsLocalSaldoTIPO_ORIGEM: TIntegerField;
+    Label16: TLabel;
+    EditSite: TcxDBTextEdit;
+    EditEmail: TcxDBTextEdit;
+    lb2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_CarregarImagemExecute(Sender: TObject);
     procedure Ac_LimparExecute(Sender: TObject);
@@ -114,6 +119,8 @@ type
     procedure pprEfetuarPesquisa; override;
 
     procedure pprFiltrarPessoas(ipIdPessoaIgnorar: Integer = 0);
+
+    procedure pprValidarDados; override;
   public
     procedure ppuRetornar; override;
 
@@ -224,6 +231,14 @@ begin
       if dmAdministrativo.cdsFundoSALDO.IsNull then
         dmAdministrativo.cdsFundoSALDO.AsFloat := 0;
     end;
+end;
+
+procedure TfrmOrganizacao.pprValidarDados;
+begin
+  inherited;
+  if (dmAdministrativo.cdsOrganizacaoEMAIL.AsString <> '') and
+    (not TUtils.fpuValidarEmail(dmAdministrativo.cdsOrganizacaoEMAIL.AsString)) then
+    raise TControlException.Create('Formato de e-mail de inválido. Exemplo de formato válido email@oreades.org', EditEmail);
 end;
 
 procedure TfrmOrganizacao.ppuRetornar;

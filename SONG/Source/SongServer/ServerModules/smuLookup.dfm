@@ -54,8 +54,17 @@ inherited smLookup: TsmLookup
       'select Organizacao.Id,'
       '       Organizacao.Nome,'
       '       Organizacao.Cnpj,'
-      '       organizacao.logo'
-      'from Organizacao'
+      '       Organizacao.Logo,'
+      '       Organizacao.Endereco,'
+      '       Organizacao.Bairro,'
+      '       Organizacao.Complemento,'
+      '       Cidade.Nome|| '#39' - '#39'||estado.uf as Cidade,'
+      '       Organizacao.Telefone,'
+      '       organizacao.site,'
+      '       organizacao.email'
+      'from Organizacao  '
+      'left join cidade on (cidade.id = organizacao.id_cidade)'
+      'left join estado on (cidade.id_estado = estado.id)'
       '&WHERE')
     Left = 188
     Top = 124
@@ -87,6 +96,48 @@ inherited smLookup: TsmLookup
       FieldName = 'LOGO'
       Origin = 'LOGO'
       ProviderFlags = []
+    end
+    object qlkOrganizacaoENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkOrganizacaoBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      ProviderFlags = []
+    end
+    object qlkOrganizacaoCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkOrganizacaoTELEFONE: TStringField
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      ProviderFlags = []
+    end
+    object qlkOrganizacaoSITE: TStringField
+      FieldName = 'SITE'
+      Origin = 'SITE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkOrganizacaoEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkOrganizacaoCIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 128
     end
   end
   object qlkFinanciador: TRFQuery

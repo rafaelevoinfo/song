@@ -258,7 +258,7 @@ begin
 
   if (dmAdministrativo.cdsPessoaEMAIL.AsString <> '') and
     (not TUtils.fpuValidarEmail(dmAdministrativo.cdsPessoaEMAIL.AsString)) then
-    raise TControlException.Create('Formato de e-mail de inválido. Deve seguir o formato xxx@xxxx.xxx', EditEmail);
+    raise TControlException.Create('Formato de e-mail de inválido. Exemplo de formato válido email@oreades.org', EditEmail);
 
   if not dmPrincipal.FuncoesAdm.fpuValidarLogin(dmAdministrativo.cdsPessoaID.AsInteger,
     dmAdministrativo.cdsPessoaNOME.AsString) then

@@ -51,7 +51,6 @@ type
     Ac_Especie: TAction;
     Espcie1: TMenuItem;
     Ac_Fornecedor: TAction;
-    Fornecedores1: TMenuItem;
     Ac_Matriz: TAction;
     Matrizes1: TMenuItem;
     Ac_Lote_Semente: TAction;
@@ -68,16 +67,13 @@ type
     Ac_Conta_Receber: TAction;
     ContasaReceber1: TMenuItem;
     Ac_Cliente: TAction;
-    Clientes1: TMenuItem;
     Estoque1: TMenuItem;
     Ac_Item: TAction;
     Itens1: TMenuItem;
     Ac_Entrada: TAction;
     Entradas1: TMenuItem;
     Ac_Solicitacao_Compra: TAction;
-    SolicitaodeCompra1: TMenuItem;
     Ac_Compra: TAction;
-    Compras1: TMenuItem;
     Ac_Meus_Dados: TAction;
     Sistema1: TMenuItem;
     MeusDados1: TMenuItem;
@@ -88,7 +84,6 @@ type
     Ac_Transferencia: TAction;
     ransfernciadeRecursos1: TMenuItem;
     Ac_Venda: TAction;
-    Vendas1: TMenuItem;
     Ac_Relatorio_Viveiro: TAction;
     Relatrios2: TMenuItem;
     Ac_Local_Uso: TAction;
@@ -121,6 +116,12 @@ type
     Doaes1: TMenuItem;
     Rubricas2: TMenuItem;
     Ac_Atualizar_Notificacoes: TAction;
+    ComprasVendas1: TMenuItem;
+    Compras2: TMenuItem;
+    Vendas2: TMenuItem;
+    Clientes2: TMenuItem;
+    Fornecedores2: TMenuItem;
+    SolicitaodeCompra2: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);

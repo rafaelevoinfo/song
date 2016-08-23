@@ -166,6 +166,7 @@ begin
   plAddViveiro(vivLoteSemente, 'Lote de Sementes');
   plAddViveiro(vivLoteMuda, 'Lote de Mudas');
   plAddViveiro(vivMatriz, 'Matrizes');
+  plAddViveiro(vivMatriz, 'Câmara Fria');
   FItems.Add('Viveiro', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;

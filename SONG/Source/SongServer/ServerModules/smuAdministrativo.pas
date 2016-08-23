@@ -182,6 +182,8 @@ type
     qProjeto_RubricaCALC_VALOR_GASTO: TBCDField;
     qProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
     qProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    qOrganizacaoSITE: TStringField;
+    qOrganizacaoEMAIL: TStringField;
     procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

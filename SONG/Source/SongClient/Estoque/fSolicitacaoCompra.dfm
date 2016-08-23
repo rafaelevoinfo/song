@@ -560,24 +560,16 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
     object ppHeaderBand2: TppHeaderBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 29898
+      mmHeight = 58473
       mmPrintPosition = 0
-      object ppLabel12: TppLabel
+      object ppShape1: TppShape
         DesignLayer = ppDesignLayer2
-        UserName = 'Label1'
-        Caption = 'Autoriza'#231#227'o de Compra'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 12
-        Font.Style = [fsBold]
-        FormField = False
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 5027
-        mmLeft = 74877
-        mmTop = 17198
-        mmWidth = 47625
+        UserName = 'Shape1'
+        Shape = stRoundRect
+        mmHeight = 29633
+        mmLeft = 794
+        mmTop = 1323
+        mmWidth = 127795
         BandType = 0
         LayerName = BandLayer6
       end
@@ -593,138 +585,34 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         GraphicType = 'AutoDetect'
         ParentDataPipeline = False
         DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 21431
-        mmLeft = 1588
-        mmTop = 794
+        mmHeight = 27252
+        mmLeft = 2381
+        mmTop = 2379
         mmWidth = 30692
         BandType = 0
         LayerName = BandLayer6
       end
-      object ppSystemVariable4: TppSystemVariable
+      object ppDBText16: TppDBText
         DesignLayer = ppDesignLayer2
-        UserName = 'SystemVariable1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 182562
-        mmTop = 14552
-        mmWidth = 14287
-        BandType = 0
-        LayerName = BandLayer6
-      end
-      object ppSystemVariable5: TppSystemVariable
-        DesignLayer = ppDesignLayer2
-        UserName = 'SystemVariable3'
-        VarType = vtTime
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 185209
-        mmTop = 18521
-        mmWidth = 11113
-        BandType = 0
-        LayerName = BandLayer6
-      end
-      object ppLabel15: TppLabel
-        DesignLayer = ppDesignLayer2
-        UserName = 'Label15'
-        Caption = 'Quantidade'
+        UserName = 'DBText1'
+        AutoSize = True
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
-        Font.Style = [fsBold]
-        FormField = False
+        Font.Style = []
+        ParentDataPipeline = False
         Transparent = True
-        mmHeight = 4233
-        mmLeft = 176477
-        mmTop = 25135
-        mmWidth = 19579
-        BandType = 0
-        LayerName = BandLayer6
-      end
-      object ppLabel18: TppLabel
-        DesignLayer = ppDesignLayer2
-        UserName = 'Label18'
-        Caption = 'Produto'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = [fsBold]
-        FormField = False
-        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
         mmHeight = 4234
-        mmLeft = 2381
-        mmTop = 25135
-        mmWidth = 13229
+        mmLeft = 34660
+        mmTop = 2381
+        mmWidth = 78053
         BandType = 0
         LayerName = BandLayer6
       end
-    end
-    object ppDetailBand2: TppDetailBand
-      Background1.Brush.Style = bsClear
-      Background2.Brush.Color = clTeal
-      mmBottomOffset = 0
-      mmHeight = 5292
-      mmPrintPosition = 0
-      object ppDBText14: TppDBText
-        DesignLayer = ppDesignLayer2
-        UserName = 'DBText14'
-        DataField = 'QTDE'
-        DataPipeline = DBPipeItensSolicitacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        TextAlignment = taCentered
-        Transparent = True
-        DataPipelineName = 'DBPipeItensSolicitacao'
-        mmHeight = 4763
-        mmLeft = 176477
-        mmTop = 529
-        mmWidth = 19579
-        BandType = 4
-        LayerName = BandLayer6
-      end
-      object ppDBText17: TppDBText
-        DesignLayer = ppDesignLayer2
-        UserName = 'EditProduto'
-        DataField = 'NOME_ITEM'
-        DataPipeline = DBPipeItensSolicitacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeItensSolicitacao'
-        mmHeight = 4763
-        mmLeft = 2381
-        mmTop = 529
-        mmWidth = 170657
-        BandType = 4
-        LayerName = BandLayer6
-      end
-    end
-    object ppFooterBand2: TppFooterBand
-      Background.Brush.Style = bsClear
-      mmBottomOffset = 0
-      mmHeight = 5027
-      mmPrintPosition = 0
       object ppLabel13: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label2'
@@ -738,17 +626,19 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
-        mmLeft = 81227
-        mmTop = 794
-        mmWidth = 7409
-        BandType = 8
+        mmLeft = 51332
+        mmTop = 6085
+        mmWidth = 7408
+        BandType = 0
         LayerName = BandLayer6
       end
       object ppDBText15: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText7'
+        AutoSize = True
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
+        DisplayFormat = '00\.000\.000\/0000\-00;0; '
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -756,63 +646,977 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         Font.Style = []
         ParentDataPipeline = False
         Transparent = True
-        VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 89435
-        mmTop = 265
-        mmWidth = 41275
-        BandType = 8
+        mmHeight = 3705
+        mmLeft = 59267
+        mmTop = 6085
+        mmWidth = 25664
+        BandType = 0
         LayerName = BandLayer6
       end
-      object ppDBText16: TppDBText
+      object ppShape2: TppShape
         DesignLayer = ppDesignLayer2
-        UserName = 'DBText1'
-        DataField = 'NOME'
-        DataPipeline = DBPipeOrganizacao
+        UserName = 'Shape2'
+        Shape = stRoundRect
+        mmHeight = 29633
+        mmLeft = 128329
+        mmTop = 1323
+        mmWidth = 40746
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel2: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label4'
+        Caption = 'REQUISI'#199#195'O PARA COMPRAS SERVI'#199'OS E ABASTECIMENTOS (USO EXTERNO)'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        WordWrap = True
+        mmHeight = 16404
+        mmLeft = 129386
+        mmTop = 7144
+        mmWidth = 38629
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppShape3: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape3'
+        Shape = stRoundRect
+        mmHeight = 29633
+        mmLeft = 168809
+        mmTop = 1323
+        mmWidth = 27781
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText3'
+        DataField = 'ID'
+        DataPipeline = DBPipeSolicitacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Name = 'Arial'
+        Font.Size = 12
         Font.Style = []
         ParentDataPipeline = False
+        TextAlignment = taCentered
         Transparent = True
-        VerticalAlignment = avCenter
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 2111
-        mmTop = 0
-        mmWidth = 76994
-        BandType = 8
+        DataPipelineName = 'DBPipeSolicitacao'
+        mmHeight = 4763
+        mmLeft = 170132
+        mmTop = 12435
+        mmWidth = 25135
+        BandType = 0
         LayerName = BandLayer6
       end
-      object ppSystemVariable6: TppSystemVariable
+      object ppShape4: TppShape
         DesignLayer = ppDesignLayer2
-        UserName = 'SystemVariable2'
-        VarType = vtPageNo
+        UserName = 'Shape4'
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 794
+        mmTop = 30427
+        mmWidth = 144463
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel3: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label1'
+        Caption = 'Fornecedor'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3705
+        mmLeft = 2645
+        mmTop = 30690
+        mmWidth = 14816
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppShape5: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape5'
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 144993
+        mmTop = 30427
+        mmWidth = 51594
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel4: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label5'
+        Caption = 'Data de Vencimento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
-        mmLeft = 193146
-        mmTop = 529
-        mmWidth = 1588
-        BandType = 8
+        mmLeft = 146316
+        mmTop = 30692
+        mmWidth = 25665
+        BandType = 0
         LayerName = BandLayer6
       end
+      object ppShape6: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape6'
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 794
+        mmTop = 39688
+        mmWidth = 144463
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppShape7: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape7'
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 144993
+        mmTop = 39688
+        mmWidth = 51594
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel5: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label6'
+        Caption = 'Projeto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3705
+        mmLeft = 2645
+        mmTop = 39952
+        mmWidth = 8732
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel6: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label7'
+        Caption = 'Rubrica'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 146316
+        mmTop = 39952
+        mmWidth = 9790
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppShape8: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape8'
+        Brush.Color = clSilver
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 794
+        mmTop = 48948
+        mmWidth = 195792
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel7: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label8'
+        Caption = 'UNID.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 6085
+        mmTop = 51859
+        mmWidth = 7938
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel8: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label9'
+        Caption = 'QUANT.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 24342
+        mmTop = 51859
+        mmWidth = 11377
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine3: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line3'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 19313
+        mmTop = 48948
+        mmWidth = 1058
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine2: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line2'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 41540
+        mmTop = 48948
+        mmWidth = 1058
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label10'
+        Caption = 'ESPECIFICA'#199#195'O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 75936
+        mmTop = 51859
+        mmWidth = 24077
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel10: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label101'
+        Caption = 'VALOR UNIT.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 149758
+        mmTop = 51859
+        mmWidth = 19050
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel11: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label11'
+        Caption = 'VALOR TOTAL'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 173566
+        mmTop = 51859
+        mmWidth = 21432
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine4: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line4'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 144462
+        mmTop = 48948
+        mmWidth = 1058
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine5: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line5'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 170921
+        mmTop = 48948
+        mmWidth = 1058
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText9'
+        AutoSize = True
+        DataField = 'ENDERECO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3704
+        mmLeft = 34660
+        mmTop = 9790
+        mmWidth = 33867
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText10'
+        DataField = 'BAIRRO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3000
+        mmLeft = 69849
+        mmTop = 9789
+        mmWidth = 41275
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText11'
+        AutoSize = True
+        DataField = 'COMPLEMENTO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3704
+        mmLeft = 45244
+        mmTop = 12700
+        mmWidth = 32808
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText12'
+        AutoSize = True
+        DataField = 'CIDADE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3704
+        mmLeft = 80433
+        mmTop = 12700
+        mmWidth = 17463
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText13'
+        AutoSize = True
+        DataField = 'TELEFONE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3704
+        mmLeft = 64558
+        mmTop = 15346
+        mmWidth = 19050
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText12: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText14'
+        HyperlinkEnabled = False
+        AutoSize = True
+        DataField = 'SITE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3704
+        mmLeft = 59002
+        mmTop = 22490
+        mmWidth = 27782
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText13: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText15'
+        HyperlinkEnabled = False
+        AutoSize = True
+        DataField = 'EMAIL'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3705
+        mmLeft = 56886
+        mmTop = 26458
+        mmWidth = 32543
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel22: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label22'
+        Caption = 'Fonefax:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 51594
+        mmTop = 15344
+        mmWidth = 11378
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel23: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label23'
+        Caption = '(64) 3661-9316'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 64559
+        mmTop = 18784
+        mmWidth = 19844
+        BandType = 0
+        LayerName = BandLayer6
+      end
+    end
+    object ppDetailBand2: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6350
+      mmPrintPosition = 0
+      object ppShape14: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape14'
+        Shape = stRoundRect
+        mmHeight = 6350
+        mmLeft = 794
+        mmTop = 0
+        mmWidth = 195792
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText4: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText5'
+        Anchors = [atLeft, atRight]
+        DataField = 'UNIDADE'
+        DataPipeline = DBPipeItensSolicitacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeItensSolicitacao'
+        mmHeight = 4763
+        mmLeft = 1059
+        mmTop = 529
+        mmWidth = 17727
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText8'
+        Anchors = [atLeft, atRight]
+        DataField = 'QTDE'
+        DataPipeline = DBPipeItensSolicitacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeItensSolicitacao'
+        mmHeight = 4763
+        mmLeft = 20903
+        mmTop = 529
+        mmWidth = 20108
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText6'
+        Anchors = [atLeft, atRight]
+        DataField = 'NOME_ITEM'
+        DataPipeline = DBPipeItensSolicitacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeItensSolicitacao'
+        mmHeight = 4763
+        mmLeft = 43128
+        mmTop = 529
+        mmWidth = 101336
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine11: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line11'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 6350
+        mmLeft = 41540
+        mmTop = 0
+        mmWidth = 1058
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine12: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line12'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 6350
+        mmLeft = 19315
+        mmTop = 0
+        mmWidth = 1058
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine13: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line13'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 6350
+        mmLeft = 144463
+        mmTop = 0
+        mmWidth = 1058
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine14: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line14'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 6350
+        mmLeft = 170922
+        mmTop = 0
+        mmWidth = 1058
+        BandType = 4
+        LayerName = BandLayer6
+      end
+    end
+    object ppFooterBand2: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
     end
     object ppSummaryBand1: TppSummaryBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 33602
+      mmHeight = 38629
       mmPrintPosition = 0
+      object ppShape9: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape9'
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 794
+        mmTop = 265
+        mmWidth = 196321
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLine6: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line6'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 37571
+        mmTop = 265
+        mmWidth = 1058
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel12: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label12'
+        Caption = 'Ve'#237'culo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 2117
+        mmTop = 529
+        mmWidth = 9525
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel14: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label14'
+        Caption = 'Placa'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 40217
+        mmTop = 529
+        mmWidth = 6879
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLine7: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line7'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 69321
+        mmTop = 265
+        mmWidth = 1058
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLine8: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line8'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 113506
+        mmTop = 265
+        mmWidth = 1058
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel15: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label15'
+        Caption = 'KM'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 71702
+        mmTop = 529
+        mmWidth = 3969
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel16: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label16'
+        Caption = 'N'#186' N.F.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 115888
+        mmTop = 529
+        mmWidth = 8996
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLine9: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line9'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 144461
+        mmTop = 265
+        mmWidth = 1058
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLine10: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line10'
+        Position = lpRight
+        Weight = 1.000000000000000000
+        mmHeight = 9525
+        mmLeft = 170920
+        mmTop = 265
+        mmWidth = 1058
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel17: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label17'
+        Caption = 'TOTAL'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 152400
+        mmTop = 2910
+        mmWidth = 11377
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppShape10: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape10'
+        Shape = stRoundRect
+        mmHeight = 19844
+        mmLeft = 794
+        mmTop = 9525
+        mmWidth = 52652
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel18: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label18'
+        Caption = 'ATEN'#199#195'O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        WordWrap = True
+        mmHeight = 4233
+        mmLeft = 8467
+        mmTop = 11377
+        mmWidth = 38629
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel1: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label3'
+        Caption = 
+          'N'#227'o nos responsabilizamos pelo pagamento de compras ou servi'#231'os ' +
+          'que n'#227'o estejam nesta requisi'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        WordWrap = True
+        mmHeight = 11113
+        mmLeft = 2117
+        mmTop = 17198
+        mmWidth = 49742
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppShape11: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape101'
+        Shape = stRoundRect
+        mmHeight = 19844
+        mmLeft = 53181
+        mmTop = 9525
+        mmWidth = 79375
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel19: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label19'
+        Caption = 'Autorizado por'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 54769
+        mmTop = 10583
+        mmWidth = 19050
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppShape12: TppShape
+        DesignLayer = ppDesignLayer2
+        UserName = 'Shape12'
+        Shape = stRoundRect
+        mmHeight = 19844
+        mmLeft = 132027
+        mmTop = 9525
+        mmWidth = 65088
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppLabel20: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label20'
+        Caption = 'Data'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 133615
+        mmTop = 10583
+        mmWidth = 5821
+        BandType = 7
+        LayerName = BandLayer6
+      end
       object ppDBText1: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText2'
+        DataField = 'DATA_ANALISE'
+        DataPipeline = DBPipeSolicitacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeSolicitacao'
+        mmHeight = 4763
+        mmLeft = 133615
+        mmTop = 15875
+        mmWidth = 62442
+        BandType = 7
+        LayerName = BandLayer6
+      end
+      object ppDBText3: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText4'
         DataField = 'RESPONSAVEL_ANALISE'
         DataPipeline = DBPipeSolicitacao
         Font.Charset = DEFAULT_CHARSET
@@ -823,12 +1627,11 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         ParentDataPipeline = False
         TextAlignment = taCentered
         Transparent = True
-        VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeSolicitacao'
         mmHeight = 4763
-        mmLeft = 65353
-        mmTop = 28833
-        mmWidth = 61648
+        mmLeft = 53181
+        mmTop = 23548
+        mmWidth = 75936
         BandType = 7
         LayerName = BandLayer6
       end
@@ -836,71 +1639,46 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         DesignLayer = ppDesignLayer2
         UserName = 'Line1'
         Weight = 0.750000000000000000
-        mmHeight = 1323
-        mmLeft = 63767
-        mmTop = 28049
-        mmWidth = 65352
+        mmHeight = 1588
+        mmLeft = 54769
+        mmTop = 22490
+        mmWidth = 76465
         BandType = 7
         LayerName = BandLayer6
       end
-      object ppDBMemo1: TppDBMemo
+      object ppShape13: TppShape
         DesignLayer = ppDesignLayer2
-        UserName = 'DBMemo1'
-        CharWrap = False
-        DataField = 'OBSERVACAO'
-        DataPipeline = DBPipeSolicitacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 12
-        Font.Style = []
-        ParentDataPipeline = False
-        RemoveEmptyLines = False
-        Transparent = True
-        DataPipelineName = 'DBPipeSolicitacao'
-        mmHeight = 14817
-        mmLeft = 2381
-        mmTop = 7403
-        mmWidth = 193675
+        UserName = 'Shape13'
+        Shape = stRoundRect
+        mmHeight = 9525
+        mmLeft = 794
+        mmTop = 29104
+        mmWidth = 196321
         BandType = 7
         LayerName = BandLayer6
-        mmBottomOffset = 0
-        mmOverFlowOffset = 0
-        mmStopPosition = 0
-        mmMinHeight = 0
-        mmLeading = 0
       end
-      object ppLabel1: TppLabel
+      object ppLabel21: TppLabel
         DesignLayer = ppDesignLayer2
-        UserName = 'Label3'
-        Caption = 'Observa'#231#245'es'
+        UserName = 'Label102'
+        Caption = 'SOLICITAMOS ANEXAR ESTA REQUISI'#199#195'O A NOTA FISCAL'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 10
+        Font.Size = 18
         Font.Style = [fsBold]
         FormField = False
+        TextAlignment = taCentered
         Transparent = True
-        mmHeight = 4233
-        mmLeft = 2381
-        mmTop = 2640
-        mmWidth = 21432
+        mmHeight = 7673
+        mmLeft = 6085
+        mmTop = 30427
+        mmWidth = 183621
         BandType = 7
         LayerName = BandLayer6
       end
     end
     object raCodeModule1: TraCodeModule
-      ProgramStream = {
-        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650614
-        4564697450726F6475746F4F6E476574546578740B50726F6772616D54797065
-        070B747450726F63656475726506536F75726365069D70726F63656475726520
-        4564697450726F6475746F4F6E476574546578742876617220546578743A2053
-        7472696E67293B0D0A626567696E0D0A0D0A202054657874203A3D2044425069
-        70654974656E73536F6C696369746163616F5B274E4F4D455F4954454D275D20
-        2B202720272B4442506970654974656E73536F6C696369746163616F5B274553
-        5045434945275D3B200D0A0D0A656E643B0D0A0D436F6D706F6E656E744E616D
-        65060B4564697450726F6475746F094576656E744E616D6506094F6E47657454
-        657874074576656E7449440235084361726574506F730102540204000000}
+      ProgramStream = {00}
     end
     object ppDesignLayers2: TppDesignLayers
       object ppDesignLayer2: TppDesignLayer
@@ -918,94 +1696,77 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
     Left = 376
     Top = 152
     object DBPipeSolicitacaoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField2: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_PESSOA_SOLICITOU'
       FieldName = 'ID_PESSOA_SOLICITOU'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField3: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_PESSOA_ANALISOU'
       FieldName = 'ID_PESSOA_ANALISOU'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField4: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField5: TppField
       FieldAlias = 'DATA_ANALISE'
       FieldName = 'DATA_ANALISE'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField6: TppField
+      Alignment = taRightJustify
       FieldAlias = 'STATUS'
       FieldName = 'STATUS'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField7: TppField
       FieldAlias = 'SOLICITANTE'
       FieldName = 'SOLICITANTE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField8: TppField
       FieldAlias = 'RESPONSAVEL_ANALISE'
       FieldName = 'RESPONSAVEL_ANALISE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField9: TppField
       FieldAlias = 'OBSERVACAO'
       FieldName = 'OBSERVACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 1000
+      DisplayWidth = 1000
       Position = 8
-      Searchable = False
-      Sortable = False
     end
   end
   object DBPipeItensSolicitacao: TppDBPipeline
@@ -1019,7 +1780,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeItensSolicitacaoppField2: TppField
@@ -1072,6 +1833,13 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       DisplayWidth = 100
       Position = 6
     end
+    object DBPipeItensSolicitacaoppField8: TppField
+      FieldAlias = 'UNIDADE'
+      FieldName = 'UNIDADE'
+      FieldLength = 10
+      DisplayWidth = 10
+      Position = 7
+    end
   end
   object DBPipeOrganizacao: TppDBPipeline
     DataSource = dmLookup.dslkOrganizacao
@@ -1084,7 +1852,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 10
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField
@@ -1110,6 +1878,55 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       Position = 3
       Searchable = False
       Sortable = False
+    end
+    object DBPipeOrganizacaoppField5: TppField
+      FieldAlias = 'ENDERECO'
+      FieldName = 'ENDERECO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 4
+    end
+    object DBPipeOrganizacaoppField6: TppField
+      FieldAlias = 'BAIRRO'
+      FieldName = 'BAIRRO'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 5
+    end
+    object DBPipeOrganizacaoppField7: TppField
+      FieldAlias = 'COMPLEMENTO'
+      FieldName = 'COMPLEMENTO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 6
+    end
+    object DBPipeOrganizacaoppField8: TppField
+      FieldAlias = 'TELEFONE'
+      FieldName = 'TELEFONE'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 7
+    end
+    object DBPipeOrganizacaoppField9: TppField
+      FieldAlias = 'SITE'
+      FieldName = 'SITE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 8
+    end
+    object DBPipeOrganizacaoppField10: TppField
+      FieldAlias = 'EMAIL'
+      FieldName = 'EMAIL'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 9
+    end
+    object DBPipeOrganizacaoppField11: TppField
+      FieldAlias = 'CIDADE'
+      FieldName = 'CIDADE'
+      FieldLength = 120
+      DisplayWidth = 120
+      Position = 10
     end
   end
 end

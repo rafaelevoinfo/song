@@ -249,6 +249,13 @@ type
     cdslkDoadorNOME: TStringField;
     cdslkDoadorTOTAL: TBCDField;
     cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
+    cdslkOrganizacaoENDERECO: TStringField;
+    cdslkOrganizacaoBAIRRO: TStringField;
+    cdslkOrganizacaoCOMPLEMENTO: TStringField;
+    cdslkOrganizacaoTELEFONE: TStringField;
+    cdslkOrganizacaoSITE: TStringField;
+    cdslkOrganizacaoEMAIL: TStringField;
+    cdslkOrganizacaoCIDADE: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

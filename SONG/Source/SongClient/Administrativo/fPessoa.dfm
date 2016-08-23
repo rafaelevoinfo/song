@@ -594,14 +594,12 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 98
-                Height = 13
                 Caption = 'Perfis dispon'#237'veis'
                 ExplicitWidth = 98
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 108
-                Height = 13
                 Caption = 'Perfis selecionados'
                 ExplicitLeft = 505
                 ExplicitWidth = 108

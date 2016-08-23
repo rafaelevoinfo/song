@@ -143,6 +143,7 @@ type
     cdsPatrimonioOBSERVACAO: TStringField;
     cdsCompra_ItemCALC_VALOR_TOTAL: TBCDField;
     cdsVenda_ItemCALC_VALOR_TOTAL: TBCDField;
+    cdsSolicitacao_Compra_ItemUNIDADE: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsCompra_ItemCalcFields(DataSet: TDataSet);
     procedure cdsVenda_ItemCalcFields(DataSet: TDataSet);

@@ -196,6 +196,7 @@ inherited smEstoque: TsmEstoque
       '       Solicitacao_Compra_Item.Id_Especie,'
       '       Solicitacao_Compra_Item.Qtde,'
       '       item.nome as Nome_Item,'
+      '       item.unidade,'
       '       especie.nome as especie'
       'from Solicitacao_Compra_Item  '
       'inner join Item on (Item.Id = Solicitacao_Compra_Item.Id_Item)'
@@ -258,6 +259,13 @@ inherited smEstoque: TsmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qSolicitacao_Compra_ItemUNIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      Size = 10
     end
   end
   object qCompra: TRFQuery

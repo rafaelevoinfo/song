@@ -72,7 +72,7 @@ type
 
     { Private declarations }
   public
-    procedure ppuConfigurarConexao(ipUsuario, ipSenha: String);
+    procedure ppuConfigurarConexao(ipUsuario, ipSenha: String; ipHost:String='');
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
@@ -263,7 +263,7 @@ begin
     end;
 end;
 
-procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha: String);
+procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha, ipHost: String);
 var
   vaHost: string;
   vaPorta: Integer;
@@ -289,6 +289,9 @@ begin
         vaFile.Free;
       end;
     end;
+
+  if ipHost <> '' then
+    vaHost := ipHost;
 
   DataSnapConn.Close;
   DataSnapConn.Params.Values['HostName'] := vaHost;

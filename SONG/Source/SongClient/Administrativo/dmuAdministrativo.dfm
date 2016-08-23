@@ -313,6 +313,16 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'LOGO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsOrganizacaoSITE: TStringField
+      DisplayLabel = 'Site'
+      FieldName = 'SITE'
+      Size = 100
+    end
+    object cdsOrganizacaoEMAIL: TStringField
+      DisplayLabel = 'E-Mail'
+      FieldName = 'EMAIL'
+      Size = 100
+    end
   end
   object cdsOrganizacao_Pessoa: TRFClientDataSet
     Aggregates = <>
