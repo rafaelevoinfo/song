@@ -9,7 +9,8 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinBlack, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, Data.DB, uClientDataSet,
-  uTypes, cxCheckBox, dmuRelatorio, cxGroupBox, dxCheckGroupBox;
+  uTypes, cxCheckBox, dmuRelatorio, cxGroupBox, dxCheckGroupBox,
+  uControleAcesso;
 
 type
   TfrmRelatorioBasico = class(TfrmBasico)
@@ -31,7 +32,12 @@ type
   protected
     dmLookup: TdmLookup;
     dmRelatorio: TdmRelatorio;
+    procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
     function fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
+
+    function fprGetPermissao: String; virtual; abstract;
+  public
+    constructor Create(AOwner: TComponent);override;
   end;
 
 var
@@ -41,6 +47,13 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmRelatorioBasico.pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
+begin
+  if not TInfoLogin.fpuGetInstance.Usuario.fpuValidarPermissao(ipAcao, ipPermissao) then
+    raise Exception.Create('Operação não permitida.' + slineBreak + 'O usuário logado não possui a ação de ' +
+      AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + TModulos.fpuGetInstance.fpuGetDescricao(ipPermissao).ToUpper);
+end;
 
 function TfrmRelatorioBasico.fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
 begin
@@ -70,6 +83,12 @@ procedure TfrmRelatorioBasico.chkTodasOrganizacoesPropertiesEditValueChanged(
 begin
   inherited;
   cbOrganizacao.Enabled := not chkTodasOrganizacoes.Checked;
+end;
+
+constructor TfrmRelatorioBasico.Create(AOwner: TComponent);
+begin
+  inherited;
+  pprValidarPermissao(atVisualizar,fprGetPermissao);
 end;
 
 procedure TfrmRelatorioBasico.FormCreate(Sender: TObject);

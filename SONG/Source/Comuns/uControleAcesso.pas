@@ -70,12 +70,14 @@ type
   end;
 
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade, admRubrica);
-  TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finContaPagar, finContaReceber, finCliente, finTransferencia, finAutorizarUsoFundo, finDoacao);
+  TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finContaPagar, finContaReceber, finCliente, finTransferencia,
+    finAutorizarUsoFundo, finDoacao);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica, vivCamaraFria);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
     estSaida, estVenda, estLocalUso);
   TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento);
   TPermissaoPatrimonio = (patItem, patPatrimonio);
+  TPermissaoRelatorio = (relFinanceiro, relAdministrativo, relViveiro, relPatrimonio);
 
 implementation
 
@@ -133,6 +135,14 @@ var
     vaPermissoes.Add(vaPermissao);
   end;
 
+  procedure plAddRelatorio(ipPermissao: TPermissaoRelatorio; ipDescricao: String);
+  var
+    vaPermissao: TPermissao;
+  begin
+    vaPermissao := TPermissao.Create(GetEnumName(TypeInfo(TPermissaoRelatorio), Ord(ipPermissao)), ipDescricao);
+    vaPermissoes.Add(vaPermissao);
+  end;
+
 begin
   FItems := TDictionary < String, TList < TPermissao >>.Create();
 
@@ -144,20 +154,30 @@ begin
   plAddAdministrativo(admOrganizacao, 'Organizações');
   plAddAdministrativo(admProjeto, 'Projetos');
   plAddAdministrativo(admRubrica, 'Rubricas');
+  plAddSistema(sisAgenda, 'Cadastro de Agendas');
+  plAddSistema(sisAgendamento, 'Agendamentos');
   FItems.Add('Administrativo', vaPermissoes);
   // Financeiro
   vaPermissoes := TList<TPermissao>.Create;
   plAddFinanceiro(finBanco, 'Bancos');
-  plAddFinanceiro(finCliente, 'Clientes');
   plAddFinanceiro(finContaPagar, 'Contas a Pagar');
   plAddFinanceiro(finContaReceber, 'Contas a Receber');
   plAddFinanceiro(finFinanciador, 'Financiadores');
-  plAddFinanceiro(finFornecedor, 'Fornecedores');
   plAddFinanceiro(finPlanoConta, 'Plano de Contas');
   plAddFinanceiro(finTransferencia, 'Transferência Financeira');
   plAddFinanceiro(finAutorizarUsoFundo, 'Autorizar uso de Conta');
-  plAddFinanceiro(finAutorizarUsoFundo, 'Doação');
+  plAddFinanceiro(finDoacao, 'Doação');
   FItems.Add('Financeiro', vaPermissoes);
+
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddFinanceiro(finCliente, 'Clientes');
+  plAddFinanceiro(finFornecedor, 'Fornecedores');
+  plAddEstoque(estSolicitacaoCompra, 'Solicitação de Compras');
+  plAddEstoque(estAnalizarSolicitacaoCompra, 'Solicitação de Compras - Aprovar/Negar');
+  plAddEstoque(estCompra, 'Compras');
+  plAddEstoque(estVenda, 'Vendas');
+  FItems.Add('Compras e Vendas', vaPermissoes);
+
   // Viveiro
   vaPermissoes := TList<TPermissao>.Create;
   plAddViveiro(vivCanteiro, 'Canteiros');
@@ -166,23 +186,17 @@ begin
   plAddViveiro(vivLoteSemente, 'Lote de Sementes');
   plAddViveiro(vivLoteMuda, 'Lote de Mudas');
   plAddViveiro(vivMatriz, 'Matrizes');
-  plAddViveiro(vivMatriz, 'Câmara Fria');
+  plAddViveiro(vivCamaraFria, 'Câmara Fria');
   FItems.Add('Viveiro', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;
   plAddSistema(sisNotificacao, 'Notificações');
-  plAddSistema(sisAgenda, 'Cadastro de Agendas');
-  plAddSistema(sisAgendamento, 'Agendamentos');
   FItems.Add('Sistema', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;
   plAddEstoque(estItem, 'Itens');
   plAddEstoque(estEntrada, 'Entradas');
   plAddEstoque(estSaida, 'Saída');
-  plAddEstoque(estSolicitacaoCompra, 'Solicitação de Compras');
-  plAddEstoque(estAnalizarSolicitacaoCompra, 'Solicitação de Compras - Aprovar/Negar');
-  plAddEstoque(estCompra, 'Compras');
-  plAddEstoque(estVenda, 'Vendas');
   plAddEstoque(estLocalUso, 'Locais de Uso');
   FItems.Add('Estoque', vaPermissoes);
 
@@ -191,6 +205,13 @@ begin
   plAddPatrimonio(patItem, 'Itens do Patrimônio');
   plAddPatrimonio(patPatrimonio, 'Patrimônio');
   FItems.Add('Patrimônio', vaPermissoes);
+  //Relatorios
+  vaPermissoes := TList<TPermissao>.Create;
+  plAddRelatorio(relFinanceiro, 'Relatórios Financeiros');
+  plAddRelatorio(relAdministrativo, 'Relatórios Administrativos');
+  plAddRelatorio(relViveiro, 'Relatórios do Viveiro');
+  plAddRelatorio(relPatrimonio, 'Relatórios do Patrimônio');
+  FItems.Add('Relatórios', vaPermissoes);
 
 end;
 

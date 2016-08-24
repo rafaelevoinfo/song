@@ -6,7 +6,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -78,6 +78,12 @@ inherited frmProjeto: TfrmProjeto
         inherited pnBotoes: TPanel
           Width = 555
           ExplicitWidth = 555
+          inherited btnUtilizar: TButton
+            TabOrder = 2
+          end
+          inherited btnExportarExcel: TButton
+            TabOrder = 1
+          end
         end
       end
       inherited pnGrid: TPanel
@@ -140,6 +146,7 @@ inherited frmProjeto: TfrmProjeto
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
+            Properties.ActivePage = tabDetailArea
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
@@ -150,13 +157,13 @@ inherited frmProjeto: TfrmProjeto
               ExplicitWidth = 965
               ExplicitHeight = 218
               inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
+                Width = 965
+                ExplicitWidth = 965
               end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
                 Height = 193
+                ExplicitWidth = 965
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -660,6 +667,7 @@ inherited frmProjeto: TfrmProjeto
                   end
                   object viewPagamentosNOME_ORGANIZACAO: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_ORGANIZACAO'
+                    Options.Editing = False
                     Width = 145
                   end
                   object viewPagamentosDATA: TcxGridDBColumn
@@ -910,10 +918,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1006,7 +1010,7 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'STATUS'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 3
+          TabOrder = 4
           Width = 195
         end
         object EditDescricao: TcxDBMemo
@@ -1014,7 +1018,7 @@ inherited frmProjeto: TfrmProjeto
           Top = 109
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 6
+          TabOrder = 7
           Height = 89
           Width = 838
         end
@@ -1025,7 +1029,7 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'ID_BANCO_CONTA_CORRENTE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 4
+          TabOrder = 5
           OnKeyDown = cbContaCorrenteKeyDown
           Width = 220
         end
@@ -1036,7 +1040,7 @@ inherited frmProjeto: TfrmProjeto
           Height = 21
           Action = Ac_Adicionar_Conta_Corrente
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 5
+          TabOrder = 6
         end
         object EditOrcamento: TcxDBCurrencyEdit
           Left = 606
@@ -1045,7 +1049,7 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataField = 'ORCAMENTO'
           DataBinding.DataSource = dsMaster
           Properties.AssignedValues.MinValue = True
-          TabOrder = 7
+          TabOrder = 3
           Width = 121
         end
       end
@@ -1101,7 +1105,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetailOrganizacao: TButton
           AlignWithMargins = True
           Left = 4
@@ -1143,7 +1147,7 @@ inherited frmProjeto: TfrmProjeto
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label11: TLabel
           Left = 5
           Top = 6
@@ -1173,7 +1177,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetailFinanciador: TButton
           AlignWithMargins = True
           Left = 4
@@ -1216,7 +1220,7 @@ inherited frmProjeto: TfrmProjeto
         Align = alClient
         BevelOuter = bvNone
         Caption = 'pnCadastroFinanciador'
-        TabOrder = 0
+        TabOrder = 1
         object Label12: TLabel
           Left = 4
           Top = 6
@@ -1257,7 +1261,7 @@ inherited frmProjeto: TfrmProjeto
           Top = 64
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsFinanciador
-          TabOrder = 2
+          TabOrder = 3
           Height = 57
           Width = 837
         end
@@ -1265,7 +1269,7 @@ inherited frmProjeto: TfrmProjeto
           Left = 3
           Top = 124
           Caption = 'Pagamentos'
-          TabOrder = 3
+          TabOrder = 4
           Height = 274
           Width = 837
           object pnEditsPagamento: TPanel
@@ -1318,12 +1322,12 @@ inherited frmProjeto: TfrmProjeto
               Height = 23
               Action = Ac_Incluir_Pagamento
               Images = dmPrincipal.imgIcons_16
-              TabOrder = 4
+              TabOrder = 0
             end
             object EditDataPagamento: TcxDateEdit
               Left = 435
               Top = 20
-              TabOrder = 2
+              TabOrder = 4
               Width = 121
             end
             object EditValorPagamento: TcxCurrencyEdit
@@ -1331,7 +1335,7 @@ inherited frmProjeto: TfrmProjeto
               Top = 20
               RepositoryItem = dmLookup.repCurPadrao
               Properties.OnEditValueChanged = EditValorPagamentoPropertiesEditValueChanged
-              TabOrder = 1
+              TabOrder = 3
               Width = 134
             end
             object EditPercentualPagamento: TcxCalcEdit
@@ -1341,7 +1345,7 @@ inherited frmProjeto: TfrmProjeto
               Enabled = False
               Properties.BeepOnError = False
               Properties.DisplayFormat = ',0.00 %'
-              TabOrder = 3
+              TabOrder = 5
               Width = 120
             end
             object cbProjetoOrganizacao: TcxLookupComboBox
@@ -1356,7 +1360,7 @@ inherited frmProjeto: TfrmProjeto
                   FieldName = 'NOME'
                 end>
               Properties.ListSource = dmLookup.dslkProjeto_Organizcao
-              TabOrder = 0
+              TabOrder = 1
               Width = 145
             end
             object cbFormaPagamento: TcxImageComboBox
@@ -1364,7 +1368,7 @@ inherited frmProjeto: TfrmProjeto
               Top = 20
               RepositoryItem = dmLookup.repIcbFormaPagamento
               Properties.Items = <>
-              TabOrder = 5
+              TabOrder = 2
               Width = 142
             end
           end
@@ -1466,7 +1470,7 @@ inherited frmProjeto: TfrmProjeto
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_FINANCIADO'
           DataBinding.DataSource = dsFinanciador
-          TabOrder = 4
+          TabOrder = 2
           Width = 148
         end
       end
@@ -1480,7 +1484,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetailDocumento: TButton
           AlignWithMargins = True
           Left = 4
@@ -1522,7 +1526,7 @@ inherited frmProjeto: TfrmProjeto
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label15: TLabel
           Left = 5
           Top = 6
@@ -1571,7 +1575,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetailRubrica: TButton
           AlignWithMargins = True
           Left = 4
@@ -1613,7 +1617,7 @@ inherited frmProjeto: TfrmProjeto
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object Label20: TLabel
           Left = 5
           Top = 6
@@ -1660,7 +1664,7 @@ inherited frmProjeto: TfrmProjeto
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetailArea: TButton
           AlignWithMargins = True
           Left = 4
@@ -1702,7 +1706,7 @@ inherited frmProjeto: TfrmProjeto
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
         object lbl2: TLabel
           Left = 7
           Top = 6

@@ -581,18 +581,21 @@ procedure TfrmAtividade.viewRegistrosCustomDrawCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
 AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
 var
-  vaDataFinal: TDateTime;
+  vaDataFinal, vaDataAtual: TDateTime;
 begin
   inherited;
+
   if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]) then
     begin
       if not(VarToStr(AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index]).ToInteger in [Ord(saFinalizada), Ord(saCancelada)]) then
         begin
           if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index]) then
             begin
+              vaDataAtual := Now;
+              vaDataAtual := EncodeDate(YearOf(vaDataAtual),MonthOf(vaDataAtual),DayOf(vaDataAtual));
               vaDataFinal := AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index];
               // atividade vencida
-              if CompareDateTime(Now, vaDataFinal) = GreaterThanValue then
+              if CompareDateTime(vaDataAtual, vaDataFinal) = GreaterThanValue then
                 begin
                   ACanvas.Font.Color := clWhite;
                   if AViewInfo.GridRecord.Selected then
@@ -600,7 +603,7 @@ begin
                   else
                     ACanvas.Brush.Color := clRed;
                 end
-              else if DaysBetween(vaDataFinal, Now) < 3 then // atividade quase vencendo
+              else if DaysBetween(vaDataFinal, vaDataAtual) < 3 then // atividade quase vencendo
                 begin
                   ACanvas.Font.Color := clBlack;
                   if AViewInfo.GridRecord.Selected then

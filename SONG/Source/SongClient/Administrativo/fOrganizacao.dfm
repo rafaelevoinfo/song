@@ -1,12 +1,10 @@
 inherited frmOrganizacao: TfrmOrganizacao
-  ActiveControl = EditNome
   Caption = 'Organiza'#231#245'es'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -30,6 +28,14 @@ inherited frmOrganizacao: TfrmOrganizacao
                 Description = 'Nome'
                 Value = 3
               end>
+          end
+        end
+        inherited pnBotoes: TPanel
+          inherited btnUtilizar: TButton
+            TabOrder = 2
+          end
+          inherited btnExportarExcel: TButton
+            TabOrder = 1
           end
         end
       end
@@ -257,7 +263,6 @@ inherited frmOrganizacao: TfrmOrganizacao
     end
     inherited tabCadastro: TcxTabSheet
       inherited pnEditsCadastro: TPanel
-        ExplicitTop = 52
         object Label3: TLabel
           Left = 8
           Top = 6
@@ -341,7 +346,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           Left = 6
           Top = 86
           Caption = 'Endere'#231'o'
-          TabOrder = 4
+          TabOrder = 7
           Height = 96
           Width = 640
           object Label6: TLabel
@@ -397,7 +402,7 @@ inherited frmOrganizacao: TfrmOrganizacao
             Top = 66
             DataBinding.DataField = 'COMPLEMENTO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 2
+            TabOrder = 3
             Width = 490
           end
           object cbCidade: TcxDBLookupComboBox
@@ -415,7 +420,7 @@ inherited frmOrganizacao: TfrmOrganizacao
                 FieldName = 'NOME'
               end>
             Properties.ListSource = dslkCidade
-            TabOrder = 3
+            TabOrder = 2
             Width = 140
           end
         end
@@ -426,7 +431,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           DataBinding.DataSource = dsMaster
           Properties.MaskKind = emkRegExprEx
           Properties.EditMask = '\(\d\d\)\d{4}-\d{4,5}'
-          TabOrder = 3
+          TabOrder = 4
           Width = 135
         end
         object EditFoto: TcxDBImage
@@ -437,7 +442,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           Properties.FitMode = ifmProportionalStretch
           Properties.GraphicClassName = 'TdxSmartImage'
           Properties.ImmediatePost = True
-          TabOrder = 5
+          TabOrder = 3
           Height = 122
           Width = 188
         end
@@ -448,7 +453,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           Height = 28
           Action = Ac_Limpar
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 6
+          TabOrder = 8
         end
         object btnCarregarFoto: TButton
           Left = 733
@@ -457,14 +462,14 @@ inherited frmOrganizacao: TfrmOrganizacao
           Height = 28
           Action = Ac_CarregarImagem
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 7
+          TabOrder = 9
         end
         object EditSite: TcxDBTextEdit
           Left = 144
           Top = 59
           DataBinding.DataField = 'SITE'
           DataBinding.DataSource = dsMaster
-          TabOrder = 8
+          TabOrder = 5
           Width = 259
         end
         object EditEmail: TcxDBTextEdit
@@ -472,7 +477,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           Top = 59
           DataBinding.DataField = 'EMAIL'
           DataBinding.DataSource = dsMaster
-          TabOrder = 9
+          TabOrder = 6
           Width = 237
         end
       end
@@ -617,7 +622,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           Top = 60
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsDetailFundo
-          TabOrder = 1
+          TabOrder = 2
           Height = 89
           Width = 964
         end
@@ -630,7 +635,7 @@ inherited frmOrganizacao: TfrmOrganizacao
           Properties.NullStyle = nssUnchecked
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          TabOrder = 2
+          TabOrder = 1
           Width = 202
         end
       end

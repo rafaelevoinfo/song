@@ -15,7 +15,7 @@ uses
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, uExceptions, System.DateUtils,
   System.Generics.Collections, uUtils, aduna_ds_list, cxGroupBox,
-  dxCheckGroupBox, cxRadioGroup;
+  dxCheckGroupBox, cxRadioGroup, uControleAcesso, System.TypInfo;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -345,7 +345,8 @@ type
     procedure ppvGerarRelatorio(ipTitulo: String; ipReport: TppReport;
       ipCds: TRFClientDataSet; ipCheckGroup: TdxCheckGroupBox; ipDataInicial, ipDataFinal: TcxDateEdit;
       ipComboEspecie: TcxLookupComboBox; ipCheckTodas: TcxCheckBox; ipLabelTitulo: TppLabel);
-  public
+  protected
+    function fprGetPermissao: String; override;
     { Public declarations }
   end;
 
@@ -540,6 +541,11 @@ begin
 
   EditDataInicialMatrizProdutiva.Date := IncYear(now, -1);
   EditDataFinalMatrizProdutiva.Date := now;
+end;
+
+function TfrmRelatorioViveiro.fprGetPermissao: String;
+begin
+  Result := GetEnumName(TypeInfo(TPermissaoRelatorio), ord(relViveiro));
 end;
 
 procedure TfrmRelatorioViveiro.ppvConfigurarGrids;

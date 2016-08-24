@@ -11,7 +11,8 @@ uses
   cxDBLookupComboBox, Vcl.StdCtrls, Vcl.ExtCtrls, cxGroupBox, cxRadioGroup,
   dmuRelatorio, ppParameter, ppDesignLayer, ppModule, raCodMod, ppBands,
   ppCtrls, ppClass, ppVar, ppPrnabl, ppCache, ppProd, ppReport, ppComm,
-  ppRelatv, ppDB, ppDBPipe, uClientDataSet, uTypes;
+  ppRelatv, ppDB, ppDBPipe, uClientDataSet, uTypes, System.TypInfo,
+  uControleAcesso;
 
 type
   TfrmRelatorioPatrimonio = class(TfrmRelatorioBasico)
@@ -58,7 +59,8 @@ type
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
   private
     { Private declarations }
-  public
+  protected
+    function fprGetPermissao: String; override;
     { Public declarations }
   end;
 
@@ -69,11 +71,17 @@ implementation
 
 {$R *.dfm}
 
+
 procedure TfrmRelatorioPatrimonio.Ac_GerarRelatorioExecute(Sender: TObject);
 begin
   inherited;
-  dmRelatorio.cdsPatrimonio.ppuDataRequest([TParametros.coStatus],[rgStatus.ItemIndex],TOperadores.coAnd,true);
+  dmRelatorio.cdsPatrimonio.ppuDataRequest([TParametros.coStatus], [rgStatus.ItemIndex], TOperadores.coAnd, true);
   ppPatrimonio.PrintReport;
+end;
+
+function TfrmRelatorioPatrimonio.fprGetPermissao: String;
+begin
+  Result := GetEnumName(TypeInfo(TPermissaoRelatorio), ord(relPatrimonio));
 end;
 
 end.

@@ -1,10 +1,12 @@
 inherited frmPerfil: TfrmPerfil
   ActiveControl = EditNome
   Caption = 'Perfis de Usu'#225'rio'
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -57,8 +59,16 @@ inherited frmPerfil: TfrmPerfil
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
-              ExplicitHeight = 156
+              ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                Width = 965
+                ExplicitWidth = 965
+              end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 965
+                Height = 170
+                ExplicitWidth = 965
+                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -112,10 +122,6 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6

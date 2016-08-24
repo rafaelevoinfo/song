@@ -17,7 +17,8 @@ uses
   System.Bindings.Expression, System.Bindings.NotifierContracts, System.Bindings.NotifierDefaults,
   System.Bindings.Helper, ppChrt, ppChrtDP, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, cxGroupBox, dxCheckGroupBox, Datasnap.DBClient, ppModule, raCodMod,
-  System.DateUtils, cxRadioGroup, cxImageComboBox, uTypes, uUtils;
+  System.DateUtils, cxRadioGroup, cxImageComboBox, uTypes, uUtils,
+  System.TypInfo, uControleAcesso;
 
 type
   TfrmRelatorioFinanceiro = class(TfrmRelatorioBasico)
@@ -469,6 +470,8 @@ type
     procedure ppvGerarlRelatorioGastoFornecedor;
     procedure ppvGerarRelatorioGastoAtividade;
     procedure ppvGerarRelatorioGastoPlanoContas;
+  protected
+    function fprGetPermissao: String; override;
   public
     { Public declarations }
   end;
@@ -852,6 +855,11 @@ begin
       cbFundoSaldo.PostEditValue;
     end;
 
+end;
+
+function TfrmRelatorioFinanceiro.fprGetPermissao: String;
+begin
+  Result := GetEnumName(TypeInfo(TPermissaoRelatorio), ord(relFinanceiro));
 end;
 
 end.

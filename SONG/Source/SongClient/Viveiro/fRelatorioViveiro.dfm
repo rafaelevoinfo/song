@@ -28,6 +28,10 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos Por Esp'#233'cie'
         ImageIndex = 0
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label2: TLabel
           Left = 7
           Top = 3
@@ -215,6 +219,10 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabProducaoMatriz: TcxTabSheet
         Caption = 'Matrizes mais Produtivas'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lb1: TLabel
           Left = 5
           Top = 3
@@ -366,6 +374,10 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabLoteSementeComprado: TcxTabSheet
         Caption = 'Compra/Venda de Sementes'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label9: TLabel
           Left = 7
           Top = 60
