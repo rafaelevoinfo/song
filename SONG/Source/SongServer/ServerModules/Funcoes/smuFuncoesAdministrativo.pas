@@ -97,7 +97,7 @@ end;
 
 function TsmFuncoesAdministrativo.fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer; ipRazaoSocial, ipCpfCnpj: String): Boolean;
 begin
-  Result := fprValidarCamposUnicos('FIN_FOR_CLI',['RAZAO_SOCIAL', 'CPF_CNPJ', 'TIPO'],[ipRazaoSocial,ipCpfCnpj,ipTipo.ToString], ipId);
+  Result := fprValidarCamposUnicos('FIN_FOR_CLI', ['RAZAO_SOCIAL', 'CPF_CNPJ', 'TIPO'], [ipRazaoSocial, ipCpfCnpj, ipTipo.ToString], ipId);
 end;
 
 function TsmFuncoesAdministrativo.fpuValidarNomeAreaProjeto(
@@ -134,7 +134,9 @@ begin
       ipDataSet.SQL.Text := 'Select ID from pessoa ' +
         '                      where pessoa.id <> :ID and' +
         '                            pessoa.nome = :NOME and ' +
-        '                            (pessoa.cpf = :CPF or :CPF is null)';
+        '                            (pessoa.cpf = :CPF or  '+
+        '                            ((pessoa.cpf = '''') and (:CPF is null)) or '+
+        '                            ((pessoa.cpf is null) and (:CPF is null)))';
       ipDataSet.ParamByName('ID').AsInteger := ipIdPessoa;
       ipDataSet.ParamByName('NOME').AsString := ipNome;
       if ipCpf = '' then

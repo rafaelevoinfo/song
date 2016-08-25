@@ -17,7 +17,7 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
   System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
-  cxCheckBox, Vcl.ExtDlgs, fFornecedor;
+  cxCheckBox, Vcl.ExtDlgs, fFornecedor, fPlano_Contas;
 
 type
   TContaPagar = class(TModelo)
@@ -224,6 +224,8 @@ type
     viewVinculosNOME_FUNDO_ALOCADO: TcxGridDBColumn;
     btnAdicionarFornecedor: TButton;
     Ac_Adicionar_Fornecedor: TAction;
+    btnAdicionar_Plano_Contas: TButton;
+    Ac_Adicionar_Plano_Contas: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Incluir_VinculoExecute(Sender: TObject);
     procedure Ac_Gerar_ParcelasExecute(Sender: TObject);
@@ -246,6 +248,9 @@ type
     procedure Ac_Adicionar_FornecedorExecute(Sender: TObject);
     procedure cbFornecedorKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure Ac_Adicionar_Plano_ContasExecute(Sender: TObject);
+    procedure cbPlanoContasKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmFinanceiro: TdmFinanceiro;
     dmLookup: TdmLookup;
@@ -260,6 +265,8 @@ type
     function fpvContaSemPagamentos: Boolean;
     procedure ppvAdicionarFornecedor;
     procedure ppvCarregarFornecedores;
+    procedure ppvAdicionarPlanoContas;
+    procedure ppvCarregarPlanoContas;
     // procedure ppvValidarSaldos;
   protected
     function fprGetPermissao: string; override;
@@ -684,9 +691,37 @@ begin
   end;
 end;
 
+procedure TfrmContaPagar.ppvAdicionarPlanoContas;
+var
+  vaFrmPlanoContas: TfrmPlanoContas;
+begin
+  vaFrmPlanoContas := TfrmPlanoContas.Create(nil);
+  try
+    vaFrmPlanoContas.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmPlanoContas.ShowModal;
+    if vaFrmPlanoContas.IdEscolhido <> 0 then
+      begin
+        ppvCarregarPlanoContas;
+        if dmLookup.cdslkPlano_Contas.Locate(TBancoDados.coId, vaFrmPlanoContas.IdEscolhido, []) then
+          begin
+            cbPlanoContas.EditValue := vaFrmPlanoContas.IdEscolhido;
+            cbPlanoContas.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmPlanoContas.Free;
+  end;
+end;
+
 procedure TfrmContaPagar.ppvCarregarFornecedores;
 begin
   dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+end;
+
+procedure TfrmContaPagar.Ac_Adicionar_Plano_ContasExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarPlanoContas;
 end;
 
 procedure TfrmContaPagar.Ac_AutorizarExecute(Sender: TObject);
@@ -989,6 +1024,14 @@ begin
     ppvAdicionarFornecedor;
 end;
 
+procedure TfrmContaPagar.cbPlanoContasKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarPlanoContas;
+end;
+
 procedure TfrmContaPagar.cbProjetoAlocadoPropertiesEditValueChanged(
   Sender: TObject);
 begin
@@ -1136,7 +1179,8 @@ begin
 
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
   ppvCarregarFornecedores;
-  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
+  ppvCarregarPlanoContas;
+  
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);;
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
@@ -1146,6 +1190,11 @@ begin
   dmLookup.cdslkProjeto.ppuDataRequest([TParametros.coStatusDiferente],
     [Ord(spRecusado).ToString + ';' + Ord(spExecutado).ToString + ';' + Ord(spCancelado).ToString]);
   dmLookup.cdslkFundo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
+end;
+
+procedure TfrmContaPagar.ppvCarregarPlanoContas;
+begin
+  dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [Ord(tpcDespesa)], TOperadores.coAnd, True);
 end;
 
 procedure TfrmContaPagar.FormDestroy(Sender: TObject);

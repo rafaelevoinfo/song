@@ -143,8 +143,13 @@ type
     qPatrimonioMODELO: TStringField;
     qPatrimonioOBSERVACAO: TStringField;
     qSolicitacao_Compra_ItemUNIDADE: TStringField;
-    procedure qSaida_ItemCalcFields(DataSet: TDataSet);
-    procedure qVenda_ItemCalcFields(DataSet: TDataSet);
+    qEntrada_ItemCALC_QTDE: TStringField;
+    qEntrada_ItemUNIDADE: TStringField;
+    qCompra_ItemUNIDADE: TStringField;
+    qCompra_ItemCALC_QTDE: TStringField;
+    qSolicitacao_Compra_ItemCALC_QTDE: TStringField;
+    qCompra_ItemCALC_VALOR_TOTAL: TBCDField;
+    qVenda_ItemCALC_VALOR_TOTAL: TBCDField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
@@ -155,6 +160,7 @@ type
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
+    procedure qEntrada_ItemCalcFields(DataSet: TDataSet);
   private
     FIdsEspecies: TList<Integer>;
   protected
@@ -347,23 +353,23 @@ begin
     end
 end;
 
+procedure TsmEstoque.qEntrada_ItemCalcFields(DataSet: TDataSet);
+var
+  vaField:TField;
+begin
+  inherited;
+  DataSet.FieldByName('CALC_QTDE').AsString := FormatFloat(',0.00', DataSet.FieldByName('QTDE').AsFloat) + ' ' + DataSet.FieldByName('UNIDADE').AsString;
+  vaField := DataSet.FindField('CALC_VALOR_TOTAL');
+  if Assigned(vaField) then
+    vaField.AsFloat := DataSet.FieldByName('QTDE').AsFloat*DataSet.FieldByName('VALOR_UNITARIO').AsFloat;
+
+end;
+
 procedure TsmEstoque.qPatrimonioCalcFields(DataSet: TDataSet);
 begin
   inherited;
   qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime, qPatrimonioVALOR_INICIAL.AsFloat,
     qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
-end;
-
-procedure TsmEstoque.qSaida_ItemCalcFields(DataSet: TDataSet);
-begin
-  inherited;
-  qSaida_ItemCALC_QTDE.AsString := FormatFloat(',0.00', qSaida_ItemQTDE.AsFloat) + ' ' + qSaida_ItemUNIDADE.AsString;
-end;
-
-procedure TsmEstoque.qVenda_ItemCalcFields(DataSet: TDataSet);
-begin
-  inherited;
-  qVenda_ItemCALC_QTDE.AsString := FormatFloat(',0.00', qVenda_ItemQTDE.AsFloat) + ' ' + qVenda_ItemUNIDADE.AsString;
 end;
 
 end.

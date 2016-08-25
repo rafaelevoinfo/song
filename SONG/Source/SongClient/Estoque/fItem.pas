@@ -13,7 +13,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxGroupBox, cxRadioGroup, Vcl.StdCtrls,
   cxDropDownEdit, cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar,
   Vcl.ExtCtrls, cxPC, dmuEstoque, cxDBEdit, dmuLookup, uControleAcesso,
-  System.TypInfo, dmuPrincipal, uTypes, uClientDataSet;
+  System.TypInfo, dmuPrincipal, uTypes, uClientDataSet, Vcl.ExtDlgs;
 
 type
   TfrmItem = class(TfrmBasicoCrud)

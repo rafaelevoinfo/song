@@ -1,34 +1,11 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
-  ActiveControl = btnSalvarDetail
+  ActiveControl = btnIncluir
   Caption = 'frmBasicoCrudMasterDetail'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetail
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      inherited pnPesquisa: TPanel
-        inherited pnEditsPesquisa: TPanel
-          inherited cbPesquisarPor: TcxImageComboBox
-            Properties.Items = <
-              item
-                Description = 'Todos'
-                ImageIndex = 0
-                Value = 1
-              end
-              item
-                Description = 'C'#243'digo'
-                ImageIndex = 0
-                Value = 2
-              end>
-          end
-        end
-      end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           Height = 169
@@ -71,14 +48,10 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
-                Width = 964
+                Width = 965
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -113,8 +86,8 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
               object cxGridRegistrosDetail: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 964
-                Height = 172
+                Width = 965
+                Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
                 TabOrder = 1
@@ -201,26 +174,16 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
       end
     end
-    inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
-    end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvarDetail: TButton
           AlignWithMargins = True
           Left = 4
@@ -262,7 +225,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         Height = 398
         Align = alClient
         BevelOuter = bvNone
-        TabOrder = 0
+        TabOrder = 1
       end
     end
   end

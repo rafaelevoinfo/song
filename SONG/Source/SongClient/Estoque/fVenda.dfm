@@ -1,17 +1,9 @@
 inherited frmVenda: TfrmVenda
-  ActiveControl = btnIncluir
   Caption = 'Vendas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -28,6 +20,7 @@ inherited frmVenda: TfrmVenda
           end
           inherited EditPesquisa: TcxButtonEdit
             Left = 135
+            TabOrder = 5
             ExplicitLeft = 135
           end
           inherited cbPesquisarPor: TcxImageComboBox
@@ -39,7 +32,7 @@ inherited frmVenda: TfrmVenda
                 Value = 1
               end
               item
-                Description = 'C'#243'digo'
+                Description = 'ID'
                 ImageIndex = 0
                 Value = 2
               end
@@ -59,15 +52,18 @@ inherited frmVenda: TfrmVenda
                 Description = 'Item'
                 Value = 7
               end>
+            TabOrder = 2
             ExplicitLeft = 2
           end
           inherited btnPesquisar: TButton
             Left = 311
+            TabOrder = 1
             ExplicitLeft = 311
           end
           inherited rgStatus: TcxRadioGroup
             Left = 6
             Top = 33
+            TabOrder = 7
             ExplicitLeft = 6
             ExplicitTop = 33
           end
@@ -76,7 +72,7 @@ inherited frmVenda: TfrmVenda
             Top = 20
             RepositoryItem = dmLookup.repLcbFornecedor
             Properties.ListColumns = <>
-            TabOrder = 5
+            TabOrder = 3
             Visible = False
             Width = 176
           end
@@ -85,7 +81,7 @@ inherited frmVenda: TfrmVenda
             Top = 20
             RepositoryItem = dmLookup.repLcbItem
             Properties.ListColumns = <>
-            TabOrder = 6
+            TabOrder = 4
             Visible = False
             Width = 177
           end
@@ -94,7 +90,7 @@ inherited frmVenda: TfrmVenda
             Top = 20
             RepositoryItem = dmLookup.repLcbPessoa
             Properties.ListColumns = <>
-            TabOrder = 7
+            TabOrder = 6
             Visible = False
             Width = 174
           end
@@ -104,10 +100,8 @@ inherited frmVenda: TfrmVenda
           ExplicitWidth = 563
           inherited btnUtilizar: TButton
             Left = 409
-            ExplicitLeft = 409
-          end
-          inherited btnExportarExcel: TButton
             TabOrder = 4
+            ExplicitLeft = 409
           end
           object btnGerarContaReceber: TButton
             AlignWithMargins = True
@@ -122,7 +116,7 @@ inherited frmVenda: TfrmVenda
             Action = Ac_Gerar_Conta_Receber
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
-            TabOrder = 2
+            TabOrder = 3
             WordWrap = True
           end
           object btnGerarSaida: TButton
@@ -138,7 +132,7 @@ inherited frmVenda: TfrmVenda
             Action = Ac_Gerar_Saida
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
-            TabOrder = 3
+            TabOrder = 2
             WordWrap = True
           end
         end
@@ -192,19 +186,7 @@ inherited frmVenda: TfrmVenda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                Height = 170
-                ExplicitWidth = 965
-                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -288,6 +270,10 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9
@@ -339,7 +325,7 @@ inherited frmVenda: TfrmVenda
           DataBinding.DataField = 'ID_PESSOA_VENDEU'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 1
+          TabOrder = 2
           Width = 209
         end
         object EditDataVenda: TcxDBDateEdit
@@ -348,7 +334,7 @@ inherited frmVenda: TfrmVenda
           RepositoryItem = dmLookup.repDateDataPadrao
           DataBinding.DataField = 'DATA'
           DataBinding.DataSource = dsMaster
-          TabOrder = 2
+          TabOrder = 3
           Width = 121
         end
         object EditDescricao: TcxDBMemo
@@ -356,7 +342,7 @@ inherited frmVenda: TfrmVenda
           Top = 67
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 3
+          TabOrder = 4
           Height = 62
           Width = 964
         end
@@ -367,16 +353,12 @@ inherited frmVenda: TfrmVenda
           Height = 21
           Action = Ac_Adicionar_Cliente
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 4
+          TabOrder = 1
           TabStop = False
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -459,7 +441,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 81
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -467,7 +449,6 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Semente'
               FocusControl = cbLoteSemente
-              ExplicitWidth = 81
             end
             object cbLoteSemente: TcxDBLookupComboBox
               Left = 0
@@ -495,7 +476,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 65
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -503,7 +484,6 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Muda'
               FocusControl = cbLoteMuda
-              ExplicitWidth = 65
             end
             object cbLoteMuda: TcxDBLookupComboBox
               Left = 0
@@ -530,7 +510,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 36
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -538,7 +518,6 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
-              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0

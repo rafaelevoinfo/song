@@ -1,6 +1,7 @@
 inherited frmFornecedor: TfrmFornecedor
   Caption = 'Fornecedores'
   ClientHeight = 497
+  ExplicitWidth = 1000
   ExplicitHeight = 536
   PixelsPerInch = 96
   TextHeight = 13
@@ -21,8 +22,12 @@ inherited frmFornecedor: TfrmFornecedor
     end
     inherited tabCadastro: TcxTabSheet
       ExplicitHeight = 469
+      inherited pnBotoesCadastro: TPanel
+        TabOrder = 1
+      end
       inherited pnEditsCadastro: TPanel
         Height = 419
+        TabOrder = 0
         ExplicitHeight = 419
         inherited lbNome: TLabel
           Top = 48

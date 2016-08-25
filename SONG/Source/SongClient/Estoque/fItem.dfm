@@ -1,11 +1,8 @@
 inherited frmItem: TfrmItem
-  ActiveControl = EditNome
   Caption = 'Itens'
-  ExplicitWidth = 1000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -38,6 +35,7 @@ inherited frmItem: TfrmItem
             object viewRegistrosTIPO: TcxGridDBColumn [1]
               DataBinding.FieldName = 'TIPO'
               RepositoryItem = dmLookup.repIcbTipoItem
+              Visible = False
               Options.Editing = False
               Width = 117
             end
@@ -61,11 +59,11 @@ inherited frmItem: TfrmItem
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
+      inherited pnBotoesCadastro: TPanel
+        TabOrder = 1
+      end
       inherited pnEditsCadastro: TPanel
+        TabOrder = 0
         object Label3: TLabel
           Left = 5
           Top = 1

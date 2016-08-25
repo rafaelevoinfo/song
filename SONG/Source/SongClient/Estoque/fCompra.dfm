@@ -1,17 +1,10 @@
 inherited frmCompra: TfrmCompra
-  ActiveControl = btnIncluir
   Caption = 'Compras'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
+  ExplicitTop = -33
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -27,7 +20,7 @@ inherited frmCompra: TfrmCompra
             Top = 20
             RepositoryItem = dmLookup.repLcbPessoa
             Properties.ListColumns = <>
-            TabOrder = 5
+            TabOrder = 6
             Visible = False
             Width = 174
           end
@@ -36,7 +29,7 @@ inherited frmCompra: TfrmCompra
             Top = 20
             RepositoryItem = dmLookup.repLcbItem
             Properties.ListColumns = <>
-            TabOrder = 6
+            TabOrder = 5
             Visible = False
             Width = 175
           end
@@ -45,7 +38,7 @@ inherited frmCompra: TfrmCompra
             Top = 20
             RepositoryItem = dmLookup.repLcbFornecedor
             Properties.ListColumns = <>
-            TabOrder = 7
+            TabOrder = 4
             Visible = False
             Width = 176
           end
@@ -55,6 +48,7 @@ inherited frmCompra: TfrmCompra
           end
           inherited EditPesquisa: TcxButtonEdit
             Left = 135
+            TabOrder = 3
             ExplicitLeft = 135
           end
           inherited cbPesquisarPor: TcxImageComboBox
@@ -66,7 +60,7 @@ inherited frmCompra: TfrmCompra
                 Value = 1
               end
               item
-                Description = 'C'#243'digo'
+                Description = 'ID'
                 ImageIndex = 0
                 Value = 2
               end
@@ -90,15 +84,18 @@ inherited frmCompra: TfrmCompra
                 Description = 'Fornecedor'
                 Value = 8
               end>
+            TabOrder = 2
             ExplicitLeft = 2
           end
           inherited btnPesquisar: TButton
             Left = 311
+            TabOrder = 1
             ExplicitLeft = 311
           end
           inherited rgStatus: TcxRadioGroup
             Left = 6
             Top = 33
+            TabOrder = 7
             ExplicitLeft = 6
             ExplicitTop = 33
           end
@@ -108,10 +105,8 @@ inherited frmCompra: TfrmCompra
           ExplicitWidth = 563
           inherited btnUtilizar: TButton
             Left = 409
-            ExplicitLeft = 409
-          end
-          inherited btnExportarExcel: TButton
             TabOrder = 4
+            ExplicitLeft = 409
           end
           object btnProdutoEntregue: TButton
             AlignWithMargins = True
@@ -215,19 +210,7 @@ inherited frmCompra: TfrmCompra
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                Height = 170
-                ExplicitWidth = 965
-                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -255,8 +238,9 @@ inherited frmCompra: TfrmCompra
                     Options.Editing = False
                   end
                   object viewRegistrosDetailQTDE: TcxGridDBColumn [5]
-                    DataBinding.FieldName = 'QTDE'
+                    DataBinding.FieldName = 'CALC_QTDE'
                     Options.Editing = False
+                    Width = 78
                   end
                   object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [6]
                     DataBinding.FieldName = 'VALOR_UNITARIO'
@@ -338,7 +322,7 @@ inherited frmCompra: TfrmCompra
           DataBinding.DataField = 'ID_PESSOA_COMPROU'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 1
+          TabOrder = 2
           Width = 209
         end
         object EditDataCompra: TcxDBDateEdit
@@ -347,7 +331,7 @@ inherited frmCompra: TfrmCompra
           RepositoryItem = dmLookup.repDateDataPadrao
           DataBinding.DataField = 'DATA'
           DataBinding.DataSource = dsMaster
-          TabOrder = 2
+          TabOrder = 3
           Width = 121
         end
         object cbStatusEntrega: TcxDBImageComboBox
@@ -357,7 +341,7 @@ inherited frmCompra: TfrmCompra
           DataBinding.DataField = 'STATUS_ENTREGA'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 4
+          TabOrder = 6
           Width = 145
         end
         object EditDescricao: TcxDBMemo
@@ -365,7 +349,7 @@ inherited frmCompra: TfrmCompra
           Top = 67
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 6
+          TabOrder = 7
           Height = 62
           Width = 964
         end
@@ -386,7 +370,7 @@ inherited frmCompra: TfrmCompra
           RepositoryItem = dmLookup.repCurPadrao
           DataBinding.DataField = 'VALOR_FRETE'
           DataBinding.DataSource = dsMaster
-          TabOrder = 3
+          TabOrder = 4
           Width = 121
         end
         object EditCodigoRastreio: TcxDBTextEdit
@@ -404,16 +388,16 @@ inherited frmCompra: TfrmCompra
           Height = 21
           Action = Ac_Adicionar_Fornecedor
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 7
+          TabOrder = 1
           TabStop = False
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7

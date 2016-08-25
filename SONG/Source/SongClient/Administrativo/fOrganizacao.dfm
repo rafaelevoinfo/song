@@ -20,7 +20,7 @@ inherited frmOrganizacao: TfrmOrganizacao
                 Value = 1
               end
               item
-                Description = 'C'#243'digo'
+                Description = 'ID'
                 ImageIndex = 0
                 Value = 2
               end

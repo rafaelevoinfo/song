@@ -110,11 +110,11 @@ inherited frmFinanciador: TfrmFinanciador
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
+      inherited pnBotoesCadastro: TPanel
+        TabOrder = 1
+      end
       inherited pnEditsCadastro: TPanel
+        TabOrder = 0
         object lbNome: TLabel
           Left = 5
           Top = 6

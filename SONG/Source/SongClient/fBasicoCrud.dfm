@@ -1,5 +1,5 @@
 inherited frmBasicoCrud: TfrmBasicoCrud
-  ActiveControl = btnIncluir
+  ActiveControl = btnSalvar
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
@@ -14,7 +14,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Height = 476
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = True
     ClientRectBottom = 472
@@ -191,7 +191,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Action = Ac_Utilizar_Selecionado
             Align = alLeft
             Images = dmPrincipal.imgIcons_32
-            TabOrder = 1
+            TabOrder = 2
             Visible = False
             WordWrap = True
           end
@@ -209,7 +209,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Align = alLeft
             ImageIndex = 18
             Images = dmPrincipal.imgIcons_32
-            TabOrder = 2
+            TabOrder = 1
             WordWrap = True
           end
         end
@@ -302,17 +302,13 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
         Width = 976
         Height = 50
         Align = alTop
-        TabOrder = 1
+        TabOrder = 0
         object btnSalvar: TButton
           AlignWithMargins = True
           Left = 4
@@ -353,7 +349,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Width = 976
         Height = 398
         Align = alClient
-        TabOrder = 0
+        TabOrder = 1
       end
     end
   end

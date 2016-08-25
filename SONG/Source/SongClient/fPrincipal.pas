@@ -342,25 +342,19 @@ begin
     GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa)), []) then
     begin
       TInfoLogin.fpuGetInstance.Usuario.Permissoes.Append;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('PERMISSAO').AsString :=
-        GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('VISUALIZAR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('ALTERAR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('INCLUIR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('EXCLUIR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.Post;
     end
   else
     begin
       TInfoLogin.fpuGetInstance.Usuario.Permissoes.Edit;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('PERMISSAO').AsString :=
-        GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('VISUALIZAR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('ALTERAR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('INCLUIR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('EXCLUIR').AsInteger := 1;
-      TInfoLogin.fpuGetInstance.Usuario.Permissoes.Post;
     end;
+
+  TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('PERMISSAO').AsString :=
+    GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admPessoa));
+  TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('VISUALIZAR').AsInteger := 1;
+  TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('ALTERAR').AsInteger := 1;
+  TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('INCLUIR').AsInteger := 1;
+  TInfoLogin.fpuGetInstance.Usuario.Permissoes.FieldByName('EXCLUIR').AsInteger := 1;
+  TInfoLogin.fpuGetInstance.Usuario.Permissoes.Post;
 
   vaFrmPessoa := TfrmPessoa.Create(nil);
   try

@@ -1,17 +1,10 @@
 inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
   ActiveControl = nil
   Caption = 'Solicita'#231#227'o de Compras'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 462
@@ -72,11 +65,13 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           end
           inherited btnPesquisar: TButton
             Left = 413
+            TabOrder = 1
             ExplicitLeft = 413
           end
           inherited rgStatus: TcxRadioGroup
             Left = 12
             Top = 33
+            TabOrder = 7
             ExplicitLeft = 12
             ExplicitTop = 33
           end
@@ -98,7 +93,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
                 Description = 'Negada'
                 Tag = 2
               end>
-            TabOrder = 5
+            TabOrder = 2
             Width = 130
           end
           object cbPessoa: TcxLookupComboBox
@@ -106,7 +101,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
             Top = 20
             RepositoryItem = dmLookup.repLcbPessoa
             Properties.ListColumns = <>
-            TabOrder = 6
+            TabOrder = 5
             Visible = False
             Width = 148
           end
@@ -115,7 +110,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
             Top = 20
             RepositoryItem = dmLookup.repLcbItem
             Properties.ListColumns = <>
-            TabOrder = 7
+            TabOrder = 6
             Visible = False
             Width = 148
           end
@@ -125,10 +120,8 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           ExplicitWidth = 461
           inherited btnUtilizar: TButton
             Left = 455
-            ExplicitLeft = 455
-          end
-          inherited btnExportarExcel: TButton
             TabOrder = 5
+            ExplicitLeft = 455
           end
           object btnAprovar: TButton
             AlignWithMargins = True
@@ -252,19 +245,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                Height = 170
-                ExplicitWidth = 965
-                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -293,7 +274,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
                     Width = 185
                   end
                   object viewRegistrosDetailQTDE: TcxGridDBColumn [5]
-                    DataBinding.FieldName = 'QTDE'
+                    DataBinding.FieldName = 'CALC_QTDE'
                     RepositoryItem = dmLookup.repCalcPadrao
                     Options.Editing = False
                     Width = 81
@@ -306,7 +287,12 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
+      inherited pnBotoesCadastro: TPanel
+        TabOrder = 1
+        ExplicitTop = 2
+      end
       inherited pnEditsCadastro: TPanel
+        TabOrder = 0
         object Label4: TLabel
           Left = 7
           Top = 8
@@ -331,14 +317,6 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Caption = 'Observa'#231#227'o'
           FocusControl = EditObservacao
         end
-        object Label8: TLabel
-          Left = 346
-          Top = 8
-          Width = 31
-          Height = 13
-          Caption = 'Status'
-          FocusControl = cbStatus
-        end
         object cbSolicitante: TcxDBLookupComboBox
           Left = 4
           Top = 24
@@ -362,27 +340,13 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Top = 67
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 3
+          TabOrder = 2
           Height = 62
           Width = 572
-        end
-        object cbStatus: TcxDBImageComboBox
-          Left = 344
-          Top = 24
-          RepositoryItem = dmLookup.repIcbStatusSolicitacaoCompra
-          DataBinding.DataField = 'STATUS'
-          DataBinding.DataSource = dsMaster
-          Properties.Items = <>
-          TabOrder = 2
-          Width = 233
         end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object lbl1: TLabel
           Left = 7
@@ -435,7 +399,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           DataBinding.DataSource = dsDetail
           Enabled = False
           Properties.ListColumns = <>
-          TabOrder = 1
+          TabOrder = 2
           Width = 209
         end
         object EditQtde: TcxDBCalcEdit
@@ -444,7 +408,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           RepositoryItem = dmLookup.repCalcPadrao
           DataBinding.DataField = 'QTDE'
           DataBinding.DataSource = dsDetail
-          TabOrder = 2
+          TabOrder = 3
           Width = 121
         end
         object btnAdicionarItem: TButton
@@ -454,7 +418,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Height = 21
           Action = Ac_Incluir_Item
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 3
+          TabOrder = 1
           TabStop = False
         end
       end

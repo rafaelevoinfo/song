@@ -1,16 +1,11 @@
 inherited frmEntrada: TfrmEntrada
   ActiveControl = nil
   Caption = 'Entradas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
+  ExplicitTop = -33
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -112,16 +107,6 @@ inherited frmEntrada: TfrmEntrada
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens da Entrada'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                inherited btnUtilizarDetailSelecionado: TButton
-                  ExplicitLeft = 82
-                  ExplicitTop = 2
-                end
-              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -138,9 +123,10 @@ inherited frmEntrada: TfrmEntrada
                     Width = 570
                   end
                   object viewRegistrosDetailQTDE: TcxGridDBColumn [3]
-                    DataBinding.FieldName = 'QTDE'
+                    DataBinding.FieldName = 'CALC_QTDE'
                     RepositoryItem = dmLookup.repCalcPadrao
                     Options.Editing = False
+                    Width = 135
                   end
                 end
               end
@@ -150,10 +136,6 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 6
@@ -174,10 +156,6 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label3: TLabel
           Left = 5

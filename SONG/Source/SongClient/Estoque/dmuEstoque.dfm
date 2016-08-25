@@ -217,9 +217,17 @@ inherited dmEstoque: TdmEstoque
       Size = 100
     end
     object cdsSolicitacao_Compra_ItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
       FieldName = 'UNIDADE'
       ProviderFlags = []
       Size = 10
+    end
+    object cdsSolicitacao_Compra_ItemCALC_QTDE: TStringField
+      DisplayLabel = 'Qtde'
+      FieldName = 'CALC_QTDE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 60
     end
   end
   object dsSolicitacao_Compra: TDataSource
@@ -320,7 +328,6 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqCompra_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    OnCalcFields = cdsCompra_ItemCalcFields
     Left = 164
     Top = 232
     object cdsCompra_ItemID: TIntegerField
@@ -379,14 +386,27 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'TIPO_ITEM'
       ProviderFlags = []
     end
+    object cdsCompra_ItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
+      FieldName = 'UNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+    object cdsCompra_ItemCALC_QTDE: TStringField
+      DisplayLabel = 'Qtde'
+      FieldName = 'CALC_QTDE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 60
+    end
     object cdsCompra_ItemCALC_VALOR_TOTAL: TBCDField
       DisplayLabel = 'Valor Total'
-      FieldKind = fkCalculated
       FieldName = 'CALC_VALOR_TOTAL'
-      ProviderFlags = []
+      ReadOnly = True
       currency = True
       Precision = 18
-      Calculated = True
+      Size = 2
     end
   end
   object dsCompra: TDataSource
@@ -444,6 +464,20 @@ inherited dmEstoque: TdmEstoque
     object cdsEntrada_ItemID_COMPRA_ITEM: TIntegerField
       FieldName = 'ID_COMPRA_ITEM'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsEntrada_ItemUNIDADE: TStringField
+      DisplayLabel = 'Unidade'
+      FieldName = 'UNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+    object cdsEntrada_ItemCALC_QTDE: TStringField
+      DisplayLabel = 'Qtde'
+      FieldName = 'CALC_QTDE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 60
     end
   end
   object dsEntrada: TDataSource
@@ -654,7 +688,6 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqVenda_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
-    OnCalcFields = cdsVenda_ItemCalcFields
     Left = 164
     Top = 124
     object cdsVenda_ItemID: TIntegerField
@@ -739,11 +772,11 @@ inherited dmEstoque: TdmEstoque
     end
     object cdsVenda_ItemCALC_VALOR_TOTAL: TBCDField
       DisplayLabel = 'Valor Total'
-      FieldKind = fkCalculated
       FieldName = 'CALC_VALOR_TOTAL'
-      ProviderFlags = []
+      ReadOnly = True
       currency = True
-      Calculated = True
+      Precision = 18
+      Size = 2
     end
   end
   object dsVenda: TDataSource

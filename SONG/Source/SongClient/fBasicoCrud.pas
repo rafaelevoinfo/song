@@ -352,6 +352,8 @@ begin
 
   pprConfigurarLabelsCamposObrigatorios;
   cbPesquisarPor.Properties.DropDownRows := cbPesquisarPor.Properties.Items.Count;
+  if pnBotoesCadastro.TabOrder = 0 then
+    pnBotoesCadastro.TabOrder := 1;
   // pprVerificarExisteStatus;
 end;
 
@@ -436,7 +438,9 @@ begin
     mePesquisa:
       btnUtilizar.Visible := True;
     meSomenteCadastro:
-      ;
+      begin
+        btnSalvarIncluir.Visible := False;
+      end;
     meSomenteEdicao:
       begin
         btnSalvarIncluir.Visible := False;

@@ -260,8 +260,8 @@ begin
     (not TUtils.fpuValidarEmail(dmAdministrativo.cdsPessoaEMAIL.AsString)) then
     raise TControlException.Create('Formato de e-mail de inválido. Exemplo de formato válido email@oreades.org', EditEmail);
 
-  if not dmPrincipal.FuncoesAdm.fpuValidarLogin(dmAdministrativo.cdsPessoaID.AsInteger,
-    dmAdministrativo.cdsPessoaNOME.AsString) then
+  if (dmAdministrativo.cdsPessoaLOGIN.AsString <> '') and
+     (not dmPrincipal.FuncoesAdm.fpuValidarLogin(dmAdministrativo.cdsPessoaID.AsInteger, dmAdministrativo.cdsPessoaLOGIN.AsString)) then
     raise TControlException.Create('O login informado já foi cadastrado. Por favor, informe outro.', EditLogin);
 
   if not dmPrincipal.FuncoesAdm.fpuValidarNomeCpfPessoa(dmAdministrativo.cdsPessoaID.AsInteger, dmAdministrativo.cdsPessoaNOME.AsString.Trim,
@@ -273,6 +273,8 @@ procedure TfrmPessoa.ppuAlterar(ipId: Integer);
 begin
   inherited;
   EditSenha.Clear;
+  //vamos sempre deixar já em edicao para caso o usuário queira trocar somente a senha
+  dmAdministrativo.cdsPessoa.Edit;
 end;
 
 procedure TfrmPessoa.ppuAlterarDetail(ipId: Integer);

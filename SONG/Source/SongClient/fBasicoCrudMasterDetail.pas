@@ -251,6 +251,8 @@ begin
   inherited;
   pcDetails.ActivePageIndex := 0;
   btnExportar_Excel_Detail.Left := pnDetail.Width-(btnExportar_Excel_Detail.Width+5);
+  if pnBotoesCadastroDetail.TabOrder = 0 then
+    pnBotoesCadastroDetail.TabOrder := 1;
 end;
 
 function TfrmBasicoCrudMasterDetail.fprHabilitarAlterarDetail: Boolean;
@@ -359,6 +361,8 @@ begin
       end;
     mePesquisaRealizada:
       btnIncluirDetail.Visible := False;
+    meSomenteCadastro:
+      btnSalvarIncluirDetail.Visible := false;
   end;
 end;
 

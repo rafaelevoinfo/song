@@ -50,8 +50,6 @@ type
     cbEspecie: TcxDBLookupComboBox;
     EditQtde: TcxDBCalcEdit;
     Label7: TLabel;
-    cbStatus: TcxDBImageComboBox;
-    Label8: TLabel;
     btnAprovar: TButton;
     btnNegar: TButton;
     Ac_Aprovar: TAction;
@@ -335,13 +333,12 @@ var
   vaPergunta: string;
   vaCompraJaGerada: Boolean;
 begin
+  vaPergunta := '';
   vaCompraJaGerada := dmPrincipal.FuncoesEstoque.fpuVerificarComprasJaGerada(dmEstoque.cdsSolicitacao_CompraID.AsInteger);
   if vaCompraJaGerada then
-    vaPergunta := 'Um registro no compras já foi gerado para essa solicitação. Tem certeza que deseja gerar outro?'
-  else
-    vaPergunta := 'Deseja incluir um novo registro no compras?';
+    vaPergunta := 'Um registro no compras já foi gerado para essa solicitação. Tem certeza que deseja gerar outro?';
 
-  if TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim then
+  if (vaPergunta='') or (TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim) then
     begin
       vaFrmCompra := TfrmCompra.Create(nil);
       try

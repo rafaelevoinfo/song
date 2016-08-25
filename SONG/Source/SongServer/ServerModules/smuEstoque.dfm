@@ -188,6 +188,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qSolicitacao_Compra_Item: TRFQuery
+    OnCalcFields = qEntrada_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Solicitacao_Compra_Item.Id,'
@@ -266,6 +267,13 @@ inherited smEstoque: TsmEstoque
       Origin = 'UNIDADE'
       ProviderFlags = []
       Size = 10
+    end
+    object qSolicitacao_Compra_ItemCALC_QTDE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE'
+      ProviderFlags = []
+      Size = 60
+      Calculated = True
     end
   end
   object qCompra: TRFQuery
@@ -380,6 +388,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qCompra_Item: TRFQuery
+    OnCalcFields = qEntrada_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Compra_Item.Id,'
@@ -390,7 +399,8 @@ inherited smEstoque: TsmEstoque
       '       Compra_Item.Valor_Unitario,'
       '       Item.nome as Item,'
       '       Especie.nome as Especie,'
-      '       Item.tipo as tipo_item'
+      '       Item.tipo as tipo_item,'
+      '       Item.Unidade'
       'from Compra_Item'
       'inner join Item on (Item.Id = Compra_Item.Id_Item)'
       'left join Especie on (Especie.Id = Compra_Item.Id_Especie)'
@@ -463,8 +473,33 @@ inherited smEstoque: TsmEstoque
       Origin = 'TIPO'
       ProviderFlags = []
     end
+    object qCompra_ItemUNIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+    object qCompra_ItemCALC_QTDE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE'
+      ProviderFlags = []
+      Size = 60
+      Calculated = True
+    end
+    object qCompra_ItemCALC_VALOR_TOTAL: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_TOTAL'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
+      Calculated = True
+    end
   end
   object qEntrada_Item: TRFQuery
+    OnCalcFields = qEntrada_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Entrada_Item.Id,'
@@ -472,7 +507,8 @@ inherited smEstoque: TsmEstoque
       '       Entrada_Item.Id_Item,'
       '       Entrada_Item.Id_Compra_Item,'
       '       Entrada_Item.Qtde,'
-      '       Item.nome as nome_item'
+      '       Item.nome as nome_item,'
+      '       Item.Unidade'
       'from Entrada_Item'
       'inner join item on (item.id = entrada_item.id_item)'
       'where Entrada_Item.Id_Entrada = :Id_Entrada   ')
@@ -522,6 +558,21 @@ inherited smEstoque: TsmEstoque
       FieldName = 'ID_COMPRA_ITEM'
       Origin = 'ID_COMPRA_ITEM'
       ProviderFlags = [pfInUpdate]
+    end
+    object qEntrada_ItemUNIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+    object qEntrada_ItemCALC_QTDE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE'
+      ProviderFlags = []
+      Size = 60
+      Calculated = True
     end
   end
   object qSaida: TRFQuery
@@ -578,7 +629,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qSaida_Item: TRFQuery
-    OnCalcFields = qSaida_ItemCalcFields
+    OnCalcFields = qEntrada_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Saida_Item.Id,'
@@ -778,7 +829,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qVenda_Item: TRFQuery
-    OnCalcFields = qVenda_ItemCalcFields
+    OnCalcFields = qEntrada_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Venda_Item.Id,'
@@ -899,6 +950,15 @@ inherited smEstoque: TsmEstoque
       FieldKind = fkCalculated
       FieldName = 'CALC_QTDE'
       Size = 60
+      Calculated = True
+    end
+    object qVenda_ItemCALC_VALOR_TOTAL: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_TOTAL'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
       Calculated = True
     end
   end
