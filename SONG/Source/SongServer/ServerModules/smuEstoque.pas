@@ -150,6 +150,7 @@ type
     qSolicitacao_Compra_ItemCALC_QTDE: TStringField;
     qCompra_ItemCALC_VALOR_TOTAL: TBCDField;
     qVenda_ItemCALC_VALOR_TOTAL: TBCDField;
+    qSolicitacao_CompraMOTIVO_NEGACAO: TStringField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;

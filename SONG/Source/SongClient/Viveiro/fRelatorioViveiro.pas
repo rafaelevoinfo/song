@@ -327,6 +327,12 @@ type
     ppParameterList7: TppParameterList;
     rgCompraVendaMuda: TcxRadioGroup;
     rgCompraVendaSemente: TcxRadioGroup;
+    ppDBCalc11: TppDBCalc;
+    ppLabel25: TppLabel;
+    ppDBCalc12: TppDBCalc;
+    ppLabel42: TppLabel;
+    ppDBCalc13: TppDBCalc;
+    ppDBCalc14: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);

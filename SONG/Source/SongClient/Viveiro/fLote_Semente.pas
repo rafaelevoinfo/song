@@ -143,6 +143,7 @@ type
     viewRegistrosID_COMPRA_ITEM: TcxGridDBColumn;
     viewRegistrosID_CAMARA_FRIA: TcxGridDBColumn;
     viewRegistrosID_LOTE_SEMENTE_ORIGEM: TcxGridDBColumn;
+    viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;

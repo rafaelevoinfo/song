@@ -582,7 +582,7 @@ begin
   TileControlAniversario.Items.Clear;
   TileControlAniversario.Groups.Clear;
 
-  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(TInfoLogin.fpuGetInstance.Usuario.Id, -1, false, True);
+  vaNotificacoes := dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(-1, TInfoLogin.fpuGetInstance.Usuario.Id, -1, false, True);
   for vaNotificacao in vaNotificacoes do
     begin
       vaGrupo := nil;

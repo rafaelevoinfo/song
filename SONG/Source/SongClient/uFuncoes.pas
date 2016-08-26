@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 08/08/2016 22:38:51
+// 26/08/2016 00:25:53
 //
 
 unit uFuncoes;
@@ -186,19 +186,17 @@ type
 
   TsmEstoqueClient = class(TDSAdminClient)
   private
-    FqSaida_ItemCalcFieldsCommand: TDBXCommand;
-    FqVenda_ItemCalcFieldsCommand: TDBXCommand;
     FDSServerModuleDestroyCommand: TDBXCommand;
     FqPatrimonioCalcFieldsCommand: TDBXCommand;
+    FqEntrada_ItemCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    procedure qSaida_ItemCalcFields(DataSet: TDataSet); virtual;
-    procedure qVenda_ItemCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleDestroy(Sender: TObject); virtual;
     procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
+    procedure qEntrada_ItemCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -299,7 +297,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean; virtual;
-    function fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipNotificacaoEmail: Boolean; ipNotificacaoSistema: Boolean): TadsObjectlist<uTypes.TNotificacao>; virtual;
+    function fpuVerificarNotificacoes(ipId: Integer; ipIdPessoa: Integer; ipTipo: Integer; ipNotificacaoEmail: Boolean; ipNotificacaoSistema: Boolean): TadsObjectlist<uTypes.TNotificacao>; virtual;
     procedure ppuCriarAgendaPessoal(ipIdPessoa: Integer); virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
@@ -1397,32 +1395,6 @@ begin
   inherited;
 end;
 
-procedure TsmEstoqueClient.qSaida_ItemCalcFields(DataSet: TDataSet);
-begin
-  if FqSaida_ItemCalcFieldsCommand = nil then
-  begin
-    FqSaida_ItemCalcFieldsCommand := FDBXConnection.CreateCommand;
-    FqSaida_ItemCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FqSaida_ItemCalcFieldsCommand.Text := 'TsmEstoque.qSaida_ItemCalcFields';
-    FqSaida_ItemCalcFieldsCommand.Prepare;
-  end;
-  FqSaida_ItemCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
-  FqSaida_ItemCalcFieldsCommand.ExecuteUpdate;
-end;
-
-procedure TsmEstoqueClient.qVenda_ItemCalcFields(DataSet: TDataSet);
-begin
-  if FqVenda_ItemCalcFieldsCommand = nil then
-  begin
-    FqVenda_ItemCalcFieldsCommand := FDBXConnection.CreateCommand;
-    FqVenda_ItemCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FqVenda_ItemCalcFieldsCommand.Text := 'TsmEstoque.qVenda_ItemCalcFields';
-    FqVenda_ItemCalcFieldsCommand.Prepare;
-  end;
-  FqVenda_ItemCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
-  FqVenda_ItemCalcFieldsCommand.ExecuteUpdate;
-end;
-
 procedure TsmEstoqueClient.DSServerModuleDestroy(Sender: TObject);
 begin
   if FDSServerModuleDestroyCommand = nil then
@@ -1459,6 +1431,19 @@ begin
   end;
   FqPatrimonioCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
   FqPatrimonioCalcFieldsCommand.ExecuteUpdate;
+end;
+
+procedure TsmEstoqueClient.qEntrada_ItemCalcFields(DataSet: TDataSet);
+begin
+  if FqEntrada_ItemCalcFieldsCommand = nil then
+  begin
+    FqEntrada_ItemCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqEntrada_ItemCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqEntrada_ItemCalcFieldsCommand.Text := 'TsmEstoque.qEntrada_ItemCalcFields';
+    FqEntrada_ItemCalcFieldsCommand.Prepare;
+  end;
+  FqEntrada_ItemCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqEntrada_ItemCalcFieldsCommand.ExecuteUpdate;
 end;
 
 procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
@@ -1501,10 +1486,9 @@ end;
 
 destructor TsmEstoqueClient.Destroy;
 begin
-  FqSaida_ItemCalcFieldsCommand.DisposeOf;
-  FqVenda_ItemCalcFieldsCommand.DisposeOf;
   FDSServerModuleDestroyCommand.DisposeOf;
   FqPatrimonioCalcFieldsCommand.DisposeOf;
+  FqEntrada_ItemCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -2024,7 +2008,7 @@ begin
   Result := FfpuValidarTipoNotificacaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TsmFuncoesSistemaClient.fpuVerificarNotificacoes(ipIdPessoa: Integer; ipTipo: Integer; ipNotificacaoEmail: Boolean; ipNotificacaoSistema: Boolean): TadsObjectlist<uTypes.TNotificacao>;
+function TsmFuncoesSistemaClient.fpuVerificarNotificacoes(ipId: Integer; ipIdPessoa: Integer; ipTipo: Integer; ipNotificacaoEmail: Boolean; ipNotificacaoSistema: Boolean): TadsObjectlist<uTypes.TNotificacao>;
 begin
   if FfpuVerificarNotificacoesCommand = nil then
   begin
@@ -2033,16 +2017,17 @@ begin
     FfpuVerificarNotificacoesCommand.Text := 'TsmFuncoesSistema.fpuVerificarNotificacoes';
     FfpuVerificarNotificacoesCommand.Prepare;
   end;
-  FfpuVerificarNotificacoesCommand.Parameters[0].Value.SetInt32(ipIdPessoa);
-  FfpuVerificarNotificacoesCommand.Parameters[1].Value.SetInt32(ipTipo);
-  FfpuVerificarNotificacoesCommand.Parameters[2].Value.SetBoolean(ipNotificacaoEmail);
-  FfpuVerificarNotificacoesCommand.Parameters[3].Value.SetBoolean(ipNotificacaoSistema);
+  FfpuVerificarNotificacoesCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuVerificarNotificacoesCommand.Parameters[1].Value.SetInt32(ipIdPessoa);
+  FfpuVerificarNotificacoesCommand.Parameters[2].Value.SetInt32(ipTipo);
+  FfpuVerificarNotificacoesCommand.Parameters[3].Value.SetBoolean(ipNotificacaoEmail);
+  FfpuVerificarNotificacoesCommand.Parameters[4].Value.SetBoolean(ipNotificacaoSistema);
   FfpuVerificarNotificacoesCommand.ExecuteUpdate;
-  if not FfpuVerificarNotificacoesCommand.Parameters[4].Value.IsNull then
+  if not FfpuVerificarNotificacoesCommand.Parameters[5].Value.IsNull then
   begin
-    FUnMarshal := TDBXClientCommand(FfpuVerificarNotificacoesCommand.Parameters[4].ConnectionHandler).GetJSONUnMarshaler;
+    FUnMarshal := TDBXClientCommand(FfpuVerificarNotificacoesCommand.Parameters[5].ConnectionHandler).GetJSONUnMarshaler;
     try
-      Result := TadsObjectlist<uTypes.TNotificacao>(FUnMarshal.UnMarshal(FfpuVerificarNotificacoesCommand.Parameters[4].Value.GetJSONValue(True)));
+      Result := TadsObjectlist<uTypes.TNotificacao>(FUnMarshal.UnMarshal(FfpuVerificarNotificacoesCommand.Parameters[5].Value.GetJSONValue(True)));
       if FInstanceOwner then
         FfpuVerificarNotificacoesCommand.FreeOnExecute(Result);
     finally

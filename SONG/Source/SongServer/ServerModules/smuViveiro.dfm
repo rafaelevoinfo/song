@@ -254,7 +254,8 @@ inherited smViveiro: TsmViveiro
       '       pessoa.nome as pessoa_coletou,'
       '       Lote_Semente.id_camara_fria,'
       '       Camara_Fria.nome as Camara_Fria,'
-      '       Lote_Semente.id_lote_semente_origem'
+      '       Lote_Semente.id_lote_semente_origem,'
+      '       fin_for_cli.razao_social'
       'from Lote_Semente'
       'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
       
@@ -263,6 +264,11 @@ inherited smViveiro: TsmViveiro
       
         'left join camara_fria on (camara_fria.id = lote_semente.id_camar' +
         'a_fria)'
+      
+        'left join compra_item on (compra_item.id = lote_semente.id_compr' +
+        'a_item)'
+      'left join compra on (compra_item.id_compra = compra.id)'
+      'left join fin_for_cli on (compra.id_fornecedor = fin_for_cli.id)'
       '&WHERE')
     Left = 376
     Top = 144
@@ -379,6 +385,13 @@ inherited smViveiro: TsmViveiro
       FieldName = 'ID_LOTE_SEMENTE_ORIGEM'
       Origin = 'ID_LOTE_SEMENTE_ORIGEM'
       ProviderFlags = [pfInUpdate]
+    end
+    object qLote_SementeRAZAO_SOCIAL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qLote_Semente_Matriz: TRFQuery
@@ -623,9 +636,15 @@ inherited smViveiro: TsmViveiro
       '       Lote_Muda.Observacao,'
       '       Lote_Muda.Taxa_Classificacao,'
       '       Lote_Muda.Saldo,'
-      '       Lote_Muda.Status'
+      '       Lote_Muda.Status,'
+      '       fin_for_cli.razao_social'
       'from Lote_Muda  '
       'inner join Especie on (Especie.Id = Lote_Muda.Id_Especie)'
+      
+        'left join compra_item on (compra_item.id = lote_muda.id_compra_i' +
+        'tem)'
+      'left join compra on (compra_item.id_compra = compra.id)'
+      'left join fin_for_cli on (compra.id_fornecedor = fin_for_cli.id)'
       '&where')
     Left = 488
     Top = 144
@@ -705,6 +724,13 @@ inherited smViveiro: TsmViveiro
       Origin = 'STATUS'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qLote_MudaRAZAO_SOCIAL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object dspqLote_Muda: TDataSetProvider

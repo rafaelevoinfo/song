@@ -20,7 +20,11 @@ type
     { Private declarations }
   public
     function fpuValidarTipoNotificacao(ipIdNotificacao, ipTipo: integer): Boolean;
-    function fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
+    /// Verifica toda as notificações cadastradas
+    /// ipId - Se diferente de -1 significa que é para gerar a notificacação somente desse ID
+    /// ipIdPessoa - Se diferente de -1 significa que é para verificar somente as notificaões configuradas para essa pessoa
+    /// ipTipo - Tipo da Notificação a ser verificada. Informe -1 para verificar todas.
+    function fpuVerificarNotificacoes(ipId, ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
       : TadsObjectlist<TNotificacao>;
     procedure ppuCriarAgendaPessoal(ipIdPessoa: integer);
   end;
@@ -49,7 +53,7 @@ begin
 
 end;
 
-function TsmFuncoesSistema.fpuVerificarNotificacoes(ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
+function TsmFuncoesSistema.fpuVerificarNotificacoes(ipId, ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
   : TadsObjectlist<TNotificacao>;
 var
   vaDataSetNotificacao, vaDataSetNotificacaoPessoa, vaDataSet: TRFQuery;
@@ -388,24 +392,32 @@ var
       '       Pessoa.nome as Solicitante, ' +
       '       Solicitacao_Compra.Status,' +
       '       Solicitacao_Compra.Data_Analise, ' +
+      '       Solicitacao_Compra.Motivo_Negacao, ' +
       '       list(coalesce(Especie.Nome, Item.Nome), '', '') as Itens' +
       ' from Solicitacao_Compra' +
       ' inner join Solicitacao_Compra_Item on (Solicitacao_Compra.Id = Solicitacao_Compra_Item.Id_Solicitacao_Compra)' +
       ' inner join pessoa on (pessoa.id = Solicitacao_Compra.id_pessoa_solicitou) ' +
       ' inner join Item on (Item.Id = Solicitacao_Compra_Item.Id_Item)' +
       ' left join Especie on (Especie.Id = Solicitacao_Compra_Item.Id_Especie)' +
-      ' where ((Solicitacao_Compra.Status = 0) and' +
+      ' where (((Solicitacao_Compra.Status = 0) and' +
       '         (dateadd(day, :Dias, Solicitacao_Compra.Data) >= current_date)) or ' +
       '       ((Solicitacao_Compra.Status <> 0) and' +
-      '        (dateadd(day, :Dias, Solicitacao_Compra.Data_Analise) >= current_date))' +
-      ' group by Solicitacao_Compra.id, Solicitacao_Compra.Data, Pessoa.nome, Solicitacao_Compra.Status, Solicitacao_Compra.Data_Analise ';
+      '        (dateadd(day, :Dias, Solicitacao_Compra.Data_Analise) >= current_date)))';
 
+    if ipId <> -1 then
+      vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' and (solicitacao_compra.id = :ID) ';
+
+    vaDataSet.SQL.Text := vaDataSet.SQL.Text +
+      ' group by Solicitacao_Compra.id, Solicitacao_Compra.Data, Pessoa.nome, '+
+      '          Solicitacao_Compra.Status, Solicitacao_Compra.Data_Analise, Solicitacao_Compra.Motivo_Negacao ';
     vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger;
+    if ipId <> -1 then
+      vaDataSet.ParamByName('ID').AsInteger := ipId;
     vaDataSet.Open;
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+        if ipNotificacaoSistema and (vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1) then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -430,7 +442,8 @@ var
         else if vaDataSet.FieldByName('STATUS').AsInteger = Ord(sscAprovada) then
           vaMsg := vaMsg + 'A solicitação dos itens ' + vaDataSet.FieldByName('ITENS').AsString + ' foi aprovada.' + ' <br/><br/>'
         else if vaDataSet.FieldByName('STATUS').AsInteger = Ord(sscNegada) then
-          vaMsg := vaMsg + 'A solicitação dos itens ' + vaDataSet.FieldByName('ITENS').AsString + ' foi negada.' + ' <br/><br/>';
+          vaMsg := vaMsg + 'A solicitação dos itens ' + vaDataSet.FieldByName('ITENS').AsString + ' foi negada pelo seguinte motivo: <br/>' +
+            vaDataSet.FieldByName('MOTIVO_NEGACAO').AsString + ' <br/><br/>';
 
         vaDataSet.next;
       end;
@@ -565,6 +578,9 @@ begin
     vaDataSet.close;
     vaDataSet.Free;
   end;
+
+  if not ipNotificacaoSistema then
+    FreeAndNil(Result);
 end;
 
 function TsmFuncoesSistema.fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean;
@@ -676,8 +692,8 @@ begin
                     if (ipDataSetNotificacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
                       (ipDataSetNotificacaoPessoa.FieldByName('Email').AsString <> '') then
                       begin
-                        //se diferente de -1 significa que no proprio select da agenda ja foi feito o filtro para garantir
-                        //que somente pessoas autorizadas vejam o agendamento
+                        // se diferente de -1 significa que no proprio select da agenda ja foi feito o filtro para garantir
+                        // que somente pessoas autorizadas vejam o agendamento
                         if ipIdPessoa = -1 then
                           begin
                             vaDataSetAgendaPessoa.close;

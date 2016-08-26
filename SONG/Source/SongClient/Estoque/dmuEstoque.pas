@@ -149,6 +149,7 @@ type
     cdsCompra_ItemUNIDADE: TStringField;
     cdsCompra_ItemCALC_QTDE: TStringField;
     cdsCompra_ItemCALC_VALOR_TOTAL: TBCDField;
+    cdsSolicitacao_CompraMOTIVO_NEGACAO: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

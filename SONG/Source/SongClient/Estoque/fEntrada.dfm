@@ -1,7 +1,6 @@
 inherited frmEntrada: TfrmEntrada
   ActiveControl = nil
   Caption = 'Entradas'
-  ExplicitTop = -33
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -95,6 +94,7 @@ inherited frmEntrada: TfrmEntrada
             end
             object viewRegistrosPESSOA: TcxGridDBColumn [2]
               DataBinding.FieldName = 'PESSOA'
+              Options.Editing = False
               Width = 159
             end
             object viewRegistrosID_PESSOA: TcxGridDBColumn
@@ -136,6 +136,10 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 6
@@ -156,6 +160,10 @@ inherited frmEntrada: TfrmEntrada
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnEditsCadastroDetail: TPanel
         object Label3: TLabel
           Left = 5

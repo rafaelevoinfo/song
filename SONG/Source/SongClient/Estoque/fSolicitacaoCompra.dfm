@@ -1,10 +1,17 @@
 inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
   ActiveControl = nil
   Caption = 'Solicita'#231#227'o de Compras'
+  OnDestroy = FormDestroy
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 462
@@ -245,6 +252,10 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -287,12 +298,11 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
-      inherited pnBotoesCadastro: TPanel
-        TabOrder = 1
-        ExplicitTop = 2
-      end
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
-        TabOrder = 0
         object Label4: TLabel
           Left = 7
           Top = 8
@@ -344,9 +354,40 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
           Height = 62
           Width = 572
         end
+        object pnMotivoNegacaoCadastro: TPanel
+          Left = 4
+          Top = 135
+          Width = 572
+          Height = 102
+          AutoSize = True
+          BevelOuter = bvNone
+          Caption = 'pnMotivoNegacaoCadastro'
+          TabOrder = 3
+          object Label9: TLabel
+            Left = 2
+            Top = 0
+            Width = 193
+            Height = 13
+            Caption = 'Motivo pelo qual foi negada a solicita'#231#227'o'
+            FocusControl = EditObservacao
+          end
+          object EditMotivoNegacaoCadastro: TcxDBMemo
+            Left = 0
+            Top = 16
+            DataBinding.DataField = 'MOTIVO_NEGACAO'
+            DataBinding.DataSource = dsMaster
+            TabOrder = 0
+            Height = 86
+            Width = 572
+          end
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object lbl1: TLabel
           Left = 7
@@ -424,7 +465,62 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       end
     end
   end
+  object pnMotivoNegacao: TPanel [1]
+    Left = 391
+    Top = 201
+    Width = 585
+    Height = 161
+    TabOrder = 1
+    Visible = False
+    object Label8: TLabel
+      Left = 4
+      Top = 3
+      Width = 291
+      Height = 13
+      Caption = 'Informe o motivo pelo qual a solicita'#231#227'o foi negada.'
+      FocusControl = EditMotivoNegacao
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object EditMotivoNegacao: TcxDBMemo
+      Left = 4
+      Top = 19
+      DataBinding.DataField = 'MOTIVO_NEGACAO'
+      DataBinding.DataSource = dsMaster
+      TabOrder = 0
+      Height = 86
+      Width = 572
+    end
+    object btnSalvarMotivo: TButton
+      AlignWithMargins = True
+      Left = 492
+      Top = 111
+      Width = 85
+      Height = 41
+      Action = Ac_Salvar_Motivo_Negacao
+      Images = dmPrincipal.imgIcons_32
+      ModalResult = 1
+      TabOrder = 2
+    end
+    object btnCancelarNegacao: TButton
+      AlignWithMargins = True
+      Left = 401
+      Top = 111
+      Width = 85
+      Height = 41
+      Caption = 'Cancelar'
+      ImageIndex = 5
+      Images = dmPrincipal.imgIcons_32
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
   inherited ActionList1: TActionList
+    Top = 160
     object Ac_Aprovar: TAction
       Category = 'Master'
       Caption = 'Aprovar'
@@ -456,6 +552,11 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       Caption = 'Imprimir Autoriza'#231#227'o de Compra'
       ImageIndex = 19
       OnExecute = Ac_Imprimir_AutorizacaoExecute
+    end
+    object Ac_Salvar_Motivo_Negacao: TAction
+      Caption = 'Salvar'
+      ImageIndex = 4
+      OnExecute = Ac_Salvar_Motivo_NegacaoExecute
     end
   end
   inherited dsMaster: TDataSource
@@ -516,8 +617,8 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
-    Left = 584
-    Top = 168
+    Left = 560
+    Top = 120
     Version = '16.02'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeItensSolicitacao'
@@ -1124,7 +1225,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       object ppLabel23: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label23'
-        Caption = '(64) 3661-9316'
+        Caption = '(64) 3661-7909'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -1133,9 +1234,9 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         FormField = False
         TextAlignment = taCentered
         Transparent = True
-        mmHeight = 3704
-        mmLeft = 64559
-        mmTop = 18784
+        mmHeight = 3705
+        mmLeft = 64558
+        mmTop = 18785
         mmWidth = 19844
         BandType = 0
         LayerName = BandLayer6
@@ -1660,77 +1761,94 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
     Left = 376
     Top = 152
     object DBPipeSolicitacaoppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField2: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_PESSOA_SOLICITOU'
       FieldName = 'ID_PESSOA_SOLICITOU'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_PESSOA_ANALISOU'
       FieldName = 'ID_PESSOA_ANALISOU'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField4: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField5: TppField
       FieldAlias = 'DATA_ANALISE'
       FieldName = 'DATA_ANALISE'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField6: TppField
-      Alignment = taRightJustify
       FieldAlias = 'STATUS'
       FieldName = 'STATUS'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField7: TppField
       FieldAlias = 'SOLICITANTE'
       FieldName = 'SOLICITANTE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField8: TppField
       FieldAlias = 'RESPONSAVEL_ANALISE'
       FieldName = 'RESPONSAVEL_ANALISE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeSolicitacaoppField9: TppField
       FieldAlias = 'OBSERVACAO'
       FieldName = 'OBSERVACAO'
-      FieldLength = 1000
-      DisplayWidth = 1000
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
   end
   object DBPipeItensSolicitacao: TppDBPipeline

@@ -112,6 +112,7 @@ inherited smEstoque: TsmEstoque
       '       Solicitacao_Compra.Data_Analise,'
       '       Solicitacao_Compra.Status,'
       '       Solicitacao_Compra.Observacao,'
+      '       Solicitacao_compra.Motivo_Negacao,'
       '       Solicitante.nome as solicitante,'
       '       Responsavel_Analise.nome as responsavel_analise'
       'from Solicitacao_Compra'
@@ -129,7 +130,7 @@ inherited smEstoque: TsmEstoque
     Top = 88
     MacroData = <
       item
-        Value = Null
+        Value = 'where solicitacao_compra.id = 0'
         Name = 'WHERE'
       end>
     object qSolicitacao_CompraID: TIntegerField
@@ -183,6 +184,12 @@ inherited smEstoque: TsmEstoque
     object qSolicitacao_CompraOBSERVACAO: TStringField
       FieldName = 'OBSERVACAO'
       Origin = 'OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object qSolicitacao_CompraMOTIVO_NEGACAO: TStringField
+      FieldName = 'MOTIVO_NEGACAO'
+      Origin = 'MOTIVO_NEGACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end

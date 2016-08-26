@@ -1,11 +1,15 @@
 inherited frmLoteMuda: TfrmLoteMuda
-  ActiveControl = btnIncluir
   Caption = 'Lotes de Mudas'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -28,13 +32,13 @@ inherited frmLoteMuda: TfrmLoteMuda
             Top = 20
             RepositoryItem = dmLookup.repIcbStatusMudas
             Properties.Items = <>
-            TabOrder = 6
+            TabOrder = 5
             Width = 176
           end
           inherited rgStatus: TcxRadioGroup [3]
             Left = 3
             Top = 31
-            TabOrder = 5
+            TabOrder = 6
             ExplicitLeft = 3
             ExplicitTop = 31
           end
@@ -153,7 +157,11 @@ inherited frmLoteMuda: TfrmLoteMuda
               Options.Editing = False
               Width = 90
             end
-            object viewRegistrosSTATUS: TcxGridDBColumn [10]
+            object viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'RAZAO_SOCIAL'
+              Width = 150
+            end
+            object viewRegistrosSTATUS: TcxGridDBColumn [11]
               DataBinding.FieldName = 'STATUS'
               RepositoryItem = dmLookup.repIcbStatusMudas
               Options.Editing = False
@@ -323,10 +331,6 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5

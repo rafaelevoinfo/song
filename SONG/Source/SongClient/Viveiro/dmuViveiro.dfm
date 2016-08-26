@@ -295,6 +295,12 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'ID_LOTE_SEMENTE_ORIGEM'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsLote_SementeRAZAO_SOCIAL: TStringField
+      DisplayLabel = 'Fornecedor'
+      FieldName = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsLote_Semente_Matriz: TRFClientDataSet
     Aggregates = <>
@@ -570,6 +576,12 @@ inherited dmViveiro: TdmViveiro
       DisplayLabel = 'Status'
       FieldName = 'STATUS'
       Required = True
+    end
+    object cdsLote_MudaRAZAO_SOCIAL: TStringField
+      DisplayLabel = 'Fornecedor'
+      FieldName = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object dsLote_Muda: TDataSource

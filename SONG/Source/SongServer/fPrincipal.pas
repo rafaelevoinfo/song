@@ -347,7 +347,7 @@ begin
   vaFuncoesSistema := TsmFuncoesSistema.Create(nil);
   try
     // preciso apenas enviar os email aqui.
-    vaNotificacoes := vaFuncoesSistema.fpuVerificarNotificacoes(-1, -1, true,false);
+    vaNotificacoes := vaFuncoesSistema.fpuVerificarNotificacoes(-1, -1, -1, true,false);
     if Assigned(vaNotificacoes) then
       vaNotificacoes.Free;
   finally

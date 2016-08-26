@@ -108,6 +108,7 @@ type
     viewCanteirosID: TcxGridDBColumn;
     viewCanteirosID_CANTEIRO: TcxGridDBColumn;
     viewCanteirosNOME_CANTEIRO: TcxGridDBColumn;
+    viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

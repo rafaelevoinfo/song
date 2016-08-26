@@ -142,6 +142,15 @@ type
     ppLine13: TppLine;
     ppLine14: TppLine;
     ppSummaryBand1: TppSummaryBand;
+    pnMotivoNegacao: TPanel;
+    Label8: TLabel;
+    EditMotivoNegacao: TcxDBMemo;
+    btnSalvarMotivo: TButton;
+    btnCancelarNegacao: TButton;
+    Ac_Salvar_Motivo_Negacao: TAction;
+    pnMotivoNegacaoCadastro: TPanel;
+    Label9: TLabel;
+    EditMotivoNegacaoCadastro: TcxDBMemo;
     procedure FormCreate(Sender: TObject);
     procedure Ac_AprovarExecute(Sender: TObject);
     procedure Ac_NegarExecute(Sender: TObject);
@@ -156,9 +165,12 @@ type
     procedure viewRegistrosSTATUSCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
+    procedure Ac_Salvar_Motivo_NegacaoExecute(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     dmLookup: TdmLookup;
     dmEstoque: TdmEstoque;
+    FrmMotivoNegacao: TForm;
     procedure ppvGerarRegistroCompras;
     procedure ppvValidarAprovacaoNegacao;
     procedure ppvAprovarNegar(ipStatus: TStatusSolicitacaoCompra);
@@ -175,6 +187,7 @@ type
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprValidarPesquisa; override;
     procedure pprBeforeAlterar; override;
+    procedure pprBeforeIncluir;override;
 
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterarDetail; override;
@@ -234,7 +247,7 @@ begin
   if not dmLookup.cdslkOrganizacao.Active then
     dmLookup.cdslkOrganizacao.Open;
 
-  //Precisa desabilitar os controles pq senao da um erro de parameter incorrect ao desenhar o cxGrid
+  // Precisa desabilitar os controles pq senao da um erro de parameter incorrect ao desenhar o cxGrid
   dmEstoque.cdsSolicitacao_Compra.DisableControls;
   dmEstoque.cdsSolicitacao_Compra_Item.DisableControls;
   try
@@ -291,19 +304,44 @@ end;
 procedure TfrmSolicitacaoCompra.ppvAprovarNegar(ipStatus: TStatusSolicitacaoCompra);
 begin
   dmEstoque.cdsSolicitacao_Compra.Edit;
+  if ipStatus = sscNegada then
+    begin
+      if not Assigned(FrmMotivoNegacao) then
+        FrmMotivoNegacao := TUtils.fpuEncapsularPanelForm('Motivo da Negação', pnMotivoNegacao);
+
+      if FrmMotivoNegacao.ShowModal <> mrOk then
+        begin
+          dmEstoque.cdsSolicitacao_Compra.Cancel;
+          Exit;
+        end;
+    end;
+
   dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger := Ord(ipStatus);
   dmEstoque.cdsSolicitacao_CompraDATA_ANALISE.AsDateTime := Now;
   dmEstoque.cdsSolicitacao_CompraID_PESSOA_ANALISOU.AsInteger := TInfoLogin.fpuGetInstance.Usuario.Id;
   dmEstoque.cdsSolicitacao_Compra.Post;
 
   if ipStatus = sscAprovada then
-    ppvGerarRegistroCompras;
+    ppvGerarRegistroCompras
+  else
+    dmPrincipal.FuncoesSistema.fpuVerificarNotificacoes(dmEstoque.cdsSolicitacao_CompraID.AsInteger, -1,Ord(tnSolicitacaoCompra),true,false);
 end;
 
 procedure TfrmSolicitacaoCompra.Ac_NegarUpdate(Sender: TObject);
 begin
   inherited;
   TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger <> Ord(sscNegada));
+end;
+
+procedure TfrmSolicitacaoCompra.Ac_Salvar_Motivo_NegacaoExecute(
+  Sender: TObject);
+begin
+  inherited;
+  if EditMotivoNegacao.Lines.Text.Trim = '' then
+    begin
+      FrmMotivoNegacao.ModalResult := mrNone;
+      TMensagem.ppuShowMessage('Informe o motivo pelo qual a solicitação foi negada.');
+    end;
 end;
 
 procedure TfrmSolicitacaoCompra.cbItemKeyDown(Sender: TObject; var Key: Word;
@@ -338,7 +376,7 @@ begin
   if vaCompraJaGerada then
     vaPergunta := 'Um registro no compras já foi gerado para essa solicitação. Tem certeza que deseja gerar outro?';
 
-  if (vaPergunta='') or (TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim) then
+  if (vaPergunta = '') or (TMensagem.fpuPerguntar(vaPergunta, ppSimNao) = rpSim) then
     begin
       vaFrmCompra := TfrmCompra.Create(nil);
       try
@@ -395,6 +433,13 @@ begin
 
 end;
 
+procedure TfrmSolicitacaoCompra.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  if Assigned(FrmMotivoNegacao) then
+    FreeAndNil(FrmMotivoNegacao);
+end;
+
 function TfrmSolicitacaoCompra.fprConfigurarControlesPesquisa: TWinControl;
 begin
   Result := inherited;
@@ -428,6 +473,8 @@ begin
   inherited;
   if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
     raise Exception.Create('Não é possível editar uma solicitação já aprovada.');
+
+  pnMotivoNegacaoCadastro.Visible := dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = ord(sscNegada);
 end;
 
 procedure TfrmSolicitacaoCompra.pprBeforeAlterarDetail;
@@ -442,6 +489,12 @@ begin
   inherited;
   if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
     raise Exception.Create('Não é possível excluir um item de uma solicitação já aprovada.');
+end;
+
+procedure TfrmSolicitacaoCompra.pprBeforeIncluir;
+begin
+  inherited;
+  pnMotivoNegacaoCadastro.Visible := false;
 end;
 
 procedure TfrmSolicitacaoCompra.pprBeforeIncluirDetail;
@@ -498,25 +551,25 @@ procedure TfrmSolicitacaoCompra.viewRegistrosSTATUSCustomDrawCell(
   AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
 begin
   inherited;
-     if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscAprovada) then
-       begin
-         ACanvas.Font.Color := clWhite;
-         if AViewInfo.GridRecord.Selected then
-           ACanvas.Brush.Color := $00274F00
-         else
-           ACanvas.Brush.Color := clGreen;
-       end
-     else if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscNegada) then
-       begin
-         ACanvas.Font.Color := clWhite;
-         if AViewInfo.GridRecord.Selected then
-           ACanvas.Brush.Color := clMaroon
-         else
-           ACanvas.Brush.Color := clRed;
-       end;
-   end;
+  if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscAprovada) then
+    begin
+      ACanvas.Font.Color := clWhite;
+      if AViewInfo.GridRecord.Selected then
+        ACanvas.Brush.Color := $00274F00
+      else
+        ACanvas.Brush.Color := clGreen;
+    end
+  else if AViewInfo.GridRecord.Values[viewRegistrosSTATUS.Index] = Ord(sscNegada) then
+    begin
+      ACanvas.Font.Color := clWhite;
+      if AViewInfo.GridRecord.Selected then
+        ACanvas.Brush.Color := clMaroon
+      else
+        ACanvas.Brush.Color := clRed;
+    end;
+end;
 
-   procedure TfrmSolicitacaoCompra.pprValidarDados;
+procedure TfrmSolicitacaoCompra.pprValidarDados;
 begin
   inherited;
   if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger in [Ord(sscAprovada), Ord(sscNegada)] then

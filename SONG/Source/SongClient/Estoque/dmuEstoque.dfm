@@ -155,6 +155,11 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object cdsSolicitacao_CompraMOTIVO_NEGACAO: TStringField
+      DisplayLabel = 'Motivo da Nega'#231#227'o'
+      FieldName = 'MOTIVO_NEGACAO'
+      Size = 1000
+    end
   end
   object cdsSolicitacao_Compra_Item: TRFClientDataSet
     Aggregates = <>
