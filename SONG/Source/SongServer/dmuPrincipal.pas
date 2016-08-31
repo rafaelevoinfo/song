@@ -142,6 +142,7 @@ var
   vaSessao: TSessaoUsuario;
 begin
   valid := True;
+{$IFNDEF DEBUG}
   if (User <> '') or (Password <> '') then
     begin
       // if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
@@ -159,6 +160,7 @@ begin
         end;
       // end;
     end;
+{$ENDIF}
 
 end;
 
@@ -166,6 +168,7 @@ procedure TdmPrincipal.AuthenticationUserAuthorize(Sender: TObject; AuthorizeEve
   var valid: Boolean);
 begin
   valid := True;
+{$IFNDEF DEBUG}
   // se nao tiver logado com um usuario e senha valido a unica coisa permitida vai ser baixar uma nova versao
   if (AuthorizeEventObject.UserName = '') and
     (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuVerificarNovaVersao') and
@@ -173,6 +176,7 @@ begin
     begin
       valid := false
     end;
+{$ENDIF}
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);

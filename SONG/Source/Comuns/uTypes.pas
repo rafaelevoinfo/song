@@ -259,7 +259,7 @@ type
 
   TRelacionamentosPessoa = Set of TTipoRelacionamentoPessoa;
 
-  TOrigemRecurso = (orProjeto, orFundo, orFinanciamento, orDoacao);
+  TOrigemRecurso = (orProjeto, orFundo, orFinanciamento, orDoacao, orTransferencia);
   TOrigem = (oriProjeto, oriFundo);
 
   TTipoMovimentacao = (tmDespesa, tmReceita);

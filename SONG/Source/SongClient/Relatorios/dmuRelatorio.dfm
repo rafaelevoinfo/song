@@ -78,7 +78,6 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <
       item
@@ -713,7 +712,6 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsLote_Muda_Comprado: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqLote_Muda_Comprado'
@@ -1018,6 +1016,98 @@ inherited dmRelatorio: TdmRelatorio
     object cdsLote_Muda_VendidoCLIENTE: TStringField
       FieldName = 'CLIENTE'
       Size = 203
+    end
+  end
+  object cdsView_Movimentacao_Financeira: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqView_Movimentacao_Financeira'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 688
+    Top = 320
+    object cdsView_Movimentacao_FinanceiraID_MOVIMENTACAO: TIntegerField
+      FieldName = 'ID_MOVIMENTACAO'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsView_Movimentacao_FinanceiraID_ORIGEM_RECURSO: TIntegerField
+      FieldName = 'ID_ORIGEM_RECURSO'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraID_UNICO_ORIGEM_RECURSO: TStringField
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 19
+    end
+    object cdsView_Movimentacao_FinanceiraORIGEM_RECURSO: TStringField
+      FieldName = 'ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsView_Movimentacao_FinanceiraTIPO: TIntegerField
+      FieldName = 'TIPO'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraDESCRICAO_TIPO: TStringField
+      FieldName = 'DESCRICAO_TIPO'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 8
+    end
+    object cdsView_Movimentacao_FinanceiraDESCRICAO_MOVIMENTACAO: TStringField
+      FieldName = 'DESCRICAO_MOVIMENTACAO'
+      ProviderFlags = []
+      Size = 124
+    end
+    object cdsView_Movimentacao_FinanceiraDATA: TDateField
+      FieldName = 'DATA'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraDATA_PAGAMENTO_RECEBIMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO: TIntegerField
+      FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
+      ProviderFlags = []
+    end
+    object cdsView_Movimentacao_FinanceiraVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField
+      FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE: TBCDField
+      FieldName = 'CALC_VALOR_RESTANTE'
+      ProviderFlags = []
+      ReadOnly = True
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsView_Movimentacao_FinanceiraCALC_SALDO: TBCDField
+      FieldName = 'CALC_SALDO'
+      ProviderFlags = []
+      ReadOnly = True
+      currency = True
+      Precision = 18
+      Size = 2
     end
   end
 end

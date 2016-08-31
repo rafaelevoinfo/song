@@ -60,6 +60,9 @@ type
 
     coPessoa = 'PESSOA';
 
+    coOrganizacao = 'ORGANIZACAO';
+    coAberto = 'ABERTO';
+
     coDelimitador = '§';
   end;
 

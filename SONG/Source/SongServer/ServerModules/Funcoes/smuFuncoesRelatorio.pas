@@ -13,18 +13,6 @@ uses
 type
   TsmFuncoesRelatorio = class(TsmFuncoesBasico)
     qMovimentacao: TRFQuery;
-    qMovimentacaoID_MOVIMENTACAO: TIntegerField;
-    qMovimentacaoID_ORGANIZACAO: TIntegerField;
-    qMovimentacaoNOME_ORGANIZACAO: TStringField;
-    qMovimentacaoTIPO_ORIGEM_RECURSO: TIntegerField;
-    qMovimentacaoID_ORIGEM_RECURSO: TIntegerField;
-    qMovimentacaoORIGEM_RECURSO: TStringField;
-    qMovimentacaoTIPO: TIntegerField;
-    qMovimentacaoDESCRICAO_TIPO: TStringField;
-    qMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField;
-    qMovimentacaoVALOR_TOTAL: TBCDField;
-    qMovimentacaoVALOR_PARCIAL: TBCDField;
-    qMovimentacaoID: TIntegerField;
     cdsSaldo: TClientDataSet;
     cdsSaldoID_ORGANIZACAO: TIntegerField;
     cdsSaldoNOME_ORGANIZACAO: TStringField;
@@ -32,14 +20,23 @@ type
     cdsSaldoNOME_PROJETO_FUNDO: TStringField;
     cdsSaldoSALDO: TBCDField;
     cdsSaldoSALDO_GERAL: TBCDField;
-    qMovimentacaoID_IDENTIFICACAO_TABELA: TIntegerField;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
-    qMovimentacaoTIPO_ORIGEM: TIntegerField;
-    qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
+    qMovimentacaoID_MOVIMENTACAO: TIntegerField;
+    qMovimentacaoID_ORGANIZACAO: TIntegerField;
+    qMovimentacaoNOME_ORGANIZACAO: TStringField;
+    qMovimentacaoID_ORIGEM_RECURSO: TIntegerField;
+    qMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField;
+    qMovimentacaoORIGEM_RECURSO: TStringField;
+    qMovimentacaoTIPO: TIntegerField;
+    qMovimentacaoDESCRICAO_TIPO: TStringField;
+    qMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField;
     qMovimentacaoDATA: TDateField;
     qMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField;
-    qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO: TSmallintField;
-    qMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField;
+    qMovimentacaoFORMA_PAGAMENTO_RECEBIMENTO: TIntegerField;
+    qMovimentacaoVALOR_TOTAL: TBCDField;
+    qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
+    qMovimentacaoVALOR_TOTAL_ORGANIZACAO: TBCDField;
+    qMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO_ORGAN: TBCDField;
   private
     procedure ppvCalcularSaldoGeral(ipCds: TClientDataSet);
     { Private declarations }
@@ -71,22 +68,10 @@ function TsmFuncoesRelatorio.fpuMovimentacaoFinanceira(ipIdOrganizacao, ipIdProj
   ipDataInicial, ipDataFinal: String; ipReceitas, ipDespesas, ipSomenteRegistroAberto: Boolean): OleVariant;
 var
   vaCds: TRFClientDataSet;
-  vaRecNo: Integer;
-  vaValorPerc, vaSomaValorPerc: Currency;
   vaDataInicial, vaDataFinal: TDateTime;
-  vaPerc: Double;
-
-  procedure plProcessarRegistro(ipValorPagoRecebido: Currency);
-  begin
-    vaCds.Edit;
-    vaCds.FieldByName(coProcessado).AsBoolean := True;
-    vaCds.FieldByName(coValor).AsFloat := ipValorPagoRecebido;
-    vaCds.FieldByName(coValorRestante).AsFloat := vaCds.FieldByName(qMovimentacaoVALOR_PARCIAL.FieldName).AsFloat - ipValorPagoRecebido;
-    vaCds.Post;
-  end;
 
 begin
-  qMovimentacao.Close;
+  {qMovimentacao.Close;
   qMovimentacao.ParamByName('TODAS_DATAS').Clear;
   if TryStrToDateTime(ipDataInicial, vaDataInicial) and TryStrToDateTime(ipDataFinal, vaDataFinal) then
     begin
@@ -118,7 +103,7 @@ begin
 
         qMovimentacao.Next;
       end;
-
+    {
     // Nao remover esse IndeFieldNames pq senao ao fazer e desfazer o filter os registros irao mudar de posicao fazendo tudo ficar errado
     vaCds.IndexFieldNames := qMovimentacaoID_IDENTIFICACAO_TABELA.FieldName + ';' +
       qMovimentacaoID_MOVIMENTACAO.FieldName + ';' +
@@ -213,7 +198,7 @@ begin
   finally
     vaCds.Free;
     qMovimentacao.Close;
-  end;
+  end;                       }
 end;
 
 function TsmFuncoesRelatorio.fpuSaldo(ipIdOrganizacao, ipIdProjeto,
@@ -221,7 +206,7 @@ function TsmFuncoesRelatorio.fpuSaldo(ipIdOrganizacao, ipIdProjeto,
 var
   vaCdsMovimentacao: TClientDataSet;
 begin
-  if cdsSaldo.Active then
+  {if cdsSaldo.Active then
     cdsSaldo.EmptyDataSet
   else
     cdsSaldo.CreateDataSet;
@@ -269,7 +254,7 @@ begin
     Result := cdsSaldo.Data;
   finally
     vaCdsMovimentacao.Free;
-  end;
+  end;     }
 end;
 
 procedure TsmFuncoesRelatorio.ppvCalcularSaldoGeral(ipCds: TClientDataSet);

@@ -31,24 +31,10 @@ type
     lbDataInicial: TLabel;
     Label1: TLabel;
     EditDataInicial: TcxDateEdit;
-    cdsMovimentacao: TRFClientDataSet;
-    cdsMovimentacaoID_MOVIMENTACAO: TIntegerField;
-    cdsMovimentacaoID_ORGANIZACAO: TIntegerField;
-    cdsMovimentacaoNOME_ORGANIZACAO: TStringField;
-    cdsMovimentacaoTIPO_ORIGEM_RECURSO: TIntegerField;
-    cdsMovimentacaoID_ORIGEM_RECURSO: TIntegerField;
-    cdsMovimentacaoORIGEM_RECURSO: TStringField;
-    cdsMovimentacaoTIPO: TIntegerField;
-    cdsMovimentacaoDESCRICAO_TIPO: TStringField;
-    cdsMovimentacaoDESCRICAO_MOVIMENTACAO: TStringField;
-    cdsMovimentacaoVALOR_TOTAL: TBCDField;
-    cdsMovimentacaoVALOR_PARCIAL: TBCDField;
     DBPipeMovimentacao: TppDBPipeline;
-    dsMovimentacao: TDataSource;
+    dsView_Movimentacao_Financeira: TDataSource;
     ppMovimentacao: TppReport;
     ppParameterList3: TppParameterList;
-    cdsMovimentacaoVALOR: TBCDField;
-    cdsMovimentacaoSALDO_GERAL: TBCDField;
     ppHeaderBand3: TppHeaderBand;
     ppLbTituloMovimentacaoFinanceira: TppLabel;
     ppDBImage3: TppDBImage;
@@ -66,7 +52,6 @@ type
     ppGroupHeaderBand2: TppGroupHeaderBand;
     ppDBText18: TppDBText;
     ppGroupFooterBand2: TppGroupFooterBand;
-    ppDBText20: TppDBText;
     ppGroupTipo: TppGroup;
     ppGroupHeaderBand4: TppGroupHeaderBand;
     ppLabelDescricao: TppLabel;
@@ -118,7 +103,6 @@ type
     chkDespesas: TcxCheckBox;
     chkSomenteTotais: TcxCheckBox;
     ppLabel20: TppLabel;
-    cdsMovimentacaoVALOR_RESTANTE: TBCDField;
     ppDBText24: TppDBText;
     ppDBCalc5: TppDBCalc;
     chkSomenteRegistrosAbertos: TcxCheckBox;
@@ -159,17 +143,14 @@ type
     raCodeModule3: TraCodeModule;
     ppDesignLayers1: TppDesignLayers;
     ppDesignLayer1: TppDesignLayer;
-    cdsMovimentacaoVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
     ppLine1: TppLine;
     ppLine2: TppLine;
     ppLabel3: TppLabel;
     ppShape2: TppShape;
-    cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO: TDateField;
     lbDataPagamentoRecebimento: TppLabel;
     lbFormaPagamento: TppLabel;
     ppDBText10: TppDBText;
     ppDBText11: TppDBText;
-    cdsMovimentacaoDESCRICAO_FORMA_PAGAMENTO: TStringField;
     cgbProjetoMovimentacao: TdxCheckGroupBox;
     cbProjetoMovimentacao: TcxLookupComboBox;
     chkTodosProjetosMovimentacao: TcxCheckBox;
@@ -182,7 +163,6 @@ type
     cgbFundoSaldo: TdxCheckGroupBox;
     cbFundoSaldo: TcxLookupComboBox;
     chkTodosFundoSaldos: TcxCheckBox;
-    cdsMovimentacaoTIPO_ORIGEM: TIntegerField;
     tabGastoAreaAtuacao: TcxTabSheet;
     cgbDataGasto: TdxCheckGroupBox;
     Label2: TLabel;
@@ -270,7 +250,6 @@ type
     EditOrigemRecurso: TppGroupFooterBand;
     EditOrigemRecurso1: TppDBText;
     ppDBText27: TppDBText;
-    cdsMovimentacaoID_UNICO_ORIGEM_RECURSO: TStringField;
     tabGastoFornecedor: TcxTabSheet;
     cbFornecedor: TcxLookupComboBox;
     chkTodosFornecedor: TcxCheckBox;
@@ -441,6 +420,7 @@ type
     ppGroupHeaderBand13: TppGroupHeaderBand;
     ppGroupFooterBand12: TppGroupFooterBand;
     ppDBText68: TppDBText;
+    ppDBCalc15: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -487,7 +467,7 @@ implementation
 procedure TfrmRelatorioFinanceiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
   vaIdOrganizacao, vaIdProjeto, vaIdFundo: Integer;
-  vaSomenteRegistrosAberto: Boolean;
+  vaTipos: String;
 begin
   inherited;
   vaIdOrganizacao := fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
@@ -497,18 +477,43 @@ begin
       vaIdProjeto := fprExtrairValor(chkTodosProjetosMovimentacao, cbProjetoMovimentacao, 'Informe o projeto, ou marque o todos.');
       vaIdFundo := fprExtrairValor(chkTodosFundoMovimentacao, cbFundoMovimentacao, 'Informe o fundo, ou marque o todos.');
 
-      vaSomenteRegistrosAberto := chkSomenteRegistrosAbertos.Enabled and chkSomenteRegistrosAbertos.Checked;
+      dmRelatorio.cdsView_Movimentacao_Financeira.ppuLimparParametros;
+      if vaIdOrganizacao <> 0 then
+        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coOrganizacao, vaIdOrganizacao);
+      if vaIdProjeto <> 0 then
+        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
+      if vaIdFundo <> 0 then
+        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coFundo, vaIdFundo);
 
       if cgbData.CheckBox.Checked then
-        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo,
-          DateToStr(EditDataInicial.Date), DateToStr(EditDataFinal.Date), chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto)
-      else
-        cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '',
-          chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
+        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicial.Date, EditDataFinal.Date));
 
-      cdsMovimentacao.IndexFieldNames := cdsMovimentacaoID_ORGANIZACAO.FieldName + ';' +
-        cdsMovimentacaoID_UNICO_ORIGEM_RECURSO.FieldName + ';' + cdsMovimentacaoTIPO.FieldName + ';' +
-        cdsMovimentacaoDATA_PAGAMENTO_RECEBIMENTO.FieldName;
+      vaTipos := '';
+      if chkReceitas.Checked then
+        vaTipos := Ord(tmReceita).ToString;
+
+      if chkDespesas.Checked then
+        begin
+          if vaTipos <> '' then
+            vaTipos := vaTipos + coDelimitadorPadrao + Ord(tmDespesa).ToString
+          else
+            vaTipos := Ord(tmDespesa).ToString;
+        end;
+
+      if vaTipos <> '' then
+        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coTipo, vaTipos);
+
+      if chkSomenteRegistrosAbertos.Enabled and chkSomenteRegistrosAbertos.Checked then
+        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coAberto, 'NAO_IMPORTA');
+      // if cgbData.CheckBox.Checked then
+      // cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo,
+      // DateToStr(EditDataInicial.Date), DateToStr(EditDataFinal.Date), chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto)
+      // else
+      // cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '',
+      // chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
+      //
+
+      dmRelatorio.cdsView_Movimentacao_Financeira.ppuDataRequest();
 
       ppDetailBandMovimentacao.Visible := not chkSomenteTotais.Checked;
       lbFormaPagamento.Visible := ppDetailBandMovimentacao.Visible;
@@ -859,7 +864,7 @@ end;
 
 function TfrmRelatorioFinanceiro.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoRelatorio), ord(relFinanceiro));
+  Result := GetEnumName(TypeInfo(TPermissaoRelatorio), Ord(relFinanceiro));
 end;
 
 end.

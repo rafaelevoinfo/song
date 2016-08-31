@@ -173,6 +173,23 @@ type
     cdsLote_Semente_VendidoVALOR: TBCDField;
     cdsLote_Semente_VendidoDATA: TDateField;
     cdsLote_Semente_VendidoCLIENTE: TStringField;
+    cdsView_Movimentacao_Financeira: TRFClientDataSet;
+    cdsView_Movimentacao_FinanceiraID_MOVIMENTACAO: TIntegerField;
+    cdsView_Movimentacao_FinanceiraID_ORGANIZACAO: TIntegerField;
+    cdsView_Movimentacao_FinanceiraNOME_ORGANIZACAO: TStringField;
+    cdsView_Movimentacao_FinanceiraID_ORIGEM_RECURSO: TIntegerField;
+    cdsView_Movimentacao_FinanceiraID_UNICO_ORIGEM_RECURSO: TStringField;
+    cdsView_Movimentacao_FinanceiraORIGEM_RECURSO: TStringField;
+    cdsView_Movimentacao_FinanceiraTIPO: TIntegerField;
+    cdsView_Movimentacao_FinanceiraDESCRICAO_TIPO: TStringField;
+    cdsView_Movimentacao_FinanceiraDESCRICAO_MOVIMENTACAO: TStringField;
+    cdsView_Movimentacao_FinanceiraDATA: TDateField;
+    cdsView_Movimentacao_FinanceiraDATA_PAGAMENTO_RECEBIMENTO: TDateField;
+    cdsView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO: TIntegerField;
+    cdsView_Movimentacao_FinanceiraVALOR_TOTAL: TBCDField;
+    cdsView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
+    cdsView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE: TBCDField;
+    cdsView_Movimentacao_FinanceiraCALC_SALDO: TBCDField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
@@ -212,9 +229,11 @@ procedure TdmRelatorio.cdsGasto_Plano_ContasCalcFields(DataSet: TDataSet);
 begin
   inherited;
   if DataSet.FieldByName(cdsGasto_Plano_ContasPROJETO.FieldName).AsString <> '' then
-    DataSet.FieldByName(cdsGasto_Plano_ContasCALC_ORIGEM.FieldName).AsString := 'Projeto: '+DataSet.FieldByName(cdsGasto_Plano_ContasPROJETO.FieldName).AsString
+    DataSet.FieldByName(cdsGasto_Plano_ContasCALC_ORIGEM.FieldName).AsString := 'Projeto: ' +
+      DataSet.FieldByName(cdsGasto_Plano_ContasPROJETO.FieldName).AsString
   else if DataSet.FieldByName(cdsGasto_Plano_ContasNOME_FUNDO.FieldName).AsString <> '' then
-    DataSet.FieldByName(cdsGasto_Plano_ContasCALC_ORIGEM.FieldName).AsString := 'Conta: '+DataSet.FieldByName(cdsGasto_Plano_ContasNOME_FUNDO.FieldName).AsString;
+    DataSet.FieldByName(cdsGasto_Plano_ContasCALC_ORIGEM.FieldName).AsString := 'Conta: ' +
+      DataSet.FieldByName(cdsGasto_Plano_ContasNOME_FUNDO.FieldName).AsString;
 
 end;
 

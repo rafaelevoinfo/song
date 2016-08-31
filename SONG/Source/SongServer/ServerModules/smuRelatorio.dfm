@@ -1553,4 +1553,136 @@ inherited smRelatorio: TsmRelatorio
       Size = 203
     end
   end
+  object qView_Movimentacao_Financeira: TRFQuery
+    OnCalcFields = qView_Movimentacao_FinanceiraCalcFields
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select View_Movimentacao_Financeira.Id_Movimentacao,'
+      '       View_Movimentacao_Financeira.Id_Organizacao,'
+      '       View_Movimentacao_Financeira.Nome_Organizacao,'
+      '       View_Movimentacao_Financeira.Id_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Id_Unico_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Tipo,'
+      '       View_Movimentacao_Financeira.Descricao_Tipo,'
+      '       View_Movimentacao_Financeira.Descricao_Movimentacao,'
+      '       View_Movimentacao_Financeira.Data,'
+      '       View_Movimentacao_Financeira.Data_Pagamento_Recebimento,'
+      '       View_Movimentacao_Financeira.Forma_Pagamento_Recebimento,'
+      '       View_Movimentacao_Financeira.Valor_Total,'
+      '       View_Movimentacao_Financeira.Valor_Total_Pago_Recebido'
+      'from View_Movimentacao_Financeira '
+      '&WHERE'
+      'ORDER BY '
+      ' View_Movimentacao_Financeira.Id_Organizacao,'
+      ' View_Movimentacao_Financeira.Origem_Recurso, '
+      ' View_Movimentacao_Financeira.Id_Unico_Origem_Recurso,'
+      ' View_Movimentacao_Financeira.Tipo,'
+      ' View_Movimentacao_Financeira.Data_Pagamento_Recebimento')
+    Left = 648
+    Top = 232
+    MacroData = <
+      item
+        Value = 'WHERE VIEW_MOVIMENTACAO_FINANCEIRA.ID_MOVIMENTACAO = 0'
+        Name = 'WHERE'
+      end>
+    object qView_Movimentacao_FinanceiraID_MOVIMENTACAO: TIntegerField
+      FieldName = 'ID_MOVIMENTACAO'
+      Origin = 'ID_MOVIMENTACAO'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qView_Movimentacao_FinanceiraID_ORIGEM_RECURSO: TIntegerField
+      FieldName = 'ID_ORIGEM_RECURSO'
+      Origin = 'ID_ORIGEM_RECURSO'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraID_UNICO_ORIGEM_RECURSO: TStringField
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      Origin = 'ID_UNICO_ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 19
+    end
+    object qView_Movimentacao_FinanceiraORIGEM_RECURSO: TStringField
+      FieldName = 'ORIGEM_RECURSO'
+      Origin = 'ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qView_Movimentacao_FinanceiraTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraDESCRICAO_TIPO: TStringField
+      FieldName = 'DESCRICAO_TIPO'
+      Origin = 'DESCRICAO_TIPO'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 8
+    end
+    object qView_Movimentacao_FinanceiraDESCRICAO_MOVIMENTACAO: TStringField
+      FieldName = 'DESCRICAO_MOVIMENTACAO'
+      Origin = 'DESCRICAO_MOVIMENTACAO'
+      ProviderFlags = []
+      Size = 124
+    end
+    object qView_Movimentacao_FinanceiraDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraDATA_PAGAMENTO_RECEBIMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+      Origin = 'DATA_PAGAMENTO_RECEBIMENTO'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO: TIntegerField
+      FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
+      Origin = 'FORMA_PAGAMENTO_RECEBIMENTO'
+      ProviderFlags = []
+    end
+    object qView_Movimentacao_FinanceiraVALOR_TOTAL: TBCDField
+      FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField
+      FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
+      Origin = 'VALOR_TOTAL_PAGO_RECEBIDO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object qView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_RESTANTE'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
+      Calculated = True
+    end
+    object qView_Movimentacao_FinanceiraCALC_SALDO: TBCDField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_SALDO'
+      ProviderFlags = []
+      currency = True
+      Precision = 18
+      Size = 2
+      Calculated = True
+    end
+  end
 end

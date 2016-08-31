@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery,
-  Datasnap.DBClient, uClientDataSet, uUtils, uSQLGenerator;
+  Datasnap.DBClient, uClientDataSet, uUtils, uSQLGenerator, uTypes;
 
 type
   TsmRelatorio = class(TsmBasico)
@@ -160,7 +160,25 @@ type
     qLote_Semente_CompradoQTDE: TBCDField;
     qLote_Muda_VendidoCLIENTE: TStringField;
     qLote_Semente_VendidoCLIENTE: TStringField;
+    qView_Movimentacao_Financeira: TRFQuery;
+    qView_Movimentacao_FinanceiraID_MOVIMENTACAO: TIntegerField;
+    qView_Movimentacao_FinanceiraID_ORGANIZACAO: TIntegerField;
+    qView_Movimentacao_FinanceiraNOME_ORGANIZACAO: TStringField;
+    qView_Movimentacao_FinanceiraID_ORIGEM_RECURSO: TIntegerField;
+    qView_Movimentacao_FinanceiraID_UNICO_ORIGEM_RECURSO: TStringField;
+    qView_Movimentacao_FinanceiraORIGEM_RECURSO: TStringField;
+    qView_Movimentacao_FinanceiraTIPO: TIntegerField;
+    qView_Movimentacao_FinanceiraDESCRICAO_TIPO: TStringField;
+    qView_Movimentacao_FinanceiraDESCRICAO_MOVIMENTACAO: TStringField;
+    qView_Movimentacao_FinanceiraDATA: TDateField;
+    qView_Movimentacao_FinanceiraDATA_PAGAMENTO_RECEBIMENTO: TDateField;
+    qView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO: TIntegerField;
+    qView_Movimentacao_FinanceiraVALOR_TOTAL: TBCDField;
+    qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
+    qView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE: TBCDField;
+    qView_Movimentacao_FinanceiraCALC_SALDO: TBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
+    procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   protected
@@ -183,6 +201,7 @@ function TsmRelatorio.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
+  vaTipos: TArray<integer>;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -247,6 +266,25 @@ begin
         Result := TSQLGenerator.fpuFilterData(Result, 'COMPRA', 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
       else if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
+    end
+  else if (ipTabela = 'VIEW_MOVIMENTACAO_FINANCEIRA') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0),
+          TUtils.fpuExtrairData(vaValor, 1), vaOperador)
+      else if ipParam.Name = TParametros.coOrganizacao then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ORGANIZACAO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coProjeto then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_UNICO_ORIGEM_RECURSO', 'Projeto_' + vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coFundo then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_UNICO_ORIGEM_RECURSO', 'Conta_' + vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coTipo then
+        begin
+          vaTipos := TUtils.fpuConverterStringToArrayInteger(vaValor, TParametros.coDelimitador);
+          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaTipos, vaOperador)
+        end
+      else if ipParam.Name = TParametros.coAberto then
+        Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL_PAGO_RECEBIDO <> VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL)' + vaOperador
     end;
 end;
 
@@ -255,6 +293,19 @@ begin
   inherited;
   qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime, qPatrimonioVALOR_INICIAL.AsFloat,
     qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
+end;
+
+procedure TsmRelatorio.qView_Movimentacao_FinanceiraCalcFields(
+  DataSet: TDataSet);
+begin
+  inherited;
+  qView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE.AsFloat := qView_Movimentacao_FinanceiraVALOR_TOTAL.AsFloat -
+    qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat;
+  if qView_Movimentacao_FinanceiraTIPO.AsInteger = Ord(tmReceita) then
+    qView_Movimentacao_FinanceiraCALC_SALDO.AsFloat := qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat
+  else
+    qView_Movimentacao_FinanceiraCALC_SALDO.AsFloat := -qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat
+
 end;
 
 end.
