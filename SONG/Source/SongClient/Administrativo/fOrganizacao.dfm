@@ -30,14 +30,6 @@ inherited frmOrganizacao: TfrmOrganizacao
               end>
           end
         end
-        inherited pnBotoes: TPanel
-          inherited btnUtilizar: TButton
-            TabOrder = 2
-          end
-          inherited btnExportarExcel: TButton
-            TabOrder = 1
-          end
-        end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
@@ -229,15 +221,7 @@ inherited frmOrganizacao: TfrmOrganizacao
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                Height = 170
-                ExplicitWidth = 965
-                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'

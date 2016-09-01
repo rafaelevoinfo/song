@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 26/08/2016 00:25:53
+// 31/08/2016 23:09:27
 //
 
 unit uFuncoes;
@@ -241,19 +241,19 @@ type
   TsmRelatorioClient = class(TDSAdminClient)
   private
     FqPatrimonioCalcFieldsCommand: TDBXCommand;
+    FqView_Movimentacao_FinanceiraCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
+    procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
   TsmFuncoesRelatorioClient = class(TDSAdminClient)
   private
-    FfpuMovimentacaoFinanceiraCommand: TDBXCommand;
-    FfpuSaldoCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -263,8 +263,6 @@ type
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant; virtual;
-    function fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant; virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -1762,6 +1760,19 @@ begin
   FqPatrimonioCalcFieldsCommand.ExecuteUpdate;
 end;
 
+procedure TsmRelatorioClient.qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
+begin
+  if FqView_Movimentacao_FinanceiraCalcFieldsCommand = nil then
+  begin
+    FqView_Movimentacao_FinanceiraCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqView_Movimentacao_FinanceiraCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqView_Movimentacao_FinanceiraCalcFieldsCommand.Text := 'TsmRelatorio.qView_Movimentacao_FinanceiraCalcFields';
+    FqView_Movimentacao_FinanceiraCalcFieldsCommand.Prepare;
+  end;
+  FqView_Movimentacao_FinanceiraCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqView_Movimentacao_FinanceiraCalcFieldsCommand.ExecuteUpdate;
+end;
+
 procedure TsmRelatorioClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1803,45 +1814,9 @@ end;
 destructor TsmRelatorioClient.Destroy;
 begin
   FqPatrimonioCalcFieldsCommand.DisposeOf;
+  FqView_Movimentacao_FinanceiraCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
-end;
-
-function TsmFuncoesRelatorioClient.fpuMovimentacaoFinanceira(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer; ipDataInicial: string; ipDataFinal: string; ipReceitas: Boolean; ipDespesas: Boolean; ipSomenteRegistroAberto: Boolean): OleVariant;
-begin
-  if FfpuMovimentacaoFinanceiraCommand = nil then
-  begin
-    FfpuMovimentacaoFinanceiraCommand := FDBXConnection.CreateCommand;
-    FfpuMovimentacaoFinanceiraCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuMovimentacaoFinanceiraCommand.Text := 'TsmFuncoesRelatorio.fpuMovimentacaoFinanceira';
-    FfpuMovimentacaoFinanceiraCommand.Prepare;
-  end;
-  FfpuMovimentacaoFinanceiraCommand.Parameters[0].Value.SetInt32(ipIdOrganizacao);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[1].Value.SetInt32(ipIdProjeto);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[2].Value.SetInt32(ipIdFundo);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[3].Value.SetWideString(ipDataInicial);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[4].Value.SetWideString(ipDataFinal);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[5].Value.SetBoolean(ipReceitas);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[6].Value.SetBoolean(ipDespesas);
-  FfpuMovimentacaoFinanceiraCommand.Parameters[7].Value.SetBoolean(ipSomenteRegistroAberto);
-  FfpuMovimentacaoFinanceiraCommand.ExecuteUpdate;
-  Result := FfpuMovimentacaoFinanceiraCommand.Parameters[8].Value.AsVariant;
-end;
-
-function TsmFuncoesRelatorioClient.fpuSaldo(ipIdOrganizacao: Integer; ipIdProjeto: Integer; ipIdFundo: Integer): OleVariant;
-begin
-  if FfpuSaldoCommand = nil then
-  begin
-    FfpuSaldoCommand := FDBXConnection.CreateCommand;
-    FfpuSaldoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuSaldoCommand.Text := 'TsmFuncoesRelatorio.fpuSaldo';
-    FfpuSaldoCommand.Prepare;
-  end;
-  FfpuSaldoCommand.Parameters[0].Value.SetInt32(ipIdOrganizacao);
-  FfpuSaldoCommand.Parameters[1].Value.SetInt32(ipIdProjeto);
-  FfpuSaldoCommand.Parameters[2].Value.SetInt32(ipIdFundo);
-  FfpuSaldoCommand.ExecuteUpdate;
-  Result := FfpuSaldoCommand.Parameters[3].Value.AsVariant;
 end;
 
 function TsmFuncoesRelatorioClient.fpuGetId(ipTabela: string): Integer;
@@ -1939,8 +1914,6 @@ end;
 
 destructor TsmFuncoesRelatorioClient.Destroy;
 begin
-  FfpuMovimentacaoFinanceiraCommand.DisposeOf;
-  FfpuSaldoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

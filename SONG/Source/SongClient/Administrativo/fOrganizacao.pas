@@ -16,7 +16,7 @@ uses
   cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   uControleAcesso, System.TypInfo, uUtils, uClientDataSet, uTypes,
   dmuPrincipal, uMensagem, cxImage, cxCheckBox, Datasnap.DBClient, Vcl.ExtDlgs,
-  uExceptions;
+  uExceptions, dmuRelatorio;
 
 type
   TfrmOrganizacao = class(TfrmBasicoCrudMasterDetail)
@@ -108,6 +108,7 @@ type
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
+    dmRelatorio: TdmRelatorio;
   protected
     function fprGetPermissao: String; override;
     procedure pprBeforeIncluirDetail; override;
@@ -136,24 +137,36 @@ implementation
 { TfrmOrganizacao }
 
 procedure TfrmOrganizacao.Ac_Ajustar_SaldoExecute(Sender: TObject);
+  procedure plAtualizarSaldo(ipSaldo: Double);
+  begin
+    dmAdministrativo.cdsFundo.Edit;
+    dmAdministrativo.cdsFundoSALDO.AsFloat := ipSaldo;
+    dmAdministrativo.cdsFundo.Post;
+    if dmAdministrativo.cdsFundo.ChangeCount > 0 then
+      dmAdministrativo.cdsFundo.ApplyUpdates(0);
+
+    TMensagem.ppuShowMessage('Ajuste realizado com sucesso.');
+  end;
+
 begin
   inherited;
   if TMensagem.fpuPerguntar('Tem certeza que deseja ajustar o saldo agora? Isto poderá demorar algum tempo.', ppSimNao) = rpSim then
     begin
-      cdsLocalSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(dmAdministrativo.cdsOrganizacaoID.AsInteger, -1, dmAdministrativo.cdsFundoID.AsInteger);
-      if cdsLocalSaldo.Locate(cdsLocalSaldoID_PROJETO_FUNDO.FieldName + ';' + cdsLocalSaldoTIPO_ORIGEM.FieldName,
-        VarArrayOf([dmAdministrativo.cdsFundoID.AsInteger, Ord(oriFundo)]), []) then
-        begin
-          dmAdministrativo.cdsFundo.Edit;
-          dmAdministrativo.cdsFundoSALDO.AsFloat := cdsLocalSaldoSALDO.AsFloat;
-          dmAdministrativo.cdsFundo.Post;
-          if dmAdministrativo.cdsFundo.ChangeCount > 0 then
-            dmAdministrativo.cdsFundo.ApplyUpdates(0);
+      dmRelatorio.cdsSaldo.ppuLimparParametros;
+      dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coOrganizacao, dmAdministrativo.cdsOrganizacaoID.AsInteger);
+      dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coProjeto, -1);
+      dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coFundo, dmAdministrativo.cdsFundoID.AsInteger);
+      dmRelatorio.cdsSaldo.ppuDataRequest();
 
-          TMensagem.ppuShowMessage('Ajuste realizado com sucesso.');
+      if dmRelatorio.cdsSaldo.Locate(dmRelatorio.cdsSaldoTIPO_ORIGEM.FieldName + ';' + dmRelatorio.cdsSaldoID_ORIGEM_RECURSO.FieldName,
+        VarArrayOf([Ord(oriFundo), dmAdministrativo.cdsFundoID.AsInteger]), []) then
+        begin
+          plAtualizarSaldo(dmRelatorio.cdsSaldoSALDO.AsFloat);
         end
-      else
-        raise Exception.Create('Não foi encontrado nenhuma informação sobre a conta selecionada.');
+      else // se nao achou nada é porque nao tem lancamentos, entao o saldo é zero
+        begin
+          plAtualizarSaldo(0);
+        end;
     end;
 end;
 
@@ -186,6 +199,9 @@ procedure TfrmOrganizacao.FormCreate(Sender: TObject);
 begin
   dmAdministrativo := TdmAdministrativo.Create(Self);
   dmAdministrativo.Name := '';
+
+  dmRelatorio := TdmRelatorio.Create(Self);
+  dmRelatorio.Name := '';
 
   dmLookup := TdmLookup.Create(Self);
   dmLookup.Name := '';

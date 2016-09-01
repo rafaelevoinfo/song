@@ -177,6 +177,14 @@ type
     qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
     qView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE: TBCDField;
     qView_Movimentacao_FinanceiraCALC_SALDO: TBCDField;
+    qSaldo: TRFQuery;
+    qSaldoID_ORGANIZACAO: TIntegerField;
+    qSaldoNOME_ORGANIZACAO: TStringField;
+    qSaldoID_ORIGEM_RECURSO: TIntegerField;
+    qSaldoID_UNICO_ORIGEM_RECURSO: TStringField;
+    qSaldoORIGEM_RECURSO: TStringField;
+    qSaldoSALDO: TBCDField;
+    qSaldoTIPO_ORIGEM: TIntegerField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private
@@ -270,21 +278,62 @@ begin
   else if (ipTabela = 'VIEW_MOVIMENTACAO_FINANCEIRA') then
     begin
       if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0),
+        Result := TSQLGenerator.fpuFilterDataSemHora(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0),
           TUtils.fpuExtrairData(vaValor, 1), vaOperador)
       else if ipParam.Name = TParametros.coOrganizacao then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ORGANIZACAO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coProjeto then
-        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_UNICO_ORIGEM_RECURSO', 'Projeto_' + vaValor, vaOperador)
+        begin
+          if vaValor.ToInteger = -1 then // nao quero q sai nenhuma conta no relatorio
+            Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM <> ' + Ord(oriProjeto).ToString + '))' + vaOperador
+          else
+            begin
+              Result := '(' + Result + '((VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM = ' + Ord(oriProjeto).ToString + ') AND ';
+              Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
+            end;
+        end
       else if ipParam.Name = TParametros.coFundo then
-        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_UNICO_ORIGEM_RECURSO', 'Conta_' + vaValor, vaOperador)
+        begin
+          if vaValor.ToInteger = -1 then // nao quero q sai nenhuma conta no relatorio
+            Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM <> ' + Ord(oriFundo).ToString + ')) ' + vaOperador
+          else
+            begin
+              Result := '(' + Result + '((VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM = ' + Ord(oriFundo).ToString + ') AND ';
+              Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
+            end;
+        end
       else if ipParam.Name = TParametros.coTipo then
         begin
           vaTipos := TUtils.fpuConverterStringToArrayInteger(vaValor, TParametros.coDelimitador);
           Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaTipos, vaOperador)
         end
       else if ipParam.Name = TParametros.coAberto then
-        Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL_PAGO_RECEBIDO <> VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL)' + vaOperador
+        Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL_PAGO_RECEBIDO <> VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL))' + vaOperador
+    end
+  else if (ipTabela = 'SALDO') then
+    begin
+      if ipParam.Name = TParametros.coOrganizacao then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'VIEW_MOVIMENTACAO_FINANCEIRA', 'ID_ORGANIZACAO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coProjeto then
+        begin
+          if vaValor.ToInteger = -1 then // nao quero q sai nenhuma conta no relatorio
+            Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM <> ' + Ord(oriProjeto).ToString + '))' + vaOperador
+          else
+            begin
+              Result := '(' + Result + '((VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM = ' + Ord(oriProjeto).ToString + ') AND ';
+              Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
+            end;
+        end
+      else if ipParam.Name = TParametros.coFundo then
+        begin
+          if vaValor.ToInteger = -1 then // nao quero q sai nenhuma conta no relatorio
+            Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM <> ' + Ord(oriFundo).ToString + ')) ' + vaOperador
+          else
+            begin
+              Result := '(' + Result + '((VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM = ' + Ord(oriFundo).ToString + ') AND ';
+              Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
+            end;
+        end
     end;
 end;
 
@@ -304,7 +353,7 @@ begin
   if qView_Movimentacao_FinanceiraTIPO.AsInteger = Ord(tmReceita) then
     qView_Movimentacao_FinanceiraCALC_SALDO.AsFloat := qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat
   else
-    qView_Movimentacao_FinanceiraCALC_SALDO.AsFloat := -qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat
+    qView_Movimentacao_FinanceiraCALC_SALDO.AsFloat := -qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat;
 
 end;
 

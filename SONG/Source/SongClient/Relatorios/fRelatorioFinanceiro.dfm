@@ -19,7 +19,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabMovimentacao
+      Properties.ActivePage = tabSaldos
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
@@ -108,12 +108,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           object EditDataFinal: TcxDateEdit
             Left = 140
             Top = 30
+            Properties.SaveTime = False
+            Properties.ShowTime = False
             TabOrder = 1
             Width = 135
           end
           object EditDataInicial: TcxDateEdit
             Left = 3
             Top = 30
+            Properties.SaveTime = False
+            Properties.ShowTime = False
             TabOrder = 0
             Width = 135
           end
@@ -589,7 +593,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       FieldName = 'ID_MOVIMENTACAO'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeMovimentacaoppField2: TppField
@@ -898,7 +902,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmHeight = 3175
         mmLeft = 5554
         mmTop = 0
-        mmWidth = 40746
+        mmWidth = 44186
         BandType = 4
         LayerName = BandLayer3
       end
@@ -965,7 +969,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText11: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText11'
-        DataField = 'DESCRICAO_FORMA_PAGAMENTO'
+        DataField = 'FORMA_PAGAMENTO_RECEBIMENTO'
         DataPipeline = DBPipeMovimentacao
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -978,6 +982,25 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         mmLeft = 91812
         mmTop = 0
         mmWidth = 25665
+        BandType = 4
+        LayerName = BandLayer3
+      end
+      object ppDBText20: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText102'
+        DataField = 'DATA'
+        DataPipeline = DBPipeMovimentacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 6
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeMovimentacao'
+        mmHeight = 3175
+        mmLeft = 52123
+        mmTop = 0
+        mmWidth = 19050
         BandType = 4
         LayerName = BandLayer3
       end
@@ -1394,6 +1417,25 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           GroupNo = 2
           LayerName = BandLayer3
         end
+        object ppLabel54: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'lbDataPagamentoRecebimento1'
+          Caption = 'Data do Registro'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 6
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 2645
+          mmLeft = 52123
+          mmTop = 6615
+          mmWidth = 16669
+          BandType = 3
+          GroupNo = 2
+          LayerName = BandLayer3
+        end
       end
       object ppGroupFooterBand4: TppGroupFooterBand
         Background.Brush.Style = bsClear
@@ -1663,7 +1705,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText26: TppDBText
         DesignLayer = ppDesignLayer4
         UserName = 'DBText101'
-        DataField = 'NOME_PROJETO_FUNDO'
+        DataField = 'ORIGEM_RECURSO'
         DataPipeline = DBPipeSaldo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1860,120 +1902,62 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppParameterList4: TppParameterList
     end
   end
-  object cdsSaldo: TClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_ORGANIZACAO'
-    Params = <>
-    Left = 712
-    Top = 168
-    object cdsSaldoID_ORGANIZACAO: TIntegerField
-      FieldName = 'ID_ORGANIZACAO'
-      ProviderFlags = []
-    end
-    object cdsSaldoNOME_ORGANIZACAO: TStringField
-      FieldName = 'NOME_ORGANIZACAO'
-      ProviderFlags = []
-      Size = 100
-    end
-    object cdsSaldoID_PROJETO_FUNDO: TIntegerField
-      FieldName = 'ID_PROJETO_FUNDO'
-      ProviderFlags = []
-    end
-    object cdsSaldoNOME_PROJETO_FUNDO: TStringField
-      FieldName = 'NOME_PROJETO_FUNDO'
-      ProviderFlags = []
-      Size = 100
-    end
-    object cdsSaldoSALDO: TBCDField
-      FieldName = 'SALDO'
-      ProviderFlags = []
-    end
-    object cdsSaldoSALDO_GERAL: TBCDField
-      FieldName = 'SALDO_GERAL'
-      ProviderFlags = []
-    end
-    object cdsSaldoTIPO_ORIGEM: TIntegerField
-      FieldName = 'TIPO_ORIGEM'
-    end
-  end
   object DBPipeSaldo: TppDBPipeline
     DataSource = dsSaldo
     UserName = 'DBPipeSaldo'
     Left = 728
     Top = 304
     object DBPipeSaldoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ORGANIZACAO'
       FieldName = 'ID_ORGANIZACAO'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoppField2: TppField
       FieldAlias = 'NOME_ORGANIZACAO'
       FieldName = 'NOME_ORGANIZACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoppField3: TppField
-      FieldAlias = 'ID_PROJETO_FUNDO'
-      FieldName = 'ID_PROJETO_FUNDO'
+      Alignment = taRightJustify
+      FieldAlias = 'ID_ORIGEM_RECURSO'
+      FieldName = 'ID_ORIGEM_RECURSO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoppField4: TppField
-      FieldAlias = 'NOME_PROJETO_FUNDO'
-      FieldName = 'NOME_PROJETO_FUNDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldAlias = 'ID_UNICO_ORIGEM_RECURSO'
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      FieldLength = 19
+      DisplayWidth = 19
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoppField5: TppField
-      FieldAlias = 'SALDO'
-      FieldName = 'SALDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldAlias = 'ORIGEM_RECURSO'
+      FieldName = 'ORIGEM_RECURSO'
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoppField6: TppField
-      FieldAlias = 'SALDO_GERAL'
-      FieldName = 'SALDO_GERAL'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      Alignment = taRightJustify
+      FieldAlias = 'SALDO'
+      FieldName = 'SALDO'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 5
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeSaldoppField7: TppField
-      FieldAlias = 'TIPO_ORIGEM'
-      FieldName = 'TIPO_ORIGEM'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 6
-      Searchable = False
-      Sortable = False
     end
   end
   object dsSaldo: TDataSource
-    DataSet = cdsSaldo
+    DataSet = dmRelatorio.cdsSaldo
     Left = 720
     Top = 248
   end

@@ -1560,6 +1560,7 @@ inherited smRelatorio: TsmRelatorio
       'select View_Movimentacao_Financeira.Id_Movimentacao,'
       '       View_Movimentacao_Financeira.Id_Organizacao,'
       '       View_Movimentacao_Financeira.Nome_Organizacao,'
+      '       View_Movimentacao_Financeira.Tipo_Origem,'
       '       View_Movimentacao_Financeira.Id_Origem_Recurso,'
       '       View_Movimentacao_Financeira.Id_Unico_Origem_Recurso,'
       '       View_Movimentacao_Financeira.Origem_Recurso,'
@@ -1683,6 +1684,86 @@ inherited smRelatorio: TsmRelatorio
       Precision = 18
       Size = 2
       Calculated = True
+    end
+  end
+  object qSaldo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select View_Movimentacao_Financeira.Id_Organizacao,'
+      '       View_Movimentacao_Financeira.Nome_Organizacao,'
+      '       View_Movimentacao_Financeira.Id_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.tipo_origem,'
+      '       View_Movimentacao_Financeira.Id_Unico_Origem_Recurso,'
+      '       View_Movimentacao_Financeira.Origem_Recurso,'
+      '       sum('
+      '       case'
+      
+        '         when View_Movimentacao_Financeira.Tipo = 0 then -View_M' +
+        'ovimentacao_Financeira.Valor_Total_Pago_Recebido'
+      
+        '         else View_Movimentacao_Financeira.Valor_Total_Pago_Rece' +
+        'bido'
+      '       end) as SALDO'
+      'from View_Movimentacao_Financeira'
+      '&WHERE'
+      'group by View_Movimentacao_Financeira.Id_Organizacao,'
+      '         View_Movimentacao_Financeira.Nome_Organizacao,'
+      '         View_Movimentacao_Financeira.Id_Origem_Recurso,'
+      '         View_Movimentacao_Financeira.tipo_origem,'
+      '         View_Movimentacao_Financeira.Id_Unico_Origem_Recurso,'
+      '         View_Movimentacao_Financeira.Origem_Recurso'
+      ''
+      'order by View_Movimentacao_Financeira.Id_Organizacao,'
+      '         View_Movimentacao_Financeira.Origem_Recurso,'
+      '         View_Movimentacao_Financeira.Id_Unico_Origem_Recurso')
+    Left = 808
+    Top = 240
+    MacroData = <
+      item
+        Value = 'where view_movimentacao_financeira.id_movimentacao = 0'
+        Name = 'WHERE'
+      end>
+    object qSaldoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object qSaldoNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaldoID_ORIGEM_RECURSO: TIntegerField
+      FieldName = 'ID_ORIGEM_RECURSO'
+      Origin = 'ID_ORIGEM_RECURSO'
+      ProviderFlags = []
+    end
+    object qSaldoID_UNICO_ORIGEM_RECURSO: TStringField
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      Origin = 'ID_UNICO_ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 19
+    end
+    object qSaldoORIGEM_RECURSO: TStringField
+      FieldName = 'ORIGEM_RECURSO'
+      Origin = 'ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qSaldoSALDO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qSaldoTIPO_ORIGEM: TIntegerField
+      FieldName = 'TIPO_ORIGEM'
+      Origin = 'TIPO_ORIGEM'
+      ProviderFlags = []
     end
   end
 end

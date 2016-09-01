@@ -1019,6 +1019,7 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsView_Movimentacao_Financeira: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqView_Movimentacao_Financeira'
@@ -1027,60 +1028,73 @@ inherited dmRelatorio: TdmRelatorio
     Top = 320
     object cdsView_Movimentacao_FinanceiraID_MOVIMENTACAO: TIntegerField
       FieldName = 'ID_MOVIMENTACAO'
+      Origin = 'ID_MOVIMENTACAO'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraID_ORGANIZACAO: TIntegerField
       FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraNOME_ORGANIZACAO: TStringField
       FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME_ORGANIZACAO'
       ProviderFlags = []
       Size = 100
     end
     object cdsView_Movimentacao_FinanceiraID_ORIGEM_RECURSO: TIntegerField
       FieldName = 'ID_ORIGEM_RECURSO'
+      Origin = 'ID_ORIGEM_RECURSO'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraID_UNICO_ORIGEM_RECURSO: TStringField
       FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      Origin = 'ID_UNICO_ORIGEM_RECURSO'
       ProviderFlags = []
       Size = 19
     end
     object cdsView_Movimentacao_FinanceiraORIGEM_RECURSO: TStringField
       FieldName = 'ORIGEM_RECURSO'
+      Origin = 'ORIGEM_RECURSO'
       ProviderFlags = []
       Size = 100
     end
     object cdsView_Movimentacao_FinanceiraTIPO: TIntegerField
       FieldName = 'TIPO'
+      Origin = 'TIPO'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraDESCRICAO_TIPO: TStringField
       FieldName = 'DESCRICAO_TIPO'
+      Origin = 'DESCRICAO_TIPO'
       ProviderFlags = []
       FixedChar = True
       Size = 8
     end
     object cdsView_Movimentacao_FinanceiraDESCRICAO_MOVIMENTACAO: TStringField
       FieldName = 'DESCRICAO_MOVIMENTACAO'
+      Origin = 'DESCRICAO_MOVIMENTACAO'
       ProviderFlags = []
       Size = 124
     end
     object cdsView_Movimentacao_FinanceiraDATA: TDateField
       FieldName = 'DATA'
+      Origin = '"DATA"'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraDATA_PAGAMENTO_RECEBIMENTO: TDateField
       FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
+      Origin = 'DATA_PAGAMENTO_RECEBIMENTO'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO: TIntegerField
       FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
+      Origin = 'FORMA_PAGAMENTO_RECEBIMENTO'
       ProviderFlags = []
     end
     object cdsView_Movimentacao_FinanceiraVALOR_TOTAL: TBCDField
       FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
       ProviderFlags = []
       currency = True
       Precision = 18
@@ -1088,6 +1102,7 @@ inherited dmRelatorio: TdmRelatorio
     end
     object cdsView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField
       FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
+      Origin = 'VALOR_TOTAL_PAGO_RECEBIDO'
       ProviderFlags = []
       currency = True
       Precision = 18
@@ -1108,6 +1123,56 @@ inherited dmRelatorio: TdmRelatorio
       currency = True
       Precision = 18
       Size = 2
+    end
+  end
+  object cdsSaldo: TRFClientDataSet
+    Active = True
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqSaldo'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 784
+    Top = 280
+    object cdsSaldoID_ORGANIZACAO: TIntegerField
+      FieldName = 'ID_ORGANIZACAO'
+      Origin = 'ID_ORGANIZACAO'
+      ProviderFlags = []
+    end
+    object cdsSaldoNOME_ORGANIZACAO: TStringField
+      FieldName = 'NOME_ORGANIZACAO'
+      Origin = 'NOME_ORGANIZACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldoID_ORIGEM_RECURSO: TIntegerField
+      FieldName = 'ID_ORIGEM_RECURSO'
+      Origin = 'ID_ORIGEM_RECURSO'
+      ProviderFlags = []
+    end
+    object cdsSaldoID_UNICO_ORIGEM_RECURSO: TStringField
+      FieldName = 'ID_UNICO_ORIGEM_RECURSO'
+      Origin = 'ID_UNICO_ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 19
+    end
+    object cdsSaldoORIGEM_RECURSO: TStringField
+      FieldName = 'ORIGEM_RECURSO'
+      Origin = 'ORIGEM_RECURSO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsSaldoSALDO: TBCDField
+      FieldName = 'SALDO'
+      Origin = 'SALDO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaldoTIPO_ORIGEM: TIntegerField
+      FieldName = 'TIPO_ORIGEM'
+      Origin = 'TIPO_ORIGEM'
+      ProviderFlags = []
     end
   end
 end

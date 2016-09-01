@@ -190,6 +190,14 @@ type
     cdsView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO: TBCDField;
     cdsView_Movimentacao_FinanceiraCALC_VALOR_RESTANTE: TBCDField;
     cdsView_Movimentacao_FinanceiraCALC_SALDO: TBCDField;
+    cdsSaldo: TRFClientDataSet;
+    cdsSaldoID_ORGANIZACAO: TIntegerField;
+    cdsSaldoNOME_ORGANIZACAO: TStringField;
+    cdsSaldoID_ORIGEM_RECURSO: TIntegerField;
+    cdsSaldoID_UNICO_ORIGEM_RECURSO: TStringField;
+    cdsSaldoORIGEM_RECURSO: TStringField;
+    cdsSaldoSALDO: TBCDField;
+    cdsSaldoTIPO_ORIGEM: TIntegerField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);

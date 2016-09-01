@@ -88,17 +88,9 @@ type
     ppDesignLayers4: TppDesignLayers;
     ppDesignLayer4: TppDesignLayer;
     ppParameterList4: TppParameterList;
-    cdsSaldo: TClientDataSet;
-    cdsSaldoID_ORGANIZACAO: TIntegerField;
-    cdsSaldoNOME_ORGANIZACAO: TStringField;
-    cdsSaldoID_PROJETO_FUNDO: TIntegerField;
-    cdsSaldoNOME_PROJETO_FUNDO: TStringField;
-    cdsSaldoSALDO: TBCDField;
-    cdsSaldoSALDO_GERAL: TBCDField;
     DBPipeSaldo: TppDBPipeline;
     dsSaldo: TDataSource;
     ppDBCalc4: TppDBCalc;
-    cdsSaldoTIPO_ORIGEM: TIntegerField;
     chkReceitas: TcxCheckBox;
     chkDespesas: TcxCheckBox;
     chkSomenteTotais: TcxCheckBox;
@@ -421,6 +413,8 @@ type
     ppGroupFooterBand12: TppGroupFooterBand;
     ppDBText68: TppDBText;
     ppDBCalc15: TppDBCalc;
+    ppLabel54: TppLabel;
+    ppDBText20: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -478,13 +472,22 @@ begin
       vaIdFundo := fprExtrairValor(chkTodosFundoMovimentacao, cbFundoMovimentacao, 'Informe o fundo, ou marque o todos.');
 
       dmRelatorio.cdsView_Movimentacao_Financeira.ppuLimparParametros;
+      // 0 significa TODOS
       if vaIdOrganizacao <> 0 then
         dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coOrganizacao, vaIdOrganizacao);
-      if vaIdProjeto <> 0 then
-        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
-      if vaIdFundo <> 0 then
-        dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+      if (vaIdProjeto > 0) and (vaIdFundo > 0) then
+        begin
+          dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coProjeto, vaIdProjeto, Toperadores.coOR);
+          dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+        end
+      else
+        begin
+          if (vaIdProjeto <> 0) then
+            dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
 
+          if (vaIdFundo <> 0) then
+            dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+        end;
       if cgbData.CheckBox.Checked then
         dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicial.Date, EditDataFinal.Date));
 
@@ -505,13 +508,6 @@ begin
 
       if chkSomenteRegistrosAbertos.Enabled and chkSomenteRegistrosAbertos.Checked then
         dmRelatorio.cdsView_Movimentacao_Financeira.ppuAddParametro(TParametros.coAberto, 'NAO_IMPORTA');
-      // if cgbData.CheckBox.Checked then
-      // cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo,
-      // DateToStr(EditDataInicial.Date), DateToStr(EditDataFinal.Date), chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto)
-      // else
-      // cdsMovimentacao.Data := dmPrincipal.FuncoesRelatorio.fpuMovimentacaoFinanceira(vaIdOrganizacao, vaIdProjeto, vaIdFundo, '', '',
-      // chkReceitas.Checked, chkDespesas.Checked, vaSomenteRegistrosAberto);
-      //
 
       dmRelatorio.cdsView_Movimentacao_Financeira.ppuDataRequest();
 
@@ -533,7 +529,26 @@ begin
       vaIdProjeto := fprExtrairValor(chkTodosProjetosSaldo, cbProjetoSaldo, 'Informe o projeto, ou marque o todos.');
       vaIdFundo := fprExtrairValor(chkTodosFundoSaldos, cbFundoSaldo, 'Informe o fundo, ou marque o todos.');
 
-      cdsSaldo.Data := dmPrincipal.FuncoesRelatorio.fpuSaldo(vaIdOrganizacao, vaIdProjeto, vaIdFundo);
+      dmRelatorio.cdsSaldo.ppuLimparParametros;
+      if vaIdOrganizacao <> 0 then
+        dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coOrganizacao, vaIdOrganizacao);
+      if (vaIdProjeto > 0) and (vaIdFundo > 0) then
+        begin
+          dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coProjeto, vaIdProjeto, Toperadores.coOR);
+          dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+        end
+      else
+        begin
+          if (vaIdProjeto <> 0) then
+            dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coProjeto, vaIdProjeto);
+
+          if (vaIdFundo <> 0) then
+            dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coFundo, vaIdFundo);
+        end;
+      if dmRelatorio.cdsSaldo.Parametros.Count = 0 then
+        dmRelatorio.cdsSaldo.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'])
+      else
+        dmRelatorio.cdsSaldo.ppuDataRequest();
 
       ppSaldo.PrintReport;
     end
@@ -591,7 +606,7 @@ begin
   vaIdFundo := fprExtrairValor(chkTodosFundoPlanoContas, cbFundoPlanoConta, 'Informe a conta');
 
   if (vaIdProjeto > 0) and (vaIdFundo > 0) then
-    vaCds.ppuAddParametros([TParametros.coProjeto, TParametros.coFundo], [vaIdProjeto, vaIdFundo], TOperadores.coOR)
+    vaCds.ppuAddParametros([TParametros.coProjeto, TParametros.coFundo], [vaIdProjeto, vaIdFundo], Toperadores.coOR)
   else
     begin
       if vaIdFundo <> 0 then
@@ -698,14 +713,14 @@ procedure TfrmRelatorioFinanceiro.tabGastoFornecedorShow(Sender: TObject);
 begin
   inherited;
   if not dmLookup.cdslkFornecedor.Active then
-    dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, false);
+    dmLookup.cdslkFornecedor.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], Toperadores.coAnd, false);
 end;
 
 procedure TfrmRelatorioFinanceiro.tabGastoPlanoContasShow(Sender: TObject);
 begin
   inherited;
   if not dmLookup.cdslkPlano_Contas.Active then
-    dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [0], TOperadores.coAnd, true); // tipo despesa
+    dmLookup.cdslkPlano_Contas.ppuDataRequest([TParametros.coTipo], [0], Toperadores.coAnd, true); // tipo despesa
 end;
 
 procedure TfrmRelatorioFinanceiro.tabTransferenciaRecursoShow(Sender: TObject);
@@ -721,7 +736,7 @@ begin
   inherited;
   dmLookup.cdslkAtividade.Close;
   if not VarIsNull(cbProjetoGastoAtividade.EditValue) then
-    dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coProjeto], [cbProjetoGastoAtividade.EditValue], TOperadores.coAnd, true);
+    dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coProjeto], [cbProjetoGastoAtividade.EditValue], Toperadores.coAnd, true);
 end;
 
 procedure TfrmRelatorioFinanceiro.cgbProjetoSaldoPropertiesEditValueChanged(
