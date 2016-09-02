@@ -1019,7 +1019,6 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsView_Movimentacao_Financeira: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqView_Movimentacao_Financeira'
@@ -1124,9 +1123,13 @@ inherited dmRelatorio: TdmRelatorio
       Precision = 18
       Size = 2
     end
+    object cdsView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO: TStringField
+      FieldName = 'CALC_DESCRICAO_FORMA_PGTO'
+      ProviderFlags = []
+      Size = 120
+    end
   end
   object cdsSaldo: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqSaldo'

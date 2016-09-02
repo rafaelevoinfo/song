@@ -198,6 +198,7 @@ type
     cdsSaldoORIGEM_RECURSO: TStringField;
     cdsSaldoSALDO: TBCDField;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
+    cdsView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);

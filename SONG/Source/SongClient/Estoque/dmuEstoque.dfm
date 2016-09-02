@@ -88,7 +88,6 @@ inherited dmEstoque: TdmEstoque
     end
   end
   object cdsSolicitacao_Compra: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqSolicitacao_Compra'
@@ -322,6 +321,7 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate]
     end
     object cdsCompraGEROU_CONTA_PAGAR: TIntegerField
+      Alignment = taLeftJustify
       DisplayLabel = 'Gerou Conta a Pagar'
       FieldName = 'GEROU_CONTA_PAGAR'
       ProviderFlags = []
@@ -723,7 +723,6 @@ inherited dmEstoque: TdmEstoque
     end
   end
   object cdsVenda_Item: TRFClientDataSet
-    Active = True
     Aggregates = <>
     IndexFieldNames = 'ID_VENDA'
     MasterFields = 'ID'

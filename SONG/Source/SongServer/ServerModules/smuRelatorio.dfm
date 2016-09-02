@@ -1685,6 +1685,13 @@ inherited smRelatorio: TsmRelatorio
       Size = 2
       Calculated = True
     end
+    object qView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_DESCRICAO_FORMA_PGTO'
+      ProviderFlags = []
+      Size = 120
+      Calculated = True
+    end
   end
   object qSaldo: TRFQuery
     Connection = dmPrincipal.conSong

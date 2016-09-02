@@ -1,7 +1,7 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
   ClientWidth = 1028
-  ExplicitTop = -257
+  ExplicitTop = -56
   ExplicitWidth = 1044
   PixelsPerInch = 96
   TextHeight = 13
@@ -589,164 +589,143 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 848
     Top = 296
     object DBPipeMovimentacaoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_MOVIMENTACAO'
       FieldName = 'ID_MOVIMENTACAO'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField2: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ORGANIZACAO'
       FieldName = 'ID_ORGANIZACAO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField3: TppField
       FieldAlias = 'NOME_ORGANIZACAO'
       FieldName = 'NOME_ORGANIZACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField4: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ORIGEM_RECURSO'
       FieldName = 'ID_ORIGEM_RECURSO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField5: TppField
       FieldAlias = 'ID_UNICO_ORIGEM_RECURSO'
       FieldName = 'ID_UNICO_ORIGEM_RECURSO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 19
+      DisplayWidth = 19
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField6: TppField
       FieldAlias = 'ORIGEM_RECURSO'
       FieldName = 'ORIGEM_RECURSO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField7: TppField
+      Alignment = taRightJustify
       FieldAlias = 'TIPO'
       FieldName = 'TIPO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField8: TppField
       FieldAlias = 'DESCRICAO_TIPO'
       FieldName = 'DESCRICAO_TIPO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 8
+      DisplayWidth = 8
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField9: TppField
       FieldAlias = 'DESCRICAO_MOVIMENTACAO'
       FieldName = 'DESCRICAO_MOVIMENTACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 124
+      DisplayWidth = 124
       Position = 8
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField10: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDate
+      DisplayWidth = 10
       Position = 9
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField11: TppField
       FieldAlias = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDate
+      DisplayWidth = 10
       Position = 10
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField12: TppField
+      Alignment = taRightJustify
       FieldAlias = 'FORMA_PAGAMENTO_RECEBIMENTO'
       FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 11
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField13: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL'
       FieldName = 'VALOR_TOTAL'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 12
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField14: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL_PAGO_RECEBIDO'
       FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 13
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField15: TppField
+      Alignment = taRightJustify
       FieldAlias = 'CALC_VALOR_RESTANTE'
       FieldName = 'CALC_VALOR_RESTANTE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 14
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField16: TppField
+      Alignment = taRightJustify
       FieldAlias = 'CALC_SALDO'
       FieldName = 'CALC_SALDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 15
-      Searchable = False
-      Sortable = False
+    end
+    object DBPipeMovimentacaoppField17: TppField
+      FieldAlias = 'CALC_DESCRICAO_FORMA_PGTO'
+      FieldName = 'CALC_DESCRICAO_FORMA_PGTO'
+      FieldLength = 120
+      DisplayWidth = 120
+      Position = 16
     end
   end
   object dsView_Movimentacao_Financeira: TDataSource
@@ -998,7 +977,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText11: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText11'
-        DataField = 'FORMA_PAGAMENTO_RECEBIMENTO'
+        DataField = 'CALC_DESCRICAO_FORMA_PGTO'
         DataPipeline = DBPipeMovimentacao
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

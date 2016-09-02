@@ -185,6 +185,7 @@ type
     qSaldoORIGEM_RECURSO: TStringField;
     qSaldoSALDO: TBCDField;
     qSaldoTIPO_ORIGEM: TIntegerField;
+    qView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO: TStringField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private
@@ -355,6 +356,8 @@ begin
   else
     qView_Movimentacao_FinanceiraCALC_SALDO.AsFloat := -qView_Movimentacao_FinanceiraVALOR_TOTAL_PAGO_RECEBIDO.AsFloat;
 
+  if not qView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO.IsNull then
+    qView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO.AsString := FormaPagamennto[TFormaPagamento(qView_Movimentacao_FinanceiraFORMA_PAGAMENTO_RECEBIMENTO.AsInteger)];
 end;
 
 end.
