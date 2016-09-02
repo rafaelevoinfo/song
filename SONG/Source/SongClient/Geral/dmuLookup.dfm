@@ -840,6 +840,7 @@ inherited dmLookup: TdmLookup
     end
     object cdslkOrganizacaoCIDADE: TStringField
       FieldName = 'CIDADE'
+      Origin = 'CIDADE'
       ProviderFlags = []
       ReadOnly = True
       Size = 120
@@ -1059,7 +1060,7 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkEspecie'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 500
+    Left = 484
     Top = 556
     object cdslkEspecieID: TIntegerField
       FieldName = 'ID'

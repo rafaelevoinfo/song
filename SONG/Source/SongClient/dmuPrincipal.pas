@@ -13,7 +13,7 @@ uses
   uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
   Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList,
   cxLocalization, uProvider, System.Rtti, uProxyGenerator, Datasnap.DSProxy,
-  cxEditRepositoryItems;
+  cxEditRepositoryItems, Vcl.Dialogs;
 
 type
   TdmPrincipal = class(TDataModule)
