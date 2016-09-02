@@ -88,6 +88,7 @@ inherited dmEstoque: TdmEstoque
     end
   end
   object cdsSolicitacao_Compra: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqSolicitacao_Compra'
@@ -158,6 +159,8 @@ inherited dmEstoque: TdmEstoque
     object cdsSolicitacao_CompraMOTIVO_NEGACAO: TStringField
       DisplayLabel = 'Motivo da Nega'#231#227'o'
       FieldName = 'MOTIVO_NEGACAO'
+      Origin = 'MOTIVO_NEGACAO'
+      ProviderFlags = [pfInUpdate]
       Size = 1000
     end
   end
@@ -317,6 +320,11 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Id da Solicita'#231#227'o da Compra'
       FieldName = 'ID_SOLICITACAO_COMPRA'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsCompraGEROU_CONTA_PAGAR: TIntegerField
+      DisplayLabel = 'Gerou Conta a Pagar'
+      FieldName = 'GEROU_CONTA_PAGAR'
+      ProviderFlags = []
     end
   end
   object cdsCompra_Item: TRFClientDataSet
@@ -630,56 +638,92 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqVenda'
     RemoteServer = dmPrincipal.ProviderEstoque
-    Left = 16
-    Top = 124
+    Left = 32
+    Top = 132
     object cdsVendaID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsVendaID_CLIENTE: TIntegerField
       DisplayLabel = 'Id do Cliente'
       FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsVendaID_PESSOA_VENDEU: TIntegerField
       DisplayLabel = 'Id da Pessoa que Vendeu'
       FieldName = 'ID_PESSOA_VENDEU'
+      Origin = 'ID_PESSOA_VENDEU'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsVendaDATA: TSQLTimeStampField
       DisplayLabel = 'Data da Venda'
       FieldName = 'DATA'
+      Origin = '"DATA"'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object cdsVendaDESCRICAO: TIntegerField
-      DisplayLabel = 'Descri'#231#227'o'
-      FieldName = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
     end
     object cdsVendaCLIENTE: TStringField
       DisplayLabel = 'Cliente'
       FieldName = 'CLIENTE'
+      Origin = 'RAZAO_SOCIAL'
       ProviderFlags = []
       Size = 100
     end
     object cdsVendaVENDEDOR: TStringField
       DisplayLabel = 'Vendedor'
       FieldName = 'VENDEDOR'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsVendaVALOR_TOTAL: TBCDField
       DisplayLabel = 'Valor Total'
       FieldName = 'VALOR_TOTAL'
+      Origin = 'VALOR_TOTAL'
+      ProviderFlags = []
       currency = True
       Precision = 18
     end
+    object cdsVendaCPF_CNPJ: TStringField
+      DisplayLabel = 'CPF/CNPJ'
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object cdsVendaCALC_VALOR_EXTENSO: TStringField
+      DisplayLabel = 'Valor por extenso'
+      FieldName = 'CALC_VALOR_EXTENSO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 120
+    end
+    object cdsVendaDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object cdsVendaSAIU_ESTOQUE: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Saiu do Estoque'
+      FieldName = 'SAIU_ESTOQUE'
+      ProviderFlags = []
+    end
+    object cdsVendaGEROU_CONTA_RECEBER: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Gerou Conta a Receber'
+      FieldName = 'GEROU_CONTA_RECEBER'
+      ProviderFlags = []
+    end
   end
   object cdsVenda_Item: TRFClientDataSet
+    Active = True
     Aggregates = <>
     IndexFieldNames = 'ID_VENDA'
     MasterFields = 'ID'
@@ -697,29 +741,34 @@ inherited dmEstoque: TdmEstoque
     Top = 124
     object cdsVenda_ItemID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsVenda_ItemID_VENDA: TIntegerField
       DisplayLabel = 'Id da Venda'
       FieldName = 'ID_VENDA'
+      Origin = 'ID_VENDA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsVenda_ItemID_ITEM: TIntegerField
       DisplayLabel = 'Id do Item'
       FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsVenda_ItemID_ESPECIE: TIntegerField
       DisplayLabel = 'Id da Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]
     end
     object cdsVenda_ItemQTDE: TBCDField
       DisplayLabel = 'Qtde'
       FieldName = 'QTDE'
+      Origin = 'QTDE'
       ProviderFlags = [pfInUpdate]
       Required = True
       Precision = 18
@@ -728,6 +777,7 @@ inherited dmEstoque: TdmEstoque
     object cdsVenda_ItemVALOR_UNITARIO: TBCDField
       DisplayLabel = 'Valor Unit'#225'rio'
       FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
       ProviderFlags = [pfInUpdate]
       Required = True
       currency = True
@@ -737,36 +787,48 @@ inherited dmEstoque: TdmEstoque
     object cdsVenda_ItemITEM: TStringField
       DisplayLabel = 'Item'
       FieldName = 'ITEM'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsVenda_ItemESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ESPECIE'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsVenda_ItemID_LOTE_SEMENTE: TIntegerField
       DisplayLabel = 'Id do Lote de Semente'
       FieldName = 'ID_LOTE_SEMENTE'
+      Origin = 'ID_LOTE_SEMENTE'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsVenda_ItemLOTE_SEMENTE: TStringField
       DisplayLabel = 'Lote de Semente'
       FieldName = 'LOTE_SEMENTE'
+      Origin = 'NOME'
+      ProviderFlags = []
       Size = 30
     end
     object cdsVenda_ItemID_LOTE_MUDA: TIntegerField
       DisplayLabel = 'Id do Lote de Muda'
       FieldName = 'ID_LOTE_MUDA'
+      Origin = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
     end
     object cdsVenda_ItemLOTE_MUDA: TStringField
       DisplayLabel = 'Lote de Muda'
       FieldName = 'LOTE_MUDA'
+      Origin = 'NOME'
+      ProviderFlags = []
       Size = 100
     end
     object cdsVenda_ItemUNIDADE: TStringField
       DisplayLabel = 'Unidade'
       FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
       Size = 10
     end
     object cdsVenda_ItemCALC_QTDE: TStringField
@@ -778,6 +840,7 @@ inherited dmEstoque: TdmEstoque
     object cdsVenda_ItemCALC_VALOR_TOTAL: TBCDField
       DisplayLabel = 'Valor Total'
       FieldName = 'CALC_VALOR_TOTAL'
+      ProviderFlags = []
       ReadOnly = True
       currency = True
       Precision = 18

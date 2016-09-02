@@ -16,7 +16,9 @@ uses
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc,
   cxCurrencyEdit, uTypes, System.DateUtils, uClientDataSet, uControleAcesso,
   System.TypInfo, uExceptions, dmuPrincipal, uMensagem, fSaida,
-  System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa;
+  System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
+  ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
+  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar;
 
 type
   TfrmVenda = class(TfrmBasicoCrudMasterDetail)
@@ -76,6 +78,66 @@ type
     btnAdicionarCliente: TButton;
     Ac_Adicionar_Cliente: TAction;
     viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
+    ColumnImprimirRecibo: TcxGridDBColumn;
+    Ac_Imprimir_Recibo: TAction;
+    DBPipeVenda: TppDBPipeline;
+    DBPipeVenda_Item: TppDBPipeline;
+    ppRecibo: TppReport;
+    ppParameterList1: TppParameterList;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppHeaderBand1: TppHeaderBand;
+    ppDetailBand1: TppDetailBand;
+    ppFooterBand1: TppFooterBand;
+    ppDBImage1: TppDBImage;
+    DBPipeOrganizacao: TppDBPipeline;
+    ppDBText1: TppDBText;
+    ppLabel1: TppLabel;
+    ppDBText2: TppDBText;
+    ppLabel2: TppLabel;
+    ppLabel3: TppLabel;
+    ppLine1: TppLine;
+    ppLabel4: TppLabel;
+    ppDBText3: TppDBText;
+    ppLabel5: TppLabel;
+    ppDBText4: TppDBText;
+    ppLine2: TppLine;
+    ppLine3: TppLine;
+    ppLine4: TppLine;
+    ppShape1: TppShape;
+    ppDBText5: TppDBText;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppDBText10: TppDBText;
+    ppDBText11: TppDBText;
+    ppLabel6: TppLabel;
+    ppDBText12: TppDBText;
+    ppDBText13: TppDBText;
+    ppLabel8: TppLabel;
+    ppLabel9: TppLabel;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppLabel12: TppLabel;
+    ppLine5: TppLine;
+    ppLine6: TppLine;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppDBText17: TppDBText;
+    ppLine7: TppLine;
+    ppLine8: TppLine;
+    ppSummaryBand1: TppSummaryBand;
+    ppLine9: TppLine;
+    ppLine10: TppLine;
+    ppLine11: TppLine;
+    ppLabel7: TppLabel;
+    ppSystemVariable1: TppSystemVariable;
+    ppLine12: TppLine;
+    ppDBText14: TppDBText;
+    ppDBText18: TppDBText;
+    viewRegistrosSAIU_ESTOQUE: TcxGridDBColumn;
+    viewRegistrosGEROU_CONTA_RECEBER: TcxGridDBColumn;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
@@ -84,6 +146,12 @@ type
     procedure Ac_Adicionar_ClienteExecute(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure Ac_Imprimir_ReciboExecute(Sender: TObject);
+    procedure viewRegistrosGEROU_CONTA_RECEBERCustomDrawCell(
+      Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+      AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+    procedure Ac_Gerar_Conta_ReceberUpdate(Sender: TObject);
+    procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -309,12 +377,19 @@ begin
   ppvGerarContaReceber;
 end;
 
+procedure TfrmVenda.Ac_Gerar_Conta_ReceberUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsVendaGEROU_CONTA_RECEBER.AsInteger = 0);
+end;
+
 procedure TfrmVenda.ppvGerarContaReceber();
 var
   vaContaGerada: Boolean;
   vaPergunta: string;
   vaFrmContaReceber: TfrmContaReceber;
   vaContaReceber: TContaReceber;
+  vaAutoApply: Boolean;
 begin
   vaContaGerada := dmPrincipal.FuncoesEstoque.fpuVerificarContaReceberJaGerada(dmEstoque.cdsVendaID.AsInteger);
   if vaContaGerada then
@@ -335,7 +410,19 @@ begin
         vaFrmContaReceber.ShowModal;
 
         if vaFrmContaReceber.IdEscolhido <> 0 then
-          TMensagem.ppuShowMessage('Conta a Receber gerada com sucesso.');
+          begin
+            TMensagem.ppuShowMessage('Conta a Receber gerada com sucesso.');
+            vaAutoApply := dmEstoque.cdsVenda.RFApplyAutomatico;
+            dmEstoque.cdsVenda.RFApplyAutomatico := false;
+            try
+              dmEstoque.cdsVenda.Edit;
+              dmEstoque.cdsVendaGEROU_CONTA_RECEBER.AsInteger := 1;
+              dmEstoque.cdsVenda.Post;
+              dmEstoque.cdsVenda.MergeChangeLog;
+            finally
+              dmEstoque.cdsVenda.RFApplyAutomatico := vaAutoApply;
+            end;
+          end;
       finally
         vaFrmContaReceber.Free;
       end;
@@ -348,11 +435,35 @@ begin
     ppvGerarSaida;
 end;
 
+procedure TfrmVenda.Ac_Gerar_SaidaUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsVendaSAIU_ESTOQUE.AsInteger = 0);
+end;
+
+procedure TfrmVenda.Ac_Imprimir_ReciboExecute(Sender: TObject);
+begin
+  inherited;
+  if not dmLookup.cdslkOrganizacao.Active then
+    dmLookup.cdslkOrganizacao.Open;
+
+  // Precisa desabilitar os controles pq senao da um erro de parameter incorrect ao desenhar o cxGrid
+  dmEstoque.cdsVenda.DisableControls;
+  dmEstoque.cdsVenda_Item.DisableControls;
+  try
+    ppRecibo.PrintReport;
+  finally
+    dmEstoque.cdsVenda.EnableControls;
+    dmEstoque.cdsVenda_Item.EnableControls;
+  end;
+end;
+
 procedure TfrmVenda.ppvGerarSaida;
 var
   vaFrmSaida: TfrmSaida;
   vaSaida: TSaida;
   vaItem: TItem;
+  vaAutoApply: Boolean;
 begin
   inherited;
   if dmPrincipal.FuncoesEstoque.fpuBuscarItensSaida(dmEstoque.cdsVendaID.AsInteger) = '' then
@@ -403,6 +514,18 @@ begin
         end;
 
         TMensagem.ppuShowMessage('Saída gerada com sucesso.');
+
+        vaAutoApply := dmEstoque.cdsVenda.RFApplyAutomatico;
+        dmEstoque.cdsVenda.RFApplyAutomatico := false;
+        try
+          dmEstoque.cdsVenda.Edit;
+          dmEstoque.cdsVendaSAIU_ESTOQUE.AsInteger := 1;
+          dmEstoque.cdsVenda.Post;
+          dmEstoque.cdsVenda.MergeChangeLog;
+        finally
+          dmEstoque.cdsVenda.RFApplyAutomatico := vaAutoApply;
+        end;
+
       finally
         vaFrmSaida.Free;
       end;
@@ -412,11 +535,31 @@ begin
 
 end;
 
+procedure TfrmVenda.viewRegistrosGEROU_CONTA_RECEBERCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+  inherited;
+  if AViewInfo.Value = 0 then
+    begin
+      ACanvas.Font.Color := clWhite;
+      if AViewInfo.GridRecord.Selected then
+        ACanvas.Brush.Color := clMaroon
+      else
+        ACanvas.Brush.Color := clRed;
+    end
+  else
+    begin
+      ACanvas.Font.Color := clWhite;
+      ACanvas.Brush.Color := clGreen;
+    end;
+end;
+
 procedure TfrmVenda.cbClienteKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
-  if key = VK_F2 then
+  if Key = VK_F2 then
     ppvAdicionarCliente;
 end;
 

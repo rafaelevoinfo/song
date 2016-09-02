@@ -1,9 +1,15 @@
 inherited frmVenda: TfrmVenda
   Caption = 'Vendas'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -168,7 +174,7 @@ inherited frmVenda: TfrmVenda
             object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [5]
               DataBinding.FieldName = 'VALOR_TOTAL'
               Options.Editing = False
-              Width = 154
+              Width = 150
             end
             object viewRegistrosDESCRICAO: TcxGridDBColumn [6]
               DataBinding.FieldName = 'DESCRICAO'
@@ -180,12 +186,43 @@ inherited frmVenda: TfrmVenda
               Options.Editing = False
               Width = 167
             end
+            object viewRegistrosSAIU_ESTOQUE: TcxGridDBColumn [8]
+              DataBinding.FieldName = 'SAIU_ESTOQUE'
+              RepositoryItem = dmLookup.RepIcbNaoSim
+              OnCustomDrawCell = viewRegistrosGEROU_CONTA_RECEBERCustomDrawCell
+              Options.Editing = False
+              Width = 94
+            end
+            object viewRegistrosGEROU_CONTA_RECEBER: TcxGridDBColumn [9]
+              DataBinding.FieldName = 'GEROU_CONTA_RECEBER'
+              RepositoryItem = dmLookup.RepIcbNaoSim
+              OnCustomDrawCell = viewRegistrosGEROU_CONTA_RECEBERCustomDrawCell
+              Options.Editing = False
+              Width = 118
+            end
+            object ColumnImprimirRecibo: TcxGridDBColumn [10]
+              Caption = 'Recibo'
+              PropertiesClassName = 'TcxButtonEditProperties'
+              Properties.Buttons = <
+                item
+                  Action = Ac_Imprimir_Recibo
+                  Default = True
+                  Kind = bkGlyph
+                end>
+              Properties.Images = dmPrincipal.imgIcons_16
+              Properties.ViewStyle = vsButtonsOnly
+              Options.ShowEditButtons = isebAlways
+            end
           end
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -270,10 +307,10 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9
@@ -359,6 +396,10 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -441,7 +482,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 81
+              Width = 182
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -449,6 +490,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Semente'
               FocusControl = cbLoteSemente
+              ExplicitWidth = 81
             end
             object cbLoteSemente: TcxDBLookupComboBox
               Left = 0
@@ -476,7 +518,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 65
+              Width = 182
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -484,6 +526,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Muda'
               FocusControl = cbLoteMuda
+              ExplicitWidth = 65
             end
             object cbLoteMuda: TcxDBLookupComboBox
               Left = 0
@@ -510,7 +553,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 36
+              Width = 182
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -518,6 +561,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
+              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0
@@ -543,17 +587,23 @@ inherited frmVenda: TfrmVenda
       Caption = 'Gerar Conta a Receber'
       ImageIndex = 31
       OnExecute = Ac_Gerar_Conta_ReceberExecute
+      OnUpdate = Ac_Gerar_Conta_ReceberUpdate
     end
     object Ac_Gerar_Saida: TAction
       Category = 'Master'
       Caption = 'Sair do Estoque'
       ImageIndex = 26
       OnExecute = Ac_Gerar_SaidaExecute
+      OnUpdate = Ac_Gerar_SaidaUpdate
     end
     object Ac_Adicionar_Cliente: TAction
       Category = 'Master'
       ImageIndex = 3
       OnExecute = Ac_Adicionar_ClienteExecute
+    end
+    object Ac_Imprimir_Recibo: TAction
+      ImageIndex = 19
+      OnExecute = Ac_Imprimir_ReciboExecute
     end
   end
   inherited dsMaster: TDataSource
@@ -563,5 +613,1208 @@ inherited frmVenda: TfrmVenda
   end
   inherited dsDetail: TDataSource
     DataSet = dmEstoque.cdsVenda_Item
+  end
+  object DBPipeVenda: TppDBPipeline
+    DataSource = dsMaster
+    UserName = 'DBPipeVenda'
+    Left = 184
+    Top = 128
+    object DBPipeVendappField1: TppField
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField2: TppField
+      FieldAlias = 'ID_CLIENTE'
+      FieldName = 'ID_CLIENTE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField3: TppField
+      FieldAlias = 'ID_PESSOA_VENDEU'
+      FieldName = 'ID_PESSOA_VENDEU'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField4: TppField
+      FieldAlias = 'DATA'
+      FieldName = 'DATA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField5: TppField
+      FieldAlias = 'CLIENTE'
+      FieldName = 'CLIENTE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField6: TppField
+      FieldAlias = 'VENDEDOR'
+      FieldName = 'VENDEDOR'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField7: TppField
+      FieldAlias = 'VALOR_TOTAL'
+      FieldName = 'VALOR_TOTAL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField8: TppField
+      FieldAlias = 'CPF_CNPJ'
+      FieldName = 'CPF_CNPJ'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField9: TppField
+      FieldAlias = 'CALC_VALOR_EXTENSO'
+      FieldName = 'CALC_VALOR_EXTENSO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 8
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField10: TppField
+      FieldAlias = 'DESCRICAO'
+      FieldName = 'DESCRICAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField11: TppField
+      FieldAlias = 'SAIU_ESTOQUE'
+      FieldName = 'SAIU_ESTOQUE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeVendappField12: TppField
+      FieldAlias = 'GEROU_CONTA_RECEBER'
+      FieldName = 'GEROU_CONTA_RECEBER'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 11
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object DBPipeVenda_Item: TppDBPipeline
+    DataSource = dsDetail
+    UserName = 'DBPipeVenda_Item'
+    Left = 184
+    Top = 192
+    object DBPipeVenda_ItemppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeVenda_ItemppField2: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_VENDA'
+      FieldName = 'ID_VENDA'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 1
+    end
+    object DBPipeVenda_ItemppField3: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_ITEM'
+      FieldName = 'ID_ITEM'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 2
+    end
+    object DBPipeVenda_ItemppField4: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_ESPECIE'
+      FieldName = 'ID_ESPECIE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 3
+    end
+    object DBPipeVenda_ItemppField5: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE'
+      FieldName = 'QTDE'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 4
+    end
+    object DBPipeVenda_ItemppField6: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'VALOR_UNITARIO'
+      FieldName = 'VALOR_UNITARIO'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 5
+    end
+    object DBPipeVenda_ItemppField7: TppField
+      FieldAlias = 'ITEM'
+      FieldName = 'ITEM'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 6
+    end
+    object DBPipeVenda_ItemppField8: TppField
+      FieldAlias = 'ESPECIE'
+      FieldName = 'ESPECIE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 7
+    end
+    object DBPipeVenda_ItemppField9: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_LOTE_SEMENTE'
+      FieldName = 'ID_LOTE_SEMENTE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 8
+    end
+    object DBPipeVenda_ItemppField10: TppField
+      FieldAlias = 'LOTE_SEMENTE'
+      FieldName = 'LOTE_SEMENTE'
+      FieldLength = 30
+      DisplayWidth = 30
+      Position = 9
+    end
+    object DBPipeVenda_ItemppField11: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_LOTE_MUDA'
+      FieldName = 'ID_LOTE_MUDA'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 10
+    end
+    object DBPipeVenda_ItemppField12: TppField
+      FieldAlias = 'LOTE_MUDA'
+      FieldName = 'LOTE_MUDA'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 11
+    end
+    object DBPipeVenda_ItemppField13: TppField
+      FieldAlias = 'UNIDADE'
+      FieldName = 'UNIDADE'
+      FieldLength = 10
+      DisplayWidth = 10
+      Position = 12
+    end
+    object DBPipeVenda_ItemppField14: TppField
+      FieldAlias = 'CALC_QTDE'
+      FieldName = 'CALC_QTDE'
+      FieldLength = 60
+      DisplayWidth = 60
+      Position = 13
+    end
+    object DBPipeVenda_ItemppField15: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'CALC_VALOR_TOTAL'
+      FieldName = 'CALC_VALOR_TOTAL'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 14
+    end
+  end
+  object ppRecibo: TppReport
+    AutoStop = False
+    DataPipeline = DBPipeVenda_Item
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 184
+    Top = 272
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeVenda_Item'
+    object ppHeaderBand1: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 51858
+      mmPrintPosition = 0
+      object ppDBImage1: TppDBImage
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 13230
+        mmTop = 794
+        mmWidth = 30692
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText1: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText1'
+        AutoSize = True
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 14
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 5820
+        mmLeft = 45508
+        mmTop = 4763
+        mmWidth = 115624
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel1: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label1'
+        Caption = ' - ONG'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 14
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5821
+        mmLeft = 161131
+        mmTop = 4763
+        mmWidth = 15610
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText2'
+        AutoSize = True
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        DisplayFormat = '000\.000\.0000\/00-00;0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3969
+        mmLeft = 82815
+        mmTop = 13758
+        mmWidth = 29369
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel2: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 71968
+        mmTop = 13493
+        mmWidth = 10054
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel3: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label3'
+        Caption = 'Insc. Est.: Isento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 120916
+        mmTop = 13758
+        mmWidth = 24342
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine1: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line1'
+        Border.Color = clBlue
+        Pen.Color = 10485760
+        Pen.Width = 3
+        Weight = 2.000000000000000000
+        mmHeight = 1323
+        mmLeft = 13229
+        mmTop = 23283
+        mmWidth = 163513
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel4: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label4'
+        Caption = 'Destinat'#225'rio:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 13229
+        mmTop = 30427
+        mmWidth = 19315
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText3: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText3'
+        DataField = 'CLIENTE'
+        DataPipeline = DBPipeVenda
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda'
+        mmHeight = 4498
+        mmLeft = 33073
+        mmTop = 30427
+        mmWidth = 80963
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel5: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label5'
+        Caption = ', CNPJ/CPF:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 115623
+        mmTop = 30427
+        mmWidth = 19844
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText4: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText4'
+        DataField = 'CPF_CNPJ'
+        DataPipeline = DBPipeVenda
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda'
+        mmHeight = 4498
+        mmLeft = 136525
+        mmTop = 30427
+        mmWidth = 40217
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine2: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line2'
+        Weight = 1.000000000000000000
+        mmHeight = 1588
+        mmLeft = 7673
+        mmTop = 27517
+        mmWidth = 177271
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine3: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line3'
+        Position = lpLeft
+        Weight = 1.000000000000000000
+        mmHeight = 24342
+        mmLeft = 7673
+        mmTop = 27517
+        mmWidth = 2117
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine4: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line4'
+        Position = lpLeft
+        Weight = 1.000000000000000000
+        mmHeight = 24342
+        mmLeft = 184944
+        mmTop = 27516
+        mmWidth = 2381
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel8: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label8'
+        Caption = 'Recibo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold, fsUnderline]
+        FormField = False
+        Transparent = True
+        mmHeight = 5028
+        mmLeft = 87577
+        mmTop = 37835
+        mmWidth = 14288
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label9'
+        Caption = 'Qtd'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 13229
+        mmTop = 46832
+        mmWidth = 5821
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel10: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label10'
+        Caption = 'Descri'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 38365
+        mmTop = 46832
+        mmWidth = 16404
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel11: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label101'
+        Caption = 'Valor Unit'#225'rio'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 122501
+        mmTop = 46832
+        mmWidth = 23283
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel12: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label12'
+        Caption = 'Valor Total'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 149223
+        mmTop = 46832
+        mmWidth = 18521
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine5: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line5'
+        Weight = 1.000000000000000000
+        mmHeight = 561
+        mmLeft = 13229
+        mmTop = 51298
+        mmWidth = 169863
+        BandType = 0
+        LayerName = Foreground
+      end
+    end
+    object ppDetailBand1: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6879
+      mmPrintPosition = 0
+      object ppDBText12: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText11'
+        DataField = 'ITEM'
+        DataPipeline = DBPipeVenda_Item
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda_Item'
+        mmHeight = 4763
+        mmLeft = 38365
+        mmTop = 265
+        mmWidth = 50800
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText13: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText12'
+        DataField = 'CALC_QTDE'
+        DataPipeline = DBPipeVenda_Item
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda_Item'
+        mmHeight = 4763
+        mmLeft = 13229
+        mmTop = 265
+        mmWidth = 23019
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine6: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line6'
+        Weight = 1.000000000000000000
+        mmHeight = 1588
+        mmLeft = 13229
+        mmTop = 5291
+        mmWidth = 169863
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText15: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText15'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeVenda_Item
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda_Item'
+        mmHeight = 4763
+        mmLeft = 89958
+        mmTop = 265
+        mmWidth = 30692
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText16: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText16'
+        DataField = 'VALOR_UNITARIO'
+        DataPipeline = DBPipeVenda_Item
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda_Item'
+        mmHeight = 4763
+        mmLeft = 122501
+        mmTop = 265
+        mmWidth = 23283
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText17: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText17'
+        DataField = 'CALC_VALOR_TOTAL'
+        DataPipeline = DBPipeVenda_Item
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeVenda_Item'
+        mmHeight = 4763
+        mmLeft = 149223
+        mmTop = 265
+        mmWidth = 32544
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine7: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line7'
+        Position = lpLeft
+        Weight = 1.000000000000000000
+        mmHeight = 6879
+        mmLeft = 184944
+        mmTop = 0
+        mmWidth = 2381
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine8: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line8'
+        Position = lpLeft
+        Weight = 1.000000000000000000
+        mmHeight = 6879
+        mmLeft = 7673
+        mmTop = 0
+        mmWidth = 2381
+        BandType = 4
+        LayerName = Foreground
+      end
+    end
+    object ppFooterBand1: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 13229
+      mmPrintPosition = 0
+      object ppShape1: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape1'
+        mmHeight = 12700
+        mmLeft = 13229
+        mmTop = 265
+        mmWidth = 163513
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText5'
+        DataField = 'ENDERECO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 21960
+        mmTop = 1583
+        mmWidth = 42069
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText6'
+        DataField = 'BAIRRO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 64822
+        mmTop = 1583
+        mmWidth = 29369
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText7'
+        DataField = 'COMPLEMENTO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 94456
+        mmTop = 1584
+        mmWidth = 46831
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText8'
+        DataField = 'CIDADE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 142350
+        mmTop = 1583
+        mmWidth = 24077
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText9'
+        HyperlinkEnabled = False
+        DataField = 'SITE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 29898
+        mmTop = 6611
+        mmWidth = 32015
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText10'
+        HyperlinkEnabled = False
+        DataField = 'EMAIL'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 63500
+        mmTop = 6615
+        mmWidth = 42069
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText101'
+        HyperlinkEnabled = False
+        DataField = 'TELEFONE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 124617
+        mmTop = 6615
+        mmWidth = 23548
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppLabel6: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label6'
+        Caption = 'Fone (Fax):'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 106363
+        mmTop = 6615
+        mmWidth = 17727
+        BandType = 8
+        LayerName = Foreground
+      end
+    end
+    object ppSummaryBand1: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 38365
+      mmPrintPosition = 0
+      object ppLine9: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line9'
+        Position = lpLeft
+        Weight = 1.000000000000000000
+        mmHeight = 35190
+        mmLeft = 7673
+        mmTop = 0
+        mmWidth = 2381
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppLine10: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line10'
+        Position = lpLeft
+        Weight = 1.000000000000000000
+        mmHeight = 35190
+        mmLeft = 185030
+        mmTop = 0
+        mmWidth = 2381
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppLine11: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line11'
+        Weight = 1.000000000000000000
+        mmHeight = 1588
+        mmLeft = 7673
+        mmTop = 34931
+        mmWidth = 177271
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppLabel7: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label7'
+        Caption = 'A IMPORT'#194'NCIA DE,'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 4234
+        mmLeft = 13229
+        mmTop = 6611
+        mmWidth = 33602
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppSystemVariable1: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable1'
+        DisplayFormat = '"Mineiros," dd "de" MMMM "de" YYYY.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 128588
+        mmTop = 14288
+        mmWidth = 53181
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppLine12: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line12'
+        Weight = 1.000000000000000000
+        mmHeight = 1588
+        mmLeft = 58208
+        mmTop = 27255
+        mmWidth = 73290
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppDBText14: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText13'
+        DataField = 'VENDEDOR'
+        DataPipeline = DBPipeVenda
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeVenda'
+        mmHeight = 4498
+        mmLeft = 61648
+        mmTop = 29104
+        mmWidth = 65617
+        BandType = 7
+        LayerName = Foreground
+      end
+      object ppDBText18: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText18'
+        DataField = 'CALC_VALOR_EXTENSO'
+        DataPipeline = DBPipeVenda
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeVenda'
+        mmHeight = 4498
+        mmLeft = 47625
+        mmTop = 6612
+        mmWidth = 134144
+        BandType = 7
+        LayerName = Foreground
+      end
+    end
+    object ppDesignLayers1: TppDesignLayers
+      object ppDesignLayer1: TppDesignLayer
+        UserName = 'Foreground'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList1: TppParameterList
+    end
+  end
+  object DBPipeOrganizacao: TppDBPipeline
+    DataSource = dmLookup.dslkOrganizacao
+    UserName = 'DBPipeOrganizacao'
+    Left = 288
+    Top = 136
+    object DBPipeOrganizacaoppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 0
+    end
+    object DBPipeOrganizacaoppField2: TppField
+      FieldAlias = 'NOME'
+      FieldName = 'NOME'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 1
+    end
+    object DBPipeOrganizacaoppField3: TppField
+      FieldAlias = 'CNPJ'
+      FieldName = 'CNPJ'
+      FieldLength = 14
+      DisplayWidth = 14
+      Position = 2
+    end
+    object DBPipeOrganizacaoppField4: TppField
+      FieldAlias = 'LOGO'
+      FieldName = 'LOGO'
+      FieldLength = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField5: TppField
+      FieldAlias = 'ENDERECO'
+      FieldName = 'ENDERECO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 4
+    end
+    object DBPipeOrganizacaoppField6: TppField
+      FieldAlias = 'BAIRRO'
+      FieldName = 'BAIRRO'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 5
+    end
+    object DBPipeOrganizacaoppField7: TppField
+      FieldAlias = 'COMPLEMENTO'
+      FieldName = 'COMPLEMENTO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 6
+    end
+    object DBPipeOrganizacaoppField8: TppField
+      FieldAlias = 'TELEFONE'
+      FieldName = 'TELEFONE'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 7
+    end
+    object DBPipeOrganizacaoppField9: TppField
+      FieldAlias = 'SITE'
+      FieldName = 'SITE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 8
+    end
+    object DBPipeOrganizacaoppField10: TppField
+      FieldAlias = 'EMAIL'
+      FieldName = 'EMAIL'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 9
+    end
+    object DBPipeOrganizacaoppField11: TppField
+      FieldAlias = 'CIDADE'
+      FieldName = 'CIDADE'
+      FieldLength = 120
+      DisplayWidth = 120
+      Position = 10
+    end
   end
 end

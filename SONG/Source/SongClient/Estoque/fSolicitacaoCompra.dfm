@@ -1110,7 +1110,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         mmHeight = 3704
         mmLeft = 45244
         mmTop = 12700
-        mmWidth = 32808
+        mmWidth = 39688
         BandType = 0
         LayerName = BandLayer6
       end
@@ -1129,7 +1129,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
         Transparent = True
         DataPipelineName = 'DBPipeOrganizacao'
         mmHeight = 3704
-        mmLeft = 80433
+        mmLeft = 85725
         mmTop = 12700
         mmWidth = 17463
         BandType = 0
@@ -1761,94 +1761,84 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
     Left = 376
     Top = 152
     object DBPipeSolicitacaoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField2: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_PESSOA_SOLICITOU'
       FieldName = 'ID_PESSOA_SOLICITOU'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField3: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_PESSOA_ANALISOU'
       FieldName = 'ID_PESSOA_ANALISOU'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField4: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField5: TppField
       FieldAlias = 'DATA_ANALISE'
       FieldName = 'DATA_ANALISE'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField6: TppField
+      Alignment = taRightJustify
       FieldAlias = 'STATUS'
       FieldName = 'STATUS'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField7: TppField
       FieldAlias = 'SOLICITANTE'
       FieldName = 'SOLICITANTE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField8: TppField
       FieldAlias = 'RESPONSAVEL_ANALISE'
       FieldName = 'RESPONSAVEL_ANALISE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSolicitacaoppField9: TppField
       FieldAlias = 'OBSERVACAO'
       FieldName = 'OBSERVACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 1000
+      DisplayWidth = 1000
       Position = 8
-      Searchable = False
-      Sortable = False
+    end
+    object DBPipeSolicitacaoppField10: TppField
+      FieldAlias = 'MOTIVO_NEGACAO'
+      FieldName = 'MOTIVO_NEGACAO'
+      FieldLength = 1000
+      DisplayWidth = 1000
+      Position = 9
     end
   end
   object DBPipeItensSolicitacao: TppDBPipeline
@@ -1934,7 +1924,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField

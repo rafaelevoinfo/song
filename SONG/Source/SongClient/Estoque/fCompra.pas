@@ -42,7 +42,6 @@ type
     viewRegistrosSTATUS_ENTREGA: TcxGridDBColumn;
     viewRegistrosVALOR_FRETE: TcxGridDBColumn;
     viewRegistrosCODIGO_RASTREIO: TcxGridDBColumn;
-    viewRegistrosDESCRICAO: TcxGridDBColumn;
     viewRegistrosFORNECEDOR: TcxGridDBColumn;
     viewRegistrosPESSOA_COMPROU: TcxGridDBColumn;
     viewRegistrosVALOR_TOTAL: TcxGridDBColumn;
@@ -88,6 +87,7 @@ type
     btnAdicionarFornecedor: TButton;
     Ac_Adicionar_Fornecedor: TAction;
     viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
+    viewRegistrosGEROU_CONTA_PAGAR: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Produto_EntregueUpdate(Sender: TObject);
     procedure Ac_Produto_EntregueExecute(Sender: TObject);
@@ -101,6 +101,10 @@ type
     procedure cbItemKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure cbFornecedorKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure Ac_Gerar_Conta_PagarUpdate(Sender: TObject);
+    procedure viewRegistrosGEROU_CONTA_PAGARCustomDrawCell(
+      Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+      AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -116,7 +120,7 @@ type
     procedure ppvCarregarItens;
     procedure ppvAdicionarFornecedor;
     procedure ppvCarregarFornecedores;
-    procedure ppvConfigurarComponentes(ipIncluindo:Boolean);
+    procedure ppvConfigurarComponentes(ipIncluindo: Boolean);
 
   protected
     function fprGetPermissao: string; override;
@@ -133,8 +137,8 @@ type
     procedure pprCarregarDadosModelo; override;
     procedure pprCarregarDadosModeloDetail; override;
 
-    procedure pprBeforeIncluir;override;
-    procedure pprBeforeAlterar;override;
+    procedure pprBeforeIncluir; override;
+    procedure pprBeforeAlterar; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -171,9 +175,15 @@ begin
   ppvGerarContaPagar;
 end;
 
+procedure TfrmCompra.Ac_Gerar_Conta_PagarUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar and (dmEstoque.cdsCompraGEROU_CONTA_PAGAR.AsInteger = 0);
+end;
+
 procedure TfrmCompra.ppvGerarContaPagar;
 var
-  vaContaGerada: Boolean;
+  vaContaGerada,vaAutoApply: Boolean;
   vaPergunta: string;
   vaFrmContaPagar: TfrmContaPagar;
   vaContaPagar: TContaPagar;
@@ -198,7 +208,20 @@ begin
         vaFrmContaPagar.ShowModal;
 
         if vaFrmContaPagar.IdEscolhido <> 0 then
-          TMensagem.ppuShowMessage('Conta a Pagar gerada com sucesso.');
+          begin
+            TMensagem.ppuShowMessage('Conta a Pagar gerada com sucesso.');
+
+            vaAutoApply := dmEstoque.cdsCompra.RFApplyAutomatico;
+            dmEstoque.cdsCompra.RFApplyAutomatico := false;
+            try
+              dmEstoque.cdsCompra.Edit;
+              dmEstoque.cdsCompraGEROU_CONTA_PAGAR.AsInteger := 1;
+              dmEstoque.cdsCompra.Post;
+              dmEstoque.cdsCompra.MergeChangeLog;
+            finally
+              dmEstoque.cdsCompra.RFApplyAutomatico := vaAutoApply;
+            end;
+          end;
       finally
         vaFrmContaPagar.Free;
       end;
@@ -369,7 +392,7 @@ begin
   ppvConfigurarComponentes(false);
 end;
 
-procedure TfrmCompra.ppvConfigurarComponentes(ipIncluindo:Boolean);
+procedure TfrmCompra.ppvConfigurarComponentes(ipIncluindo: Boolean);
 begin
   lbStatusEntrega.Visible := not ipIncluindo;
   cbStatusEntrega.Visible := lbStatusEntrega.Visible;
@@ -559,8 +582,8 @@ end;
 procedure TfrmCompra.pprBeforeIncluir;
 begin
   inherited;
-  //nao vamos deixar alterar o valor padrao durante a insercao
-  ppvConfigurarComponentes(true);
+  // nao vamos deixar alterar o valor padrao durante a insercao
+  ppvConfigurarComponentes(True);
 end;
 
 procedure TfrmCompra.pprBeforeSalvarDetail;
@@ -784,6 +807,26 @@ begin
   finally
     vaFrmLoteMuda.Free;
   end;
+end;
+
+procedure TfrmCompra.viewRegistrosGEROU_CONTA_PAGARCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+  inherited;
+  if AViewInfo.Value = 0 then
+    begin
+      ACanvas.Font.Color := clWhite;
+      if AViewInfo.GridRecord.Selected then
+        ACanvas.Brush.Color := clMaroon
+      else
+        ACanvas.Brush.Color := clRed;
+    end
+  else
+    begin
+      ACanvas.Font.Color := clWhite;
+      ACanvas.Brush.Color := clGreen;
+    end;
 end;
 
 procedure TfrmCompra.viewRegistrosSTATUS_ENTREGACustomDrawCell(

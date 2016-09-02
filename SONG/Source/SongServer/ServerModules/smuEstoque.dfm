@@ -303,7 +303,13 @@ inherited smEstoque: TsmEstoque
       '          from compra_item '
       
         '        where compra_item.id_compra = compra.id)+ Coalesce(Compr' +
-        'a.Valor_Frete,0) as Valor_Total'
+        'a.Valor_Frete,0) as Valor_Total,'
+      '       case'
+      
+        '         when (Select count(*) from conta_pagar where conta_paga' +
+        'r.id_compra = compra.id) > 0 then 1'
+      '         else 0'
+      '       end Gerou_Conta_Pagar'
       'from Compra '
       'left join compra_item on (compra_item.id_compra = compra.id)'
       
@@ -392,6 +398,12 @@ inherited smEstoque: TsmEstoque
       FieldName = 'ID_SOLICITACAO_COMPRA'
       Origin = 'ID_SOLICITACAO_COMPRA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qCompraGEROU_CONTA_PAGAR: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'GEROU_CONTA_PAGAR'
+      Origin = 'GEROU_CONTA_PAGAR'
+      ProviderFlags = []
     end
   end
   object qCompra_Item: TRFQuery
@@ -758,23 +770,43 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qVenda: TRFQuery
+    OnCalcFields = qVendaCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Venda.Id,'
       '       Venda.Id_Cliente,'
       '       Fin_For_Cli.razao_social as Cliente,'
+      '       coalesce(Fin_For_Cli.CPF_CNPJ, cliente.cpf) as Cpf_Cnpj,'
       '       Venda.Id_Pessoa_Vendeu,'
       '       Pessoa.Nome as Vendedor,'
       '       Venda.Data,'
       '       Venda.Descricao,'
       
-        '       (Select Coalesce(Sum(venda_item.valor_unitario*venda_item' +
-        '.qtde),0) from'
+        '       (Select Trunc(Coalesce(Sum(venda_item.valor_unitario*vend' +
+        'a_item.qtde),0),2) from'
       
         '       venda_item where venda_item.id_venda = venda.id) as Valor' +
-        '_Total'
+        '_Total,'
+      '       case'
+      
+        '         when (Select count(*) from saida_item where saida_item.' +
+        'id_venda_item in (select venda_item.id from venda_item where ven' +
+        'da_item.id_venda = venda.id)) > 0 then 1'
+      '         else 0'
+      '       end Saiu_Estoque,'
+      '       case'
+      
+        '         when (Select count(*) from conta_receber where conta_re' +
+        'ceber.id_venda = venda.id) > 0 then 1'
+      '         else 0'
+      '       end Gerou_Conta_Receber'
+      '       '
+      ''
       'from Venda '
       'inner join fin_for_cli on (fin_for_cli.id = Venda.id_cliente)'
+      
+        'left join pessoa cliente on (fin_for_cli.id_contato = cliente.id' +
+        ')'
       'inner join pessoa on (pessoa.id = venda.id_pessoa_vendeu)'
       '&WHERE')
     Left = 544
@@ -808,17 +840,18 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qVendaDESCRICAO: TIntegerField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = [pfInUpdate]
-    end
     object qVendaCLIENTE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'CLIENTE'
       Origin = 'RAZAO_SOCIAL'
       ProviderFlags = []
       Size = 100
+    end
+    object qVendaDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
     object qVendaVENDEDOR: TStringField
       AutoGenerateValue = arDefault
@@ -833,6 +866,32 @@ inherited smEstoque: TsmEstoque
       Origin = 'VALOR_TOTAL'
       ProviderFlags = []
       Precision = 18
+    end
+    object qVendaCPF_CNPJ: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qVendaCALC_VALOR_EXTENSO: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_EXTENSO'
+      ProviderFlags = []
+      Size = 120
+      Calculated = True
+    end
+    object qVendaSAIU_ESTOQUE: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'SAIU_ESTOQUE'
+      Origin = 'SAIU_ESTOQUE'
+      ProviderFlags = []
+    end
+    object qVendaGEROU_CONTA_RECEBER: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'GEROU_CONTA_RECEBER'
+      Origin = 'GEROU_CONTA_RECEBER'
+      ProviderFlags = []
     end
   end
   object qVenda_Item: TRFQuery

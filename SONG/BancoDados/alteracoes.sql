@@ -3771,3 +3771,8 @@ inner join Fundo on (Fundo.Id = Transferencia_Financeira.Id_Fundo_Origem)
 inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
 ;
 
+
+
+ALTER TABLE VENDA
+    ALTER DESCRICAO TYPE D_DESCRICAO;
+

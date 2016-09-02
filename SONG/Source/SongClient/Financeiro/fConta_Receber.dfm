@@ -1,5 +1,4 @@
 inherited frmContaReceber: TfrmContaReceber
-  ActiveControl = EditDescricao
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
   ExplicitWidth = 1000
@@ -7,7 +6,6 @@ inherited frmContaReceber: TfrmContaReceber
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -198,7 +196,6 @@ inherited frmContaReceber: TfrmContaReceber
                   Left = 183
                   TabOrder = 2
                   ExplicitLeft = 183
-                  ExplicitTop = 2
                 end
                 object btnBaixarReabrir: TButton
                   Left = 82
@@ -268,6 +265,10 @@ inherited frmContaReceber: TfrmContaReceber
             object tabVinculos: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -371,7 +372,7 @@ inherited frmContaReceber: TfrmContaReceber
         object Label5: TLabel
           Left = 435
           Top = 2
-          Width = 76
+          Width = 78
           Height = 13
           Caption = 'Plano de Contas'
           FocusControl = cbPlanoContas
@@ -692,12 +693,6 @@ inherited frmContaReceber: TfrmContaReceber
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
-      inherited pnBotoesCadastroDetail: TPanel
-        TabOrder = 0
-      end
-      inherited pnEditsCadastroDetail: TPanel
-        TabOrder = 1
-      end
     end
   end
   inherited ActionList1: TActionList

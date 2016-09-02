@@ -1,6 +1,5 @@
 inherited frmCompra: TfrmCompra
   Caption = 'Compras'
-  ExplicitTop = -33
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -176,31 +175,31 @@ inherited frmCompra: TfrmCompra
               Options.Editing = False
               Width = 83
             end
-            object viewRegistrosSTATUS_ENTREGA: TcxGridDBColumn [6]
+            object viewRegistrosVALOR_FRETE: TcxGridDBColumn [6]
+              DataBinding.FieldName = 'VALOR_FRETE'
+              RepositoryItem = dmLookup.repCurPadrao
+              Options.Editing = False
+              Width = 85
+            end
+            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [7]
+              DataBinding.FieldName = 'VALOR_TOTAL'
+              RepositoryItem = dmLookup.repCurPadrao
+              Options.Editing = False
+            end
+            object viewRegistrosSTATUS_ENTREGA: TcxGridDBColumn [8]
               DataBinding.FieldName = 'STATUS_ENTREGA'
               RepositoryItem = dmLookup.repIcbStatusEntrega
               OnCustomDrawCell = viewRegistrosSTATUS_ENTREGACustomDrawCell
               Options.Editing = False
               Width = 92
             end
-            object viewRegistrosVALOR_FRETE: TcxGridDBColumn [7]
-              DataBinding.FieldName = 'VALOR_FRETE'
-              RepositoryItem = dmLookup.repCurPadrao
-              Options.Editing = False
-              Width = 85
+            object viewRegistrosGEROU_CONTA_PAGAR: TcxGridDBColumn [9]
+              DataBinding.FieldName = 'GEROU_CONTA_PAGAR'
+              OnCustomDrawCell = viewRegistrosGEROU_CONTA_PAGARCustomDrawCell
+              Width = 106
             end
-            object viewRegistrosVALOR_TOTAL: TcxGridDBColumn [8]
-              DataBinding.FieldName = 'VALOR_TOTAL'
-              RepositoryItem = dmLookup.repCurPadrao
-              Options.Editing = False
-            end
-            object viewRegistrosCODIGO_RASTREIO: TcxGridDBColumn [9]
+            object viewRegistrosCODIGO_RASTREIO: TcxGridDBColumn [10]
               DataBinding.FieldName = 'CODIGO_RASTREIO'
-              Visible = False
-              Options.Editing = False
-            end
-            object viewRegistrosDESCRICAO: TcxGridDBColumn [10]
-              DataBinding.FieldName = 'DESCRICAO'
               Visible = False
               Options.Editing = False
             end
@@ -394,10 +393,10 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -505,7 +504,7 @@ inherited frmCompra: TfrmCompra
       Caption = 'Gerar Conta a Pagar'
       ImageIndex = 14
       OnExecute = Ac_Gerar_Conta_PagarExecute
-      OnUpdate = Ac_AlterarUpdate
+      OnUpdate = Ac_Gerar_Conta_PagarUpdate
     end
     object Ac_Adicionar_Item: TAction
       Category = 'Detail'

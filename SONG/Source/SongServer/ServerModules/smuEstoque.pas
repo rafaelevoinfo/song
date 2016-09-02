@@ -94,7 +94,6 @@ type
     qVendaID_CLIENTE: TIntegerField;
     qVendaID_PESSOA_VENDEU: TIntegerField;
     qVendaDATA: TSQLTimeStampField;
-    qVendaDESCRICAO: TIntegerField;
     qVenda_ItemID: TIntegerField;
     qVenda_ItemID_VENDA: TIntegerField;
     qVenda_ItemID_ITEM: TIntegerField;
@@ -151,6 +150,12 @@ type
     qCompra_ItemCALC_VALOR_TOTAL: TBCDField;
     qVenda_ItemCALC_VALOR_TOTAL: TBCDField;
     qSolicitacao_CompraMOTIVO_NEGACAO: TStringField;
+    qVendaCPF_CNPJ: TStringField;
+    qVendaCALC_VALOR_EXTENSO: TStringField;
+    qVendaDESCRICAO: TStringField;
+    qVendaSAIU_ESTOQUE: TIntegerField;
+    qVendaGEROU_CONTA_RECEBER: TIntegerField;
+    qCompraGEROU_CONTA_PAGAR: TIntegerField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
@@ -162,6 +167,7 @@ type
       UpdateKind: TUpdateKind);
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qEntrada_ItemCalcFields(DataSet: TDataSet);
+    procedure qVendaCalcFields(DataSet: TDataSet);
   private
     FIdsEspecies: TList<Integer>;
   protected
@@ -371,6 +377,12 @@ begin
   inherited;
   qPatrimonioCALC_VALOR_ATUAL.AsFloat := TUtils.fpuCalcularDepreciacao(qPatrimonioDATA_AQUISICAO.AsDateTime, qPatrimonioVALOR_INICIAL.AsFloat,
     qPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger);
+end;
+
+procedure TsmEstoque.qVendaCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  qVendaCALC_VALOR_EXTENSO.AsString := TUtils.fpuGetValorPorExtenso(qVendaVALOR_TOTAL.AsFloat);
 end;
 
 end.

@@ -93,7 +93,6 @@ type
     cdsVendaID_CLIENTE: TIntegerField;
     cdsVendaID_PESSOA_VENDEU: TIntegerField;
     cdsVendaDATA: TSQLTimeStampField;
-    cdsVendaDESCRICAO: TIntegerField;
     cdsVendaCLIENTE: TStringField;
     cdsVendaVENDEDOR: TStringField;
     cdsVenda_Item: TRFClientDataSet;
@@ -150,6 +149,12 @@ type
     cdsCompra_ItemCALC_QTDE: TStringField;
     cdsCompra_ItemCALC_VALOR_TOTAL: TBCDField;
     cdsSolicitacao_CompraMOTIVO_NEGACAO: TStringField;
+    cdsVendaCPF_CNPJ: TStringField;
+    cdsVendaCALC_VALOR_EXTENSO: TStringField;
+    cdsVendaDESCRICAO: TStringField;
+    cdsVendaSAIU_ESTOQUE: TIntegerField;
+    cdsVendaGEROU_CONTA_RECEBER: TIntegerField;
+    cdsCompraGEROU_CONTA_PAGAR: TIntegerField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

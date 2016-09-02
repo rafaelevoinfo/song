@@ -592,7 +592,10 @@ begin
     procedure(ipDataSet: TRFQuery)
     begin
       ipDataSet.SQL.Text :=
-        'Select conta_receber_parcela.id from conta_receber_parcela where conta_receber_parcela.id_conta_receber = :id_conta_receber';
+        'Select conta_receber_parcela.id '+
+        ' from conta_receber_parcela '+
+        ' where conta_receber_parcela.id_conta_receber = :id_conta_receber and '+
+        '       conta_receber_parcela.status = 1';
       ipDataSet.ParamByName('ID_CONTA_RECEBER').AsInteger := ipIdContaReceber;
       ipDataSet.Open();
 
