@@ -168,6 +168,13 @@ type
     qlkOrganizacaoSITE: TStringField;
     qlkOrganizacaoEMAIL: TStringField;
     qlkOrganizacaoCIDADE: TStringField;
+    qlkArea_Atuacao: TRFQuery;
+    qlkArea_AtuacaoID: TIntegerField;
+    qlkArea_AtuacaoNOME: TStringField;
+    qlkArea_Execucao: TRFQuery;
+    qlkArea_ExecucaoID: TIntegerField;
+    qlkArea_ExecucaoID_AREA_ATUACAO: TIntegerField;
+    qlkArea_ExecucaoNOME: TStringField;
   private
     { Private declarations }
   protected

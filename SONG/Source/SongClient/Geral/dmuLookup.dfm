@@ -740,6 +740,16 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkItem_Patrimonio
     end
+    object repLcbArea_Atuacao: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkArea_Atuacao
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1935,5 +1945,60 @@ inherited dmLookup: TdmLookup
       Precision = 18
       Size = 2
     end
+  end
+  object cdslkArea_Atuacao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkArea_Atuacao'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 560
+    Top = 400
+    object cdslkArea_AtuacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkArea_AtuacaoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object cdslkArea_Execucao: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_AREA_ATUACAO'
+    MasterFields = 'ID'
+    MasterSource = dslkArea_Atuacao
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqlkArea_Execucao'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 424
+    Top = 296
+    object cdslkArea_ExecucaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkArea_ExecucaoID_AREA_ATUACAO: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Atua'#231#227'o'
+      FieldName = 'ID_AREA_ATUACAO'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkArea_ExecucaoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkArea_Atuacao: TDataSource
+    DataSet = cdslkArea_Atuacao
+    Left = 416
+    Top = 504
   end
 end

@@ -21,7 +21,7 @@ uses
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
-  fDoacao, dmuPrincipal;
+  fDoacao, dmuPrincipal, fAreaAtuacao;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -122,6 +122,8 @@ type
     Clientes2: TMenuItem;
     Fornecedores2: TMenuItem;
     SolicitaodeCompra2: TMenuItem;
+    Ac_Area_Atuacao: TAction;
+    reasdeAtuao1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -167,6 +169,7 @@ type
     procedure Ac_Relatorio_PatrimonioExecute(Sender: TObject);
     procedure Ac_DoacaoExecute(Sender: TObject);
     procedure Ac_Atualizar_NotificacoesExecute(Sender: TObject);
+    procedure Ac_Area_AtuacaoExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -203,6 +206,12 @@ procedure TfrmPrincipal.Ac_AgendamentoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmAgendamento>(pcPrincipal, TfrmAgendamento, frmAgendamento);
+end;
+
+procedure TfrmPrincipal.Ac_Area_AtuacaoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmAreaAtuacao>(pcPrincipal, TfrmAreaAtuacao, frmAreaAtuacao);
 end;
 
 procedure TfrmPrincipal.Ac_AtividadeExecute(Sender: TObject);

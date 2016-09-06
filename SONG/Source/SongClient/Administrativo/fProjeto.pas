@@ -172,7 +172,6 @@ type
     btnSalvarIncluirDetailArea: TButton;
     pnEditsCadastroDetailArea: TPanel;
     lbl2: TLabel;
-    EditNomeArea: TcxDBTextEdit;
     dsArea: TDataSource;
     Panel10: TPanel;
     btnIncluirArea: TButton;
@@ -206,6 +205,8 @@ type
     viewPagamentosNOME_ORGANIZACAO: TcxGridDBColumn;
     lb1: TLabel;
     cbFormaPagamento: TcxImageComboBox;
+    viewAreaAtuacaoID_AREA_ATUACAO: TcxGridDBColumn;
+    cbAreaAtuacao: TcxDBLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -491,6 +492,7 @@ begin
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coAtivo], [coRegistroAtivo]);
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
+  dmLookup.cdslkArea_Atuacao.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
 
   ppvCarregarFinanciadores;
   ppvCarregarContasCorrentes;
@@ -567,11 +569,11 @@ var
 begin
   inherited;
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Area then
-    begin
-      if not dmPrincipal.FuncoesAdm.fpuValidarNomeAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
-        dmAdministrativo.cdsProjeto_AreaID.AsInteger, dmAdministrativo.cdsProjeto_AreaNOME.AsString) then
+    begin      
+      if not dmPrincipal.FuncoesAdm.fpuValidarAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
+        dmAdministrativo.cdsProjeto_AreaID_AREA_ATUACAO.AsInteger) then
         begin
-          raise Exception.Create('Já existe uma área para este projeto com este nome. Por favor, informe outro nome.');
+          raise TControlException.Create('Á área informada já esta cadastrada para este projeto. Por favor escolha outra.',cbAreaAtuacao);
         end;
     end
   else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Rubrica then

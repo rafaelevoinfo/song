@@ -783,7 +783,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE.DESCRICAO,'
       '       PROJETO.NOME AS NOME_PROJETO,'
       '       ATIVIDADE.DATA_CADASTRO,'
-      '       ATIVIDADE.DATA_ALTERACAO'
+      '       ATIVIDADE.DATA_ALTERACAO,'
+      '       ATIVIDADE.DATA_FINALIZACAO'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
@@ -865,6 +866,11 @@ inherited smAdministrativo: TsmAdministrativo
     object qAtividadeDATA_ALTERACAO: TSQLTimeStampField
       FieldName = 'DATA_ALTERACAO'
       Origin = 'DATA_ALTERACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeDATA_FINALIZACAO: TSQLTimeStampField
+      FieldName = 'DATA_FINALIZACAO'
+      Origin = 'DATA_FINALIZACAO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -1337,8 +1343,12 @@ inherited smAdministrativo: TsmAdministrativo
     SQL.Strings = (
       'Select Projeto_Area.Id,'
       '       Projeto_Area.Id_Projeto,'
-      '       Projeto_Area.Nome'
+      '       Projeto_Area.id_area_atuacao,'
+      '       Area_Atuacao.Nome'
       'from Projeto_Area'
+      
+        'inner join area_atuacao on (area_atuacao.id = projeto_area.id_ar' +
+        'ea_atuacao)'
       'where Projeto_Area.Id_Projeto = :ID_PROJETO')
     Left = 488
     Top = 216
@@ -1361,11 +1371,16 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qProjeto_AreaID_AREA_ATUACAO: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO'
+      Origin = 'ID_AREA_ATUACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
     object qProjeto_AreaNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
-      ProviderFlags = [pfInUpdate]
-      Required = True
+      ProviderFlags = []
       Size = 100
     end
   end
@@ -1428,6 +1443,66 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'REQUER_AUTORIZACAO'
       Origin = 'REQUER_AUTORIZACAO'
       ProviderFlags = [pfInUpdate]
+    end
+  end
+  object dspqAtividade: TDataSetProvider
+    DataSet = qAtividade
+    Options = []
+    UpdateMode = upWhereKeyOnly
+    AfterUpdateRecord = dspqAtividadeAfterUpdateRecord
+    Left = 504
+    Top = 16
+  end
+  object qArea_Atuacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Area_Atuacao.Id,'
+      '       Area_Atuacao.Nome'
+      'from Area_Atuacao  '
+      '&WHERE')
+    Left = 32
+    Top = 288
+    MacroData = <
+      item
+        Value = 'WHERE AREA_ATUACAO.ID = 0'
+        Name = 'WHERE'
+      end>
+  end
+  object qArea_Execucao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Area_Execucao.Id,'
+      '       Area_Execucao.Id_Area_Atuacao,'
+      '       Area_Execucao.Nome'
+      'from Area_Execucao '
+      'where area_execucao.id_area_atuacao = :ID_AREA_ATUACAO')
+    Left = 120
+    Top = 288
+    ParamData = <
+      item
+        Name = 'ID_AREA_ATUACAO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qArea_ExecucaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qArea_ExecucaoID_AREA_ATUACAO: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO'
+      Origin = 'ID_AREA_ATUACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qArea_ExecucaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
     end
   end
 end

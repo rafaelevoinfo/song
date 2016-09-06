@@ -1326,4 +1326,69 @@ inherited smLookup: TsmLookup
       Size = 2
     end
   end
+  object qlkArea_Atuacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'Select Area_Atuacao.id,'
+      '       Area_Atuacao.nome'
+      'from area_atuacao'
+      '&WHERE')
+    Left = 448
+    Top = 176
+    MacroData = <
+      item
+        Value = 'where id = 0'
+        Name = 'WHERE'
+      end>
+    object qlkArea_AtuacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkArea_AtuacaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object qlkArea_Execucao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Area_Execucao.Id,'
+      '       Area_Execucao.Id_Area_Atuacao,'
+      '       Area_Execucao.Nome'
+      'from Area_Execucao '
+      'where area_execucao.id_area_atuacao = :ID_AREA_EXECUCAO')
+    Left = 232
+    Top = 304
+    ParamData = <
+      item
+        Name = 'ID_AREA_EXECUCAO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qlkArea_ExecucaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkArea_ExecucaoID_AREA_ATUACAO: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO'
+      Origin = 'ID_AREA_ATUACAO'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkArea_ExecucaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

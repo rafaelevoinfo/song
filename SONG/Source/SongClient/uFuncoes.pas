@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 31/08/2016 23:09:27
+// 05/09/2016 23:57:18
 //
 
 unit uFuncoes;
@@ -60,7 +60,7 @@ type
     FfpuValidarFinanciadorFornecedorClienteCommand: TDBXCommand;
     FfpuValidarLoginCommand: TDBXCommand;
     FfpuValidarNomeProjetoCommand: TDBXCommand;
-    FfpuValidarNomeAreaProjetoCommand: TDBXCommand;
+    FfpuValidarAreaProjetoCommand: TDBXCommand;
     FfpuInfoPessoaCommand: TDBXCommand;
     FppuValidarFinalizarAtividadeCommand: TDBXCommand;
     FfpuValidarNomeCpfPessoaCommand: TDBXCommand;
@@ -75,7 +75,7 @@ type
     function fpuValidarFinanciadorFornecedorCliente(ipId: Integer; ipTipo: Integer; ipRazaoSocial: string; ipCpfCnpj: string): Boolean; virtual;
     function fpuValidarLogin(ipId: Integer; ipLogin: string): Boolean; virtual;
     function fpuValidarNomeProjeto(ipIdProjeto: Integer; ipNome: string): Boolean; virtual;
-    function fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean; virtual;
+    function fpuValidarAreaProjeto(ipIdProjeto: Integer; ipIdAreaAtuacao: Integer): Boolean; virtual;
     function fpuInfoPessoa(ipLogin: string): TPessoa; virtual;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer); virtual;
     function fpuValidarNomeCpfPessoa(ipIdPessoa: Integer; ipNome: string; ipCpf: string): Boolean; virtual;
@@ -189,6 +189,7 @@ type
     FDSServerModuleDestroyCommand: TDBXCommand;
     FqPatrimonioCalcFieldsCommand: TDBXCommand;
     FqEntrada_ItemCalcFieldsCommand: TDBXCommand;
+    FqVendaCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -197,6 +198,7 @@ type
     procedure DSServerModuleDestroy(Sender: TObject); virtual;
     procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
     procedure qEntrada_ItemCalcFields(DataSet: TDataSet); virtual;
+    procedure qVendaCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -602,20 +604,19 @@ begin
   Result := FfpuValidarNomeProjetoCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TsmFuncoesAdministrativoClient.fpuValidarNomeAreaProjeto(ipIdProjeto: Integer; ipIdAreaProjeto: Integer; ipNome: string): Boolean;
+function TsmFuncoesAdministrativoClient.fpuValidarAreaProjeto(ipIdProjeto: Integer; ipIdAreaAtuacao: Integer): Boolean;
 begin
-  if FfpuValidarNomeAreaProjetoCommand = nil then
+  if FfpuValidarAreaProjetoCommand = nil then
   begin
-    FfpuValidarNomeAreaProjetoCommand := FDBXConnection.CreateCommand;
-    FfpuValidarNomeAreaProjetoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FfpuValidarNomeAreaProjetoCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeAreaProjeto';
-    FfpuValidarNomeAreaProjetoCommand.Prepare;
+    FfpuValidarAreaProjetoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarAreaProjetoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarAreaProjetoCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarAreaProjeto';
+    FfpuValidarAreaProjetoCommand.Prepare;
   end;
-  FfpuValidarNomeAreaProjetoCommand.Parameters[0].Value.SetInt32(ipIdProjeto);
-  FfpuValidarNomeAreaProjetoCommand.Parameters[1].Value.SetInt32(ipIdAreaProjeto);
-  FfpuValidarNomeAreaProjetoCommand.Parameters[2].Value.SetWideString(ipNome);
-  FfpuValidarNomeAreaProjetoCommand.ExecuteUpdate;
-  Result := FfpuValidarNomeAreaProjetoCommand.Parameters[3].Value.GetBoolean;
+  FfpuValidarAreaProjetoCommand.Parameters[0].Value.SetInt32(ipIdProjeto);
+  FfpuValidarAreaProjetoCommand.Parameters[1].Value.SetInt32(ipIdAreaAtuacao);
+  FfpuValidarAreaProjetoCommand.ExecuteUpdate;
+  Result := FfpuValidarAreaProjetoCommand.Parameters[2].Value.GetBoolean;
 end;
 
 function TsmFuncoesAdministrativoClient.fpuInfoPessoa(ipLogin: string): TPessoa;
@@ -745,7 +746,7 @@ begin
   FfpuValidarFinanciadorFornecedorClienteCommand.DisposeOf;
   FfpuValidarLoginCommand.DisposeOf;
   FfpuValidarNomeProjetoCommand.DisposeOf;
-  FfpuValidarNomeAreaProjetoCommand.DisposeOf;
+  FfpuValidarAreaProjetoCommand.DisposeOf;
   FfpuInfoPessoaCommand.DisposeOf;
   FppuValidarFinalizarAtividadeCommand.DisposeOf;
   FfpuValidarNomeCpfPessoaCommand.DisposeOf;
@@ -1444,6 +1445,19 @@ begin
   FqEntrada_ItemCalcFieldsCommand.ExecuteUpdate;
 end;
 
+procedure TsmEstoqueClient.qVendaCalcFields(DataSet: TDataSet);
+begin
+  if FqVendaCalcFieldsCommand = nil then
+  begin
+    FqVendaCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqVendaCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqVendaCalcFieldsCommand.Text := 'TsmEstoque.qVendaCalcFields';
+    FqVendaCalcFieldsCommand.Prepare;
+  end;
+  FqVendaCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqVendaCalcFieldsCommand.ExecuteUpdate;
+end;
+
 procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1487,6 +1501,7 @@ begin
   FDSServerModuleDestroyCommand.DisposeOf;
   FqPatrimonioCalcFieldsCommand.DisposeOf;
   FqEntrada_ItemCalcFieldsCommand.DisposeOf;
+  FqVendaCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

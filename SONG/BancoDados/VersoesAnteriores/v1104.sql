@@ -3776,3 +3776,11 @@ inner join Organizacao on (Organizacao.Id = Fundo.Id_Organizacao)
 ALTER TABLE VENDA
     ALTER DESCRICAO TYPE D_DESCRICAO;
 
+	
+
+
+ALTER TABLE ATIVIDADE
+    ADD DATA_FINALIZACAO TIMESTAMP;
+
+COMMENT ON COLUMN ATIVIDADE.DATA_FINALIZACAO IS
+'Data em que a atividade teve seu status alterado para finalizada ou cancelada';	

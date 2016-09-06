@@ -256,6 +256,15 @@ type
     cdslkOrganizacaoSITE: TStringField;
     cdslkOrganizacaoEMAIL: TStringField;
     cdslkOrganizacaoCIDADE: TStringField;
+    cdslkArea_Atuacao: TRFClientDataSet;
+    cdslkArea_AtuacaoID: TIntegerField;
+    cdslkArea_AtuacaoNOME: TStringField;
+    cdslkArea_Execucao: TRFClientDataSet;
+    dslkArea_Atuacao: TDataSource;
+    cdslkArea_ExecucaoID: TIntegerField;
+    cdslkArea_ExecucaoID_AREA_ATUACAO: TIntegerField;
+    cdslkArea_ExecucaoNOME: TStringField;
+    repLcbArea_Atuacao: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

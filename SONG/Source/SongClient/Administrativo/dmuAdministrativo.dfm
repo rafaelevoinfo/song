@@ -824,6 +824,9 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'DATA_ALTERACAO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsAtividadeDATA_FINALIZACAO: TSQLTimeStampField
+      FieldName = 'DATA_FINALIZACAO'
+    end
   end
   object cdsAtividade_Projeto: TRFClientDataSet
     Aggregates = <>
@@ -1326,11 +1329,16 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object cdsProjeto_AreaNOME: TStringField
-      DisplayLabel = 'Nome da '#193'rea'
-      FieldName = 'NOME'
+    object cdsProjeto_AreaID_AREA_ATUACAO: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Atua'#231#227'o'
+      FieldName = 'ID_AREA_ATUACAO'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object cdsProjeto_AreaNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
       Size = 100
     end
   end
@@ -1383,5 +1391,65 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'REQUER_AUTORIZACAO'
       ProviderFlags = [pfInUpdate]
     end
+  end
+  object cdsArea_Atuacao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqArea_Atuacao'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 168
+    Top = 408
+    object cdsArea_AtuacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsArea_AtuacaoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+  end
+  object cdsArea_Execucao: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_AREA_ATUACAO'
+    MasterFields = 'ID'
+    MasterSource = dsArea_Atuacao
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_AREA_ATUACAO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqArea_Execucao'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    Left = 40
+    Top = 407
+    object cdsArea_ExecucaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsArea_ExecucaoID_AREA_ATUACAO: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Atua'#231#227'o'
+      FieldName = 'ID_AREA_ATUACAO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsArea_ExecucaoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+  end
+  object dsArea_Atuacao: TDataSource
+    DataSet = cdsArea_Atuacao
+    Left = 48
+    Top = 112
   end
 end

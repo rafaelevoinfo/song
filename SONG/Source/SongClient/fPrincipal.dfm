@@ -47,7 +47,7 @@ inherited frmPrincipal: TfrmPrincipal
         OptionsView.ItemIndent = 4
         OptionsView.ItemWidth = 200
         Style.FocusedColor = clBlack
-        TabOrder = 0
+        TabOrder = 1
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clDefault
         Title.Font.Height = -16
@@ -64,7 +64,7 @@ inherited frmPrincipal: TfrmPrincipal
         Align = alTop
         ImageAlignment = iaCenter
         Images = dmPrincipal.imgIcons_32
-        TabOrder = 1
+        TabOrder = 0
         TabStop = False
       end
       object TileControlAniversario: TdxTileControl
@@ -166,6 +166,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object Agendas2: TMenuItem
         Action = Ac_Agendamento
+      end
+      object reasdeAtuao1: TMenuItem
+        Action = Ac_Area_Atuacao
       end
       object Atividades1: TMenuItem
         Action = Ac_Atividade
@@ -483,6 +486,12 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Atualizar_Notificacoes: TAction
       ImageIndex = 17
       OnExecute = Ac_Atualizar_NotificacoesExecute
+    end
+    object Ac_Area_Atuacao: TAction
+      Category = 'Administrativo'
+      Caption = #193'reas de Atua'#231#227'o'
+      ImageIndex = 46
+      OnExecute = Ac_Area_AtuacaoExecute
     end
   end
   object dxSkinController1: TdxSkinController

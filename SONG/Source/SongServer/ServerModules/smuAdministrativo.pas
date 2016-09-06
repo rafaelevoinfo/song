@@ -9,7 +9,7 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dmuPrincipal, uTypes,
   uSQLGenerator, uQuery, Datasnap.Provider, uClientDataSet, uUtils,
-  System.RegularExpressions;
+  System.RegularExpressions, Datasnap.DBClient;
 
 type
   TsmAdministrativo = class(TsmBasico)
@@ -147,22 +147,21 @@ type
     qProjeto_FinanciadorOBSERVACAO: TStringField;
     qAtividade_PessoaNOME_PESSOA: TStringField;
     qAtividade_PessoaNOME_ATIVIDADE: TStringField;
-    qProjeto_Rubrica: TRFQuery;
+    qProjeto_Rubrica: TRfQuery;
     qProjeto_RubricaID: TIntegerField;
     qProjeto_RubricaID_PROJETO: TIntegerField;
     qProjeto_RubricaID_RUBRICA: TIntegerField;
     qProjeto_RubricaORCAMENTO: TBCDField;
     qProjeto_RubricaNOME_RUBRICA: TStringField;
-    qProjeto_Area: TRFQuery;
+    qProjeto_Area: TRfQuery;
     qProjeto_AreaID: TIntegerField;
     qProjeto_AreaID_PROJETO: TIntegerField;
-    qProjeto_AreaNOME: TStringField;
     qProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
     qProjeto_RubricaGASTO: TFMTBCDField;
     qProjeto_RubricaRECEBIDO: TBCDField;
     qProjeto_RubricaAPROVISIONADO: TFMTBCDField;
     qOrganizacaoLOGO: TBlobField;
-    qFundo: TRFQuery;
+    qFundo: TRfQuery;
     qFundoID: TIntegerField;
     qFundoID_ORGANIZACAO: TIntegerField;
     qFundoNOME: TStringField;
@@ -184,7 +183,19 @@ type
     qProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     qOrganizacaoSITE: TStringField;
     qOrganizacaoEMAIL: TStringField;
+    qAtividadeDATA_FINALIZACAO: TSQLTimeStampField;
+    dspqAtividade: TDataSetProvider;
+    qProjeto_AreaID_AREA_ATUACAO: TIntegerField;
+    qArea_Atuacao: TRFQuery;
+    qArea_Execucao: TRFQuery;
+    qArea_ExecucaoID: TIntegerField;
+    qArea_ExecucaoID_AREA_ATUACAO: TIntegerField;
+    qArea_ExecucaoNOME: TStringField;
+    qProjeto_AreaNOME: TStringField;
     procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
+    procedure dspqAtividadeAfterUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind);
   private
     { Private declarations }
   protected
@@ -201,10 +212,43 @@ implementation
 {$R *.dfm}
 { TsmAdministrativo }
 
+procedure TsmAdministrativo.dspqAtividadeAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+var
+  vaStatus: integer;
+begin
+  inherited;
+  if UpdateKind in [ukInsert, ukModify] then
+    begin
+      if (not VarIsNull(DeltaDS.FieldByName('STATUS').NewValue)) then
+        begin
+          if TryStrToInt(VarToStrDef(DeltaDS.FieldByName('STATUS').NewValue, ''), vaStatus) then
+            begin
+              if vaStatus in [Ord(saFinalizada), Ord(saCancelada)] then
+                begin
+                  if DeltaDS.FieldByName('DATA_FINALIZACAO').IsNull then
+                    begin
+                      Connection.ExecSQL('update atividade set atividade.data_finalizacao = current_timestamp where atividade.id = :ID',
+                        [DeltaDS.FieldByName(TBancoDados.coId).OldValue]);
+                      Connection.Commit;
+
+                    end;
+                end
+              else
+                begin
+                  Connection.ExecSQL('update atividade set atividade.data_finalizacao = null where atividade.id = :ID',
+                    [DeltaDS.FieldByName(TBancoDados.coId).OldValue]);
+                  Connection.Commit;
+                end;
+            end;
+        end;
+    end;
+end;
+
 function TsmAdministrativo.fprMontarWhere(ipTabela, ipWhere: string; ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
-  vaCodigos: TArray<Integer>;
+  vaCodigos: TArray<integer>;
 begin
   Result := inherited;
 
@@ -226,9 +270,9 @@ begin
       if ipParam.Name = TParametros.coData then
         begin
           Result := Result + ' ((ATIVIDADE.DATA_INICIAL between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
-            QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1)))+') or '+
-              '(ATIVIDADE.DATA_FINAL between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
-            QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1)))+')) '+vaOperador;
+            QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') or ' +
+            '(ATIVIDADE.DATA_FINAL between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
+            QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')) ' + vaOperador;
         end
       else if ipParam.Name = TParametros.coProjeto then
         begin
@@ -246,9 +290,11 @@ begin
   qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat := qProjeto_RubricaRECEBIDO.AsFloat;
 
   if qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat > qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat then
-    qProjeto_RubricaCALC_VALOR_GASTO.AsFloat := qProjeto_RubricaCALC_VALOR_GASTO.AsFloat + (qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat - qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat)
+    qProjeto_RubricaCALC_VALOR_GASTO.AsFloat := qProjeto_RubricaCALC_VALOR_GASTO.AsFloat +
+      (qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat - qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat)
   else if qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat < qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat then
-    qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat := qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat + (qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat - qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat);
+    qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat := qProjeto_RubricaCALC_VALOR_RECEBIDO.AsFloat +
+      (qProjeto_RubricaRECEBIDO_TRANSFERENCIA.AsFloat - qProjeto_RubricaGASTO_TRANSFERENCIA.AsFloat);
 end;
 
 end.

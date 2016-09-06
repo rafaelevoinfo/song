@@ -69,7 +69,7 @@ type
     class function fpuGetInstance: TInfoLogin;
   end;
 
-  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade, admRubrica);
+  TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade, admRubrica, admAreaAtuacao);
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finContaPagar, finContaReceber, finCliente, finTransferencia,
     finAutorizarUsoFundo, finDoacao);
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica, vivCamaraFria);
@@ -154,6 +154,7 @@ begin
   plAddAdministrativo(admOrganizacao, 'Organizações');
   plAddAdministrativo(admProjeto, 'Projetos');
   plAddAdministrativo(admRubrica, 'Rubricas');
+  plAddAdministrativo(admAreaAtuacao,'Áreas de Atuação');
   plAddSistema(sisAgenda, 'Cadastro de Agendas');
   plAddSistema(sisAgendamento, 'Agendamentos');
   FItems.Add('Administrativo', vaPermissoes);

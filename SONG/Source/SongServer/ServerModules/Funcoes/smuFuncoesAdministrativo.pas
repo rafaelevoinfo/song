@@ -19,7 +19,7 @@ type
     function fpuValidarFinanciadorFornecedorCliente(ipId, ipTipo: integer; ipRazaoSocial, ipCpfCnpj: String): Boolean;
     function fpuValidarLogin(ipId: integer; ipLogin: String): Boolean;
     function fpuValidarNomeProjeto(ipIdProjeto: integer; ipNome: String): Boolean;
-    function fpuValidarNomeAreaProjeto(ipIdProjeto, ipIdAreaProjeto: integer; ipNome: String): Boolean;
+    function fpuValidarAreaProjeto(ipIdProjeto, ipIdAreaAtuacao: integer): Boolean;
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
     function fpuValidarNomeCpfPessoa(ipIdPessoa: integer; ipNome, ipCpf: String): Boolean;
@@ -100,8 +100,7 @@ begin
   Result := fprValidarCamposUnicos('FIN_FOR_CLI', ['RAZAO_SOCIAL', 'CPF_CNPJ', 'TIPO'], [ipRazaoSocial, ipCpfCnpj, ipTipo.ToString], ipId);
 end;
 
-function TsmFuncoesAdministrativo.fpuValidarNomeAreaProjeto(
-  ipIdProjeto, ipIdAreaProjeto: integer; ipNome: String): Boolean;
+function TsmFuncoesAdministrativo.fpuValidarAreaProjeto(ipIdProjeto, ipIdAreaAtuacao: integer): Boolean;
 var
   vaResult: Boolean;
 begin
@@ -110,12 +109,10 @@ begin
     begin
       ipDataSet.SQL.Text := 'select count(*) as Quant ' +
         '  from Projeto_Area ' +
-        ' where Projeto_Area.Id <> :Id and ' +
-        '       Projeto_Area.Id_Projeto <> :Id_Projeto and ' +
-        '       Projeto_area.nome = :nome';
-      ipDataSet.ParamByName('ID').AsInteger := ipIdAreaProjeto;
+        ' where Projeto_Area.Id_Projeto = :ID_PROJETO and ' +
+        '       Projeto_area.Id_Area_Atuacao = :ID_AREA_ATUACAO';
       ipDataSet.ParamByName('ID_PROJETO').AsInteger := ipIdProjeto;
-      ipDataSet.ParamByName('NOME').AsString := ipNome;
+      ipDataSet.ParamByName('ID_AREA_ATUACAO').AsInteger := ipIdAreaAtuacao;
       ipDataSet.Open();
 
       vaResult := ipDataSet.FieldByName('QUANT').AsInteger = 0;

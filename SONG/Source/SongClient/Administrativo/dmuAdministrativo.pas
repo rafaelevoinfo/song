@@ -157,7 +157,6 @@ type
     cdsProjeto_Area: TRFClientDataSet;
     cdsProjeto_AreaID: TIntegerField;
     cdsProjeto_AreaID_PROJETO: TIntegerField;
-    cdsProjeto_AreaNOME: TStringField;
     cdsProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
     cdsProjeto_RubricaGASTO: TFMTBCDField;
     cdsProjeto_RubricaRECEBIDO: TBCDField;
@@ -187,6 +186,17 @@ type
     cdsProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
     cdsOrganizacaoSITE: TStringField;
     cdsOrganizacaoEMAIL: TStringField;
+    cdsAtividadeDATA_FINALIZACAO: TSQLTimeStampField;
+    cdsProjeto_AreaID_AREA_ATUACAO: TIntegerField;
+    cdsArea_Atuacao: TRFClientDataSet;
+    cdsArea_AtuacaoID: TIntegerField;
+    cdsArea_AtuacaoNOME: TStringField;
+    cdsArea_Execucao: TRFClientDataSet;
+    cdsArea_ExecucaoID: TIntegerField;
+    cdsArea_ExecucaoID_AREA_ATUACAO: TIntegerField;
+    cdsArea_ExecucaoNOME: TStringField;
+    dsArea_Atuacao: TDataSource;
+    cdsProjeto_AreaNOME: TStringField;
   private
     { Private declarations }
   public

@@ -6,7 +6,6 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -78,12 +77,6 @@ inherited frmProjeto: TfrmProjeto
         inherited pnBotoes: TPanel
           Width = 555
           ExplicitWidth = 555
-          inherited btnUtilizar: TButton
-            TabOrder = 2
-          end
-          inherited btnExportarExcel: TButton
-            TabOrder = 1
-          end
         end
       end
       inherited pnGrid: TPanel
@@ -156,14 +149,8 @@ inherited frmProjeto: TfrmProjeto
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 218
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
                 Height = 193
-                ExplicitWidth = 965
                 ExplicitHeight = 193
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -747,6 +734,10 @@ inherited frmProjeto: TfrmProjeto
                     DataBinding.FieldName = 'ID'
                     Options.Editing = False
                   end
+                  object viewAreaAtuacaoID_AREA_ATUACAO: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_AREA_ATUACAO'
+                    Visible = False
+                  end
                   object viewAreaAtuacaoID_PROJETO: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_PROJETO'
                     Visible = False
@@ -754,6 +745,7 @@ inherited frmProjeto: TfrmProjeto
                   object viewAreaAtuacaoNOME: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME'
                     Options.Editing = False
+                    Width = 505
                   end
                   object ColumnAlterarDetailArea: TcxGridDBColumn
                     Caption = 'Alterar'
@@ -918,6 +910,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1708,20 +1704,22 @@ inherited frmProjeto: TfrmProjeto
         BevelOuter = bvNone
         TabOrder = 1
         object lbl2: TLabel
-          Left = 7
+          Left = 9
           Top = 6
           Width = 81
           Height = 13
           Caption = #193'rea de Atua'#231#227'o'
-          FocusControl = EditNomeArea
+          FocusControl = cbAreaAtuacao
         end
-        object EditNomeArea: TcxDBTextEdit
-          Left = 4
+        object cbAreaAtuacao: TcxDBLookupComboBox
+          Left = 7
           Top = 22
-          DataBinding.DataField = 'NOME'
+          RepositoryItem = dmLookup.repLcbArea_Atuacao
+          DataBinding.DataField = 'ID_AREA_ATUACAO'
           DataBinding.DataSource = dsArea
+          Properties.ListColumns = <>
           TabOrder = 0
-          Width = 356
+          Width = 293
         end
       end
     end
@@ -1774,8 +1772,8 @@ inherited frmProjeto: TfrmProjeto
   end
   object dsOrganizacao: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Organizacao
-    Left = 448
-    Top = 176
+    Left = 384
+    Top = 200
   end
   object dsFinanciador: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Financiador
@@ -1797,8 +1795,8 @@ inherited frmProjeto: TfrmProjeto
     Top = 144
   end
   object SaveDialogDocumento: TSaveDialog
-    Left = 392
-    Top = 168
+    Left = 440
+    Top = 104
   end
   object dsRubrica: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Rubrica
