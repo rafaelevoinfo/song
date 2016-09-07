@@ -7,6 +7,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   inherited pnBotoes: TPanel
     Height = 426
     TabOrder = 1
+    ExplicitLeft = 44
+    ExplicitTop = 98
     ExplicitHeight = 426
   end
   inherited pnConfiguracoes: TPanel
@@ -21,7 +23,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabLoteMudaComprado
+      Properties.ActivePage = tabTubetesSemeados
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 421
       ClientRectLeft = 2
@@ -158,14 +160,12 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 114
-                Height = 15
                 Caption = 'Esp'#233'cies dispon'#237'veis'
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 439
                 Width = 124
-                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 439
                 ExplicitWidth = 124
@@ -460,6 +460,38 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           TabOrder = 0
           Height = 52
           Width = 281
+        end
+      end
+      object tabTubetesSemeados: TcxTabSheet
+        Caption = 'Tubetes Semeados'
+        ImageIndex = 5
+        ExplicitLeft = -230
+        ExplicitTop = -24
+        object lb3: TLabel
+          Left = 6
+          Top = 3
+          Width = 36
+          Height = 13
+          Caption = 'Esp'#233'cie'
+        end
+        object cbEspecieTubete: TcxLookupComboBox
+          Left = 3
+          Top = 19
+          RepositoryItem = dmLookup.repLcbEspecie
+          Enabled = False
+          Properties.ListColumns = <>
+          TabOrder = 0
+          Width = 225
+        end
+        object chkTodasEspecieTubete: TcxCheckBox
+          Left = 228
+          Top = 20
+          Caption = 'Todas'
+          Properties.OnEditValueChanged = chkTodasEspecieTubetePropertiesEditValueChanged
+          State = cbsChecked
+          TabOrder = 1
+          Transparent = True
+          Width = 69
         end
       end
     end
@@ -1058,71 +1090,58 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       FieldAlias = 'NOME'
       FieldName = 'NOME'
       FieldLength = 0
-      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoEspecieppField2: TppField
       FieldAlias = 'NOME_CIENTIFICO'
       FieldName = 'NOME_CIENTIFICO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoEspecieppField3: TppField
       FieldAlias = 'FAMILIA_BOTANICA'
       FieldName = 'FAMILIA_BOTANICA'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoEspecieppField4: TppField
+      Alignment = taRightJustify
       FieldAlias = 'QTDE_SEMENTE_ESTOQUE'
       FieldName = 'QTDE_SEMENTE_ESTOQUE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoEspecieppField5: TppField
+      Alignment = taRightJustify
       FieldAlias = 'QTDE_MUDA_PRONTA'
       FieldName = 'QTDE_MUDA_PRONTA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoEspecieppField6: TppField
+      Alignment = taRightJustify
       FieldAlias = 'QTDE_MUDA_DESENVOLVIMENTO'
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeSaldoEspecieppField7: TppField
+      Alignment = taRightJustify
       FieldAlias = 'CALC_TOTAL_MUDA'
       FieldName = 'CALC_TOTAL_MUDA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 6
-      Searchable = False
-      Sortable = False
     end
   end
   object DBPipeOrganizacao: TppDBPipeline
@@ -3721,8 +3740,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   end
   object dsLote_Semente_Vendido: TDataSource
     DataSet = dmRelatorio.cdsLote_Semente_Vendido
-    Left = 96
-    Top = 200
+    Left = 136
+    Top = 216
   end
   object ppLote_Semente_Vendido: TppReport
     AutoStop = False
@@ -3776,8 +3795,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
-    Left = 96
-    Top = 344
+    Left = 136
+    Top = 360
     Version = '16.02'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeLote_Semente_Vendido'
@@ -4285,8 +4304,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   object DBPipeLote_Semente_Vendido: TppDBPipeline
     DataSource = dsLote_Semente_Vendido
     UserName = 'DBPipeLote_Semente_Vendido'
-    Left = 88
-    Top = 272
+    Left = 128
+    Top = 288
     object DBPipeLote_Semente_VendidoppField1: TppField
       Alignment = taRightJustify
       FieldAlias = 'ID'
@@ -5021,6 +5040,455 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       end
     end
     object ppParameterList7: TppParameterList
+    end
+  end
+  object dsTubete_Semeado: TDataSource
+    DataSet = dmRelatorio.cdsTubete_Semeado
+    Left = 48
+    Top = 200
+  end
+  object DBPipeTubete_Semeado: TppDBPipeline
+    DataSource = dsTubete_Semeado
+    UserName = 'DBPipeTubete_Semeado'
+    Left = 32
+    Top = 272
+    object DBPipeTubete_SemeadoppField1: TppField
+      FieldAlias = 'QTDE_TUBETE'
+      FieldName = 'QTDE_TUBETE'
+      FieldLength = 0
+      DataType = dtLargeInt
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeTubete_SemeadoppField2: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_ESPECIE'
+      FieldName = 'ID_ESPECIE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 1
+    end
+    object DBPipeTubete_SemeadoppField3: TppField
+      FieldAlias = 'NOME'
+      FieldName = 'NOME'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 2
+    end
+    object DBPipeTubete_SemeadoppField4: TppField
+      FieldAlias = 'NOME_CIENTIFICO'
+      FieldName = 'NOME_CIENTIFICO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 3
+    end
+  end
+  object ppTubete_Semeado: TppReport
+    AutoStop = False
+    DataPipeline = DBPipeTubete_Semeado
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    Units = utMillimeters
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 24
+    Top = 368
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeTubete_Semeado'
+    object ppHeaderBand8: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 27517
+      mmPrintPosition = 0
+      object ppLabel50: TppLabel
+        DesignLayer = ppDesignLayer8
+        UserName = 'Label1'
+        Caption = 'Quantidade de Tubetes Semeados por Esp'#233'cie'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5028
+        mmLeft = 52917
+        mmTop = 15610
+        mmWidth = 94456
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppDBImage8: TppDBImage
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 1588
+        mmTop = 0
+        mmWidth = 30692
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppSystemVariable22: TppSystemVariable
+        DesignLayer = ppDesignLayer8
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 182562
+        mmTop = 13439
+        mmWidth = 14287
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppSystemVariable23: TppSystemVariable
+        DesignLayer = ppDesignLayer8
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 185209
+        mmTop = 16880
+        mmWidth = 11113
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppLabel51: TppLabel
+        DesignLayer = ppDesignLayer8
+        UserName = 'Label3'
+        Caption = 'Nome da Esp'#233'cie'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 2117
+        mmTop = 22225
+        mmWidth = 24871
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppLabel52: TppLabel
+        DesignLayer = ppDesignLayer8
+        UserName = 'Label4'
+        Caption = 'Nome Cient'#237'fico'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 56886
+        mmTop = 22172
+        mmWidth = 23019
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppLabel53: TppLabel
+        DesignLayer = ppDesignLayer8
+        UserName = 'Label6'
+        Caption = 'Quantidade'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 179123
+        mmTop = 22225
+        mmWidth = 16404
+        BandType = 0
+        LayerName = BandLayer9
+      end
+      object ppLine3: TppLine
+        DesignLayer = ppDesignLayer8
+        UserName = 'Line1'
+        Weight = 0.750000000000000000
+        mmHeight = 1054
+        mmLeft = 2115
+        mmTop = 26404
+        mmWidth = 193678
+        BandType = 0
+        LayerName = BandLayer9
+      end
+    end
+    object ppDetailBand8: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5821
+      mmPrintPosition = 0
+      object ppDBText54: TppDBText
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBText101'
+        DataField = 'NOME'
+        DataPipeline = DBPipeTubete_Semeado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeTubete_Semeado'
+        mmHeight = 4763
+        mmLeft = 2115
+        mmTop = 0
+        mmWidth = 52917
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText55: TppDBText
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBText2'
+        DataField = 'QTDE_TUBETE'
+        DataPipeline = DBPipeTubete_Semeado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'DBPipeTubete_Semeado'
+        mmHeight = 4763
+        mmLeft = 168540
+        mmTop = 0
+        mmWidth = 27252
+        BandType = 4
+        LayerName = BandLayer9
+      end
+      object ppDBText56: TppDBText
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBText3'
+        DataField = 'NOME_CIENTIFICO'
+        DataPipeline = DBPipeTubete_Semeado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeTubete_Semeado'
+        mmHeight = 4763
+        mmLeft = 56887
+        mmTop = 0
+        mmWidth = 109802
+        BandType = 4
+        LayerName = BandLayer9
+      end
+    end
+    object ppFooterBand8: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+      object ppLabel57: TppLabel
+        DesignLayer = ppDesignLayer8
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 81227
+        mmTop = 794
+        mmWidth = 7409
+        BandType = 8
+        LayerName = BandLayer9
+      end
+      object ppDBText59: TppDBText
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBText7'
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 89435
+        mmTop = 265
+        mmWidth = 41275
+        BandType = 8
+        LayerName = BandLayer9
+      end
+      object ppDBText60: TppDBText
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBText1'
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 2111
+        mmTop = 0
+        mmWidth = 76994
+        BandType = 8
+        LayerName = BandLayer9
+      end
+      object ppSystemVariable24: TppSystemVariable
+        DesignLayer = ppDesignLayer8
+        UserName = 'SystemVariable2'
+        VarType = vtPageNo
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 193939
+        mmTop = 529
+        mmWidth = 1587
+        BandType = 8
+        LayerName = BandLayer9
+      end
+    end
+    object ppSummaryBand7: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6879
+      mmPrintPosition = 0
+      object ppLabel58: TppLabel
+        DesignLayer = ppDesignLayer8
+        UserName = 'Label8'
+        Caption = 'Total de Tubetes Semeados:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 105834
+        mmTop = 1323
+        mmWidth = 47890
+        BandType = 7
+        LayerName = BandLayer9
+      end
+      object ppDBCalc15: TppDBCalc
+        DesignLayer = ppDesignLayer8
+        UserName = 'DBCalc1'
+        DataField = 'QTDE_TUBETE'
+        DataPipeline = DBPipeTubete_Semeado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'DBPipeTubete_Semeado'
+        mmHeight = 4498
+        mmLeft = 155575
+        mmTop = 1322
+        mmWidth = 38894
+        BandType = 7
+        LayerName = BandLayer9
+      end
+    end
+    object raCodeModule8: TraCodeModule
+      ProgramStream = {00}
+    end
+    object ppDesignLayers8: TppDesignLayers
+      object ppDesignLayer8: TppDesignLayer
+        UserName = 'BandLayer9'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList8: TppParameterList
     end
   end
 end

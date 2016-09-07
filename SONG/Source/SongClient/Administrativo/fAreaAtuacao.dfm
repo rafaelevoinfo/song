@@ -1,11 +1,10 @@
 inherited frmAreaAtuacao: TfrmAreaAtuacao
+  ActiveControl = btnIncluir
   Caption = #193'rea de Atua'#231#227'o'
-  ExplicitTop = -140
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -63,10 +62,6 @@ inherited frmAreaAtuacao: TfrmAreaAtuacao
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 4
@@ -87,10 +82,6 @@ inherited frmAreaAtuacao: TfrmAreaAtuacao
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object lb1: TLabel
           Left = 4

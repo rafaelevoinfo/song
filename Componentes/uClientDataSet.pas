@@ -29,6 +29,7 @@ type
     coRazaoSocial = 'RAZAO_SOCIAL';
     coCpfCnpj = 'CPF_CNPJ';
     coEspecie = 'ESPECIE';
+    coEspecieExotica = 'EXOTICA';
     coDescricao = 'DESCRICAO';
     coFornecedor = 'FORNECEDOR';
     coRubrica = 'RUBRICA';

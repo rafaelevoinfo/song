@@ -166,6 +166,31 @@ inherited frmAtividade: TfrmAtividade
               DataBinding.FieldName = 'DATA_CADASTRO'
               Visible = False
             end
+            object viewRegistrosDATA_FINALIZACAO: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'DATA_FINALIZACAO'
+              Options.Editing = False
+              Width = 103
+            end
+            object viewRegistrosID_AREA_ATUACAO: TcxGridDBColumn [11]
+              DataBinding.FieldName = 'ID_AREA_ATUACAO'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosID_AREA_EXECUCAO: TcxGridDBColumn [12]
+              DataBinding.FieldName = 'ID_AREA_EXECUCAO'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosAREA_ATUACAO: TcxGridDBColumn [13]
+              DataBinding.FieldName = 'AREA_ATUACAO'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosAREA_EXECUCAO: TcxGridDBColumn [14]
+              DataBinding.FieldName = 'AREA_EXECUCAO'
+              Visible = False
+              Options.Editing = False
+            end
           end
         end
         inherited pnDetail: TPanel
@@ -296,15 +321,7 @@ inherited frmAtividade: TfrmAtividade
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                Height = 170
-                ExplicitWidth = 965
-                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -698,11 +715,7 @@ inherited frmAtividade: TfrmAtividade
       end
     end
     inherited tabCadastro: TcxTabSheet
-      inherited pnBotoesCadastro: TPanel
-        TabOrder = 0
-      end
       inherited pnEditsCadastro: TPanel
-        TabOrder = 1
         object Label4: TLabel
           Left = 5
           Top = 2
@@ -728,7 +741,7 @@ inherited frmAtividade: TfrmAtividade
           FocusControl = EditDataTerminoAtividade
         end
         object Label7: TLabel
-          Left = 6
+          Left = 7
           Top = 80
           Width = 49
           Height = 13
@@ -736,7 +749,7 @@ inherited frmAtividade: TfrmAtividade
           FocusControl = cbSolicitante
         end
         object Label8: TLabel
-          Left = 216
+          Left = 218
           Top = 80
           Width = 61
           Height = 13
@@ -752,7 +765,7 @@ inherited frmAtividade: TfrmAtividade
           FocusControl = cbStatus
         end
         object Label10: TLabel
-          Left = 5
+          Left = 6
           Top = 120
           Width = 46
           Height = 13
@@ -765,6 +778,22 @@ inherited frmAtividade: TfrmAtividade
           Height = 13
           Caption = 'Projeto Principal (F2)'
           FocusControl = cbProjetoPrincipal
+        end
+        object lb1: TLabel
+          Left = 254
+          Top = 39
+          Width = 104
+          Height = 13
+          Caption = #193'rea de Atua'#231#227'o (F2)'
+          FocusControl = cbAreaAtuacao
+        end
+        object lb2: TLabel
+          Left = 429
+          Top = 39
+          Width = 110
+          Height = 13
+          Caption = #193'rea de Execu'#231#227'o (F2)'
+          FocusControl = cbAreaExecucao
         end
         object EditNome: TcxDBTextEdit
           Left = 4
@@ -795,13 +824,13 @@ inherited frmAtividade: TfrmAtividade
           Width = 84
         end
         object cbSolicitante: TcxDBLookupComboBox
-          Left = 5
+          Left = 4
           Top = 96
           RepositoryItem = dmLookup.repLcbPessoa
           DataBinding.DataField = 'ID_SOLICITANTE'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 5
+          TabOrder = 9
           Width = 209
         end
         object cbResponsavel: TcxDBLookupComboBox
@@ -811,7 +840,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataField = 'ID_RESPONSAVEL'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
-          TabOrder = 6
+          TabOrder = 10
           Width = 209
         end
         object cbStatus: TcxDBImageComboBox
@@ -821,7 +850,7 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataField = 'STATUS'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 7
+          TabOrder = 11
           Width = 173
         end
         object EditDescricao: TcxDBMemo
@@ -829,7 +858,7 @@ inherited frmAtividade: TfrmAtividade
           Top = 135
           DataBinding.DataField = 'DESCRICAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 8
+          TabOrder = 12
           Height = 89
           Width = 596
         end
@@ -840,12 +869,13 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataField = 'ID_PROJETO'
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
+          Properties.OnEditValueChanged = cbProjetoPrincipalPropertiesEditValueChanged
           TabOrder = 3
           OnKeyDown = cbProjetoPrincipalKeyDown
-          Width = 420
+          Width = 210
         end
         object btnPesquisarProjeto: TButton
-          Left = 430
+          Left = 218
           Top = 55
           Width = 21
           Height = 20
@@ -854,18 +884,69 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 4
           TabStop = False
         end
+        object cbAreaAtuacao: TcxDBLookupComboBox
+          Left = 251
+          Top = 55
+          DataBinding.DataField = 'ID_AREA_ATUACAO'
+          DataBinding.DataSource = dsMaster
+          Properties.ClearKey = 46
+          Properties.DropDownListStyle = lsFixedList
+          Properties.DropDownSizeable = True
+          Properties.KeyFieldNames = 'ID'
+          Properties.ListColumns = <
+            item
+              FieldName = 'NOME'
+            end>
+          Properties.ListOptions.SyncMode = True
+          Properties.ListSource = dsLocal_Area_Atuacao
+          Properties.OnEditValueChanged = cbAreaAtuacaoPropertiesEditValueChanged
+          TabOrder = 5
+          OnKeyDown = cbAreaAtuacaoKeyDown
+          Width = 152
+        end
+        object btnAdicionarAreaAtuacao: TButton
+          Left = 404
+          Top = 55
+          Width = 21
+          Height = 21
+          Action = Ac_Adicionar_Area_Atuacao
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 6
+          TabStop = False
+        end
+        object btnAdicionarAreaExecucao: TButton
+          Left = 580
+          Top = 55
+          Width = 21
+          Height = 21
+          Action = Ac_Adicionar_Area_Execucao
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 8
+          TabStop = False
+        end
+        object cbAreaExecucao: TcxDBLookupComboBox
+          Left = 427
+          Top = 55
+          RepositoryItem = dmLookup.repLcbArea_Execucao
+          DataBinding.DataField = 'ID_AREA_EXECUCAO'
+          DataBinding.DataSource = dsMaster
+          Properties.ClearKey = 46
+          Properties.DropDownListStyle = lsFixedList
+          Properties.DropDownSizeable = True
+          Properties.KeyFieldNames = 'ID'
+          Properties.ListColumns = <
+            item
+              FieldName = 'NOME'
+            end>
+          Properties.ListSource = dsLocal_Area_Execucao
+          TabOrder = 7
+          OnKeyDown = cbAreaExecucaoKeyDown
+          Width = 152
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
-      inherited pnBotoesCadastroDetail: TPanel
-        TabOrder = 0
-      end
       inherited pnEditsCadastroDetail: TPanel
-        TabOrder = 1
         object Label11: TLabel
           Left = 5
           Top = 43
@@ -1353,6 +1434,16 @@ inherited frmAtividade: TfrmAtividade
       ImageIndex = 0
       OnExecute = Ac_Pesquisar_Pessoa_EnvolvidaExecute
     end
+    object Ac_Adicionar_Area_Atuacao: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_Area_AtuacaoExecute
+    end
+    object Ac_Adicionar_Area_Execucao: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_Area_ExecucaoExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmAdministrativo.cdsAtividade
@@ -1389,5 +1480,51 @@ inherited frmAtividade: TfrmAtividade
   object FileDialog: TOpenTextFileDialog
     Left = 192
     Top = 232
+  end
+  object cdsLocal_Area_Atuacao: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 56
+    Top = 328
+    object cdsLocal_Area_AtuacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsLocal_Area_AtuacaoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdsLocal_Area_Execucao: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 312
+    Top = 336
+    object cdsLocal_Area_ExecucaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsLocal_Area_ExecucaoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsLocal_Area_ExecucaoID_AREA_ATUACAO: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO'
+      ProviderFlags = []
+    end
+  end
+  object dsLocal_Area_Atuacao: TDataSource
+    DataSet = cdsLocal_Area_Atuacao
+    Left = 168
+    Top = 320
+  end
+  object dsLocal_Area_Execucao: TDataSource
+    DataSet = cdsLocal_Area_Execucao
+    Left = 440
+    Top = 344
   end
 end

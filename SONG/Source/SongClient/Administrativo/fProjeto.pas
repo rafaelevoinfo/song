@@ -16,7 +16,8 @@ uses
   cxDBEdit, cxMemo, dmuLookup, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
   uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit, cxLocalization,
-  cxCheckBox, uMensagem, System.Math, System.Types, Datasnap.DBClient;
+  cxCheckBox, uMensagem, System.Math, System.Types, Datasnap.DBClient,
+  fAreaAtuacao;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -207,6 +208,8 @@ type
     cbFormaPagamento: TcxImageComboBox;
     viewAreaAtuacaoID_AREA_ATUACAO: TcxGridDBColumn;
     cbAreaAtuacao: TcxDBLookupComboBox;
+    btnAdicionarAreaAtuacao: TButton;
+    Ac_Adicionar_Area_Atuacao: TAction;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -224,6 +227,9 @@ type
     procedure viewRubricasCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
+    procedure Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
+    procedure cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -234,6 +240,8 @@ type
     procedure ppvCarregarFinanciadores;
     procedure ppvExcluirPagamento;
     procedure ppvFiltrarProjetoOrganizacao;
+    procedure ppvAdicionarAreaAtuacao;
+    procedure ppvCarregarAreasAtuacao;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -271,6 +279,37 @@ uses
 
 {$R *.dfm}
 
+
+procedure TfrmProjeto.Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarAreaAtuacao;
+end;
+
+procedure TfrmProjeto.ppvAdicionarAreaAtuacao;
+var
+  vaFrmAreaAtuacao: TfrmAreaAtuacao;
+  vaFrmProjeto:TfrmProjeto;
+begin
+  vaFrmAreaAtuacao := TfrmAreaAtuacao.Create(nil);
+  try
+    vaFrmAreaAtuacao.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmAreaAtuacao.ShowModal;
+
+    if vaFrmAreaAtuacao.IdEscolhido <> 0 then
+      begin
+        ppvCarregarAreasAtuacao;
+        if dmLookup.cdslkArea_Atuacao.Locate(TBancoDados.coId, vaFrmAreaAtuacao.IdEscolhido, []) then
+          begin
+            cbAreaAtuacao.EditValue := vaFrmAreaAtuacao.IdEscolhido;
+            cbAreaAtuacao.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmAreaAtuacao.Free;
+  end;
+
+end;
 
 procedure TfrmProjeto.Ac_Adicionar_Conta_CorrenteExecute(Sender: TObject);
 begin
@@ -416,6 +455,14 @@ begin
   TUtils.fpuFocar(EditValorPagamento);
 end;
 
+procedure TfrmProjeto.cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if key = VK_F2 then
+    ppvAdicionarAreaAtuacao;
+end;
+
 procedure TfrmProjeto.cbContaCorrenteKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -492,11 +539,16 @@ begin
   dmLookup.cdslkPessoa.ppuDataRequest([TParametros.coAtivo], [coRegistroAtivo]);
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
-  dmLookup.cdslkArea_Atuacao.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
+  ppvCarregarAreasAtuacao;
 
   ppvCarregarFinanciadores;
   ppvCarregarContasCorrentes;
 
+end;
+
+procedure TfrmProjeto.ppvCarregarAreasAtuacao;
+begin
+  dmLookup.cdslkArea_Atuacao.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
 end;
 
 procedure TfrmProjeto.ppvCarregarContasCorrentes();

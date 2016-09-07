@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/09/2016 23:57:18
+// 07/09/2016 08:10:05
 //
 
 unit uFuncoes;
@@ -64,6 +64,7 @@ type
     FfpuInfoPessoaCommand: TDBXCommand;
     FppuValidarFinalizarAtividadeCommand: TDBXCommand;
     FfpuValidarNomeCpfPessoaCommand: TDBXCommand;
+    FfpuValidarNomeAreaAtuacaoCommand: TDBXCommand;
     FfpuSomaOrcamentoRubricaCommand: TDBXCommand;
     FfpuSomaPagametosFinanciadorCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
@@ -79,6 +80,7 @@ type
     function fpuInfoPessoa(ipLogin: string): TPessoa; virtual;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: Integer); virtual;
     function fpuValidarNomeCpfPessoa(ipIdPessoa: Integer; ipNome: string; ipCpf: string): Boolean; virtual;
+    function fpuValidarNomeAreaAtuacao(ipIdAreaAtuacao: Integer; ipNome: string): Boolean; virtual;
     function fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double; virtual;
     function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: Integer): Double; virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
@@ -674,6 +676,21 @@ begin
   Result := FfpuValidarNomeCpfPessoaCommand.Parameters[3].Value.GetBoolean;
 end;
 
+function TsmFuncoesAdministrativoClient.fpuValidarNomeAreaAtuacao(ipIdAreaAtuacao: Integer; ipNome: string): Boolean;
+begin
+  if FfpuValidarNomeAreaAtuacaoCommand = nil then
+  begin
+    FfpuValidarNomeAreaAtuacaoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarNomeAreaAtuacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarNomeAreaAtuacaoCommand.Text := 'TsmFuncoesAdministrativo.fpuValidarNomeAreaAtuacao';
+    FfpuValidarNomeAreaAtuacaoCommand.Prepare;
+  end;
+  FfpuValidarNomeAreaAtuacaoCommand.Parameters[0].Value.SetInt32(ipIdAreaAtuacao);
+  FfpuValidarNomeAreaAtuacaoCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuValidarNomeAreaAtuacaoCommand.ExecuteUpdate;
+  Result := FfpuValidarNomeAreaAtuacaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TsmFuncoesAdministrativoClient.fpuSomaOrcamentoRubrica(ipIdProjeto: Integer): Double;
 begin
   if FfpuSomaOrcamentoRubricaCommand = nil then
@@ -750,6 +767,7 @@ begin
   FfpuInfoPessoaCommand.DisposeOf;
   FppuValidarFinalizarAtividadeCommand.DisposeOf;
   FfpuValidarNomeCpfPessoaCommand.DisposeOf;
+  FfpuValidarNomeAreaAtuacaoCommand.DisposeOf;
   FfpuSomaOrcamentoRubricaCommand.DisposeOf;
   FfpuSomaPagametosFinanciadorCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;

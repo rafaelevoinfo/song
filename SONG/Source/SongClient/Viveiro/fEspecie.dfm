@@ -6,6 +6,20 @@ inherited frmEspecie: TfrmEspecie
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
+          Left = 376
+          Width = 599
+          ExplicitLeft = 384
+          ExplicitWidth = 599
+          inherited pnData: TPanel
+            Left = 371
+            ExplicitLeft = 371
+          end
+          inherited EditPesquisa: TcxButtonEdit
+            Left = 264
+            ExplicitLeft = 264
+            ExplicitWidth = 236
+            Width = 236
+          end
           inherited cbPesquisarPor: TcxImageComboBox
             Properties.Items = <
               item
@@ -31,6 +45,24 @@ inherited frmEspecie: TfrmEspecie
                 Value = 6
               end>
           end
+          inherited btnPesquisar: TButton
+            Left = 499
+            ExplicitLeft = 499
+          end
+          inherited rgStatus: TcxRadioGroup
+            ExplicitWidth = 126
+            Width = 126
+          end
+          object chkSomenteExotica: TcxCheckBox
+            Left = 211
+            Top = 2
+            Caption = 'Apenas esp'#233'cies ex'#243'ticas'
+            TabOrder = 5
+            Width = 155
+          end
+        end
+        inherited pnBotoes: TPanel
+          Width = 375
         end
       end
       inherited pnGrid: TPanel
@@ -125,6 +157,11 @@ inherited frmEspecie: TfrmEspecie
               Visible = False
               Options.Editing = False
               Width = 265
+            end
+            object viewRegistrosEXOTICA: TcxGridDBColumn [16]
+              DataBinding.FieldName = 'EXOTICA'
+              RepositoryItem = dmLookup.RepIcbNaoSim
+              Options.Editing = False
             end
             inherited ColumnAlterar: TcxGridDBColumn
               MinWidth = 40
@@ -262,7 +299,7 @@ inherited frmEspecie: TfrmEspecie
           Top = 147
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 12
+          TabOrder = 13
           Height = 89
           Width = 823
         end
@@ -357,6 +394,17 @@ inherited frmEspecie: TfrmEspecie
           DataBinding.DataSource = dsMaster
           TabOrder = 7
           Width = 150
+        end
+        object chkExotica: TcxDBCheckBox
+          Left = 743
+          Top = 106
+          RepositoryItem = dmLookup.RepChkNaoSim
+          Caption = 'Esp'#233'cie Ex'#243'tica'
+          DataBinding.DataField = 'EXOTICA'
+          DataBinding.DataSource = dsMaster
+          Style.BorderColor = clNone
+          TabOrder = 12
+          Width = 121
         end
       end
     end

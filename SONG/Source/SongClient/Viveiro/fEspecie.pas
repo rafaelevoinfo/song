@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
   cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc, cxCurrencyEdit,
   dmuLookup, cxSpinEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  Vcl.ExtDlgs;
+  Vcl.ExtDlgs, cxCheckBox;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)
@@ -61,6 +61,9 @@ type
     viewRegistrosQTDE_SEMENTE_TUBETE: TcxGridDBColumn;
     Label14: TLabel;
     EditQtdeSementeTubete: TcxDBSpinEdit;
+    viewRegistrosEXOTICA: TcxGridDBColumn;
+    chkExotica: TcxDBCheckBox;
+    chkSomenteExotica: TcxCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
   private
@@ -128,7 +131,12 @@ begin
   if cbPesquisarPor.EditValue = coNomeCientifico then
     ipCds.ppuAddParametro(TParametros.coNomeCientifico, EditPesquisa.Text)
   else if cbPesquisarPor.EditValue = coFamiliaBotanica then
-    ipCds.ppuAddParametro(TParametros.coFamiliaBotanica, EditPesquisa.Text)
+    ipCds.ppuAddParametro(TParametros.coFamiliaBotanica, EditPesquisa.Text);
+
+  if chkSomenteExotica.Checked then
+    ipCds.ppuAddParametro(TParametros.coEspecieExotica,1);
+
+
 end;
 
 end.

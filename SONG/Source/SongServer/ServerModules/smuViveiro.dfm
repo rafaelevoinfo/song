@@ -24,6 +24,7 @@ inherited smViveiro: TsmViveiro
       '       Especie.Mes_Fim_Coleta,'
       '       ESPECIE.PESO_MEDIO_SEMENTE,'
       '       ESPECIE.Qtde_Semente_Tubete,'
+      '       coalesce(ESPECIE.Exotica,0) as Exotica,'
       
         '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
         'estoque,'
@@ -148,6 +149,11 @@ inherited smViveiro: TsmViveiro
     object qEspecieQTDE_SEMENTE_TUBETE: TIntegerField
       FieldName = 'QTDE_SEMENTE_TUBETE'
       Origin = 'QTDE_SEMENTE_TUBETE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieEXOTICA: TSmallintField
+      FieldName = 'EXOTICA'
+      Origin = 'EXOTICA'
       ProviderFlags = [pfInUpdate]
     end
   end

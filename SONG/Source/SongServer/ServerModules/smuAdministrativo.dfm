@@ -784,12 +784,22 @@ inherited smAdministrativo: TsmAdministrativo
       '       PROJETO.NOME AS NOME_PROJETO,'
       '       ATIVIDADE.DATA_CADASTRO,'
       '       ATIVIDADE.DATA_ALTERACAO,'
-      '       ATIVIDADE.DATA_FINALIZACAO'
+      '       ATIVIDADE.DATA_FINALIZACAO,'
+      '       ATIVIDADE.ID_AREA_ATUACAO,'
+      '       ATIVIDADE.ID_AREA_EXECUCAO,'
+      '       AREA_ATUACAO.NOME AS AREA_ATUACAO,'
+      '       AREA_EXECUCAO.NOME AS AREA_EXECUCAO'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
         ' ATIVIDADE.ID)'
       'left join projeto on (projeto.id = atividade.id_projeto)'
+      
+        'left join area_atuacao on (area_atuacao.id = atividade.id_area_a' +
+        'tuacao)'
+      
+        'left join area_execucao on (area_execucao.id = atividade.id_area' +
+        '_execucao)'
       '&WHERE')
     Left = 360
     Top = 80
@@ -843,7 +853,7 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'ID_PROJETO'
       Origin = 'ID_PROJETO'
       ProviderFlags = [pfInUpdate]
-      Required = True
+      Visible = False
     end
     object qAtividadeNOME_PROJETO: TStringField
       AutoGenerateValue = arDefault
@@ -872,6 +882,30 @@ inherited smAdministrativo: TsmAdministrativo
       FieldName = 'DATA_FINALIZACAO'
       Origin = 'DATA_FINALIZACAO'
       ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeID_AREA_ATUACAO: TIntegerField
+      FieldName = 'ID_AREA_ATUACAO'
+      Origin = 'ID_AREA_ATUACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeID_AREA_EXECUCAO: TIntegerField
+      FieldName = 'ID_AREA_EXECUCAO'
+      Origin = 'ID_AREA_EXECUCAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qAtividadeAREA_ATUACAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'AREA_ATUACAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qAtividadeAREA_EXECUCAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'AREA_EXECUCAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qAtividade_Pessoa: TRFQuery

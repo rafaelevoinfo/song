@@ -333,6 +333,38 @@ type
     ppLabel42: TppLabel;
     ppDBCalc13: TppDBCalc;
     ppDBCalc14: TppDBCalc;
+    tabTubetesSemeados: TcxTabSheet;
+    lb3: TLabel;
+    cbEspecieTubete: TcxLookupComboBox;
+    chkTodasEspecieTubete: TcxCheckBox;
+    dsTubete_Semeado: TDataSource;
+    DBPipeTubete_Semeado: TppDBPipeline;
+    ppTubete_Semeado: TppReport;
+    ppHeaderBand8: TppHeaderBand;
+    ppLabel50: TppLabel;
+    ppDBImage8: TppDBImage;
+    ppSystemVariable22: TppSystemVariable;
+    ppSystemVariable23: TppSystemVariable;
+    ppLabel51: TppLabel;
+    ppLabel52: TppLabel;
+    ppLabel53: TppLabel;
+    ppLine3: TppLine;
+    ppDetailBand8: TppDetailBand;
+    ppDBText54: TppDBText;
+    ppDBText55: TppDBText;
+    ppDBText56: TppDBText;
+    ppFooterBand8: TppFooterBand;
+    ppLabel57: TppLabel;
+    ppDBText59: TppDBText;
+    ppDBText60: TppDBText;
+    ppSystemVariable24: TppSystemVariable;
+    ppSummaryBand7: TppSummaryBand;
+    ppLabel58: TppLabel;
+    ppDBCalc15: TppDBCalc;
+    raCodeModule8: TraCodeModule;
+    ppDesignLayers8: TppDesignLayers;
+    ppDesignLayer8: TppDesignLayer;
+    ppParameterList8: TppParameterList;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
@@ -344,6 +376,7 @@ type
       Sender: TObject);
     procedure chkTodosEspecieLoteSementeCompradoPropertiesEditValueChanged(
       Sender: TObject);
+    procedure chkTodasEspecieTubetePropertiesEditValueChanged(Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
     procedure ppvConfigurarGrids;
@@ -460,6 +493,10 @@ begin
             EditDataInicialLoteSementeComprado, EditDataFinalLoteSementeComprado, cbEspecieLoteSementeComprado, chkTodosEspecieLoteSementeComprado,
             ppLbTituloLoteSementeVendia);
         end;
+    end
+  else if pcPrincipal.ActivePage = tabTubetesSemeados then
+    begin
+      ppvGerarRelatorio('', ppTubete_Semeado, dmRelatorio.cdsTubete_Semeado, nil, nil,nil, cbEspecieTubete, chkTodasEspecieTubete,nil);
     end;
 end;
 
@@ -476,18 +513,21 @@ begin
   if vaIdEspecie > 0 then
     ipCds.ppuAddParametro(TParametros.coEspecie, vaIdEspecie);
 
-  if ipCheckGroup.CheckBox.Checked then
+  if Assigned(ipCheckGroup) and Assigned(ipLabelTitulo) then
     begin
-      if VarIsNull(ipDataInicial.EditValue) or VarIsNull(ipDataFinal.EditValue) then
-        raise Exception.Create('Informe uma data inicial e final para gerar o relatório.');
+      if ipCheckGroup.CheckBox.Checked then
+        begin
+          if VarIsNull(ipDataInicial.EditValue) or VarIsNull(ipDataFinal.EditValue) then
+            raise Exception.Create('Informe uma data inicial e final para gerar o relatório.');
 
-      ipCds.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(ipDataInicial.Date,
-        ipDataFinal.Date));
+          ipCds.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(ipDataInicial.Date,
+            ipDataFinal.Date));
 
-      ipLabelTitulo.Caption := ipTitulo + ' (' + DateToStr(ipDataInicial.Date) + ' - ' + DateToStr(ipDataFinal.Date) + ')';
-    end
-  else
-    ipLabelTitulo.Caption := ipTitulo;
+          ipLabelTitulo.Caption := ipTitulo + ' (' + DateToStr(ipDataInicial.Date) + ' - ' + DateToStr(ipDataFinal.Date) + ')';
+        end
+      else
+        ipLabelTitulo.Caption := ipTitulo;
+    end;
 
   ipCds.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
 
@@ -517,6 +557,13 @@ procedure TfrmRelatorioViveiro.chkTodasEspecieProducaoMatrizPropertiesEditValueC
 begin
   inherited;
   cbEspecieMatrizProdutiva.Enabled := not chkTodasEspecieMatrizProdutiva.Checked;
+end;
+
+procedure TfrmRelatorioViveiro.chkTodasEspecieTubetePropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbEspecieTubete.Enabled := not chkTodasEspecieTubete.Checked;
 end;
 
 procedure TfrmRelatorioViveiro.chkTodosEspecieLoteMudaCompradaPropertiesEditValueChanged(

@@ -421,6 +421,7 @@ type
     ppDBCalc18: TppDBCalc;
     ppDBCalc19: TppDBCalc;
     ppDBCalc20: TppDBCalc;
+    Label11: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);

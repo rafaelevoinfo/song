@@ -168,13 +168,18 @@ type
     qlkOrganizacaoSITE: TStringField;
     qlkOrganizacaoEMAIL: TStringField;
     qlkOrganizacaoCIDADE: TStringField;
-    qlkArea_Atuacao: TRFQuery;
-    qlkArea_AtuacaoID: TIntegerField;
-    qlkArea_AtuacaoNOME: TStringField;
+    qlkArea_Atuacao_Projeto: TRFQuery;
+    qlkArea_Atuacao_ProjetoID: TIntegerField;
+    qlkArea_Atuacao_ProjetoNOME: TStringField;
     qlkArea_Execucao: TRFQuery;
     qlkArea_ExecucaoID: TIntegerField;
     qlkArea_ExecucaoID_AREA_ATUACAO: TIntegerField;
     qlkArea_ExecucaoNOME: TStringField;
+    qlkArea_Atuacao_ProjetoID_PROJETO: TIntegerField;
+    qlkArea_Atuacao: TRFQuery;
+    qlkArea_AtuacaoID: TIntegerField;
+    qlkArea_AtuacaoNOME: TStringField;
+    qlkEspecieEXOTICA: TSmallintField;
   private
     { Private declarations }
   protected

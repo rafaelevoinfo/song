@@ -801,7 +801,6 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Id do Projeto'
       FieldName = 'ID_PROJETO'
       ProviderFlags = [pfInUpdate]
-      Required = True
     end
     object cdsAtividadeNOME_PROJETO: TStringField
       DisplayLabel = 'Projeto'
@@ -825,7 +824,30 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = [pfInUpdate]
     end
     object cdsAtividadeDATA_FINALIZACAO: TSQLTimeStampField
+      DisplayLabel = 'Data de Finaliza'#231#227'o'
       FieldName = 'DATA_FINALIZACAO'
+    end
+    object cdsAtividadeID_AREA_ATUACAO: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Atua'#231#227'o'
+      FieldName = 'ID_AREA_ATUACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsAtividadeID_AREA_EXECUCAO: TIntegerField
+      DisplayLabel = 'Id da '#193'rea de Execu'#231#227'o'
+      FieldName = 'ID_AREA_EXECUCAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsAtividadeAREA_ATUACAO: TStringField
+      DisplayLabel = #193'rea de Atua'#231#227'o'
+      FieldName = 'AREA_ATUACAO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsAtividadeAREA_EXECUCAO: TStringField
+      DisplayLabel = #193'rea de Execu'#231#227'o'
+      FieldName = 'AREA_EXECUCAO'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object cdsAtividade_Projeto: TRFClientDataSet

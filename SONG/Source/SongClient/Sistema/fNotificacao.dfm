@@ -6,7 +6,7 @@ inherited frmNotificacao: TfrmNotificacao
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -48,15 +48,7 @@ inherited frmNotificacao: TfrmNotificacao
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
-              inherited pnBotoesDetail: TPanel
-                Width = 965
-                ExplicitWidth = 965
-              end
               inherited cxGridRegistrosDetail: TcxGrid
-                Width = 965
-                Height = 170
-                ExplicitWidth = 965
-                ExplicitHeight = 170
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -93,6 +85,10 @@ inherited frmNotificacao: TfrmNotificacao
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnEditsVariaveis: TPanel
           Left = 216
@@ -319,15 +315,15 @@ inherited frmNotificacao: TfrmNotificacao
           Height = 13
           Align = alTop
           Caption = 
-            'Notifica'#231#245'es de atividades somente ser'#227'o enviadas as pessoas env' +
-            'olvidas e configuradas aqui.'
+            'Notifica'#231#245'es de atividades ser'#227'o enviadas as pessoas envolvidas ' +
+            'e as que forem configuradas aqui.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clRed
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitWidth = 534
+          ExplicitWidth = 558
         end
         inline frameUsuarios: TframeGrids
           Left = 0
@@ -417,12 +413,14 @@ inherited frmNotificacao: TfrmNotificacao
               ExplicitWidth = 974
               inherited lbInfoGridEsquerda: TLabel
                 Width = 112
+                Height = 15
                 Caption = 'Pessoas dispon'#237'veis'
                 ExplicitWidth = 112
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 505
                 Width = 206
+                Height = 15
                 Caption = 'Pessoas que receber'#227'o a notifica'#231#227'o'
                 ExplicitLeft = 505
                 ExplicitWidth = 206

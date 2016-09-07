@@ -16,7 +16,8 @@ uses
   cxCheckBox, cxCheckComboBox, uTypes, System.TypInfo, uControleAcesso, cxDBEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuPrincipal, cxMemo,
   uClientDataSet, System.IOUtils, Vcl.ExtDlgs, uUtils,
-  System.RegularExpressions, System.DateUtils, cxLocalization, System.Types;
+  System.RegularExpressions, System.DateUtils, cxLocalization, System.Types,
+  fAreaAtuacao, uExceptions, Datasnap.DBClient;
 
 type
   TfrmAtividade = class(TfrmBasicoCrudMasterDetail)
@@ -163,6 +164,28 @@ type
     Ac_Pesquisar_Pessoa_Envolvida: TAction;
     viewRegistrosDetailNOME_PESSOA: TcxGridDBColumn;
     viewRegistrosDATA_CADASTRO: TcxGridDBColumn;
+    cbAreaAtuacao: TcxDBLookupComboBox;
+    lb1: TLabel;
+    btnAdicionarAreaAtuacao: TButton;
+    btnAdicionarAreaExecucao: TButton;
+    cbAreaExecucao: TcxDBLookupComboBox;
+    lb2: TLabel;
+    Ac_Adicionar_Area_Atuacao: TAction;
+    Ac_Adicionar_Area_Execucao: TAction;
+    cdsLocal_Area_Atuacao: TClientDataSet;
+    cdsLocal_Area_AtuacaoID: TIntegerField;
+    cdsLocal_Area_AtuacaoNOME: TStringField;
+    cdsLocal_Area_Execucao: TClientDataSet;
+    cdsLocal_Area_ExecucaoID: TIntegerField;
+    cdsLocal_Area_ExecucaoNOME: TStringField;
+    dsLocal_Area_Atuacao: TDataSource;
+    dsLocal_Area_Execucao: TDataSource;
+    cdsLocal_Area_ExecucaoID_AREA_ATUACAO: TIntegerField;
+    viewRegistrosDATA_FINALIZACAO: TcxGridDBColumn;
+    viewRegistrosID_AREA_ATUACAO: TcxGridDBColumn;
+    viewRegistrosID_AREA_EXECUCAO: TcxGridDBColumn;
+    viewRegistrosAREA_ATUACAO: TcxGridDBColumn;
+    viewRegistrosAREA_EXECUCAO: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -184,6 +207,14 @@ type
     procedure viewRegistrosCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
+    procedure cbProjetoPrincipalPropertiesEditValueChanged(Sender: TObject);
+    procedure cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ac_Adicionar_Area_ExecucaoExecute(Sender: TObject);
+    procedure cbAreaExecucaoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
+    procedure cbAreaAtuacaoPropertiesEditValueChanged(Sender: TObject);
   private
     dmLookup: TdmLookup;
     dmAdministrativo: TdmAdministrativo;
@@ -192,6 +223,10 @@ type
     procedure ppvPesquisarProjeto(ipCombo: TcxDBLookupComboBox);
     procedure ppvPesquisarAtividade;
     procedure ppvCarregarAtividades(ipIdEspecifico: Integer = 0);
+    procedure ppvAdicionarAreaAtuacao;
+    procedure ppvCarregarAreasAtuacao;
+    procedure ppvAdicionarAreaExecucao;
+    procedure ppvCarregarAreaExecucao;
 
     { Private declarations }
   protected
@@ -202,6 +237,8 @@ type
     procedure pprEfetuarPesquisa; override;
     procedure pprExecutarSalvarDetail; override;
     procedure pprBeforeSalvar; override;
+    procedure pprBeforeAlterar; override;
+    procedure pprBeforeIncluir; override;
 
     procedure pprCarregarProjetos(ipIdEspecifico: Integer = 0);
   public
@@ -226,6 +263,18 @@ uses
 {$R *.dfm}
 
 { TfrmAtividade }
+
+procedure TfrmAtividade.Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarAreaAtuacao;
+end;
+
+procedure TfrmAtividade.Ac_Adicionar_Area_ExecucaoExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarAreaExecucao;
+end;
 
 procedure TfrmAtividade.Ac_CarregarArquivoExecute(Sender: TObject);
 begin
@@ -276,6 +325,30 @@ begin
   ppvPesquisarProjeto(cbProjetoPrincipal);
 end;
 
+procedure TfrmAtividade.cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarAreaAtuacao;
+end;
+
+procedure TfrmAtividade.cbAreaAtuacaoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastro then
+    ppvCarregarAreaExecucao;
+end;
+
+procedure TfrmAtividade.cbAreaExecucaoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarAreaExecucao;
+end;
+
 procedure TfrmAtividade.cbAtividadeVinculoKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
@@ -300,6 +373,16 @@ begin
     ppvPesquisarProjeto(cbProjetoPrincipal);
 end;
 
+procedure TfrmAtividade.cbProjetoPrincipalPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastro then
+    begin
+      ppvCarregarAreasAtuacao;
+    end;
+end;
+
 procedure TfrmAtividade.ppvPesquisarProjeto(ipCombo: TcxDBLookupComboBox);
 var
   vaFrmProjeto: TfrmProjeto;
@@ -311,7 +394,7 @@ begin
     vaFrmProjeto.ShowModal;
     if vaFrmProjeto.IdEscolhido <> 0 then
       begin
-        if dmLookup.cdslkProjeto.Locate(TBancoDados.coID, vaFrmProjeto.IdEscolhido, []) then
+        if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, vaFrmProjeto.IdEscolhido, []) then
           begin
             ipCombo.EditValue := vaFrmProjeto.IdEscolhido;
             ipCombo.PostEditValue;
@@ -319,7 +402,7 @@ begin
         else
           begin
             pprCarregarProjetos(vaFrmProjeto.IdEscolhido);
-            if dmLookup.cdslkProjeto.Locate(TBancoDados.coID, vaFrmProjeto.IdEscolhido, []) then
+            if dmLookup.cdslkProjeto.Locate(TBancoDados.coId, vaFrmProjeto.IdEscolhido, []) then
               begin
                 ipCombo.EditValue := vaFrmProjeto.IdEscolhido;
                 ipCombo.PostEditValue;
@@ -345,7 +428,7 @@ begin
     vaFrmAtividade.ShowModal;
     if vaFrmAtividade.IdEscolhido <> 0 then
       begin
-        if dmLookup.cdslkAtividade.Locate(TBancoDados.coID, vaFrmAtividade.IdEscolhido, []) then
+        if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, vaFrmAtividade.IdEscolhido, []) then
           begin
             cbAtividadeVinculo.EditValue := vaFrmAtividade.IdEscolhido;
             cbAtividadeVinculo.PostEditValue;
@@ -353,7 +436,7 @@ begin
         else
           begin
             ppvCarregarAtividades(vaFrmAtividade.IdEscolhido);
-            if dmLookup.cdslkAtividade.Locate(TBancoDados.coID, vaFrmAtividade.IdEscolhido, []) then
+            if dmLookup.cdslkAtividade.Locate(TBancoDados.coId, vaFrmAtividade.IdEscolhido, []) then
               begin
                 cbAtividadeVinculo.EditValue := vaFrmAtividade.IdEscolhido;
                 cbAtividadeVinculo.PostEditValue;
@@ -386,11 +469,188 @@ begin
   pcDetails.ActivePage := tabDetailComentario;
 end;
 
+procedure TfrmAtividade.ppvCarregarAreasAtuacao;
+begin
+  if not dmLookup.cdslkArea_Atuacao_Projeto.Active then
+    begin
+      dmLookup.cdslkArea_Atuacao_Projeto.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+      dmLookup.cdslkArea_Execucao.Open;
+    end;
+
+  cdsLocal_Area_Atuacao.DisableControls;
+  cdsLocal_Area_Execucao.DisableControls;
+  try
+    if cdsLocal_Area_Atuacao.Active then
+      cdsLocal_Area_Atuacao.EmptyDataSet
+    else
+      cdsLocal_Area_Atuacao.CreateDataSet;
+
+    dmLookup.cdslkArea_Atuacao_Projeto.First;
+    while not dmLookup.cdslkArea_Atuacao_Projeto.eof do
+      begin
+        if not cdsLocal_Area_Atuacao.Locate(cdsLocal_Area_AtuacaoID.FieldName, dmLookup.cdslkArea_Atuacao_ProjetoID.AsInteger, []) then
+          begin
+            if VarIsNull(cbProjetoPrincipal.EditValue) or (cbProjetoPrincipal.EditValue = dmLookup.cdslkArea_Atuacao_ProjetoID_PROJETO.AsInteger) then
+              begin
+                cdsLocal_Area_Atuacao.Append;
+                cdsLocal_Area_AtuacaoID.AsInteger := dmLookup.cdslkArea_Atuacao_ProjetoID.AsInteger;
+                cdsLocal_Area_AtuacaoNOME.AsString := dmLookup.cdslkArea_Atuacao_ProjetoNOME.AsString;
+                cdsLocal_Area_Atuacao.Post;
+              end;
+          end;
+
+        dmLookup.cdslkArea_Atuacao_Projeto.Next;
+      end;
+
+    ppvCarregarAreaExecucao;
+
+  finally
+    cdsLocal_Area_Execucao.EnableControls;
+    cdsLocal_Area_Atuacao.EnableControls;
+  end;
+
+  if (not VarIsNull(cbAreaAtuacao.EditValue)) and (not(dmLookup.cdslkArea_Atuacao_Projeto.Locate(TBancoDados.coId, cbAreaAtuacao.EditValue, []))) then
+    begin
+      if dmAdministrativo.cdsAtividade.State in [dsEdit, dsInsert] then
+        begin
+          dmAdministrativo.cdsAtividadeID_AREA_ATUACAO.Clear;
+          dmAdministrativo.cdsAtividadeID_AREA_EXECUCAO.Clear;
+        end;
+    end;
+end;
+
+procedure TfrmAtividade.ppvCarregarAreaExecucao;
+begin
+  cdsLocal_Area_Execucao.DisableControls;
+  try
+
+    if cdsLocal_Area_Execucao.Active then
+      cdsLocal_Area_Execucao.EmptyDataSet
+    else
+      cdsLocal_Area_Execucao.CreateDataSet;
+
+    if (not VarIsNull(cbAreaAtuacao.EditValue)) and
+      (dmLookup.cdslkArea_Atuacao_Projeto.Locate(dmLookup.cdslkArea_Atuacao_ProjetoID.FieldName, cbAreaAtuacao.EditValue, [])) then
+      begin
+        while not dmLookup.cdslkArea_Execucao.eof do
+          begin
+            if not cdsLocal_Area_Execucao.Locate(cdsLocal_Area_AtuacaoID.FieldName, dmLookup.cdslkArea_Atuacao_ProjetoID.AsInteger, []) then
+              begin
+                cdsLocal_Area_Execucao.Append;
+                cdsLocal_Area_ExecucaoID.AsInteger := dmLookup.cdslkArea_ExecucaoID.AsInteger;
+                cdsLocal_Area_ExecucaoID_AREA_ATUACAO.AsInteger := dmLookup.cdslkArea_ExecucaoID_AREA_ATUACAO.AsInteger;
+                cdsLocal_Area_ExecucaoNOME.AsString := dmLookup.cdslkArea_ExecucaoNOME.AsString;
+                cdsLocal_Area_Execucao.Post;
+              end;
+
+            dmLookup.cdslkArea_Execucao.Next;
+          end;
+      end;
+  finally
+    cdsLocal_Area_Execucao.EnableControls;
+  end;
+end;
+
+procedure TfrmAtividade.ppvAdicionarAreaExecucao;
+var
+  vaFrmAreaAtuacao: TfrmAreaAtuacao;
+begin
+  if VarIsNull(cbAreaAtuacao.EditValue) then
+    raise TControlException.Create('Selecione a Área de Atuação', cbAreaAtuacao);
+
+  vaFrmAreaAtuacao := TfrmAreaAtuacao.Create(nil);
+  try
+
+    vaFrmAreaAtuacao.ppuConfigurarPesquisa(Ord(tppId), cbAreaAtuacao.EditValue);
+    vaFrmAreaAtuacao.ppuPesquisar;
+    if vaFrmAreaAtuacao.dsMaster.DataSet.RecordCount > 0 then
+      begin
+        vaFrmAreaAtuacao.ppuConfigurarModoExecucao(meSomenteCadastro);
+        vaFrmAreaAtuacao.ppuIncluirDetail;
+        vaFrmAreaAtuacao.ShowModal;
+        if vaFrmAreaAtuacao.IdDetailEscolhido <> 0 then
+          begin
+            ppvCarregarAreasAtuacao;
+            if dmLookup.cdslkArea_Execucao.Locate(TBancoDados.coId, vaFrmAreaAtuacao.IdDetailEscolhido, []) then
+              begin
+                cbAreaExecucao.EditValue := vaFrmAreaAtuacao.IdDetailEscolhido;
+                cbAreaExecucao.PostEditValue;
+              end;
+          end;
+      end
+    else
+      raise Exception.Create('Não foi possível encontrar a área de atuação selecionada.');
+  finally
+    vaFrmAreaAtuacao.Free;
+  end;
+
+end;
+
+procedure TfrmAtividade.ppvAdicionarAreaAtuacao;
+var
+  vaFrmAreaAtuacao: TfrmAreaAtuacao;
+  vaFrmProjeto: TfrmProjeto;
+  vaIdEscolhido: Integer;
+  vaField: TField;
+begin
+  vaIdEscolhido := 0;
+  if not VarIsNull(cbProjetoPrincipal.EditValue) then
+    begin
+      vaFrmProjeto := TfrmProjeto.Create(nil);
+      try
+        vaFrmProjeto.ppuConfigurarPesquisa(Ord(tppId), cbProjetoPrincipal.EditValue);
+        vaFrmProjeto.ppuPesquisar;
+        if vaFrmProjeto.dsMaster.DataSet.RecordCount > 0 then
+          begin
+            vaFrmProjeto.pcDetails.ActivePage := vaFrmProjeto.tabDetailArea;
+            vaFrmProjeto.ppuIncluirDetail;
+
+            vaFrmProjeto.ppuConfigurarModoExecucao(meSomenteCadastro);
+            vaFrmProjeto.ShowModal;
+            if vaFrmProjeto.IdDetailEscolhido <> 0 then
+              begin
+                vaField := vaFrmProjeto.dsDetail.DataSet.FindField('ID_AREA_ATUACAO');
+                if Assigned(vaField) then
+                  vaIdEscolhido := vaField.AsInteger;
+              end;
+          end;
+      finally
+        vaFrmProjeto.Free;
+      end;
+    end
+  else
+    begin
+      vaFrmAreaAtuacao := TfrmAreaAtuacao.Create(nil);
+      try
+        vaFrmAreaAtuacao.ppuConfigurarModoExecucao(meSomenteCadastro);
+        vaFrmAreaAtuacao.ShowModal;
+
+        if vaFrmAreaAtuacao.IdEscolhido <> 0 then
+          vaIdEscolhido := vaFrmAreaAtuacao.IdEscolhido;
+      finally
+        vaFrmAreaAtuacao.Free;
+      end;
+    end;
+
+  if vaIdEscolhido <> 0 then
+    begin
+      ppvCarregarAreasAtuacao;
+      if dmLookup.cdslkArea_Atuacao_Projeto.Locate(TBancoDados.coId, vaIdEscolhido, []) then
+        begin
+          if not(dmAdministrativo.cdsAtividade.State in [dsInsert, dsEdit]) then
+            dmAdministrativo.cdsAtividade.Edit;
+
+          cbAreaAtuacao.EditValue := vaIdEscolhido;
+          cbAreaAtuacao.PostEditValue;
+        end;
+    end;
+end;
+
 procedure TfrmAtividade.pprCarregarProjetos(ipIdEspecifico: Integer);
 begin
   dmLookup.cdslkProjeto.ppuLimparParametros;
   if ipIdEspecifico <> 0 then
-    dmLookup.cdslkProjeto.ppuAddParametro(TParametros.coID, ipIdEspecifico, TOperadores.coOR);
+    dmLookup.cdslkProjeto.ppuAddParametro(TParametros.coId, ipIdEspecifico, TOperadores.coOR);
 
   // recusado, cancelado, executado
   dmLookup.cdslkProjeto.ppuAddParametro(TParametros.coStatusDiferente,
@@ -444,8 +704,8 @@ end;
 
 procedure TfrmAtividade.ppvFiltrarAtividade;
 begin
-  dmLookup.cdslkAtividade.Filter := TBancoDados.coID + ' <> ' + dmAdministrativo.cdsAtividadeID.AsString;
-  dmLookup.cdslkAtividade.Filtered := True;
+  dmLookup.cdslkAtividade.Filter := TBancoDados.coId + ' <> ' + dmAdministrativo.cdsAtividadeID.AsString;
+  dmLookup.cdslkAtividade.Filtered := true;
 end;
 
 procedure TfrmAtividade.ppuIncluirDetail;
@@ -465,7 +725,19 @@ end;
 procedure TfrmAtividade.ppuRetornar;
 begin
   inherited;
-  dmLookup.cdslkAtividade.Filtered := False;
+  dmLookup.cdslkAtividade.Filtered := false;
+end;
+
+procedure TfrmAtividade.pprBeforeAlterar;
+begin
+  inherited;
+  ppvCarregarAreasAtuacao;
+end;
+
+procedure TfrmAtividade.pprBeforeIncluir;
+begin
+  inherited;
+  ppvCarregarAreasAtuacao;
 end;
 
 procedure TfrmAtividade.pprBeforeSalvar;
@@ -487,7 +759,7 @@ end;
 
 procedure TfrmAtividade.ppuBaixarArquivo(ipId: Integer);
 begin
-  if dmAdministrativo.cdsAtividade_Arquivo.Locate(TBancoDados.coID, ipId, []) then
+  if dmAdministrativo.cdsAtividade_Arquivo.Locate(TBancoDados.coId, ipId, []) then
     begin
       if not dmAdministrativo.cdsAtividade_ArquivoARQUIVO.IsNull then
         begin
@@ -592,7 +864,7 @@ begin
           if not VarIsNull(AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index]) then
             begin
               vaDataAtual := Now;
-              vaDataAtual := EncodeDate(YearOf(vaDataAtual),MonthOf(vaDataAtual),DayOf(vaDataAtual));
+              vaDataAtual := EncodeDate(YearOf(vaDataAtual), MonthOf(vaDataAtual), DayOf(vaDataAtual));
               vaDataFinal := AViewInfo.GridRecord.Values[viewRegistrosDATA_FINAL.Index];
               // atividade vencida
               if CompareDateTime(vaDataAtual, vaDataFinal) = GreaterThanValue then
@@ -641,7 +913,7 @@ begin
         begin
           dmLookup.cdslkAtividade.ppuAddParametro(TParametros.coStatusDiferente, Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString,
             TOperadores.coOR);
-          dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coID], [ipIdEspecifico], TOperadores.coAnd);
+          dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coId], [ipIdEspecifico], TOperadores.coAnd);
         end
       else
         dmLookup.cdslkAtividade.ppuDataRequest([TParametros.coStatusDiferente], [Ord(saCancelada).ToString + ';' + Ord(saFinalizada).ToString]);

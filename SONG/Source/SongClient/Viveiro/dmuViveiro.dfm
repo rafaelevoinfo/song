@@ -121,6 +121,12 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'QTDE_SEMENTE_TUBETE'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsEspecieEXOTICA: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Ex'#243'tica'
+      FieldName = 'EXOTICA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>

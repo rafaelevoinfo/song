@@ -186,6 +186,11 @@ type
     qSaldoSALDO: TBCDField;
     qSaldoTIPO_ORIGEM: TIntegerField;
     qView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO: TStringField;
+    qTubete_Semeado: TRFQuery;
+    qTubete_SemeadoQTDE_TUBETE: TLargeintField;
+    qTubete_SemeadoID_ESPECIE: TIntegerField;
+    qTubete_SemeadoNOME: TStringField;
+    qTubete_SemeadoNOME_CIENTIFICO: TStringField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private
@@ -335,6 +340,11 @@ begin
               Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
             end;
         end
+    end
+  else if (ipTabela = 'TUBETE_SEMEADO') then
+    begin
+      if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
     end;
 end;
 

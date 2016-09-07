@@ -1,6 +1,6 @@
 inherited smLookup: TsmLookup
   OldCreateOrder = True
-  Height = 444
+  Height = 504
   Width = 1021
   object qlkPerfil: TRFQuery
     Connection = dmPrincipal.conSong
@@ -400,7 +400,8 @@ inherited smLookup: TsmLookup
       '       Especie.Qtde_Muda_Pronta,'
       '       Especie.Qtde_Muda_Desenvolvimento,'
       '       Especie.Qtde_Semente_Tubete,'
-      '       Especie.Peso_Medio_Semente'
+      '       Especie.Peso_Medio_Semente,'
+      '       Coalesce(Especie.Exotica,0) as Exotica'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -470,6 +471,11 @@ inherited smLookup: TsmLookup
       Origin = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = []
       Precision = 18
+    end
+    object qlkEspecieEXOTICA: TSmallintField
+      FieldName = 'EXOTICA'
+      Origin = 'EXOTICA'
+      ProviderFlags = []
     end
   end
   object qlkMatriz: TRFQuery
@@ -761,8 +767,11 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select distinct Projeto_Area.Id,'
       '       Projeto_Area.Id_Projeto,'
-      '       Projeto_Area.Nome'
+      '       Area_Atuacao.Nome'
       'from Projeto_Area'
+      
+        'inner join area_atuacao on (area_atuacao.id=projeto_area.id_area' +
+        '_atuacao)'
       '&where')
     Left = 760
     Top = 224
@@ -793,8 +802,11 @@ inherited smLookup: TsmLookup
     SQL.Strings = (
       'select distinct Projeto_Area.Id,'
       '       Projeto_Area.Id_Projeto,'
-      '       Projeto_Area.Nome'
+      '       Area_Atuacao.Nome'
       'from Projeto_Area'
+      
+        'inner join area_atuacao on (area_atuacao.id = projeto_area.id_ar' +
+        'ea_atuacao)'
       'inner join Projeto on (Projeto.Id = Projeto_Area.Id_Projeto)'
       'left join atividade on (atividade.id_projeto = projeto.id)'
       '&where')
@@ -1326,32 +1338,44 @@ inherited smLookup: TsmLookup
       Size = 2
     end
   end
-  object qlkArea_Atuacao: TRFQuery
+  object qlkArea_Atuacao_Projeto: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'Select Area_Atuacao.id,'
-      '       Area_Atuacao.nome'
+      'Select distinct Area_Atuacao.id,'
+      '       Area_Atuacao.nome,'
+      '       projeto_area.id_projeto'
       'from area_atuacao'
-      '&WHERE')
-    Left = 448
-    Top = 176
+      
+        'left join projeto_area on (area_atuacao.id = projeto_area.id_are' +
+        'a_atuacao)'
+      '&WHERE'
+      'order by Area_Atuacao.nome')
+    Left = 232
+    Top = 376
     MacroData = <
       item
-        Value = 'where id = 0'
+        Value = 'where area_atuacao.id = 0'
         Name = 'WHERE'
       end>
-    object qlkArea_AtuacaoID: TIntegerField
+    object qlkArea_Atuacao_ProjetoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = []
       Required = True
     end
-    object qlkArea_AtuacaoNOME: TStringField
+    object qlkArea_Atuacao_ProjetoNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = []
       Required = True
       Size = 100
+    end
+    object qlkArea_Atuacao_ProjetoID_PROJETO: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_PROJETO'
+      Origin = 'ID_PROJETO'
+      ProviderFlags = []
+      ReadOnly = True
     end
   end
   object qlkArea_Execucao: TRFQuery
@@ -1361,12 +1385,13 @@ inherited smLookup: TsmLookup
       '       Area_Execucao.Id_Area_Atuacao,'
       '       Area_Execucao.Nome'
       'from Area_Execucao '
-      'where area_execucao.id_area_atuacao = :ID_AREA_EXECUCAO')
+      'where area_execucao.id_area_atuacao = :ID_AREA_ATUACAO'
+      'order by area_execucao.nome')
     Left = 232
     Top = 304
     ParamData = <
       item
-        Name = 'ID_AREA_EXECUCAO'
+        Name = 'ID_AREA_ATUACAO'
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
@@ -1384,6 +1409,35 @@ inherited smLookup: TsmLookup
       Required = True
     end
     object qlkArea_ExecucaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object qlkArea_Atuacao: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Area_Atuacao.Id,'
+      '       Area_Atuacao.Nome'
+      'from Area_Atuacao  '
+      '&WHERE'
+      'order by Area_Atuacao.nome')
+    Left = 232
+    Top = 440
+    MacroData = <
+      item
+        Value = 'WHERE AREA_ATUACAO.ID = 0'
+        Name = 'WHERE'
+      end>
+    object qlkArea_AtuacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkArea_AtuacaoNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = []

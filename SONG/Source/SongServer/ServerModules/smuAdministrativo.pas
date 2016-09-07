@@ -192,6 +192,10 @@ type
     qArea_ExecucaoID_AREA_ATUACAO: TIntegerField;
     qArea_ExecucaoNOME: TStringField;
     qProjeto_AreaNOME: TStringField;
+    qAtividadeID_AREA_ATUACAO: TIntegerField;
+    qAtividadeID_AREA_EXECUCAO: TIntegerField;
+    qAtividadeAREA_ATUACAO: TStringField;
+    qAtividadeAREA_EXECUCAO: TStringField;
     procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
     procedure dspqAtividadeAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;

@@ -18,7 +18,7 @@ uses
   System.TypInfo, uExceptions, dmuPrincipal, uMensagem, fSaida,
   System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
   ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
-  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar;
+  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod;
 
 type
   TfrmVenda = class(TfrmBasicoCrudMasterDetail)
@@ -131,13 +131,22 @@ type
     ppLine9: TppLine;
     ppLine10: TppLine;
     ppLine11: TppLine;
-    ppLabel7: TppLabel;
     ppSystemVariable1: TppSystemVariable;
     ppLine12: TppLine;
     ppDBText14: TppDBText;
-    ppDBText18: TppDBText;
     viewRegistrosSAIU_ESTOQUE: TcxGridDBColumn;
     viewRegistrosGEROU_CONTA_RECEBER: TcxGridDBColumn;
+    raCodeModule1: TraCodeModule;
+    ppLabel13: TppLabel;
+    ppDBText19: TppDBText;
+    ppDBText20: TppDBText;
+    ppLabel14: TppLabel;
+    ppLabel15: TppLabel;
+    ppLine13: TppLine;
+    ppLine14: TppLine;
+    ppLine15: TppLine;
+    ppLine16: TppLine;
+    ppLine17: TppLine;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);

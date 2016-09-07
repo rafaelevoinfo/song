@@ -1178,4 +1178,32 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
     end
   end
+  object cdsTubete_Semeado: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqTubete_Semeado'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 776
+    Top = 160
+    object cdsTubete_SemeadoQTDE_TUBETE: TLargeintField
+      FieldName = 'QTDE_TUBETE'
+      ProviderFlags = []
+    end
+    object cdsTubete_SemeadoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsTubete_SemeadoNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsTubete_SemeadoNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
 end

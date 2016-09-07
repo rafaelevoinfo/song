@@ -1,7 +1,6 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
   ClientWidth = 1028
-  ExplicitTop = -56
   ExplicitWidth = 1044
   PixelsPerInch = 96
   TextHeight = 13
@@ -20,7 +19,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabSaldoRubrica
+      Properties.ActivePage = tabGastoAtividade
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
@@ -445,6 +444,21 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Width = 45
           Height = 13
           Caption = 'Atividade'
+        end
+        object Label11: TLabel
+          Left = 234
+          Top = 23
+          Width = 410
+          Height = 13
+          Caption = 
+            'Atividades sem projeto principal n'#227'o ser'#227'o consideradas neste re' +
+            'lat'#243'rio.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object cbProjetoGastoAtividade: TcxLookupComboBox
           Left = 3

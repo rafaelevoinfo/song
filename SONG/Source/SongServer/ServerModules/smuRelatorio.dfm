@@ -374,7 +374,7 @@ inherited smRelatorio: TsmRelatorio
         'Conta_Pagar_Parcela.Valor / Conta_Pagar.Valor_Total), 0)),2), 0)' +
         ' as Gasto,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,'
-      '       Projeto_Area.Nome as Area_Atuacao,'
+      '       Area_Atuacao.Nome as Area_Atuacao,'
       '       Projeto.nome as Projeto'
       'from Conta_Pagar_Parcela'
       
@@ -386,14 +386,17 @@ inherited smRelatorio: TsmRelatorio
       
         'inner join Projeto_Area on (Projeto_Area.Id = Conta_Pagar_Vincul' +
         'o.Id_Area_Atuacao_Origem)'
+      
+        'inner join area_atuacao on (area_atuacao.id = projeto_area.id_ar' +
+        'ea_atuacao)'
       'inner join projeto on (projeto.id = projeto_area.id_projeto)'
       'where (Conta_Pagar_Parcela.Status = 1) and'
       
         '      ((:Todas_Datas = 1) or (Conta_Pagar_Parcela.Vencimento bet' +
         'ween :Data_Inicial and :Data_Final))'
       
-        'group by Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem, Projeto_Are' +
-        'a.Nome,Projeto.nome'
+        'group by Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,Area_Atuacao' +
+        '.Nome,Projeto.nome'
       'order by Projeto.Nome'
       '  ')
     Left = 204
@@ -1771,6 +1774,57 @@ inherited smRelatorio: TsmRelatorio
       FieldName = 'TIPO_ORIGEM'
       Origin = 'TIPO_ORIGEM'
       ProviderFlags = []
+    end
+  end
+  object qTubete_Semeado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select sum(Semeadura.Qtde_Tubete) as Qtde_Tubete,'
+      '       Lote_Semente.Id_Especie,'
+      '       Especie.Nome,'
+      '       Especie.Nome_Cientifico'
+      'from Semeadura'
+      
+        'inner join Lote_Semente on (Lote_Semente.Id = Semeadura.Id_Lote_' +
+        'Semente)'
+      'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
+      
+        'where ((Lote_Semente.Status = 0) or (Lote_Semente.Status is null' +
+        '))'
+      '&AND'
+      
+        'group by Lote_Semente.Id_Especie, Especie.Nome, Especie.Nome_Cie' +
+        'ntifico ')
+    Left = 48
+    Top = 296
+    MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end>
+    object qTubete_SemeadoQTDE_TUBETE: TLargeintField
+      FieldName = 'QTDE_TUBETE'
+      Origin = 'QTDE_TUBETE'
+      ProviderFlags = []
+    end
+    object qTubete_SemeadoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object qTubete_SemeadoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qTubete_SemeadoNOME_CIENTIFICO: TStringField
+      FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

@@ -1,16 +1,11 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabCadastroDetailArea
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -145,9 +140,6 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -910,10 +902,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1051,10 +1039,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1706,9 +1690,9 @@ inherited frmProjeto: TfrmProjeto
         object lbl2: TLabel
           Left = 9
           Top = 6
-          Width = 81
+          Width = 104
           Height = 13
-          Caption = #193'rea de Atua'#231#227'o'
+          Caption = #193'rea de Atua'#231#227'o (F2)'
           FocusControl = cbAreaAtuacao
         end
         object cbAreaAtuacao: TcxDBLookupComboBox
@@ -1719,7 +1703,18 @@ inherited frmProjeto: TfrmProjeto
           DataBinding.DataSource = dsArea
           Properties.ListColumns = <>
           TabOrder = 0
+          OnKeyDown = cbAreaAtuacaoKeyDown
           Width = 293
+        end
+        object btnAdicionarAreaAtuacao: TButton
+          Left = 304
+          Top = 24
+          Width = 21
+          Height = 19
+          Action = Ac_Adicionar_Area_Atuacao
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 1
+          TabStop = False
         end
       end
     end
@@ -1760,6 +1755,11 @@ inherited frmProjeto: TfrmProjeto
       Category = 'Detail'
       ImageIndex = 3
       OnExecute = Ac_Adicionar_FinanciadorExecute
+    end
+    object Ac_Adicionar_Area_Atuacao: TAction
+      Category = 'Detail'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_Area_AtuacaoExecute
     end
   end
   inherited dsMaster: TDataSource

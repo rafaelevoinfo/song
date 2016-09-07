@@ -126,6 +126,7 @@ type
     qLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField;
     qLote_MudaRAZAO_SOCIAL: TStringField;
     qLote_SementeRAZAO_SOCIAL: TStringField;
+    qEspecieEXOTICA: TSmallintField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -288,6 +289,8 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_CIENTIFICO', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coFamiliaBotanica then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'FAMILIA_BOTANICA', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coEspecieExotica then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'EXOTICA', vaValor.ToInteger, vaOperador)
     end
   else if ipTabela = 'MATRIZ' then
     begin

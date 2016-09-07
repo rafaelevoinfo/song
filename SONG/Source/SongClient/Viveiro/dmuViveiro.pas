@@ -119,6 +119,7 @@ type
     cdsLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField;
     cdsLote_SementeRAZAO_SOCIAL: TStringField;
     cdsLote_MudaRAZAO_SOCIAL: TStringField;
+    cdsEspecieEXOTICA: TSmallintField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

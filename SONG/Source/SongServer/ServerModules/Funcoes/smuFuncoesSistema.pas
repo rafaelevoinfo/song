@@ -297,9 +297,9 @@ var
     vaDataSet.SQL.Text := 'select Atividade.Id,' +
       '       Atividade.Nome,' +
       '       Atividade.status,' +
-      '       Projeto.Nome as Nome_Projeto' +
+      '       Coalesce(Projeto.Nome,''SEM PROJETO'') as Nome_Projeto' +
       ' from Atividade' +
-      ' inner join Projeto on (Atividade.Id_Projeto = Projeto.Id) ';
+      ' left join Projeto on (Atividade.Id_Projeto = Projeto.Id) ';
     if ipTipoNotificacao = tnAtividadeVencendo then
       begin
         vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where (dateadd(day, :DIAS, current_date) >= Atividade.Data_Final) and ' +
@@ -311,7 +311,7 @@ var
       begin
         if ipTipoNotificacao = tnAtividadeAlterada then
           vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Atividade.Data_Alteracao >= (dateadd(day, :DIAS, current_date))'
-        else
+        else //atividade cadastrada
           vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Atividade.Data_Cadastro >= (dateadd(day, :DIAS, current_date))';
 
         vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger * -1;

@@ -23,6 +23,7 @@ type
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
     function fpuValidarNomeCpfPessoa(ipIdPessoa: integer; ipNome, ipCpf: String): Boolean;
+    function fpuValidarNomeAreaAtuacao(ipIdAreaAtuacao:Integer; ipNome:String):Boolean;
 
     function fpuSomaOrcamentoRubrica(ipIdProjeto: integer): Double;
     function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: integer): Double;
@@ -118,6 +119,12 @@ begin
       vaResult := ipDataSet.FieldByName('QUANT').AsInteger = 0;
     end);
   Result := vaResult;
+end;
+
+function TsmFuncoesAdministrativo.fpuValidarNomeAreaAtuacao(
+  ipIdAreaAtuacao: Integer; ipNome: String): Boolean;
+begin
+  Result := fprValidarCampoUnico('AREA_ATUACAO','NOME',ipIdAreaAtuacao,ipNome);
 end;
 
 function TsmFuncoesAdministrativo.fpuValidarNomeCpfPessoa(ipIdPessoa: integer;

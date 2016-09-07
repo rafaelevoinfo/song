@@ -197,6 +197,10 @@ type
     cdsArea_ExecucaoNOME: TStringField;
     dsArea_Atuacao: TDataSource;
     cdsProjeto_AreaNOME: TStringField;
+    cdsAtividadeID_AREA_ATUACAO: TIntegerField;
+    cdsAtividadeID_AREA_EXECUCAO: TIntegerField;
+    cdsAtividadeAREA_ATUACAO: TStringField;
+    cdsAtividadeAREA_EXECUCAO: TStringField;
   private
     { Private declarations }
   public

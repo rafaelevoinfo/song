@@ -215,7 +215,13 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 300
           FieldName = 'NOME'
+        end
+        item
+          RepositoryItem = RepIcbNaoSim
+          Width = 100
+          FieldName = 'EXOTICA'
         end>
       Properties.ListSource = dslkEspecie
     end
@@ -743,12 +749,25 @@ inherited dmLookup: TdmLookup
     object repLcbArea_Atuacao: TcxEditRepositoryLookupComboBoxItem
       Properties.ClearKey = 46
       Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
           FieldName = 'NOME'
         end>
+      Properties.ListOptions.SyncMode = True
       Properties.ListSource = dslkArea_Atuacao
+    end
+    object repLcbArea_Execucao: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkArea_Execucao
     end
   end
   object dslkPerfil: TDataSource
@@ -1123,6 +1142,11 @@ inherited dmLookup: TdmLookup
       FieldName = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = []
       Precision = 18
+    end
+    object cdslkEspecieEXOTICA: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Ex'#243'tica'
+      FieldName = 'EXOTICA'
     end
   end
   object dslkEspecie: TDataSource
@@ -1917,8 +1941,8 @@ inherited dmLookup: TdmLookup
   end
   object dslkItem_Patrimonio: TDataSource
     DataSet = cdslkItem_Patrimonio
-    Left = 432
-    Top = 408
+    Left = 320
+    Top = 400
   end
   object cdslkDoador: TRFClientDataSet
     Aggregates = <>
@@ -1946,36 +1970,46 @@ inherited dmLookup: TdmLookup
       Size = 2
     end
   end
-  object cdslkArea_Atuacao: TRFClientDataSet
+  object cdslkArea_Atuacao_Projeto: TRFClientDataSet
     Aggregates = <>
     Params = <>
-    ProviderName = 'dspqlkArea_Atuacao'
+    ProviderName = 'dspqlkArea_Atuacao_Projeto'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 560
-    Top = 400
-    object cdslkArea_AtuacaoID: TIntegerField
+    Left = 568
+    Top = 280
+    object cdslkArea_Atuacao_ProjetoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
       Required = True
     end
-    object cdslkArea_AtuacaoNOME: TStringField
+    object cdslkArea_Atuacao_ProjetoNOME: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME'
       ProviderFlags = []
       Required = True
       Size = 100
     end
+    object cdslkArea_Atuacao_ProjetoID_PROJETO: TIntegerField
+      FieldName = 'ID_PROJETO'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
   object cdslkArea_Execucao: TRFClientDataSet
     Aggregates = <>
     IndexFieldNames = 'ID_AREA_ATUACAO'
     MasterFields = 'ID'
-    MasterSource = dslkArea_Atuacao
+    MasterSource = dslkArea_Atuacao_Projeto
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_AREA_ATUACAO'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqlkArea_Execucao'
     RemoteServer = dmPrincipal.ProviderLookup
-    Left = 424
+    Left = 360
     Top = 296
     object cdslkArea_ExecucaoID: TIntegerField
       FieldName = 'ID'
@@ -2000,5 +2034,34 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkArea_Atuacao
     Left = 416
     Top = 504
+  end
+  object dslkArea_Execucao: TDataSource
+    DataSet = cdslkArea_Execucao
+    Left = 432
+    Top = 400
+  end
+  object cdslkArea_Atuacao: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkArea_Atuacao'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 224
+    Top = 736
+    object cdslkArea_AtuacaoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkArea_AtuacaoNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkArea_Atuacao_Projeto: TDataSource
+    DataSet = cdslkArea_Atuacao_Projeto
+    Left = 696
+    Top = 288
   end
 end

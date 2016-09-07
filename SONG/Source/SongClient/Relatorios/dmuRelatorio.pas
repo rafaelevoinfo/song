@@ -199,6 +199,11 @@ type
     cdsSaldoSALDO: TBCDField;
     cdsSaldoTIPO_ORIGEM: TIntegerField;
     cdsView_Movimentacao_FinanceiraCALC_DESCRICAO_FORMA_PGTO: TStringField;
+    cdsTubete_Semeado: TRFClientDataSet;
+    cdsTubete_SemeadoQTDE_TUBETE: TLargeintField;
+    cdsTubete_SemeadoID_ESPECIE: TIntegerField;
+    cdsTubete_SemeadoNOME: TStringField;
+    cdsTubete_SemeadoNOME_CIENTIFICO: TStringField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);
