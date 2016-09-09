@@ -1,6 +1,6 @@
 inherited smViveiro: TsmViveiro
   OldCreateOrder = True
-  Height = 289
+  Height = 308
   Width = 787
   inherited qAux: TRFQuery
     Left = 104

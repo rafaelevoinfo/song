@@ -18,7 +18,7 @@ uses
   System.TypInfo, uExceptions, dmuPrincipal, uMensagem, fSaida,
   System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
   ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
-  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod;
+  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod, ppUtils;
 
 type
   TfrmVenda = class(TfrmBasicoCrudMasterDetail)
@@ -84,26 +84,54 @@ type
     DBPipeVenda_Item: TppDBPipeline;
     ppRecibo: TppReport;
     ppParameterList1: TppParameterList;
-    ppDesignLayers1: TppDesignLayers;
-    ppDesignLayer1: TppDesignLayer;
-    ppHeaderBand1: TppHeaderBand;
-    ppDetailBand1: TppDetailBand;
-    ppFooterBand1: TppFooterBand;
-    ppDBImage1: TppDBImage;
     DBPipeOrganizacao: TppDBPipeline;
+    viewRegistrosSAIU_ESTOQUE: TcxGridDBColumn;
+    viewRegistrosGEROU_CONTA_RECEBER: TcxGridDBColumn;
+    ppHeaderBand1: TppHeaderBand;
     ppDBText1: TppDBText;
-    ppLabel1: TppLabel;
     ppDBText2: TppDBText;
     ppLabel2: TppLabel;
     ppLabel3: TppLabel;
     ppLine1: TppLine;
     ppLabel4: TppLabel;
     ppDBText3: TppDBText;
-    ppLabel5: TppLabel;
-    ppDBText4: TppDBText;
     ppLine2: TppLine;
     ppLine3: TppLine;
     ppLine4: TppLine;
+    ppLabel8: TppLabel;
+    ppLabel9: TppLabel;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppLabel12: TppLabel;
+    ppLabel13: TppLabel;
+    ppEditValorDescricao: TppDBText;
+    ppLabel14: TppLabel;
+    ppLabel15: TppLabel;
+    ppLine13: TppLine;
+    ppLine14: TppLine;
+    ppLine16: TppLine;
+    ppDBImage2: TppDBImage;
+    ppDBImage1: TppDBImage;
+    ppLine29: TppLine;
+    ppLine30: TppLine;
+    ppLine31: TppLine;
+    ppLine32: TppLine;
+    ppDetailBand1: TppDetailBand;
+    ppDBText12: TppDBText;
+    ppDBText13: TppDBText;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppDBText17: TppDBText;
+    ppLine7: TppLine;
+    ppLine8: TppLine;
+    ppLine15: TppLine;
+    ppLine17: TppLine;
+    ppLine5: TppLine;
+    ppLine21: TppLine;
+    ppLine22: TppLine;
+    ppLine23: TppLine;
+    ppLine24: TppLine;
+    ppFooterBand1: TppFooterBand;
     ppShape1: TppShape;
     ppDBText5: TppDBText;
     ppDBText6: TppDBText;
@@ -113,40 +141,24 @@ type
     ppDBText10: TppDBText;
     ppDBText11: TppDBText;
     ppLabel6: TppLabel;
-    ppDBText12: TppDBText;
-    ppDBText13: TppDBText;
-    ppLabel8: TppLabel;
-    ppLabel9: TppLabel;
-    ppLabel10: TppLabel;
-    ppLabel11: TppLabel;
-    ppLabel12: TppLabel;
-    ppLine5: TppLine;
-    ppLine6: TppLine;
-    ppDBText15: TppDBText;
-    ppDBText16: TppDBText;
-    ppDBText17: TppDBText;
-    ppLine7: TppLine;
-    ppLine8: TppLine;
     ppSummaryBand1: TppSummaryBand;
     ppLine9: TppLine;
     ppLine10: TppLine;
     ppLine11: TppLine;
-    ppSystemVariable1: TppSystemVariable;
     ppLine12: TppLine;
     ppDBText14: TppDBText;
-    viewRegistrosSAIU_ESTOQUE: TcxGridDBColumn;
-    viewRegistrosGEROU_CONTA_RECEBER: TcxGridDBColumn;
-    raCodeModule1: TraCodeModule;
-    ppLabel13: TppLabel;
-    ppDBText19: TppDBText;
-    ppDBText20: TppDBText;
-    ppLabel14: TppLabel;
-    ppLabel15: TppLabel;
-    ppLine13: TppLine;
-    ppLine14: TppLine;
-    ppLine15: TppLine;
-    ppLine16: TppLine;
-    ppLine17: TppLine;
+    ppLine6: TppLine;
+    ppDBCalc1: TppDBCalc;
+    ppLabel7: TppLabel;
+    ppLine18: TppLine;
+    ppLine19: TppLine;
+    ppLine20: TppLine;
+    ppLine28: TppLine;
+    ppLine33: TppLine;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppEditValorTotal: TppDBText;
+    ppSystemVariable1: TppSystemVariable;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
@@ -161,6 +173,7 @@ type
       AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
     procedure Ac_Gerar_Conta_ReceberUpdate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
+    procedure ppReciboAfterPrint(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -220,6 +233,12 @@ begin
     ipCds.ppuAddParametro(TParametros.coVendedor, cbPesquisaPessoa.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCliente then
     ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaCliente.EditValue);
+end;
+
+procedure TfrmVenda.ppReciboAfterPrint(Sender: TObject);
+begin
+  inherited;
+  ppEditValorDescricao.Left := ppEditValorTotal.Left + ppEditValorTotal.Width + 5;
 end;
 
 procedure TfrmVenda.pprValidarDadosDetail;
@@ -460,6 +479,8 @@ begin
   dmEstoque.cdsVenda.DisableControls;
   dmEstoque.cdsVenda_Item.DisableControls;
   try
+    //tive que fazer essa gabi do caralho so pra conseguir colocar um apos o outro
+    ppEditValorDescricao.Left := ppEditValorTotal.Left + ppUtils.ppGetSpTextWidth(ppEditValorTotal.Font,FormatFloat('$ ,0.00',dmEstoque.cdsVendaVALOR_TOTAL.AsFloat))+12; //FormatFloat('$ ,0.00',dmEstoque.cdsVendaVALOR_TOTAL.AsFloat).Length * 8;
     ppRecibo.PrintReport;
   finally
     dmEstoque.cdsVenda.EnableControls;

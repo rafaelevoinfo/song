@@ -382,7 +382,7 @@ end;
 procedure TsmEstoque.qVendaCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  qVendaCALC_VALOR_EXTENSO.AsString := TUtils.fpuGetValorPorExtenso(qVendaVALOR_TOTAL.AsFloat);
+  qVendaCALC_VALOR_EXTENSO.AsString := '('+TUtils.fpuGetValorPorExtenso(qVendaVALOR_TOTAL.AsFloat)+')';
 end;
 
 end.

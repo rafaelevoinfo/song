@@ -61,13 +61,14 @@ inherited smLookup: TsmLookup
       '       Cidade.Nome|| '#39' - '#39'||estado.uf as Cidade,'
       '       Organizacao.Telefone,'
       '       organizacao.site,'
-      '       organizacao.email'
+      '       organizacao.email,'
+      '       organizacao.logo_secundaria'
       'from Organizacao  '
       'left join cidade on (cidade.id = organizacao.id_cidade)'
       'left join estado on (cidade.id_estado = estado.id)'
       '&WHERE')
-    Left = 188
-    Top = 124
+    Left = 260
+    Top = 100
     MacroData = <
       item
         Value = Null
@@ -138,6 +139,11 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 128
+    end
+    object qlkOrganizacaoLOGO_SECUNDARIA: TBlobField
+      FieldName = 'LOGO_SECUNDARIA'
+      Origin = 'LOGO_SECUNDARIA'
+      ProviderFlags = []
     end
   end
   object qlkFinanciador: TRFQuery

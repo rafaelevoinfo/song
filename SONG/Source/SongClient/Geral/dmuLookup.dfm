@@ -805,8 +805,8 @@ inherited dmLookup: TdmLookup
     ProviderName = 'dspqlkOrganizacao'
     RemoteServer = dmPrincipal.ProviderLookup
     RFApplyAutomatico = False
-    Left = 500
-    Top = 448
+    Left = 548
+    Top = 408
     object cdslkOrganizacaoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -873,6 +873,10 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 120
+    end
+    object cdslkOrganizacaoLOGO_SECUNDARIA: TBlobField
+      FieldName = 'LOGO_SECUNDARIA'
+      ProviderFlags = []
     end
   end
   object cdslkFinanciador: TRFClientDataSet

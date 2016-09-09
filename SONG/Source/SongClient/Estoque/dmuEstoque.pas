@@ -155,7 +155,9 @@ type
     cdsVendaSAIU_ESTOQUE: TIntegerField;
     cdsVendaGEROU_CONTA_RECEBER: TIntegerField;
     cdsCompraGEROU_CONTA_PAGAR: TIntegerField;
+    cdsVendaCALC_CLIENTE: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
+    procedure cdsVendaCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -176,6 +178,12 @@ procedure TdmEstoque.cdsItemCalcFields(DataSet: TDataSet);
 begin
   inherited;
   cdsItemCALC_SALDO.AsString := FormatFloat(',0.00', cdsItemSALDO.AsFloat) + ' ' + cdsItemUNIDADE.AsString;
+end;
+
+procedure TdmEstoque.cdsVendaCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  cdsVendaCALC_CLIENTE.AsString := cdsVendaCLIENTE.AsString+', CNPJ/CPF: '+cdsVendaCPF_CNPJ.AsString;
 end;
 
 end.

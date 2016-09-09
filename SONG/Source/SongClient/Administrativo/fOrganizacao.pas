@@ -100,11 +100,20 @@ type
     EditSite: TcxDBTextEdit;
     EditEmail: TcxDBTextEdit;
     lb2: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Ac_Carregar_Logo_Secundario: TAction;
+    Ac_Limpar_Logo_Secundario: TAction;
+    EditLogoSecundaria: TcxDBImage;
+    btnLimparLogoSecundaria: TButton;
+    btnCarregarLogoSecundaria: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Ac_CarregarImagemExecute(Sender: TObject);
     procedure Ac_LimparExecute(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_Ajustar_SaldoExecute(Sender: TObject);
+    procedure Ac_Carregar_Logo_SecundarioExecute(Sender: TObject);
+    procedure Ac_Limpar_Logo_SecundarioExecute(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -181,6 +190,17 @@ begin
   end;
 end;
 
+procedure TfrmOrganizacao.Ac_Carregar_Logo_SecundarioExecute(Sender: TObject);
+begin
+  inherited;
+  try
+    EditLogoSecundaria.LoadFromFile;
+  except
+    on e: Exception do
+      TMensagem.ppuShowException('Imagem inválida.', e);
+  end;
+end;
+
 procedure TfrmOrganizacao.Ac_LimparExecute(Sender: TObject);
 begin
   inherited;
@@ -189,6 +209,20 @@ begin
       dmAdministrativo.cdsOrganizacao.Edit;
 
     dmAdministrativo.cdsOrganizacaoLOGO.Clear;
+  except
+    on e: Exception do
+      TMensagem.ppuShowException('Erro ao remover a logo.', e);
+  end;
+end;
+
+procedure TfrmOrganizacao.Ac_Limpar_Logo_SecundarioExecute(Sender: TObject);
+begin
+  inherited;
+  try
+    if not(dmAdministrativo.cdsOrganizacao.State in [dsEdit, dsInsert]) then
+      dmAdministrativo.cdsOrganizacao.Edit;
+
+    dmAdministrativo.cdsOrganizacaoLOGO_SECUNDARIA.Clear;
   except
     on e: Exception do
       TMensagem.ppuShowException('Erro ao remover a logo.', e);

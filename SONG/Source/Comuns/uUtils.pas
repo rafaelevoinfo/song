@@ -235,7 +235,7 @@ begin
           s := s + ' centavos';
         end;
     end;
-  Result := s;
+  Result := s.ToUpper;
 end;
 
 class function TUtils.fpuTruncTo(ipValor: Double; ipCasasDecimais: Integer): Double;

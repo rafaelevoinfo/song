@@ -180,6 +180,7 @@ type
     qlkArea_AtuacaoID: TIntegerField;
     qlkArea_AtuacaoNOME: TStringField;
     qlkEspecieEXOTICA: TSmallintField;
+    qlkOrganizacaoLOGO_SECUNDARIA: TBlobField;
   private
     { Private declarations }
   protected

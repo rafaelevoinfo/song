@@ -273,6 +273,7 @@ type
     cdslkArea_AtuacaoNOME: TStringField;
     dslkArea_Atuacao_Projeto: TDataSource;
     cdslkEspecieEXOTICA: TSmallintField;
+    cdslkOrganizacaoLOGO_SECUNDARIA: TBlobField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

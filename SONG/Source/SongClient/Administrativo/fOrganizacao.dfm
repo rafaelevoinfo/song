@@ -1,17 +1,31 @@
 inherited frmOrganizacao: TfrmOrganizacao
+  ActiveControl = btnSalvar
   Caption = 'Organiza'#231#245'es'
-  ExplicitWidth = 1000
+  ClientWidth = 1184
+  ExplicitWidth = 1200
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
+  object Label17: TLabel [0]
+    Left = 657
+    Top = 262
+    Width = 23
+    Height = 13
+    Caption = 'Logo'
+  end
   inherited pcPrincipal: TcxPageControl
+    Width = 1184
+    Properties.ActivePage = tabCadastro
+    ClientRectRight = 1180
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnPesquisa: TPanel
+        Width = 1176
         inherited pnEditsPesquisa: TPanel
+          Left = 632
           inherited cbPesquisarPor: TcxImageComboBox
             Properties.Items = <
               item
@@ -30,9 +44,14 @@ inherited frmOrganizacao: TfrmOrganizacao
               end>
           end
         end
+        inherited pnBotoes: TPanel
+          Width = 631
+        end
       end
       inherited pnGrid: TPanel
+        Width = 1176
         inherited cxGridRegistros: TcxGrid
+          Width = 1174
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -79,20 +98,28 @@ inherited frmOrganizacao: TfrmOrganizacao
             end
           end
         end
+        inherited cxSplitter1: TcxSplitter
+          Width = 1174
+        end
         inherited pnDetail: TPanel
+          Width = 1174
           inherited pcDetails: TcxPageControl
+            Width = 1172
             Properties.ActivePage = tabDetailFundo
             OnChange = pcDetailsChange
+            ClientRectRight = 1167
             object tabDetailFundo: TcxTabSheet [0]
               Caption = 'Contas'
               ImageIndex = 1
+              ExplicitWidth = 965
               object pnBotoesDetailFundo: TPanel
                 Left = 0
                 Top = 0
-                Width = 965
+                Width = 1165
                 Height = 25
                 Align = alTop
                 TabOrder = 0
+                ExplicitWidth = 965
                 object Button1: TButton
                   Left = 1
                   Top = 1
@@ -117,7 +144,7 @@ inherited frmOrganizacao: TfrmOrganizacao
               object cxGridFundo: TcxGrid
                 Left = 0
                 Top = 25
-                Width = 965
+                Width = 1165
                 Height = 170
                 Align = alClient
                 Images = dmPrincipal.imgIcons_16
@@ -125,6 +152,7 @@ inherited frmOrganizacao: TfrmOrganizacao
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitWidth = 965
                 object viewFundo: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -221,7 +249,11 @@ inherited frmOrganizacao: TfrmOrganizacao
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                Width = 1165
+              end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 1165
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -242,11 +274,22 @@ inherited frmOrganizacao: TfrmOrganizacao
               end
             end
           end
+          inherited btnExportar_Excel_Detail: TButton
+            Left = 1034
+          end
         end
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
+      inherited pnBotoesCadastro: TPanel
+        Width = 1176
+      end
       inherited pnEditsCadastro: TPanel
+        Width = 1176
         object Label3: TLabel
           Left = 8
           Top = 6
@@ -281,9 +324,9 @@ inherited frmOrganizacao: TfrmOrganizacao
         object lb1: TLabel
           Left = 653
           Top = 6
-          Width = 23
+          Width = 65
           Height = 13
-          Caption = 'Logo'
+          Caption = 'Logo Principal'
         end
         object Label16: TLabel
           Left = 146
@@ -300,6 +343,13 @@ inherited frmOrganizacao: TfrmOrganizacao
           Height = 13
           Caption = 'E-Mail'
           FocusControl = EditEmail
+        end
+        object Label18: TLabel
+          Left = 849
+          Top = 6
+          Width = 79
+          Height = 13
+          Caption = 'Logo Secund'#225'rio'
         end
         object EditNome: TcxDBTextEdit
           Left = 6
@@ -464,6 +514,36 @@ inherited frmOrganizacao: TfrmOrganizacao
           TabOrder = 6
           Width = 237
         end
+        object EditLogoSecundaria: TcxDBImage
+          Left = 846
+          Top = 22
+          DataBinding.DataField = 'LOGO_SECUNDARIA'
+          DataBinding.DataSource = dsMaster
+          Properties.FitMode = ifmProportionalStretch
+          Properties.GraphicClassName = 'TdxSmartImage'
+          Properties.ImmediatePost = True
+          TabOrder = 10
+          Height = 122
+          Width = 188
+        end
+        object btnLimparLogoSecundaria: TButton
+          Left = 848
+          Top = 154
+          Width = 75
+          Height = 28
+          Action = Ac_Limpar_Logo_Secundario
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 11
+        end
+        object btnCarregarLogoSecundaria: TButton
+          Left = 927
+          Top = 154
+          Width = 107
+          Height = 28
+          Action = Ac_Carregar_Logo_Secundario
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 12
+        end
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
@@ -471,7 +551,11 @@ inherited frmOrganizacao: TfrmOrganizacao
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
+      inherited pnBotoesCadastroDetail: TPanel
+        Width = 1176
+      end
       inherited pnEditsCadastroDetail: TPanel
+        Width = 1176
         object Label11: TLabel
           Left = 258
           Top = 6
@@ -528,13 +612,15 @@ inherited frmOrganizacao: TfrmOrganizacao
     object tabCadastroFundo: TcxTabSheet
       Caption = 'tabCadastroFundo'
       ImageIndex = 3
+      ExplicitWidth = 976
       object pnBotoesCadastroFundo: TPanel
         Left = 0
         Top = 0
-        Width = 976
+        Width = 1176
         Height = 50
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 976
         object btnSalvarFundo: TButton
           AlignWithMargins = True
           Left = 4
@@ -572,11 +658,12 @@ inherited frmOrganizacao: TfrmOrganizacao
       object pnEditsCadastroFundo: TPanel
         Left = 0
         Top = 50
-        Width = 976
+        Width = 1176
         Height = 398
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 976
         object Label14: TLabel
           Left = 5
           Top = 3
@@ -644,6 +731,18 @@ inherited frmOrganizacao: TfrmOrganizacao
       ImageIndex = 17
       OnExecute = Ac_Ajustar_SaldoExecute
       OnUpdate = Ac_Alterar_DetailUpdate
+    end
+    object Ac_Carregar_Logo_Secundario: TAction
+      Category = 'Master'
+      Caption = 'Carregar Imagem'
+      ImageIndex = 9
+      OnExecute = Ac_Carregar_Logo_SecundarioExecute
+    end
+    object Ac_Limpar_Logo_Secundario: TAction
+      Category = 'Master'
+      Caption = 'Limpar'
+      ImageIndex = 5
+      OnExecute = Ac_Limpar_Logo_SecundarioExecute
     end
   end
   inherited dsMaster: TDataSource

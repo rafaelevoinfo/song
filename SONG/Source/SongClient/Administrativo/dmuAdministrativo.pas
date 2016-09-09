@@ -201,6 +201,7 @@ type
     cdsAtividadeID_AREA_EXECUCAO: TIntegerField;
     cdsAtividadeAREA_ATUACAO: TStringField;
     cdsAtividadeAREA_EXECUCAO: TStringField;
+    cdsOrganizacaoLOGO_SECUNDARIA: TBlobField;
   private
     { Private declarations }
   public

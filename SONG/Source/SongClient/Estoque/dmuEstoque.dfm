@@ -634,10 +634,12 @@ inherited dmEstoque: TdmEstoque
     Top = 16
   end
   object cdsVenda: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqVenda'
     RemoteServer = dmPrincipal.ProviderEstoque
+    OnCalcFields = cdsVendaCalcFields
     Left = 32
     Top = 132
     object cdsVendaID: TIntegerField
@@ -706,6 +708,7 @@ inherited dmEstoque: TdmEstoque
     object cdsVendaDESCRICAO: TStringField
       DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
@@ -713,13 +716,22 @@ inherited dmEstoque: TdmEstoque
       Alignment = taLeftJustify
       DisplayLabel = 'Saiu do Estoque'
       FieldName = 'SAIU_ESTOQUE'
+      Origin = 'SAIU_ESTOQUE'
       ProviderFlags = []
     end
     object cdsVendaGEROU_CONTA_RECEBER: TIntegerField
       Alignment = taLeftJustify
       DisplayLabel = 'Gerou Conta a Receber'
       FieldName = 'GEROU_CONTA_RECEBER'
+      Origin = 'GEROU_CONTA_RECEBER'
       ProviderFlags = []
+    end
+    object cdsVendaCALC_CLIENTE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_CLIENTE'
+      ProviderFlags = []
+      Size = 300
+      Calculated = True
     end
   end
   object cdsVenda_Item: TRFClientDataSet

@@ -323,6 +323,10 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'EMAIL'
       Size = 100
     end
+    object cdsOrganizacaoLOGO_SECUNDARIA: TBlobField
+      FieldName = 'LOGO_SECUNDARIA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsOrganizacao_Pessoa: TRFClientDataSet
     Aggregates = <>

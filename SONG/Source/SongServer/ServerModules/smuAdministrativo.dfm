@@ -292,7 +292,8 @@ inherited smAdministrativo: TsmAdministrativo
       '       ORGANIZACAO.ID_CIDADE,'
       '       ORGANIZACAO.LOGO,'
       '       organizacao.site,'
-      '       organizacao.email'
+      '       organizacao.email,'
+      '       organizacao.logo_secundaria'
       'from ORGANIZACAO  '
       'left join cidade on (cidade.id = organizacao.id_cidade)'
       '&WHERE')
@@ -377,6 +378,11 @@ inherited smAdministrativo: TsmAdministrativo
       Origin = 'EMAIL'
       ProviderFlags = [pfInUpdate]
       Size = 100
+    end
+    object qOrganizacaoLOGO_SECUNDARIA: TBlobField
+      FieldName = 'LOGO_SECUNDARIA'
+      Origin = 'LOGO_SECUNDARIA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qOrganizacao_Pessoa: TRFQuery
