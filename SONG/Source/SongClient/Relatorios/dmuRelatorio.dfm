@@ -78,6 +78,7 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <
       item
@@ -964,6 +965,7 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsLote_Muda_Vendido: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqLote_Muda_Vendido'
@@ -972,49 +974,60 @@ inherited dmRelatorio: TdmRelatorio
     Top = 288
     object cdsLote_Muda_VendidoID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsLote_Muda_VendidoNOME: TStringField
       FieldName = 'NOME'
+      Origin = 'NOME'
       Required = True
       Size = 100
     end
     object cdsLote_Muda_VendidoID_ESPECIE: TIntegerField
       FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
       Required = True
     end
     object cdsLote_Muda_VendidoESPECIE: TStringField
       FieldName = 'ESPECIE'
+      Origin = 'ESPECIE'
       Required = True
       Size = 100
     end
     object cdsLote_Muda_VendidoID_CLIENTE: TIntegerField
       FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
       Required = True
     end
     object cdsLote_Muda_VendidoQTDE: TBCDField
       FieldName = 'QTDE'
+      Origin = 'QTDE'
       Required = True
       Precision = 18
       Size = 2
     end
     object cdsLote_Muda_VendidoVALOR_UNITARIO: TBCDField
       FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
       Required = True
       Precision = 18
       Size = 2
     end
     object cdsLote_Muda_VendidoVALOR: TBCDField
       FieldName = 'VALOR'
+      Origin = 'VALOR'
       Required = True
       Precision = 18
     end
     object cdsLote_Muda_VendidoDATA: TDateField
       FieldName = 'DATA'
+      Origin = '"DATA"'
       Required = True
     end
     object cdsLote_Muda_VendidoCLIENTE: TStringField
       FieldName = 'CLIENTE'
+      Origin = 'CLIENTE'
       Size = 203
     end
   end
@@ -1204,6 +1217,56 @@ inherited dmRelatorio: TdmRelatorio
       FieldName = 'NOME_CIENTIFICO'
       ProviderFlags = []
       Size = 100
+    end
+  end
+  object cdsConta_Pagar: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqConta_Pagar'
+    RemoteServer = dmPrincipal.ProviderRelatorio
+    Left = 792
+    Top = 48
+    object cdsConta_PagarID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsConta_PagarID_VINCULO: TIntegerField
+      FieldName = 'ID_VINCULO'
+      ProviderFlags = []
+    end
+    object cdsConta_PagarRAZAO_SOCIAL: TStringField
+      FieldName = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object cdsConta_PagarCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 18
+    end
+    object cdsConta_PagarNUMERO_DOCUMENTO: TStringField
+      FieldName = 'NUMERO_DOCUMENTO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsConta_PagarDATA_PAGAMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO'
+      ProviderFlags = []
+    end
+    object cdsConta_PagarVALOR: TBCDField
+      FieldName = 'VALOR'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
+    object cdsConta_PagarVALOR_PAGO: TBCDField
+      FieldName = 'VALOR_PAGO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
     end
   end
 end

@@ -204,6 +204,15 @@ type
     cdsTubete_SemeadoID_ESPECIE: TIntegerField;
     cdsTubete_SemeadoNOME: TStringField;
     cdsTubete_SemeadoNOME_CIENTIFICO: TStringField;
+    cdsConta_Pagar: TRFClientDataSet;
+    cdsConta_PagarID: TIntegerField;
+    cdsConta_PagarID_VINCULO: TIntegerField;
+    cdsConta_PagarRAZAO_SOCIAL: TStringField;
+    cdsConta_PagarCPF_CNPJ: TStringField;
+    cdsConta_PagarNUMERO_DOCUMENTO: TStringField;
+    cdsConta_PagarDATA_PAGAMENTO: TDateField;
+    cdsConta_PagarVALOR: TBCDField;
+    cdsConta_PagarVALOR_PAGO: TBCDField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);

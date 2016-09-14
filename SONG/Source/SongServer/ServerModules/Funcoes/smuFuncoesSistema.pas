@@ -8,10 +8,15 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, aduna_ds_list,
-  uTypes, uEnviarEmail, uUtils, System.Generics.Collections;
+  uTypes, uEnviarEmail, uUtils, System.Generics.Collections, dmuPrincipal;
 
 type
   TsmFuncoesSistema = class(TsmFuncoesBasico)
+    qNotificacao_Pessoa: TRFQuery;
+    qNotificacao_PessoaID_PESSOA: TIntegerField;
+    qNotificacao_PessoaNOTIFICACAO_SISTEMA: TSmallintField;
+    qNotificacao_PessoaNOTIFICACAO_EMAIL: TSmallintField;
+    qNotificacao_PessoaEMAIL: TStringField;
   private
     function fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean;
       ipDataSetNotificacao, ipDataSetNotificacaoPessoa: TRFQuery): TList<TNotificacao>;
@@ -33,6 +38,9 @@ var
   smFuncoesSistema: TsmFuncoesSistema;
 
 implementation
+
+uses
+  smuFuncoesEstoque;
 
 {$R *.dfm}
 
@@ -56,7 +64,7 @@ end;
 function TsmFuncoesSistema.fpuVerificarNotificacoes(ipId, ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
   : TadsObjectlist<TNotificacao>;
 var
-  vaDataSetNotificacao, vaDataSetNotificacaoPessoa, vaDataSet: TRFQuery;
+  vaDataSetNotificacao, vaDataSet: TRFQuery;
   vaNotificacao: TNotificacao;
   vaNotificacoes: TList<TNotificacao>;
   vaTipoNotificacao: TTipoNotificacao;
@@ -66,15 +74,15 @@ var
   begin
     if ipNotificacaoEmail then
       begin
-        vaDataSetNotificacaoPessoa.First;
-        while not vaDataSetNotificacaoPessoa.Eof do
+        qNotificacao_Pessoa.First;
+        while not qNotificacao_Pessoa.Eof do
           begin
-            if (vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
-              (vaDataSetNotificacaoPessoa.FieldByName('Email').AsString <> '') then
+            if (qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
+              (qNotificacao_Pessoa.FieldByName('Email').AsString <> '') then
               begin
-                pprEnviarEmail(TiposNotificacao[ipTipo], ipMsg, vaDataSetNotificacaoPessoa.FieldByName('Email').AsString);
+                pprEnviarEmail(TiposNotificacao[ipTipo], ipMsg, qNotificacao_Pessoa.FieldByName('Email').AsString);
               end;
-            vaDataSetNotificacaoPessoa.next;
+            qNotificacao_Pessoa.next;
           end;
       end;
   end;
@@ -101,7 +109,7 @@ var
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+        if qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -154,7 +162,7 @@ var
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+        if qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -212,7 +220,7 @@ var
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+        if qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -260,7 +268,7 @@ var
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+        if qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -311,7 +319,7 @@ var
       begin
         if ipTipoNotificacao = tnAtividadeAlterada then
           vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Atividade.Data_Alteracao >= (dateadd(day, :DIAS, current_date))'
-        else //atividade cadastrada
+        else // atividade cadastrada
           vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Atividade.Data_Cadastro >= (dateadd(day, :DIAS, current_date))';
 
         vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger * -1;
@@ -324,10 +332,16 @@ var
         pprCriarDataSet(vaDataSetEnvolvidos);
         try
           vaDataSetEnvolvidos.SQL.Text := ' select Atividade.Id_Solicitante,' +
+            '       Solicitante.email as email_solicitante, ' +
             '       Atividade.Id_Responsavel,' +
-            '       Atividade_pessoa.id_pessoa as ID_PESSOA_ENVOLVIDA' +
+            '       Responsavel.email as email_responsavel, ' +
+            '       Atividade_pessoa.id_pessoa as ID_PESSOA_ENVOLVIDA, ' +
+            '       Envolvido.email as email_envolvido ' +
             ' from atividade' +
             ' left join atividade_pessoa on (atividade.id = atividade_pessoa.id_pessoa)' +
+            ' left join pessoa solicitante on (solicitante.id = atividade.id_solicitante) ' +
+            ' left join pessoa responsavel on (responsavel.id = atividade.id_responsavel) ' +
+            ' left join pessoa envolvido on (envolvido.id = Atividade_pessoa.id_pessoa) ' +
             ' where atividade.id = :ID';
 
           while not vaDataSet.Eof do
@@ -336,12 +350,13 @@ var
               vaDataSetEnvolvidos.ParamByName('ID').AsInteger := vaDataSet.FieldByName('ID').AsInteger;
               vaDataSetEnvolvidos.Open();
 
-              if vaDataSetEnvolvidos.Locate('ID_SOLICITANTE', vaDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger, []) or
-                vaDataSetEnvolvidos.Locate('ID_RESPONSAVEL', vaDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger, []) or
-                vaDataSetEnvolvidos.Locate('ID_PESSOA_ENVOLVIDA', vaDataSetNotificacaoPessoa.FieldByName('ID_PESSOA').AsInteger, []) then
+              if vaDataSetEnvolvidos.Locate('ID_SOLICITANTE', ipIdPessoa, []) or
+                vaDataSetEnvolvidos.Locate('ID_RESPONSAVEL', ipIdPessoa, []) or
+                vaDataSetEnvolvidos.Locate('ID_PESSOA_ENVOLVIDA', ipIdPessoa, []) then
                 begin
-
-                  if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+                  // Notificacao de alteracao de atividade sempre serao enviadas aos responsaveis e envolvidos
+                  if (ipIdPessoa = qNotificacao_Pessoa.FieldByName('ID_PESSOA').AsInteger) and
+                    (qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1) then
                     begin
                       vaNotificacao := TNotificacao.Create;
 
@@ -358,17 +373,64 @@ var
 
                       Result.Add(vaNotificacao);
                     end;
-
-                  if ipTipoNotificacao = tnAtividadeVencendo then
-                    vaMsg := vaMsg + 'A atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
-                      vaDataSet.FieldByName('NOME_PROJETO').AsString + ' está prestes a vencer seu prazo de execução. <br/><br/>'
-                  else if ipTipoNotificacao = tnAtividadeAlterada then
-                    vaMsg := vaMsg + 'Houve modificações na atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
-                      vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>'
-                  else
-                    vaMsg := vaMsg + 'Foi cadastrada a atividade ' + vaDataSet.FieldByName('NOME').AsString + ' para o projeto ' +
-                      vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>';
                 end;
+
+              if ipTipoNotificacao = tnAtividadeAlterada then
+                begin
+                  if not vaDataSetEnvolvidos.FieldByName('ID_SOLICITANTE').IsNull then
+                    begin
+                      if not qNotificacao_Pessoa.Locate('ID_PESSOA', vaDataSetEnvolvidos.FieldByName('ID_SOLICITANTE').AsInteger, []) then
+                        begin
+                          qNotificacao_Pessoa.Append;
+                          qNotificacao_Pessoa.FieldByName('ID_PESSOA').AsInteger := vaDataSetEnvolvidos.FieldByName('ID_SOLICITANTE').AsInteger;
+                          qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger := 1;
+                          qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger := 1;
+                          qNotificacao_Pessoa.FieldByName('EMAIL').AsString := vaDataSetEnvolvidos.FieldByName('EMAIL_SOLICITANTE').AsString;
+                          qNotificacao_Pessoa.Post;
+                        end;
+                    end;
+                  if not vaDataSetEnvolvidos.FieldByName('ID_RESPONSAVEL').IsNull then
+                    begin
+                      if not qNotificacao_Pessoa.Locate('ID_PESSOA', vaDataSetEnvolvidos.FieldByName('ID_RESPONSAVEL').AsInteger, []) then
+                        begin
+                          qNotificacao_Pessoa.Append;
+                          qNotificacao_Pessoa.FieldByName('ID_PESSOA').AsInteger := vaDataSetEnvolvidos.FieldByName('ID_SOLICITANTE').AsInteger;
+                          qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger := 1;
+                          qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger := 1;
+                          qNotificacao_Pessoa.FieldByName('EMAIL').AsString := vaDataSetEnvolvidos.FieldByName('EMAIL_RESPONSAVEL').AsString;
+                          qNotificacao_Pessoa.Post;
+                        end;
+                    end;
+
+                  vaDataSetEnvolvidos.First;
+                  while not vaDataSetEnvolvidos.Eof do
+                    begin
+                      if not vaDataSetEnvolvidos.FieldByName('ID_PESSOA_ENVOLVIDA').IsNull then
+                        begin
+                          if not qNotificacao_Pessoa.Locate('ID_PESSOA', vaDataSetEnvolvidos.FieldByName('ID_PESSOA_ENVOLVIDA').AsInteger, []) then
+                            begin
+                              qNotificacao_Pessoa.Append;
+                              qNotificacao_Pessoa.FieldByName('ID_PESSOA').AsInteger := vaDataSetEnvolvidos.FieldByName('ID_PESSOA_ENVOLVIDA').AsInteger;
+                              qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger := 1;
+                              qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger := 1;
+                              qNotificacao_Pessoa.FieldByName('EMAIL').AsString := vaDataSetEnvolvidos.FieldByName('EMAIL_ENVOLVIDO').AsString;
+                              qNotificacao_Pessoa.Post;
+                            end;
+                        end;
+                      vaDataSetEnvolvidos.next;
+                    end;
+                end;
+
+              if ipTipoNotificacao = tnAtividadeVencendo then
+                vaMsg := vaMsg + 'A atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
+                  vaDataSet.FieldByName('NOME_PROJETO').AsString + ' está prestes a vencer seu prazo de execução. <br/><br/>'
+              else if ipTipoNotificacao = tnAtividadeAlterada then
+                vaMsg := vaMsg + 'Houve modificações na atividade ' + vaDataSet.FieldByName('NOME').AsString + ' do projeto ' +
+                  vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>'
+              else
+                vaMsg := vaMsg + 'Foi cadastrada a atividade ' + vaDataSet.FieldByName('NOME').AsString + ' para o projeto ' +
+                  vaDataSet.FieldByName('NOME_PROJETO').AsString + '. <br/><br/>';
+
               vaDataSet.next;
             end;
         finally
@@ -408,7 +470,7 @@ var
       vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' and (solicitacao_compra.id = :ID) ';
 
     vaDataSet.SQL.Text := vaDataSet.SQL.Text +
-      ' group by Solicitacao_Compra.id, Solicitacao_Compra.Data, Pessoa.nome, '+
+      ' group by Solicitacao_Compra.id, Solicitacao_Compra.Data, Pessoa.nome, ' +
       '          Solicitacao_Compra.Status, Solicitacao_Compra.Data_Analise, Solicitacao_Compra.Motivo_Negacao ';
     vaDataSet.ParamByName('DIAS').AsInteger := vaDataSetNotificacao.FieldByName('TEMPO_ANTECEDENCIA').AsInteger;
     if ipId <> -1 then
@@ -417,7 +479,7 @@ var
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if ipNotificacaoSistema and (vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1) then
+        if ipNotificacaoSistema and (qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1) then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -471,7 +533,7 @@ var
     vaMsg := '';
     while not vaDataSet.Eof do
       begin
-        if vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
+        if qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1 then
           begin
             vaNotificacao := TNotificacao.Create;
 
@@ -501,7 +563,8 @@ begin
   Result := TadsObjectlist<TNotificacao>.Create;
 
   pprCriarDataSet(vaDataSetNotificacao);
-  pprCriarDataSet(vaDataSetNotificacaoPessoa);
+  vaDataSetNotificacao.CachedUpdates := true;
+
   pprCriarDataSet(vaDataSet);
   try
     // vamos ver os tipos de notificacoes configurados
@@ -515,8 +578,8 @@ begin
       begin
         if (ipTipo = -1) or (vaDataSetNotificacao.FieldByName('TIPO').AsInteger = ipTipo) then
           begin
-            vaDataSetNotificacaoPessoa.close;
-            vaDataSetNotificacaoPessoa.SQL.Text := 'Select Notificacao_Pessoa.id_pessoa, ' +
+            qNotificacao_Pessoa.close;
+            qNotificacao_Pessoa.SQL.Text := 'Select Notificacao_Pessoa.id_pessoa, ' +
               '        Notificacao_Pessoa.Notificacao_Sistema,' +
               '        Notificacao_Pessoa.Notificacao_Email,' +
               '        Pessoa.Email ' +
@@ -524,19 +587,21 @@ begin
               ' inner join Pessoa on (Pessoa.Id = Notificacao_Pessoa.Id_Pessoa) ' +
               ' where ((notificacao_pessoa.id_pessoa = :ID_PESSOA) or (:ID_PESSOA IS NULL)) and' +
               '       notificacao_pessoa.id_notificacao = :ID_NOTIFICACAO';
-            vaDataSetNotificacaoPessoa.ParamByName('ID_NOTIFICACAO').AsInteger := vaDataSetNotificacao.FieldByName('ID').AsInteger;
+            qNotificacao_Pessoa.ParamByName('ID_NOTIFICACAO').AsInteger := vaDataSetNotificacao.FieldByName('ID').AsInteger;
             if ipIdPessoa <> -1 then
-              vaDataSetNotificacaoPessoa.ParamByName('ID_PESSOA').AsInteger := ipIdPessoa
+              qNotificacao_Pessoa.ParamByName('ID_PESSOA').AsInteger := ipIdPessoa
             else
-              vaDataSetNotificacaoPessoa.ParamByName('ID_PESSOA').Clear;
+              qNotificacao_Pessoa.ParamByName('ID_PESSOA').Clear;
 
-            vaDataSetNotificacaoPessoa.Open;
+            qNotificacao_Pessoa.Open;
 
-            if (not vaDataSetNotificacaoPessoa.Eof) and
-              ((vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) or
-              (vaDataSetNotificacaoPessoa.FieldByName('Notificacao_Sistema').AsInteger = 1)) then
+            vaTipoNotificacao := TTipoNotificacao(vaDataSetNotificacao.FieldByName('TIPO').AsInteger);
+            if ((not qNotificacao_Pessoa.Eof) and
+              ((qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger = 1) or
+              (qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1))) or
+              (vaTipoNotificacao = tnAtividadeAlterada) then // atividade alterada sempre vai avisar os envolvidos mesmo q nao tenha nenhum usuario configurado
               begin
-                vaTipoNotificacao := TTipoNotificacao(vaDataSetNotificacao.FieldByName('TIPO').AsInteger);
+
                 case vaTipoNotificacao of
                   tnContaPagarVencendo:
                     plVerificarContaPagarVencendo;
@@ -555,7 +620,7 @@ begin
                   tnEventoAgenda:
                     begin
                       vaNotificacoes := fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa, ipNotificacaoEmail, ipNotificacaoSistema,
-                        vaDataSetNotificacao, vaDataSetNotificacaoPessoa);
+                        vaDataSetNotificacao, qNotificacao_Pessoa);
 
                       if Assigned(vaNotificacoes) then
                         begin
@@ -569,11 +634,13 @@ begin
         vaDataSetNotificacao.next;
       end;
   finally
+    if qNotificacao_Pessoa.ChangeCount > 0 then
+      qNotificacao_Pessoa.CancelUpdates;
+
+    qNotificacao_Pessoa.Close;
+
     vaDataSetNotificacao.close;
     vaDataSetNotificacao.Free;
-
-    vaDataSetNotificacaoPessoa.close;
-    vaDataSetNotificacaoPessoa.Free;
 
     vaDataSet.close;
     vaDataSet.Free;

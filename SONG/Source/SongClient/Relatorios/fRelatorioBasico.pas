@@ -10,7 +10,8 @@ uses
   dxSkinBlack, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, Data.DB, uClientDataSet,
   uTypes, cxCheckBox, dmuRelatorio, cxGroupBox, dxCheckGroupBox,
-  uControleAcesso;
+  uControleAcesso, ppComm, ppRelatv, ppProd, ppClass, ppReport, cxDateUtils,
+  Vcl.ComCtrls, dxCore, cxCalendar, ppParameter, ppCTCtrl, ppCtrls;
 
 type
   TfrmRelatorioBasico = class(TfrmBasico)
@@ -37,7 +38,7 @@ type
 
     function fprGetPermissao: String; virtual; abstract;
   public
-    constructor Create(AOwner: TComponent);override;
+    constructor Create(AOwner: TComponent); override;
   end;
 
 var
@@ -88,7 +89,7 @@ end;
 constructor TfrmRelatorioBasico.Create(AOwner: TComponent);
 begin
   inherited;
-  pprValidarPermissao(atVisualizar,fprGetPermissao);
+  pprValidarPermissao(atVisualizar, fprGetPermissao);
 end;
 
 procedure TfrmRelatorioBasico.FormCreate(Sender: TObject);

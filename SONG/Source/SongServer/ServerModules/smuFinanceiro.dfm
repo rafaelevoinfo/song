@@ -741,7 +741,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Id_Rubrica_Origem,'
       '       rubrica_origem.nome as rubrica_origem,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Origem,'
-      '       area_origem.nome as area_atuacao_origem,'
+      '       area_origem_atuacao.nome as area_atuacao_origem,'
       '       Conta_Pagar_Vinculo.Id_Projeto_Alocado,'
       '       projeto_alocado.nome as projeto_alocado,'
       '       Conta_Pagar_Vinculo.Id_Atividade_Alocado,'
@@ -749,7 +749,7 @@ inherited smFinanceiro: TsmFinanceiro
       '       Conta_Pagar_Vinculo.Id_Rubrica_Alocado,'
       '       rubrica_alocado.nome as rubrica_alocada,'
       '       Conta_Pagar_Vinculo.Id_Area_Atuacao_Alocado,'
-      '       area_alocado.nome as area_atuacao_alocada,'
+      '       area_alocado_atuacao.nome as area_atuacao_alocada,'
       '       Conta_Pagar_Vinculo.Id_Fundo_Alocado,'
       '       Fundo_Alocado.nome as Nome_Fundo_Alocado,'
       '       Conta_Pagar_Vinculo.Valor'
@@ -775,6 +775,9 @@ inherited smFinanceiro: TsmFinanceiro
         'left join projeto_area area_origem on (area_origem.id = conta_pa' +
         'gar_vinculo.id_area_atuacao_origem)'
       
+        'left join area_atuacao area_origem_atuacao on (area_origem_atuac' +
+        'ao.id = area_origem.id_area_atuacao)'
+      
         'left join projeto projeto_alocado on (projeto_alocado.id = conta' +
         '_pagar_vinculo.id_projeto_alocado)'
       
@@ -786,6 +789,9 @@ inherited smFinanceiro: TsmFinanceiro
       
         'left join projeto_area area_alocado on (area_alocado.id = conta_' +
         'pagar_vinculo.id_area_atuacao_alocado)'
+      
+        'left join area_atuacao area_alocado_atuacao on (area_alocado_atu' +
+        'acao.id = area_alocado.id_area_atuacao)'
       'where conta_pagar_vinculo.id_conta_pagar = :id_conta_pagar')
     Left = 408
     Top = 64

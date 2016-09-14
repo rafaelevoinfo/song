@@ -794,7 +794,9 @@ inherited smAdministrativo: TsmAdministrativo
       '       ATIVIDADE.ID_AREA_ATUACAO,'
       '       ATIVIDADE.ID_AREA_EXECUCAO,'
       '       AREA_ATUACAO.NOME AS AREA_ATUACAO,'
-      '       AREA_EXECUCAO.NOME AS AREA_EXECUCAO'
+      '       AREA_EXECUCAO.NOME AS AREA_EXECUCAO,'
+      '       Solicitante.nome as Nome_Solicitante,'
+      '       Responsavel.nome as Nome_Responsavel'
       'from ATIVIDADE  '
       
         'left join atividade_projeto on (ATIVIDADE_PROJETO.ID_ATIVIDADE =' +
@@ -806,6 +808,12 @@ inherited smAdministrativo: TsmAdministrativo
       
         'left join area_execucao on (area_execucao.id = atividade.id_area' +
         '_execucao)'
+      
+        'inner join pessoa solicitante on (solicitante.id = atividade.id_' +
+        'solicitante)'
+      
+        'inner join pessoa Responsavel on (Responsavel.id = atividade.id_' +
+        'Responsavel)'
       '&WHERE')
     Left = 360
     Top = 80
@@ -909,6 +917,20 @@ inherited smAdministrativo: TsmAdministrativo
     object qAtividadeAREA_EXECUCAO: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'AREA_EXECUCAO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qAtividadeNOME_SOLICITANTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_SOLICITANTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qAtividadeNOME_RESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_RESPONSAVEL'
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100

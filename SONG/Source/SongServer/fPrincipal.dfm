@@ -52,7 +52,7 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object Label8: TLabel
+    object lbLicenca: TLabel
       Left = 130
       Top = 57
       Width = 263
@@ -2172,6 +2172,15 @@ object frmPrincipal: TfrmPrincipal
         OnClick = bttLigarDesligarClick
       end
     end
+    object btnLicenca: TButton
+      Left = 130
+      Top = 73
+      Width = 97
+      Height = 25
+      Caption = 'Ativar Licen'#231'a'
+      TabOrder = 2
+      OnClick = btnLicencaClick
+    end
   end
   object cxPageControl1: TcxPageControl
     Left = 0
@@ -2235,7 +2244,7 @@ object frmPrincipal: TfrmPrincipal
           Style.BorderColor = clWindowFrame
           Style.BorderStyle = ebs3D
           Style.HotTrack = False
-          TabOrder = 0
+          TabOrder = 3
           Width = 375
         end
         object EditServidor: TcxTextEdit
@@ -2244,7 +2253,7 @@ object frmPrincipal: TfrmPrincipal
           Style.BorderColor = clWindowFrame
           Style.BorderStyle = ebs3D
           Style.HotTrack = False
-          TabOrder = 1
+          TabOrder = 0
           Width = 121
         end
         object EditUsuario: TcxTextEdit
@@ -2253,7 +2262,7 @@ object frmPrincipal: TfrmPrincipal
           Style.BorderColor = clWindowFrame
           Style.BorderStyle = ebs3D
           Style.HotTrack = False
-          TabOrder = 2
+          TabOrder = 1
           Width = 121
         end
         object EditSenha: TcxTextEdit
@@ -2264,7 +2273,7 @@ object frmPrincipal: TfrmPrincipal
           Style.BorderColor = clWindowFrame
           Style.BorderStyle = ebs3D
           Style.HotTrack = False
-          TabOrder = 3
+          TabOrder = 2
           Width = 121
         end
       end
@@ -2343,7 +2352,7 @@ object frmPrincipal: TfrmPrincipal
         Width = 833
         Height = 196
         Align = alClient
-        TabOrder = 0
+        TabOrder = 1
         object viewAtualizacoes: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           Navigator.Buttons.First.Visible = False
@@ -2396,7 +2405,7 @@ object frmPrincipal: TfrmPrincipal
         Height = 25
         Align = alTop
         BevelOuter = bvNone
-        TabOrder = 1
+        TabOrder = 0
         object btnAddAtualizacao: TButton
           Left = 75
           Top = 0
@@ -2404,7 +2413,7 @@ object frmPrincipal: TfrmPrincipal
           Height = 25
           Align = alLeft
           Caption = 'Excluir'
-          TabOrder = 0
+          TabOrder = 1
           OnClick = btnAddAtualizacaoClick
         end
         object btnDelAtualizacao: TButton
@@ -2414,7 +2423,7 @@ object frmPrincipal: TfrmPrincipal
           Height = 25
           Align = alLeft
           Caption = 'Adicionar'
-          TabOrder = 1
+          TabOrder = 0
           OnClick = btnDelAtualizacaoClick
         end
       end
@@ -2728,7 +2737,7 @@ object frmPrincipal: TfrmPrincipal
     end
   end
   object tmrTempo: TTimer
-    Interval = 60000
+    Interval = 6000
     OnTimer = tmrTempoTimer
     Left = 608
     Top = 200

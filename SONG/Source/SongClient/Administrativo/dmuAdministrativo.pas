@@ -202,6 +202,8 @@ type
     cdsAtividadeAREA_ATUACAO: TStringField;
     cdsAtividadeAREA_EXECUCAO: TStringField;
     cdsOrganizacaoLOGO_SECUNDARIA: TBlobField;
+    cdsAtividadeNOME_SOLICITANTE: TStringField;
+    cdsAtividadeNOME_RESPONSAVEL: TStringField;
   private
     { Private declarations }
   public

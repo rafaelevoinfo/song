@@ -853,6 +853,16 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = []
       Size = 100
     end
+    object cdsAtividadeNOME_SOLICITANTE: TStringField
+      FieldName = 'NOME_SOLICITANTE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsAtividadeNOME_RESPONSAVEL: TStringField
+      FieldName = 'NOME_RESPONSAVEL'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsAtividade_Projeto: TRFClientDataSet
     Aggregates = <>

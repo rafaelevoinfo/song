@@ -3,7 +3,7 @@ program SongServer;
 uses
   {$IFDEF DEBUG}
   FastMM4,
-  {$ENDIF}
+  {$ENDIF }
   Vcl.Forms,
   Web.WebReq,
   IdHTTPWebBrokerBridge,
@@ -34,7 +34,8 @@ uses
   uBackup in 'uBackup.pas',
   smuSistema in 'ServerModules\smuSistema.pas' {smSistema: TDSServerModule},
   smuFuncoesSistema in 'ServerModules\Funcoes\smuFuncoesSistema.pas' {smFuncoesSistema: TDSServerModule},
-  uEnviarEmail in '..\Comuns\uEnviarEmail.pas';
+  uEnviarEmail in '..\Comuns\uEnviarEmail.pas',
+  uSMBIOS in 'uSMBIOS.pas';
 
 {$R *.res}
 

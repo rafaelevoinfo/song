@@ -191,6 +191,15 @@ type
     qTubete_SemeadoID_ESPECIE: TIntegerField;
     qTubete_SemeadoNOME: TStringField;
     qTubete_SemeadoNOME_CIENTIFICO: TStringField;
+    qConta_Pagar: TRFQuery;
+    qConta_PagarID: TIntegerField;
+    qConta_PagarID_VINCULO: TIntegerField;
+    qConta_PagarRAZAO_SOCIAL: TStringField;
+    qConta_PagarCPF_CNPJ: TStringField;
+    qConta_PagarNUMERO_DOCUMENTO: TStringField;
+    qConta_PagarDATA_PAGAMENTO: TDateField;
+    qConta_PagarVALOR: TBCDField;
+    qConta_PagarVALOR_PAGO: TBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private
@@ -281,6 +290,13 @@ begin
       else if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
     end
+  else if (ipTabela = 'LOTE_SEMENTE_VENDIDO') or (ipTabela = 'LOTE_MUDA_VENDIDO') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, 'VENDA', 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1), vaOperador)
+      else if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
+    end
   else if (ipTabela = 'VIEW_MOVIMENTACAO_FINANCEIRA') then
     begin
       if ipParam.Name = TParametros.coData then
@@ -345,6 +361,12 @@ begin
     begin
       if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
+    end
+  else if (ipTabela = 'CONTA_PAGAR') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterDataSemHora(Result, 'VIEW_CONTA_PAGAR', 'DATA', TUtils.fpuExtrairData(vaValor, 0),
+          TUtils.fpuExtrairData(vaValor, 1), vaOperador);
     end;
 end;
 

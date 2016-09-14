@@ -4,6 +4,7 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
+  ExplicitTop = -24
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -17,6 +18,8 @@ inherited frmContaPagar: TfrmContaPagar
     ClientRectBottom = 487
     ClientRectRight = 990
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnPesquisa: TPanel
@@ -289,7 +292,10 @@ inherited frmContaPagar: TfrmContaPagar
             ClientRectRight = 977
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
               ExplicitWidth = 975
+              ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
                 Width = 975
                 ExplicitWidth = 975
@@ -569,6 +575,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel
@@ -588,7 +596,7 @@ inherited frmContaPagar: TfrmContaPagar
           Align = alClient
           TabOrder = 0
           TabStop = False
-          Properties.ActivePage = tabInfoGeral
+          Properties.ActivePage = tabVinculo
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 406
           ClientRectLeft = 2
@@ -826,7 +834,7 @@ inherited frmContaPagar: TfrmContaPagar
                   Left = 3
                   Top = 17
                   Properties.MinValue = 1.000000000000000000
-                  TabOrder = 1
+                  TabOrder = 0
                   Value = 1
                   Width = 76
                 end
@@ -835,7 +843,7 @@ inherited frmContaPagar: TfrmContaPagar
                   Top = 17
                   Properties.SaveTime = False
                   Properties.ShowTime = False
-                  TabOrder = 2
+                  TabOrder = 1
                   Width = 125
                 end
                 object btnIncluirParcelas: TButton
@@ -845,7 +853,7 @@ inherited frmContaPagar: TfrmContaPagar
                   Height = 37
                   Action = Ac_Gerar_Parcelas
                   Images = dmPrincipal.imgIcons_32
-                  TabOrder = 0
+                  TabOrder = 2
                 end
               end
             end
@@ -1092,16 +1100,16 @@ inherited frmContaPagar: TfrmContaPagar
                     Top = 15
                     RepositoryItem = dmLookup.repLcbRubricaAtividade
                     Properties.ListColumns = <>
-                    TabOrder = 0
+                    TabOrder = 1
                     Width = 170
                   end
                   object cbAtividadeOrigem: TcxLookupComboBox
                     Left = 0
-                    Top = 16
+                    Top = 15
                     RepositoryItem = dmLookup.repLcbAtividade
                     Properties.ListColumns = <>
                     Properties.OnEditValueChanged = cbAtividadePropertiesEditValueChanged
-                    TabOrder = 2
+                    TabOrder = 0
                     Width = 200
                   end
                   object cbAreaAtuacaoOrigem: TcxLookupComboBox
@@ -1109,7 +1117,7 @@ inherited frmContaPagar: TfrmContaPagar
                     Top = 15
                     RepositoryItem = dmLookup.repLcbProjeto_Area_Atividade
                     Properties.ListColumns = <>
-                    TabOrder = 1
+                    TabOrder = 2
                     Width = 170
                   end
                 end
@@ -1290,13 +1298,13 @@ inherited frmContaPagar: TfrmContaPagar
                 Height = 39
                 Action = Ac_Incluir_Vinculo
                 Images = dmPrincipal.imgIcons_32
-                TabOrder = 0
+                TabOrder = 1
               end
               object EditValorVinculo: TcxCurrencyEdit
                 Left = 3
                 Top = 20
                 RepositoryItem = dmLookup.repCurPadrao
-                TabOrder = 1
+                TabOrder = 0
                 Width = 121
               end
             end
@@ -1467,6 +1475,8 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastroDetail: TPanel

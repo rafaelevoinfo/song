@@ -7,8 +7,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   inherited pnBotoes: TPanel
     Height = 426
     TabOrder = 1
-    ExplicitLeft = 44
-    ExplicitTop = 98
     ExplicitHeight = 426
   end
   inherited pnConfiguracoes: TPanel
@@ -23,7 +21,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabTubetesSemeados
+      Properties.ActivePage = tabLoteMudaComprado
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 421
       ClientRectLeft = 2
@@ -160,12 +158,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 114
+                Height = 15
                 Caption = 'Esp'#233'cies dispon'#237'veis'
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 439
                 Width = 124
+                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 439
                 ExplicitWidth = 124
@@ -465,8 +465,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabTubetesSemeados: TcxTabSheet
         Caption = 'Tubetes Semeados'
         ImageIndex = 5
-        ExplicitLeft = -230
-        ExplicitTop = -24
         object lb3: TLabel
           Left = 6
           Top = 3
@@ -4397,7 +4395,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   end
   object DBPipeLote_Muda_Vendido: TppDBPipeline
     DataSource = dsLote_Muda_Vendido
-    UserName = 'DBPipeLote_Semente_Vendido1'
+    UserName = 'DBPipeLote_Muda_Vendido'
     Left = 224
     Top = 280
     object DBPipeLote_Muda_VendidoppField1: TppField

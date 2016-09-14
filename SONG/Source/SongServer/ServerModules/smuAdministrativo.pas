@@ -197,6 +197,8 @@ type
     qAtividadeAREA_ATUACAO: TStringField;
     qAtividadeAREA_EXECUCAO: TStringField;
     qOrganizacaoLOGO_SECUNDARIA: TBlobField;
+    qAtividadeNOME_SOLICITANTE: TStringField;
+    qAtividadeNOME_RESPONSAVEL: TStringField;
     procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
     procedure dspqAtividadeAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;

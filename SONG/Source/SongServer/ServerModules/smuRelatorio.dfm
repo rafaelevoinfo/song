@@ -1827,4 +1827,78 @@ inherited smRelatorio: TsmRelatorio
       Size = 100
     end
   end
+  object qConta_Pagar: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select View_Conta_Pagar.Id,'
+      '       View_Conta_Pagar.Id_Vinculo,'
+      '       Fin_For_Cli.Razao_Social,'
+      '       Fin_For_Cli.Cpf_Cnpj,'
+      '       Conta_Pagar.Numero_Documento,'
+      '       View_Conta_Pagar.Data_Pagamento,'
+      '       View_Conta_Pagar.Valor,'
+      '       View_Conta_Pagar.Valor_Pago'
+      'from View_Conta_Pagar'
+      'inner join Conta_Pagar on (View_Conta_Pagar.Id = Conta_Pagar.Id)'
+      
+        'left join Fin_For_Cli on (Fin_For_Cli.Id = Conta_Pagar.Id_Fornec' +
+        'edor)  '
+      '&WHERE'
+      'order by Fin_For_Cli.Razao_Social')
+    Left = 328
+    Top = 280
+    MacroData = <
+      item
+        Value = 'WHERE VIEW_CONTA_PAGAR.ID = 0'
+        Name = 'WHERE'
+      end>
+    object qConta_PagarID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+    end
+    object qConta_PagarID_VINCULO: TIntegerField
+      FieldName = 'ID_VINCULO'
+      Origin = 'ID_VINCULO'
+    end
+    object qConta_PagarRAZAO_SOCIAL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RAZAO_SOCIAL'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qConta_PagarCPF_CNPJ: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 18
+    end
+    object qConta_PagarNUMERO_DOCUMENTO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NUMERO_DOCUMENTO'
+      Origin = 'NUMERO_DOCUMENTO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 30
+    end
+    object qConta_PagarDATA_PAGAMENTO: TDateField
+      FieldName = 'DATA_PAGAMENTO'
+      Origin = 'DATA_PAGAMENTO'
+    end
+    object qConta_PagarVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      Precision = 18
+      Size = 2
+    end
+    object qConta_PagarVALOR_PAGO: TBCDField
+      FieldName = 'VALOR_PAGO'
+      Origin = 'VALOR_PAGO'
+      Precision = 18
+      Size = 2
+    end
+  end
 end

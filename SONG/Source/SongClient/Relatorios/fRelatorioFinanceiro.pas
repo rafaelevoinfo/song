@@ -422,6 +422,45 @@ type
     ppDBCalc19: TppDBCalc;
     ppDBCalc20: TppDBCalc;
     Label11: TLabel;
+    tabContasPagar: TcxTabSheet;
+    cgbContasPagarData: TdxCheckGroupBox;
+    lb6: TLabel;
+    lb7: TLabel;
+    EditDataFinalContaPagar: TcxDateEdit;
+    EditDataInicialContaPagar: TcxDateEdit;
+    dsConta_Pagar: TDataSource;
+    DBPipeConta_Pagar: TppDBPipeline;
+    ppConta_Pagar: TppReport;
+    ppHeaderBand10: TppHeaderBand;
+    ppLabel56: TppLabel;
+    ppDBImage10: TppDBImage;
+    ppSystemVariable28: TppSystemVariable;
+    ppSystemVariable29: TppSystemVariable;
+    ppLabel57: TppLabel;
+    ppLabel58: TppLabel;
+    ppLabel59: TppLabel;
+    ppDetailBand9: TppDetailBand;
+    ppDBText69: TppDBText;
+    ppDBText70: TppDBText;
+    ppDBText71: TppDBText;
+    ppFooterBand10: TppFooterBand;
+    ppLabel60: TppLabel;
+    ppDBText72: TppDBText;
+    ppDBText73: TppDBText;
+    ppSystemVariable30: TppSystemVariable;
+    ppSummaryBand7: TppSummaryBand;
+    ppLabel61: TppLabel;
+    ppDBCalc21: TppDBCalc;
+    raCodeModule7: TraCodeModule;
+    ppDesignLayers10: TppDesignLayers;
+    ppDesignLayer10: TppDesignLayer;
+    ppParameterList10: TppParameterList;
+    ppLabel62: TppLabel;
+    ppLabel63: TppLabel;
+    ppLabel64: TppLabel;
+    ppDBText74: TppDBText;
+    ppDBText75: TppDBText;
+    ppDBText76: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);
@@ -451,6 +490,7 @@ type
     procedure ppvGerarlRelatorioGastoFornecedor;
     procedure ppvGerarRelatorioGastoAtividade;
     procedure ppvGerarRelatorioGastoPlanoContas;
+    procedure ppvGerarRelatorioContaPagar;
   protected
     function fprGetPermissao: String; override;
   public
@@ -553,7 +593,7 @@ begin
             dmRelatorio.cdsSaldo.ppuAddParametro(TParametros.coFundo, vaIdFundo);
         end;
       if dmRelatorio.cdsSaldo.Parametros.Count = 0 then
-        dmRelatorio.cdsSaldo.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA'])
+        dmRelatorio.cdsSaldo.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'])
       else
         dmRelatorio.cdsSaldo.ppuDataRequest();
 
@@ -586,8 +626,27 @@ begin
   else if pcPrincipal.ActivePage = tabGastoAtividade then
     ppvGerarRelatorioGastoAtividade
   else if pcPrincipal.ActivePage = tabGastoPlanoContas then
-    ppvGerarRelatorioGastoPlanoContas;
+    ppvGerarRelatorioGastoPlanoContas
+  else if pcPrincipal.ActivePage = tabContasPagar then
+    ppvGerarRelatorioContaPagar;
 
+end;
+
+procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioContaPagar;
+begin
+
+  dmRelatorio.cdsConta_Pagar.ppuLimparParametros;
+  dmRelatorio.cdsConta_Pagar.ppuAddParametro(TParametros.coTodos,'NAO_IMPORTA');
+  if cgbContasPagarData.CheckBox.Checked then
+    begin
+      if (VarIsNull(EditDataInicialContaPagar.EditValue)) or (VarIsNull(EditDataFinalContaPagar.EditValue)) then
+        raise Exception.Create('Informe a data inicial e final para que seja possível gerar o relatório.');
+
+      dmRelatorio.cdsConta_Pagar.ppuAddParametro(TParametros.coData, TUtils.fpuMontarDataBetween(EditDataInicialContaPagar.Date, EditDataFinalContaPagar.Date));
+    end;
+  dmRelatorio.cdsConta_Pagar.ppuDataRequest();
+
+  ppConta_Pagar.PrintReport;
 end;
 
 procedure TfrmRelatorioFinanceiro.ppvGerarRelatorioGastoPlanoContas;

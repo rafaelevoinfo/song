@@ -17,7 +17,9 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuPrincipal, cxMemo,
   uClientDataSet, System.IOUtils, Vcl.ExtDlgs, uUtils,
   System.RegularExpressions, System.DateUtils, cxLocalization, System.Types,
-  fAreaAtuacao, uExceptions, Datasnap.DBClient;
+  fAreaAtuacao, uExceptions, Datasnap.DBClient, ppDB, ppDBPipe, ppParameter,
+  ppDesignLayer, ppVar, ppCtrls, ppBands, ppPrnabl, ppClass, ppCache, ppComm,
+  ppRelatv, ppProd, ppReport, ppStrtch, ppRegion, ppMemo;
 
 type
   TfrmAtividade = class(TfrmBasicoCrudMasterDetail)
@@ -186,6 +188,55 @@ type
     viewRegistrosID_AREA_EXECUCAO: TcxGridDBColumn;
     viewRegistrosAREA_ATUACAO: TcxGridDBColumn;
     viewRegistrosAREA_EXECUCAO: TcxGridDBColumn;
+    ppOrdemServico: TppReport;
+    ppHeaderBand1: TppHeaderBand;
+    ppDBText1: TppDBText;
+    ppDBText2: TppDBText;
+    ppLabel2: TppLabel;
+    ppLabel3: TppLabel;
+    ppLine1: TppLine;
+    ppLabel4: TppLabel;
+    ppDBText3: TppDBText;
+    ppLabel8: TppLabel;
+    ppDBImage2: TppDBImage;
+    ppDBImage1: TppDBImage;
+    ppDetailBand1: TppDetailBand;
+    ppFooterBand1: TppFooterBand;
+    ppShape1: TppShape;
+    ppDBText5: TppDBText;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppDBText10: TppDBText;
+    ppDBText11: TppDBText;
+    ppLabel6: TppLabel;
+    ppSummaryBand1: TppSummaryBand;
+    ppSystemVariable1: TppSystemVariable;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppParameterList1: TppParameterList;
+    DBPipeAtividade: TppDBPipeline;
+    DBPipeOrganizacao: TppDBPipeline;
+    ColumnImprimirOS: TcxGridDBColumn;
+    Ac_Imprimir_OS: TAction;
+    ppDBText4: TppDBText;
+    ppLabel1: TppLabel;
+    ppDBText18: TppDBText;
+    ppLabel5: TppLabel;
+    ppLabel9: TppLabel;
+    ppDBText19: TppDBText;
+    ppLabel10: TppLabel;
+    ppDBText20: TppDBText;
+    ppLabel11: TppLabel;
+    ppDBMemo1: TppDBMemo;
+    ppRegion1: TppRegion;
+    ppDBText12: TppDBText;
+    ppLine2: TppLine;
+    ppDBText13: TppDBText;
+    ppLine3: TppLine;
+    ppLabel12: TppLabel;
+    ppSystemVariable2: TppSystemVariable;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -215,6 +266,7 @@ type
       Shift: TShiftState);
     procedure Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
     procedure cbAreaAtuacaoPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Imprimir_OSExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     dmAdministrativo: TdmAdministrativo;
@@ -300,6 +352,21 @@ procedure TfrmAtividade.Ac_DownloadExecute(Sender: TObject);
 begin
   inherited;
   ppuBaixarArquivo(dmAdministrativo.cdsAtividade_ArquivoID.AsInteger);
+end;
+
+procedure TfrmAtividade.Ac_Imprimir_OSExecute(Sender: TObject);
+begin
+  inherited;
+  if not dmLookup.cdslkOrganizacao.Active then
+    dmLookup.cdslkOrganizacao.Open;
+
+  // Precisa desabilitar os controles pq senao da um erro de parameter incorrect ao desenhar o cxGrid
+  dmAdministrativo.cdsAtividade.DisableControls;
+  try
+    ppOrdemServico.PrintReport;
+  finally
+    dmAdministrativo.cdsAtividade.EnableControls;
+  end;
 end;
 
 procedure TfrmAtividade.Ac_Pesquisar_AtividadeExecute(Sender: TObject);

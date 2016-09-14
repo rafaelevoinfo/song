@@ -19,7 +19,7 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   FireDAC.Phys.IBWrapper, FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.IBBase,
   System.Actions, Vcl.ActnList, cxCheckBox, IdBaseComponent, IdComponent,
   IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdFTP,
-  Vcl.ComCtrls, smuFuncoesSistema, aduna_ds_list;
+  Vcl.ComCtrls, smuFuncoesSistema, aduna_ds_list, uSMBIOS;
 
 type
   TfrmPrincipal = class(TForm)
@@ -43,7 +43,7 @@ type
     EditPorta: TcxSpinEdit;
     imgLogo: TcxImage;
     Label7: TLabel;
-    Label8: TLabel;
+    lbLicenca: TLabel;
     tabLog: TcxTabSheet;
     pnStatus: TPanel;
     lbStatus: TLabel;
@@ -106,6 +106,7 @@ type
     EditHostFtp: TcxTextEdit;
     btnRealizarBackup: TButton;
     statusBar: TStatusBar;
+    btnLicenca: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bttLigarDesligarClick(Sender: TObject);
@@ -116,7 +117,9 @@ type
     procedure Ac_Localizar_Pasta_RedeExecute(Sender: TObject);
     procedure Ac_Salvar_ConfiguracoesExecute(Sender: TObject);
     procedure btnRealizarBackupClick(Sender: TObject);
+    procedure btnLicencaClick(Sender: TObject);
   private
+    FLicencaValida: Boolean;
     FThreadBackup: TThreadBackup;
     FUltimaData: TDate;
     FHoraUltimoBackup: TDateTime;
@@ -127,14 +130,20 @@ type
     procedure ppvEnviarEmailNotificacao;
     procedure ppvFinalizarThreadBackup;
     procedure ppvConfigurarThreadBackup;
+    procedure ppvCarregarLicenca;
+    function fpvExtrairNumeroSerie: String;
     { Private declarations }
   public
     procedure ppuAdicionarErroLog(ipException: Exception); overload;
     procedure ppuAdicionarErroLog(ipErro: String); overload;
+
   end;
 
 var
   frmPrincipal: TfrmPrincipal;
+
+const
+  coLicenca = 'licenca.rfc';
 
 implementation
 
@@ -186,6 +195,31 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.btnLicencaClick(Sender: TObject);
+var
+  vaSenha, vaNumeroSerie: String;
+begin
+  if InputQuery('Informe a senha de ativação', 'Senha de Ativação', vaSenha) then
+    begin
+      if TUtils.fpuCriptografarSha1(vaSenha) = '7CF0488FBF273704444494B01527892C37C2C59A' then
+        begin
+          if Tfile.Exists(coLicenca) then
+            Tfile.Delete(coLicenca);
+
+          vaNumeroSerie := fpvExtrairNumeroSerie;
+          if vaNumeroSerie <> '' then
+            begin
+              Tfile.WriteAllText(coLicenca, TUtils.fpuCriptografarSha1(vaNumeroSerie));
+              ppvCarregarLicenca;
+            end
+          else
+            TMensagem.ppuShowMessage('Não foi possível encontrar nenhuma informação unica para gerar a licença.');
+        end
+      else
+        TMensagem.ppuShowException('Senha incorreta.',nil);
+    end;
+end;
+
 procedure TfrmPrincipal.btnRealizarBackupClick(Sender: TObject);
 begin
   ppvEfetuarBackup;
@@ -213,6 +247,8 @@ begin
 
   FHoraUltimoBackup := StrToDateTimeDef(lbHoraUltimoBackup.Caption, 0);
 
+  ppvCarregarLicenca;
+
   ppvIniciarFinalizarServidor(true);
 
   cdsAtualizacoes.Data := dmPrincipal.fpuCarregarAtualizacoes;
@@ -220,14 +256,60 @@ end;
 
 procedure TfrmPrincipal.ppuAdicionarErroLog(ipException: Exception);
 begin
-  ppuAdicionarErroLog(ipException);
+  ppuAdicionarErroLog(ipException.Message);
+end;
+
+function TfrmPrincipal.fpvExtrairNumeroSerie: String;
+var
+  vaBios: TSMBios;
+begin
+  vaBios := TSMBios.Create;
+  try
+    if vaBios.HasBaseBoardInfo then
+      Result := vaBios.BaseBoardInfo[0].SerialNumberStr
+    else if vaBios.HasProcessorInfo then
+      vaBios.ProcessorInfo[0].SerialNumberStr
+    else
+      Result := '';
+  finally
+    vaBios.Free;
+  end;
+end;
+
+procedure TfrmPrincipal.ppvCarregarLicenca;
+var
+  vaNumeroSerie: String;
+begin
+  FLicencaValida := false;
+  if Tfile.Exists(coLicenca) then
+    begin
+      vaNumeroSerie := fpvExtrairNumeroSerie;
+      if vaNumeroSerie <> '' then
+        FLicencaValida := Tfile.ReadAllText(coLicenca) = TUtils.fpuCriptografarSha1(vaNumeroSerie)
+      else
+        TMensagem.ppuShowMessage('Não foi possível encontrar nenhuma informação unica para gerar a licença.');
+    end;
+
+  if not FLicencaValida then
+    begin
+      lbLicenca.Font.Color := clRed;
+      lbLicenca.Caption := 'O sistema não está ativo.';
+      ppvIniciarFinalizarServidor(false);
+    end
+  else
+    begin
+      lbLicenca.Font.Color := clBlack;
+      lbLicenca.Caption := 'Licenciado para Oréades Núcleo de Geoprocessamento';
+      ppvIniciarFinalizarServidor(true);
+    end;
 end;
 
 procedure TfrmPrincipal.ppuAdicionarErroLog(ipErro: String);
 var
   vaProc: TThreadProcedure;
 begin
-  vaProc := procedure
+  vaProc :=
+      procedure
     begin
       if not cdsLog.Active then
         cdsLog.CreateDataSet;
@@ -277,13 +359,15 @@ begin
       FThreadBackup.HoraBackup := EditHoraBackup.Time;
       FThreadBackup.Backup := vaBackup;
 
-      FThreadBackup.OnStartBackup := procedure
+      FThreadBackup.OnStartBackup :=
+          procedure
         begin
           statusBar.Panels[0].Text := 'Efetuando backup...';
           Application.ProcessMessages;
         end;
 
-      FThreadBackup.OnFinishBackup := procedure
+      FThreadBackup.OnFinishBackup :=
+          procedure
         begin
           FHoraUltimoBackup := Now;
           statusBar.Panels[0].Text := '';
@@ -303,6 +387,12 @@ begin
   try
     if ipIniciar then
       begin
+        if not FLicencaValida then
+          begin
+            TMensagem.ppuShowMessage('Não é possível inicial o servidor enquanto uma licença não for ativada.');
+            Exit;
+          end;
+
         dmPrincipal.ppuIniciarServidor(EditServidor.Text, EditEnderecoBanco.Text,
           EditUsuario.Text, EditSenha.Text, EditPorta.Value);
 
@@ -347,7 +437,7 @@ begin
   vaFuncoesSistema := TsmFuncoesSistema.Create(nil);
   try
     // preciso apenas enviar os email aqui.
-    vaNotificacoes := vaFuncoesSistema.fpuVerificarNotificacoes(-1, -1, -1, true,false);
+    vaNotificacoes := vaFuncoesSistema.fpuVerificarNotificacoes(-1, -1, -1, true, false);
     if Assigned(vaNotificacoes) then
       vaNotificacoes.Free;
   finally
