@@ -446,6 +446,10 @@ begin
       if VarIsNull(EditDataPrevisao.EditValue) then
         raise TControlException.Create('Informe a data para qual deseja saber a previsão de produção.', EditDataPrevisao);
 
+      if (not cdsEspecieSelecionada.Active) or (cdsEspecieSelecionada.recordCount = 0) then
+        raise Exception.Create('Selecione pelo menos uma espécie.');
+
+
       if cdsParametros.Active then
         cdsParametros.EmptyDataSet
       else

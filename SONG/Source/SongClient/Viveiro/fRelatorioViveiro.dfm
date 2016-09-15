@@ -21,7 +21,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabLoteMudaComprado
+      Properties.ActivePage = tabPrevisaoProducao
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 421
       ClientRectLeft = 2
@@ -158,14 +158,12 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 114
-                Height = 15
                 Caption = 'Esp'#233'cies dispon'#237'veis'
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
                 Left = 439
                 Width = 124
-                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 439
                 ExplicitWidth = 124

@@ -1,6 +1,7 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
   ClientWidth = 1028
+  ExplicitTop = -165
   ExplicitWidth = 1044
   PixelsPerInch = 96
   TextHeight = 13
@@ -19,7 +20,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Align = alClient
       TabOrder = 0
       TabStop = False
-      Properties.ActivePage = tabGastoFornecedor
+      Properties.ActivePage = tabGastoPlanoContas
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 622
       ClientRectLeft = 2
@@ -580,11 +581,11 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         end
       end
       object tabContasPagar: TcxTabSheet
-        Caption = 'Contas a Pagar'
+        Caption = 'Cont'#225'bil'
         ImageIndex = 8
-        object cgbContasPagarData: TdxCheckGroupBox
-          Left = 1
-          Top = 3
+        object cgbDataContabil: TdxCheckGroupBox
+          Left = 4
+          Top = 116
           Caption = 'Filtrar por Per'#237'odo'
           TabOrder = 0
           Height = 61
@@ -603,19 +604,71 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Height = 13
             Caption = 'Data Final'
           end
-          object EditDataFinalContaPagar: TcxDateEdit
+          object EditDataFinalContabil: TcxDateEdit
             Left = 140
             Top = 30
             Properties.ShowTime = False
             TabOrder = 1
             Width = 135
           end
-          object EditDataInicialContaPagar: TcxDateEdit
+          object EditDataInicialContabil: TcxDateEdit
             Left = 3
             Top = 30
             Properties.ShowTime = False
             TabOrder = 0
             Width = 135
+          end
+        end
+        object cgbProjetoContabil: TdxCheckGroupBox
+          Left = 4
+          Top = 3
+          Caption = 'Projeto'
+          Properties.OnEditValueChanged = cgbProjetoSaldoPropertiesEditValueChanged
+          TabOrder = 1
+          Height = 51
+          Width = 341
+          object cbProjetoContabil: TcxLookupComboBox
+            Left = 4
+            Top = 21
+            RepositoryItem = dmLookup.repLcbProjeto
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 280
+          end
+          object chkTodosProjetoContabil: TcxCheckBox
+            Left = 286
+            Top = 22
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkTodosProjetoContabilPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
+          end
+        end
+        object cgbContaContabil: TdxCheckGroupBox
+          Left = 4
+          Top = 60
+          Caption = 'Conta'
+          Properties.OnEditValueChanged = cgbProjetoSaldoPropertiesEditValueChanged
+          TabOrder = 2
+          Height = 52
+          Width = 341
+          object cbContaContabil: TcxLookupComboBox
+            Left = 3
+            Top = 18
+            RepositoryItem = dmLookup.repLcbFundo
+            Properties.ListColumns = <>
+            TabOrder = 0
+            Width = 281
+          end
+          object chkTodasContaContabil: TcxCheckBox
+            Left = 286
+            Top = 19
+            Caption = 'Todos'
+            Properties.OnEditValueChanged = chkTodasContaContabilPropertiesEditValueChanged
+            TabOrder = 1
+            Transparent = True
+            Width = 69
           end
         end
       end
@@ -625,6 +678,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Width = 1025
     TabOrder = 0
     ExplicitWidth = 1025
+    inherited chkTodasOrganizacoes: TcxCheckBox
+      ExplicitHeight = 19
+    end
   end
   inherited ActionList: TActionList
     Left = 504
@@ -640,143 +696,174 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 848
     Top = 296
     object DBPipeMovimentacaoppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_MOVIMENTACAO'
       FieldName = 'ID_MOVIMENTACAO'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField2: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_ORGANIZACAO'
       FieldName = 'ID_ORGANIZACAO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField3: TppField
       FieldAlias = 'NOME_ORGANIZACAO'
       FieldName = 'NOME_ORGANIZACAO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField4: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_ORIGEM_RECURSO'
       FieldName = 'ID_ORIGEM_RECURSO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField5: TppField
       FieldAlias = 'ID_UNICO_ORIGEM_RECURSO'
       FieldName = 'ID_UNICO_ORIGEM_RECURSO'
-      FieldLength = 19
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField6: TppField
       FieldAlias = 'ORIGEM_RECURSO'
       FieldName = 'ORIGEM_RECURSO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField7: TppField
-      Alignment = taRightJustify
       FieldAlias = 'TIPO'
       FieldName = 'TIPO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField8: TppField
       FieldAlias = 'DESCRICAO_TIPO'
       FieldName = 'DESCRICAO_TIPO'
-      FieldLength = 8
-      DisplayWidth = 8
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField9: TppField
       FieldAlias = 'DESCRICAO_MOVIMENTACAO'
       FieldName = 'DESCRICAO_MOVIMENTACAO'
-      FieldLength = 124
-      DisplayWidth = 124
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField10: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtDate
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField11: TppField
       FieldAlias = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
-      DataType = dtDate
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 10
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField12: TppField
-      Alignment = taRightJustify
       FieldAlias = 'FORMA_PAGAMENTO_RECEBIMENTO'
       FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 11
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField13: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL'
       FieldName = 'VALOR_TOTAL'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 12
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField14: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL_PAGO_RECEBIDO'
       FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 13
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField15: TppField
-      Alignment = taRightJustify
       FieldAlias = 'CALC_VALOR_RESTANTE'
       FieldName = 'CALC_VALOR_RESTANTE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 14
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField16: TppField
-      Alignment = taRightJustify
       FieldAlias = 'CALC_SALDO'
       FieldName = 'CALC_SALDO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 15
+      Searchable = False
+      Sortable = False
     end
     object DBPipeMovimentacaoppField17: TppField
       FieldAlias = 'CALC_DESCRICAO_FORMA_PGTO'
       FieldName = 'CALC_DESCRICAO_FORMA_PGTO'
-      FieldLength = 120
-      DisplayWidth = 120
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 16
+      Searchable = False
+      Sortable = False
     end
   end
   object dsView_Movimentacao_Financeira: TDataSource
@@ -5343,7 +5430,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 10
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeGasto_Plano_ContasppField2: TppField
@@ -5872,9 +5959,28 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           VerticalAlignment = avCenter
           DataPipelineName = 'DBPipeGasto_Plano_Contas'
           mmHeight = 4763
-          mmLeft = 2117
+          mmLeft = 15635
           mmTop = 529
-          mmWidth = 194734
+          mmWidth = 182803
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer10
+        end
+        object ppLabel65: TppLabel
+          DesignLayer = ppDesignLayer8
+          UserName = 'Label65'
+          Caption = 'Rubrica:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 2117
+          mmTop = 1126
+          mmWidth = 12435
           BandType = 3
           GroupNo = 1
           LayerName = BandLayer10
@@ -5953,124 +6059,100 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 16
     Top = 320
     object DBPipeGasto_Plano_Contas_DetalhadoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField3: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_PROJETO'
       FieldName = 'ID_PROJETO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField4: TppField
       FieldAlias = 'PROJETO'
       FieldName = 'PROJETO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField5: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_FUNDO'
       FieldName = 'ID_FUNDO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField6: TppField
       FieldAlias = 'NOME_FUNDO'
       FieldName = 'NOME_FUNDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField7: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_RUBRICA'
       FieldName = 'ID_RUBRICA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField8: TppField
       FieldAlias = 'RUBRICA'
       FieldName = 'RUBRICA'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField9: TppField
       FieldAlias = 'DESCRICAO'
       FieldName = 'DESCRICAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 8
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField10: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL'
       FieldName = 'VALOR_TOTAL'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 9
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField11: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_PAGO'
       FieldName = 'VALOR_PAGO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 10
-      Searchable = False
-      Sortable = False
     end
     object DBPipeGasto_Plano_Contas_DetalhadoppField12: TppField
       FieldAlias = 'CALC_ORIGEM'
       FieldName = 'CALC_ORIGEM'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 200
+      DisplayWidth = 200
       Position = 11
-      Searchable = False
-      Sortable = False
     end
   end
   object ppGasto_Plano_Contas_Detalhado: TppReport
@@ -6459,9 +6541,28 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           VerticalAlignment = avCenter
           DataPipelineName = 'DBPipeGasto_Plano_Contas_Detalhado'
           mmHeight = 4763
-          mmLeft = 2117
+          mmLeft = 15635
           mmTop = 529
-          mmWidth = 194734
+          mmWidth = 183525
+          BandType = 3
+          GroupNo = 1
+          LayerName = BandLayer101
+        end
+        object ppLabel66: TppLabel
+          DesignLayer = ppDesignLayer9
+          UserName = 'Label66'
+          Caption = 'Rubrica:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 2275
+          mmTop = 552
+          mmWidth = 12435
           BandType = 3
           GroupNo = 1
           LayerName = BandLayer101
@@ -6709,7 +6810,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       Position = 7
     end
   end
-  object ppConta_Pagar: TppReport
+  object ppContabil: TppReport
     AutoStop = False
     DataPipeline = DBPipeConta_Pagar
     PrinterSetup.BinName = 'Default'
@@ -6774,7 +6875,8 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel56: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label1'
-        Caption = 'Contas a Pagar'
+        AutoSize = False
+        Caption = 'Relat'#243'rio Cont'#225'bil'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -6784,9 +6886,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
-        mmLeft = 81492
+        mmLeft = 74537
         mmTop = 17198
-        mmWidth = 30956
+        mmWidth = 47625
         BandType = 0
         LayerName = BandLayer11
       end
@@ -7169,7 +7271,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel61: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label14'
-        Caption = 'Total:'
+        Caption = 'Total Pago:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -7178,9 +7280,9 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         FormField = False
         Transparent = True
         mmHeight = 4233
-        mmLeft = 156901
+        mmLeft = 149157
         mmTop = 0
-        mmWidth = 9525
+        mmWidth = 19315
         BandType = 7
         LayerName = BandLayer11
       end
