@@ -350,29 +350,29 @@ var
               vaDataSetEnvolvidos.ParamByName('ID').AsInteger := vaDataSet.FieldByName('ID').AsInteger;
               vaDataSetEnvolvidos.Open();
 
-              if vaDataSetEnvolvidos.Locate('ID_SOLICITANTE', ipIdPessoa, []) or
+              if (vaDataSetEnvolvidos.Locate('ID_SOLICITANTE', ipIdPessoa, []) or
                 vaDataSetEnvolvidos.Locate('ID_RESPONSAVEL', ipIdPessoa, []) or
-                vaDataSetEnvolvidos.Locate('ID_PESSOA_ENVOLVIDA', ipIdPessoa, []) then
+                vaDataSetEnvolvidos.Locate('ID_PESSOA_ENVOLVIDA', ipIdPessoa, [])) or
+
+                ((ipIdPessoa = qNotificacao_Pessoa.FieldByName('ID_PESSOA').AsInteger) and
+                (qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1)) then
                 begin
                   // Notificacao de alteracao de atividade sempre serao enviadas aos responsaveis e envolvidos
-                  if (ipIdPessoa = qNotificacao_Pessoa.FieldByName('ID_PESSOA').AsInteger) and
-                    (qNotificacao_Pessoa.FieldByName('Notificacao_Sistema').AsInteger = 1) then
-                    begin
-                      vaNotificacao := TNotificacao.Create;
+                  vaNotificacao := TNotificacao.Create;
 
-                      vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
-                      vaNotificacao.Tipo := Ord(ipTipoNotificacao);
+                  vaNotificacao.Id := vaDataSet.FieldByName('ID').AsInteger;
+                  vaNotificacao.Tipo := Ord(ipTipoNotificacao);
 
-                      vaAtividade := TAtividade.Create;
-                      vaAtividade.Id := vaDataSet.FieldByName('ID').AsInteger;
-                      vaAtividade.Nome := vaDataSet.FieldByName('NOME').AsString;
-                      vaAtividade.NomeProjeto := vaDataSet.FieldByName('NOME_PROJETO').AsString;
-                      vaAtividade.Status := vaDataSet.FieldByName('STATUS').AsInteger;
+                  vaAtividade := TAtividade.Create;
+                  vaAtividade.Id := vaDataSet.FieldByName('ID').AsInteger;
+                  vaAtividade.Nome := vaDataSet.FieldByName('NOME').AsString;
+                  vaAtividade.NomeProjeto := vaDataSet.FieldByName('NOME_PROJETO').AsString;
+                  vaAtividade.Status := vaDataSet.FieldByName('STATUS').AsInteger;
 
-                      vaNotificacao.Info := vaAtividade;
+                  vaNotificacao.Info := vaAtividade;
 
-                      Result.Add(vaNotificacao);
-                    end;
+                  Result.Add(vaNotificacao);
+
                 end;
 
               if ipTipoNotificacao = tnAtividadeAlterada then
@@ -637,7 +637,7 @@ begin
     if qNotificacao_Pessoa.ChangeCount > 0 then
       qNotificacao_Pessoa.CancelUpdates;
 
-    qNotificacao_Pessoa.Close;
+    qNotificacao_Pessoa.close;
 
     vaDataSetNotificacao.close;
     vaDataSetNotificacao.Free;

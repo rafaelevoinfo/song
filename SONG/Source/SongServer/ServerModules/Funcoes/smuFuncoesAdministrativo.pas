@@ -23,7 +23,7 @@ type
     function fpuInfoPessoa(ipLogin: string): TPessoa;
     procedure ppuValidarFinalizarAtividade(ipIdAtividade: integer);
     function fpuValidarNomeCpfPessoa(ipIdPessoa: integer; ipNome, ipCpf: String): Boolean;
-    function fpuValidarNomeAreaAtuacao(ipIdAreaAtuacao:Integer; ipNome:String):Boolean;
+    function fpuValidarNomeAreaAtuacao(ipIdAreaAtuacao: integer; ipNome: String): Boolean;
 
     function fpuSomaOrcamentoRubrica(ipIdProjeto: integer): Double;
     function fpuSomaPagametosFinanciador(ipIdProjetoFinanciador: integer): Double;
@@ -42,6 +42,7 @@ function TsmFuncoesAdministrativo.fpuInfoPessoa(ipLogin: string): TPessoa;
 var
   vaPessoa: TPessoa;
 begin
+  vaPessoa := nil;
   pprEncapsularConsulta(
     procedure(ipDataSet: TRFQuery)
 
@@ -53,10 +54,12 @@ begin
 
       ipDataSet.ParamByName('LOGIN').AsString := ipLogin;
       ipDataSet.Open();
-
-      vaPessoa := TPessoa.Create;
-      vaPessoa.Id := ipDataSet.FieldByName('ID').AsInteger;
-      vaPessoa.Nome := ipDataSet.FieldByName('NOME').AsString;
+      if not ipDataSet.Eof then
+        begin
+          vaPessoa := TPessoa.Create;
+          vaPessoa.Id := ipDataSet.FieldByName('ID').AsInteger;
+          vaPessoa.Nome := ipDataSet.FieldByName('NOME').AsString;
+        end;
     end);
 
   Result := vaPessoa;
@@ -122,9 +125,9 @@ begin
 end;
 
 function TsmFuncoesAdministrativo.fpuValidarNomeAreaAtuacao(
-  ipIdAreaAtuacao: Integer; ipNome: String): Boolean;
+  ipIdAreaAtuacao: integer; ipNome: String): Boolean;
 begin
-  Result := fprValidarCampoUnico('AREA_ATUACAO','NOME',ipIdAreaAtuacao,ipNome);
+  Result := fprValidarCampoUnico('AREA_ATUACAO', 'NOME', ipIdAreaAtuacao, ipNome);
 end;
 
 function TsmFuncoesAdministrativo.fpuValidarNomeCpfPessoa(ipIdPessoa: integer;
@@ -138,8 +141,8 @@ begin
       ipDataSet.SQL.Text := 'Select ID from pessoa ' +
         '                      where pessoa.id <> :ID and' +
         '                            pessoa.nome = :NOME and ' +
-        '                            (pessoa.cpf = :CPF or  '+
-        '                            ((pessoa.cpf = '''') and (:CPF is null)) or '+
+        '                            (pessoa.cpf = :CPF or  ' +
+        '                            ((pessoa.cpf = '''') and (:CPF is null)) or ' +
         '                            ((pessoa.cpf is null) and (:CPF is null)))';
       ipDataSet.ParamByName('ID').AsInteger := ipIdPessoa;
       ipDataSet.ParamByName('NOME').AsString := ipNome;
