@@ -129,19 +129,29 @@ inherited frmAtividade: TfrmAtividade
             end
             object viewRegistrosID_SOLICITANTE: TcxGridDBColumn [4]
               DataBinding.FieldName = 'ID_SOLICITANTE'
-              RepositoryItem = dmLookup.repLcbPessoa
+              Visible = False
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 131
             end
-            object viewRegistrosID_RESPONSAVEL: TcxGridDBColumn [5]
+            object viewRegistrosNOME_SOLICITANTE: TcxGridDBColumn [5]
+              DataBinding.FieldName = 'NOME_SOLICITANTE'
+              Options.Editing = False
+              Width = 227
+            end
+            object viewRegistrosID_RESPONSAVEL: TcxGridDBColumn [6]
               DataBinding.FieldName = 'ID_RESPONSAVEL'
-              RepositoryItem = dmLookup.repLcbPessoa
+              Visible = False
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 157
             end
-            object viewRegistrosSTATUS: TcxGridDBColumn [6]
+            object viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn [7]
+              DataBinding.FieldName = 'NOME_RESPONSAVEL'
+              Options.Editing = False
+              Width = 215
+            end
+            object viewRegistrosSTATUS: TcxGridDBColumn [8]
               DataBinding.FieldName = 'STATUS'
               PropertiesClassName = 'TcxImageComboBoxProperties'
               Properties.Items = <>
@@ -150,48 +160,48 @@ inherited frmAtividade: TfrmAtividade
               Options.ShowEditButtons = isebAlways
               Width = 129
             end
-            object viewRegistrosDATA_INICIAL: TcxGridDBColumn [7]
+            object viewRegistrosDATA_INICIAL: TcxGridDBColumn [9]
               DataBinding.FieldName = 'DATA_INICIAL'
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 63
             end
-            object viewRegistrosDATA_FINAL: TcxGridDBColumn [8]
+            object viewRegistrosDATA_FINAL: TcxGridDBColumn [10]
               DataBinding.FieldName = 'DATA_FINAL'
               Options.Editing = False
               Options.ShowEditButtons = isebNever
               Width = 63
             end
-            object viewRegistrosDATA_CADASTRO: TcxGridDBColumn [9]
+            object viewRegistrosDATA_CADASTRO: TcxGridDBColumn [11]
               DataBinding.FieldName = 'DATA_CADASTRO'
               Visible = False
             end
-            object viewRegistrosDATA_FINALIZACAO: TcxGridDBColumn [10]
+            object viewRegistrosDATA_FINALIZACAO: TcxGridDBColumn [12]
               DataBinding.FieldName = 'DATA_FINALIZACAO'
               Options.Editing = False
               Width = 103
             end
-            object viewRegistrosID_AREA_ATUACAO: TcxGridDBColumn [11]
+            object viewRegistrosID_AREA_ATUACAO: TcxGridDBColumn [13]
               DataBinding.FieldName = 'ID_AREA_ATUACAO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosID_AREA_EXECUCAO: TcxGridDBColumn [12]
+            object viewRegistrosID_AREA_EXECUCAO: TcxGridDBColumn [14]
               DataBinding.FieldName = 'ID_AREA_EXECUCAO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosAREA_ATUACAO: TcxGridDBColumn [13]
+            object viewRegistrosAREA_ATUACAO: TcxGridDBColumn [15]
               DataBinding.FieldName = 'AREA_ATUACAO'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosAREA_EXECUCAO: TcxGridDBColumn [14]
+            object viewRegistrosAREA_EXECUCAO: TcxGridDBColumn [16]
               DataBinding.FieldName = 'AREA_EXECUCAO'
               Visible = False
               Options.Editing = False
             end
-            object ColumnImprimirOS: TcxGridDBColumn [15]
+            object ColumnImprimirOS: TcxGridDBColumn [17]
               Caption = 'Imprimir O.S.'
               PropertiesClassName = 'TcxButtonEditProperties'
               Properties.Buttons = <
@@ -219,6 +229,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailComentario: TcxTabSheet [0]
               Caption = 'Coment'#225'rios'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -365,6 +379,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -471,6 +489,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailVinculo: TcxTabSheet
               Caption = 'Atividades v'#237'nculadas'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesDetailVinculo: TPanel
                 Left = 0
                 Top = 0
@@ -592,6 +614,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailArquivo: TcxTabSheet
               Caption = 'Arquivos'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -759,9 +785,9 @@ inherited frmAtividade: TfrmAtividade
         object Label8: TLabel
           Left = 218
           Top = 80
-          Width = 61
+          Width = 84
           Height = 13
-          Caption = 'Respons'#225'vel'
+          Caption = 'Respons'#225'vel (F2)'
           FocusControl = cbResponsavel
         end
         object Label9: TLabel
@@ -849,7 +875,8 @@ inherited frmAtividade: TfrmAtividade
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 10
-          Width = 209
+          OnKeyDown = cbResponsavelKeyDown
+          Width = 187
         end
         object cbStatus: TcxDBImageComboBox
           Left = 427
@@ -950,6 +977,15 @@ inherited frmAtividade: TfrmAtividade
           TabOrder = 7
           OnKeyDown = cbAreaExecucaoKeyDown
           Width = 152
+        end
+        object btnPesquisar_Pessoa_Responsavel: TButton
+          Left = 404
+          Top = 96
+          Width = 22
+          Height = 21
+          Action = Ac_Pesquisar_Responsavel
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 13
         end
       end
     end
@@ -1400,6 +1436,8 @@ inherited frmAtividade: TfrmAtividade
     end
   end
   inherited ActionList1: TActionList
+    Left = 16
+    Top = 16
     object Ac_Pesquisar_Projeto: TAction [13]
       Category = 'Master'
       ImageIndex = 0
@@ -1445,48 +1483,59 @@ inherited frmAtividade: TfrmAtividade
       ImageIndex = 19
       OnExecute = Ac_Imprimir_OSExecute
     end
+    object Ac_Pesquisar_Responsavel: TAction
+      Category = 'Master'
+      ImageIndex = 0
+      OnExecute = Ac_Pesquisar_ResponsavelExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmAdministrativo.cdsAtividade
-    Left = 264
-    Top = 200
+    Left = 312
+    Top = 124
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 312
+    Top = 232
   end
   inherited dsDetail: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Pessoa
+    Left = 164
+    Top = 124
   end
   object dsAtividade_Projeto: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Projeto
-    Left = 384
-    Top = 152
+    Left = 16
+    Top = 124
   end
   object dsAtividade_Vinculo: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Vinculo
-    Left = 504
-    Top = 144
+    Left = 460
+    Top = 124
   end
   object dsAtividade_Arquivo: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Arquivo
-    Left = 616
-    Top = 160
+    Left = 904
+    Top = 16
   end
   object dsAtividade_Comentario: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Comentario
-    Left = 544
-    Top = 256
+    Left = 460
+    Top = 16
   end
   object SaveDialogDocumento: TSaveDialog
-    Left = 608
-    Top = 400
+    Left = 164
+    Top = 232
   end
   object FileDialog: TOpenTextFileDialog
-    Left = 192
-    Top = 232
+    Left = 608
+    Top = 124
   end
   object cdsLocal_Area_Atuacao: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 56
-    Top = 328
+    Left = 164
+    Top = 16
     object cdsLocal_Area_AtuacaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -1502,7 +1551,7 @@ inherited frmAtividade: TfrmAtividade
     Aggregates = <>
     Params = <>
     Left = 312
-    Top = 336
+    Top = 16
     object cdsLocal_Area_ExecucaoID: TIntegerField
       FieldName = 'ID'
       ProviderFlags = []
@@ -1520,13 +1569,13 @@ inherited frmAtividade: TfrmAtividade
   end
   object dsLocal_Area_Atuacao: TDataSource
     DataSet = cdsLocal_Area_Atuacao
-    Left = 168
-    Top = 320
+    Left = 756
+    Top = 16
   end
   object dsLocal_Area_Execucao: TDataSource
     DataSet = cdsLocal_Area_Execucao
-    Left = 440
-    Top = 344
+    Left = 608
+    Top = 16
   end
   object ppOrdemServico: TppReport
     AutoStop = False
@@ -1580,8 +1629,8 @@ inherited frmAtividade: TfrmAtividade
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
-    Left = 48
-    Top = 144
+    Left = 16
+    Top = 232
     Version = '16.02'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeAtividade'
@@ -2313,8 +2362,8 @@ inherited frmAtividade: TfrmAtividade
     RangeEnd = reCurrentRecord
     RangeBegin = rbCurrentRecord
     UserName = 'DBPipeAtividade'
-    Left = 184
-    Top = 120
+    Left = 904
+    Top = 124
     object DBPipeAtividadeppField1: TppField
       Alignment = taRightJustify
       FieldAlias = 'ID'
@@ -2471,8 +2520,8 @@ inherited frmAtividade: TfrmAtividade
   object DBPipeOrganizacao: TppDBPipeline
     DataSource = dmLookup.dslkOrganizacao
     UserName = 'DBPipeOrganizacao'
-    Left = 288
-    Top = 136
+    Left = 756
+    Top = 124
     object DBPipeOrganizacaoppField1: TppField
       FieldAlias = 'ID'
       FieldName = 'ID'

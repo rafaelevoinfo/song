@@ -634,7 +634,6 @@ inherited dmEstoque: TdmEstoque
     Top = 16
   end
   object cdsVenda: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqVenda'
@@ -1004,6 +1003,17 @@ inherited dmEstoque: TdmEstoque
       DisplayLabel = 'Observa'#231#227'o'
       FieldName = 'OBSERVACAO'
       Size = 1000
+    end
+    object cdsPatrimonioID_PESSOA_RESPONSAVEL: TIntegerField
+      DisplayLabel = 'Id do Respons'#225'vel'
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsPatrimonioRESPONSAVEL: TStringField
+      DisplayLabel = 'Respons'#225'vel'
+      FieldName = 'RESPONSAVEL'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

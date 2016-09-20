@@ -7,7 +7,8 @@ uses
   cxClasses, Data.DB, Datasnap.DBClient, cxDBEditRepository,
   uClientDataSet, dmuPrincipal, uTypes, cxImageComboBox, uUtils,
   cxDBLookupEdit, cxDBLookupComboBox, System.IOUtils,
-  System.RegularExpressions, Winapi.Windows;
+  System.RegularExpressions, Winapi.Windows, cxExtEditRepositoryItems,
+  cxCheckBox;
 
 type
   TdmLookup = class(TdmBasico)
@@ -274,6 +275,9 @@ type
     dslkArea_Atuacao_Projeto: TDataSource;
     cdslkEspecieEXOTICA: TSmallintField;
     cdslkOrganizacaoLOGO_SECUNDARIA: TBlobField;
+    repIcbClassificacaoEspecie: TcxEditRepositoryImageComboBoxItem;
+    repCheckGroupBiomas: TcxEditRepositoryCheckGroupItem;
+    repCcbBiomas: TcxEditRepositoryCheckComboBox;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

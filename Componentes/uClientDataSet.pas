@@ -14,6 +14,10 @@ type
     coIdPai: string = 'ID_PAI';
     coNome: string = 'NOME';
     coData: string = 'DATA';
+    coDataCompra: string = 'DATA_COMPRA';
+    coDataVencimento:string = 'DATA_VENCIMENTO';
+    coDataPagamentoRecebimento:string = 'DATA_PAGAMENTO_RECEBIMENTO';
+
     coActive: string = 'ACTIVE';
     coLogin: string = 'LOGIN';
     coAtivo: string = 'ATIVO';
@@ -29,7 +33,6 @@ type
     coRazaoSocial = 'RAZAO_SOCIAL';
     coCpfCnpj = 'CPF_CNPJ';
     coEspecie = 'ESPECIE';
-    coEspecieExotica = 'EXOTICA';
     coDescricao = 'DESCRICAO';
     coFornecedor = 'FORNECEDOR';
     coRubrica = 'RUBRICA';
@@ -63,6 +66,9 @@ type
 
     coOrganizacao = 'ORGANIZACAO';
     coAberto = 'ABERTO';
+
+    coClassificacao = 'CLASSIFICACAO';
+    coBioma = 'BIOMA';
 
     coDelimitador = '§';
   end;

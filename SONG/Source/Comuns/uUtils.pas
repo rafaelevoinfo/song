@@ -590,7 +590,10 @@ begin
         vaIndices := TRegex.Split(copy(ipCheckBox.EditValue, Pos(';', ipCheckBox.EditValue) + 1, length(ipCheckBox.EditValue)), ',', [roIgnoreCase]);
         for i := 0 to High(vaIndices) do
           begin
-            vaCodigosProjetos.Add(ipCheckBox.Properties.Items[vaIndices[i].ToInteger].Tag.ToString());
+            if assigned(ipCheckBox.RepositoryItem) then
+              vaCodigosProjetos.Add(TcxCheckComboBoxProperties(ipCheckBox.RepositoryItem.Properties).Items[vaIndices[i].ToInteger].Tag.ToString())
+            else
+              vaCodigosProjetos.Add(ipCheckBox.Properties.Items[vaIndices[i].ToInteger].Tag.ToString());
           end;
 
         if vaCodigosProjetos.Count > 0 then

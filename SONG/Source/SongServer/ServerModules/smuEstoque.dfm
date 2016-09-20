@@ -1120,6 +1120,8 @@ inherited smEstoque: TsmEstoque
     SQL.Strings = (
       'select Patrimonio.Id,'
       '       Patrimonio.Id_Item_Patrimonio,'
+      '       Patrimonio.id_pessoa_responsavel,'
+      '       Pessoa.nome as Responsavel,'
       '       Item_Patrimonio.Nome as Nome_Item,'
       '       Patrimonio.Data_Aquisicao,'
       '       Patrimonio.Identificacao,'
@@ -1135,6 +1137,9 @@ inherited smEstoque: TsmEstoque
       
         'inner join Item_Patrimonio on (Item_Patrimonio.Id = Patrimonio.I' +
         'd_Item_Patrimonio)'
+      
+        'left join pessoa on (pessoa.id = patrimonio.id_pessoa_responsave' +
+        'l)'
       '&WHERE')
     Left = 64
     Top = 368
@@ -1228,6 +1233,18 @@ inherited smEstoque: TsmEstoque
       Origin = 'OBSERVACAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qPatrimonioID_PESSOA_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      Origin = 'ID_PESSOA_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qPatrimonioRESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

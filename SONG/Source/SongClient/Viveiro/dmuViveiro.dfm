@@ -121,10 +121,10 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'QTDE_SEMENTE_TUBETE'
       ProviderFlags = [pfInUpdate]
     end
-    object cdsEspecieEXOTICA: TSmallintField
+    object cdsEspecieCLASSIFICACAO: TSmallintField
       Alignment = taLeftJustify
-      DisplayLabel = 'Ex'#243'tica'
-      FieldName = 'EXOTICA'
+      DisplayLabel = 'Classifica'#231#227'o'
+      FieldName = 'CLASSIFICACAO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -726,6 +726,39 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+  end
+  object dsEspecie: TDataSource
+    DataSet = cdsEspecie
+    Left = 384
+    Top = 168
+  end
+  object cdsEspecie_Bioma: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ESPECIE'
+    MasterFields = 'ID'
+    MasterSource = dsEspecie
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqEspecie_Bioma'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    RFApplyAutomatico = False
+    Left = 560
+    Top = 200
+    object cdsEspecie_BiomaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsEspecie_BiomaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsEspecie_BiomaBIOMA: TSmallintField
+      FieldName = 'BIOMA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
 end

@@ -339,7 +339,8 @@ inherited smFinanceiro: TsmFinanceiro
         '       (banco.nome || '#39' - '#39'|| banco_conta_corrente.agencia||'#39'/'#39'|' +
         '|banco_conta_corrente.conta) as conta_corrente,'
       '       Conta_pagar.id_responsavel,'
-      '       responsavel.nome as nome_responsavel'
+      '       responsavel.nome as nome_responsavel,'
+      '       log.data_hora as data_cadastro'
       'from Conta_Pagar'
       
         'inner join fin_for_cli on (fin_for_cli.id = conta_pagar.id_forne' +
@@ -360,6 +361,10 @@ inherited smFinanceiro: TsmFinanceiro
       
         'left join pessoa responsavel on (responsavel.id = conta_pagar.id' +
         '_responsavel)'
+      'left join compra on (compra.id = conta_pagar.id_compra)'
+      
+        'left join log on (log.id_tabela = conta_pagar.id and log.tabela ' +
+        '= '#39'CONTA_PAGAR'#39' and log.operacao = 1)'
       '&where')
     Left = 408
     Top = 8
@@ -462,6 +467,13 @@ inherited smFinanceiro: TsmFinanceiro
       ProviderFlags = []
       Size = 100
     end
+    object qConta_PagarDATA_CADASTRO: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'DATA_CADASTRO'
+      Origin = 'DATA_HORA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
   object qConta_Pagar_Parcela: TRFQuery
     Connection = dmPrincipal.conSong
@@ -545,7 +557,8 @@ inherited smFinanceiro: TsmFinanceiro
       '                Plano_Contas.Nome as Plano_Contas,'
       
         '                (Banco.Nome || '#39' - '#39' || Banco_Conta_Corrente.Age' +
-        'ncia || '#39'/'#39' || Banco_Conta_Corrente.Conta) as Conta_Corrente'
+        'ncia || '#39'/'#39' || Banco_Conta_Corrente.Conta) as Conta_Corrente,'
+      '                Log.Data_Hora as Data_Cadastro'
       'from Conta_Receber'
       
         'inner join Fin_For_Cli on (Fin_For_Cli.Id = Conta_Receber.Id_Cli' +
@@ -563,6 +576,9 @@ inherited smFinanceiro: TsmFinanceiro
       
         'left join Conta_Receber_Parcela on (Conta_Receber_Parcela.Id_Con' +
         'ta_Receber = Conta_Receber.Id)  '
+      
+        'left join log on (log.id_tabela = conta_receber.id and log.tabel' +
+        'a = '#39'CONTA_RECEBER'#39' and log.operacao = 1)'
       '&where')
     Left = 600
     Top = 8
@@ -657,6 +673,12 @@ inherited smFinanceiro: TsmFinanceiro
       FieldName = 'ID_VENDA'
       Origin = 'ID_VENDA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qConta_ReceberDATA_CADASTRO: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'DATA_CADASTRO'
+      Origin = 'DATA_HORA'
+      ProviderFlags = []
     end
   end
   object qConta_Receber_Parcela: TRFQuery

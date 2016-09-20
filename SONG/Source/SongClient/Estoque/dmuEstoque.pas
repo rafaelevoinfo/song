@@ -156,6 +156,8 @@ type
     cdsVendaGEROU_CONTA_RECEBER: TIntegerField;
     cdsCompraGEROU_CONTA_PAGAR: TIntegerField;
     cdsVendaCALC_CLIENTE: TStringField;
+    cdsPatrimonioID_PESSOA_RESPONSAVEL: TIntegerField;
+    cdsPatrimonioRESPONSAVEL: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

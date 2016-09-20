@@ -168,6 +168,8 @@ type
     qDoacaoOBSERVACAO: TStringField;
     dspqDoacao: TDataSetProvider;
     qDoacaoFORMA_PAGTO: TSmallintField;
+    qConta_ReceberDATA_CADASTRO: TSQLTimeStampField;
+    qConta_PagarDATA_CADASTRO: TSQLTimeStampField;
     procedure dspqDoacaoBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind;
       var Applied: Boolean);
@@ -371,6 +373,12 @@ begin
     begin
       if ipParam.Name = TParametros.coData then
         begin
+          Result := Result + ' (LOG.DATA_HORA between ' +
+            QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', TUtils.fpuExtrairData(vaValor, 0))) +
+            ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
+        end
+      else if ipParam.Name = TParametros.coDataVencimento then
+        begin
           Result := Result + ' (' + ipTabela + '_PARCELA.VENCIMENTO between ' +
             QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
             ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
@@ -411,12 +419,30 @@ begin
               else if ipParam.Name = TParametros.coResponsavelDespesa then
                 Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_RESPONSAVEL', vaValor.ToInteger, vaOperador)
               else if ipParam.Name = TParametros.coFundo then
-                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador);
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_PAGAR_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador)
+              else if ipParam.Name = TParametros.coDataPagamentoRecebimento then
+                begin
+                  Result := Result + ' (' + ipTabela + '_PARCELA.DATA_PAGAMENTO between ' +
+                    QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
+                    ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
+                end
+              else if ipParam.Name = TParametros.coDataCompra then
+                begin
+                  Result := Result + ' (COMPRA.DATA between ' +
+                    QuotedStr(FormatDateTime('dd.mm.yyyy 00:00:00', TUtils.fpuExtrairData(vaValor, 0))) +
+                    ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy 23:59:59', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
+                end
             end
           else if ipTabela = 'CONTA_RECEBER' then
             begin
               if ipParam.Name = TParametros.coFundo then
-                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_RECEBER_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador);
+                Result := TSQLGenerator.fpuFilterInteger(Result, 'CONTA_RECEBER_VINCULO', 'ID_FUNDO', vaValor.ToInteger, vaOperador)
+              else if ipParam.Name = TParametros.coDataPagamentoRecebimento then
+                begin
+                  Result := Result + ' (' + ipTabela + '_PARCELA.DATA_RECEBIMENTO between ' +
+                    QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) +
+                    ' AND ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ')' + vaOperador;
+                end
             end;
         end;
     end

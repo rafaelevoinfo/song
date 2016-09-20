@@ -23,19 +23,22 @@ inherited smViveiro: TsmViveiro
       '       Especie.Mes_Inicio_Coleta,'
       '       Especie.Mes_Fim_Coleta,'
       '       ESPECIE.PESO_MEDIO_SEMENTE,'
-      '       ESPECIE.Qtde_Semente_Tubete,'
-      '       coalesce(ESPECIE.Exotica,0) as Exotica,'
+      '       ESPECIE.Qtde_Semente_Tubete,       '
       
         '       Coalesce(Especie.qtde_semente_estoque,0) as qtde_semente_' +
         'estoque,'
       '       Coalesce(Especie.qtde_muda_pronta,0) as qtde_muda_pronta,'
       
         '       Coalesce(Especie.qtde_muda_desenvolvimento,0) as qtde_mud' +
-        'a_desenvolvimento'
+        'a_desenvolvimento,'
+      '       especie.classificacao'
       'from ESPECIE  '
       
         'left join familia_botanica on (especie.id_familia_botanica = fam' +
         'ilia_botanica.id)'
+      
+        'left join especie_bioma on (especie_bioma.id_especie = especie.i' +
+        'd)'
       '&WHERE')
     Left = 32
     Top = 16
@@ -151,9 +154,9 @@ inherited smViveiro: TsmViveiro
       Origin = 'QTDE_SEMENTE_TUBETE'
       ProviderFlags = [pfInUpdate]
     end
-    object qEspecieEXOTICA: TSmallintField
-      FieldName = 'EXOTICA'
-      Origin = 'EXOTICA'
+    object qEspecieCLASSIFICACAO: TSmallintField
+      FieldName = 'CLASSIFICACAO'
+      Origin = 'CLASSIFICACAO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -928,6 +931,42 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+  end
+  object qEspecie_Bioma: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Especie_Bioma.Id,'
+      '       Especie_Bioma.Id_Especie,'
+      '       Especie_Bioma.Bioma'
+      'from Especie_Bioma'
+      'where especie_bioma.id_especie = :ID_ESPECIE')
+    Left = 32
+    Top = 88
+    ParamData = <
+      item
+        Name = 'ID_ESPECIE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qEspecie_BiomaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qEspecie_BiomaID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qEspecie_BiomaBIOMA: TSmallintField
+      FieldName = 'BIOMA'
+      Origin = 'BIOMA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
 end

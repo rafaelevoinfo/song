@@ -126,7 +126,11 @@ type
     qLote_SementeID_LOTE_SEMENTE_ORIGEM: TIntegerField;
     qLote_MudaRAZAO_SOCIAL: TStringField;
     qLote_SementeRAZAO_SOCIAL: TStringField;
-    qEspecieEXOTICA: TSmallintField;
+    qEspecieCLASSIFICACAO: TSmallintField;
+    qEspecie_Bioma: TRFQuery;
+    qEspecie_BiomaID: TIntegerField;
+    qEspecie_BiomaID_ESPECIE: TIntegerField;
+    qEspecie_BiomaBIOMA: TSmallintField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -276,6 +280,7 @@ function TsmViveiro.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
+  vaBiomas:TArray<Integer>;
 begin
   Result := inherited;
 
@@ -289,8 +294,13 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOME_CIENTIFICO', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coFamiliaBotanica then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'FAMILIA_BOTANICA', vaValor, vaOperador)
-      else if ipParam.Name = TParametros.coEspecieExotica then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'EXOTICA', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coClassificacao then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'CLASSIFICACAO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coBioma then
+      begin
+        vaBiomas := TUtils.fpuConverterStringToArrayInteger(vaValor);
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE_BIOMA', 'BIOMA',vaBiomas, vaOperador);
+      end;
     end
   else if ipTabela = 'MATRIZ' then
     begin

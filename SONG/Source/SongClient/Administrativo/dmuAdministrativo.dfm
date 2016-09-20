@@ -771,14 +771,14 @@ inherited dmAdministrativo: TdmAdministrativo
     end
     object cdsAtividadeID_SOLICITANTE: TIntegerField
       Alignment = taLeftJustify
-      DisplayLabel = 'Solicitante'
+      DisplayLabel = 'Id do Solicitante'
       FieldName = 'ID_SOLICITANTE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsAtividadeID_RESPONSAVEL: TIntegerField
       Alignment = taLeftJustify
-      DisplayLabel = 'Respons'#225'vel'
+      DisplayLabel = 'Id do Respons'#225'vel'
       FieldName = 'ID_RESPONSAVEL'
       ProviderFlags = [pfInUpdate]
       Required = True
@@ -854,11 +854,13 @@ inherited dmAdministrativo: TdmAdministrativo
       Size = 100
     end
     object cdsAtividadeNOME_SOLICITANTE: TStringField
+      DisplayLabel = 'Solicitante'
       FieldName = 'NOME_SOLICITANTE'
       ProviderFlags = []
       Size = 100
     end
     object cdsAtividadeNOME_RESPONSAVEL: TStringField
+      DisplayLabel = 'Respons'#225'vel'
       FieldName = 'NOME_RESPONSAVEL'
       ProviderFlags = []
       Size = 100

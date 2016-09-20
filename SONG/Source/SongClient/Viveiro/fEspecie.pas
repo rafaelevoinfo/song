@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
   cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc, cxCurrencyEdit,
   dmuLookup, cxSpinEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  Vcl.ExtDlgs, cxCheckBox;
+  Vcl.ExtDlgs, cxCheckBox, cxCheckGroup, uUtils, uExceptions, cxCheckComboBox;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)
@@ -61,17 +61,27 @@ type
     viewRegistrosQTDE_SEMENTE_TUBETE: TcxGridDBColumn;
     Label14: TLabel;
     EditQtdeSementeTubete: TcxDBSpinEdit;
-    viewRegistrosEXOTICA: TcxGridDBColumn;
-    chkExotica: TcxDBCheckBox;
-    chkSomenteExotica: TcxCheckBox;
+    viewRegistrosCLASSIFICACAO: TcxGridDBColumn;
+    cbClassificacao: TcxDBImageComboBox;
+    lb1: TLabel;
+    cgBioma: TcxCheckGroup;
+    cbClassifiacaoPesquisa: TcxImageComboBox;
+    cbBiomaPesquisa: TcxCheckComboBox;
     procedure FormCreate(Sender: TObject);
     procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
+    procedure cgBiomaPropertiesEditValueChanged(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
   protected
     function fprGetPermissao: String; override;
+    procedure pprBeforeIncluir; override;
+    procedure pprBeforeAlterar; override;
+    procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); override;
+    procedure pprEfetuarPesquisa; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
+    function fprConfigurarControlesPesquisa: TWinControl; override;
+    procedure pprValidarPesquisa; override;
   public
     { Public declarations }
   end;
@@ -82,12 +92,21 @@ var
 const
   coNomeCientifico = 5;
   coFamiliaBotanica = 6;
+  coClassificacao = 7;
+  coBioma = 8;
 
 implementation
 
 {$R *.dfm}
 
 { TfrmEspecie }
+
+procedure TfrmEspecie.cgBiomaPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if (pcPrincipal.ActivePage = tabCadastro) and (not (dmViveiro.cdsEspecie.state in [dsEdit,dsInsert])) then
+    dmViveiro.cdsEspecie.Edit;
+end;
 
 procedure TfrmEspecie.EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
 begin
@@ -99,7 +118,7 @@ begin
           if not(dmViveiro.cdsEspecie.State in [dsEdit, dsInsert]) then
             dmViveiro.cdsEspecie.Edit;
 
-          dmViveiro.cdsEspecieQTDE_SEMENTE_KILO.AsInteger := Trunc(1000/EditPesoMedio.EditValue);
+          dmViveiro.cdsEspecieQTDE_SEMENTE_KILO.AsInteger := Trunc(1000 / EditPesoMedio.EditValue);
         end;
     end;
 end;
@@ -116,8 +135,23 @@ begin
 
   PesquisaPadrao := Ord(tppNome);
 
-  dmLookup.cdslkFamilia_Botanica.ppuAddParametro(TParametros.coTodos,'NAO_IMPORTA');
+  dmLookup.cdslkFamilia_Botanica.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkFamilia_Botanica);
+end;
+
+function TfrmEspecie.fprConfigurarControlesPesquisa: TWinControl;
+begin
+  Result := inherited;
+  cbClassifiacaoPesquisa.Visible := cbPesquisarPor.EditValue = coClassificacao;
+  cbBiomaPesquisa.Visible := cbPesquisarPor.EditValue = coBioma;
+  EditPesquisa.Visible := EditPesquisa.Visible and (not (cbClassifiacaoPesquisa.Visible or cbBiomaPesquisa.Visible));
+  if cbClassifiacaoPesquisa.Visible then
+    Result := cbClassifiacaoPesquisa
+  else if cbBiomaPesquisa.Visible then
+    Result := cbBiomaPesquisa;
+
+
+
 end;
 
 function TfrmEspecie.fprGetPermissao: String;
@@ -125,17 +159,93 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivEspecie));
 end;
 
+procedure TfrmEspecie.pprAfterSalvar(ipAcaoExecutada: TDataSetState);
+var
+  I: Integer;
+begin
+  inherited;
+
+  // vamos ver se existe algum registro gravado q nao esta marcado
+  dmViveiro.cdsEspecie_Bioma.First;
+  while not dmViveiro.cdsEspecie_Bioma.Eof do
+    begin
+      if cgBioma.States[dmViveiro.cdsEspecie_BiomaBIOMA.AsInteger] <> cbsChecked then
+        dmViveiro.cdsEspecie_Bioma.Delete
+      else
+        dmViveiro.cdsEspecie_Bioma.Next;
+    end;
+
+  for I := 0 to TcxCheckGroupProperties(cgBioma.RepositoryItem.Properties).Items.Count - 1 do
+    begin
+      if (cgBioma.States[I] = cbsChecked) and
+        (not dmViveiro.cdsEspecie_Bioma.Locate(dmViveiro.cdsEspecie_BiomaBIOMA.FieldName, I, [])) then
+        begin
+          dmViveiro.cdsEspecie_Bioma.Append;
+          pprPreencherCamposPadroes(dmViveiro.cdsEspecie_Bioma);
+          dmViveiro.cdsEspecie_BiomaBIOMA.AsInteger := I;
+          dmViveiro.cdsEspecie_Bioma.Post;
+        end;
+    end;
+
+  if dmViveiro.cdsEspecie_Bioma.ChangeCount > 0 then
+    dmViveiro.cdsEspecie_Bioma.ApplyUpdates(0);
+end;
+
+procedure TfrmEspecie.pprBeforeAlterar;
+begin
+  inherited;
+  cgBioma.Clear;
+  TUtils.ppuPercorrerCds(dmViveiro.cdsEspecie_Bioma,
+    procedure
+    begin
+      cgBioma.States[dmViveiro.cdsEspecie_BiomaBIOMA.AsInteger] := cbsChecked;
+    end);
+end;
+
+procedure TfrmEspecie.pprBeforeIncluir;
+begin
+  inherited;
+  cgBioma.Clear;
+end;
+
 procedure TfrmEspecie.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+var
+  vaBiomas: String;
 begin
   inherited;
   if cbPesquisarPor.EditValue = coNomeCientifico then
     ipCds.ppuAddParametro(TParametros.coNomeCientifico, EditPesquisa.Text)
   else if cbPesquisarPor.EditValue = coFamiliaBotanica then
-    ipCds.ppuAddParametro(TParametros.coFamiliaBotanica, EditPesquisa.Text);
+    ipCds.ppuAddParametro(TParametros.coFamiliaBotanica, EditPesquisa.Text)
+  else if cbPesquisarPor.EditValue = coClassificacao then
+    ipCds.ppuAddParametro(TParametros.coClassificacao, cbClassifiacaoPesquisa.EditValue)
+  else if cbPesquisarPor.EditValue = coBioma then
+    begin
+      vaBiomas := TUtils.fpuExtrairValoresCheckComboBox(cbBiomaPesquisa);
+      ipCds.ppuAddParametro(TParametros.coBioma, vaBiomas);
+    end;
 
-  if chkSomenteExotica.Checked then
-    ipCds.ppuAddParametro(TParametros.coEspecieExotica,1);
+end;
 
+procedure TfrmEspecie.pprEfetuarPesquisa;
+begin
+  dmViveiro.cdsEspecie_Bioma.close;
+  try
+    inherited;
+  finally
+    dmViveiro.cdsEspecie_Bioma.Open;
+  end;
+
+end;
+
+procedure TfrmEspecie.pprValidarPesquisa;
+begin
+  inherited;
+  if cbClassifiacaoPesquisa.Visible and VarIsNull(cbClassifiacaoPesquisa.EditValue) then
+    raise TControlException.Create('Informe a classificação a ser pesquisada', cbClassifiacaoPesquisa);
+
+  if cbBiomaPesquisa.Visible and VarIsNull(cbBiomaPesquisa.EditValue) then
+    raise TControlException.Create('Informe os biomas a serem pesquisados', cbBiomaPesquisa);
 
 end;
 

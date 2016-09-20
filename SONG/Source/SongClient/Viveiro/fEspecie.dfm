@@ -1,26 +1,51 @@
 inherited frmEspecie: TfrmEspecie
+  ActiveControl = btnIncluir
   Caption = 'Esp'#233'cies Produzidas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
-          Left = 376
-          Width = 599
-          ExplicitLeft = 384
-          ExplicitWidth = 599
+          Left = 508
+          Width = 467
+          ExplicitLeft = 376
+          ExplicitWidth = 467
+          inherited Label1: TLabel
+            Left = 4
+            ExplicitLeft = 4
+          end
           inherited pnData: TPanel
-            Left = 371
-            ExplicitLeft = 371
+            Left = 239
+            ExplicitLeft = 239
           end
           inherited EditPesquisa: TcxButtonEdit
-            Left = 264
-            ExplicitLeft = 264
+            Left = 132
+            ExplicitLeft = 132
             ExplicitWidth = 236
             Width = 236
           end
+          object cbBiomaPesquisa: TcxCheckComboBox [3]
+            Left = 133
+            Top = 20
+            RepositoryItem = dmLookup.repCcbBiomas
+            Properties.Items = <>
+            TabOrder = 6
+            Visible = False
+            Width = 235
+          end
+          object cbClassifiacaoPesquisa: TcxImageComboBox [4]
+            Left = 132
+            Top = 20
+            RepositoryItem = dmLookup.repIcbClassificacaoEspecie
+            Properties.Items = <>
+            TabOrder = 5
+            Visible = False
+            Width = 236
+          end
           inherited cbPesquisarPor: TcxImageComboBox
+            Left = 2
             Properties.Items = <
               item
                 Description = 'Todos'
@@ -43,26 +68,33 @@ inherited frmEspecie: TfrmEspecie
               item
                 Description = 'Fam'#237'lia Bot'#226'nica'
                 Value = 6
+              end
+              item
+                Description = 'Classifica'#231#227'o'
+                Value = 7
+              end
+              item
+                Description = 'Bioma'
+                Value = 8
               end>
+            ExplicitLeft = 2
           end
           inherited btnPesquisar: TButton
-            Left = 499
-            ExplicitLeft = 499
+            Left = 367
+            ExplicitLeft = 367
           end
           inherited rgStatus: TcxRadioGroup
+            Left = 6
+            Top = 28
+            ExplicitLeft = 6
+            ExplicitTop = 28
             ExplicitWidth = 126
             Width = 126
           end
-          object chkSomenteExotica: TcxCheckBox
-            Left = 211
-            Top = 2
-            Caption = 'Apenas esp'#233'cies ex'#243'ticas'
-            TabOrder = 5
-            Width = 155
-          end
         end
         inherited pnBotoes: TPanel
-          Width = 375
+          Width = 507
+          ExplicitWidth = 375
         end
       end
       inherited pnGrid: TPanel
@@ -158,10 +190,11 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 265
             end
-            object viewRegistrosEXOTICA: TcxGridDBColumn [16]
-              DataBinding.FieldName = 'EXOTICA'
-              RepositoryItem = dmLookup.RepIcbNaoSim
+            object viewRegistrosCLASSIFICACAO: TcxGridDBColumn [16]
+              DataBinding.FieldName = 'CLASSIFICACAO'
+              RepositoryItem = dmLookup.repIcbClassificacaoEspecie
               Options.Editing = False
+              Width = 106
             end
             inherited ColumnAlterar: TcxGridDBColumn
               MinWidth = 40
@@ -206,7 +239,7 @@ inherited frmEspecie: TfrmEspecie
         end
         object Label6: TLabel
           Left = 5
-          Top = 131
+          Top = 187
           Width = 53
           Height = 13
           Caption = 'Oberva'#231#227'o'
@@ -251,7 +284,7 @@ inherited frmEspecie: TfrmEspecie
           Caption = 'M'#234's de In'#237'cio da Coleta'
         end
         object lbl1: TLabel
-          Left = 615
+          Left = 591
           Top = 89
           Width = 102
           Height = 13
@@ -278,6 +311,13 @@ inherited frmEspecie: TfrmEspecie
           Height = 13
           Caption = 'Qtde. de sementes por tubete'
         end
+        object lb1: TLabel
+          Left = 701
+          Top = 89
+          Width = 61
+          Height = 13
+          Caption = 'Classifica'#231#227'o'
+        end
         object EditNome: TcxDBTextEdit
           Left = 4
           Top = 19
@@ -296,10 +336,10 @@ inherited frmEspecie: TfrmEspecie
         end
         object EditObsevacao: TcxDBMemo
           Left = 4
-          Top = 147
+          Top = 203
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 13
+          TabOrder = 12
           Height = 89
           Width = 823
         end
@@ -355,17 +395,17 @@ inherited frmEspecie: TfrmEspecie
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
           TabOrder = 10
-          Width = 141
+          Width = 113
         end
         object cbMesFimColeta: TcxDBImageComboBox
-          Left = 613
+          Left = 589
           Top = 104
           RepositoryItem = dmLookup.repIcbMeses
           DataBinding.DataField = 'MES_FIM_COLETA'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
           TabOrder = 11
-          Width = 127
+          Width = 104
         end
         object EditPesoMedio: TcxDBCalcEdit
           Left = 383
@@ -395,26 +435,40 @@ inherited frmEspecie: TfrmEspecie
           TabOrder = 7
           Width = 150
         end
-        object chkExotica: TcxDBCheckBox
-          Left = 743
-          Top = 106
-          RepositoryItem = dmLookup.RepChkNaoSim
-          Caption = 'Esp'#233'cie Ex'#243'tica'
-          DataBinding.DataField = 'EXOTICA'
+        object cbClassificacao: TcxDBImageComboBox
+          Left = 699
+          Top = 104
+          RepositoryItem = dmLookup.repIcbClassificacaoEspecie
+          DataBinding.DataField = 'CLASSIFICACAO'
           DataBinding.DataSource = dsMaster
-          Style.BorderColor = clNone
-          TabOrder = 12
-          Width = 121
+          Properties.Items = <>
+          TabOrder = 13
+          Width = 128
+        end
+        object cgBioma: TcxCheckGroup
+          Left = 6
+          Top = 131
+          RepositoryItem = dmLookup.repCheckGroupBiomas
+          Caption = 'Biomas'
+          Properties.Items = <>
+          Properties.OnEditValueChanged = cgBiomaPropertiesEditValueChanged
+          TabOrder = 14
+          Height = 50
+          Width = 821
         end
       end
     end
   end
   inherited ActionList1: TActionList
-    Top = 248
+    Top = 280
   end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsEspecie
     Left = 240
-    Top = 224
+    Top = 296
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 456
+    Top = 304
   end
 end

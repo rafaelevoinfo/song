@@ -769,6 +769,85 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkArea_Execucao
     end
+    object repIcbClassificacaoEspecie: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.Items = <
+        item
+          Description = 'Pioneira'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Secund'#225'ria'
+          Value = 1
+        end
+        item
+          Description = 'Cl'#237'max'
+          Value = 2
+        end>
+    end
+    object repCheckGroupBiomas: TcxEditRepositoryCheckGroupItem
+      Properties.Columns = 7
+      Properties.Items = <
+        item
+          Caption = 'Amaz'#244'nia'
+        end
+        item
+          Caption = 'Cerrado'
+          Tag = 1
+        end
+        item
+          Caption = 'Mata Atl'#226'ntica'
+          Tag = 2
+        end
+        item
+          Caption = 'Caatinga'
+          Tag = 3
+        end
+        item
+          Caption = 'Pampa'
+          Tag = 4
+        end
+        item
+          Caption = 'Pantanal'
+          Tag = 5
+        end
+        item
+          Caption = 'Ex'#243'tico'
+          Tag = 6
+        end>
+    end
+    object repCcbBiomas: TcxEditRepositoryCheckComboBox
+      Properties.EditValueFormat = cvfIndices
+      Properties.Items = <
+        item
+          Description = 'Amaz'#244'nia'
+        end
+        item
+          Description = 'Cerrado'
+          Tag = 1
+        end
+        item
+          Description = 'Mata Atl'#226'ntica'
+          Tag = 2
+        end
+        item
+          Description = 'Caatinga'
+          Tag = 3
+        end
+        item
+          Description = 'Pampa'
+          Tag = 4
+        end
+        item
+          Description = 'Pantanal'
+          Tag = 5
+        end
+        item
+          Description = 'Ex'#243'tica'
+          Tag = 6
+        end>
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil

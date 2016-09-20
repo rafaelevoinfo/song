@@ -228,6 +228,7 @@ var
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
+
   if (ipTabela = 'PATRIMONIO') then
     begin
       if ipParam.Name = TParametros.coStatus then
@@ -301,41 +302,6 @@ begin
       else if ipParam.Name = TParametros.coEspecie then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador);
     end
- { else if (ipTabela = 'VIEW_MOVIMENTACAO_FINANCEIRA') then
-    begin
-      if ipParam.Name = TParametros.coData then
-        Result := TSQLGenerator.fpuFilterDataSemHora(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0),
-          TUtils.fpuExtrairData(vaValor, 1), vaOperador)
-      else if ipParam.Name = TParametros.coOrganizacao then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_ORGANIZACAO', vaValor.ToInteger, vaOperador)
-      else if ipParam.Name = TParametros.coProjeto then
-        begin
-          if vaValor.ToInteger = -1 then // nao quero q sai nenhuma conta no relatorio
-            Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM <> ' + Ord(oriProjeto).ToString + '))' + vaOperador
-          else
-            begin
-              Result := '(' + Result + '((VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM = ' + Ord(oriProjeto).ToString + ') AND ';
-              Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
-            end;
-        end
-      else if ipParam.Name = TParametros.coFundo then
-        begin
-          if vaValor.ToInteger = -1 then // nao quero q sai nenhuma conta no relatorio
-            Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM <> ' + Ord(oriFundo).ToString + ')) ' + vaOperador
-          else
-            begin
-              Result := '(' + Result + '((VIEW_MOVIMENTACAO_FINANCEIRA.TIPO_ORIGEM = ' + Ord(oriFundo).ToString + ') AND ';
-              Result := Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
-            end;
-        end
-      else if ipParam.Name = TParametros.coTipo then
-        begin
-          vaTipos := TUtils.fpuConverterStringToArrayInteger(vaValor, TParametros.coDelimitador);
-          Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'TIPO', vaTipos, vaOperador)
-        end
-      else if ipParam.Name = TParametros.coAberto then
-        Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL_PAGO_RECEBIDO <> VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL))' + vaOperador
-    end}
   else if (ipTabela = 'SALDO') or (ipTabela = 'VIEW_MOVIMENTACAO_FINANCEIRA') then
     begin
       if ipParam.Name = TParametros.coData then
@@ -409,7 +375,14 @@ begin
               Result := Result + ' (VIEW_CONTA_PAGAR.ID_ORIGEM_RECURSO = ' + vaValor + ')))' + vaOperador;
             end;
         end;
-    end;
+    end
+  else if (ipTabela = 'SALDO_SEMENTE_MUDA') then
+    begin
+      if ipParam.Name = TParametros.coClassificacao then
+        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'CLASSIFICACAO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coBioma then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE_BIOMA', 'BIOMA', vaValor.ToInteger, vaOperador);
+    end
 end;
 
 procedure TsmRelatorio.qPatrimonioCalcFields(DataSet: TDataSet);

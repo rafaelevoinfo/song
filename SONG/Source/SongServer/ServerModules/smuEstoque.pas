@@ -156,6 +156,8 @@ type
     qVendaSAIU_ESTOQUE: TIntegerField;
     qVendaGEROU_CONTA_RECEBER: TIntegerField;
     qCompraGEROU_CONTA_PAGAR: TIntegerField;
+    qPatrimonioID_PESSOA_RESPONSAVEL: TIntegerField;
+    qPatrimonioRESPONSAVEL: TStringField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;

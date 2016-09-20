@@ -237,6 +237,10 @@ type
     ppLine3: TppLine;
     ppLabel12: TppLabel;
     ppSystemVariable2: TppSystemVariable;
+    btnPesquisar_Pessoa_Responsavel: TButton;
+    Ac_Pesquisar_Responsavel: TAction;
+    viewRegistrosNOME_SOLICITANTE: TcxGridDBColumn;
+    viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -267,6 +271,9 @@ type
     procedure Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
     procedure cbAreaAtuacaoPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Imprimir_OSExecute(Sender: TObject);
+    procedure Ac_Pesquisar_ResponsavelExecute(Sender: TObject);
+    procedure cbResponsavelKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmLookup: TdmLookup;
     dmAdministrativo: TdmAdministrativo;
@@ -290,6 +297,7 @@ type
     procedure pprExecutarSalvarDetail; override;
     procedure pprBeforeSalvar; override;
     procedure pprBeforeAlterar; override;
+    procedure pprBeforeAlterarDetail; override;
     procedure pprBeforeIncluir; override;
 
     procedure pprCarregarProjetos(ipIdEspecifico: Integer = 0);
@@ -392,6 +400,12 @@ begin
   ppvPesquisarProjeto(cbProjetoPrincipal);
 end;
 
+procedure TfrmAtividade.Ac_Pesquisar_ResponsavelExecute(Sender: TObject);
+begin
+  inherited;
+  dmLookup.ppuPesquisarPessoa(cbResponsavel, coTiposPessoaPadrao);
+end;
+
 procedure TfrmAtividade.cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -448,6 +462,14 @@ begin
     begin
       ppvCarregarAreasAtuacao;
     end;
+end;
+
+procedure TfrmAtividade.cbResponsavelKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    dmLookup.ppuPesquisarPessoa(cbResponsavel, coTiposPessoaPadrao);
 end;
 
 procedure TfrmAtividade.ppvPesquisarProjeto(ipCombo: TcxDBLookupComboBox);
@@ -799,6 +821,18 @@ procedure TfrmAtividade.pprBeforeAlterar;
 begin
   inherited;
   ppvCarregarAreasAtuacao;
+  if not dmLookup.cdslkPessoa.Locate(TBancoDados.coId, dmAdministrativo.cdsAtividadeID_RESPONSAVEL.AsInteger, []) then
+    dmLookup.ppuCarregarPessoas(dmAdministrativo.cdsAtividadeID_RESPONSAVEL.AsInteger, coTiposPessoaPadrao);
+end;
+
+procedure TfrmAtividade.pprBeforeAlterarDetail;
+begin
+  inherited;
+  if dsDetail.DataSet = dmAdministrativo.cdsAtividade_Pessoa then
+    begin
+      if not dmLookup.cdslkPessoa.Locate(TBancoDados.coId, dmAdministrativo.cdsAtividade_PessoaID_PESSOA.AsInteger, []) then
+        dmLookup.ppuCarregarPessoas(dmAdministrativo.cdsAtividade_PessoaID_PESSOA.AsInteger, coTiposPessoaPadrao);
+    end;
 end;
 
 procedure TfrmAtividade.pprBeforeIncluir;
