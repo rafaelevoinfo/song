@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 07/09/2016 08:10:05
+// 21/09/2016 22:49:04
 //
 
 unit uFuncoes;
@@ -111,6 +111,7 @@ type
     FfpuValidarNomeMatrizCommand: TDBXCommand;
     FfpuValidarNomeCanteiroCommand: TDBXCommand;
     FfpuvalidarNomeCamaraFriaCommand: TDBXCommand;
+    FfpuvalidarNomeTipoEspecieCommand: TDBXCommand;
     FppuValidarSemeaduraCommand: TDBXCommand;
     FfpuBuscarLotesMudasCommand: TDBXCommand;
     FfpuBuscarLoteMudaCommand: TDBXCommand;
@@ -130,6 +131,7 @@ type
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: string): Boolean; virtual;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: string): Boolean; virtual;
     function fpuvalidarNomeCamaraFria(ipId: Integer; ipNome: string): Boolean; virtual;
+    function fpuvalidarNomeTipoEspecie(ipId: Integer; ipNome: string): Boolean; virtual;
     procedure ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double); virtual;
     function fpuBuscarLotesMudas(ipIdCompra: Integer): string; virtual;
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer; virtual;
@@ -907,6 +909,21 @@ begin
   Result := FfpuvalidarNomeCamaraFriaCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TsmFuncoesViveiroClient.fpuvalidarNomeTipoEspecie(ipId: Integer; ipNome: string): Boolean;
+begin
+  if FfpuvalidarNomeTipoEspecieCommand = nil then
+  begin
+    FfpuvalidarNomeTipoEspecieCommand := FDBXConnection.CreateCommand;
+    FfpuvalidarNomeTipoEspecieCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuvalidarNomeTipoEspecieCommand.Text := 'TsmFuncoesViveiro.fpuvalidarNomeTipoEspecie';
+    FfpuvalidarNomeTipoEspecieCommand.Prepare;
+  end;
+  FfpuvalidarNomeTipoEspecieCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuvalidarNomeTipoEspecieCommand.Parameters[1].Value.SetWideString(ipNome);
+  FfpuvalidarNomeTipoEspecieCommand.ExecuteUpdate;
+  Result := FfpuvalidarNomeTipoEspecieCommand.Parameters[2].Value.GetBoolean;
+end;
+
 procedure TsmFuncoesViveiroClient.ppuValidarSemeadura(ipIdLote: Integer; ipIdSemeadura: Integer; ipQtdeSemeada: Double);
 begin
   if FppuValidarSemeaduraCommand = nil then
@@ -1116,6 +1133,7 @@ begin
   FfpuValidarNomeMatrizCommand.DisposeOf;
   FfpuValidarNomeCanteiroCommand.DisposeOf;
   FfpuvalidarNomeCamaraFriaCommand.DisposeOf;
+  FfpuvalidarNomeTipoEspecieCommand.DisposeOf;
   FppuValidarSemeaduraCommand.DisposeOf;
   FfpuBuscarLotesMudasCommand.DisposeOf;
   FfpuBuscarLoteMudaCommand.DisposeOf;

@@ -15,7 +15,8 @@ uses
   dmuPrincipal, fmGrids, Datasnap.DBClient, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, uMensagem, uExceptions, System.DateUtils,
   System.Generics.Collections, uUtils, aduna_ds_list, cxGroupBox,
-  dxCheckGroupBox, cxRadioGroup, uControleAcesso, System.TypInfo;
+  dxCheckGroupBox, cxRadioGroup, uControleAcesso, System.TypInfo,
+  cxImageComboBox, cxCheckGroup;
 
 type
   TfrmRelatorioViveiro = class(TfrmRelatorioBasico)
@@ -365,6 +366,24 @@ type
     ppDesignLayers8: TppDesignLayers;
     ppDesignLayer8: TppDesignLayer;
     ppParameterList8: TppParameterList;
+    cbClassificacaoEspecie: TcxImageComboBox;
+    Label12: TLabel;
+    chkTodasClassificacao: TcxCheckBox;
+    Label13: TLabel;
+    cbCategoriaArmazenagem: TcxImageComboBox;
+    chkTodasCategoriaArmazenamento: TcxCheckBox;
+    lb4: TLabel;
+    chkTodosTipoEspecie: TcxCheckBox;
+    chkApenasEspecieComSaldo: TcxCheckBox;
+    cbTipo_Especie: TcxLookupComboBox;
+    cgBioma: TcxCheckGroup;
+    ppGroup6: TppGroup;
+    ppGroupHeaderBand6: TppGroupHeaderBand;
+    ppGroupFooterBand6: TppGroupFooterBand;
+    ppLabel54: TppLabel;
+    ppLabel55: TppLabel;
+    EditTotalFamilia: TppVariable;
+    ppDBCalc16: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);
@@ -377,6 +396,10 @@ type
     procedure chkTodosEspecieLoteSementeCompradoPropertiesEditValueChanged(
       Sender: TObject);
     procedure chkTodasEspecieTubetePropertiesEditValueChanged(Sender: TObject);
+    procedure chkTodasClassificacaoPropertiesEditValueChanged(Sender: TObject);
+    procedure chkTodasCategoriaArmazenamentoPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure chkTodosTipoEspeciePropertiesEditValueChanged(Sender: TObject);
   private
     dmRelatorio: TdmRelatorio;
     procedure ppvConfigurarGrids;
@@ -421,24 +444,55 @@ end;
 
 procedure TfrmRelatorioViveiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
-  vaIdEspecie: Integer;
+  i, vaClassificacao, vaCategoria, vaTipo, vaIdEspecie: Integer;
+  vaBiomas: String;
 begin
   inherited;
   fprExtrairValor(chkTodasOrganizacoes, cbOrganizacao, 'Informe a organização ou marque todas');
   if pcPrincipal.ActivePage = tabSaldos then
     begin
       vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies, cbSaldoEspecie, 'Informe a espécie ou marque todas');
+      vaClassificacao := fprExtrairValor(chkTodasClassificacao, cbClassificacaoEspecie, 'Informe a classificação ou marque todas');
+      vaCategoria := fprExtrairValor(chkTodasCategoriaArmazenamento, cbCategoriaArmazenagem, 'Informe a categoria de armazenagem ou marque todas');
+      vaTipo := fprExtrairValor(chkTodosTipoEspecie, cbTipo_Especie, 'Informe o tipo de espécie ou marque todas');
+      vaBiomas := '';
+      for i := 0 to TcxCheckGroupProperties(cgBioma.RepositoryItem.Properties).Items.Count - 1 do
+        begin
+          if (cgBioma.States[i] = cbsChecked) then
+            begin
+              if vaBiomas = '' then
+                vaBiomas := i.ToString
+              else
+                vaBiomas := vaBiomas + coDelimitadorPadrao + i.ToString();
+            end;
+        end;
+
+      if vaBiomas = '' then
+        raise Exception.Create('Informe pelo menos um tipo de bioma.');
 
       // vamos garantir que o saldo esteja correto, para isso vamos chamar a função de ajustar os saldos
       dmPrincipal.FuncoesViveiro.ppuAjustarSaldoEspecie(vaIdEspecie);
 
       dmRelatorio.cdsSaldo_Semente_Muda.Close;
+      dmRelatorio.cdsSaldo_Semente_Muda.ppuLimparParametros;
       if vaIdEspecie <> 0 then
-        dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').AsInteger := vaIdEspecie
-      else
-        dmRelatorio.cdsSaldo_Semente_Muda.ParamByName('ID_ESPECIE').Clear;
+        dmRelatorio.cdsSaldo_Semente_Muda.ppuAddParametro(TParametros.coID_ESPECIE, vaIdEspecie);
 
-      dmRelatorio.cdsSaldo_Semente_Muda.Open;
+      if not chkTodasClassificacao.Checked then
+        dmRelatorio.cdsSaldo_Semente_Muda.ppuAddParametro(TParametros.coClassificacao, cbClassificacaoEspecie.EditValue);
+
+      if not chkTodasCategoriaArmazenamento.Checked then
+        dmRelatorio.cdsSaldo_Semente_Muda.ppuAddParametro(TParametros.coCategoria, vaCategoria);
+
+      if vaTipo <> 0 then
+        dmRelatorio.cdsSaldo_Semente_Muda.ppuAddParametro(TParametros.coTipo, vaTipo);
+
+      if chkApenasEspecieComSaldo.Checked then
+        dmRelatorio.cdsSaldo_Semente_Muda.ppuAddParametro(TParametros.coSaldoPositivo, 'NAO_IMPORTA');
+
+      dmRelatorio.cdsSaldo_Semente_Muda.ppuAddParametro(TParametros.coBioma, vaBiomas);
+
+      dmRelatorio.cdsSaldo_Semente_Muda.ppuDataRequest;
       ppSaldo_Especie.PrintReport;
     end
   else if pcPrincipal.ActivePage = tabPrevisaoProducao then
@@ -448,7 +502,6 @@ begin
 
       if (not cdsEspecieSelecionada.Active) or (cdsEspecieSelecionada.recordCount = 0) then
         raise Exception.Create('Selecione pelo menos uma espécie.');
-
 
       if cdsParametros.Active then
         cdsParametros.EmptyDataSet
@@ -500,7 +553,7 @@ begin
     end
   else if pcPrincipal.ActivePage = tabTubetesSemeados then
     begin
-      ppvGerarRelatorio('', ppTubete_Semeado, dmRelatorio.cdsTubete_Semeado, nil, nil,nil, cbEspecieTubete, chkTodasEspecieTubete,nil);
+      ppvGerarRelatorio('', ppTubete_Semeado, dmRelatorio.cdsTubete_Semeado, nil, nil, nil, cbEspecieTubete, chkTodasEspecieTubete, nil);
     end;
 end;
 
@@ -556,6 +609,20 @@ begin
   cbSaldoEspecie.Enabled := not chkSaldoTodasEspecies.Checked;
 end;
 
+procedure TfrmRelatorioViveiro.chkTodasCategoriaArmazenamentoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbCategoriaArmazenagem.Enabled := not chkTodasCategoriaArmazenamento.Checked;
+end;
+
+procedure TfrmRelatorioViveiro.chkTodasClassificacaoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbClassificacaoEspecie.Enabled := not chkTodasClassificacao.Checked;
+end;
+
 procedure TfrmRelatorioViveiro.chkTodasEspecieProducaoMatrizPropertiesEditValueChanged(
   Sender: TObject);
 begin
@@ -584,7 +651,16 @@ begin
   cbEspecieLoteSementeComprado.Enabled := not chkTodosEspecieLoteSementeComprado.Checked;
 end;
 
+procedure TfrmRelatorioViveiro.chkTodosTipoEspeciePropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cbTipo_Especie.Enabled := not chkTodosTipoEspecie.Checked;
+end;
+
 procedure TfrmRelatorioViveiro.FormCreate(Sender: TObject);
+var
+  i: Integer;
 begin
   dmRelatorio := TdmRelatorio.Create(Self);
   dmRelatorio.Name := '';
@@ -594,10 +670,15 @@ begin
 
   ppvConfigurarGrids;
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
+  dmLookup.cdslkTipo_Especie.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
   cdsEspecieSelecionada.CreateDataSet;
+
 
   EditDataInicialMatrizProdutiva.Date := IncYear(now, -1);
   EditDataFinalMatrizProdutiva.Date := now;
+
+  for i := 0 to TcxCheckGroupProperties(cgBioma.RepositoryItem.Properties).Items.Count - 1 do
+    cgBioma.States[i] := cbschecked;
 end;
 
 function TfrmRelatorioViveiro.fprGetPermissao: String;
@@ -608,7 +689,7 @@ end;
 procedure TfrmRelatorioViveiro.ppvConfigurarGrids;
 begin
   // Esquerda
-  frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, TBancoDados.coId);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, TBancoDados.coID);
   frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieNOME.FieldName);
   frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieNOME_CIENTIFICO.FieldName, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieFAMILIA_BOTANICA.FieldName, false);
@@ -622,7 +703,7 @@ begin
   frameEspecies.fpuAdicionarField(frameEspecies.viewEsquerda, dmRelatorio.cdsTaxas_EspecieQTDE_SEMENTE_KILO.FieldName, false);
 
   // Direita
-  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, TBancoDados.coId, false);
+  frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, TBancoDados.coID, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME.FieldName);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieNOME_CIENTIFICO.FieldName, false);
   frameEspecies.fpuAdicionarField(frameEspecies.viewDireita, dmRelatorio.cdsTaxas_EspecieFAMILIA_BOTANICA.FieldName, false);

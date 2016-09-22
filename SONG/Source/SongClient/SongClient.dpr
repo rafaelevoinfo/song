@@ -69,7 +69,8 @@ uses
   fPatrimonio in 'Estoque\fPatrimonio.pas' {frmPatrimonio},
   fRelatorioPatrimonio in 'Relatorios\fRelatorioPatrimonio.pas' {frmRelatorioPatrimonio},
   fDoacao in 'Financeiro\fDoacao.pas' {frmDoacao},
-  fAreaAtuacao in 'Administrativo\fAreaAtuacao.pas' {frmAreaAtuacao};
+  fAreaAtuacao in 'Administrativo\fAreaAtuacao.pas' {frmAreaAtuacao},
+  fTipoEspecie in 'Viveiro\fTipoEspecie.pas' {frmTipoEspecie};
 
 {$R Localization.RES}
 {$R *.res}

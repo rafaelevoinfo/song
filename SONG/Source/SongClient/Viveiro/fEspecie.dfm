@@ -1,6 +1,7 @@
 inherited frmEspecie: TfrmEspecie
   ActiveControl = btnIncluir
   Caption = 'Esp'#233'cies Produzidas'
+  ExplicitTop = -50
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -10,7 +11,7 @@ inherited frmEspecie: TfrmEspecie
         inherited pnEditsPesquisa: TPanel
           Left = 508
           Width = 467
-          ExplicitLeft = 376
+          ExplicitLeft = 508
           ExplicitWidth = 467
           inherited Label1: TLabel
             Left = 4
@@ -94,13 +95,40 @@ inherited frmEspecie: TfrmEspecie
         end
         inherited pnBotoes: TPanel
           Width = 507
-          ExplicitWidth = 375
+          ExplicitWidth = 507
         end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = ',0 Und'
+                Kind = skSum
+                FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
+                Column = viewRegistrosQTDE_MUDA_DESENVOLVIMENTO
+              end
+              item
+                Format = ',0 Und'
+                Kind = skSum
+                FieldName = 'QTDE_MUDA_PRONTA'
+                Column = viewRegistrosQTDE_MUDA_PRONTA
+              end
+              item
+                Format = ',0.00 Kg'
+                Kind = skSum
+                FieldName = 'QTDE_SEMENTE_ESTOQUE'
+                Column = viewRegistrosQTDE_SEMENTE_ESTOQUE
+              end
+              item
+                Format = ',0'
+                Kind = skCount
+                FieldName = 'ID'
+                Column = viewRegistrosNOME
+              end>
+            OptionsView.Footer = True
+            OptionsView.FooterAutoHeight = True
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
               Visible = False
@@ -196,6 +224,34 @@ inherited frmEspecie: TfrmEspecie
               Options.Editing = False
               Width = 106
             end
+            object viewRegistrosMES_INICIO_COLETA: TcxGridDBColumn [17]
+              DataBinding.FieldName = 'MES_INICIO_COLETA'
+              RepositoryItem = dmLookup.repIcbMeses
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosMES_FIM_COLETA: TcxGridDBColumn [18]
+              DataBinding.FieldName = 'MES_FIM_COLETA'
+              RepositoryItem = dmLookup.repIcbMeses
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosID_TIPO_ESPECIE: TcxGridDBColumn [19]
+              DataBinding.FieldName = 'ID_TIPO_ESPECIE'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosTIPO_ESPECIE: TcxGridDBColumn [20]
+              DataBinding.FieldName = 'TIPO_ESPECIE'
+              Options.Editing = False
+              Width = 150
+            end
+            object viewRegistrosCATEGORIA_ARMAZENAMENTO: TcxGridDBColumn [21]
+              DataBinding.FieldName = 'CATEGORIA_ARMAZENAMENTO'
+              RepositoryItem = dmLookup.repIcbCategoriaArmazenamento
+              Options.Editing = False
+              Width = 148
+            end
             inherited ColumnAlterar: TcxGridDBColumn
               MinWidth = 40
               Width = 40
@@ -239,7 +295,7 @@ inherited frmEspecie: TfrmEspecie
         end
         object Label6: TLabel
           Left = 5
-          Top = 187
+          Top = 225
           Width = 53
           Height = 13
           Caption = 'Oberva'#231#227'o'
@@ -318,6 +374,20 @@ inherited frmEspecie: TfrmEspecie
           Height = 13
           Caption = 'Classifica'#231#227'o'
         end
+        object Label15: TLabel
+          Left = 5
+          Top = 129
+          Width = 143
+          Height = 13
+          Caption = 'Categoria de Armazenamento'
+        end
+        object Label16: TLabel
+          Left = 162
+          Top = 129
+          Width = 74
+          Height = 13
+          Caption = 'Tipo de Esp'#233'cie'
+        end
         object EditNome: TcxDBTextEdit
           Left = 4
           Top = 19
@@ -336,10 +406,10 @@ inherited frmEspecie: TfrmEspecie
         end
         object EditObsevacao: TcxDBMemo
           Left = 4
-          Top = 203
+          Top = 241
           DataBinding.DataField = 'OBSERVACAO'
           DataBinding.DataSource = dsMaster
-          TabOrder = 12
+          TabOrder = 16
           Height = 89
           Width = 823
         end
@@ -433,7 +503,7 @@ inherited frmEspecie: TfrmEspecie
           DataBinding.DataField = 'QTDE_SEMENTE_TUBETE'
           DataBinding.DataSource = dsMaster
           TabOrder = 7
-          Width = 150
+          Width = 151
         end
         object cbClassificacao: TcxDBImageComboBox
           Left = 699
@@ -442,19 +512,39 @@ inherited frmEspecie: TfrmEspecie
           DataBinding.DataField = 'CLASSIFICACAO'
           DataBinding.DataSource = dsMaster
           Properties.Items = <>
-          TabOrder = 13
+          TabOrder = 12
           Width = 128
         end
         object cgBioma: TcxCheckGroup
-          Left = 6
-          Top = 131
+          Left = 4
+          Top = 169
           RepositoryItem = dmLookup.repCheckGroupBiomas
           Caption = 'Biomas'
           Properties.Items = <>
           Properties.OnEditValueChanged = cgBiomaPropertiesEditValueChanged
-          TabOrder = 14
+          TabOrder = 15
           Height = 50
           Width = 821
+        end
+        object cxDBImageComboBox1: TcxDBImageComboBox
+          Left = 5
+          Top = 144
+          RepositoryItem = dmLookup.repIcbCategoriaArmazenamento
+          DataBinding.DataField = 'CATEGORIA_ARMAZENAMENTO'
+          DataBinding.DataSource = dsMaster
+          Properties.Items = <>
+          TabOrder = 13
+          Width = 151
+        end
+        object cbTipo_Especie: TcxDBLookupComboBox
+          Left = 160
+          Top = 144
+          RepositoryItem = dmLookup.repLcbTipoEspecie
+          DataBinding.DataField = 'ID_TIPO_ESPECIE'
+          DataBinding.DataSource = dsMaster
+          Properties.ListColumns = <>
+          TabOrder = 14
+          Width = 151
         end
       end
     end

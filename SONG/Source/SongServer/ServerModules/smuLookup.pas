@@ -179,8 +179,10 @@ type
     qlkArea_Atuacao: TRFQuery;
     qlkArea_AtuacaoID: TIntegerField;
     qlkArea_AtuacaoNOME: TStringField;
-    qlkEspecieEXOTICA: TSmallintField;
     qlkOrganizacaoLOGO_SECUNDARIA: TBlobField;
+    qlkTipo_Especie: TRFQuery;
+    qlkTipo_EspecieID: TIntegerField;
+    qlkTipo_EspecieNOME: TStringField;
   private
     { Private declarations }
   protected

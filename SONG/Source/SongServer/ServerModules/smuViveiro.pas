@@ -131,6 +131,13 @@ type
     qEspecie_BiomaID: TIntegerField;
     qEspecie_BiomaID_ESPECIE: TIntegerField;
     qEspecie_BiomaBIOMA: TSmallintField;
+    qTipo_Especie: TRFQuery;
+    qTipo_EspecieID: TIntegerField;
+    qTipo_EspecieNOME: TStringField;
+    qTipo_EspecieDESCRICAO: TStringField;
+    qEspecieID_TIPO_ESPECIE: TIntegerField;
+    qEspecieTIPO_ESPECIE: TStringField;
+    qEspecieCATEGORIA_ARMAZENAMENTO: TSmallintField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

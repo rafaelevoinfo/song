@@ -67,6 +67,15 @@ type
     cgBioma: TcxCheckGroup;
     cbClassifiacaoPesquisa: TcxImageComboBox;
     cbBiomaPesquisa: TcxCheckComboBox;
+    Label15: TLabel;
+    cxDBImageComboBox1: TcxDBImageComboBox;
+    viewRegistrosMES_INICIO_COLETA: TcxGridDBColumn;
+    viewRegistrosMES_FIM_COLETA: TcxGridDBColumn;
+    viewRegistrosID_TIPO_ESPECIE: TcxGridDBColumn;
+    viewRegistrosTIPO_ESPECIE: TcxGridDBColumn;
+    viewRegistrosCATEGORIA_ARMAZENAMENTO: TcxGridDBColumn;
+    cbTipo_Especie: TcxDBLookupComboBox;
+    Label16: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
     procedure cgBiomaPropertiesEditValueChanged(Sender: TObject);
@@ -137,6 +146,7 @@ begin
 
   dmLookup.cdslkFamilia_Botanica.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkFamilia_Botanica);
+  dmLookup.cdslkTipo_Especie.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
 end;
 
 function TfrmEspecie.fprConfigurarControlesPesquisa: TWinControl;

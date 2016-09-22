@@ -30,12 +30,35 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos Por Esp'#233'cie'
         ImageIndex = 0
+        ExplicitLeft = 3
+        ExplicitTop = 27
         object Label2: TLabel
           Left = 7
           Top = 3
           Width = 36
           Height = 13
           Caption = 'Esp'#233'cie'
+        end
+        object Label12: TLabel
+          Left = 7
+          Top = 42
+          Width = 115
+          Height = 13
+          Caption = 'Classifica'#231#227'o da Esp'#233'cie'
+        end
+        object Label13: TLabel
+          Left = 7
+          Top = 82
+          Width = 143
+          Height = 13
+          Caption = 'Categoria de Armazenamento'
+        end
+        object lb4: TLabel
+          Left = 7
+          Top = 122
+          Width = 74
+          Height = 13
+          Caption = 'Tipo da Esp'#233'cie'
         end
         object cbSaldoEspecie: TcxLookupComboBox
           Left = 4
@@ -53,6 +76,81 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           TabOrder = 1
           Transparent = True
           Width = 69
+        end
+        object cbClassificacaoEspecie: TcxImageComboBox
+          Left = 4
+          Top = 56
+          RepositoryItem = dmLookup.repIcbClassificacaoEspecie
+          Enabled = False
+          Properties.Items = <>
+          TabOrder = 2
+          Width = 225
+        end
+        object chkTodasClassificacao: TcxCheckBox
+          Left = 229
+          Top = 58
+          Caption = 'Todas'
+          Properties.OnEditValueChanged = chkTodasClassificacaoPropertiesEditValueChanged
+          State = cbsChecked
+          TabOrder = 3
+          Transparent = True
+          Width = 69
+        end
+        object cbCategoriaArmazenagem: TcxImageComboBox
+          Left = 4
+          Top = 96
+          RepositoryItem = dmLookup.repIcbCategoriaArmazenamento
+          Enabled = False
+          Properties.Items = <>
+          TabOrder = 4
+          Width = 225
+        end
+        object chkTodasCategoriaArmazenamento: TcxCheckBox
+          Left = 229
+          Top = 98
+          Caption = 'Todas'
+          Properties.OnEditValueChanged = chkTodasCategoriaArmazenamentoPropertiesEditValueChanged
+          State = cbsChecked
+          TabOrder = 5
+          Transparent = True
+          Width = 69
+        end
+        object chkTodosTipoEspecie: TcxCheckBox
+          Left = 229
+          Top = 138
+          Caption = 'Todas'
+          Properties.OnEditValueChanged = chkTodosTipoEspeciePropertiesEditValueChanged
+          State = cbsChecked
+          TabOrder = 6
+          Transparent = True
+          Width = 69
+        end
+        object chkApenasEspecieComSaldo: TcxCheckBox
+          Left = 4
+          Top = 219
+          Caption = 'Apenas esp'#233'cies com saldo de semente ou muda'
+          TabOrder = 7
+          Width = 277
+        end
+        object cbTipo_Especie: TcxLookupComboBox
+          Left = 4
+          Top = 136
+          RepositoryItem = dmLookup.repLcbTipoEspecie
+          Enabled = False
+          Properties.ListColumns = <>
+          TabOrder = 8
+          Width = 225
+        end
+        object cgBioma: TcxCheckGroup
+          Left = 4
+          Top = 164
+          RepositoryItem = dmLookup.repCheckGroupBiomas
+          Caption = 'Biomas'
+          EditValue = ';0,1,2,3,4,5,6'
+          Properties.Items = <>
+          TabOrder = 9
+          Height = 50
+          Width = 685
         end
       end
       object tabPrevisaoProducao: TcxTabSheet
@@ -92,8 +190,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
             ExplicitWidth = 848
             ExplicitHeight = 320
             inherited cxGrid1: TcxGrid
-              Width = 397
-              Height = 318
               ExplicitWidth = 397
               ExplicitHeight = 318
               inherited viewEsquerda: TcxGridDBTableView
@@ -101,9 +197,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited pnBotoes: TPanel
-              Left = 398
-              Width = 42
-              Height = 318
               ExplicitLeft = 398
               ExplicitWidth = 42
               ExplicitHeight = 318
@@ -125,9 +218,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited cxGrid2: TcxGrid
-              Left = 440
-              Width = 407
-              Height = 318
               ExplicitLeft = 440
               ExplicitWidth = 407
               ExplicitHeight = 318
@@ -158,14 +248,11 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               ExplicitWidth = 846
               inherited lbInfoGridEsquerda: TLabel
                 Width = 114
-                Height = 15
                 Caption = 'Esp'#233'cies dispon'#237'veis'
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
-                Left = 439
                 Width = 124
-                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 439
                 ExplicitWidth = 124
@@ -496,9 +583,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   end
   inherited pnOrganizacao: TPanel
     TabOrder = 0
-    inherited chkTodasOrganizacoes: TcxCheckBox
-      ExplicitHeight = 19
-    end
   end
   inherited ActionList: TActionList
     Left = 416
@@ -986,7 +1070,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object ppSummaryBand1: TppSummaryBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 13229
+      mmHeight = 28310
       mmPrintPosition = 0
       object ppLabel13: TppLabel
         DesignLayer = ppDesignLayer4
@@ -1001,7 +1085,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         mmHeight = 4233
         mmLeft = 109273
-        mmTop = 1323
+        mmTop = 11967
         mmWidth = 32544
         BandType = 7
         LayerName = BandLayer4
@@ -1019,8 +1103,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 4234
-        mmLeft = 115096
-        mmTop = 6879
+        mmLeft = 109290
+        mmTop = 17282
         mmWidth = 26723
         BandType = 7
         LayerName = BandLayer4
@@ -1039,8 +1123,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4498
-        mmLeft = 142610
-        mmTop = 1322
+        mmLeft = 143820
+        mmTop = 11966
         mmWidth = 51858
         BandType = 7
         LayerName = BandLayer4
@@ -1059,15 +1143,138 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4498
-        mmLeft = 142609
-        mmTop = 7144
+        mmLeft = 143819
+        mmTop = 17062
         mmWidth = 51858
         BandType = 7
         LayerName = BandLayer4
       end
+      object ppLabel54: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label54'
+        Caption = 'Total de Esp'#233'cies:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4234
+        mmLeft = 109318
+        mmTop = 1058
+        mmWidth = 30427
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object ppLabel55: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label55'
+        Caption = 'Total de Fam'#237'lias:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 109212
+        mmTop = 6350
+        mmWidth = 30162
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object EditTotalFamilia: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'EditTotalFamilia'
+        BlankWhenZero = False
+        CalcOrder = 0
+        CalcType = veGroupStart
+        DataType = dtInteger
+        DisplayFormat = ',0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        mmHeight = 4234
+        mmLeft = 143669
+        mmTop = 6395
+        mmWidth = 27517
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object ppDBCalc16: TppDBCalc
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBCalc16'
+        DataField = 'ID'
+        DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DBCalcType = dcCount
+        DataPipelineName = 'DBPipeSaldoEspecie'
+        mmHeight = 4498
+        mmLeft = 144198
+        mmTop = 907
+        mmWidth = 17198
+        BandType = 7
+        LayerName = BandLayer4
+      end
+    end
+    object ppGroup6: TppGroup
+      BreakName = 'ID_FAMILIA_BOTANICA'
+      DataPipeline = DBPipeSaldoEspecie
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      KeepTogether = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group6'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeSaldoEspecie'
+      NewFile = False
+      object ppGroupHeaderBand6: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
+      object ppGroupFooterBand6: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
     end
     object raCodeModule2: TraCodeModule
-      ProgramStream = {00}
+      ProgramStream = {
+        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650616
+        45646974546F74616C46616D696C69614F6E43616C630B50726F6772616D5479
+        7065070B747450726F63656475726506536F75726365067070726F6365647572
+        652045646974546F74616C46616D696C69614F6E43616C63287661722056616C
+        75653A2056617269616E74293B0D0A626567696E0D0A0D0A202056616C756520
+        3A3D2045646974546F74616C46616D696C69612E56616C7565202B20313B0D0A
+        0D0A656E643B0D0A0D436F6D706F6E656E744E616D65061045646974546F7461
+        6C46616D696C6961094576656E744E616D6506064F6E43616C63074576656E74
+        49440221084361726574506F730102030203000001060F5472614576656E7448
+        616E646C65720B50726F6772616D4E616D65061745646974546F74616C46616D
+        696C69614F6E52657365740B50726F6772616D54797065070B747450726F6365
+        6475726506536F75726365066D70726F6365647572652045646974546F74616C
+        46616D696C69614F6E5265736574287661722056616C75653A2056617269616E
+        74293B0D0A626567696E0D0A0D0A202056616C7565203A3D2045646974546F74
+        616C46616D696C69612E56616C75653B0D0A0D0A656E643B0D0A0D436F6D706F
+        6E656E744E616D65061045646974546F74616C46616D696C6961094576656E74
+        4E616D6506074F6E5265736574074576656E7449440222084361726574506F73
+        0102230204000000}
     end
     object ppDesignLayers4: TppDesignLayers
       object ppDesignLayer4: TppDesignLayer
@@ -1087,8 +1294,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object DBPipeSaldoEspecieppField1: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 0
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 0
     end
     object DBPipeSaldoEspecieppField2: TppField
@@ -1140,6 +1347,24 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       DataType = dtInteger
       DisplayWidth = 10
       Position = 6
+    end
+    object DBPipeSaldoEspecieppField8: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_FAMILIA_BOTANICA'
+      FieldName = 'ID_FAMILIA_BOTANICA'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 7
+    end
+    object DBPipeSaldoEspecieppField9: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 8
     end
   end
   object DBPipeOrganizacao: TppDBPipeline
@@ -2275,8 +2500,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   end
   object dsMatriz_Produtiva: TDataSource
     DataSet = dmRelatorio.cdsMatriz_Produtiva
-    Left = 376
-    Top = 192
+    Left = 456
+    Top = 152
   end
   object ppLote_Muda_Comprado: TppReport
     AutoStop = False
@@ -2464,6 +2689,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText2'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Muda_Comprado
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -2669,7 +2895,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBCalc13'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Muda_Comprado
-        DisplayFormat = '$ ,0.00'
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3193,6 +3419,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText2'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Semente_Comprado
+        DisplayFormat = ',0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3398,7 +3625,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBCalc12'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Semente_Comprado
-        DisplayFormat = ',0 Kg'
+        DisplayFormat = ',0.00 Kg'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3927,6 +4154,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText2'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Semente_Vendido
+        DisplayFormat = ',0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -4305,87 +4533,104 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     Left = 128
     Top = 288
     object DBPipeLote_Semente_VendidoppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 30
-      DisplayWidth = 30
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField4: TppField
       FieldAlias = 'ESPECIE'
       FieldName = 'ESPECIE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField5: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_CLIENTE'
       FieldName = 'ID_CLIENTE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField6: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE'
       FieldName = 'QTDE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField7: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR_UNITARIO'
       FieldName = 'VALOR_UNITARIO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField8: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR'
       FieldName = 'VALOR'
-      FieldLength = 4
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField9: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtDate
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField10: TppField
       FieldAlias = 'CLIENTE'
       FieldName = 'CLIENTE'
-      FieldLength = 203
-      DisplayWidth = 203
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
     end
   end
   object dsLote_Muda_Vendido: TDataSource
@@ -4404,7 +4649,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeLote_Muda_VendidoppField2: TppField
@@ -4668,6 +4913,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText2'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Muda_Vendido
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -5054,32 +5300,41 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       FieldAlias = 'QTDE_TUBETE'
       FieldName = 'QTDE_TUBETE'
       FieldLength = 0
-      DataType = dtLargeInt
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeTubete_SemeadoppField2: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeTubete_SemeadoppField3: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeTubete_SemeadoppField4: TppField
       FieldAlias = 'NOME_CIENTIFICO'
       FieldName = 'NOME_CIENTIFICO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
   end
   object ppTubete_Semeado: TppReport
@@ -5313,6 +5568,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText2'
         DataField = 'QTDE_TUBETE'
         DataPipeline = DBPipeTubete_Semeado
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -5461,6 +5717,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBCalc1'
         DataField = 'QTDE_TUBETE'
         DataPipeline = DBPipeTubete_Semeado
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'

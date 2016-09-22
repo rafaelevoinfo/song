@@ -406,8 +406,7 @@ inherited smLookup: TsmLookup
       '       Especie.Qtde_Muda_Pronta,'
       '       Especie.Qtde_Muda_Desenvolvimento,'
       '       Especie.Qtde_Semente_Tubete,'
-      '       Especie.Peso_Medio_Semente,'
-      '       Coalesce(Especie.Exotica,0) as Exotica'
+      '       Especie.Peso_Medio_Semente'
       'from especie'
       '&where'
       'order by Especie.nome')
@@ -477,11 +476,6 @@ inherited smLookup: TsmLookup
       Origin = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = []
       Precision = 18
-    end
-    object qlkEspecieEXOTICA: TSmallintField
-      FieldName = 'EXOTICA'
-      Origin = 'EXOTICA'
-      ProviderFlags = []
     end
   end
   object qlkMatriz: TRFQuery
@@ -1444,6 +1438,34 @@ inherited smLookup: TsmLookup
       Required = True
     end
     object qlkArea_AtuacaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object qlkTipo_Especie: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Tipo_Especie.Id,'
+      '       Tipo_Especie.Nome'
+      'from Tipo_Especie '
+      '&WHERE')
+    Left = 352
+    Top = 432
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qlkTipo_EspecieID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkTipo_EspecieNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = []

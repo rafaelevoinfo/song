@@ -200,6 +200,8 @@ type
     qConta_PagarDATA_PAGAMENTO: TDateField;
     qConta_PagarVALOR: TBCDField;
     qConta_PagarVALOR_PAGO: TBCDField;
+    qSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField;
+    qSaldo_Semente_MudaID: TIntegerField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private
@@ -224,7 +226,7 @@ function TsmRelatorio.fprMontarWhere(ipTabela, ipWhere: string;
   ipParam: TParam): string;
 var
   vaValor, vaOperador: string;
-  vaTipos: TArray<integer>;
+  vaArray: TArray<integer>;
 begin
   Result := inherited;
   TUtils.ppuExtrairValorOperadorParametro(ipParam.Text, vaValor, vaOperador, TParametros.coDelimitador);
@@ -335,8 +337,8 @@ begin
         end
       else if ipParam.Name = TParametros.coTipo then
         begin
-          vaTipos := TUtils.fpuConverterStringToArrayInteger(vaValor, TParametros.coDelimitador);
-          Result := TSQLGenerator.fpuFilterInteger(Result, 'VIEW_MOVIMENTACAO_FINANCEIRA', 'TIPO', vaTipos, vaOperador)
+          vaArray := TUtils.fpuConverterStringToArrayInteger(vaValor, TParametros.coDelimitador);
+          Result := TSQLGenerator.fpuFilterInteger(Result, 'VIEW_MOVIMENTACAO_FINANCEIRA', 'TIPO', vaArray, vaOperador)
         end
       else if ipParam.Name = TParametros.coAberto then
         Result := '(' + Result + ' (VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL_PAGO_RECEBIDO <> VIEW_MOVIMENTACAO_FINANCEIRA.VALOR_TOTAL))' + vaOperador
@@ -378,10 +380,21 @@ begin
     end
   else if (ipTabela = 'SALDO_SEMENTE_MUDA') then
     begin
-      if ipParam.Name = TParametros.coClassificacao then
-        Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'CLASSIFICACAO', vaValor.ToInteger, vaOperador)
+      if ipParam.Name = TParametros.coID_ESPECIE then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coClassificacao then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'CLASSIFICACAO', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coBioma then
-        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE_BIOMA', 'BIOMA', vaValor.ToInteger, vaOperador);
+        begin
+          vaArray := TUtils.fpuConverterStringToArrayInteger(vaValor, TParametros.coDelimitador);
+          Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE_BIOMA', 'BIOMA', vaArray, vaOperador)
+        end
+        else if ipParam.Name = TParametros.coCategoria then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'CATEGORIA_ARMAZENAMENTO', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coTipo then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ESPECIE', 'ID_TIPO_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coSaldoPositivo then
+        Result := Result + ' ((Especie.Qtde_Semente_Estoque > 0) OR (Especie.Qtde_Muda_Pronta > 0) OR (Especie.Qtde_Muda_Desenvolvimento > 0)) ' + vaOperador;
     end
 end;
 

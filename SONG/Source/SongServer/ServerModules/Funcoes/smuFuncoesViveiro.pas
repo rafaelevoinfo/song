@@ -31,6 +31,7 @@ type
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: String): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: String): Boolean;
     function fpuvalidarNomeCamaraFria(ipId:Integer; ipNome:String):Boolean;
+    function fpuvalidarNomeTipoEspecie(ipId:Integer; ipNome:String):Boolean;
     procedure ppuValidarSemeadura(ipIdLote, ipIdSemeadura: Integer; ipQtdeSemeada: Double);
 
 
@@ -368,6 +369,12 @@ function TsmFuncoesViveiro.fpuValidarNomeMatriz(ipId: Integer;
 ipNome: String): Boolean;
 begin
   Result := fprValidarCampoUnico('MATRIZ', 'NOME', ipId, ipNome);
+end;
+
+function TsmFuncoesViveiro.fpuvalidarNomeTipoEspecie(ipId: Integer;
+  ipNome: String): Boolean;
+begin
+  Result := fprValidarCampoUnico('TIPO_ESPECIE','NOME',ipId,ipNome);
 end;
 
 procedure TsmFuncoesViveiro.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);

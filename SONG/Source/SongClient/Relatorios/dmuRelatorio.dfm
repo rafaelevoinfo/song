@@ -132,6 +132,17 @@ inherited dmRelatorio: TdmRelatorio
       FieldName = 'CALC_TOTAL_MUDA'
       Calculated = True
     end
+    object cdsSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField
+      FieldName = 'ID_FAMILIA_BOTANICA'
+      Origin = 'ID_FAMILIA_BOTANICA'
+      ProviderFlags = []
+    end
+    object cdsSaldo_Semente_MudaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
   end
   object dsSaldo_Semente_Muda: TDataSource
     DataSet = cdsSaldo_Semente_Muda

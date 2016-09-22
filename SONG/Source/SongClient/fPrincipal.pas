@@ -21,7 +21,7 @@ uses
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
-  fDoacao, dmuPrincipal, fAreaAtuacao;
+  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -124,6 +124,8 @@ type
     SolicitaodeCompra2: TMenuItem;
     Ac_Area_Atuacao: TAction;
     reasdeAtuao1: TMenuItem;
+    Ac_Tipo_Especie: TAction;
+    ipodeEspcie1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -170,6 +172,7 @@ type
     procedure Ac_DoacaoExecute(Sender: TObject);
     procedure Ac_Atualizar_NotificacoesExecute(Sender: TObject);
     procedure Ac_Area_AtuacaoExecute(Sender: TObject);
+    procedure Ac_Tipo_EspecieExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -462,6 +465,12 @@ procedure TfrmPrincipal.Ac_Solicitacao_CompraExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmSolicitacaoCompra>(pcPrincipal, TfrmSolicitacaoCompra, frmSolicitacaoCompra);
+end;
+
+procedure TfrmPrincipal.Ac_Tipo_EspecieExecute(Sender: TObject);
+begin
+  inherited;
+   TUtils.ppuAbrirFormAba<TfrmTipoEspecie>(pcPrincipal, TfrmTipoEspecie, frmTipoEspecie);
 end;
 
 procedure TfrmPrincipal.Ac_TransferenciaExecute(Sender: TObject);

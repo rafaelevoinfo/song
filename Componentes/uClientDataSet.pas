@@ -11,6 +11,7 @@ type
   public const
     coTodos: string = 'TODOS';
     coID: string = 'ID';
+    coID_ESPECIE = 'ID_ESPECIE';
     coIdPai: string = 'ID_PAI';
     coNome: string = 'NOME';
     coData: string = 'DATA';
@@ -71,6 +72,9 @@ type
     coBioma = 'BIOMA';
 
     coDelimitador = '§';
+
+    coCategoria = 'CATEGORIA';
+    coSaldoPositivo = 'SALDO_POSITIVO';
   end;
 
   TOnErroRede = function(e: Exception): Boolean of object;

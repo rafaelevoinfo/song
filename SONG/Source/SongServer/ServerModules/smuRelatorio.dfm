@@ -123,7 +123,10 @@ inherited smRelatorio: TsmRelatorio
   object qSaldo_Semente_Muda: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Especie.Nome,'
+      'select DISTINCT '
+      '       Especie.Id,'
+      '       Especie.Nome,'
+      '       especie.id_familia_botanica,'
       '       Especie.Nome_Cientifico,'
       '       familia_botanica.nome as Familia_Botanica,'
       '       Especie.Qtde_Semente_Estoque,'
@@ -131,18 +134,19 @@ inherited smRelatorio: TsmRelatorio
       '       Especie.Qtde_Muda_Desenvolvimento'
       'from Especie'
       
-        'inner join familia_botanica on (especie.id_familia_botanica = fa' +
-        'milia_botanica.id)'
-      'where Especie.id = :ID_ESPECIE OR :ID_ESPECIE IS NULL'
-      'order by Especie.Nome')
+        'left join familia_botanica on (especie.id_familia_botanica = fam' +
+        'ilia_botanica.id)'
+      
+        'left join especie_bioma on (especie_bioma.id_especie = especie.i' +
+        'd)'
+      '&WHERE'
+      'order by  familia_botanica.nome, Especie.Nome')
     Left = 204
     Top = 124
-    ParamData = <
+    MacroData = <
       item
-        Name = 'ID_ESPECIE'
-        DataType = ftInteger
-        ParamType = ptInput
         Value = Null
+        Name = 'WHERE'
       end>
     object qSaldo_Semente_MudaNOME: TStringField
       FieldName = 'NOME'
@@ -178,6 +182,17 @@ inherited smRelatorio: TsmRelatorio
       FieldName = 'QTDE_MUDA_DESENVOLVIMENTO'
       Origin = 'QTDE_MUDA_DESENVOLVIMENTO'
       ProviderFlags = []
+    end
+    object qSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField
+      FieldName = 'ID_FAMILIA_BOTANICA'
+      Origin = 'ID_FAMILIA_BOTANICA'
+      ProviderFlags = []
+    end
+    object qSaldo_Semente_MudaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
     end
   end
   object qTaxas_Especie: TRFQuery

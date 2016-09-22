@@ -273,11 +273,16 @@ type
     cdslkArea_AtuacaoID: TIntegerField;
     cdslkArea_AtuacaoNOME: TStringField;
     dslkArea_Atuacao_Projeto: TDataSource;
-    cdslkEspecieEXOTICA: TSmallintField;
     cdslkOrganizacaoLOGO_SECUNDARIA: TBlobField;
     repIcbClassificacaoEspecie: TcxEditRepositoryImageComboBoxItem;
     repCheckGroupBiomas: TcxEditRepositoryCheckGroupItem;
     repCcbBiomas: TcxEditRepositoryCheckComboBox;
+    repIcbCategoriaArmazenamento: TcxEditRepositoryImageComboBoxItem;
+    cdslkTipo_Especie: TRFClientDataSet;
+    repLcbTipoEspecie: TcxEditRepositoryLookupComboBoxItem;
+    dslkTipo_Especie: TDataSource;
+    cdslkTipo_EspecieID: TIntegerField;
+    cdslkTipo_EspecieNOME: TStringField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

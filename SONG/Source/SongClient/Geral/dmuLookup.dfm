@@ -215,13 +215,7 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          Width = 300
           FieldName = 'NOME'
-        end
-        item
-          RepositoryItem = RepIcbNaoSim
-          Width = 100
-          FieldName = 'EXOTICA'
         end>
       Properties.ListSource = dslkEspecie
     end
@@ -848,6 +842,34 @@ inherited dmLookup: TdmLookup
           Tag = 6
         end>
     end
+    object repIcbCategoriaArmazenamento: TcxEditRepositoryImageComboBoxItem
+      Properties.ClearKey = 46
+      Properties.Items = <
+        item
+          Description = 'Ortodoxa'
+          ImageIndex = 0
+          Value = 0
+        end
+        item
+          Description = 'Recalcitrante'
+          Value = 1
+        end
+        item
+          Description = 'Intermedi'#225'ria'
+          Value = 2
+        end>
+    end
+    object repLcbTipoEspecie: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          Width = 200
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkTipo_Especie
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1225,11 +1247,6 @@ inherited dmLookup: TdmLookup
       FieldName = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = []
       Precision = 18
-    end
-    object cdslkEspecieEXOTICA: TSmallintField
-      Alignment = taLeftJustify
-      DisplayLabel = 'Ex'#243'tica'
-      FieldName = 'EXOTICA'
     end
   end
   object dslkEspecie: TDataSource
@@ -2146,5 +2163,30 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkArea_Atuacao_Projeto
     Left = 696
     Top = 288
+  end
+  object cdslkTipo_Especie: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkTipo_Especie'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 496
+    Top = 496
+    object cdslkTipo_EspecieID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkTipo_EspecieNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object dslkTipo_Especie: TDataSource
+    DataSet = cdslkTipo_Especie
+    Left = 488
+    Top = 440
   end
 end

@@ -127,6 +127,21 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'CLASSIFICACAO'
       ProviderFlags = [pfInUpdate]
     end
+    object cdsEspecieID_TIPO_ESPECIE: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'ID do Tipo da Esp'#233'cie'
+      FieldName = 'ID_TIPO_ESPECIE'
+    end
+    object cdsEspecieTIPO_ESPECIE: TStringField
+      DisplayLabel = 'Tipo da Esp'#233'cie'
+      FieldName = 'TIPO_ESPECIE'
+      Size = 100
+    end
+    object cdsEspecieCATEGORIA_ARMAZENAMENTO: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Categoria de Armazenamento'
+      FieldName = 'CATEGORIA_ARMAZENAMENTO'
+    end
   end
   object cdsMatriz: TRFClientDataSet
     Aggregates = <>
@@ -759,6 +774,31 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'BIOMA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+  end
+  object cdsTipo_Especie: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqTipo_Especie'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 640
+    Top = 120
+    object cdsTipo_EspecieID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsTipo_EspecieNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsTipo_EspecieDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

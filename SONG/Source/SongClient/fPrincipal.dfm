@@ -216,6 +216,9 @@ inherited frmPrincipal: TfrmPrincipal
         Action = Ac_Familia_Botanica
         Caption = 'Fam'#237'lias Bot'#226'nicas'
       end
+      object ipodeEspcie1: TMenuItem
+        Action = Ac_Tipo_Especie
+      end
       object Espcie1: TMenuItem
         Action = Ac_Especie
       end
@@ -492,6 +495,11 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = #193'reas de Atua'#231#227'o'
       ImageIndex = 46
       OnExecute = Ac_Area_AtuacaoExecute
+    end
+    object Ac_Tipo_Especie: TAction
+      Category = 'Viveiro'
+      Caption = 'Tipo de Esp'#233'cie'
+      OnExecute = Ac_Tipo_EspecieExecute
     end
   end
   object dxSkinController1: TdxSkinController

@@ -11,7 +11,8 @@ uses
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, Data.DB, uClientDataSet,
   uTypes, cxCheckBox, dmuRelatorio, cxGroupBox, dxCheckGroupBox,
   uControleAcesso, ppComm, ppRelatv, ppProd, ppClass, ppReport, cxDateUtils,
-  Vcl.ComCtrls, dxCore, cxCalendar, ppParameter, ppCTCtrl, ppCtrls;
+  Vcl.ComCtrls, dxCore, cxCalendar, ppParameter, ppCTCtrl, ppCtrls,
+  cxImageComboBox;
 
 type
   TfrmRelatorioBasico = class(TfrmBasico)
@@ -34,7 +35,8 @@ type
     dmLookup: TdmLookup;
     dmRelatorio: TdmRelatorio;
     procedure pprValidarPermissao(ipAcao: TAcaoTela; ipPermissao: string);
-    function fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
+    function fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxCustomEdit; ipMsgErro: string): Integer;
+//    function fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxImageComboBox; ipMsgErro: string): Integer; overload;
 
     function fprGetPermissao: String; virtual; abstract;
   public
@@ -56,7 +58,7 @@ begin
       AcaoTelaDescricao[ipAcao].ToUpper + ' para a permissão ' + TModulos.fpuGetInstance.fpuGetDescricao(ipPermissao).ToUpper);
 end;
 
-function TfrmRelatorioBasico.fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxLookupComboBox; ipMsgErro: string): Integer;
+function TfrmRelatorioBasico.fprExtrairValor(ipChkTodos: TcxCheckBox; ipLookup: TcxCustomEdit; ipMsgErro: string): Integer;
 begin
   Result := 0;
   if Assigned(ipLookup.Parent) and (ipLookup.Parent is TdxCheckGroupBox) and (not TdxCheckGroupBox(ipLookup.Parent).CheckBox.Checked) then
@@ -109,5 +111,6 @@ begin
       cbOrganizacao.PostEditValue;
     end;
 end;
+
 
 end.

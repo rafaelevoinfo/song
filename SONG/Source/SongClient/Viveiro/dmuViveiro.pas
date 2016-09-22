@@ -125,6 +125,13 @@ type
     cdsEspecie_BiomaID: TIntegerField;
     cdsEspecie_BiomaID_ESPECIE: TIntegerField;
     cdsEspecie_BiomaBIOMA: TSmallintField;
+    cdsEspecieID_TIPO_ESPECIE: TIntegerField;
+    cdsEspecieTIPO_ESPECIE: TStringField;
+    cdsEspecieCATEGORIA_ARMAZENAMENTO: TSmallintField;
+    cdsTipo_Especie: TRFClientDataSet;
+    cdsTipo_EspecieID: TIntegerField;
+    cdsTipo_EspecieNOME: TStringField;
+    cdsTipo_EspecieDESCRICAO: TStringField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

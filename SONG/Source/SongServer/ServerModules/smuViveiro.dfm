@@ -9,7 +9,7 @@ inherited smViveiro: TsmViveiro
   object qEspecie: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select ESPECIE.ID,'
+      'select distinct ESPECIE.ID,'
       '       ESPECIE.NOME,'
       '       ESPECIE.NOME_CIENTIFICO,'
       '       ESPECIE.ID_FAMILIA_BOTANICA,'
@@ -31,7 +31,10 @@ inherited smViveiro: TsmViveiro
       
         '       Coalesce(Especie.qtde_muda_desenvolvimento,0) as qtde_mud' +
         'a_desenvolvimento,'
-      '       especie.classificacao'
+      '       especie.classificacao,'
+      '       especie.id_tipo_especie,'
+      '       tipo_especie.nome as tipo_especie,'
+      '       especie.categoria_armazenamento'
       'from ESPECIE  '
       
         'left join familia_botanica on (especie.id_familia_botanica = fam' +
@@ -39,6 +42,9 @@ inherited smViveiro: TsmViveiro
       
         'left join especie_bioma on (especie_bioma.id_especie = especie.i' +
         'd)'
+      
+        'left join tipo_especie on (tipo_especie.id = especie.id_tipo_esp' +
+        'ecie)'
       '&WHERE')
     Left = 32
     Top = 16
@@ -157,6 +163,23 @@ inherited smViveiro: TsmViveiro
     object qEspecieCLASSIFICACAO: TSmallintField
       FieldName = 'CLASSIFICACAO'
       Origin = 'CLASSIFICACAO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieID_TIPO_ESPECIE: TIntegerField
+      FieldName = 'ID_TIPO_ESPECIE'
+      Origin = 'ID_TIPO_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qEspecieTIPO_ESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'TIPO_ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qEspecieCATEGORIA_ARMAZENAMENTO: TSmallintField
+      FieldName = 'CATEGORIA_ARMAZENAMENTO'
+      Origin = 'CATEGORIA_ARMAZENAMENTO'
       ProviderFlags = [pfInUpdate]
     end
   end
@@ -967,6 +990,41 @@ inherited smViveiro: TsmViveiro
       Origin = 'BIOMA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+  end
+  object qTipo_Especie: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Tipo_Especie.Id,'
+      '       Tipo_Especie.Nome,'
+      '       Tipo_Especie.Descricao'
+      'from Tipo_Especie '
+      '&WHERE')
+    Left = 112
+    Top = 224
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qTipo_EspecieID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qTipo_EspecieNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qTipo_EspecieDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
     end
   end
 end

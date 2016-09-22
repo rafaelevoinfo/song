@@ -185,3 +185,96 @@ COMMENT ON COLUMN ESPECIE_BIOMA.BIOMA IS
 5 - Pantanal
 6 - Exotico (Bioma que nao e brasileiro)';
 
+
+
+ALTER TABLE ESPECIE
+    ADD ID_TIPO_ESPECIE INTEGER;
+
+alter table ESPECIE
+alter ID position 1;
+
+alter table ESPECIE
+alter NOME position 2;
+
+alter table ESPECIE
+alter NOME_CIENTIFICO position 3;
+
+alter table ESPECIE
+alter ID_FAMILIA_BOTANICA position 4;
+
+alter table ESPECIE
+alter ID_TIPO_ESPECIE position 5;
+
+alter table ESPECIE
+alter VALOR_MUDA position 6;
+
+alter table ESPECIE
+alter VALOR_KG_SEMENTE position 7;
+
+alter table ESPECIE
+alter TEMPO_GERMINACAO position 8;
+
+alter table ESPECIE
+alter QTDE_SEMENTE_KILO position 9;
+
+alter table ESPECIE
+alter QTDE_SEMENTE_ESTOQUE position 10;
+
+alter table ESPECIE
+alter QTDE_MUDA_PRONTA position 11;
+
+alter table ESPECIE
+alter QTDE_MUDA_DESENVOLVIMENTO position 12;
+
+alter table ESPECIE
+alter TEMPO_DESENVOLVIMENTO position 13;
+
+alter table ESPECIE
+alter OBSERVACAO position 14;
+
+alter table ESPECIE
+alter MES_INICIO_COLETA position 15;
+
+alter table ESPECIE
+alter MES_FIM_COLETA position 16;
+
+alter table ESPECIE
+alter PESO_MEDIO_SEMENTE position 17;
+
+alter table ESPECIE
+alter QTDE_SEMENTE_TUBETE position 18;
+
+alter table ESPECIE
+alter CLASSIFICACAO position 19;
+
+
+
+CREATE TABLE TIPO_ESPECIE (
+    ID INTEGER NOT NULL,
+    NOME D_NOME NOT NULL,
+    DESCRICAO D_DESCRICAO);
+
+ALTER TABLE TIPO_ESPECIE
+ADD CONSTRAINT PK_TIPO_ESPECIE
+PRIMARY KEY (ID);
+
+CREATE SEQUENCE GEN_TIPO_ESPECIE;
+
+
+
+ALTER TABLE ESPECIE
+    ADD CATEGORIA_ARMAZENAMENTO SMALLINT;
+
+COMMENT ON COLUMN ESPECIE.CATEGORIA_ARMAZENAMENTO IS
+'0 - Ortodoxas
+1 - Recalcitrantes
+2 - Intermediaria';
+
+
+
+ALTER TABLE ESPECIE
+ADD CONSTRAINT FK_ESPECIE_2
+FOREIGN KEY (ID_TIPO_ESPECIE)
+REFERENCES TIPO_ESPECIE(ID)
+ON UPDATE CASCADE;
+
