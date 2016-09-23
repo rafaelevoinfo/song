@@ -307,7 +307,9 @@ type
     coPesquisaRubricaOrigemRecurso = 10;
     coPesquisaResponsavelDespesa = 11;
     coPesquisaFundo = 12;
-
+    coPesquisaDataPagamento = 13;
+    coPesquisaDataCompra = 14;
+    coPesquisaDataVencimento = 15;
   end;
 
 var
@@ -427,7 +429,13 @@ begin
   else if cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa then
     ipCds.ppuAddParametro(TParametros.coResponsavelDespesa, cbPesquisaResponsavel.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaFundo then
-    ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue);
+    ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaDataPagamento then
+    ipCds.ppuAddParametro(TParametros.coDataPagamentoRecebimento, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date))
+  else if cbPesquisarPor.EditValue = coPesquisaDataCompra then
+    ipCds.ppuAddParametro(TParametros.coDataCompra, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date))
+  else if cbPesquisarPor.EditValue = coPesquisaDataVencimento then
+    ipCds.ppuAddParametro(TParametros.coDataVencimento, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 
   if rgStatus.EditValue <> 2 then // ambos
     ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.EditValue);
@@ -1017,7 +1025,7 @@ begin
 end;
 
 procedure TfrmContaPagar.cbFornecedorKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -1025,7 +1033,7 @@ begin
 end;
 
 procedure TfrmContaPagar.cbPlanoContasKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -1172,7 +1180,7 @@ begin
   pcAlocadoPara.ActivePage := tabAlocadoProjeto;
   pcEditsCadastro.ActivePage := tabInfoGeral;
 
-  PesquisaPadrao := Ord(tppData);
+  PesquisaPadrao := coPesquisaDataVencimento;
 
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
@@ -1180,7 +1188,7 @@ begin
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
   ppvCarregarFornecedores;
   ppvCarregarPlanoContas;
-  
+
   dmLookup.cdslkConta_Corrente.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
   dmLookup.cdslkRubrica.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);;
   dmLookup.cdslkOrganizacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, True);
@@ -1212,11 +1220,17 @@ begin
   cbPesquisaRubricas.Visible := cbPesquisarPor.EditValue = coPesquisaRubricaOrigemRecurso;
   cbPesquisaResponsavel.Visible := cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa;
   cbPesquisaFundo.Visible := cbPesquisarPor.EditValue = coPesquisaFundo;
+  pnData.Visible := pnData.Visible or (cbPesquisarPor.EditValue = coPesquisaDataVencimento) or
+                    (cbPesquisarPor.EditValue = coPesquisaDataPagamento) or
+                    (cbPesquisarPor.EditValue = coPesquisaDataCompra);
   EditPesquisa.Visible := EditPesquisa.Visible and
     (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or
-    cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible or cbPesquisaResponsavel.Visible or cbPesquisaFundo.Visible));
+    cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible or cbPesquisaResponsavel.Visible or
+    cbPesquisaFundo.Visible or pnData.Visible));
 
-  if cbPesquisaFornecedor.Visible then
+  if pnData.Visible then
+    Result := pnData
+  else if cbPesquisaFornecedor.Visible then
     Result := cbPesquisaFornecedor
   else if cbPesquisaPlanoConta.Visible then
     Result := cbPesquisaPlanoConta

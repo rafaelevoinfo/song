@@ -377,13 +377,12 @@ type
     chkApenasEspecieComSaldo: TcxCheckBox;
     cbTipo_Especie: TcxLookupComboBox;
     cgBioma: TcxCheckGroup;
-    ppGroup6: TppGroup;
-    ppGroupHeaderBand6: TppGroupHeaderBand;
-    ppGroupFooterBand6: TppGroupFooterBand;
     ppLabel54: TppLabel;
     ppLabel55: TppLabel;
-    EditTotalFamilia: TppVariable;
     ppDBCalc16: TppDBCalc;
+    ppDBText53: TppDBText;
+    ppLabel56: TppLabel;
+    ppDBText57: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkSaldoTodasEspeciesPropertiesEditValueChanged(Sender: TObject);

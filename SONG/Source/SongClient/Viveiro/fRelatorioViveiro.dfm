@@ -1,6 +1,7 @@
 inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   Caption = 'Relat'#243'rios do Viveiro'
   ClientHeight = 480
+  ExplicitTop = -144
   ExplicitHeight = 519
   PixelsPerInch = 96
   TextHeight = 13
@@ -30,8 +31,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos Por Esp'#233'cie'
         ImageIndex = 0
-        ExplicitLeft = 3
-        ExplicitTop = 27
         object Label2: TLabel
           Left = 7
           Top = 3
@@ -146,7 +145,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           Top = 164
           RepositoryItem = dmLookup.repCheckGroupBiomas
           Caption = 'Biomas'
-          EditValue = ';0,1,2,3,4,5,6'
           Properties.Items = <>
           TabOrder = 9
           Height = 50
@@ -583,6 +581,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   end
   inherited pnOrganizacao: TPanel
     TabOrder = 0
+    inherited chkTodasOrganizacoes: TcxCheckBox
+      ExplicitHeight = 19
+    end
   end
   inherited ActionList: TActionList
     Left = 416
@@ -739,14 +740,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = [fsBold]
         FormField = False
         Transparent = True
-        mmHeight = 3704
+        mmHeight = 2910
         mmLeft = 2117
-        mmTop = 22172
-        mmWidth = 8466
+        mmTop = 22225
+        mmWidth = 6879
         BandType = 0
         LayerName = BandLayer4
       end
@@ -757,14 +758,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = [fsBold]
         FormField = False
         Transparent = True
-        mmHeight = 3704
-        mmLeft = 43656
-        mmTop = 22172
-        mmWidth = 23019
+        mmHeight = 2910
+        mmLeft = 38818
+        mmTop = 22225
+        mmWidth = 19315
         BandType = 0
         LayerName = BandLayer4
       end
@@ -775,14 +776,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = [fsBold]
         FormField = False
         Transparent = True
-        mmHeight = 3704
-        mmLeft = 85724
-        mmTop = 22225
-        mmWidth = 21696
+        mmHeight = 2910
+        mmLeft = 104109
+        mmTop = 21983
+        mmWidth = 17198
         BandType = 0
         LayerName = BandLayer4
       end
@@ -793,14 +794,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = [fsBold]
         FormField = False
         Transparent = True
-        mmHeight = 3704
-        mmLeft = 152931
+        mmHeight = 2910
+        mmLeft = 157769
         mmTop = 22225
-        mmWidth = 21961
+        mmWidth = 17728
         BandType = 0
         LayerName = BandLayer4
       end
@@ -822,33 +823,51 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = [fsBold]
         FormField = False
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3704
-        mmLeft = 108740
+        mmHeight = 2910
+        mmLeft = 122512
         mmTop = 22225
-        mmWidth = 41540
+        mmWidth = 33338
         BandType = 0
         LayerName = BandLayer4
       end
       object ppLabel9: TppLabel
         DesignLayer = ppDesignLayer4
         UserName = 'Label9'
-        Caption = 'Total Mudas'
+        Caption = 'Total de Mudas'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = [fsBold]
         FormField = False
         Transparent = True
-        mmHeight = 3704
-        mmLeft = 177800
+        mmHeight = 2910
+        mmLeft = 177536
         mmTop = 22225
-        mmWidth = 17727
+        mmWidth = 17991
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel56: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label56'
+        Caption = 'Fam'#237'lia Bot'#226'nica'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 2910
+        mmLeft = 72118
+        mmTop = 22225
+        mmWidth = 20109
         BandType = 0
         LayerName = BandLayer4
       end
@@ -864,19 +883,18 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBQtdeMudaPronta'
         DataField = 'QTDE_MUDA_PRONTA'
         DataPipeline = DBPipeSaldoEspecie
-        DisplayFormat = ',0 Und'
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
-        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 151869
+        mmLeft = 158278
         mmTop = 0
-        mmWidth = 21960
+        mmWidth = 17799
         BandType = 4
         LayerName = BandLayer4
       end
@@ -888,14 +906,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
         mmLeft = 2115
         mmTop = 0
-        mmWidth = 41000
+        mmWidth = 35358
         BandType = 4
         LayerName = BandLayer4
       end
@@ -904,19 +922,18 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText2'
         DataField = 'QTDE_SEMENTE_ESTOQUE'
         DataPipeline = DBPipeSaldoEspecie
-        DisplayFormat = ',0.00 Kg'
+        DisplayFormat = ',0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
-        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 84929
+        mmLeft = 104523
         mmTop = 0
-        mmWidth = 21696
+        mmWidth = 17318
         BandType = 4
         LayerName = BandLayer4
       end
@@ -928,14 +945,14 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 43657
+        mmLeft = 38819
         mmTop = 0
-        mmWidth = 39952
+        mmWidth = 32712
         BandType = 4
         LayerName = BandLayer4
       end
@@ -944,19 +961,18 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBQtdeMudaDesenvolvimento'
         DataField = 'QTDE_MUDA_DESENVOLVIMENTO'
         DataPipeline = DBPipeSaldoEspecie
-        DisplayFormat = ',0 Und'
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
-        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 108480
+        mmLeft = 125076
         mmTop = 0
-        mmWidth = 41540
+        mmWidth = 31269
         BandType = 4
         LayerName = BandLayer4
       end
@@ -965,19 +981,37 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText11'
         DataField = 'CALC_TOTAL_MUDA'
         DataPipeline = DBPipeSaldoEspecie
-        DisplayFormat = ',0 Und'
+        DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
-        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4763
-        mmLeft = 175154
+        mmLeft = 177498
         mmTop = 0
-        mmWidth = 20638
+        mmWidth = 17559
+        BandType = 4
+        LayerName = BandLayer4
+      end
+      object ppDBText57: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText57'
+        DataField = 'FAMILIA_BOTANICA'
+        DataPipeline = DBPipeSaldoEspecie
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeSaldoEspecie'
+        mmHeight = 4763
+        mmLeft = 72035
+        mmTop = 0
+        mmWidth = 30956
         BandType = 4
         LayerName = BandLayer4
       end
@@ -1070,7 +1104,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object ppSummaryBand1: TppSummaryBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 28310
+      mmHeight = 24606
       mmPrintPosition = 0
       object ppLabel13: TppLabel
         DesignLayer = ppDesignLayer4
@@ -1185,27 +1219,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 7
         LayerName = BandLayer4
       end
-      object EditTotalFamilia: TppVariable
-        DesignLayer = ppDesignLayer4
-        UserName = 'EditTotalFamilia'
-        BlankWhenZero = False
-        CalcOrder = 0
-        CalcType = veGroupStart
-        DataType = dtInteger
-        DisplayFormat = ',0'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = [fsBold]
-        Transparent = True
-        mmHeight = 4234
-        mmLeft = 143669
-        mmTop = 6395
-        mmWidth = 27517
-        BandType = 7
-        LayerName = BandLayer4
-      end
       object ppDBCalc16: TppDBCalc
         DesignLayer = ppDesignLayer4
         UserName = 'DBCalc16'
@@ -1221,60 +1234,35 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         DBCalcType = dcCount
         DataPipelineName = 'DBPipeSaldoEspecie'
         mmHeight = 4498
-        mmLeft = 144198
-        mmTop = 907
-        mmWidth = 17198
+        mmLeft = 143714
+        mmTop = 665
+        mmWidth = 35117
+        BandType = 7
+        LayerName = BandLayer4
+      end
+      object ppDBText53: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText53'
+        DataField = 'QTDE_FAMILIA'
+        DataPipeline = DBPipeSaldoEspecie
+        DisplayFormat = ',0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'DBPipeSaldoEspecie'
+        mmHeight = 4763
+        mmLeft = 143759
+        mmTop = 5821
+        mmWidth = 21696
         BandType = 7
         LayerName = BandLayer4
       end
     end
-    object ppGroup6: TppGroup
-      BreakName = 'ID_FAMILIA_BOTANICA'
-      DataPipeline = DBPipeSaldoEspecie
-      GroupFileSettings.NewFile = False
-      GroupFileSettings.EmailFile = False
-      KeepTogether = True
-      OutlineSettings.CreateNode = True
-      StartOnOddPage = False
-      UserName = 'Group6'
-      mmNewColumnThreshold = 0
-      mmNewPageThreshold = 0
-      DataPipelineName = 'DBPipeSaldoEspecie'
-      NewFile = False
-      object ppGroupHeaderBand6: TppGroupHeaderBand
-        Background.Brush.Style = bsClear
-        mmBottomOffset = 0
-        mmHeight = 0
-        mmPrintPosition = 0
-      end
-      object ppGroupFooterBand6: TppGroupFooterBand
-        Background.Brush.Style = bsClear
-        HideWhenOneDetail = False
-        mmBottomOffset = 0
-        mmHeight = 0
-        mmPrintPosition = 0
-      end
-    end
     object raCodeModule2: TraCodeModule
-      ProgramStream = {
-        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650616
-        45646974546F74616C46616D696C69614F6E43616C630B50726F6772616D5479
-        7065070B747450726F63656475726506536F75726365067070726F6365647572
-        652045646974546F74616C46616D696C69614F6E43616C63287661722056616C
-        75653A2056617269616E74293B0D0A626567696E0D0A0D0A202056616C756520
-        3A3D2045646974546F74616C46616D696C69612E56616C7565202B20313B0D0A
-        0D0A656E643B0D0A0D436F6D706F6E656E744E616D65061045646974546F7461
-        6C46616D696C6961094576656E744E616D6506064F6E43616C63074576656E74
-        49440221084361726574506F730102030203000001060F5472614576656E7448
-        616E646C65720B50726F6772616D4E616D65061745646974546F74616C46616D
-        696C69614F6E52657365740B50726F6772616D54797065070B747450726F6365
-        6475726506536F75726365066D70726F6365647572652045646974546F74616C
-        46616D696C69614F6E5265736574287661722056616C75653A2056617269616E
-        74293B0D0A626567696E0D0A0D0A202056616C7565203A3D2045646974546F74
-        616C46616D696C69612E56616C75653B0D0A0D0A656E643B0D0A0D436F6D706F
-        6E656E744E616D65061045646974546F74616C46616D696C6961094576656E74
-        4E616D6506074F6E5265736574074576656E7449440222084361726574506F73
-        0102230204000000}
+      ProgramStream = {00}
     end
     object ppDesignLayers4: TppDesignLayers
       object ppDesignLayer4: TppDesignLayer
@@ -1294,8 +1282,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object DBPipeSaldoEspecieppField1: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DisplayWidth = 0
       Position = 0
     end
     object DBPipeSaldoEspecieppField2: TppField
@@ -1365,6 +1353,15 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       DataType = dtInteger
       DisplayWidth = 10
       Position = 8
+    end
+    object DBPipeSaldoEspecieppField10: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE_FAMILIA'
+      FieldName = 'QTDE_FAMILIA'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 9
     end
   end
   object DBPipeOrganizacao: TppDBPipeline
@@ -3090,7 +3087,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           UserName = 'DBCalc14'
           DataField = 'QTDE'
           DataPipeline = DBPipeLote_Muda_Comprado
-          DisplayFormat = '$ ,0.00'
+          DisplayFormat = ',0'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
@@ -3712,7 +3709,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         object ppLabel32: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label6'
-          Caption = 'Qtde.'
+          Caption = 'Qtde (Kg)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
@@ -3721,9 +3718,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 117739
-          mmTop = 5295
-          mmWidth = 7673
+          mmLeft = 117740
+          mmTop = 5292
+          mmWidth = 13494
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer6
@@ -4409,7 +4406,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         object ppLabel39: TppLabel
           DesignLayer = ppDesignLayer6
           UserName = 'Label6'
-          Caption = 'Qtde.'
+          Caption = 'Qtde (Kg)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
@@ -4418,9 +4415,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 117739
-          mmTop = 5295
-          mmWidth = 7673
+          mmLeft = 117740
+          mmTop = 5292
+          mmWidth = 13494
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer7
@@ -4644,87 +4641,104 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     Left = 224
     Top = 280
     object DBPipeLote_Muda_VendidoppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField4: TppField
       FieldAlias = 'ESPECIE'
       FieldName = 'ESPECIE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField5: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_CLIENTE'
       FieldName = 'ID_CLIENTE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField6: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE'
       FieldName = 'QTDE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField7: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR_UNITARIO'
       FieldName = 'VALOR_UNITARIO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField8: TppField
-      Alignment = taRightJustify
       FieldAlias = 'VALOR'
       FieldName = 'VALOR'
-      FieldLength = 4
-      DataType = dtDouble
-      DisplayWidth = 19
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField9: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtDate
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField10: TppField
       FieldAlias = 'CLIENTE'
       FieldName = 'CLIENTE'
-      FieldLength = 203
-      DisplayWidth = 203
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
     end
   end
   object ppLote_Muda_Vendido: TppReport

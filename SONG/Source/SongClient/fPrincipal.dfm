@@ -498,7 +498,8 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object Ac_Tipo_Especie: TAction
       Category = 'Viveiro'
-      Caption = 'Tipo de Esp'#233'cie'
+      Caption = 'Tipos de Esp'#233'cies'
+      ImageIndex = 40
       OnExecute = Ac_Tipo_EspecieExecute
     end
   end

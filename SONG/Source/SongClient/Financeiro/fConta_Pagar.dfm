@@ -4,7 +4,6 @@ inherited frmContaPagar: TfrmContaPagar
   ClientHeight = 491
   ClientWidth = 994
   OnDestroy = FormDestroy
-  ExplicitTop = -24
   ExplicitWidth = 1010
   ExplicitHeight = 530
   PixelsPerInch = 96
@@ -12,7 +11,7 @@ inherited frmContaPagar: TfrmContaPagar
   inherited pcPrincipal: TcxPageControl
     Width = 994
     Height = 491
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     ExplicitWidth = 994
     ExplicitHeight = 491
     ClientRectBottom = 487
@@ -147,7 +146,7 @@ inherited frmContaPagar: TfrmContaPagar
                 Value = 7
               end
               item
-                Description = 'Data de Vencimento'
+                Description = 'Data de Cadastro'
                 Value = 4
               end
               item
@@ -165,6 +164,18 @@ inherited frmContaPagar: TfrmContaPagar
               item
                 Description = 'Conta de Origem do Recurso'
                 Value = 12
+              end
+              item
+                Description = 'Data de Pagamento'
+                Value = 13
+              end
+              item
+                Description = 'Data da Compra'
+                Value = 14
+              end
+              item
+                Description = 'Data de Vencimento'
+                Value = '15'
               end>
             ExplicitLeft = 201
             ExplicitWidth = 153
@@ -575,8 +586,6 @@ inherited frmContaPagar: TfrmContaPagar
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 986
       ExplicitHeight = 463
       inherited pnBotoesCadastro: TPanel

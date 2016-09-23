@@ -215,6 +215,7 @@ type
     cdsConta_PagarVALOR_PAGO: TBCDField;
     cdsSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField;
     cdsSaldo_Semente_MudaID: TIntegerField;
+    cdsSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);

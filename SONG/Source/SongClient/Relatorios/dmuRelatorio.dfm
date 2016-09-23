@@ -78,7 +78,6 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <
       item
@@ -142,6 +141,10 @@ inherited dmRelatorio: TdmRelatorio
       Origin = 'ID'
       ProviderFlags = []
       Required = True
+    end
+    object cdsSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField
+      FieldName = 'QTDE_FAMILIA'
+      ProviderFlags = []
     end
   end
   object dsSaldo_Semente_Muda: TDataSource
@@ -976,7 +979,6 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsLote_Muda_Vendido: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqLote_Muda_Vendido'

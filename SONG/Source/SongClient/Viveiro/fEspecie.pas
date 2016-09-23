@@ -15,7 +15,8 @@ uses
   Vcl.ExtCtrls, cxPC, dmuViveiro, uControleAcesso, System.TypInfo, uTypes,
   cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc, cxCurrencyEdit,
   dmuLookup, cxSpinEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  Vcl.ExtDlgs, cxCheckBox, cxCheckGroup, uUtils, uExceptions, cxCheckComboBox;
+  Vcl.ExtDlgs, cxCheckBox, cxCheckGroup, uUtils, uExceptions, cxCheckComboBox,
+  fFamilia_Botanica;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)
@@ -76,12 +77,19 @@ type
     viewRegistrosCATEGORIA_ARMAZENAMENTO: TcxGridDBColumn;
     cbTipo_Especie: TcxDBLookupComboBox;
     Label16: TLabel;
+    btnAdicionarAreaAtuacao: TButton;
+    Ac_Adicionar_Familia: TAction;
     procedure FormCreate(Sender: TObject);
     procedure EditPesoMedioPropertiesEditValueChanged(Sender: TObject);
     procedure cgBiomaPropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Adicionar_FamiliaExecute(Sender: TObject);
+    procedure cbFamiliaBotanicaKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
+    procedure ppvAdicionarFamiliaBotanica;
+    procedure ppvCarregarFamiliaBotanica;
   protected
     function fprGetPermissao: String; override;
     procedure pprBeforeIncluir; override;
@@ -109,6 +117,44 @@ implementation
 {$R *.dfm}
 
 { TfrmEspecie }
+
+procedure TfrmEspecie.Ac_Adicionar_FamiliaExecute(Sender: TObject);
+begin
+  inherited;
+  ppvAdicionarFamiliaBotanica;
+end;
+
+procedure TfrmEspecie.ppvAdicionarFamiliaBotanica;
+var
+  vaFrmFamilia: TfrmFamiliaBotanica;
+begin
+  vaFrmFamilia := TfrmFamiliaBotanica.Create(nil);
+  try
+    vaFrmFamilia.ppuConfigurarModoExecucao(meSomenteCadastro);
+    vaFrmFamilia.ShowModal;
+
+    if vaFrmFamilia.IdEscolhido <> 0 then
+      begin
+        ppvCarregarFamiliaBotanica;
+        if dmLookup.cdslkFamilia_Botanica.Locate(TBancoDados.coId, vaFrmFamilia.IdEscolhido, []) then
+          begin
+            cbFamiliaBotanica.EditValue := vaFrmFamilia.IdEscolhido;
+            cbFamiliaBotanica.PostEditValue;
+          end;
+      end;
+  finally
+    vaFrmFamilia.Free;
+  end;
+
+end;
+
+procedure TfrmEspecie.cbFamiliaBotanicaKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvAdicionarFamiliaBotanica;
+end;
 
 procedure TfrmEspecie.cgBiomaPropertiesEditValueChanged(Sender: TObject);
 begin
@@ -144,9 +190,16 @@ begin
 
   PesquisaPadrao := Ord(tppNome);
 
+  ppvCarregarFamiliaBotanica;
+
+  dmLookup.cdslkTipo_Especie.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
+end;
+
+procedure TfrmEspecie.ppvCarregarFamiliaBotanica;
+begin
+  dmLookup.cdslkFamilia_Botanica.Close;
   dmLookup.cdslkFamilia_Botanica.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkFamilia_Botanica);
-  dmLookup.cdslkTipo_Especie.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
 end;
 
 function TfrmEspecie.fprConfigurarControlesPesquisa: TWinControl;

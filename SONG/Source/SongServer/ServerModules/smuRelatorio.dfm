@@ -131,7 +131,11 @@ inherited smRelatorio: TsmRelatorio
       '       familia_botanica.nome as Familia_Botanica,'
       '       Especie.Qtde_Semente_Estoque,'
       '       Especie.Qtde_Muda_Pronta,'
-      '       Especie.Qtde_Muda_Desenvolvimento'
+      '       Especie.Qtde_Muda_Desenvolvimento,'
+      '       (select count(distinct especie.Id_Familia_Botanica)'
+      '         from Especie'
+      '        where especie.id_familia_botanica is not null'
+      '              &AND) as Qtde_Familia'
       'from Especie'
       
         'left join familia_botanica on (especie.id_familia_botanica = fam' +
@@ -140,10 +144,14 @@ inherited smRelatorio: TsmRelatorio
         'left join especie_bioma on (especie_bioma.id_especie = especie.i' +
         'd)'
       '&WHERE'
-      'order by  familia_botanica.nome, Especie.Nome')
+      'order by Especie.Nome')
     Left = 204
     Top = 124
     MacroData = <
+      item
+        Value = Null
+        Name = 'AND'
+      end
       item
         Value = Null
         Name = 'WHERE'
@@ -193,6 +201,12 @@ inherited smRelatorio: TsmRelatorio
       Origin = 'ID'
       ProviderFlags = []
       Required = True
+    end
+    object qSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE_FAMILIA'
+      Origin = 'QTDE_FAMILIA'
+      ProviderFlags = []
     end
   end
   object qTaxas_Especie: TRFQuery
@@ -1046,12 +1060,14 @@ inherited smRelatorio: TsmRelatorio
       
         'inner join Compra_Item on (Compra_Item.Id = Lote_Muda.Id_Compra_' +
         'Item)'
+      'inner join item on (item.id =compra_item.id_item)'
       'inner join Compra on (Compra.Id = Compra_Item.Id_Compra)'
       'inner join Especie on (Lote_Muda.Id_Especie = Especie.Id)'
       
         'inner join Fin_For_Cli on (Compra.Id_Fornecedor = Fin_For_Cli.Id' +
         ')'
-      'where Lote_Muda.Id_Compra_Item is not null'
+      'where Lote_Muda.Id_Compra_Item is not null and '
+      '      Item.Tipo = 2--2=Muda'
       '&AND'
       'order by Lote_Muda.Id_Especie  ')
     Left = 600
@@ -1158,12 +1174,14 @@ inherited smRelatorio: TsmRelatorio
       
         'inner join Compra_Item on (Compra_Item.Id = Lote_Semente.Id_Comp' +
         'ra_Item)'
+      'inner join item on (item.id =compra_item.id_item)'
       'inner join Compra on (Compra.Id = Compra_Item.Id_Compra)'
       'inner join Especie on (Lote_Semente.Id_Especie = Especie.Id)'
       
         'inner join Fin_For_Cli on (Compra.Id_Fornecedor = Fin_For_Cli.Id' +
         ')'
-      'where Lote_Semente.Id_Compra_Item is not null '
+      'where Lote_Semente.Id_Compra_Item is not null and'
+      '      Item.tipo = 1'
       '&AND'
       'order by Lote_Semente.Id_Especie  ')
     Left = 744

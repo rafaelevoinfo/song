@@ -142,7 +142,7 @@ var
   vaSessao: TSessaoUsuario;
 begin
   valid := True;
-{$IFNDEF DEBUG}
+
   if (User <> '') or (Password <> '') then
     begin
       // if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
@@ -151,7 +151,11 @@ begin
       qLogin.ParamByName('LOGIN').AsString := User;
       qLogin.ParamByName('SENHA').AsString := Password;
       qLogin.Open();
-      valid := not qLogin.Eof;
+      {$IFDEF DEBUG}
+        valid := true;
+      {$ELSE}
+         valid := not qLogin.Eof;
+      {$ENDIF}
       if valid then
         begin
           vaSessao := TSessaoUsuario.Create;
@@ -160,7 +164,7 @@ begin
         end;
       // end;
     end;
-{$ENDIF}
+
 
 end;
 

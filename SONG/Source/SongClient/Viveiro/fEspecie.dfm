@@ -1,11 +1,8 @@
 inherited frmEspecie: TfrmEspecie
-  ActiveControl = btnIncluir
   Caption = 'Esp'#233'cies Produzidas'
-  ExplicitTop = -50
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -289,9 +286,9 @@ inherited frmEspecie: TfrmEspecie
         object Label5: TLabel
           Left = 554
           Top = 3
-          Width = 76
+          Width = 99
           Height = 13
-          Caption = 'Fam'#237'lia Bot'#226'nica'
+          Caption = 'Fam'#237'lia Bot'#226'nica (F2)'
         end
         object Label6: TLabel
           Left = 5
@@ -495,7 +492,8 @@ inherited frmEspecie: TfrmEspecie
           DataBinding.DataSource = dsMaster
           Properties.ListColumns = <>
           TabOrder = 2
-          Width = 275
+          OnKeyDown = cbFamiliaBotanicaKeyDown
+          Width = 252
         end
         object EditQtdeSementeTubete: TcxDBSpinEdit
           Left = 5
@@ -546,11 +544,26 @@ inherited frmEspecie: TfrmEspecie
           TabOrder = 14
           Width = 151
         end
+        object btnAdicionarAreaAtuacao: TButton
+          Left = 806
+          Top = 19
+          Width = 21
+          Height = 21
+          Action = Ac_Adicionar_Familia
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 17
+          TabStop = False
+        end
       end
     end
   end
   inherited ActionList1: TActionList
     Top = 280
+    object Ac_Adicionar_Familia: TAction
+      Category = 'Master'
+      ImageIndex = 3
+      OnExecute = Ac_Adicionar_FamiliaExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsEspecie

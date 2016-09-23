@@ -202,6 +202,7 @@ type
     qConta_PagarVALOR_PAGO: TBCDField;
     qSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField;
     qSaldo_Semente_MudaID: TIntegerField;
+    qSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private

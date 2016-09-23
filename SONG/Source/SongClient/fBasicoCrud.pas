@@ -603,7 +603,7 @@ begin
 
   fprConfigurarControlesPesquisa;
 
-  if (PesquisaPadrao = Ord(tppTodos)) or ((PesquisaPadrao = Ord(tppData)) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and
+  if (PesquisaPadrao = Ord(tppTodos)) or (((PesquisaPadrao = Ord(tppData)) or pnData.Visible) and (not VarIsNull(EditDataInicialPesquisa.EditValue)) and
     (not VarIsNull(EditDataFinalPesquisa.EditValue))) then
     ppuPesquisar
   else if (PesquisaPadrao = Ord(tppId)) and Assigned(FModelo) and (FModelo.Id <> 0) then
