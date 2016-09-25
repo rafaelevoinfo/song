@@ -1,7 +1,6 @@
 inherited frmRelatorioViveiro: TfrmRelatorioViveiro
   Caption = 'Relat'#243'rios do Viveiro'
   ClientHeight = 480
-  ExplicitTop = -144
   ExplicitHeight = 519
   PixelsPerInch = 96
   TextHeight = 13
@@ -3817,7 +3816,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           UserName = 'DBCalc11'
           DataField = 'QTDE'
           DataPipeline = DBPipeLote_Semente_Comprado
-          DisplayFormat = ',0 Kg'
+          DisplayFormat = ',0.00 Kg'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'

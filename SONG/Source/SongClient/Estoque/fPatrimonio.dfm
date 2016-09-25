@@ -1,11 +1,11 @@
 inherited frmPatrimonio: TfrmPatrimonio
-  ActiveControl = cbItem
+  ActiveControl = btnIncluir
   Caption = 'Patrim'#244'nio'
-  ExplicitWidth = 1000
+  ExplicitTop = -136
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -64,12 +64,13 @@ inherited frmPatrimonio: TfrmPatrimonio
         end
         inherited pnBotoes: TPanel
           inherited btnUtilizar: TButton
-            Left = 188
-            ExplicitLeft = 188
+            Left = 290
+            TabOrder = 3
+            ExplicitLeft = 290
           end
           object btnBaixarReativar: TButton
             AlignWithMargins = True
-            Left = 86
+            Left = 188
             Top = 1
             Width = 100
             Height = 40
@@ -105,45 +106,61 @@ inherited frmPatrimonio: TfrmPatrimonio
               Options.Editing = False
               Width = 222
             end
-            object viewRegistrosDATA_AQUISICAO: TcxGridDBColumn [3]
+            object viewRegistrosID_PESSOA_RESPONSAVEL: TcxGridDBColumn [3]
+              DataBinding.FieldName = 'ID_PESSOA_RESPONSAVEL'
+              Visible = False
+              Options.Editing = False
+            end
+            object viewRegistrosRESPONSAVEL: TcxGridDBColumn [4]
+              DataBinding.FieldName = 'RESPONSAVEL'
+              Options.Editing = False
+              Width = 150
+            end
+            object viewRegistrosDATA_AQUISICAO: TcxGridDBColumn [5]
               DataBinding.FieldName = 'DATA_AQUISICAO'
               Options.Editing = False
               Width = 92
             end
-            object viewRegistrosIDENTIFICACAO: TcxGridDBColumn [4]
+            object viewRegistrosIDENTIFICACAO: TcxGridDBColumn [6]
               DataBinding.FieldName = 'IDENTIFICACAO'
               Options.Editing = False
             end
-            object viewRegistrosMARCA: TcxGridDBColumn [5]
+            object viewRegistrosMARCA: TcxGridDBColumn [7]
               DataBinding.FieldName = 'MARCA'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosVALOR_INICIAL: TcxGridDBColumn [6]
+            object viewRegistrosMODELO: TcxGridDBColumn [8]
+              DataBinding.FieldName = 'MODELO'
+              Visible = False
+              Options.Editing = False
+              Width = 100
+            end
+            object viewRegistrosVALOR_INICIAL: TcxGridDBColumn [9]
               DataBinding.FieldName = 'VALOR_INICIAL'
               Options.Editing = False
             end
-            object viewRegistrosTAXA_DEPRECIACAO_ANUAL: TcxGridDBColumn [7]
+            object viewRegistrosTAXA_DEPRECIACAO_ANUAL: TcxGridDBColumn [10]
               DataBinding.FieldName = 'TAXA_DEPRECIACAO_ANUAL'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosLOCALIZACAO: TcxGridDBColumn [8]
+            object viewRegistrosLOCALIZACAO: TcxGridDBColumn [11]
               DataBinding.FieldName = 'LOCALIZACAO'
               Options.Editing = False
               Width = 132
             end
-            object viewRegistrosNOTA_FISCAL: TcxGridDBColumn [9]
+            object viewRegistrosNOTA_FISCAL: TcxGridDBColumn [12]
               DataBinding.FieldName = 'NOTA_FISCAL'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosSTATUS: TcxGridDBColumn [10]
+            object viewRegistrosSTATUS: TcxGridDBColumn [13]
               DataBinding.FieldName = 'STATUS'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosCALC_VALOR_ATUAL: TcxGridDBColumn [11]
+            object viewRegistrosCALC_VALOR_ATUAL: TcxGridDBColumn [14]
               DataBinding.FieldName = 'CALC_VALOR_ATUAL'
               Options.Editing = False
             end
@@ -245,6 +262,14 @@ inherited frmPatrimonio: TfrmPatrimonio
           Caption = 'Observa'#231#227'o'
           FocusControl = EditObservacao
         end
+        object Label9: TLabel
+          Left = 265
+          Top = 93
+          Width = 160
+          Height = 13
+          Caption = 'Respons'#225'vel pelo Patrim'#244'nio (F2)'
+          FocusControl = cbResponsavel
+        end
         object cbItem: TcxDBLookupComboBox
           Left = 4
           Top = 18
@@ -343,6 +368,27 @@ inherited frmPatrimonio: TfrmPatrimonio
           Height = 73
           Width = 831
         end
+        object cbResponsavel: TcxDBLookupComboBox
+          Left = 265
+          Top = 109
+          RepositoryItem = dmLookup.repLcbPessoa
+          DataBinding.DataField = 'ID_PESSOA_RESPONSAVEL'
+          DataBinding.DataSource = dsMaster
+          Properties.ListColumns = <>
+          TabOrder = 11
+          OnKeyDown = cbResponsavelKeyDown
+          Width = 256
+        end
+        object btnBuscarResponsavel: TButton
+          Left = 525
+          Top = 109
+          Width = 22
+          Height = 21
+          Action = Ac_Buscar_Responsavel
+          Images = dmPrincipal.imgIcons_16
+          TabOrder = 12
+          TabStop = False
+        end
       end
     end
   end
@@ -366,6 +412,10 @@ inherited frmPatrimonio: TfrmPatrimonio
       ImageIndex = 6
       OnExecute = Ac_ReativarExecute
       OnUpdate = Ac_AlterarUpdate
+    end
+    object Ac_Buscar_Responsavel: TAction
+      ImageIndex = 0
+      OnExecute = Ac_Buscar_ResponsavelExecute
     end
   end
   inherited dsMaster: TDataSource

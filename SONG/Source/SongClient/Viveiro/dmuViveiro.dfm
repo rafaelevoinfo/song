@@ -781,8 +781,8 @@ inherited dmViveiro: TdmViveiro
     Params = <>
     ProviderName = 'dspqTipo_Especie'
     RemoteServer = dmPrincipal.ProviderViveiro
-    Left = 640
-    Top = 120
+    Left = 528
+    Top = 40
     object cdsTipo_EspecieID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -799,6 +799,140 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+  end
+  object cdsMix_Muda: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqMix_Muda'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 672
+    Top = 40
+    object cdsMix_MudaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsMix_MudaID_CLIENTE: TIntegerField
+      DisplayLabel = 'Id do Cliente'
+      FieldName = 'ID_CLIENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_MudaCLIENTE: TStringField
+      DisplayLabel = 'Cliente'
+      FieldName = 'CLIENTE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMix_MudaID_PESSOA_RESPONSAVEL: TIntegerField
+      DisplayLabel = 'Id do Respons'#225'vel'
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_MudaRESPONSAVEL: TStringField
+      DisplayLabel = 'Respons'#225'vel'
+      FieldName = 'RESPONSAVEL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMix_MudaDATA: TDateField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_MudaQTDE_MUDA: TIntegerField
+      DisplayLabel = 'Qtde. de Muda'
+      FieldName = 'QTDE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_MudaQTDE_MUDA_ROCAMBOLE: TIntegerField
+      DisplayLabel = 'Qtde. de Muda por Rocambole'
+      FieldName = 'QTDE_MUDA_ROCAMBOLE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_MudaDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+  end
+  object cdsMix_Muda_Especie: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqMix_Muda_Especie'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 672
+    Top = 104
+    object cdsMix_Muda_EspecieID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsMix_Muda_EspecieID_MIX_MUDA: TIntegerField
+      DisplayLabel = 'Id do Mix de Muda'
+      FieldName = 'ID_MIX_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_Muda_EspecieID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_Muda_EspecieESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMix_Muda_EspecieNOME_CIENTIFICO: TStringField
+      DisplayLabel = 'Nome Cient'#237'fico'
+      FieldName = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object cdsMix_Muda_Especie_Lote: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqMix_Muda_Especie_Lote'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 672
+    Top = 176
+    object cdsMix_Muda_Especie_LoteID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField
+      FieldName = 'ID_MIX_MUDA_ESPCECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_Muda_Especie_LoteID_LOTE_MUDA: TIntegerField
+      DisplayLabel = 'Id do Lote de Muda'
+      FieldName = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsMix_Muda_Especie_LoteLOTE: TStringField
+      DisplayLabel = 'Lote'
+      FieldName = 'LOTE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsMix_Muda_Especie_LoteCANTEIRO: TStringField
+      DisplayLabel = 'Canteiro'
+      FieldName = 'CANTEIRO'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

@@ -33,8 +33,8 @@ type
     cdslkCidadeNOME: TStringField;
     Repositorio: TcxEditRepository;
     repLcbCidade: TcxEditRepositoryLookupComboBoxItem;
-	repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
-	repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem;
+    repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
+    repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem;
     dslkCidade: TDataSource;
     cxLocalizer1: TcxLocalizer;
     ProviderEstoque: TRFProviderConnection;
@@ -72,7 +72,7 @@ type
 
     { Private declarations }
   public
-    procedure ppuConfigurarConexao(ipUsuario, ipSenha: String; ipHost:String='');
+    procedure ppuConfigurarConexao(ipUsuario, ipSenha: String; ipHost: String = '');
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
@@ -81,10 +81,14 @@ type
     property FuncoesEstoque: TSMFuncoesEstoqueClient read FFuncoesEstoque;
     property FuncoesRelatorio: TsmFuncoesRelatorioClient read FFuncoesRelatorio;
     property FuncoesSistema: TsmFuncoesSistemaClient read FFuncoesSistema write SetFuncoesSistema;
+
   end;
 
 var
   dmPrincipal: TdmPrincipal;
+
+const
+  coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria, trpParceiro];
 
 implementation
 
@@ -108,7 +112,7 @@ begin
     end
   else
     begin
-      if TfrmReconexao.fpuDetectarPerdaConexao(e) then
+      if TfrmReconexao.fpuDetectarPerdaConexao(E) then
         TfrmReconexao.ppuIniciarReconexao
       else if TRegex.IsMatch(E.Message, 'FOREIGN KEY constraint', [roIgnoreCase]) then
         begin
@@ -130,7 +134,6 @@ begin
   cxLocalizer1.Active := True;
   cxLocalizer1.Locale := 1046; // Portugues Brasil
 
-
   FInterceptorFuncoesGeral := TVirtualMethodInterceptor.Create(TsmFuncoesGeralClient);
   FInterceptorFuncoesAdministrativo := TVirtualMethodInterceptor.Create(TsmFuncoesAdministrativoClient);
   FInterceptorFuncoesViveiro := TVirtualMethodInterceptor.Create(TSMFuncoesViveiroClient);
@@ -141,8 +144,8 @@ begin
 
   vaProcOnException := procedure(Instance: TObject; Method: TRttiMethod; const Args: TArray<TValue>;
       out RaiseException: Boolean; TheException: Exception; out Result: TValue)
-  var
-    vaClassName:String;
+    var
+      vaClassName: String;
     begin
       if TfrmReconexao.fpuDetectarPerdaConexao(TheException) then
         begin

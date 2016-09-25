@@ -877,8 +877,8 @@ inherited smViveiro: TsmViveiro
         'inner join Canteiro on (Canteiro.Id = Lote_Muda_Canteiro.Id_Cant' +
         'eiro)'
       'where Lote_Muda_Canteiro.Id_Lote_Muda = :Id_Lote_Muda ')
-    Left = 712
-    Top = 152
+    Left = 696
+    Top = 232
     ParamData = <
       item
         Name = 'ID_LOTE_MUDA'
@@ -1025,6 +1025,187 @@ inherited smViveiro: TsmViveiro
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+  end
+  object qMix_Muda: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Mix_Muda.Id,'
+      '       Mix_Muda.Id_Cliente,'
+      '       fin_for_cli.razao_social as cliente,'
+      '       Mix_Muda.Id_Pessoa_Responsavel,'
+      '       Pessoa.nome as Responsavel,'
+      '       Mix_Muda.Data,'
+      '       Mix_Muda.Qtde_Muda,'
+      '       Mix_Muda.Qtde_Muda_Rocambole,'
+      '       Mix_Muda.Descricao'
+      'from Mix_Muda  '
+      'inner join fin_for_cli on (fin_for_cli.id = mix_muda.id_cliente)'
+      
+        'inner join pessoa on (pessoa.id = mix_muda.id_pessoa_responsavel' +
+        ')'
+      '&WHERE')
+    Left = 688
+    Top = 24
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+        DataType = mdIdentifier
+      end>
+    object qMix_MudaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qMix_MudaID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_MudaCLIENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CLIENTE'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qMix_MudaID_PESSOA_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      Origin = 'ID_PESSOA_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_MudaRESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qMix_MudaDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_MudaQTDE_MUDA: TIntegerField
+      FieldName = 'QTDE_MUDA'
+      Origin = 'QTDE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_MudaQTDE_MUDA_ROCAMBOLE: TIntegerField
+      FieldName = 'QTDE_MUDA_ROCAMBOLE'
+      Origin = 'QTDE_MUDA_ROCAMBOLE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_MudaDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+  end
+  object qMix_Muda_Especie: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Mix_Muda_Especie.Id,'
+      '       Mix_Muda_Especie.Id_Mix_Muda,'
+      '       Mix_Muda_Especie.Id_Especie,'
+      '       Especie.Nome as especie,'
+      '       Especie.Nome_Cientifico'
+      'from Mix_Muda_Especie'
+      'inner join especie on (especie.id = mix_muda_especie.id_especie)')
+    Left = 688
+    Top = 88
+    object qMix_Muda_EspecieID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qMix_Muda_EspecieID_MIX_MUDA: TIntegerField
+      FieldName = 'ID_MIX_MUDA'
+      Origin = 'ID_MIX_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_Muda_EspecieID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_Muda_EspecieESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qMix_Muda_EspecieNOME_CIENTIFICO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+  end
+  object qMix_Muda_Especie_Lote: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select mix_muda_especie_lote.Id,'
+      '       mix_muda_especie_lote.id_mix_muda_espcecie,'
+      '       mix_muda_especie_lote.id_lote_muda,'
+      '       lote_muda.nome AS LOTE,'
+      '       canteiro.nome as canteiro'
+      'from mix_muda_especie_lote'
+      
+        'inner join lote_muda on (lote_muda.id = mix_muda_especie_lote.id' +
+        '_lote_muda)'
+      
+        'inner join lote_muda_canteiro on (lote_muda_canteiro.id_lote_mud' +
+        'a = lote_muda.id)'
+      
+        'inner join canteiro on (canteiro.id = lote_muda_canteiro.id_cant' +
+        'eiro)')
+    Left = 688
+    Top = 144
+    object qMix_Muda_Especie_LoteID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField
+      FieldName = 'ID_MIX_MUDA_ESPCECIE'
+      Origin = 'ID_MIX_MUDA_ESPCECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_Muda_Especie_LoteID_LOTE_MUDA: TIntegerField
+      FieldName = 'ID_LOTE_MUDA'
+      Origin = 'ID_LOTE_MUDA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qMix_Muda_Especie_LoteLOTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'LOTE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qMix_Muda_Especie_LoteCANTEIRO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CANTEIRO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

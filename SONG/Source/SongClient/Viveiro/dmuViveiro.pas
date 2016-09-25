@@ -132,6 +132,28 @@ type
     cdsTipo_EspecieID: TIntegerField;
     cdsTipo_EspecieNOME: TStringField;
     cdsTipo_EspecieDESCRICAO: TStringField;
+    cdsMix_Muda: TRFClientDataSet;
+    cdsMix_MudaID: TIntegerField;
+    cdsMix_MudaID_CLIENTE: TIntegerField;
+    cdsMix_MudaCLIENTE: TStringField;
+    cdsMix_MudaID_PESSOA_RESPONSAVEL: TIntegerField;
+    cdsMix_MudaRESPONSAVEL: TStringField;
+    cdsMix_MudaDATA: TDateField;
+    cdsMix_MudaQTDE_MUDA: TIntegerField;
+    cdsMix_MudaQTDE_MUDA_ROCAMBOLE: TIntegerField;
+    cdsMix_MudaDESCRICAO: TStringField;
+    cdsMix_Muda_Especie: TRFClientDataSet;
+    cdsMix_Muda_EspecieID: TIntegerField;
+    cdsMix_Muda_EspecieID_MIX_MUDA: TIntegerField;
+    cdsMix_Muda_EspecieID_ESPECIE: TIntegerField;
+    cdsMix_Muda_EspecieESPECIE: TStringField;
+    cdsMix_Muda_EspecieNOME_CIENTIFICO: TStringField;
+    cdsMix_Muda_Especie_Lote: TRFClientDataSet;
+    cdsMix_Muda_Especie_LoteID: TIntegerField;
+    cdsMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField;
+    cdsMix_Muda_Especie_LoteID_LOTE_MUDA: TIntegerField;
+    cdsMix_Muda_Especie_LoteLOTE: TStringField;
+    cdsMix_Muda_Especie_LoteCANTEIRO: TStringField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuEstoque, uTypes, uControleAcesso, System.TypInfo,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, fItemPatrimonio,
   uClientDataSet, dmuLookup, cxCurrencyEdit, cxDBEdit, cxSpinEdit, uMensagem,
-  uExceptions, cxMemo, uUtils;
+  uExceptions, cxMemo, uUtils, Vcl.ExtDlgs, dmuPrincipal;
 
 type
   TfrmPatrimonio = class(TfrmBasicoCrud)
@@ -57,6 +57,13 @@ type
     EditModelo: TcxDBTextEdit;
     EditObservacao: TcxDBMemo;
     Label8: TLabel;
+    cbResponsavel: TcxDBLookupComboBox;
+    btnBuscarResponsavel: TButton;
+    Ac_Buscar_Responsavel: TAction;
+    Label9: TLabel;
+    viewRegistrosMODELO: TcxGridDBColumn;
+    viewRegistrosID_PESSOA_RESPONSAVEL: TcxGridDBColumn;
+    viewRegistrosRESPONSAVEL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbItemKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Ac_Adicionar_ItemExecute(Sender: TObject);
@@ -66,11 +73,15 @@ type
     procedure viewRegistrosCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
+    procedure cbResponsavelKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ac_Buscar_ResponsavelExecute(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
     procedure ppvAdicionarItemPatrimonio;
     procedure ppvCarregarItens(ipIdItemEspecifico: integer = 0);
+    procedure ppvBuscarResponsavel;
   protected
     procedure pprBeforeAlterar; override;
     function fprGetPermissao: string; override;
@@ -119,6 +130,12 @@ begin
     end;
 end;
 
+procedure TfrmPatrimonio.Ac_Buscar_ResponsavelExecute(Sender: TObject);
+begin
+  inherited;
+  ppvBuscarResponsavel;
+end;
+
 procedure TfrmPatrimonio.Ac_ReativarExecute(Sender: TObject);
 begin
   inherited;
@@ -149,6 +166,14 @@ begin
       if dmLookup.cdslkItem_Patrimonio.Locate(TBancoDados.coID, cbItem.Editvalue, []) then
         dmEstoque.cdsPatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger := dmLookup.cdslkItem_PatrimonioTAXA_DEPRECIACAO_ANUAL.AsInteger;
     end;
+end;
+
+procedure TfrmPatrimonio.cbResponsavelKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    ppvBuscarResponsavel;
 end;
 
 procedure TfrmPatrimonio.ppvCarregarItens(ipIdItemEspecifico: integer);
@@ -190,6 +215,9 @@ procedure TfrmPatrimonio.pprBeforeAlterar;
 begin
   inherited;
   ppvCarregarItens(dmEstoque.cdsPatrimonioID_ITEM_PATRIMONIO.AsInteger);
+  if not dmLookup.cdslkPessoa.Locate(TBancoDados.coID, dmEstoque.cdsPatrimonioID_PESSOA_RESPONSAVEL.AsInteger, []) then
+    dmLookup.ppuCarregarPessoas(dmEstoque.cdsPatrimonioID_PESSOA_RESPONSAVEL.AsInteger, coTiposPessoaPadrao);
+
 end;
 
 procedure TfrmPatrimonio.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -268,6 +296,12 @@ begin
   PesquisaPadrao := 5; // Item
 
   ppvCarregarItens;
+  dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
+end;
+
+procedure TfrmPatrimonio.ppvBuscarResponsavel;
+begin
+  dmLookup.ppuPesquisarPessoa(cbResponsavel, coTiposPessoaPadrao);
 end;
 
 function TfrmPatrimonio.fprConfigurarControlesPesquisa: TWinControl;

@@ -307,8 +307,7 @@ type
     procedure ppuIncluirDetail; override;
     procedure ppuRetornar; override;
     procedure ppuBaixarArquivo(ipId: Integer);
-  public const
-    coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria, trpParceiro];
+
 
   end;
 

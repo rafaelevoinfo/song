@@ -1,8 +1,11 @@
 inherited frmEspecie: TfrmEspecie
+  ActiveControl = btnIncluir
   Caption = 'Esp'#233'cies Produzidas'
+  ExplicitTop = -33
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -119,7 +122,7 @@ inherited frmEspecie: TfrmEspecie
                 Column = viewRegistrosQTDE_SEMENTE_ESTOQUE
               end
               item
-                Format = ',0'
+                Format = 'Total de Esp'#233'cies: ,0 '
                 Kind = skCount
                 FieldName = 'ID'
                 Column = viewRegistrosNOME
@@ -262,10 +265,6 @@ inherited frmEspecie: TfrmEspecie
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
