@@ -156,10 +156,12 @@ type
     qMix_Muda_EspecieESPECIE: TStringField;
     qMix_Muda_Especie_Lote: TRFQuery;
     qMix_Muda_Especie_LoteID: TIntegerField;
-    qMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField;
     qMix_Muda_Especie_LoteID_LOTE_MUDA: TIntegerField;
     qMix_Muda_Especie_LoteLOTE: TStringField;
-    qMix_Muda_Especie_LoteCANTEIRO: TStringField;
+    qMix_Muda_Especie_LoteID_MIX_MUDA_ESPECIE: TIntegerField;
+    qMix_MudaID_VENDA: TIntegerField;
+    qMix_MudaID_SAIDA: TIntegerField;
+    qMix_Muda_Especie_LoteCANTEIROS: TMemoField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

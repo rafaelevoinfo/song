@@ -231,6 +231,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Lotes1: TMenuItem
         Action = Ac_Lote_Semente
       end
+      object MixdeMudas1: TMenuItem
+        Action = Ac_Mix_Muda
+      end
       object Relatrios2: TMenuItem
         Action = Ac_Relatorio_Viveiro
       end
@@ -501,6 +504,11 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = 'Tipos de Esp'#233'cies'
       ImageIndex = 40
       OnExecute = Ac_Tipo_EspecieExecute
+    end
+    object Ac_Mix_Muda: TAction
+      Category = 'Viveiro'
+      Caption = 'Mix de Mudas'
+      OnExecute = Ac_Mix_MudaExecute
     end
   end
   object dxSkinController1: TdxSkinController

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 21/09/2016 22:49:04
+// 27/09/2016 00:06:38
 //
 
 unit uFuncoes;
@@ -119,6 +119,7 @@ type
     FfpuBuscarLoteSementeCommand: TDBXCommand;
     FppuAjustarSaldoEspecieCommand: TDBXCommand;
     FfpuCalcularPrevisaoProducaoMudaCommand: TDBXCommand;
+    FppuCalcularQuantidadeMudasMixCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -139,6 +140,7 @@ type
     function fpuBuscarLoteSemente(ipIdCompraItem: Integer): Integer; virtual;
     procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer); virtual;
     function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant; virtual;
+    procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer); virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -1035,6 +1037,19 @@ begin
   Result := FfpuCalcularPrevisaoProducaoMudaCommand.Parameters[2].Value.AsVariant;
 end;
 
+procedure TsmFuncoesViveiroClient.ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer);
+begin
+  if FppuCalcularQuantidadeMudasMixCommand = nil then
+  begin
+    FppuCalcularQuantidadeMudasMixCommand := FDBXConnection.CreateCommand;
+    FppuCalcularQuantidadeMudasMixCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuCalcularQuantidadeMudasMixCommand.Text := 'TsmFuncoesViveiro.ppuCalcularQuantidadeMudasMix';
+    FppuCalcularQuantidadeMudasMixCommand.Prepare;
+  end;
+  FppuCalcularQuantidadeMudasMixCommand.Parameters[0].Value.SetInt32(ipIdMixMuda);
+  FppuCalcularQuantidadeMudasMixCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1141,6 +1156,7 @@ begin
   FfpuBuscarLoteSementeCommand.DisposeOf;
   FppuAjustarSaldoEspecieCommand.DisposeOf;
   FfpuCalcularPrevisaoProducaoMudaCommand.DisposeOf;
+  FppuCalcularQuantidadeMudasMixCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

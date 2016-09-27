@@ -150,10 +150,14 @@ type
     cdsMix_Muda_EspecieNOME_CIENTIFICO: TStringField;
     cdsMix_Muda_Especie_Lote: TRFClientDataSet;
     cdsMix_Muda_Especie_LoteID: TIntegerField;
-    cdsMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField;
     cdsMix_Muda_Especie_LoteID_LOTE_MUDA: TIntegerField;
     cdsMix_Muda_Especie_LoteLOTE: TStringField;
-    cdsMix_Muda_Especie_LoteCANTEIRO: TStringField;
+    cdsMix_Muda_Especie_LoteID_MIX_MUDA_ESPECIE: TIntegerField;
+    dsMix_Muda: TDataSource;
+    dsMix_Muda_Especie: TDataSource;
+    cdsMix_MudaID_VENDA: TIntegerField;
+    cdsMix_MudaID_SAIDA: TIntegerField;
+    cdsMix_Muda_Especie_LoteCANTEIROS: TMemoField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

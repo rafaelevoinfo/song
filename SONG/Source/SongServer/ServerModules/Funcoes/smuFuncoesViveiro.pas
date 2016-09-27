@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uTypes, Datasnap.DBClient, System.Generics.Collections,
   uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list,
-  System.Math, System.Types;
+  System.Math, System.Types, uUtils;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -30,10 +30,9 @@ type
   public
     function fpuValidarNomeMatriz(ipId: Integer; ipNome: String): Boolean;
     function fpuValidarNomeCanteiro(ipId: Integer; ipNome: String): Boolean;
-    function fpuvalidarNomeCamaraFria(ipId:Integer; ipNome:String):Boolean;
-    function fpuvalidarNomeTipoEspecie(ipId:Integer; ipNome:String):Boolean;
+    function fpuvalidarNomeCamaraFria(ipId: Integer; ipNome: String): Boolean;
+    function fpuvalidarNomeTipoEspecie(ipId: Integer; ipNome: String): Boolean;
     procedure ppuValidarSemeadura(ipIdLote, ipIdSemeadura: Integer; ipQtdeSemeada: Double);
-
 
     function fpuBuscarLotesMudas(ipIdCompra: Integer): string;
     function fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
@@ -44,6 +43,8 @@ type
     procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
 
     function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
+
+    procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer);
   end;
 
 var
@@ -155,7 +156,7 @@ begin
 
 end;
 
-function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda( ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
+function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
 var
   vaEspecies: String;
   vaEspecie: TEspecie;
@@ -196,8 +197,8 @@ begin
     else
       cdsPrevisaoProducao.CreateDataSet;
     // ********************CONTABILIZANDO AS MUDAS QUE SERAO GERADAS A PARTIR DAS SEMENTES QUE SERAO SEMADAS***********
-    //nao posso pegar aqui a quantidad de muda em desenvolvimento  pois isso causaria uma duplicação quando
-    //chegasse na parte do codigo que calcula essas mudas. Portanto, vou deixar pra contabiliar somente lá.
+    // nao posso pegar aqui a quantidad de muda em desenvolvimento  pois isso causaria uma duplicação quando
+    // chegasse na parte do codigo que calcula essas mudas. Portanto, vou deixar pra contabiliar somente lá.
     vaDataSet.SQL.Text := 'select Especie.Id,' +
       '       Especie.Nome,' +
       '       Especie.Nome_Cientifico,' +
@@ -205,9 +206,9 @@ begin
       '       Especie.Qtde_Semente_Kilo,' +
       '       Especie.Qtde_Semente_Estoque,' +
       '       Especie.Qtde_Muda_Pronta,' +
-      '       0 as Qtde_Muda_Desenvolvimento' + //nao posso pegar o valor do banco aqui pq senao vai duplicar
+      '       0 as Qtde_Muda_Desenvolvimento' + // nao posso pegar o valor do banco aqui pq senao vai duplicar
       ' from Especie' +
-      ' inner join familia_botanica on (familia_botanica.id = especie.id_familia_botanica) '+
+      ' inner join familia_botanica on (familia_botanica.id = especie.id_familia_botanica) ' +
       ' where especie.id in (' + vaEspecies + ')';
     vaDataSet.Open;
     while not vaDataSet.Eof do
@@ -260,9 +261,9 @@ begin
       ' inner join Semeadura on (Semeadura.Id_Lote_Semente = Lote_Semente.Id)' +
       ' left join Germinadas on (Germinadas.Id_Lote_Semente = Lote_Semente.Id)' +
       ' where Lote_Semente.Id_Especie in (' + vaEspecies + ') and' +
-      '       ((Lote_Semente.status is null) or (lote_semente.status = 0)) and '+
-      //aqui vamos garantir que pegaremos somente lotes que ainda nao tem registro na tabela germinacao
-      //ou que tenha mas ainda nao tenha sido finalizado a fase de germinacao e portanto nao exista o lote de mudas
+      '       ((Lote_Semente.status is null) or (lote_semente.status = 0)) and ' +
+    // aqui vamos garantir que pegaremos somente lotes que ainda nao tem registro na tabela germinacao
+    // ou que tenha mas ainda nao tenha sido finalizado a fase de germinacao e portanto nao exista o lote de mudas
       '      (Germinadas.data is null or ((select count(*)' +
       '                                  from Lote_Muda' +
       '                                  where Lote_Muda.Id_Lote_Semente = Lote_Semente.Id) = 0))';
@@ -346,7 +347,7 @@ begin
 
         vaDataSet.Next;
       end;
-     Result := cdsPrevisaoProducao.Data;
+    Result := cdsPrevisaoProducao.Data;
   finally
     vaDataSet.Close;
     vaDataSet.Free;
@@ -354,7 +355,7 @@ begin
 end;
 
 function TsmFuncoesViveiro.fpuvalidarNomeCamaraFria(ipId: Integer;
-  ipNome: String): Boolean;
+ipNome: String): Boolean;
 begin
   Result := fprValidarCampoUnico('CAMARA_FRIA', 'NOME', ipId, ipNome);
 end;
@@ -372,9 +373,9 @@ begin
 end;
 
 function TsmFuncoesViveiro.fpuvalidarNomeTipoEspecie(ipId: Integer;
-  ipNome: String): Boolean;
+ipNome: String): Boolean;
 begin
-  Result := fprValidarCampoUnico('TIPO_ESPECIE','NOME',ipId,ipNome);
+  Result := fprValidarCampoUnico('TIPO_ESPECIE', 'NOME', ipId, ipNome);
 end;
 
 procedure TsmFuncoesViveiro.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
@@ -386,6 +387,97 @@ begin
 
   qAjusta_Saldo_Especie.ExecSQL;
   qAjusta_Saldo_Especie.Connection.Commit;
+end;
+
+procedure TsmFuncoesViveiro.ppuCalcularQuantidadeMudasMix(
+  ipIdMixMuda: Integer);
+var
+  vaDataSet, vaDataSetLote: TRFQuery;
+  vaQtdeTotalMudas, vaQtdeCalculada, vaQtdeSomada, vaQtdeIncluir: Integer;
+  vaPercentual: Double;
+begin
+  vaQtdeTotalMudas := 0;
+  vaQtdeCalculada := 0;
+  vaQtdeSomada := 0;
+
+  pprCriarDataSet(vaDataSet);
+  pprCriarDataSet(vaDataSetLote);
+  try
+    try
+      Connection.StartTransaction;
+
+      vaDataSet.SQL.Text := 'select Mix_Muda.Qtde_Muda,' +
+        '       Mix_Muda.Qtde_Muda_Rocambole,' +
+        '       Mix_Muda_Especie.Id,' +
+        '       Mix_Muda_Especie.Id_Especie, ' +
+        '       Especie.Qtde_Muda_Pronta, ' +
+        '       Especie.nome as NOME_ESPECIE ' +
+        '   from Mix_Muda_Especie' +
+        '   inner join Mix_Muda on(Mix_Muda.Id = Mix_Muda_Especie.id_mix_muda)' +
+        '   inner join Especie on(Especie.Id = Mix_Muda_Especie.Id_Especie)' +
+        '   where Mix_Muda_Especie.id_mix_muda = : id_mix_muda';
+      vaDataSet.ParamByName('ID_MIX_MUDA').AsInteger := ipIdMixMuda;
+      vaDataSet.Open();
+
+      vaDataSet.First;
+      while not vaDataSet.Eof do
+        begin
+          Inc(vaQtdeTotalMudas, vaDataSet.FieldByName('Qtde_Muda_Pronta').AsInteger);
+          vaDataSet.Next;
+        end;
+
+      vaDataSet.First;
+      while not vaDataSet.Eof do
+        begin
+          vaPercentual := vaDataSet.FieldByName('Qtde_Muda_Pronta').AsInteger / vaQtdeTotalMudas;
+          if vaDataSet.RecNo = vaDataSet.RecordCount then // ultimo registro
+            vaQtdeCalculada := vaDataSet.FieldByName('Qtde_Muda').AsInteger - vaQtdeSomada
+          else
+            vaQtdeCalculada := Trunc(vaDataSet.FieldByName('Qtde_Muda').AsInteger * vaPercentual);
+
+          Inc(vaQtdeSomada,vaQtdeCalculada);
+          // vamos deletar todos registros filhos
+          Connection.ExecSQL('delete from mix_muda_especie_lote where mix_muda_especie_lote.id_mix_muda_especie = :ID',
+            [vaDataSet.FieldByName('ID').AsInteger]);
+
+          // VAMOS PEGAR TODOS OS LOTES DE MUDAS DESSA ESPECIE QUE POSSUEM MUDAS PRONTAS
+          vaDataSetLote.Close;
+          vaDataSetLote.SQL.Text := 'select Lote_Muda.Id,' +
+            '       Lote_Muda.Saldo' +
+            ' from Lote_Muda' +
+            ' where Lote_Muda.Id_Especie = :Id_Especie and' +
+            '       Lote_Muda.Status = 1';
+          vaDataSetLote.ParamByName('ID_ESPECIE').AsInteger := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
+          vaDataSetLote.Open();
+          if vaDataSetLote.Eof then
+            raise Exception.Create('A espécie ' + vaDataSet.FieldByName('NOME_ESPECIE').AsString + ' não possui nenhum lote de muda pronto para plantio.');
+
+          vaQtdeIncluir := vaQtdeCalculada;
+          while vaQtdeCalculada > 0 do
+            begin
+              if vaDataSetLote.FieldByName('SALDO').AsInteger < vaQtdeCalculada then
+                vaQtdeIncluir := vaDataSetLote.FieldByName('SALDO').AsInteger;
+
+              Connection.ExecSQL('insert into Mix_Muda_Especie_Lote (Mix_Muda_Especie_Lote.Id, Mix_Muda_Especie_Lote.Id_Mix_Muda_Especie,' +
+                                 '                                   Mix_Muda_Especie_Lote.Id_Lote_Muda, Mix_Muda_Especie_Lote.Qtde)' +
+                                 ' values (next value for Gen_Mix_Muda_Especie_Lote, :Id_Mix_Muda_Especie, :Id_Lote_Muda, :Qtde)',
+                                 [vaDataSet.FieldByName('ID').AsInteger, vaDataSetLote.FieldByName('ID').AsInteger, vaQtdeIncluir]);
+
+              vaQtdeCalculada := vaQtdeCalculada - vaQtdeIncluir;
+              vaDataSetLote.Next;
+            end;
+
+          vaDataSet.Next;
+        end;
+      Connection.Commit;
+    except
+      if Connection.InTransaction then
+        Connection.Rollback;
+    end;
+  finally
+    vaDataSet.Free;
+    vaDataSetLote.Free;
+  end;
 end;
 
 procedure TsmFuncoesViveiro.ppuValidarSemeadura(ipIdLote, ipIdSemeadura: Integer;
@@ -406,7 +498,8 @@ begin
         raise Exception.Create('Lote inválido.');
 
       // Faço a soma para os caso onde estiver alterando, pois nesse caso tenho que desconsiderar o valor já cadastrado para a semeadura que esta sendo alterada
-      if System.Math.CompareValue(ipDataSet.FieldByName('QTDE_ARMAZENADA').AsFloat + ipDataSet.FieldByName('QTDE_SEMEADA').AsFloat, ipQtdeSemeada) = LessThanValue then
+      if System.Math.CompareValue(ipDataSet.FieldByName('QTDE_ARMAZENADA').AsFloat + ipDataSet.FieldByName('QTDE_SEMEADA').AsFloat, ipQtdeSemeada) = LessThanValue
+      then
         raise Exception.Create('Quantidade semeada não pode ser superior a quantidade em estoque para este lote.');
 
     end);

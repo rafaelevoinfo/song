@@ -1035,6 +1035,8 @@ inherited smViveiro: TsmViveiro
       '       fin_for_cli.razao_social as cliente,'
       '       Mix_Muda.Id_Pessoa_Responsavel,'
       '       Pessoa.nome as Responsavel,'
+      '       Mix_Muda.Id_Venda,'
+      '       Mix_Muda.Id_Saida,'
       '       Mix_Muda.Data,'
       '       Mix_Muda.Qtde_Muda,'
       '       Mix_Muda.Qtde_Muda_Rocambole,'
@@ -1109,6 +1111,16 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object qMix_MudaID_VENDA: TIntegerField
+      FieldName = 'ID_VENDA'
+      Origin = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qMix_MudaID_SAIDA: TIntegerField
+      FieldName = 'ID_SAIDA'
+      Origin = 'ID_SAIDA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object qMix_Muda_Especie: TRFQuery
     Connection = dmPrincipal.conSong
@@ -1119,9 +1131,17 @@ inherited smViveiro: TsmViveiro
       '       Especie.Nome as especie,'
       '       Especie.Nome_Cientifico'
       'from Mix_Muda_Especie'
-      'inner join especie on (especie.id = mix_muda_especie.id_especie)')
+      'inner join especie on (especie.id = mix_muda_especie.id_especie)'
+      'where mix_muda_especie.id_mix_muda = :ID_MIX_MUDA')
     Left = 688
     Top = 88
+    ParamData = <
+      item
+        Name = 'ID_MIX_MUDA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qMix_Muda_EspecieID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -1158,32 +1178,44 @@ inherited smViveiro: TsmViveiro
   object qMix_Muda_Especie_Lote: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select mix_muda_especie_lote.Id,'
-      '       mix_muda_especie_lote.id_mix_muda_espcecie,'
-      '       mix_muda_especie_lote.id_lote_muda,'
-      '       lote_muda.nome AS LOTE,'
-      '       canteiro.nome as canteiro'
-      'from mix_muda_especie_lote'
+      'select distinct Mix_Muda_Especie_Lote.Id,'
+      '                Mix_Muda_Especie_Lote.Id_Mix_Muda_Especie,'
+      '                Mix_Muda_Especie_Lote.Id_Lote_Muda,'
+      '                Lote_Muda.Nome as Lote,'
+      '                (select lIST(Canteiro.Nome)'
+      '                 from Canteiro'
       
-        'inner join lote_muda on (lote_muda.id = mix_muda_especie_lote.id' +
-        '_lote_muda)'
+        '                 where Canteiro.Id in (select Lote_Muda_Canteiro' +
+        '.Id_Canteiro'
+      '                                       from Lote_Muda_Canteiro'
       
-        'inner join lote_muda_canteiro on (lote_muda_canteiro.id_lote_mud' +
-        'a = lote_muda.id)'
+        '                                       where Lote_Muda_Canteiro.' +
+        'Id_Lote_Muda = Lote_Muda.Id)) as Canteiros'
+      'from Mix_Muda_Especie_Lote'
       
-        'inner join canteiro on (canteiro.id = lote_muda_canteiro.id_cant' +
-        'eiro)')
+        'inner join Lote_Muda on (Lote_Muda.Id = Mix_Muda_Especie_Lote.Id' +
+        '_Lote_Muda)'
+      
+        'where Mix_Muda_Especie_Lote.Id_Mix_Muda_Especie = :Id_Mix_Muda_E' +
+        'specie   ')
     Left = 688
     Top = 144
+    ParamData = <
+      item
+        Name = 'ID_MIX_MUDA_ESPECIE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qMix_Muda_Especie_LoteID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField
-      FieldName = 'ID_MIX_MUDA_ESPCECIE'
-      Origin = 'ID_MIX_MUDA_ESPCECIE'
+    object qMix_Muda_Especie_LoteID_MIX_MUDA_ESPECIE: TIntegerField
+      FieldName = 'ID_MIX_MUDA_ESPECIE'
+      Origin = 'ID_MIX_MUDA_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
@@ -1200,12 +1232,12 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = []
       Size = 100
     end
-    object qMix_Muda_Especie_LoteCANTEIRO: TStringField
+    object qMix_Muda_Especie_LoteCANTEIROS: TMemoField
       AutoGenerateValue = arDefault
-      FieldName = 'CANTEIRO'
-      Origin = 'NOME'
+      FieldName = 'CANTEIROS'
+      Origin = 'CANTEIROS'
       ProviderFlags = []
-      Size = 100
+      BlobType = ftMemo
     end
   end
 end

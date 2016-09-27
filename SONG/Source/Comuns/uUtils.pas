@@ -14,9 +14,9 @@ type
   public
     class procedure ppuAbrirFormAba<T: TForm>(ipPageControl: TcxPageControl; ipClassForm: TFormClass; var opForm: T;
       ipCriarSeNecessario: Boolean = true);
-    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
+    class procedure ppuPercorrerCds(ipCDS: TDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
       ipOtimizarLoop: Boolean = true); overload;
-    class procedure ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = true;
+    class procedure ppuPercorrerCds(ipCDS: TDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = true;
       ipOtimizarLoop: Boolean = true); overload;
     class function fpuCriptografarSha1(ipValor: String): String;
     class function fpuValidarEmail(ipEmail: String): Boolean;
@@ -344,7 +344,7 @@ begin
   end;
 end;
 
-class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
+class procedure TUtils.ppuPercorrerCds(ipCDS: TDataSet; ipProc: TProc; ipManterPosicao: Boolean = true;
   ipOtimizarLoop: Boolean = true);
 begin
   TUtils.ppuPercorrerCds(ipCDS,
@@ -355,7 +355,7 @@ begin
     end, ipManterPosicao, ipOtimizarLoop);
 end;
 
-class procedure TUtils.ppuPercorrerCds(ipCDS: TClientDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = true;
+class procedure TUtils.ppuPercorrerCds(ipCDS: TDataSet; ipFunc: TFunc<Boolean>; ipManterPosicao: Boolean = true;
 ipOtimizarLoop: Boolean = true);
 var
   vaRecNo: Integer;

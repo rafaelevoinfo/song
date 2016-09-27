@@ -21,7 +21,7 @@ uses
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
-  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie;
+  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie, fMix_Muda;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -126,6 +126,8 @@ type
     reasdeAtuao1: TMenuItem;
     Ac_Tipo_Especie: TAction;
     ipodeEspcie1: TMenuItem;
+    Ac_Mix_Muda: TAction;
+    MixdeMudas1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -173,6 +175,7 @@ type
     procedure Ac_Atualizar_NotificacoesExecute(Sender: TObject);
     procedure Ac_Area_AtuacaoExecute(Sender: TObject);
     procedure Ac_Tipo_EspecieExecute(Sender: TObject);
+    procedure Ac_Mix_MudaExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -386,6 +389,12 @@ begin
     vaFrmPessoa.Free;
   end;
 
+end;
+
+procedure TfrmPrincipal.Ac_Mix_MudaExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmMixMuda>(pcPrincipal, TfrmMixMuda, frmMixMuda);
 end;
 
 procedure TfrmPrincipal.Ac_NotificacaoExecute(Sender: TObject);

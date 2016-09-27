@@ -861,12 +861,30 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object cdsMix_MudaID_VENDA: TIntegerField
+      FieldName = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsMix_MudaID_SAIDA: TIntegerField
+      FieldName = 'ID_SAIDA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMix_Muda_Especie: TRFClientDataSet
     Aggregates = <>
-    Params = <>
+    IndexFieldNames = 'ID_MIX_MUDA'
+    MasterFields = 'ID'
+    MasterSource = dsMix_Muda
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_MIX_MUDA'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqMix_Muda_Especie'
     RemoteServer = dmPrincipal.ProviderViveiro
+    RFApplyAutomatico = False
     Left = 672
     Top = 104
     object cdsMix_Muda_EspecieID: TIntegerField
@@ -901,9 +919,19 @@ inherited dmViveiro: TdmViveiro
   end
   object cdsMix_Muda_Especie_Lote: TRFClientDataSet
     Aggregates = <>
-    Params = <>
+    IndexFieldNames = 'ID_MIX_MUDA_ESPECIE'
+    MasterFields = 'ID'
+    MasterSource = dsMix_Muda_Especie
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_MIX_MUDA_ESPECIE'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqMix_Muda_Especie_Lote'
     RemoteServer = dmPrincipal.ProviderViveiro
+    RFApplyAutomatico = False
     Left = 672
     Top = 176
     object cdsMix_Muda_Especie_LoteID: TIntegerField
@@ -911,8 +939,8 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cdsMix_Muda_Especie_LoteID_MIX_MUDA_ESPCECIE: TIntegerField
-      FieldName = 'ID_MIX_MUDA_ESPCECIE'
+    object cdsMix_Muda_Especie_LoteID_MIX_MUDA_ESPECIE: TIntegerField
+      FieldName = 'ID_MIX_MUDA_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
@@ -928,11 +956,21 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = []
       Size = 100
     end
-    object cdsMix_Muda_Especie_LoteCANTEIRO: TStringField
-      DisplayLabel = 'Canteiro'
-      FieldName = 'CANTEIRO'
+    object cdsMix_Muda_Especie_LoteCANTEIROS: TMemoField
+      DisplayLabel = 'Canteiros'
+      FieldName = 'CANTEIROS'
       ProviderFlags = []
-      Size = 100
+      BlobType = ftMemo
     end
+  end
+  object dsMix_Muda: TDataSource
+    DataSet = cdsMix_Muda
+    Left = 600
+    Top = 40
+  end
+  object dsMix_Muda_Especie: TDataSource
+    DataSet = cdsMix_Muda_Especie
+    Left = 576
+    Top = 112
   end
 end

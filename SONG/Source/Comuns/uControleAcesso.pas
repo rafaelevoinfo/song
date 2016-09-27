@@ -72,7 +72,8 @@ type
   TPermissaoAdministrativo = (admPessoa, admPerfil, admOrganizacao, admProjeto, admAtividade, admRubrica, admAreaAtuacao);
   TPermissaoFinanceiro = (finBanco, finFinanciador, finFornecedor, finPlanoConta, finContaPagar, finContaReceber, finCliente, finTransferencia,
     finAutorizarUsoFundo, finDoacao);
-  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica, vivCamaraFria, vivTipoEspecie);
+  TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica,
+   vivCamaraFria, vivTipoEspecie, vivMixMuda);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
     estSaida, estVenda, estLocalUso);
   TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento);
@@ -189,6 +190,7 @@ begin
   plAddViveiro(vivMatriz, 'Matrizes');
   plAddViveiro(vivCamaraFria, 'Câmara Fria');
   plAddViveiro(vivTipoEspecie, 'Tipo de Espécie');
+  plAddViveiro(vivMixMuda, 'Mix de Mudas');
   FItems.Add('Viveiro', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;

@@ -70,7 +70,8 @@ uses
   fRelatorioPatrimonio in 'Relatorios\fRelatorioPatrimonio.pas' {frmRelatorioPatrimonio},
   fDoacao in 'Financeiro\fDoacao.pas' {frmDoacao},
   fAreaAtuacao in 'Administrativo\fAreaAtuacao.pas' {frmAreaAtuacao},
-  fTipoEspecie in 'Viveiro\fTipoEspecie.pas' {frmTipoEspecie};
+  fTipoEspecie in 'Viveiro\fTipoEspecie.pas' {frmTipoEspecie},
+  fMix_Muda in 'Viveiro\fMix_Muda.pas' {frmMixMuda};
 
 {$R Localization.RES}
 {$R *.res}
