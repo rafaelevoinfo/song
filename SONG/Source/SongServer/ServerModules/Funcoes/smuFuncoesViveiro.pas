@@ -45,6 +45,8 @@ type
     function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
 
     procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer);
+
+    function fpuBuscarIdItemMuda(): Integer;
   end;
 
 var
@@ -55,6 +57,24 @@ implementation
 {$R *.dfm}
 
 { TsmBasico1 }
+
+function TsmFuncoesViveiro.fpuBuscarIdItemMuda: Integer;
+var
+  vaId: Integer;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'Select item.id from item where item.tipo = 2';
+      ipDataSet.Open;
+      if ipDataSet.Eof then
+        raise Exception.Create('Não existe nenhum item do tipo Muda cadastrado. Procure o administrador do sistema.');
+
+      vaId := ipDataSet.FieldByName('ID').AsInteger;
+    end);
+
+  Result := vaId;
+end;
 
 function TsmFuncoesViveiro.fpuBuscarLoteMuda(ipIdCompraItem: Integer): Integer;
 var
@@ -397,7 +417,6 @@ var
   vaPercentual: Double;
 begin
   vaQtdeTotalMudas := 0;
-  vaQtdeCalculada := 0;
   vaQtdeSomada := 0;
 
   pprCriarDataSet(vaDataSet);
@@ -415,7 +434,8 @@ begin
         '   from Mix_Muda_Especie' +
         '   inner join Mix_Muda on(Mix_Muda.Id = Mix_Muda_Especie.id_mix_muda)' +
         '   inner join Especie on(Especie.Id = Mix_Muda_Especie.Id_Especie)' +
-        '   where Mix_Muda_Especie.id_mix_muda = : id_mix_muda';
+        '   where Mix_Muda_Especie.id_mix_muda = :id_mix_muda ' +
+        '   order by Especie.Qtde_Muda_Pronta'; // as maiores devem vir por ultimo
       vaDataSet.ParamByName('ID_MIX_MUDA').AsInteger := ipIdMixMuda;
       vaDataSet.Open();
 
@@ -426,6 +446,9 @@ begin
           vaDataSet.Next;
         end;
 
+      if vaQtdeTotalMudas < vaDataSet.FieldByName('Qtde_Muda').AsInteger then
+        raise Exception.Create('As espécies selecionadas não possuem mudas suficientes para a quantidade de saidas.');
+
       vaDataSet.First;
       while not vaDataSet.Eof do
         begin
@@ -435,7 +458,16 @@ begin
           else
             vaQtdeCalculada := Trunc(vaDataSet.FieldByName('Qtde_Muda').AsInteger * vaPercentual);
 
-          Inc(vaQtdeSomada,vaQtdeCalculada);
+          // se a quantidade em estoque for muito baixa em relacao ao total pode dar valores muitos pequenos, por isso
+          // tenho essa condicao para garantir pelo menos uma muda
+          if vaQtdeCalculada < 1 then
+            vaQtdeCalculada := 1;
+
+          if (vaQtdeSomada + vaQtdeCalculada) > vaDataSet.FieldByName('QTDE_MUDA').AsInteger then
+            vaQtdeCalculada := vaDataSet.FieldByName('QTDE_MUDA').AsInteger - vaQtdeSomada;
+
+          Inc(vaQtdeSomada, vaQtdeCalculada);
+
           // vamos deletar todos registros filhos
           Connection.ExecSQL('delete from mix_muda_especie_lote where mix_muda_especie_lote.id_mix_muda_especie = :ID',
             [vaDataSet.FieldByName('ID').AsInteger]);
@@ -459,9 +491,9 @@ begin
                 vaQtdeIncluir := vaDataSetLote.FieldByName('SALDO').AsInteger;
 
               Connection.ExecSQL('insert into Mix_Muda_Especie_Lote (Mix_Muda_Especie_Lote.Id, Mix_Muda_Especie_Lote.Id_Mix_Muda_Especie,' +
-                                 '                                   Mix_Muda_Especie_Lote.Id_Lote_Muda, Mix_Muda_Especie_Lote.Qtde)' +
-                                 ' values (next value for Gen_Mix_Muda_Especie_Lote, :Id_Mix_Muda_Especie, :Id_Lote_Muda, :Qtde)',
-                                 [vaDataSet.FieldByName('ID').AsInteger, vaDataSetLote.FieldByName('ID').AsInteger, vaQtdeIncluir]);
+                '                                   Mix_Muda_Especie_Lote.Id_Lote_Muda, Mix_Muda_Especie_Lote.Qtde)' +
+                ' values (next value for Gen_Mix_Muda_Especie_Lote, :Id_Mix_Muda_Especie, :Id_Lote_Muda, :Qtde)',
+                [vaDataSet.FieldByName('ID').AsInteger, vaDataSetLote.FieldByName('ID').AsInteger, vaQtdeIncluir]);
 
               vaQtdeCalculada := vaQtdeCalculada - vaQtdeIncluir;
               vaDataSetLote.Next;

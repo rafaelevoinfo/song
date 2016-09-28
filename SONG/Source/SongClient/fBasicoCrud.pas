@@ -15,7 +15,7 @@ uses
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
   uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup,
-  cxGridExportLink, Vcl.ExtDlgs;
+  cxGridExportLink, Vcl.ExtDlgs, System.DateUtils;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -354,7 +354,9 @@ begin
   cbPesquisarPor.Properties.DropDownRows := cbPesquisarPor.Properties.Items.Count;
   if pnBotoesCadastro.TabOrder = 0 then
     pnBotoesCadastro.TabOrder := 1;
-  // pprVerificarExisteStatus;
+
+  EditDataInicialPesquisa.Date := IncDay(Now, -7);
+  EditDataFinalPesquisa.Date := Now;
 end;
 
 procedure TfrmBasicoCrud.FormShow(Sender: TObject);

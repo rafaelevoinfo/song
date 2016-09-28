@@ -15,7 +15,8 @@ uses
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuViveiro, dmuLookup,
   dmuPrincipal, cxCalc, cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, Datasnap.DBClient, fmGrids, uUtils, System.TypInfo,
-  uControleAcesso, uClientDataSet, uTypes;
+  uControleAcesso, uClientDataSet, uTypes, uExceptions, fSaida, uMensagem,
+  fVenda;
 
 type
   TfrmMixMuda = class(TfrmBasicoCrudMasterDetail)
@@ -52,23 +53,53 @@ type
     cdsLocalEspecieNOME: TStringField;
     btnGerarVenda: TButton;
     Ac_Gerar_Venda: TAction;
+    btnGerarSaida: TButton;
+    Ac_Gerar_Saida: TAction;
+    cdsLocalEspecieQTDE_MUDA_PRONTA: TIntegerField;
+    dsMix_Muda_Especie_Lote: TDataSource;
+    cxGrid1: TcxGrid;
+    viewLotes: TcxGridDBTableView;
+    cxGridLevel2: TcxGridLevel;
+    viewLotesID: TcxGridDBColumn;
+    viewLotesID_LOTE_MUDA: TcxGridDBColumn;
+    viewLotesLOTE: TcxGridDBColumn;
+    viewLotesCANTEIROS: TcxGridDBColumn;
+    Label5: TLabel;
+    viewRegistrosID_VENDA: TcxGridDBColumn;
+    viewRegistrosID_SAIDA: TcxGridDBColumn;
+    ColumnSaidaVenda: TcxGridDBColumn;
+    viewLotesQTDE: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
+    procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
+    procedure EditQtdePropertiesEditValueChanged(Sender: TObject);
+    procedure Ac_Gerar_SaidaExecute(Sender: TObject);
+    procedure ColumnSaidaVendaGetDisplayText(Sender: TcxCustomGridTableItem;
+      ARecord: TcxCustomGridRecord; var AText: string);
+    procedure ColumnSaidaVendaCustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
+    procedure Ac_Gerar_VendaExecute(Sender: TObject);
   private
+    FIdItemMuda: integer;
+    FCalcularQuantidades: Boolean;
     dmLookup: TdmLookup;
     dmViveiro: TdmViveiro;
     procedure ppvConfigurarGrids;
     procedure ppvCarregarClientes;
+    procedure ppvConfigurarEdits;
+    procedure ppvIncluirEspecieCdsLocal;
     { Private declarations }
   protected
     procedure pprEfetuarPesquisa; override;
     function fprHabilitarAlterarDetail: Boolean; override;
 
+    procedure pprValidarDados; override;
     procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); override;
 
-    function fprGetPermissao:String;override;
+    function fprGetPermissao: String; override;
   public
     procedure ppuIncluir; override;
-    procedure ppuAlterar(ipId: Integer); override;
+    procedure ppuAlterar(ipId: integer); override;
   end;
 
 var
@@ -80,6 +111,204 @@ implementation
 
 { TfrmMixMuda }
 
+procedure TfrmMixMuda.Ac_Gerar_SaidaExecute(Sender: TObject);
+var
+  vaFrmSaida: TfrmSaida;
+  vaSaida: TSaida;
+  vaItem: TItem;
+begin
+  inherited;
+  if (dmViveiro.cdsMix_MudaID_VENDA.IsNull and dmViveiro.cdsMix_MudaID_SAIDA.IsNull) then
+    begin
+      vaFrmSaida := TfrmSaida.Create(nil);
+      try
+        try
+          vaFrmSaida.ModoSilencioso := True;
+          vaSaida := TSaida.Create;
+          vaSaida.Data := dmViveiro.cdsMix_MudaDATA.AsDateTime;
+          vaSaida.Tipo := tsPlantio;
+
+          vaFrmSaida.ppuConfigurarModoExecucao(meSomenteCadastro, vaSaida);
+          vaFrmSaida.ppuIncluir;
+          vaFrmSaida.ppuSalvar;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Não foi possível gerar a saída deste mix.', e);
+              Exit;
+            end;
+        end;
+
+        try
+          dmViveiro.cdsMix_Muda_Especie.First;
+          while not dmViveiro.cdsMix_Muda_Especie.eof do
+            begin
+              dmViveiro.cdsMix_Muda_Especie_Lote.First;
+              while not dmViveiro.cdsMix_Muda_Especie_Lote.eof do
+                begin
+                  vaItem := TItem.Create;
+                  vaItem.Id := FIdItemMuda;
+                  vaItem.IdEspecie := dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.AsInteger;
+                  vaItem.IdLoteMuda := dmViveiro.cdsMix_Muda_Especie_LoteID_LOTE_MUDA.AsInteger;
+                  vaItem.Qtde := dmViveiro.cdsMix_Muda_Especie_LoteQTDE.AsInteger;
+
+                  vaFrmSaida.Modelo := vaItem;
+                  vaFrmSaida.ppuIncluirDetail;
+                  vaFrmSaida.ppuSalvarDetail;
+
+                  dmViveiro.cdsMix_Muda_Especie_Lote.Next;
+                end;
+
+              dmViveiro.cdsMix_Muda_Especie.Next;
+            end;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+              Exit;
+            end;
+        end;
+
+        dmViveiro.cdsMix_Muda.Edit;
+        dmViveiro.cdsMix_MudaID_SAIDA.AsInteger := vaFrmSaida.IdEscolhido;
+        dmViveiro.cdsMix_Muda.Post;
+
+        TMensagem.ppuShowMessage('Saída gerada com sucesso.');
+
+      finally
+        vaFrmSaida.Free;
+      end;
+    end
+  else
+    raise Exception.Create('Já existe uma venda ou saída vinculada a este mix.');
+
+end;
+
+procedure TfrmMixMuda.Ac_Gerar_SaidaUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar and (dmViveiro.cdsMix_MudaID_VENDA.IsNull) and (dmViveiro.cdsMix_MudaID_SAIDA.IsNull);
+end;
+
+procedure TfrmMixMuda.Ac_Gerar_VendaExecute(Sender: TObject);
+var
+  vaFrmVenda: TfrmVenda;
+  vaVenda: TVenda;
+  vaItem: TItem;
+begin
+  inherited;
+  if (dmViveiro.cdsMix_MudaID_VENDA.IsNull and dmViveiro.cdsMix_MudaID_SAIDA.IsNull) then
+    begin
+      vaFrmVenda := TfrmVenda.Create(nil);
+      try
+        try
+          vaFrmVenda.ModoSilencioso := True;
+          vaVenda := TVenda.Create;
+          vaVenda.Data := dmViveiro.cdsMix_MudaDATA.AsDateTime;
+          vaVenda.IdCliente := dmViveiro.cdsMix_MudaID_CLIENTE.AsInteger;
+          vaVenda.IdVendedor := dmViveiro.cdsMix_MudaID_PESSOA_RESPONSAVEL.AsInteger;
+
+          vaFrmVenda.ppuConfigurarModoExecucao(meSomenteCadastro, vaVenda);
+          vaFrmVenda.ppuIncluir;
+          vaFrmVenda.ppuSalvar;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Não foi possível gerar a venda deste mix.', e);
+              Exit;
+            end;
+        end;
+
+        try
+          dmViveiro.cdsMix_Muda_Especie.First;
+          while not dmViveiro.cdsMix_Muda_Especie.eof do
+            begin
+              dmViveiro.cdsMix_Muda_Especie_Lote.First;
+              while not dmViveiro.cdsMix_Muda_Especie_Lote.eof do
+                begin
+                  vaItem := TItem.Create;
+                  vaItem.Id := FIdItemMuda;
+                  vaItem.IdEspecie := dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.AsInteger;
+                  vaItem.IdLoteMuda := dmViveiro.cdsMix_Muda_Especie_LoteID_LOTE_MUDA.AsInteger;
+                  vaItem.Qtde := dmViveiro.cdsMix_Muda_Especie_LoteQTDE.AsInteger;
+                  if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, vaItem.IdEspecie, []) then
+                    vaItem.ValorUnitario := dmLookup.cdslkEspecieVALOR_MUDA.AsFloat;
+
+                  vaFrmVenda.Modelo := vaItem;
+                  vaFrmVenda.ppuIncluirDetail;
+                  // se nao tiver valor configurado irei abrir a tela para o usuario informar
+                  if vaItem.ValorUnitario = 0 then
+                    vaFrmVenda.ShowModal
+                  else
+                    vaFrmVenda.ppuSalvarDetail;
+
+                  dmViveiro.cdsMix_Muda_Especie_Lote.Next;
+                end;
+
+              dmViveiro.cdsMix_Muda_Especie.Next;
+            end;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+              Exit;
+            end;
+        end;
+
+        dmViveiro.cdsMix_Muda.Edit;
+        dmViveiro.cdsMix_MudaID_VENDA.AsInteger := vaFrmVenda.IdEscolhido;
+        dmViveiro.cdsMix_Muda.Post;
+
+        TMensagem.ppuShowMessage('Venda gerada com sucesso.');
+
+      finally
+        vaFrmVenda.Free;
+      end;
+    end
+  else
+    raise Exception.Create('Já existe uma venda ou saída vinculada a este mix.');
+
+end;
+
+procedure TfrmMixMuda.ColumnSaidaVendaCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+  inherited;
+  if AViewInfo.Text = 'Não' then
+    begin
+      ACanvas.Font.Color := clWhite;
+      if AViewInfo.GridRecord.Selected then
+        ACanvas.Brush.Color := clMaroon
+      else
+        ACanvas.Brush.Color := clRed;
+    end
+  else
+    begin
+      ACanvas.Font.Color := clWhite;
+      ACanvas.Brush.Color := clGreen;
+    end;
+end;
+
+procedure TfrmMixMuda.ColumnSaidaVendaGetDisplayText(
+  Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+  var AText: string);
+begin
+  inherited;
+  if (not VarIsNull(ARecord.Values[viewRegistrosID_VENDA.Index])) or (not VarIsNull(ARecord.Values[viewRegistrosID_SAIDA.Index])) then
+    AText := 'Sim'
+  else
+    AText := 'Não';
+
+end;
+
+procedure TfrmMixMuda.EditQtdePropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastro then
+    FCalcularQuantidades := True;
+end;
+
 procedure TfrmMixMuda.FormCreate(Sender: TObject);
 begin
   dmLookup := TdmLookup.Create(Self);
@@ -89,12 +318,17 @@ begin
   dmViveiro.name := '';
   inherited;
 
+  PesquisaPadrao := Ord(tppData);
+
+  dmLookup.cdslkEspecie.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkEspecie);
-  dmLookup.ppuCarregarPessoas(0,coTiposPessoaPadrao);
+  dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
 
   ppvCarregarClientes;
 
   ppvConfigurarGrids;
+
+  FIdItemMuda := dmprincipal.FuncoesViveiro.fpuBuscarIdItemMuda;
 end;
 
 procedure TfrmMixMuda.ppvCarregarClientes;
@@ -104,7 +338,7 @@ end;
 
 function TfrmMixMuda.fprGetPermissao: String;
 begin
-  Result := GetEnumName(TypeInfo(TPermissaoViveiro), ord(vivMixMuda));
+  Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivMixMuda));
 end;
 
 function TfrmMixMuda.fprHabilitarAlterarDetail: Boolean;
@@ -118,9 +352,17 @@ begin
   if dmViveiro.cdsMix_Muda_Especie.ChangeCount > 0 then
     dmViveiro.cdsMix_Muda_Especie.ApplyUpdates(0);
 
-  //calcula as quantidades e insere os lotes para cada especie
-  dmPrincipal.FuncoesViveiro.ppuCalcularQuantidadeMudasMix(dmViveiro.cdsMix_MudaID.AsInteger);
+  // calcula as quantidades e insere os lotes para cada especie
+  if FCalcularQuantidades then
+    dmprincipal.FuncoesViveiro.ppuCalcularQuantidadeMudasMix(dmViveiro.cdsMix_MudaID.AsInteger);
 
+end;
+
+procedure TfrmMixMuda.ppvConfigurarEdits;
+begin
+  EditQtde.Enabled := (dmViveiro.cdsMix_MudaID_VENDA.IsNull) and (dmViveiro.cdsMix_MudaID_VENDA.IsNull);
+  EditQtdeRocambole.Enabled := EditQtde.Enabled;
+  frameGrids.ppuLockUnlockAcoes(not EditQtde.Enabled);
 end;
 
 procedure TfrmMixMuda.pprEfetuarPesquisa;
@@ -130,9 +372,21 @@ begin
   dmViveiro.cdsMix_Muda_Especie_Lote.Open;
 end;
 
-procedure TfrmMixMuda.ppuAlterar(ipId: Integer);
+procedure TfrmMixMuda.pprValidarDados;
 begin
   inherited;
+  if dmViveiro.cdsMix_Muda_Especie.RecordCount = 0 then
+    raise Exception.Create('É necessário selecionar pelo menos uma espécie.');
+
+  if StrToIntDef(dmViveiro.cdsMix_Muda_EspecieAGG_TOTAL_MUDA.AsString, 0) < dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger then
+    raise TControlException.Create('As espécies selecionadas não possuem mudas suficientes para a quantidade informada.', EditQtde);
+
+end;
+
+procedure TfrmMixMuda.ppuAlterar(ipId: integer);
+begin
+  inherited;
+  FCalcularQuantidades := false;
   if cdsLocalEspecie.Active then
     cdsLocalEspecie.EmptyDataSet
   else
@@ -144,36 +398,48 @@ begin
       if (not dmViveiro.cdsMix_Muda_Especie.Locate(dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.FieldName, dmLookup.cdslkEspecieID.AsInteger, [])) and
         (dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger > 0) then
         begin
-          cdsLocalEspecie.Append;
-          cdsLocalEspecieID.AsInteger := dmLookup.cdslkEspecieID.AsInteger;
-          cdsLocalEspecieNOME.AsString := dmLookup.cdslkEspecieNOME.AsString;
-          cdsLocalEspecie.Post;
+          ppvIncluirEspecieCdsLocal;
         end;
     end);
+
+  ppvConfigurarEdits;
 end;
 
 procedure TfrmMixMuda.ppuIncluir;
 begin
   inherited;
+  FCalcularQuantidades := True;
   if cdsLocalEspecie.Active then
     cdsLocalEspecie.EmptyDataSet
   else
     cdsLocalEspecie.CreateDataSet;
 
   dmViveiro.cdsMix_MudaQTDE_MUDA_ROCAMBOLE.AsInteger := 30;
+  dmViveiro.cdsMix_MudaDATA.AsDateTime := now;
+
   TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
     procedure
     begin
       if dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger > 0 then
         begin
-          cdsLocalEspecie.Append;
-          cdsLocalEspecieID.AsInteger := dmLookup.cdslkEspecieID.AsInteger;
-          cdsLocalEspecieNOME.AsString := dmLookup.cdslkEspecieNOME.AsString;
-          cdsLocalEspecie.Post;
+          ppvIncluirEspecieCdsLocal;
         end;
     end);
 
+  ppvConfigurarEdits;
+
+  pprPreencherCamposPadroes(dmViveiro.cdsMix_Muda);
+
   frameGrids.Ac_AddTodos.Execute;
+end;
+
+procedure TfrmMixMuda.ppvIncluirEspecieCdsLocal;
+begin
+  cdsLocalEspecie.Append;
+  cdsLocalEspecieID.AsInteger := dmLookup.cdslkEspecieID.AsInteger;
+  cdsLocalEspecieNOME.AsString := dmLookup.cdslkEspecieNOME.AsString;
+  cdsLocalEspecieQTDE_MUDA_PRONTA.AsInteger := dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger;
+  cdsLocalEspecie.Post;
 end;
 
 procedure TfrmMixMuda.ppvConfigurarGrids;
@@ -181,12 +447,22 @@ begin
   // Esquerda
   frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'ID', false);
   frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'NOME');
+  frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'QTDE_MUDA_PRONTA');
   // Direita
   frameGrids.fpuAdicionarField(frameGrids.viewDireita, 'ID_ESPECIE', false);
   frameGrids.fpuAdicionarField(frameGrids.viewDireita, 'ESPECIE');
+  frameGrids.fpuAdicionarField(frameGrids.viewDireita, 'QTDE_MUDA_PRONTA');
   // mapeando
   frameGrids.ppuMapearFields('ID', 'ID_ESPECIE');
   frameGrids.ppuMapearFields('NOME', 'ESPECIE');
+  frameGrids.ppuMapearFields('QTDE_MUDA_PRONTA', 'QTDE_MUDA_PRONTA');
+
+  frameGrids.OnAddRemoveRegistro := procedure(ipDataSetOrigem, ipDataSetDestino: TDataSet; ipTipo: TTipoAcao)
+    begin
+      FCalcularQuantidades := True;
+      if not(dmViveiro.cdsMix_Muda.State in [dsInsert, dsEdit]) then
+        dmViveiro.cdsMix_Muda.Edit;
+    end;
 end;
 
 end.

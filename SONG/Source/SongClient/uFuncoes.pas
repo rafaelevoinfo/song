@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 27/09/2016 00:06:38
+// 27/09/2016 23:36:12
 //
 
 unit uFuncoes;
@@ -120,6 +120,7 @@ type
     FppuAjustarSaldoEspecieCommand: TDBXCommand;
     FfpuCalcularPrevisaoProducaoMudaCommand: TDBXCommand;
     FppuCalcularQuantidadeMudasMixCommand: TDBXCommand;
+    FfpuBuscarIdItemMudaCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -141,6 +142,7 @@ type
     procedure ppuAjustarSaldoEspecie(ipIdEspecie: Integer); virtual;
     function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant; virtual;
     procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer); virtual;
+    function fpuBuscarIdItemMuda: Integer; virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -1050,6 +1052,19 @@ begin
   FppuCalcularQuantidadeMudasMixCommand.ExecuteUpdate;
 end;
 
+function TsmFuncoesViveiroClient.fpuBuscarIdItemMuda: Integer;
+begin
+  if FfpuBuscarIdItemMudaCommand = nil then
+  begin
+    FfpuBuscarIdItemMudaCommand := FDBXConnection.CreateCommand;
+    FfpuBuscarIdItemMudaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuBuscarIdItemMudaCommand.Text := 'TsmFuncoesViveiro.fpuBuscarIdItemMuda';
+    FfpuBuscarIdItemMudaCommand.Prepare;
+  end;
+  FfpuBuscarIdItemMudaCommand.ExecuteUpdate;
+  Result := FfpuBuscarIdItemMudaCommand.Parameters[0].Value.GetInt32;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1157,6 +1172,7 @@ begin
   FppuAjustarSaldoEspecieCommand.DisposeOf;
   FfpuCalcularPrevisaoProducaoMudaCommand.DisposeOf;
   FppuCalcularQuantidadeMudasMixCommand.DisposeOf;
+  FfpuBuscarIdItemMudaCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

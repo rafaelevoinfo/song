@@ -848,6 +848,7 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'QTDE_MUDA'
       ProviderFlags = [pfInUpdate]
       Required = True
+      DisplayFormat = ',0'
     end
     object cdsMix_MudaQTDE_MUDA_ROCAMBOLE: TIntegerField
       DisplayLabel = 'Qtde. de Muda por Rocambole'
@@ -862,16 +863,19 @@ inherited dmViveiro: TdmViveiro
       Size = 1000
     end
     object cdsMix_MudaID_VENDA: TIntegerField
+      DisplayLabel = 'Id da Venda'
       FieldName = 'ID_VENDA'
       ProviderFlags = [pfInUpdate]
     end
     object cdsMix_MudaID_SAIDA: TIntegerField
+      DisplayLabel = 'Id da Sa'#237'da'
       FieldName = 'ID_SAIDA'
       ProviderFlags = [pfInUpdate]
     end
   end
   object cdsMix_Muda_Especie: TRFClientDataSet
     Aggregates = <>
+    AggregatesActive = True
     IndexFieldNames = 'ID_MIX_MUDA'
     MasterFields = 'ID'
     MasterSource = dsMix_Muda
@@ -889,32 +893,50 @@ inherited dmViveiro: TdmViveiro
     Top = 104
     object cdsMix_Muda_EspecieID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsMix_Muda_EspecieID_MIX_MUDA: TIntegerField
       DisplayLabel = 'Id do Mix de Muda'
       FieldName = 'ID_MIX_MUDA'
+      Origin = 'ID_MIX_MUDA'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsMix_Muda_EspecieID_ESPECIE: TIntegerField
       DisplayLabel = 'Id da Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsMix_Muda_EspecieESPECIE: TStringField
       DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ESPECIE'
+      Origin = 'NOME'
       ProviderFlags = []
       Size = 100
     end
     object cdsMix_Muda_EspecieNOME_CIENTIFICO: TStringField
       DisplayLabel = 'Nome Cient'#237'fico'
       FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsMix_Muda_EspecieQTDE_MUDA_PRONTA: TIntegerField
+      DisplayLabel = 'Qtde. de Muda Pronta'
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+      DisplayFormat = ',0'
+    end
+    object cdsMix_Muda_EspecieAGG_TOTAL_MUDA: TAggregateField
+      FieldName = 'AGG_TOTAL_MUDA'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTDE_MUDA_PRONTA)'
     end
   end
   object cdsMix_Muda_Especie_Lote: TRFClientDataSet
@@ -961,6 +983,12 @@ inherited dmViveiro: TdmViveiro
       FieldName = 'CANTEIROS'
       ProviderFlags = []
       BlobType = ftMemo
+    end
+    object cdsMix_Muda_Especie_LoteQTDE: TIntegerField
+      DisplayLabel = 'Quantidade'
+      FieldName = 'QTDE'
+      Required = True
+      DisplayFormat = ',0'
     end
   end
   object dsMix_Muda: TDataSource

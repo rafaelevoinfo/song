@@ -121,17 +121,20 @@ type
     FIdItemCompraVenda: Integer;
     FIdLoteSemente: Integer;
     FIdLoteMuda: Integer;
+    FValorUnitario: Double;
     procedure SetQtde(const Value: Double);
     procedure SetIdEspecie(const Value: Integer);
     procedure SetIdItemCompraVenda(const Value: Integer);
     procedure SetIdLoteMuda(const Value: Integer);
     procedure SetIdLoteSemente(const Value: Integer);
+    procedure SetValorUnitario(const Value: Double);
   public
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
     property IdItemCompraVenda: Integer read FIdItemCompraVenda write SetIdItemCompraVenda;
     property IdLoteMuda: Integer read FIdLoteMuda write SetIdLoteMuda;
     property IdLoteSemente: Integer read FIdLoteSemente write SetIdLoteSemente;
     property Qtde: Double read FQtde write SetQtde;
+    property ValorUnitario:Double read FValorUnitario write SetValorUnitario;
   end;
 
   TLote = class(TModelo)
@@ -362,6 +365,11 @@ end;
 procedure TItem.SetQtde(const Value: Double);
 begin
   FQtde := Value;
+end;
+
+procedure TItem.SetValorUnitario(const Value: Double);
+begin
+  FValorUnitario := Value;
 end;
 
 { TEspecie }

@@ -8,19 +8,70 @@ inherited frmMixMuda: TfrmMixMuda
   inherited pcPrincipal: TcxPageControl
     Height = 611
     Properties.ActivePage = tabCadastro
+    ExplicitHeight = 611
     ClientRectBottom = 607
     inherited tabPesquisa: TcxTabSheet
+      ExplicitHeight = 583
       inherited pnPesquisa: TPanel
+        inherited pnEditsPesquisa: TPanel
+          Left = 564
+          Width = 411
+          ExplicitWidth = 411
+          inherited Label1: TLabel
+            Left = 4
+            ExplicitLeft = 4
+          end
+          inherited pnData: TPanel
+            Left = 183
+            ExplicitLeft = 183
+          end
+          inherited EditPesquisa: TcxButtonEdit
+            Left = 135
+            ExplicitLeft = 135
+          end
+          inherited cbPesquisarPor: TcxImageComboBox
+            Left = 2
+            Properties.Items = <
+              item
+                Description = 'Todos'
+                ImageIndex = 0
+                Value = 1
+              end
+              item
+                Description = 'ID'
+                ImageIndex = 0
+                Value = 2
+              end
+              item
+                Description = 'Data'
+                Value = 4
+              end>
+            ExplicitLeft = 2
+          end
+          inherited btnPesquisar: TButton
+            Left = 311
+            ExplicitLeft = 311
+          end
+          inherited rgStatus: TcxRadioGroup
+            Left = 6
+            Top = 41
+            ExplicitLeft = 6
+            ExplicitTop = 41
+          end
+        end
         inherited pnBotoes: TPanel
+          Width = 563
           inherited btnUtilizar: TButton
-            Left = 274
+            Left = 374
+            ExplicitLeft = 274
           end
           inherited btnExportarExcel: TButton
-            Left = 172
+            Left = 272
+            ExplicitLeft = 172
           end
           object btnGerarVenda: TButton
             AlignWithMargins = True
-            Left = 86
+            Left = 186
             Top = 1
             Width = 85
             Height = 40
@@ -33,13 +84,32 @@ inherited frmMixMuda: TfrmMixMuda
             Images = dmPrincipal.imgIcons_32
             TabOrder = 3
             WordWrap = True
+            ExplicitLeft = 86
+          end
+          object btnGerarSaida: TButton
+            AlignWithMargins = True
+            Left = 86
+            Top = 1
+            Width = 99
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 1
+            Margins.Bottom = 1
+            Action = Ac_Gerar_Saida
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 4
+            WordWrap = True
           end
         end
       end
       inherited pnGrid: TPanel
         Height = 539
+        ExplicitHeight = 539
         inherited cxGridRegistros: TcxGrid
           Height = 304
+          ExplicitHeight = 304
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -81,13 +151,29 @@ inherited frmMixMuda: TfrmMixMuda
               Options.Editing = False
               Width = 151
             end
+            object ColumnSaidaVenda: TcxGridDBColumn [8]
+              Caption = 'Gerou Sa'#237'da ou Venda'
+              OnCustomDrawCell = ColumnSaidaVendaCustomDrawCell
+              OnGetDisplayText = ColumnSaidaVendaGetDisplayText
+              Options.Editing = False
+            end
+            object viewRegistrosID_VENDA: TcxGridDBColumn [9]
+              DataBinding.FieldName = 'ID_VENDA'
+              Visible = False
+            end
+            object viewRegistrosID_SAIDA: TcxGridDBColumn [10]
+              DataBinding.FieldName = 'ID_SAIDA'
+              Visible = False
+            end
           end
         end
         inherited cxSplitter1: TcxSplitter
           Top = 305
+          ExplicitTop = 305
         end
         inherited pnDetail: TPanel
           Top = 311
+          ExplicitTop = 311
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Esp'#233'cies'
@@ -97,8 +183,24 @@ inherited frmMixMuda: TfrmMixMuda
               ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
                 Visible = False
+                object Label5: TLabel [0]
+                  Left = 633
+                  Top = 9
+                  Width = 31
+                  Height = 13
+                  Caption = 'Lotes'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'Tahoma'
+                  Font.Style = [fsBold]
+                  ParentFont = False
+                end
               end
               inherited cxGridRegistrosDetail: TcxGrid
+                Width = 633
+                Align = alLeft
+                ExplicitWidth = 633
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
@@ -119,6 +221,72 @@ inherited frmMixMuda: TfrmMixMuda
                     Options.Editing = False
                     Width = 371
                   end
+                  inherited ColumnAlterarDetail: TcxGridDBColumn
+                    Visible = False
+                    VisibleForCustomization = False
+                  end
+                  inherited ColumnExcluirDetail: TcxGridDBColumn
+                    Visible = False
+                    VisibleForCustomization = False
+                  end
+                end
+              end
+              object cxGrid1: TcxGrid
+                Left = 633
+                Top = 25
+                Width = 332
+                Height = 170
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 2
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitLeft = 0
+                ExplicitWidth = 457
+                object viewLotes: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsMix_Muda_Especie_Lote
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Editing = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewLotesID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewLotesID_LOTE_MUDA: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID_LOTE_MUDA'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewLotesLOTE: TcxGridDBColumn
+                    DataBinding.FieldName = 'LOTE'
+                    Options.Editing = False
+                    Width = 154
+                  end
+                  object viewLotesQTDE: TcxGridDBColumn
+                    DataBinding.FieldName = 'QTDE'
+                  end
+                  object viewLotesCANTEIROS: TcxGridDBColumn
+                    DataBinding.FieldName = 'CANTEIROS'
+                    Options.Editing = False
+                    Width = 272
+                  end
+                end
+                object cxGridLevel2: TcxGridLevel
+                  GridView = viewLotes
                 end
               end
             end
@@ -129,6 +297,7 @@ inherited frmMixMuda: TfrmMixMuda
     inherited tabCadastro: TcxTabSheet
       inherited pnEditsCadastro: TPanel
         Height = 533
+        ExplicitHeight = 533
         object pnEditsCadastroSuperior: TPanel
           Left = 1
           Top = 1
@@ -138,7 +307,7 @@ inherited frmMixMuda: TfrmMixMuda
           BevelOuter = bvNone
           TabOrder = 0
           object Label3: TLabel
-            Left = 9
+            Left = 3
             Top = 46
             Width = 77
             Height = 13
@@ -146,7 +315,7 @@ inherited frmMixMuda: TfrmMixMuda
             FocusControl = EditQtde
           end
           object Label4: TLabel
-            Left = 97
+            Left = 91
             Top = 46
             Width = 102
             Height = 13
@@ -154,7 +323,7 @@ inherited frmMixMuda: TfrmMixMuda
             FocusControl = EditQtdeRocambole
           end
           object lbl1: TLabel
-            Left = 201
+            Left = 195
             Top = 3
             Width = 61
             Height = 13
@@ -162,7 +331,7 @@ inherited frmMixMuda: TfrmMixMuda
             FocusControl = cbResponsavel
           end
           object lbl2: TLabel
-            Left = 413
+            Left = 407
             Top = 3
             Width = 71
             Height = 13
@@ -170,7 +339,7 @@ inherited frmMixMuda: TfrmMixMuda
             FocusControl = EditData
           end
           object lbl4: TLabel
-            Left = 7
+            Left = 3
             Top = 86
             Width = 46
             Height = 13
@@ -178,7 +347,7 @@ inherited frmMixMuda: TfrmMixMuda
             FocusControl = EditDescricao
           end
           object lbl5: TLabel
-            Left = 9
+            Left = 3
             Top = 3
             Width = 56
             Height = 13
@@ -186,27 +355,27 @@ inherited frmMixMuda: TfrmMixMuda
             FocusControl = cbCliente
           end
           object btnAdicionarCliente: TButton
-            Left = 172
+            Left = 166
             Top = 19
             Width = 22
             Height = 21
             Action = Ac_Adicionar_Cliente
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 0
+            TabOrder = 1
             TabStop = False
           end
           object cbCliente: TcxDBLookupComboBox
-            Left = 7
+            Left = 1
             Top = 19
             RepositoryItem = dmLookup.repLcbFinForCli
             DataBinding.DataField = 'ID_CLIENTE'
             DataBinding.DataSource = dsMaster
             Properties.ListColumns = <>
-            TabOrder = 1
+            TabOrder = 0
             Width = 165
           end
           object cbResponsavel: TcxDBLookupComboBox
-            Left = 199
+            Left = 193
             Top = 19
             RepositoryItem = dmLookup.repLcbPessoa
             DataBinding.DataField = 'ID_PESSOA_RESPONSAVEL'
@@ -216,7 +385,7 @@ inherited frmMixMuda: TfrmMixMuda
             Width = 208
           end
           object EditData: TcxDBDateEdit
-            Left = 411
+            Left = 405
             Top = 19
             RepositoryItem = dmLookup.repDateDataPadrao
             DataBinding.DataField = 'DATA'
@@ -225,30 +394,32 @@ inherited frmMixMuda: TfrmMixMuda
             Width = 121
           end
           object EditDescricao: TcxDBMemo
-            Left = 7
+            Left = 1
             Top = 102
             DataBinding.DataField = 'DESCRICAO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 4
+            TabOrder = 6
             Height = 62
             Width = 525
           end
           object EditQtde: TcxDBCalcEdit
-            Left = 7
+            Left = 1
             Top = 63
             RepositoryItem = dmLookup.repCalcPadrao
             DataBinding.DataField = 'QTDE_MUDA'
             DataBinding.DataSource = dsMaster
-            TabOrder = 5
+            Properties.OnEditValueChanged = EditQtdePropertiesEditValueChanged
+            TabOrder = 4
             Width = 82
           end
           object EditQtdeRocambole: TcxDBCalcEdit
-            Left = 95
+            Left = 89
             Top = 63
             RepositoryItem = dmLookup.repCalcPadrao
             DataBinding.DataField = 'QTDE_MUDA_ROCAMBOLE'
             DataBinding.DataSource = dsMaster
-            TabOrder = 6
+            Properties.OnEditValueChanged = EditQtdePropertiesEditValueChanged
+            TabOrder = 5
             Width = 104
           end
         end
@@ -259,8 +430,10 @@ inherited frmMixMuda: TfrmMixMuda
           Height = 363
           Align = alClient
           TabOrder = 1
+          ExplicitLeft = 1
+          ExplicitTop = 169
           ExplicitWidth = 974
-          ExplicitHeight = 168
+          ExplicitHeight = 363
           inherited gpGrids: TGridPanel
             Width = 974
             Height = 344
@@ -282,12 +455,12 @@ inherited frmMixMuda: TfrmMixMuda
               end>
             TabOrder = 1
             ExplicitWidth = 974
-            ExplicitHeight = 149
+            ExplicitHeight = 344
             inherited cxGrid1: TcxGrid
               Width = 456
               Height = 342
               ExplicitWidth = 456
-              ExplicitHeight = 147
+              ExplicitHeight = 342
             end
             inherited pnBotoes: TPanel
               Left = 457
@@ -295,7 +468,7 @@ inherited frmMixMuda: TfrmMixMuda
               Height = 342
               ExplicitLeft = 457
               ExplicitWidth = 48
-              ExplicitHeight = 147
+              ExplicitHeight = 342
               inherited btnAdd: TButton
                 ExplicitWidth = 48
               end
@@ -315,7 +488,7 @@ inherited frmMixMuda: TfrmMixMuda
               Height = 342
               ExplicitLeft = 505
               ExplicitWidth = 468
-              ExplicitHeight = 147
+              ExplicitHeight = 342
               inherited viewDireita: TcxGridDBTableView
                 DataController.DataSource = dsDetail
               end
@@ -371,8 +544,10 @@ inherited frmMixMuda: TfrmMixMuda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitHeight = 583
       inherited pnEditsCadastroDetail: TPanel
         Height = 533
+        ExplicitHeight = 533
       end
     end
   end
@@ -385,6 +560,15 @@ inherited frmMixMuda: TfrmMixMuda
       Category = 'Master'
       Caption = 'Gerar Venda'
       ImageIndex = 27
+      OnExecute = Ac_Gerar_VendaExecute
+      OnUpdate = Ac_Gerar_SaidaUpdate
+    end
+    object Ac_Gerar_Saida: TAction
+      Category = 'Master'
+      Caption = 'Gerar Sa'#237'da do Estoque'
+      ImageIndex = 26
+      OnExecute = Ac_Gerar_SaidaExecute
+      OnUpdate = Ac_Gerar_SaidaUpdate
     end
   end
   inherited dsMaster: TDataSource
@@ -406,13 +590,25 @@ inherited frmMixMuda: TfrmMixMuda
     Left = 296
     Top = 216
     object cdsLocalEspecieID: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
       FieldName = 'ID'
       ProviderFlags = []
     end
     object cdsLocalEspecieNOME: TStringField
+      DisplayLabel = 'Esp'#233'cie'
       FieldName = 'NOME'
       ProviderFlags = []
       Size = 100
     end
+    object cdsLocalEspecieQTDE_MUDA_PRONTA: TIntegerField
+      DisplayLabel = 'Qtde. de Muda Pronta'
+      FieldName = 'QTDE_MUDA_PRONTA'
+      DisplayFormat = ',0'
+    end
+  end
+  object dsMix_Muda_Especie_Lote: TDataSource
+    DataSet = dmViveiro.cdsMix_Muda_Especie_Lote
+    Left = 488
+    Top = 312
   end
 end

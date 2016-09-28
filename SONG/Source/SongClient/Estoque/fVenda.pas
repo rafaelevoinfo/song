@@ -18,9 +18,27 @@ uses
   System.TypInfo, uExceptions, dmuPrincipal, uMensagem, fSaida,
   System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
   ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
-  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod, ppUtils;
+  ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod, ppUtils,
+  System.Generics.Collections;
 
 type
+  TVenda = class(TModelo)
+  private
+    FItens: TObjectList<TItem>;
+    FIdCliente: Integer;
+    FData: TDateTime;
+    FIdVendedor: Integer;
+    procedure SetData(const Value: TDateTime);
+    procedure SetIdCliente(const Value: Integer);
+    procedure SetIdVendedor(const Value: Integer);
+    procedure SetItens(const Value: TObjectList<TItem>);
+  public
+    property IdCliente: Integer read FIdCliente write SetIdCliente;
+    property IdVendedor: Integer read FIdVendedor write SetIdVendedor;
+    property Data: TDateTime read FData write SetData;
+    property Itens: TObjectList<TItem> read FItens write SetItens;
+  end;
+
   TfrmVenda = class(TfrmBasicoCrudMasterDetail)
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosID_CLIENTE: TcxGridDBColumn;
@@ -198,6 +216,9 @@ type
 
     procedure pprValidarDadosDetail; override;
 
+    procedure pprCarregarDadosModelo; override;
+    procedure pprCarregarDadosModeloDetail; override;
+
   public
     procedure ppuIncluir; override;
     procedure ppuIncluirDetail; override;
@@ -222,6 +243,46 @@ uses
 function TfrmVenda.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estVenda));
+end;
+
+procedure TfrmVenda.pprCarregarDadosModelo;
+var
+  vaVenda: TVenda;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TVenda) then
+    begin
+      vaVenda := TVenda(Modelo);
+
+      dmEstoque.cdsVendaDATA.AsDateTime := vaVenda.Data;
+      dmEstoque.cdsVendaID_CLIENTE.AsInteger := vaVenda.IdCliente;
+      dmEstoque.cdsVendaID_PESSOA_VENDEU.AsInteger := vaVenda.IdVendedor;
+    end;
+end;
+
+procedure TfrmVenda.pprCarregarDadosModeloDetail;
+var
+  vaItem: TItem;
+begin
+  inherited;
+  if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
+    begin
+      vaItem := TItem(Modelo);
+      dmEstoque.cdsVenda_ItemID_ITEM.AsInteger := vaItem.Id;
+      dmEstoque.cdsVenda_ItemQTDE.AsFloat := vaItem.Qtde;
+      if vaItem.IdEspecie <> 0 then
+        dmEstoque.cdsVenda_ItemID_ESPECIE.AsInteger := vaItem.IdEspecie;
+
+      if vaItem.IdLoteMuda <> 0 then
+        dmEstoque.cdsVenda_ItemID_LOTE_MUDA.AsInteger := vaItem.IdLoteMuda;
+
+      if vaItem.IdLoteSemente <> 0 then
+        dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.AsInteger := vaItem.IdLoteSemente;
+
+      if vaItem.ValorUnitario <> 0 then
+        dmEstoque.cdsVenda_ItemVALOR_UNITARIO.AsFloat := vaItem.ValorUnitario;
+
+    end;
 end;
 
 procedure TfrmVenda.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
@@ -479,8 +540,9 @@ begin
   dmEstoque.cdsVenda.DisableControls;
   dmEstoque.cdsVenda_Item.DisableControls;
   try
-    //tive que fazer essa gabi do caralho so pra conseguir colocar um apos o outro
-    ppEditValorDescricao.Left := ppEditValorTotal.Left + ppUtils.ppGetSpTextWidth(ppEditValorTotal.Font,FormatFloat('$ ,0.00',dmEstoque.cdsVendaVALOR_TOTAL.AsFloat))+12; //FormatFloat('$ ,0.00',dmEstoque.cdsVendaVALOR_TOTAL.AsFloat).Length * 8;
+    // tive que fazer essa gabi do caralho so pra conseguir colocar um apos o outro
+    ppEditValorDescricao.Left := ppEditValorTotal.Left + ppUtils.ppGetSpTextWidth(ppEditValorTotal.Font,
+      FormatFloat('$ ,0.00', dmEstoque.cdsVendaVALOR_TOTAL.AsFloat)) + 12; // FormatFloat('$ ,0.00',dmEstoque.cdsVendaVALOR_TOTAL.AsFloat).Length * 8;
     ppRecibo.PrintReport;
   finally
     dmEstoque.cdsVenda.EnableControls;
@@ -716,6 +778,28 @@ end;
 procedure TfrmVenda.ppvCarregarClientes;
 begin
   dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
+end;
+
+{ TVenda }
+
+procedure TVenda.SetData(const Value: TDateTime);
+begin
+  FData := Value;
+end;
+
+procedure TVenda.SetIdCliente(const Value: Integer);
+begin
+  FIdCliente := Value;
+end;
+
+procedure TVenda.SetIdVendedor(const Value: Integer);
+begin
+  FIdVendedor := Value;
+end;
+
+procedure TVenda.SetItens(const Value: TObjectList<TItem>);
+begin
+  FItens := Value;
 end;
 
 end.

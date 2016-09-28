@@ -162,6 +162,8 @@ type
     qMix_MudaID_VENDA: TIntegerField;
     qMix_MudaID_SAIDA: TIntegerField;
     qMix_Muda_Especie_LoteCANTEIROS: TMemoField;
+    qMix_Muda_EspecieQTDE_MUDA_PRONTA: TIntegerField;
+    qMix_Muda_Especie_LoteQTDE: TIntegerField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

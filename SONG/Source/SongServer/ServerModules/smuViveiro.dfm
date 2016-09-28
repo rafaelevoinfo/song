@@ -1129,7 +1129,8 @@ inherited smViveiro: TsmViveiro
       '       Mix_Muda_Especie.Id_Mix_Muda,'
       '       Mix_Muda_Especie.Id_Especie,'
       '       Especie.Nome as especie,'
-      '       Especie.Nome_Cientifico'
+      '       Especie.Nome_Cientifico,'
+      '       Especie.Qtde_Muda_pronta'
       'from Mix_Muda_Especie'
       'inner join especie on (especie.id = mix_muda_especie.id_especie)'
       'where mix_muda_especie.id_mix_muda = :ID_MIX_MUDA')
@@ -1174,6 +1175,12 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = []
       Size = 100
     end
+    object qMix_Muda_EspecieQTDE_MUDA_PRONTA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTDE_MUDA_PRONTA'
+      Origin = 'QTDE_MUDA_PRONTA'
+      ProviderFlags = []
+    end
   end
   object qMix_Muda_Especie_Lote: TRFQuery
     Connection = dmPrincipal.conSong
@@ -1181,6 +1188,7 @@ inherited smViveiro: TsmViveiro
       'select distinct Mix_Muda_Especie_Lote.Id,'
       '                Mix_Muda_Especie_Lote.Id_Mix_Muda_Especie,'
       '                Mix_Muda_Especie_Lote.Id_Lote_Muda,'
+      '                Mix_Muda_Especie_Lote.Qtde,'
       '                Lote_Muda.Nome as Lote,'
       '                (select lIST(Canteiro.Nome)'
       '                 from Canteiro'
@@ -1238,6 +1246,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'CANTEIROS'
       ProviderFlags = []
       BlobType = ftMemo
+    end
+    object qMix_Muda_Especie_LoteQTDE: TIntegerField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
   end
 end

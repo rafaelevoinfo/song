@@ -213,10 +213,10 @@ inherited frmVenda: TfrmVenda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
+              ExplicitLeft = 4
+              ExplicitTop = 24
+              ExplicitWidth = 964
+              ExplicitHeight = 197
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -301,10 +301,6 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9
@@ -607,8 +603,8 @@ inherited frmVenda: TfrmVenda
   object DBPipeVenda: TppDBPipeline
     DataSource = dsMaster
     UserName = 'DBPipeVenda'
-    Left = 184
-    Top = 128
+    Left = 392
+    Top = 192
     object DBPipeVendappField1: TppField
       Alignment = taRightJustify
       FieldAlias = 'ID'

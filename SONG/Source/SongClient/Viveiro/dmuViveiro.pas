@@ -158,6 +158,9 @@ type
     cdsMix_MudaID_VENDA: TIntegerField;
     cdsMix_MudaID_SAIDA: TIntegerField;
     cdsMix_Muda_Especie_LoteCANTEIROS: TMemoField;
+    cdsMix_Muda_EspecieQTDE_MUDA_PRONTA: TIntegerField;
+    cdsMix_Muda_EspecieAGG_TOTAL_MUDA: TAggregateField;
+    cdsMix_Muda_Especie_LoteQTDE: TIntegerField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
