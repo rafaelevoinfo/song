@@ -16,7 +16,9 @@ uses
   dmuPrincipal, cxCalc, cxDBEdit, cxMemo, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, Datasnap.DBClient, fmGrids, uUtils, System.TypInfo,
   uControleAcesso, uClientDataSet, uTypes, uExceptions, fSaida, uMensagem,
-  fVenda;
+  fVenda, ppParameter, ppDesignLayer, ppProd, ppClass, ppReport, ppComm,
+  ppRelatv, ppDB, ppDBPipe, ppVar, ppCtrls, ppPrnabl, ppBands, ppCache,
+  Vcl.Menus;
 
 type
   TfrmMixMuda = class(TfrmBasicoCrudMasterDetail)
@@ -69,6 +71,32 @@ type
     viewRegistrosID_SAIDA: TcxGridDBColumn;
     ColumnSaidaVenda: TcxGridDBColumn;
     viewLotesQTDE: TcxGridDBColumn;
+    btnImprimir: TButton;
+    Ac_Imprimir: TAction;
+    DBPipeOrganizacao: TppDBPipeline;
+    ppMudas: TppReport;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppParameterList1: TppParameterList;
+    ppHeaderBand1: TppHeaderBand;
+    ppDetailBand1: TppDetailBand;
+    ppFooterBand1: TppFooterBand;
+    ppDBImage7: TppDBImage;
+    ppLbTituloLoteMudaVendida: TppLabel;
+    ppSystemVariable19: TppSystemVariable;
+    ppSystemVariable20: TppSystemVariable;
+    ppDBImage1: TppDBImage;
+    DBPipeLotesCanteiro: TppDBPipeline;
+    dsMix_Muda_Especie_Lote_Canteiro: TDataSource;
+    ppGroup1: TppGroup;
+    ppGroupHeaderBand1: TppGroupHeaderBand;
+    ppGroupFooterBand1: TppGroupFooterBand;
+    ppDBText1: TppDBText;
+    ppDBText2: TppDBText;
+    ppLabel2: TppLabel;
+    ppLabel3: TppLabel;
+    ppDBText3: TppDBText;
+    ppShape1: TppShape;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure EditQtdePropertiesEditValueChanged(Sender: TObject);
@@ -79,6 +107,7 @@ type
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
     procedure Ac_Gerar_VendaExecute(Sender: TObject);
+    procedure Ac_ImprimirExecute(Sender: TObject);
   private
     FIdItemMuda: integer;
     FCalcularQuantidades: Boolean;
@@ -270,6 +299,17 @@ begin
 
 end;
 
+procedure TfrmMixMuda.Ac_ImprimirExecute(Sender: TObject);
+begin
+  inherited;
+  dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Close;
+  dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.ParamByName('ID_MIX_MUDA').AsInteger := dmViveiro.cdsMix_MudaID.AsInteger;
+  dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Open;
+
+  ppMudas.PrintReport;
+
+end;
+
 procedure TfrmMixMuda.ColumnSaidaVendaCustomDrawCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
   AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
@@ -320,6 +360,7 @@ begin
 
   PesquisaPadrao := Ord(tppData);
 
+  dmLookup.ppuAbrirCache(dmLookup.cdslkOrganizacao);
   dmLookup.cdslkEspecie.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkEspecie);
   dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
@@ -373,12 +414,21 @@ begin
 end;
 
 procedure TfrmMixMuda.pprValidarDados;
+var
+  vaTotalMudasDisponiveis: integer;
 begin
   inherited;
   if dmViveiro.cdsMix_Muda_Especie.RecordCount = 0 then
     raise Exception.Create('É necessário selecionar pelo menos uma espécie.');
 
-  if StrToIntDef(dmViveiro.cdsMix_Muda_EspecieAGG_TOTAL_MUDA.AsString, 0) < dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger then
+  vaTotalMudasDisponiveis := 0;
+  TUtils.ppuPercorrerCds(dmViveiro.cdsMix_Muda_Especie,
+    procedure
+    begin
+      inc(vaTotalMudasDisponiveis, dmViveiro.cdsMix_Muda_EspecieQTDE_MUDA_PRONTA.AsInteger);
+    end);
+
+  if vaTotalMudasDisponiveis < dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger then
     raise TControlException.Create('As espécies selecionadas não possuem mudas suficientes para a quantidade informada.', EditQtde);
 
 end;
@@ -430,7 +480,7 @@ begin
 
   pprPreencherCamposPadroes(dmViveiro.cdsMix_Muda);
 
-  frameGrids.Ac_AddTodos.Execute;
+  // frameGrids.Ac_AddTodos.Execute;
 end;
 
 procedure TfrmMixMuda.ppvIncluirEspecieCdsLocal;

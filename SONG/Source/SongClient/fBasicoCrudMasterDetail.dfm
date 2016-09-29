@@ -1,14 +1,20 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
   ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabCadastroDetail
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          Height = 169
+          Height = 152
           ExplicitHeight = 169
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
@@ -16,19 +22,21 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
         object cxSplitter1: TcxSplitter
           Left = 1
-          Top = 170
+          Top = 153
           Width = 974
           Height = 6
           AlignSplitter = salBottom
           Control = pnDetail
+          ExplicitTop = 170
         end
         object pnDetail: TPanel
           Left = 1
-          Top = 176
+          Top = 159
           Width = 974
           Height = 227
           Align = alBottom
           TabOrder = 2
+          ExplicitTop = 176
           DesignSize = (
             974
             227)
@@ -48,6 +56,10 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
             object tabDetail: TcxTabSheet
               Caption = 'tabDetail'
               ImageIndex = 0
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesDetail: TPanel
                 Left = 0
                 Top = 0
@@ -177,6 +189,10 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroDetail: TPanel
         Left = 0
         Top = 0
@@ -264,19 +280,19 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       ImageIndex = 5
       OnExecute = Ac_Cancelar_DetailExecute
     end
-    object Ac_Salvar_Incluir_Detail: TAction
+    object Ac_Salvar_Incluir_Detail: TAction [14]
       Category = 'Detail'
       Caption = 'Salvar/Incluir'
       ImageIndex = 4
       OnExecute = Ac_Salvar_Incluir_DetailExecute
       OnUpdate = Ac_Salvar_DetailUpdate
     end
-    object Ac_Utilizar_Detail_Selecionado: TAction
+    object Ac_Utilizar_Detail_Selecionado: TAction [15]
       Caption = 'Utilizar Selecionado'
       ImageIndex = 6
       OnExecute = Ac_Utilizar_Detail_SelecionadoExecute
     end
-    object Ac_Exportar_Excel_Detail: TAction
+    object Ac_Exportar_Excel_Detail: TAction [16]
       Category = 'Detail'
       Caption = 'Exportar para Excel'
       ImageIndex = 18
@@ -284,7 +300,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       OnUpdate = Ac_Alterar_DetailUpdate
     end
   end
-  object dsDetail: TDataSource
+  object dsDetail: TDataSource [4]
     Left = 424
     Top = 240
   end

@@ -1,13 +1,14 @@
 inherited frmMixMuda: TfrmMixMuda
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'Mix de Mudas'
   ClientHeight = 611
+  ExplicitWidth = 1000
   ExplicitHeight = 650
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Height = 611
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     ExplicitHeight = 611
     ClientRectBottom = 607
     inherited tabPesquisa: TcxTabSheet
@@ -16,6 +17,7 @@ inherited frmMixMuda: TfrmMixMuda
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -61,13 +63,14 @@ inherited frmMixMuda: TfrmMixMuda
         end
         inherited pnBotoes: TPanel
           Width = 563
+          ExplicitWidth = 563
           inherited btnUtilizar: TButton
-            Left = 374
-            ExplicitLeft = 274
+            Left = 460
+            ExplicitLeft = 374
           end
           inherited btnExportarExcel: TButton
-            Left = 272
-            ExplicitLeft = 172
+            Left = 358
+            ExplicitLeft = 272
           end
           object btnGerarVenda: TButton
             AlignWithMargins = True
@@ -84,7 +87,6 @@ inherited frmMixMuda: TfrmMixMuda
             Images = dmPrincipal.imgIcons_32
             TabOrder = 3
             WordWrap = True
-            ExplicitLeft = 86
           end
           object btnGerarSaida: TButton
             AlignWithMargins = True
@@ -102,13 +104,31 @@ inherited frmMixMuda: TfrmMixMuda
             TabOrder = 4
             WordWrap = True
           end
+          object btnImprimir: TButton
+            AlignWithMargins = True
+            Left = 272
+            Top = 1
+            Width = 85
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 1
+            Margins.Bottom = 1
+            Action = Ac_Imprimir
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 5
+            WordWrap = True
+            ExplicitLeft = 314
+            ExplicitTop = -1
+          end
         end
       end
       inherited pnGrid: TPanel
-        Height = 539
-        ExplicitHeight = 539
+        Height = 522
+        ExplicitHeight = 521
         inherited cxGridRegistros: TcxGrid
-          Height = 304
+          Height = 287
           ExplicitHeight = 304
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
@@ -156,6 +176,7 @@ inherited frmMixMuda: TfrmMixMuda
               OnCustomDrawCell = ColumnSaidaVendaCustomDrawCell
               OnGetDisplayText = ColumnSaidaVendaGetDisplayText
               Options.Editing = False
+              Width = 111
             end
             object viewRegistrosID_VENDA: TcxGridDBColumn [9]
               DataBinding.FieldName = 'ID_VENDA'
@@ -168,11 +189,11 @@ inherited frmMixMuda: TfrmMixMuda
           end
         end
         inherited cxSplitter1: TcxSplitter
-          Top = 305
+          Top = 288
           ExplicitTop = 305
         end
         inherited pnDetail: TPanel
-          Top = 311
+          Top = 294
           ExplicitTop = 311
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
@@ -182,7 +203,6 @@ inherited frmMixMuda: TfrmMixMuda
               ExplicitWidth = 965
               ExplicitHeight = 195
               inherited pnBotoesDetail: TPanel
-                Visible = False
                 object Label5: TLabel [0]
                   Left = 633
                   Top = 9
@@ -195,6 +215,9 @@ inherited frmMixMuda: TfrmMixMuda
                   Font.Name = 'Tahoma'
                   Font.Style = [fsBold]
                   ParentFont = False
+                end
+                inherited btnIncluirDetail: TButton
+                  Visible = False
                 end
               end
               inherited cxGridRegistrosDetail: TcxGrid
@@ -242,8 +265,6 @@ inherited frmMixMuda: TfrmMixMuda
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitLeft = 0
-                ExplicitWidth = 457
                 object viewLotes: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -457,15 +478,10 @@ inherited frmMixMuda: TfrmMixMuda
             ExplicitWidth = 974
             ExplicitHeight = 344
             inherited cxGrid1: TcxGrid
-              Width = 456
-              Height = 342
               ExplicitWidth = 456
               ExplicitHeight = 342
             end
             inherited pnBotoes: TPanel
-              Left = 457
-              Width = 48
-              Height = 342
               ExplicitLeft = 457
               ExplicitWidth = 48
               ExplicitHeight = 342
@@ -483,9 +499,6 @@ inherited frmMixMuda: TfrmMixMuda
               end
             end
             inherited cxGrid2: TcxGrid
-              Left = 505
-              Width = 468
-              Height = 342
               ExplicitLeft = 505
               ExplicitWidth = 468
               ExplicitHeight = 342
@@ -518,7 +531,6 @@ inherited frmMixMuda: TfrmMixMuda
                 ExplicitWidth = 229
               end
               inherited lbInfoGridDireita: TLabel
-                Left = 504
                 Width = 124
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 504
@@ -544,6 +556,9 @@ inherited frmMixMuda: TfrmMixMuda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
       ExplicitHeight = 583
       inherited pnEditsCadastroDetail: TPanel
         Height = 533
@@ -552,22 +567,29 @@ inherited frmMixMuda: TfrmMixMuda
     end
   end
   inherited ActionList1: TActionList
-    object Ac_Adicionar_Cliente: TAction
+    object Ac_Adicionar_Cliente: TAction [17]
       Category = 'Master'
       ImageIndex = 3
     end
-    object Ac_Gerar_Venda: TAction
+    object Ac_Gerar_Venda: TAction [18]
       Category = 'Master'
       Caption = 'Gerar Venda'
       ImageIndex = 27
       OnExecute = Ac_Gerar_VendaExecute
       OnUpdate = Ac_Gerar_SaidaUpdate
     end
-    object Ac_Gerar_Saida: TAction
+    object Ac_Gerar_Saida: TAction [19]
       Category = 'Master'
       Caption = 'Gerar Sa'#237'da do Estoque'
       ImageIndex = 26
       OnExecute = Ac_Gerar_SaidaExecute
+      OnUpdate = Ac_Gerar_SaidaUpdate
+    end
+    object Ac_Imprimir: TAction [20]
+      Category = 'Master'
+      Caption = 'Imprimir'
+      ImageIndex = 19
+      OnExecute = Ac_ImprimirExecute
       OnUpdate = Ac_Gerar_SaidaUpdate
     end
   end
@@ -584,7 +606,7 @@ inherited frmMixMuda: TfrmMixMuda
     Left = 352
     Top = 144
   end
-  object cdsLocalEspecie: TClientDataSet
+  object cdsLocalEspecie: TClientDataSet [5]
     Aggregates = <>
     Params = <>
     Left = 296
@@ -606,9 +628,525 @@ inherited frmMixMuda: TfrmMixMuda
       DisplayFormat = ',0'
     end
   end
-  object dsMix_Muda_Especie_Lote: TDataSource
+  object dsMix_Muda_Especie_Lote: TDataSource [6]
     DataSet = dmViveiro.cdsMix_Muda_Especie_Lote
     Left = 488
     Top = 312
+  end
+  object DBPipeOrganizacao: TppDBPipeline [7]
+    DataSource = dmLookup.dslkOrganizacao
+    UserName = 'DBPipeOrganizacao'
+    Left = 200
+    Top = 248
+    object DBPipeOrganizacaoppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeOrganizacaoppField2: TppField
+      FieldAlias = 'NOME'
+      FieldName = 'NOME'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 1
+    end
+    object DBPipeOrganizacaoppField3: TppField
+      FieldAlias = 'CNPJ'
+      FieldName = 'CNPJ'
+      FieldLength = 14
+      DisplayWidth = 14
+      Position = 2
+    end
+    object DBPipeOrganizacaoppField4: TppField
+      FieldAlias = 'LOGO'
+      FieldName = 'LOGO'
+      FieldLength = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField5: TppField
+      FieldAlias = 'ENDERECO'
+      FieldName = 'ENDERECO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 4
+    end
+    object DBPipeOrganizacaoppField6: TppField
+      FieldAlias = 'BAIRRO'
+      FieldName = 'BAIRRO'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 5
+    end
+    object DBPipeOrganizacaoppField7: TppField
+      FieldAlias = 'COMPLEMENTO'
+      FieldName = 'COMPLEMENTO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 6
+    end
+    object DBPipeOrganizacaoppField8: TppField
+      FieldAlias = 'TELEFONE'
+      FieldName = 'TELEFONE'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 7
+    end
+    object DBPipeOrganizacaoppField9: TppField
+      FieldAlias = 'SITE'
+      FieldName = 'SITE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 8
+    end
+    object DBPipeOrganizacaoppField10: TppField
+      FieldAlias = 'EMAIL'
+      FieldName = 'EMAIL'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 9
+    end
+    object DBPipeOrganizacaoppField11: TppField
+      FieldAlias = 'CIDADE'
+      FieldName = 'CIDADE'
+      FieldLength = 120
+      DisplayWidth = 120
+      Position = 10
+    end
+    object DBPipeOrganizacaoppField12: TppField
+      FieldAlias = 'LOGO_SECUNDARIA'
+      FieldName = 'LOGO_SECUNDARIA'
+      FieldLength = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
+      Position = 11
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object ppMudas: TppReport [8]
+    AutoStop = False
+    DataPipeline = DBPipeLotesCanteiro
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 80
+    Top = 240
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeLotesCanteiro'
+    object ppHeaderBand1: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 21960
+      mmPrintPosition = 0
+      object ppDBImage7: TppDBImage
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 1588
+        mmTop = 0
+        mmWidth = 30692
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLbTituloLoteMudaVendida: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label1'
+        Caption = 'Retirada de Mudas'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 78052
+        mmTop = 16404
+        mmWidth = 37571
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBImage1: TppDBImage
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBImage2'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO_SECUNDARIA'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 166159
+        mmTop = 0
+        mmWidth = 30692
+        BandType = 0
+        LayerName = Foreground
+      end
+    end
+    object ppDetailBand1: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6350
+      mmPrintPosition = 0
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText2'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeLotesCanteiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeLotesCanteiro'
+        mmHeight = 4763
+        mmLeft = 1588
+        mmTop = 332
+        mmWidth = 41131
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText3: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText3'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeLotesCanteiro
+        DisplayFormat = ',0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeLotesCanteiro'
+        mmHeight = 4763
+        mmLeft = 45266
+        mmTop = 287
+        mmWidth = 22369
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppShape1: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape1'
+        mmHeight = 4570
+        mmLeft = 68792
+        mmTop = 529
+        mmWidth = 29345
+        BandType = 4
+        LayerName = Foreground
+      end
+    end
+    object ppFooterBand1: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 8731
+      mmPrintPosition = 0
+      object ppSystemVariable20: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 186532
+        mmTop = 5027
+        mmWidth = 11113
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppSystemVariable19: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 182563
+        mmTop = 529
+        mmWidth = 14288
+        BandType = 8
+        LayerName = Foreground
+      end
+    end
+    object ppGroup1: TppGroup
+      BreakName = 'ID_CANTEIRO'
+      DataPipeline = DBPipeLotesCanteiro
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      PreventOrphans = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group1'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'DBPipeLotesCanteiro'
+      NewFile = False
+      object ppGroupHeaderBand1: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 12171
+        mmPrintPosition = 0
+        object ppDBText1: TppDBText
+          DesignLayer = ppDesignLayer1
+          UserName = 'DBText1'
+          DataField = 'CANTEIRO'
+          DataPipeline = DBPipeLotesCanteiro
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeLotesCanteiro'
+          mmHeight = 5027
+          mmLeft = 1588
+          mmTop = 1058
+          mmWidth = 89237
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppLabel2: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label3'
+          Caption = 'Esp'#233'cie'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = []
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 1588
+          mmTop = 7938
+          mmWidth = 12435
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppLabel3: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label4'
+          Caption = 'Qtde'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = []
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 45260
+          mmTop = 7938
+          mmWidth = 7408
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+      end
+      object ppGroupFooterBand1: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
+    end
+    object ppDesignLayers1: TppDesignLayers
+      object ppDesignLayer1: TppDesignLayer
+        UserName = 'Foreground'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList1: TppParameterList
+    end
+  end
+  object DBPipeLotesCanteiro: TppDBPipeline [9]
+    DataSource = dsMix_Muda_Especie_Lote_Canteiro
+    UserName = 'DBPipeLotesCanteiro'
+    Left = 88
+    Top = 304
+    object DBPipeLotesCanteiroppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_CANTEIRO'
+      FieldName = 'ID_CANTEIRO'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeLotesCanteiroppField2: TppField
+      FieldAlias = 'CANTEIRO'
+      FieldName = 'CANTEIRO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 1
+    end
+    object DBPipeLotesCanteiroppField3: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_ESPECIE'
+      FieldName = 'ID_ESPECIE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 2
+    end
+    object DBPipeLotesCanteiroppField4: TppField
+      FieldAlias = 'ESPECIE'
+      FieldName = 'ESPECIE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 3
+    end
+    object DBPipeLotesCanteiroppField5: TppField
+      FieldAlias = 'LOTE'
+      FieldName = 'LOTE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 4
+    end
+    object DBPipeLotesCanteiroppField6: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE_MUDA_RETIRAR'
+      FieldName = 'QTDE_MUDA_RETIRAR'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 5
+    end
+    object DBPipeLotesCanteiroppField7: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_CLIENTE'
+      FieldName = 'ID_CLIENTE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 6
+    end
+    object DBPipeLotesCanteiroppField8: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID_PESSOA_RESPONSAVEL'
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 7
+    end
+    object DBPipeLotesCanteiroppField9: TppField
+      FieldAlias = 'RESPONSAVEL'
+      FieldName = 'RESPONSAVEL'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 8
+    end
+    object DBPipeLotesCanteiroppField10: TppField
+      FieldAlias = 'CLIENTE'
+      FieldName = 'CLIENTE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 9
+    end
+    object DBPipeLotesCanteiroppField11: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE_MUDA'
+      FieldName = 'QTDE_MUDA'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 10
+    end
+    object DBPipeLotesCanteiroppField12: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE_MUDA_ROCAMBOLE'
+      FieldName = 'QTDE_MUDA_ROCAMBOLE'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 11
+    end
+  end
+  object dsMix_Muda_Especie_Lote_Canteiro: TDataSource [10]
+    DataSet = dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro
+    Left = 296
+    Top = 288
   end
 end

@@ -159,8 +159,20 @@ type
     cdsMix_MudaID_SAIDA: TIntegerField;
     cdsMix_Muda_Especie_LoteCANTEIROS: TMemoField;
     cdsMix_Muda_EspecieQTDE_MUDA_PRONTA: TIntegerField;
-    cdsMix_Muda_EspecieAGG_TOTAL_MUDA: TAggregateField;
     cdsMix_Muda_Especie_LoteQTDE: TIntegerField;
+    cdsMix_Muda_Especie_Lote_Canteiro: TRFClientDataSet;
+    cdsMix_Muda_Especie_Lote_CanteiroID_CANTEIRO: TIntegerField;
+    cdsMix_Muda_Especie_Lote_CanteiroCANTEIRO: TStringField;
+    cdsMix_Muda_Especie_Lote_CanteiroID_ESPECIE: TIntegerField;
+    cdsMix_Muda_Especie_Lote_CanteiroESPECIE: TStringField;
+    cdsMix_Muda_Especie_Lote_CanteiroLOTE: TStringField;
+    cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_RETIRAR: TIntegerField;
+    cdsMix_Muda_Especie_Lote_CanteiroID_CLIENTE: TIntegerField;
+    cdsMix_Muda_Especie_Lote_CanteiroID_PESSOA_RESPONSAVEL: TIntegerField;
+    cdsMix_Muda_Especie_Lote_CanteiroRESPONSAVEL: TStringField;
+    cdsMix_Muda_Especie_Lote_CanteiroCLIENTE: TStringField;
+    cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField;
+    cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

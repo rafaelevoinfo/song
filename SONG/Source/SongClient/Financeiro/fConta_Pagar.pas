@@ -17,7 +17,7 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
   System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
-  cxCheckBox, Vcl.ExtDlgs, fFornecedor, fPlano_Contas;
+  cxCheckBox, Vcl.ExtDlgs, fFornecedor, fPlano_Contas, Vcl.Menus;
 
 type
   TContaPagar = class(TModelo)

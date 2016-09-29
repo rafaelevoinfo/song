@@ -1,7 +1,7 @@
 inherited smViveiro: TsmViveiro
   OldCreateOrder = True
-  Height = 308
-  Width = 787
+  Height = 396
+  Width = 982
   inherited qAux: TRFQuery
     Left = 104
     Top = 80
@@ -877,8 +877,8 @@ inherited smViveiro: TsmViveiro
         'inner join Canteiro on (Canteiro.Id = Lote_Muda_Canteiro.Id_Cant' +
         'eiro)'
       'where Lote_Muda_Canteiro.Id_Lote_Muda = :Id_Lote_Muda ')
-    Left = 696
-    Top = 232
+    Left = 512
+    Top = 264
     ParamData = <
       item
         Name = 'ID_LOTE_MUDA'
@@ -1251,6 +1251,131 @@ inherited smViveiro: TsmViveiro
       FieldName = 'QTDE'
       Origin = 'QTDE'
       ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qMix_Muda_Especie_Lote_Canteiro: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Canteiro.Id as Id_Canteiro,'
+      '       Canteiro.Nome as Canteiro,'
+      '       Especie.Id as Id_Especie,'
+      '       Especie.Nome as Especie,'
+      '       Lote_Muda.Nome as Lote,'
+      '       Mix_Muda_Especie_Lote.Qtde as Qtde_Muda_Retirar,'
+      '       Mix_Muda.Id_Cliente,'
+      '       Mix_Muda.Id_Pessoa_Responsavel,'
+      '       Pessoa.Nome as Responsavel,'
+      '       Fin_For_Cli.Razao_Social as Cliente,'
+      '       Mix_Muda.Qtde_Muda,'
+      '       Mix_Muda.Qtde_Muda_Rocambole'
+      'from Mix_Muda_Especie_Lote'
+      
+        'inner join Lote_Muda on (Lote_Muda.Id = Mix_Muda_Especie_Lote.Id' +
+        '_Lote_Muda)'
+      
+        'inner join Lote_Muda_Canteiro on (Lote_Muda_Canteiro.id_lote_mud' +
+        'a = lote_muda.id)'
+      
+        'inner join canteiro on (canteiro.id = lote_muda_canteiro.id_cant' +
+        'eiro)'
+      
+        'inner join mix_Muda_Especie on (Mix_Muda_Especie.id = Mix_Muda_E' +
+        'specie_Lote.Id_Mix_Muda_Especie)'
+      'inner join especie on (especie.id = mix_muda_especie.id_especie)'
+      
+        'inner join mix_Muda on (Mix_Muda.id = Mix_Muda_Especie.Id_Mix_Mu' +
+        'da)'
+      
+        'inner join pessoa on (pessoa.id = mix_muda.id_pessoa_responsavel' +
+        ')'
+      'inner join fin_for_cli on (fin_for_cli.id = mix_muda.id_cliente)'
+      'where Mix_Muda_Especie.Id = :Id_Mix_Muda'
+      'Order by Canteiro.Nome, Especie.Nome, Lote_Muda.Nome')
+    Left = 744
+    Top = 216
+    ParamData = <
+      item
+        Name = 'ID_MIX_MUDA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qMix_Muda_Especie_Lote_CanteiroID_CANTEIRO: TIntegerField
+      FieldName = 'ID_CANTEIRO'
+      Origin = 'ID_CANTEIRO'
+      ProviderFlags = []
+      Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroCANTEIRO: TStringField
+      FieldName = 'CANTEIRO'
+      Origin = 'CANTEIRO'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qMix_Muda_Especie_Lote_CanteiroID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      Origin = 'ESPECIE'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qMix_Muda_Especie_Lote_CanteiroLOTE: TStringField
+      FieldName = 'LOTE'
+      Origin = 'LOTE'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_RETIRAR: TIntegerField
+      FieldName = 'QTDE_MUDA_RETIRAR'
+      Origin = 'QTDE_MUDA_RETIRAR'
+      ProviderFlags = []
+      Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      ProviderFlags = []
+      Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroID_PESSOA_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      Origin = 'ID_PESSOA_RESPONSAVEL'
+      ProviderFlags = []
+      Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroRESPONSAVEL: TStringField
+      FieldName = 'RESPONSAVEL'
+      Origin = 'RESPONSAVEL'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qMix_Muda_Especie_Lote_CanteiroCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      Origin = 'CLIENTE'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField
+      FieldName = 'QTDE_MUDA'
+      Origin = 'QTDE_MUDA'
+      ProviderFlags = []
+      Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField
+      FieldName = 'QTDE_MUDA_ROCAMBOLE'
+      Origin = 'QTDE_MUDA_ROCAMBOLE'
+      ProviderFlags = []
       Required = True
     end
   end

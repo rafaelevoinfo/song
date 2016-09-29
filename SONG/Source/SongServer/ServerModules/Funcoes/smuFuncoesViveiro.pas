@@ -484,9 +484,9 @@ begin
           if vaDataSetLote.Eof then
             raise Exception.Create('A espécie ' + vaDataSet.FieldByName('NOME_ESPECIE').AsString + ' não possui nenhum lote de muda pronto para plantio.');
 
-          vaQtdeIncluir := vaQtdeCalculada;
           while vaQtdeCalculada > 0 do
             begin
+              vaQtdeIncluir := vaQtdeCalculada;
               if vaDataSetLote.FieldByName('SALDO').AsInteger < vaQtdeCalculada then
                 vaQtdeIncluir := vaDataSetLote.FieldByName('SALDO').AsInteger;
 
@@ -505,6 +505,7 @@ begin
     except
       if Connection.InTransaction then
         Connection.Rollback;
+      raise;
     end;
   finally
     vaDataSet.Free;

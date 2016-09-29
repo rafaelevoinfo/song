@@ -190,15 +190,18 @@ inherited frmContaPagar: TfrmContaPagar
           Width = 366
           ExplicitWidth = 366
         end
+        inherited pnFiltros: TPanel
+          Width = 984
+        end
       end
       inherited pnGrid: TPanel
         Width = 986
-        Height = 419
+        Height = 402
         ExplicitWidth = 986
-        ExplicitHeight = 419
+        ExplicitHeight = 401
         inherited cxGridRegistros: TcxGrid
           Width = 984
-          Height = 184
+          Height = 167
           ExplicitWidth = 984
           ExplicitHeight = 184
           inherited viewRegistros: TcxGridDBTableView
@@ -287,13 +290,13 @@ inherited frmContaPagar: TfrmContaPagar
           end
         end
         inherited cxSplitter1: TcxSplitter
-          Top = 185
+          Top = 168
           Width = 984
           ExplicitTop = 185
           ExplicitWidth = 984
         end
         inherited pnDetail: TPanel
-          Top = 191
+          Top = 174
           Width = 984
           ExplicitTop = 191
           ExplicitWidth = 984
@@ -388,6 +391,10 @@ inherited frmContaPagar: TfrmContaPagar
             object tabVinculoPesquisa: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0
@@ -493,6 +500,10 @@ inherited frmContaPagar: TfrmContaPagar
             object tabAutorizacoes: TcxTabSheet
               Caption = 'Autoriza'#231#245'es'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesAutorizacoes: TPanel
                 Left = 0
                 Top = 0
@@ -614,6 +625,10 @@ inherited frmContaPagar: TfrmContaPagar
           object tabInfoGeral: TcxTabSheet
             Caption = 'Informa'#231#245'es Gerais'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label3: TLabel
               Left = 5
               Top = 2
@@ -909,6 +924,10 @@ inherited frmContaPagar: TfrmContaPagar
           object tabVinculo: TcxTabSheet
             Caption = 'V'#237'nculos'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnVinculoTop: TPanel
               Left = 0
               Top = 0
@@ -953,6 +972,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabProjeto: TcxTabSheet
                   Caption = 'tabProjeto'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label10: TLabel
                     Left = 4
                     Top = 3
@@ -989,6 +1012,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabFundo: TcxTabSheet
                   Caption = 'tabFundo'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label15: TLabel
                     Left = 4
                     Top = 3
@@ -1083,6 +1110,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabRecursoNaoAlocado: TcxTabSheet
                   Caption = 'tabRecursoNaoAlocado'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label14: TLabel
                     Left = 206
                     Top = 0
@@ -1133,6 +1164,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabRecursoAlocado: TcxTabSheet
                   Caption = 'tabRecursoAlocado'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object lb1: TLabel
                     Left = 2
                     Top = 1
@@ -1176,6 +1211,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabAlocadoProjeto: TcxTabSheet
                   Caption = 'tabAlocadoProjeto'
                   ImageIndex = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object Label19: TLabel
                     Left = 817
                     Top = 0
@@ -1266,6 +1305,10 @@ inherited frmContaPagar: TfrmContaPagar
                 object tabAlocadoFundo: TcxTabSheet
                   Caption = 'tabAlocadoFundo'
                   ImageIndex = 1
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object lb3: TLabel
                     Left = 4
                     Top = 1
@@ -1549,48 +1592,48 @@ inherited frmContaPagar: TfrmContaPagar
   inherited ActionList1: TActionList
     Left = 280
     Top = 224
-    object Ac_Gerar_Parcelas: TAction
+    object Ac_Gerar_Parcelas: TAction [17]
       Category = 'Detail'
       Caption = 'Gerar Parcelas'
       ImageIndex = 3
       OnExecute = Ac_Gerar_ParcelasExecute
     end
-    object Ac_Incluir_Vinculo: TAction
+    object Ac_Incluir_Vinculo: TAction [18]
       Category = 'Detail'
       Caption = 'Adicionar'
       ImageIndex = 3
       OnExecute = Ac_Incluir_VinculoExecute
     end
-    object Ac_Excluir_Vinculo: TAction
+    object Ac_Excluir_Vinculo: TAction [19]
       Category = 'Detail'
       ImageIndex = 2
       OnExecute = Ac_Excluir_VinculoExecute
     end
-    object Ac_Quitar_Reabrir: TAction
+    object Ac_Quitar_Reabrir: TAction [20]
       Category = 'Detail'
       Caption = 'Quitar Parcela'
       ImageIndex = 8
       OnExecute = Ac_Quitar_ReabrirExecute
       OnUpdate = Ac_Quitar_ReabrirUpdate
     end
-    object Ac_Autorizar: TAction
+    object Ac_Autorizar: TAction [21]
       Category = 'Autorizacao'
       Caption = 'Autorizar'
       ImageIndex = 6
       OnExecute = Ac_AutorizarExecute
     end
-    object Ac_Excluir_Autorizacao: TAction
+    object Ac_Excluir_Autorizacao: TAction [22]
       Category = 'Autorizacao'
       Caption = 'Excluir'
       ImageIndex = 2
       OnExecute = Ac_Excluir_AutorizacaoExecute
     end
-    object Ac_Adicionar_Fornecedor: TAction
+    object Ac_Adicionar_Fornecedor: TAction [23]
       Category = 'Master'
       ImageIndex = 3
       OnExecute = Ac_Adicionar_FornecedorExecute
     end
-    object Ac_Adicionar_Plano_Contas: TAction
+    object Ac_Adicionar_Plano_Contas: TAction [24]
       ImageIndex = 3
       OnExecute = Ac_Adicionar_Plano_ContasExecute
     end
@@ -1605,31 +1648,31 @@ inherited frmContaPagar: TfrmContaPagar
     Left = 384
     Top = 216
   end
-  object dsVinculos: TDataSource
+  object dsVinculos: TDataSource [6]
     Left = 600
     Top = 240
   end
-  object dsAtividadeAlocada: TDataSource
+  object dsAtividadeAlocada: TDataSource [7]
     DataSet = dmLookup.cdslkAtividade_Alocada
     Left = 720
     Top = 184
   end
-  object dsRubricaAlocada: TDataSource
+  object dsRubricaAlocada: TDataSource [8]
     DataSet = dmLookup.cdslkRubrica_Atividade_Alocada
     Left = 840
     Top = 192
   end
-  object dsAreaAlocada: TDataSource
+  object dsAreaAlocada: TDataSource [9]
     DataSet = dmLookup.cdslkProjeto_Area_Atividade_Alocada
     Left = 584
     Top = 177
   end
-  object dsVinculo: TDataSource
+  object dsVinculo: TDataSource [10]
     DataSet = dmFinanceiro.cdsConta_Pagar_Vinculo
     Left = 504
     Top = 136
   end
-  object cdsLocalRubricas: TClientDataSet
+  object cdsLocalRubricas: TClientDataSet [11]
     Aggregates = <>
     Params = <>
     Left = 424
@@ -1643,12 +1686,12 @@ inherited frmContaPagar: TfrmContaPagar
       Size = 123
     end
   end
-  object dsLocalRubricas: TDataSource
+  object dsLocalRubricas: TDataSource [12]
     DataSet = cdsLocalRubricas
     Left = 504
     Top = 184
   end
-  object dsConta_Pagar_Autorizacao: TDataSource
+  object dsConta_Pagar_Autorizacao: TDataSource [13]
     DataSet = dmFinanceiro.cdsConta_Pagar_Autorizacao
     Left = 408
     Top = 160

@@ -3,7 +3,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -28,7 +27,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Left = 0
         Top = 0
         Width = 976
-        Height = 44
+        Height = 61
         Align = alTop
         TabOrder = 0
         object pnEditsPesquisa: TPanel
@@ -133,7 +132,9 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Width = 100
             Height = 36
             Action = Ac_Pesquisar
+            DropDownMenu = pmPesquisa
             Images = dmPrincipal.imgIcons_32
+            Style = bsSplitButton
             TabOrder = 2
           end
           object rgStatus: TcxRadioGroup
@@ -160,7 +161,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Top = 1
           Width = 431
           Height = 42
-          Align = alClient
+          Align = alLeft
           BevelOuter = bvNone
           TabOrder = 0
           object btnIncluir: TButton
@@ -213,19 +214,32 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             WordWrap = True
           end
         end
+        object pnFiltros: TPanel
+          Left = 1
+          Top = 43
+          Width = 974
+          Height = 17
+          Align = alBottom
+          TabOrder = 2
+          ExplicitLeft = 208
+          ExplicitTop = 21
+          ExplicitWidth = 185
+        end
       end
       object pnGrid: TPanel
         Left = 0
-        Top = 44
+        Top = 61
         Width = 976
-        Height = 404
+        Height = 387
         Align = alClient
         TabOrder = 1
+        ExplicitTop = 44
+        ExplicitHeight = 404
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
           Width = 974
-          Height = 402
+          Height = 385
           Align = alClient
           Images = dmPrincipal.imgIcons_16
           TabOrder = 0
@@ -233,6 +247,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
+          ExplicitHeight = 402
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -414,6 +429,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
       OnExecute = Ac_Exportar_ExcelExecute
       OnUpdate = Ac_AlterarUpdate
     end
+    object Ac_Adicionar_Filtro_Pesquisa: TAction
+      Category = 'Master'
+      Caption = 'Adicionar filtro de pesquisa'
+    end
   end
   object dsMaster: TDataSource
     Left = 256
@@ -424,5 +443,9 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     Filter = 'Microsoft Excel (*.xlsx)|*.xlsx'
     Left = 488
     Top = 240
+  end
+  object pmPesquisa: TPopupMenu
+    Left = 656
+    Top = 168
   end
 end

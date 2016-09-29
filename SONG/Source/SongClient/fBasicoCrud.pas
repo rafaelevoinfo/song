@@ -15,7 +15,7 @@ uses
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
   uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup,
-  cxGridExportLink, Vcl.ExtDlgs, System.DateUtils;
+  cxGridExportLink, Vcl.ExtDlgs, System.DateUtils, Vcl.Menus;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -61,6 +61,9 @@ type
     btnExportarExcel: TButton;
     Ac_Exportar_Excel: TAction;
     fdExportDialog: TSaveTextFileDialog;
+    pmPesquisa: TPopupMenu;
+    Ac_Adicionar_Filtro_Pesquisa: TAction;
+    pnFiltros: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -87,9 +90,11 @@ type
     FIdEscolhido: Integer;
     FModelo: TModelo;
     FModoSilencioso: Boolean;
+    FFiltrosPesquisa: TDictionary<String,Variant>;
     procedure SetPesquisaPadrao(const Value: Integer);
     procedure SetModelo(const Value: TModelo);
     procedure SetModoSilencioso(const Value: Boolean);
+    procedure SetFiltrosPesquisa(const Value: TDictionary<String,Variant>);
 
   protected
     FShowExecutado: Boolean;
@@ -136,6 +141,8 @@ type
     // objeto modelo para ser utilizado em caso da tela ser aberta somente para cadastros
     property Modelo: TModelo read FModelo write SetModelo;
     property IdEscolhido: Integer read FIdEscolhido;
+    //Filtros de pesquisas (Utilizado quando se quer fazer uma pesquisa por mais de um campo)
+    property FiltrosPesquisa:TDictionary<String,Variant> read FFiltrosPesquisa write SetFiltrosPesquisa;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -474,6 +481,8 @@ begin
 end;
 
 procedure TfrmBasicoCrud.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
+var
+  vaKey:String;
 begin
   ipCds.ppuLimparParametros;
   if cbPesquisarPor.EditValue = Ord(tppTodos) then
@@ -485,6 +494,10 @@ begin
   else if (cbPesquisarPor.EditValue = Ord(tppData)) then
     ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 
+  for vaKey in FFiltrosPesquisa.Keys do
+    begin
+     ipCds.ppuAddParametro(vaKey, FFiltrosPesquisa.Items[vaKey]);
+    end;
 end;
 
 procedure TfrmBasicoCrud.pprEfetuarPesquisa;
@@ -772,6 +785,11 @@ end;
 procedure TfrmBasicoCrud.ppuRetornar;
 begin
   ppuRetornar(True);
+end;
+
+procedure TfrmBasicoCrud.SetFiltrosPesquisa(const Value: TDictionary<String,Variant>);
+begin
+  FFiltrosPesquisa := Value;
 end;
 
 procedure TfrmBasicoCrud.SetModelo(const Value: TModelo);

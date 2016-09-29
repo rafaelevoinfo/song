@@ -876,6 +876,8 @@ inherited dmViveiro: TdmViveiro
   object cdsMix_Muda_Especie: TRFClientDataSet
     Aggregates = <>
     AggregatesActive = True
+    FieldDefs = <>
+    IndexDefs = <>
     IndexFieldNames = 'ID_MIX_MUDA'
     MasterFields = 'ID'
     MasterSource = dsMix_Muda
@@ -888,6 +890,7 @@ inherited dmViveiro: TdmViveiro
       end>
     ProviderName = 'dspqMix_Muda_Especie'
     RemoteServer = dmPrincipal.ProviderViveiro
+    StoreDefs = True
     RFApplyAutomatico = False
     Left = 672
     Top = 104
@@ -931,12 +934,6 @@ inherited dmViveiro: TdmViveiro
       Origin = 'QTDE_MUDA_PRONTA'
       ProviderFlags = []
       DisplayFormat = ',0'
-    end
-    object cdsMix_Muda_EspecieAGG_TOTAL_MUDA: TAggregateField
-      FieldName = 'AGG_TOTAL_MUDA'
-      Active = True
-      DisplayName = ''
-      Expression = 'SUM(QTDE_MUDA_PRONTA)'
     end
   end
   object cdsMix_Muda_Especie_Lote: TRFClientDataSet
@@ -1000,5 +997,83 @@ inherited dmViveiro: TdmViveiro
     DataSet = cdsMix_Muda_Especie
     Left = 576
     Top = 112
+  end
+  object cdsMix_Muda_Especie_Lote_Canteiro: TRFClientDataSet
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_MIX_MUDA'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqMix_Muda_Especie_Lote_Canteiro'
+    RemoteServer = dmPrincipal.ProviderViveiro
+    Left = 664
+    Top = 248
+    object cdsMix_Muda_Especie_Lote_CanteiroID_CANTEIRO: TIntegerField
+      FieldName = 'ID_CANTEIRO'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroCANTEIRO: TStringField
+      FieldName = 'CANTEIRO'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroLOTE: TStringField
+      FieldName = 'LOTE'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_RETIRAR: TIntegerField
+      FieldName = 'QTDE_MUDA_RETIRAR'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroID_PESSOA_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_PESSOA_RESPONSAVEL'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroRESPONSAVEL: TStringField
+      FieldName = 'RESPONSAVEL'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField
+      FieldName = 'QTDE_MUDA'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField
+      FieldName = 'QTDE_MUDA_ROCAMBOLE'
+      ProviderFlags = []
+      Required = True
+    end
   end
 end
