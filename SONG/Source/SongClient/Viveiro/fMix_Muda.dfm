@@ -12,6 +12,9 @@ inherited frmMixMuda: TfrmMixMuda
     ExplicitHeight = 611
     ClientRectBottom = 607
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
       ExplicitHeight = 583
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -66,11 +69,11 @@ inherited frmMixMuda: TfrmMixMuda
           ExplicitWidth = 563
           inherited btnUtilizar: TButton
             Left = 460
-            ExplicitLeft = 374
+            ExplicitLeft = 460
           end
           inherited btnExportarExcel: TButton
             Left = 358
-            ExplicitLeft = 272
+            ExplicitLeft = 358
           end
           object btnGerarVenda: TButton
             AlignWithMargins = True
@@ -119,17 +122,20 @@ inherited frmMixMuda: TfrmMixMuda
             Images = dmPrincipal.imgIcons_32
             TabOrder = 5
             WordWrap = True
-            ExplicitLeft = 314
-            ExplicitTop = -1
           end
+        end
+        inherited pnFiltros: TPanel
+          ExplicitLeft = 1
+          ExplicitTop = 43
+          ExplicitWidth = 974
         end
       end
       inherited pnGrid: TPanel
         Height = 522
-        ExplicitHeight = 521
+        ExplicitHeight = 522
         inherited cxGridRegistros: TcxGrid
           Height = 287
-          ExplicitHeight = 304
+          ExplicitHeight = 287
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -190,11 +196,11 @@ inherited frmMixMuda: TfrmMixMuda
         end
         inherited cxSplitter1: TcxSplitter
           Top = 288
-          ExplicitTop = 305
+          ExplicitTop = 288
         end
         inherited pnDetail: TPanel
           Top = 294
-          ExplicitTop = 311
+          ExplicitTop = 294
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Esp'#233'cies'
@@ -316,6 +322,10 @@ inherited frmMixMuda: TfrmMixMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 583
       inherited pnEditsCadastro: TPanel
         Height = 533
         ExplicitHeight = 533
@@ -590,7 +600,7 @@ inherited frmMixMuda: TfrmMixMuda
       Caption = 'Imprimir'
       ImageIndex = 19
       OnExecute = Ac_ImprimirExecute
-      OnUpdate = Ac_Gerar_SaidaUpdate
+      OnUpdate = Ac_ImprimirUpdate
     end
   end
   inherited dsMaster: TDataSource
@@ -639,34 +649,41 @@ inherited frmMixMuda: TfrmMixMuda
     Left = 200
     Top = 248
     object DBPipeOrganizacaoppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField3: TppField
       FieldAlias = 'CNPJ'
       FieldName = 'CNPJ'
-      FieldLength = 14
-      DisplayWidth = 14
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField4: TppField
       FieldAlias = 'LOGO'
       FieldName = 'LOGO'
       FieldLength = 0
-      DataType = dtBLOB
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
       Searchable = False
       Sortable = False
@@ -674,58 +691,79 @@ inherited frmMixMuda: TfrmMixMuda
     object DBPipeOrganizacaoppField5: TppField
       FieldAlias = 'ENDERECO'
       FieldName = 'ENDERECO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField6: TppField
       FieldAlias = 'BAIRRO'
       FieldName = 'BAIRRO'
-      FieldLength = 20
-      DisplayWidth = 20
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField7: TppField
       FieldAlias = 'COMPLEMENTO'
       FieldName = 'COMPLEMENTO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField8: TppField
       FieldAlias = 'TELEFONE'
       FieldName = 'TELEFONE'
-      FieldLength = 20
-      DisplayWidth = 20
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField9: TppField
       FieldAlias = 'SITE'
       FieldName = 'SITE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField10: TppField
       FieldAlias = 'EMAIL'
       FieldName = 'EMAIL'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField11: TppField
       FieldAlias = 'CIDADE'
       FieldName = 'CIDADE'
-      FieldLength = 120
-      DisplayWidth = 120
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 10
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField12: TppField
       FieldAlias = 'LOGO_SECUNDARIA'
       FieldName = 'LOGO_SECUNDARIA'
       FieldLength = 0
-      DataType = dtBLOB
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 11
       Searchable = False
       Sortable = False
@@ -768,6 +806,8 @@ inherited frmMixMuda: TfrmMixMuda
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
     RTFSettings.DefaultFont.Color = clWindowText
     RTFSettings.DefaultFont.Height = -13
@@ -788,7 +828,7 @@ inherited frmMixMuda: TfrmMixMuda
     object ppHeaderBand1: TppHeaderBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 21960
+      mmHeight = 23548
       mmPrintPosition = 0
       object ppDBImage7: TppDBImage
         DesignLayer = ppDesignLayer1
@@ -847,6 +887,68 @@ inherited frmMixMuda: TfrmMixMuda
         BandType = 0
         LayerName = Foreground
       end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText5'
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4763
+        mmLeft = 34149
+        mmTop = 1368
+        mmWidth = 130127
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel13: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 34396
+        mmTop = 7144
+        mmWidth = 7408
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText15: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText7'
+        AutoSize = True
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        DisplayFormat = '00\.000\.000\/0000\-00;0; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3704
+        mmLeft = 42333
+        mmTop = 7144
+        mmWidth = 25665
+        BandType = 0
+        LayerName = Foreground
+      end
     end
     object ppDetailBand1: TppDetailBand
       Background1.Brush.Style = bsClear
@@ -867,18 +969,48 @@ inherited frmMixMuda: TfrmMixMuda
         Transparent = True
         DataPipelineName = 'DBPipeLotesCanteiro'
         mmHeight = 4763
-        mmLeft = 1588
+        mmLeft = 8845
         mmTop = 332
-        mmWidth = 41131
+        mmWidth = 64703
         BandType = 4
         LayerName = Foreground
       end
       object ppDBText3: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText3'
-        DataField = 'ESPECIE'
+        DataField = 'QTDE_MUDA_RETIRAR'
         DataPipeline = DBPipeLotesCanteiro
         DisplayFormat = ',0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'DBPipeLotesCanteiro'
+        mmHeight = 4763
+        mmLeft = 136524
+        mmTop = 242
+        mmWidth = 16597
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppShape1: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape1'
+        mmHeight = 4498
+        mmLeft = 2072
+        mmTop = 529
+        mmWidth = 5556
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText4: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText4'
+        DataField = 'LOTE'
+        DataPipeline = DBPipeLotesCanteiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -887,19 +1019,9 @@ inherited frmMixMuda: TfrmMixMuda
         Transparent = True
         DataPipelineName = 'DBPipeLotesCanteiro'
         mmHeight = 4763
-        mmLeft = 45266
-        mmTop = 287
-        mmWidth = 22369
-        BandType = 4
-        LayerName = Foreground
-      end
-      object ppShape1: TppShape
-        DesignLayer = ppDesignLayer1
-        UserName = 'Shape1'
-        mmHeight = 4570
-        mmLeft = 68792
-        mmTop = 529
-        mmWidth = 29345
+        mmLeft = 75655
+        mmTop = 265
+        mmWidth = 59652
         BandType = 4
         LayerName = Foreground
       end
@@ -907,40 +1029,23 @@ inherited frmMixMuda: TfrmMixMuda
     object ppFooterBand1: TppFooterBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 8731
+      mmHeight = 4763
       mmPrintPosition = 0
-      object ppSystemVariable20: TppSystemVariable
-        DesignLayer = ppDesignLayer1
-        UserName = 'SystemVariable3'
-        VarType = vtTime
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 186532
-        mmTop = 5027
-        mmWidth = 11113
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppSystemVariable19: TppSystemVariable
+      object ppSystemVariable1: TppSystemVariable
         DesignLayer = ppDesignLayer1
         UserName = 'SystemVariable1'
+        VarType = vtDateTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taCentered
+        TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3704
-        mmLeft = 182563
-        mmTop = 529
-        mmWidth = 14288
+        mmLeft = 161661
+        mmTop = 1058
+        mmWidth = 34660
         BandType = 8
         LayerName = Foreground
       end
@@ -961,7 +1066,7 @@ inherited frmMixMuda: TfrmMixMuda
       object ppGroupHeaderBand1: TppGroupHeaderBand
         Background.Brush.Style = bsClear
         mmBottomOffset = 0
-        mmHeight = 12171
+        mmHeight = 12700
         mmPrintPosition = 0
         object ppDBText1: TppDBText
           DesignLayer = ppDesignLayer1
@@ -971,7 +1076,7 @@ inherited frmMixMuda: TfrmMixMuda
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 12
+          Font.Size = 11
           Font.Style = [fsBold]
           Transparent = True
           DataPipelineName = 'DBPipeLotesCanteiro'
@@ -983,40 +1088,59 @@ inherited frmMixMuda: TfrmMixMuda
           GroupNo = 0
           LayerName = Foreground
         end
-        object ppLabel2: TppLabel
+        object ppLabel1: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label3'
           Caption = 'Esp'#233'cie'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = []
+          Font.Size = 8
+          Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 4233
-          mmLeft = 1588
+          mmHeight = 3704
+          mmLeft = 8776
           mmTop = 7938
-          mmWidth = 12435
+          mmWidth = 11377
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppLabel2: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label4'
+          Caption = 'Lote'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 75648
+          mmTop = 7938
+          mmWidth = 6615
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
         end
         object ppLabel3: TppLabel
           DesignLayer = ppDesignLayer1
-          UserName = 'Label4'
-          Caption = 'Qtde'
+          UserName = 'Label5'
+          Caption = 'Quantidade'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = []
+          Font.Size = 8
+          Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 4233
-          mmLeft = 45260
+          mmHeight = 3704
+          mmLeft = 136790
           mmTop = 7938
-          mmWidth = 7408
+          mmWidth = 16404
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
@@ -1046,43 +1170,54 @@ inherited frmMixMuda: TfrmMixMuda
     Left = 88
     Top = 304
     object DBPipeLotesCanteiroppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_CANTEIRO'
       FieldName = 'ID_CANTEIRO'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLotesCanteiroppField2: TppField
       FieldAlias = 'CANTEIRO'
       FieldName = 'CANTEIRO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLotesCanteiroppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLotesCanteiroppField4: TppField
       FieldAlias = 'ESPECIE'
       FieldName = 'ESPECIE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLotesCanteiroppField5: TppField
       FieldAlias = 'LOTE'
       FieldName = 'LOTE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeLotesCanteiroppField6: TppField
       Alignment = taRightJustify
@@ -1090,7 +1225,7 @@ inherited frmMixMuda: TfrmMixMuda
       FieldName = 'QTDE_MUDA_RETIRAR'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 10
+      DisplayWidth = 0
       Position = 5
     end
     object DBPipeLotesCanteiroppField7: TppField

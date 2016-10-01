@@ -478,7 +478,8 @@ begin
             '       Lote_Muda.Saldo' +
             ' from Lote_Muda' +
             ' where Lote_Muda.Id_Especie = :Id_Especie and' +
-            '       Lote_Muda.Status = 1';
+            '       Lote_Muda.Status = 1 and '+
+            '       Lote_Muda.Saldo > 0';
           vaDataSetLote.ParamByName('ID_ESPECIE').AsInteger := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
           vaDataSetLote.Open();
           if vaDataSetLote.Eof then

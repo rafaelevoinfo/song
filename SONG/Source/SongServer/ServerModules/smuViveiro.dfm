@@ -1261,8 +1261,48 @@ inherited smViveiro: TsmViveiro
       '       Canteiro.Nome as Canteiro,'
       '       Especie.Id as Id_Especie,'
       '       Especie.Nome as Especie,'
-      '       Lote_Muda.Nome as Lote,'
-      '       Mix_Muda_Especie_Lote.Qtde as Qtde_Muda_Retirar,'
+      '       case'
+      '         when (select count(*) '
+      '               from lote_muda lm'
+      
+        '               inner join Lote_Muda_Canteiro lmc on (lmc.id_lote' +
+        '_muda = lm.id)'
+      '               where lm.id = lote_muda.id) > 1 then'
+      '           case '
+      '             when (select first 1 lmc.id '
+      '                   from lote_muda_canteiro lmc'
+      
+        '                  where lmc.id_lote_muda = lote_muda.id) = lote_' +
+        'muda_canteiro.id then'
+      '                Lote_Muda.Nome '
+      '               else'
+      '                Lote_Muda.Nome || '#39' (Se Necess'#225'rio)'#39
+      '             end'
+      '               '
+      '                  '
+      '         else'
+      '           Lote_Muda.Nome'
+      '       end as Lote,'
+      '       case'
+      '         when (select count(*) '
+      '               from lote_muda lm'
+      
+        '               inner join Lote_Muda_Canteiro lmc on (lmc.id_lote' +
+        '_muda = lm.id)'
+      '               where lm.id = lote_muda.id) > 1 then'
+      '           case '
+      '             when (select first 1 lmc.id '
+      '                   from lote_muda_canteiro lmc'
+      
+        '                  where lmc.id_lote_muda = lote_muda.id) = lote_' +
+        'muda_canteiro.id then'
+      '                Mix_Muda_Especie_Lote.Qtde '
+      '               else'
+      '                null'
+      '             end                                '
+      '         else'
+      '           Mix_Muda_Especie_Lote.Qtde'
+      '       end as Qtde_Muda_Retirar,'
       '       Mix_Muda.Id_Cliente,'
       '       Mix_Muda.Id_Pessoa_Responsavel,'
       '       Pessoa.Nome as Responsavel,'
@@ -1290,7 +1330,7 @@ inherited smViveiro: TsmViveiro
         'inner join pessoa on (pessoa.id = mix_muda.id_pessoa_responsavel' +
         ')'
       'inner join fin_for_cli on (fin_for_cli.id = mix_muda.id_cliente)'
-      'where Mix_Muda_Especie.Id = :Id_Mix_Muda'
+      'where Mix_Muda.Id = :Id_Mix_Muda'
       'Order by Canteiro.Nome, Especie.Nome, Lote_Muda.Nome')
     Left = 744
     Top = 216

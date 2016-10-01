@@ -233,8 +233,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 387
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 44
-        ExplicitHeight = 404
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
@@ -247,7 +245,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
-          ExplicitHeight = 402
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -317,6 +314,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

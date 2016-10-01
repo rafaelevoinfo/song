@@ -83,8 +83,6 @@ type
     ppFooterBand1: TppFooterBand;
     ppDBImage7: TppDBImage;
     ppLbTituloLoteMudaVendida: TppLabel;
-    ppSystemVariable19: TppSystemVariable;
-    ppSystemVariable20: TppSystemVariable;
     ppDBImage1: TppDBImage;
     DBPipeLotesCanteiro: TppDBPipeline;
     dsMix_Muda_Especie_Lote_Canteiro: TDataSource;
@@ -93,10 +91,16 @@ type
     ppGroupFooterBand1: TppGroupFooterBand;
     ppDBText1: TppDBText;
     ppDBText2: TppDBText;
-    ppLabel2: TppLabel;
-    ppLabel3: TppLabel;
     ppDBText3: TppDBText;
     ppShape1: TppShape;
+    ppDBText4: TppDBText;
+    ppDBText5: TppDBText;
+    ppSystemVariable1: TppSystemVariable;
+    ppLabel13: TppLabel;
+    ppDBText15: TppDBText;
+    ppLabel1: TppLabel;
+    ppLabel2: TppLabel;
+    ppLabel3: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure EditQtdePropertiesEditValueChanged(Sender: TObject);
@@ -108,6 +112,7 @@ type
       var ADone: Boolean);
     procedure Ac_Gerar_VendaExecute(Sender: TObject);
     procedure Ac_ImprimirExecute(Sender: TObject);
+    procedure Ac_ImprimirUpdate(Sender: TObject);
   private
     FIdItemMuda: integer;
     FCalcularQuantidades: Boolean;
@@ -117,6 +122,7 @@ type
     procedure ppvCarregarClientes;
     procedure ppvConfigurarEdits;
     procedure ppvIncluirEspecieCdsLocal;
+    procedure ppvCarregarEspeciesAndSaldos;
     { Private declarations }
   protected
     procedure pprEfetuarPesquisa; override;
@@ -126,6 +132,8 @@ type
     procedure pprAfterSalvar(ipAcaoExecutada: TDataSetState); override;
 
     function fprGetPermissao: String; override;
+
+    procedure pprExecutarCancelar;override;
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: integer); override;
@@ -310,6 +318,12 @@ begin
 
 end;
 
+procedure TfrmMixMuda.Ac_ImprimirUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar;
+end;
+
 procedure TfrmMixMuda.ColumnSaidaVendaCustomDrawCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
   AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
@@ -360,9 +374,11 @@ begin
 
   PesquisaPadrao := Ord(tppData);
 
+  dmLookup.cdslkOrganizacao.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkOrganizacao);
-  dmLookup.cdslkEspecie.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
-  dmLookup.ppuAbrirCache(dmLookup.cdslkEspecie);
+
+  ppvCarregarEspeciesAndSaldos;
+
   dmLookup.ppuCarregarPessoas(0, coTiposPessoaPadrao);
 
   ppvCarregarClientes;
@@ -370,6 +386,13 @@ begin
   ppvConfigurarGrids;
 
   FIdItemMuda := dmprincipal.FuncoesViveiro.fpuBuscarIdItemMuda;
+end;
+
+procedure TfrmMixMuda.ppvCarregarEspeciesAndSaldos;
+begin
+  dmLookup.cdslkEspecie.Close;
+  dmLookup.cdslkEspecie.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
+  dmLookup.ppuAbrirCache(dmLookup.cdslkEspecie);
 end;
 
 procedure TfrmMixMuda.ppvCarregarClientes;
@@ -413,6 +436,13 @@ begin
   dmViveiro.cdsMix_Muda_Especie_Lote.Open;
 end;
 
+procedure TfrmMixMuda.pprExecutarCancelar;
+begin
+  inherited;
+  if dmViveiro.cdsMix_Muda_Especie.ChangeCount > 0 then
+    dmViveiro.cdsMix_Muda_Especie.CancelUpdates;
+end;
+
 procedure TfrmMixMuda.pprValidarDados;
 var
   vaTotalMudasDisponiveis: integer;
@@ -442,6 +472,7 @@ begin
   else
     cdsLocalEspecie.CreateDataSet;
 
+  ppvCarregarEspeciesAndSaldos;//atualiza os saldoss
   TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
     procedure
     begin
@@ -458,6 +489,8 @@ end;
 procedure TfrmMixMuda.ppuIncluir;
 begin
   inherited;
+
+
   FCalcularQuantidades := True;
   if cdsLocalEspecie.Active then
     cdsLocalEspecie.EmptyDataSet
@@ -467,6 +500,7 @@ begin
   dmViveiro.cdsMix_MudaQTDE_MUDA_ROCAMBOLE.AsInteger := 30;
   dmViveiro.cdsMix_MudaDATA.AsDateTime := now;
 
+  ppvCarregarEspeciesAndSaldos; // atualiza os saldos
   TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
     procedure
     begin
@@ -480,7 +514,7 @@ begin
 
   pprPreencherCamposPadroes(dmViveiro.cdsMix_Muda);
 
-  // frameGrids.Ac_AddTodos.Execute;
+  frameGrids.Ac_AddTodos.Execute;
 end;
 
 procedure TfrmMixMuda.ppvIncluirEspecieCdsLocal;

@@ -494,10 +494,10 @@ begin
   else if (cbPesquisarPor.EditValue = Ord(tppData)) then
     ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 
-  for vaKey in FFiltrosPesquisa.Keys do
-    begin
-     ipCds.ppuAddParametro(vaKey, FFiltrosPesquisa.Items[vaKey]);
-    end;
+//  for vaKey in FFiltrosPesquisa.Keys do
+//    begin
+//     ipCds.ppuAddParametro(vaKey, FFiltrosPesquisa.Items[vaKey]);
+//    end;
 end;
 
 procedure TfrmBasicoCrud.pprEfetuarPesquisa;
