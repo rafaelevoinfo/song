@@ -649,41 +649,34 @@ inherited frmMixMuda: TfrmMixMuda
     Left = 200
     Top = 248
     object DBPipeOrganizacaoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField3: TppField
       FieldAlias = 'CNPJ'
       FieldName = 'CNPJ'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 14
+      DisplayWidth = 14
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField4: TppField
       FieldAlias = 'LOGO'
       FieldName = 'LOGO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
       Position = 3
       Searchable = False
       Sortable = False
@@ -691,79 +684,58 @@ inherited frmMixMuda: TfrmMixMuda
     object DBPipeOrganizacaoppField5: TppField
       FieldAlias = 'ENDERECO'
       FieldName = 'ENDERECO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField6: TppField
       FieldAlias = 'BAIRRO'
       FieldName = 'BAIRRO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 20
+      DisplayWidth = 20
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField7: TppField
       FieldAlias = 'COMPLEMENTO'
       FieldName = 'COMPLEMENTO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField8: TppField
       FieldAlias = 'TELEFONE'
       FieldName = 'TELEFONE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 20
+      DisplayWidth = 20
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField9: TppField
       FieldAlias = 'SITE'
       FieldName = 'SITE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 8
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField10: TppField
       FieldAlias = 'EMAIL'
       FieldName = 'EMAIL'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 9
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField11: TppField
       FieldAlias = 'CIDADE'
       FieldName = 'CIDADE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 120
+      DisplayWidth = 120
       Position = 10
-      Searchable = False
-      Sortable = False
     end
     object DBPipeOrganizacaoppField12: TppField
       FieldAlias = 'LOGO_SECUNDARIA'
       FieldName = 'LOGO_SECUNDARIA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
       Position = 11
       Searchable = False
       Sortable = False
@@ -952,9 +924,9 @@ inherited frmMixMuda: TfrmMixMuda
     end
     object ppDetailBand1: TppDetailBand
       Background1.Brush.Style = bsClear
-      Background2.Brush.Style = bsClear
+      Background2.Brush.Color = clSilver
       mmBottomOffset = 0
-      mmHeight = 6350
+      mmHeight = 5292
       mmPrintPosition = 0
       object ppDBText2: TppDBText
         DesignLayer = ppDesignLayer1
@@ -1048,6 +1020,250 @@ inherited frmMixMuda: TfrmMixMuda
         mmWidth = 34660
         BandType = 8
         LayerName = Foreground
+      end
+    end
+    object ppSummaryBand1: TppSummaryBand
+      Background.Brush.Style = bsClear
+      PrintHeight = phDynamic
+      mmBottomOffset = 0
+      mmHeight = 5292
+      mmPrintPosition = 0
+      object ppSubReportRocambole: TppSubReport
+        DesignLayer = ppDesignLayer1
+        UserName = 'SubReportRocambole'
+        ExpandAll = False
+        NewPrintJob = False
+        OutlineSettings.CreateNode = True
+        TraverseAllData = False
+        DataPipelineName = 'DBPipeRocamboles'
+        mmHeight = 5027
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 7
+        LayerName = Foreground
+        mmBottomOffset = 0
+        mmOverFlowOffset = 0
+        mmStopPosition = 0
+        mmMinHeight = 0
+        object ppChildReport1: TppChildReport
+          AutoStop = False
+          DataPipeline = DBPipeRocamboles
+          PrinterSetup.BinName = 'Default'
+          PrinterSetup.DocumentName = 'Report'
+          PrinterSetup.PaperName = 'A4'
+          PrinterSetup.PrinterName = 'Default'
+          PrinterSetup.SaveDeviceSettings = False
+          PrinterSetup.mmMarginBottom = 6350
+          PrinterSetup.mmMarginLeft = 6350
+          PrinterSetup.mmMarginRight = 6350
+          PrinterSetup.mmMarginTop = 6350
+          PrinterSetup.mmPaperHeight = 297000
+          PrinterSetup.mmPaperWidth = 210000
+          PrinterSetup.PaperSize = 9
+          Version = '16.02'
+          mmColumnWidth = 0
+          DataPipelineName = 'DBPipeRocamboles'
+          object ppTitleBand1: TppTitleBand
+            Background.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 10054
+            mmPrintPosition = 0
+            object ppShape2: TppShape
+              DesignLayer = ppDesignLayer2
+              UserName = 'Shape2'
+              Brush.Color = clSilver
+              Shape = stRoundRect
+              mmHeight = 7697
+              mmLeft = 6907
+              mmTop = 2357
+              mmWidth = 180398
+              BandType = 1
+              LayerName = Foreground1
+            end
+            object ppLabel4: TppLabel
+              DesignLayer = ppDesignLayer2
+              UserName = 'Label1'
+              AutoSize = False
+              Caption = 'Distribui'#231#227'o de Mudas por Rocambole'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Arial'
+              Font.Size = 12
+              Font.Style = [fsBold]
+              FormField = False
+              TextAlignment = taCentered
+              Transparent = True
+              mmHeight = 5532
+              mmLeft = 794
+              mmTop = 3296
+              mmWidth = 196321
+              BandType = 1
+              LayerName = Foreground1
+            end
+          end
+          object ppDetailBand2: TppDetailBand
+            Background1.Brush.Style = bsClear
+            Background2.Brush.Color = clSilver
+            mmBottomOffset = 0
+            mmHeight = 4763
+            mmPrintPosition = 0
+            object ppDBText7: TppDBText
+              DesignLayer = ppDesignLayer2
+              UserName = 'DBText1'
+              DataField = 'ESPECIE'
+              DataPipeline = DBPipeRocamboles
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Arial'
+              Font.Size = 8
+              Font.Style = []
+              Transparent = True
+              DataPipelineName = 'DBPipeRocamboles'
+              mmHeight = 4763
+              mmLeft = 2646
+              mmTop = 0
+              mmWidth = 66386
+              BandType = 4
+              LayerName = Foreground1
+            end
+            object ppDBText8: TppDBText
+              DesignLayer = ppDesignLayer2
+              UserName = 'DBText8'
+              DataField = 'QTDE'
+              DataPipeline = DBPipeRocamboles
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Arial'
+              Font.Size = 8
+              Font.Style = []
+              TextAlignment = taCentered
+              Transparent = True
+              DataPipelineName = 'DBPipeRocamboles'
+              mmHeight = 4763
+              mmLeft = 72231
+              mmTop = 0
+              mmWidth = 16837
+              BandType = 4
+              LayerName = Foreground1
+            end
+          end
+          object ppSummaryBand2: TppSummaryBand
+            Background.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 0
+            mmPrintPosition = 0
+          end
+          object ppGroup2: TppGroup
+            BreakName = 'ID'
+            DataPipeline = DBPipeRocamboles
+            GroupFileSettings.NewFile = False
+            GroupFileSettings.EmailFile = False
+            KeepTogether = True
+            OutlineSettings.CreateNode = True
+            StartOnOddPage = False
+            UserName = 'Group2'
+            mmNewColumnThreshold = 0
+            mmNewPageThreshold = 0
+            DataPipelineName = 'DBPipeRocamboles'
+            NewFile = False
+            object ppGroupHeaderBand2: TppGroupHeaderBand
+              Background.Brush.Style = bsClear
+              mmBottomOffset = 0
+              mmHeight = 5821
+              mmPrintPosition = 0
+              object ppDBText6: TppDBText
+                DesignLayer = ppDesignLayer2
+                UserName = 'DBText6'
+                DataField = 'NOME'
+                DataPipeline = DBPipeRocamboles
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Name = 'Arial'
+                Font.Size = 10
+                Font.Style = [fsBold]
+                Transparent = True
+                DataPipelineName = 'DBPipeRocamboles'
+                mmHeight = 4763
+                mmLeft = 2381
+                mmTop = 1058
+                mmWidth = 66411
+                BandType = 3
+                GroupNo = 0
+                LayerName = Foreground1
+              end
+            end
+            object ppGroupFooterBand2: TppGroupFooterBand
+              Background.Brush.Style = bsClear
+              HideWhenOneDetail = False
+              mmBottomOffset = 0
+              mmHeight = 7673
+              mmPrintPosition = 0
+              object ppShape3: TppShape
+                DesignLayer = ppDesignLayer2
+                UserName = 'Shape3'
+                Brush.Color = clSilver
+                Shape = stRoundRect
+                mmHeight = 6615
+                mmLeft = 31510
+                mmTop = 265
+                mmWidth = 63019
+                BandType = 5
+                GroupNo = 0
+                LayerName = Foreground1
+              end
+              object ppDBCalc1: TppDBCalc
+                DesignLayer = ppDesignLayer2
+                UserName = 'DBCalc1'
+                DataField = 'QTDE'
+                DataPipeline = DBPipeRocamboles
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Name = 'Arial'
+                Font.Size = 8
+                Font.Style = []
+                ResetGroup = ppGroup2
+                TextAlignment = taCentered
+                Transparent = True
+                DataPipelineName = 'DBPipeRocamboles'
+                mmHeight = 4498
+                mmLeft = 72159
+                mmTop = 1210
+                mmWidth = 16837
+                BandType = 5
+                GroupNo = 0
+                LayerName = Foreground1
+              end
+              object ppLabel5: TppLabel
+                DesignLayer = ppDesignLayer2
+                UserName = 'Label2'
+                Caption = 'Total do Rocambole:'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Name = 'Arial'
+                Font.Size = 10
+                Font.Style = [fsBold]
+                FormField = False
+                TextAlignment = taCentered
+                Transparent = True
+                mmHeight = 4233
+                mmLeft = 34925
+                mmTop = 1588
+                mmWidth = 34925
+                BandType = 5
+                GroupNo = 0
+                LayerName = Foreground1
+              end
+            end
+          end
+          object ppDesignLayers2: TppDesignLayers
+            object ppDesignLayer2: TppDesignLayer
+              UserName = 'Foreground1'
+              LayerType = ltBanded
+              Index = 0
+            end
+          end
+        end
       end
     end
     object ppGroup1: TppGroup
@@ -1283,5 +1499,95 @@ inherited frmMixMuda: TfrmMixMuda
     DataSet = dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro
     Left = 296
     Top = 288
+  end
+  object DBPipeRocamboles: TppDBPipeline
+    DataSource = dsQtdeMudaRocambole
+    UserName = 'DBPipeRocamboles'
+    Left = 392
+    Top = 224
+    object DBPipeRocambolesppField1: TppField
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeRocambolesppField2: TppField
+      FieldAlias = 'NOME'
+      FieldName = 'NOME'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeRocambolesppField3: TppField
+      FieldAlias = 'ID_ESPECIE'
+      FieldName = 'ID_ESPECIE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeRocambolesppField4: TppField
+      FieldAlias = 'ESPECIE'
+      FieldName = 'ESPECIE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeRocambolesppField5: TppField
+      FieldAlias = 'QTDE'
+      FieldName = 'QTDE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object dsQtdeMudaRocambole: TDataSource
+    DataSet = cdsQtdeMudaRocambole
+    Left = 592
+    Top = 272
+  end
+  object cdsQtdeMudaRocambole: TClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID'
+    Params = <>
+    Left = 664
+    Top = 232
+    object cdsQtdeMudaRocamboleID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsQtdeMudaRocamboleNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsQtdeMudaRocamboleID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+    end
+    object cdsQtdeMudaRocamboleESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsQtdeMudaRocamboleQTDE: TIntegerField
+      FieldName = 'QTDE'
+      ProviderFlags = []
+    end
   end
 end

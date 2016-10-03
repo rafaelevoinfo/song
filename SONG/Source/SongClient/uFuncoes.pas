@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 27/09/2016 23:36:12
+// 02/10/2016 22:35:51
 //
 
 unit uFuncoes;
@@ -121,6 +121,7 @@ type
     FfpuCalcularPrevisaoProducaoMudaCommand: TDBXCommand;
     FppuCalcularQuantidadeMudasMixCommand: TDBXCommand;
     FfpuBuscarIdItemMudaCommand: TDBXCommand;
+    FfpuCalcularQtdeMudasRocamboleCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -143,6 +144,7 @@ type
     function fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<uTypes.TEspecie>; ipDataPrevisao: string): OleVariant; virtual;
     procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer); virtual;
     function fpuBuscarIdItemMuda: Integer; virtual;
+    function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant; virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -1065,6 +1067,20 @@ begin
   Result := FfpuBuscarIdItemMudaCommand.Parameters[0].Value.GetInt32;
 end;
 
+function TsmFuncoesViveiroClient.fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
+begin
+  if FfpuCalcularQtdeMudasRocamboleCommand = nil then
+  begin
+    FfpuCalcularQtdeMudasRocamboleCommand := FDBXConnection.CreateCommand;
+    FfpuCalcularQtdeMudasRocamboleCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuCalcularQtdeMudasRocamboleCommand.Text := 'TsmFuncoesViveiro.fpuCalcularQtdeMudasRocambole';
+    FfpuCalcularQtdeMudasRocamboleCommand.Prepare;
+  end;
+  FfpuCalcularQtdeMudasRocamboleCommand.Parameters[0].Value.SetInt32(ipIdMixMuda);
+  FfpuCalcularQtdeMudasRocamboleCommand.ExecuteUpdate;
+  Result := FfpuCalcularQtdeMudasRocamboleCommand.Parameters[1].Value.AsVariant;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1173,6 +1189,7 @@ begin
   FfpuCalcularPrevisaoProducaoMudaCommand.DisposeOf;
   FppuCalcularQuantidadeMudasMixCommand.DisposeOf;
   FfpuBuscarIdItemMudaCommand.DisposeOf;
+  FfpuCalcularQtdeMudasRocamboleCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

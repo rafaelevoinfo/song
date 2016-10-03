@@ -24,6 +24,13 @@ type
     cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO: TIntegerField;
     cdsPrevisaoProducaoQTDE_SEMENTE_ESTOQUE: TBCDField;
     cdsPrevisaoProducaoQTDE_SEMENTE_KILO: TIntegerField;
+    cdsQtdeMudaRocambole: TClientDataSet;
+    cdsQtdeMudaRocamboleID: TIntegerField;
+    cdsQtdeMudaRocamboleNOME: TStringField;
+    cdsQtdeMudaRocamboleID_ESPECIE: TIntegerField;
+    cdsQtdeMudaRocamboleESPECIE: TStringField;
+    cdsQtdeMudaRocamboleQTDE: TIntegerField;
+    cdsQtdeMudaRocamboleQTDE_TOTAL: TAggregateField;
   private
 
     { Private declarations }
@@ -47,6 +54,9 @@ type
     procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer);
 
     function fpuBuscarIdItemMuda(): Integer;
+
+    function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
+
   end;
 
 var
@@ -374,6 +384,108 @@ begin
   end;
 end;
 
+function TsmFuncoesViveiro.fpuCalcularQtdeMudasRocambole(
+  ipIdMixMuda: Integer): OleVariant;
+var
+  vaDataSet: TRFQuery;
+  vaQtde, vaQtdeRocambole, vaId, vaQtdeTotalMuda,vaQtdeTotalRocambole: Integer;
+  vaTrava: Integer;
+begin
+  if not cdsQtdeMudaRocambole.Active then
+    cdsQtdeMudaRocambole.CreateDataSet
+  else
+    cdsQtdeMudaRocambole.EmptyDataSet;
+
+  pprCriarDataSet(vaDataSet);
+  try
+    vaDataSet.SQL.Text := ' select Mix_Muda.Qtde_Muda,' +
+      '       Mix_Muda.Qtde_Muda_Rocambole,' +
+      '       Mix_Muda_Especie.Id_Especie, ' +
+      '       Especie.nome as especie, ' +
+      '       Sum(Mix_Muda_Especie_Lote.Qtde) as Qtde' +
+      ' from Mix_Muda ' +
+      ' inner join Mix_Muda_Especie on (Mix_Muda_Especie.Id_Mix_Muda = Mix_Muda.Id)' +
+      ' inner join Mix_Muda_Especie_Lote on (Mix_Muda_Especie_Lote.Id_Mix_Muda_Especie = Mix_Muda_Especie.Id)' +
+      ' inner join especie on (especie.id = mix_muda_especie.id_especie) ' +
+      ' where Mix_Muda.Id = :ID ' +
+      ' group by Mix_Muda.Qtde_Muda, Mix_Muda.Qtde_Muda_Rocambole, Mix_Muda_Especie.Id_Especie, Especie.nome';
+    vaDataSet.ParamByName('ID').AsInteger := ipIdMixMuda;
+    vaDataSet.Open;
+    if not vaDataSet.Eof then
+      begin
+        // calculando a quantidade de rocamboles
+        vaQtdeRocambole := Trunc(vaDataSet.FieldByName('QTDE_MUDA').AsInteger / vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger);
+        if (vaDataSet.FieldByName('QTDE_MUDA').AsInteger mod vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger) <> 0 then
+          Inc(vaQtdeRocambole);
+
+        while not vaDataSet.Eof do
+          begin
+            vaId := 1;
+
+            vaQtdeTotalMuda := vaDataSet.FieldByName('QTDE').AsInteger;
+            vaQtde := Trunc(vaQtdeTotalMuda / vaQtdeRocambole);
+            if vaQtde <= 0 then
+              vaQtde := 1;
+
+            vaTrava := 0;
+            while vaQtdeTotalMuda > 0 do
+              begin
+                try
+                  if vaQtde > vaQtdeTotalMuda then
+                    vaQtde := vaQtdeTotalMuda;
+
+                  if not cdsQtdeMudaRocambole.Locate(cdsQtdeMudaRocamboleID.FieldName + ';' + cdsQtdeMudaRocamboleID_ESPECIE.FieldName,
+                    VarArrayOf([vaId, vaDataSet.FieldByName('ID_ESPECIE').AsInteger]), []) then
+                    cdsQtdeMudaRocambole.Append
+                  else
+                    cdsQtdeMudaRocambole.Edit;
+
+                  vaQtdeTotalRocambole := StrToIntDef(cdsQtdeMudaRocamboleQTDE_TOTAL.AsString,0);
+                  if vaQtdeTotalRocambole = vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger then
+                    begin
+                      cdsQtdeMudaRocambole.Cancel;
+                      Inc(vaId);
+                      if vaId > vaQtdeRocambole then
+                        vaId := 1;
+
+                      continue;
+                    end
+                  else if (vaQtdeTotalRocambole + vaQtde) > vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger then
+                    vaQtde := vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger - vaQtdeTotalRocambole;
+
+                  cdsQtdeMudaRocamboleID.AsInteger := vaId;
+                  cdsQtdeMudaRocamboleNOME.AsString := 'Rocambole ' + vaId.ToString();
+                  cdsQtdeMudaRocamboleID_ESPECIE.AsInteger := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
+                  cdsQtdeMudaRocamboleESPECIE.AsString := vaDataSet.FieldByName('ESPECIE').AsString;
+                  cdsQtdeMudaRocamboleQTDE.AsInteger := cdsQtdeMudaRocamboleQTDE.AsInteger + vaQtde;
+                  cdsQtdeMudaRocambole.Post;
+
+                  Inc(vaId);
+                  if vaId > vaQtdeRocambole then
+                    vaId := 1;
+
+                  Dec(vaQtdeTotalMuda, vaQtde);
+
+                finally
+                  Inc(vaTrava);
+                  if vaTrava > 1000 then
+                    raise Exception.Create('Não foi possível calcular a quantidade de mudas por rocambole.');
+                end;
+              end;
+            vaDataSet.Next;
+          end;
+      end;
+
+    Result := cdsQtdeMudaRocambole.Data;
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+
+    cdsQtdeMudaRocambole.EmptyDataSet;
+  end;
+
+end;
+
 function TsmFuncoesViveiro.fpuvalidarNomeCamaraFria(ipId: Integer;
 ipNome: String): Boolean;
 begin
@@ -478,7 +590,7 @@ begin
             '       Lote_Muda.Saldo' +
             ' from Lote_Muda' +
             ' where Lote_Muda.Id_Especie = :Id_Especie and' +
-            '       Lote_Muda.Status = 1 and '+
+            '       Lote_Muda.Status = 1 and ' +
             '       Lote_Muda.Saldo > 0';
           vaDataSetLote.ParamByName('ID_ESPECIE').AsInteger := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
           vaDataSetLote.Open();

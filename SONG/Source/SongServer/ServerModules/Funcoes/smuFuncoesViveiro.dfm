@@ -13,8 +13,8 @@ inherited smFuncoesViveiro: TsmFuncoesViveiro
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'execute procedure sp_ajusta_saldo_especie(:ID_ESPECIE,1,1);')
-    Left = 248
-    Top = 168
+    Left = 104
+    Top = 120
     ParamData = <
       item
         Name = 'ID_ESPECIE'
@@ -63,6 +63,52 @@ inherited smFuncoesViveiro: TsmFuncoesViveiro
     end
     object cdsPrevisaoProducaoQTDE_SEMENTE_KILO: TIntegerField
       FieldName = 'QTDE_SEMENTE_KILO'
+    end
+  end
+  object cdsQtdeMudaRocambole: TClientDataSet
+    Aggregates = <>
+    AggregatesActive = True
+    FieldDefs = <>
+    IndexDefs = <
+      item
+        Name = 'cdsQtdeMudaRocamboleIndex1'
+        Fields = 'ID'
+        GroupingLevel = 1
+      end>
+    IndexName = 'cdsQtdeMudaRocamboleIndex1'
+    Params = <>
+    StoreDefs = True
+    Left = 288
+    Top = 232
+    object cdsQtdeMudaRocamboleID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdsQtdeMudaRocamboleNOME: TStringField
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsQtdeMudaRocamboleID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+    end
+    object cdsQtdeMudaRocamboleESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsQtdeMudaRocamboleQTDE: TIntegerField
+      FieldName = 'QTDE'
+      ProviderFlags = []
+    end
+    object cdsQtdeMudaRocamboleQTDE_TOTAL: TAggregateField
+      FieldName = 'QTDE_TOTAL'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(QTDE)'
+      GroupingLevel = 1
+      IndexName = 'cdsQtdeMudaRocamboleIndex1'
     end
   end
 end

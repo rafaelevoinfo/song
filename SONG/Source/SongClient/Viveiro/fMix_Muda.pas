@@ -18,7 +18,7 @@ uses
   uControleAcesso, uClientDataSet, uTypes, uExceptions, fSaida, uMensagem,
   fVenda, ppParameter, ppDesignLayer, ppProd, ppClass, ppReport, ppComm,
   ppRelatv, ppDB, ppDBPipe, ppVar, ppCtrls, ppPrnabl, ppBands, ppCache,
-  Vcl.Menus;
+  Vcl.Menus, ppStrtch, ppSubRpt;
 
 type
   TfrmMixMuda = class(TfrmBasicoCrudMasterDetail)
@@ -101,6 +101,33 @@ type
     ppLabel1: TppLabel;
     ppLabel2: TppLabel;
     ppLabel3: TppLabel;
+    DBPipeRocamboles: TppDBPipeline;
+    dsQtdeMudaRocambole: TDataSource;
+    cdsQtdeMudaRocambole: TClientDataSet;
+    cdsQtdeMudaRocamboleID: TIntegerField;
+    cdsQtdeMudaRocamboleNOME: TStringField;
+    cdsQtdeMudaRocamboleID_ESPECIE: TIntegerField;
+    cdsQtdeMudaRocamboleESPECIE: TStringField;
+    cdsQtdeMudaRocamboleQTDE: TIntegerField;
+    ppSummaryBand1: TppSummaryBand;
+    ppSubReportRocambole: TppSubReport;
+    ppChildReport1: TppChildReport;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppTitleBand1: TppTitleBand;
+    ppDetailBand2: TppDetailBand;
+    ppSummaryBand2: TppSummaryBand;
+    ppLabel4: TppLabel;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand2: TppGroupHeaderBand;
+    ppGroupFooterBand2: TppGroupFooterBand;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppDBText8: TppDBText;
+    ppDBCalc1: TppDBCalc;
+    ppLabel5: TppLabel;
+    ppShape2: TppShape;
+    ppShape3: TppShape;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure EditQtdePropertiesEditValueChanged(Sender: TObject);
@@ -133,7 +160,7 @@ type
 
     function fprGetPermissao: String; override;
 
-    procedure pprExecutarCancelar;override;
+    procedure pprExecutarCancelar; override;
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: integer); override;
@@ -314,6 +341,23 @@ begin
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.ParamByName('ID_MIX_MUDA').AsInteger := dmViveiro.cdsMix_MudaID.AsInteger;
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Open;
 
+  ppSubReportRocambole.Visible := true;
+  try
+    cdsQtdeMudaRocambole.Data := dmPrincipal.FuncoesViveiro.fpuCalcularQtdeMudasRocambole(dmViveiro.cdsMix_MudaID.AsInteger);
+  except
+    on e: Exception do
+      begin
+        ppSubReportRocambole.Visible := false;
+        //mesmo se der erro ao calcular a quantidade de mudas por rocambole, ainda irei imprimir
+        TMensagem.ppuShowException(e);
+        if not cdsQtdeMudaRocambole.Active then
+          cdsQtdeMudaRocambole.CreateDataSet
+        else
+          cdsQtdeMudaRocambole.EmptyDataSet;
+
+      end;
+  end;
+
   ppMudas.PrintReport;
 
 end;
@@ -385,7 +429,7 @@ begin
 
   ppvConfigurarGrids;
 
-  FIdItemMuda := dmprincipal.FuncoesViveiro.fpuBuscarIdItemMuda;
+  FIdItemMuda := dmPrincipal.FuncoesViveiro.fpuBuscarIdItemMuda;
 end;
 
 procedure TfrmMixMuda.ppvCarregarEspeciesAndSaldos;
@@ -418,7 +462,7 @@ begin
 
   // calcula as quantidades e insere os lotes para cada especie
   if FCalcularQuantidades then
-    dmprincipal.FuncoesViveiro.ppuCalcularQuantidadeMudasMix(dmViveiro.cdsMix_MudaID.AsInteger);
+    dmPrincipal.FuncoesViveiro.ppuCalcularQuantidadeMudasMix(dmViveiro.cdsMix_MudaID.AsInteger);
 
 end;
 
@@ -472,7 +516,7 @@ begin
   else
     cdsLocalEspecie.CreateDataSet;
 
-  ppvCarregarEspeciesAndSaldos;//atualiza os saldoss
+  ppvCarregarEspeciesAndSaldos; // atualiza os saldoss
   TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
     procedure
     begin
@@ -489,7 +533,6 @@ end;
 procedure TfrmMixMuda.ppuIncluir;
 begin
   inherited;
-
 
   FCalcularQuantidades := True;
   if cdsLocalEspecie.Active then
