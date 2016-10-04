@@ -388,9 +388,9 @@ function TsmFuncoesViveiro.fpuCalcularQtdeMudasRocambole(
   ipIdMixMuda: Integer): OleVariant;
 var
   vaDataSet: TRFQuery;
-  vaQtde, vaQtdeRocambole, vaId, vaQtdeTotalMuda,vaQtdeTotalRocambole: Integer;
-  vaTrava: Integer;
+  vaQtdeMudaRocambole,vaQtdeTotalRocambole, vaQtdeRocambole, vaIdRocambole: Integer;
 begin
+
   if not cdsQtdeMudaRocambole.Active then
     cdsQtdeMudaRocambole.CreateDataSet
   else
@@ -398,6 +398,9 @@ begin
 
   pprCriarDataSet(vaDataSet);
   try
+    // vamos por em cache as alteracoes para que futuramente possamos cancelar todas de uma vez
+    vaDataSet.CachedUpdates := True;
+
     vaDataSet.SQL.Text := ' select Mix_Muda.Qtde_Muda,' +
       '       Mix_Muda.Qtde_Muda_Rocambole,' +
       '       Mix_Muda_Especie.Id_Especie, ' +
@@ -413,71 +416,65 @@ begin
     vaDataSet.Open;
     if not vaDataSet.Eof then
       begin
+        vaDataSet.FieldByName('QTDE').ReadOnly := false;
+
+        vaQtdeMudaRocambole := vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger;
         // calculando a quantidade de rocamboles
-        vaQtdeRocambole := Trunc(vaDataSet.FieldByName('QTDE_MUDA').AsInteger / vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger);
+        vaQtdeRocambole := Trunc(vaDataSet.FieldByName('QTDE_MUDA').AsInteger / vaQtdeMudaRocambole);
         if (vaDataSet.FieldByName('QTDE_MUDA').AsInteger mod vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger) <> 0 then
           Inc(vaQtdeRocambole);
 
-        while not vaDataSet.Eof do
+        for vaIdRocambole := 1 to vaQtdeRocambole do
           begin
-            vaId := 1;
+            vaQtdeTotalRocambole := 0;
 
-            vaQtdeTotalMuda := vaDataSet.FieldByName('QTDE').AsInteger;
-            vaQtde := Trunc(vaQtdeTotalMuda / vaQtdeRocambole);
-            if vaQtde <= 0 then
-              vaQtde := 1;
-
-            vaTrava := 0;
-            while vaQtdeTotalMuda > 0 do
+            vaDataSet.First;
+            while (vaQtdeTotalRocambole < vaQtdeMudaRocambole) and (vaDataSet.RecordCount > 0) do
               begin
-                try
-                  if vaQtde > vaQtdeTotalMuda then
-                    vaQtde := vaQtdeTotalMuda;
+                if cdsQtdeMudaRocambole.Locate(cdsQtdeMudaRocamboleID.FieldName, vaIdRocambole, []) then
+                  begin
+                    vaQtdeTotalRocambole := StrToIntDef(cdsQtdeMudaRocamboleQTDE_TOTAL.AsString, 0);
+                    if vaQtdeTotalRocambole >= vaQtdeMudaRocambole then
+                      break;
+                  end;
 
-                  if not cdsQtdeMudaRocambole.Locate(cdsQtdeMudaRocamboleID.FieldName + ';' + cdsQtdeMudaRocamboleID_ESPECIE.FieldName,
-                    VarArrayOf([vaId, vaDataSet.FieldByName('ID_ESPECIE').AsInteger]), []) then
-                    cdsQtdeMudaRocambole.Append
-                  else
-                    cdsQtdeMudaRocambole.Edit;
+                if vaDataSet.FieldByName('QTDE').AsInteger > 0 then
+                  begin
+                    if not cdsQtdeMudaRocambole.Locate(cdsQtdeMudaRocamboleID.FieldName + ';' + cdsQtdeMudaRocamboleID_ESPECIE.FieldName,
+                      VarArrayOf([vaIdRocambole, vaDataSet.FieldByName('ID_ESPECIE').AsInteger]), []) then
+                      begin
+                        cdsQtdeMudaRocambole.Append;
+                        cdsQtdeMudaRocamboleID.AsInteger := vaIdRocambole;
+                        cdsQtdeMudaRocamboleNOME.AsString := 'Rocambole ' + vaIdRocambole.ToString();
+                        cdsQtdeMudaRocamboleID_ESPECIE.AsInteger := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
+                        cdsQtdeMudaRocamboleESPECIE.AsString := vaDataSet.FieldByName('ESPECIE').AsString;
+                      end
+                    else
+                      cdsQtdeMudaRocambole.Edit;
 
-                  vaQtdeTotalRocambole := StrToIntDef(cdsQtdeMudaRocamboleQTDE_TOTAL.AsString,0);
-                  if vaQtdeTotalRocambole = vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger then
-                    begin
-                      cdsQtdeMudaRocambole.Cancel;
-                      Inc(vaId);
-                      if vaId > vaQtdeRocambole then
-                        vaId := 1;
+                    cdsQtdeMudaRocamboleQTDE.AsInteger := cdsQtdeMudaRocamboleQTDE.AsInteger + 1;
+                    cdsQtdeMudaRocambole.Post;
 
-                      continue;
-                    end
-                  else if (vaQtdeTotalRocambole + vaQtde) > vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger then
-                    vaQtde := vaDataSet.FieldByName('QTDE_MUDA_ROCAMBOLE').AsInteger - vaQtdeTotalRocambole;
+                    vaDataSet.Edit;
+                    vaDataSet.FieldByName('QTDE').AsInteger := vaDataSet.FieldByName('QTDE').AsInteger - 1;
+                    vaDataSet.Post;
 
-                  cdsQtdeMudaRocamboleID.AsInteger := vaId;
-                  cdsQtdeMudaRocamboleNOME.AsString := 'Rocambole ' + vaId.ToString();
-                  cdsQtdeMudaRocamboleID_ESPECIE.AsInteger := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
-                  cdsQtdeMudaRocamboleESPECIE.AsString := vaDataSet.FieldByName('ESPECIE').AsString;
-                  cdsQtdeMudaRocamboleQTDE.AsInteger := cdsQtdeMudaRocamboleQTDE.AsInteger + vaQtde;
-                  cdsQtdeMudaRocambole.Post;
+                    vaDataSet.Next;
+                  end
+                else
+                  vaDataSet.Delete;
 
-                  Inc(vaId);
-                  if vaId > vaQtdeRocambole then
-                    vaId := 1;
-
-                  Dec(vaQtdeTotalMuda, vaQtde);
-
-                finally
-                  Inc(vaTrava);
-                  if vaTrava > 1000 then
-                    raise Exception.Create('Não foi possível calcular a quantidade de mudas por rocambole.');
-                end;
+                if vaDataSet.Eof then
+                  vaDataSet.First;
               end;
-            vaDataSet.Next;
           end;
+
       end;
 
     Result := cdsQtdeMudaRocambole.Data;
   finally
+    vaDataSet.CancelUpdates;
+
     vaDataSet.Close;
     vaDataSet.Free;
 

@@ -192,6 +192,7 @@ inherited frmContaPagar: TfrmContaPagar
         end
         inherited pnFiltros: TPanel
           Width = 984
+          ExplicitWidth = 984
         end
       end
       inherited pnGrid: TPanel
@@ -203,7 +204,7 @@ inherited frmContaPagar: TfrmContaPagar
           Width = 984
           Height = 167
           ExplicitWidth = 984
-          ExplicitHeight = 184
+          ExplicitHeight = 167
           inherited viewRegistros: TcxGridDBTableView
             DataController.Summary.FooterSummaryItems = <
               item

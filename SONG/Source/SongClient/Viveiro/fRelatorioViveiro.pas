@@ -443,7 +443,7 @@ end;
 
 procedure TfrmRelatorioViveiro.Ac_GerarRelatorioExecute(Sender: TObject);
 var
-  i, vaClassificacao, vaCategoria, vaTipo, vaIdEspecie: Integer;
+  i, vaCategoria, vaTipo, vaIdEspecie: Integer;
   vaBiomas: String;
 begin
   inherited;
@@ -451,7 +451,6 @@ begin
   if pcPrincipal.ActivePage = tabSaldos then
     begin
       vaIdEspecie := fprExtrairValor(chkSaldoTodasEspecies, cbSaldoEspecie, 'Informe a espécie ou marque todas');
-      vaClassificacao := fprExtrairValor(chkTodasClassificacao, cbClassificacaoEspecie, 'Informe a classificação ou marque todas');
       vaCategoria := fprExtrairValor(chkTodasCategoriaArmazenamento, cbCategoriaArmazenagem, 'Informe a categoria de armazenagem ou marque todas');
       vaTipo := fprExtrairValor(chkTodosTipoEspecie, cbTipo_Especie, 'Informe o tipo de espécie ou marque todas');
       vaBiomas := '';

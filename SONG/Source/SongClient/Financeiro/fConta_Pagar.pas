@@ -659,9 +659,9 @@ var
   vaRecNo: Integer;
 begin
   Result := True;
+  vaRecNo := dmFinanceiro.cdsConta_Pagar_Parcela.RecNo;
   dmFinanceiro.cdsConta_Pagar_Parcela.DisableControls;
   try
-    vaRecNo := dmFinanceiro.cdsConta_Pagar_Parcela.RecNo;
     if dmFinanceiro.cdsConta_Pagar_Parcela.Locate(dmFinanceiro.cdsConta_Pagar_ParcelaSTATUS.FieldName, 1, []) then
       Result := False;
 
@@ -742,9 +742,10 @@ begin
   if not fpvContaSemPagamentos then
     raise Exception.Create('Já existe uma quitação para esta conta. Não é possível incluir autorizações.');
 
+  vaRecNo := dmFinanceiro.cdsConta_Pagar_Autorizacao.RecNo;
   dmFinanceiro.cdsConta_Pagar_Autorizacao.DisableControls;
   try
-    vaRecNo := dmFinanceiro.cdsConta_Pagar_Autorizacao.RecNo;
+
     if dmFinanceiro.cdsConta_Pagar_Autorizacao.Locate(dmFinanceiro.cdsConta_Pagar_AutorizacaoID_PESSOA.FieldName,
       TInfoLogin.fpuGetInstance.Usuario.Id, []) then
       raise Exception.Create('O usuário atual já realizou a autorização para esta conta.');
@@ -1221,8 +1222,8 @@ begin
   cbPesquisaResponsavel.Visible := cbPesquisarPor.EditValue = coPesquisaResponsavelDespesa;
   cbPesquisaFundo.Visible := cbPesquisarPor.EditValue = coPesquisaFundo;
   pnData.Visible := pnData.Visible or (cbPesquisarPor.EditValue = coPesquisaDataVencimento) or
-                    (cbPesquisarPor.EditValue = coPesquisaDataPagamento) or
-                    (cbPesquisarPor.EditValue = coPesquisaDataCompra);
+    (cbPesquisarPor.EditValue = coPesquisaDataPagamento) or
+    (cbPesquisarPor.EditValue = coPesquisaDataCompra);
   EditPesquisa.Visible := EditPesquisa.Visible and
     (not(cbPesquisaFornecedor.Visible or cbPesquisaPlanoConta.Visible or
     cbPesquisaProjeto.Visible or cbPesquisaRubricas.Visible or cbPesquisaResponsavel.Visible or

@@ -508,6 +508,7 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Mix_Muda: TAction
       Category = 'Viveiro'
       Caption = 'Mix de Mudas'
+      ImageIndex = 51
       OnExecute = Ac_Mix_MudaExecute
     end
   end

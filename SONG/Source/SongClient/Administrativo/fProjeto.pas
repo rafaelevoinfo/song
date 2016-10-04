@@ -17,7 +17,7 @@ uses
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
   uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit, cxLocalization,
   cxCheckBox, uMensagem, System.Math, System.Types, Datasnap.DBClient,
-  fAreaAtuacao;
+  fAreaAtuacao, Vcl.Menus;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -289,7 +289,6 @@ end;
 procedure TfrmProjeto.ppvAdicionarAreaAtuacao;
 var
   vaFrmAreaAtuacao: TfrmAreaAtuacao;
-  vaFrmProjeto:TfrmProjeto;
 begin
   vaFrmAreaAtuacao := TfrmAreaAtuacao.Create(nil);
   try

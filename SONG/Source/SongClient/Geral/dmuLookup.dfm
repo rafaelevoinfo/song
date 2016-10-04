@@ -977,6 +977,7 @@ inherited dmLookup: TdmLookup
     end
     object cdslkOrganizacaoLOGO_SECUNDARIA: TBlobField
       FieldName = 'LOGO_SECUNDARIA'
+      Origin = 'LOGO_SECUNDARIA'
       ProviderFlags = []
     end
   end

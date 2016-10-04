@@ -187,6 +187,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
             ExplicitWidth = 848
             ExplicitHeight = 320
             inherited cxGrid1: TcxGrid
+              Width = 397
+              Height = 318
               ExplicitWidth = 397
               ExplicitHeight = 318
               inherited viewEsquerda: TcxGridDBTableView
@@ -194,6 +196,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited pnBotoes: TPanel
+              Left = 398
+              Width = 42
+              Height = 318
               ExplicitLeft = 398
               ExplicitWidth = 42
               ExplicitHeight = 318
@@ -215,6 +220,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited cxGrid2: TcxGrid
+              Left = 440
+              Width = 407
+              Height = 318
               ExplicitLeft = 440
               ExplicitWidth = 407
               ExplicitHeight = 318
@@ -249,9 +257,10 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
+                Left = 439
                 Width = 124
                 Caption = 'Esp'#233'cies selecionadas'
-                ExplicitLeft = 439
+                ExplicitLeft = 504
                 ExplicitWidth = 124
               end
             end

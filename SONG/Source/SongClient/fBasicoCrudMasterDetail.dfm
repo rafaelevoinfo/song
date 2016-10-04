@@ -1,7 +1,6 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
   ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
-  ExplicitWidth = 320
   ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
@@ -15,7 +14,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           Height = 152
-          ExplicitHeight = 169
+          ExplicitHeight = 152
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
           end

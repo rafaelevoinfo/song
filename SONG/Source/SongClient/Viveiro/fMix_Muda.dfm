@@ -824,7 +824,7 @@ inherited frmMixMuda: TfrmMixMuda
       object ppLbTituloLoteMudaVendida: TppLabel
         DesignLayer = ppDesignLayer1
         UserName = 'Label1'
-        Caption = 'Retirada de Mudas'
+        Caption = 'Mix de Mudas'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -834,9 +834,9 @@ inherited frmMixMuda: TfrmMixMuda
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
-        mmLeft = 78052
+        mmLeft = 83608
         mmTop = 16404
-        mmWidth = 37571
+        mmWidth = 27517
         BandType = 0
         LayerName = Foreground
       end
@@ -1024,6 +1024,7 @@ inherited frmMixMuda: TfrmMixMuda
     end
     object ppSummaryBand1: TppSummaryBand
       Background.Brush.Style = bsClear
+      NewPage = True
       PrintHeight = phDynamic
       mmBottomOffset = 0
       mmHeight = 5292
@@ -1048,6 +1049,11 @@ inherited frmMixMuda: TfrmMixMuda
         mmMinHeight = 0
         object ppChildReport1: TppChildReport
           AutoStop = False
+          Columns = 3
+          ColumnPositions.Strings = (
+            '6350'
+            '72116'
+            '137882')
           DataPipeline = DBPipeRocamboles
           PrinterSetup.BinName = 'Default'
           PrinterSetup.DocumentName = 'Report'
@@ -1062,25 +1068,13 @@ inherited frmMixMuda: TfrmMixMuda
           PrinterSetup.mmPaperWidth = 210000
           PrinterSetup.PaperSize = 9
           Version = '16.02'
-          mmColumnWidth = 0
+          mmColumnWidth = 65766
           DataPipelineName = 'DBPipeRocamboles'
           object ppTitleBand1: TppTitleBand
             Background.Brush.Style = bsClear
             mmBottomOffset = 0
-            mmHeight = 10054
+            mmHeight = 10583
             mmPrintPosition = 0
-            object ppShape2: TppShape
-              DesignLayer = ppDesignLayer2
-              UserName = 'Shape2'
-              Brush.Color = clSilver
-              Shape = stRoundRect
-              mmHeight = 7697
-              mmLeft = 6907
-              mmTop = 2357
-              mmWidth = 180398
-              BandType = 1
-              LayerName = Foreground1
-            end
             object ppLabel4: TppLabel
               DesignLayer = ppDesignLayer2
               UserName = 'Label1'
@@ -1102,11 +1096,17 @@ inherited frmMixMuda: TfrmMixMuda
               LayerName = Foreground1
             end
           end
+          object ppColumnHeaderBand1: TppColumnHeaderBand
+            Background.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 0
+            mmPrintPosition = 0
+          end
           object ppDetailBand2: TppDetailBand
             Background1.Brush.Style = bsClear
             Background2.Brush.Color = clSilver
             mmBottomOffset = 0
-            mmHeight = 4763
+            mmHeight = 5821
             mmPrintPosition = 0
             object ppDBText7: TppDBText
               DesignLayer = ppDesignLayer2
@@ -1119,11 +1119,12 @@ inherited frmMixMuda: TfrmMixMuda
               Font.Size = 8
               Font.Style = []
               Transparent = True
+              VerticalAlignment = avCenter
               DataPipelineName = 'DBPipeRocamboles'
               mmHeight = 4763
               mmLeft = 2646
               mmTop = 0
-              mmWidth = 66386
+              mmWidth = 42574
               BandType = 4
               LayerName = Foreground1
             end
@@ -1139,14 +1140,21 @@ inherited frmMixMuda: TfrmMixMuda
               Font.Style = []
               TextAlignment = taCentered
               Transparent = True
+              VerticalAlignment = avCenter
               DataPipelineName = 'DBPipeRocamboles'
               mmHeight = 4763
-              mmLeft = 72231
+              mmLeft = 48039
               mmTop = 0
               mmWidth = 16837
               BandType = 4
               LayerName = Foreground1
             end
+          end
+          object ppColumnFooterBand1: TppColumnFooterBand
+            Background.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 0
+            mmPrintPosition = 0
           end
           object ppSummaryBand2: TppSummaryBand
             Background.Brush.Style = bsClear
@@ -1187,7 +1195,7 @@ inherited frmMixMuda: TfrmMixMuda
                 mmHeight = 4763
                 mmLeft = 2381
                 mmTop = 1058
-                mmWidth = 66411
+                mmWidth = 62538
                 BandType = 3
                 GroupNo = 0
                 LayerName = Foreground1
@@ -1197,63 +1205,8 @@ inherited frmMixMuda: TfrmMixMuda
               Background.Brush.Style = bsClear
               HideWhenOneDetail = False
               mmBottomOffset = 0
-              mmHeight = 7673
+              mmHeight = 0
               mmPrintPosition = 0
-              object ppShape3: TppShape
-                DesignLayer = ppDesignLayer2
-                UserName = 'Shape3'
-                Brush.Color = clSilver
-                Shape = stRoundRect
-                mmHeight = 6615
-                mmLeft = 31510
-                mmTop = 265
-                mmWidth = 63019
-                BandType = 5
-                GroupNo = 0
-                LayerName = Foreground1
-              end
-              object ppDBCalc1: TppDBCalc
-                DesignLayer = ppDesignLayer2
-                UserName = 'DBCalc1'
-                DataField = 'QTDE'
-                DataPipeline = DBPipeRocamboles
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Name = 'Arial'
-                Font.Size = 8
-                Font.Style = []
-                ResetGroup = ppGroup2
-                TextAlignment = taCentered
-                Transparent = True
-                DataPipelineName = 'DBPipeRocamboles'
-                mmHeight = 4498
-                mmLeft = 72159
-                mmTop = 1210
-                mmWidth = 16837
-                BandType = 5
-                GroupNo = 0
-                LayerName = Foreground1
-              end
-              object ppLabel5: TppLabel
-                DesignLayer = ppDesignLayer2
-                UserName = 'Label2'
-                Caption = 'Total do Rocambole:'
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Name = 'Arial'
-                Font.Size = 10
-                Font.Style = [fsBold]
-                FormField = False
-                TextAlignment = taCentered
-                Transparent = True
-                mmHeight = 4233
-                mmLeft = 34925
-                mmTop = 1588
-                mmWidth = 34925
-                BandType = 5
-                GroupNo = 0
-                LayerName = Foreground1
-              end
             end
           end
           object ppDesignLayers2: TppDesignLayers
