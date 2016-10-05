@@ -15,7 +15,8 @@ uses
   cxCalendar, uMensagem, Datasnap.DBClient, System.Generics.Collections, System.Generics.Defaults,
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
   uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup,
-  cxGridExportLink, Vcl.ExtDlgs, System.DateUtils, Vcl.Menus;
+  cxGridExportLink, Vcl.ExtDlgs, System.DateUtils, Vcl.Menus, cxLabel, cxButtons,
+  System.RegularExpressions;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)
@@ -64,6 +65,7 @@ type
     pmPesquisa: TPopupMenu;
     Ac_Adicionar_Filtro_Pesquisa: TAction;
     pnFiltros: TPanel;
+    Adicionarfiltrodepesquisa1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure Ac_IncluirExecute(Sender: TObject);
     procedure Ac_AlterarExecute(Sender: TObject);
@@ -83,6 +85,7 @@ type
     procedure Ac_AlterarUpdate(Sender: TObject);
     procedure Ac_ExcluirUpdate(Sender: TObject);
     procedure Ac_Exportar_ExcelExecute(Sender: TObject);
+    procedure Ac_Adicionar_Filtro_PesquisaExecute(Sender: TObject);
   private
     FPesquisaRealizada: Boolean;
     FPesquisaPadrao: Integer;
@@ -90,14 +93,16 @@ type
     FIdEscolhido: Integer;
     FModelo: TModelo;
     FModoSilencioso: Boolean;
-    FFiltrosPesquisa: TDictionary<String,Variant>;
+    FFiltrosPesquisa: TDictionary<String, Variant>;
     procedure SetPesquisaPadrao(const Value: Integer);
     procedure SetModelo(const Value: TModelo);
     procedure SetModoSilencioso(const Value: Boolean);
-    procedure SetFiltrosPesquisa(const Value: TDictionary<String,Variant>);
+    procedure SetFiltrosPesquisa(const Value: TDictionary<String, Variant>);
+    procedure ppvConfigurarPanelFiltro;
 
   protected
     FShowExecutado: Boolean;
+    FAdicionarFiltros: Boolean;
     // CRUD
     procedure pprPreencherCamposPadroes(ipDataSet: TDataSet); virtual;
     procedure pprValidarDados; virtual;
@@ -121,6 +126,12 @@ type
     procedure pprEfetuarPesquisa; virtual;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); virtual;
     function fprConfigurarControlesPesquisa: TWinControl; virtual;
+    procedure pprAdicionarFiltro; virtual;
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; virtual;
+    procedure pprAdicionarPanelFiltro(ipContainer: TWinControl; ipParametro: String; ipValor: Variant); virtual;
+    procedure pprAtualizarPanelFiltro(ipParametro: String; ipValor: Variant); virtual;
+    procedure pprRemoverPanelFiltro(Sender: TObject); virtual;
+
     // GERAL
     procedure pprConfigurarLabelsCamposObrigatorios; virtual;
     // procedure pprVerificarExisteStatus; virtual;
@@ -141,8 +152,8 @@ type
     // objeto modelo para ser utilizado em caso da tela ser aberta somente para cadastros
     property Modelo: TModelo read FModelo write SetModelo;
     property IdEscolhido: Integer read FIdEscolhido;
-    //Filtros de pesquisas (Utilizado quando se quer fazer uma pesquisa por mais de um campo)
-    property FiltrosPesquisa:TDictionary<String,Variant> read FFiltrosPesquisa write SetFiltrosPesquisa;
+    // Filtros de pesquisas (Utilizado quando se quer fazer uma pesquisa por mais de um campo)
+    property FiltrosPesquisa: TDictionary<String, Variant> read FFiltrosPesquisa write SetFiltrosPesquisa;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -172,6 +183,12 @@ uses
 
 {$R *.dfm}
 
+
+procedure TfrmBasicoCrud.Ac_Adicionar_Filtro_PesquisaExecute(Sender: TObject);
+begin
+  inherited;
+  pprAdicionarFiltro;
+end;
 
 procedure TfrmBasicoCrud.Ac_AlterarExecute(Sender: TObject);
 begin
@@ -289,7 +306,7 @@ end;
 
 function TfrmBasicoCrud.fprConfigurarControlesPesquisa(): TWinControl;
 begin
-  EditPesquisa.Clear;
+  // EditPesquisa.Clear;
 
   EditPesquisa.Properties.EditMask := '.*';
   if cbPesquisarPor.EditValue = Ord(tppId) then
@@ -329,6 +346,7 @@ end;
 constructor TfrmBasicoCrud.Create(AOwner: TComponent);
 begin
   inherited;
+  FFiltrosPesquisa := TDictionary<String, Variant>.Create;
   FPesquisaPadrao := Ord(tppActive);
   pprValidarPermissao(atVisualizar, fprGetPermissao);
 end;
@@ -337,6 +355,8 @@ destructor TfrmBasicoCrud.Destroy;
 begin
   if Assigned(FModelo) then
     FreeAndNil(FModelo);
+
+  FFiltrosPesquisa.Free;
   inherited;
 end;
 
@@ -364,6 +384,8 @@ begin
 
   EditDataInicialPesquisa.Date := IncDay(Now, -7);
   EditDataFinalPesquisa.Date := Now;
+
+  ppvConfigurarPanelFiltro;
 end;
 
 procedure TfrmBasicoCrud.FormShow(Sender: TObject);
@@ -381,6 +403,169 @@ begin
     end;
 
   FShowExecutado := True;
+end;
+
+function TfrmBasicoCrud.fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String;
+var
+  vaControl: TWinControl;
+  vaTexto: Variant;
+  vaContext: TRttiContext;
+  vaType: TRttiType;
+  vaProperty: TRttiProperty;
+begin
+  if (ipParametro = TParametros.coData) or (TRegex.IsMatch(ipParametro, '^DATA_.*', [roIgnoreCase])) then
+    begin
+      Result := cbPesquisarPor.Text + ' entre ' + DateToStr(TUtils.fpuExtrairData(ipValor, 0)) +
+        ' e ' + DateToStr(TUtils.fpuExtrairData(ipValor, 1));
+    end
+  else if ipParametro = TParametros.coTodos then
+    Result := 'Todos'
+  else
+    begin
+      vaControl := fprConfigurarControlesPesquisa;
+      try
+        vaContext := TRttiContext.Create;
+        vaType := vaContext.GetType(vaControl.ClassType);
+        vaProperty := vaType.GetProperty('Text');
+        if Assigned(vaProperty) then
+          vaTexto := vaProperty.GetValue(vaControl).AsString
+        else
+          vaTexto := Unassigned;
+
+      except
+        // property text nao encontrada
+        vaTexto := Unassigned;
+      end;
+
+      if vaTexto <> Unassigned then
+        Result := cbPesquisarPor.Text + ' = ' + VarToStrDef(vaTexto, '')
+      else
+        Result := cbPesquisarPor.Text;
+    end;
+
+end;
+
+procedure TfrmBasicoCrud.pprRemoverPanelFiltro(Sender: TObject);
+var
+  vaPanel: TPanel;
+begin
+  if (Sender is TcxButton) and (TcxButton(Sender).Parent is TPanel) then
+    begin
+      vaPanel := TcxButton(Sender).Parent as TPanel;
+      if FFiltrosPesquisa.ContainsKey(vaPanel.Caption) then
+        FFiltrosPesquisa.Remove(vaPanel.Caption);
+
+      vaPanel.Visible := False;
+      ppvConfigurarPanelFiltro;
+    end;
+end;
+
+procedure TfrmBasicoCrud.pprAtualizarPanelFiltro(ipParametro: String; ipValor: Variant);
+var
+  I: Integer;
+  vaPanel: TPanel;
+  j: Integer;
+begin
+  for I := 0 to pnFiltros.ControlCount - 1 do
+    begin
+      if pnFiltros.Controls[I] is TPanel then
+        begin
+          vaPanel := pnFiltros.Controls[I] as TPanel;
+          if (vaPanel.Visible) and (vaPanel.Caption = ipParametro) then
+            begin
+              for j := 0 to vaPanel.ControlCount - 1 do
+                begin
+                  if vaPanel.Controls[j] is TcxLabel then
+                    begin
+                      TcxLabel(vaPanel.Controls[j]).Caption := fprMontarTextoPanelFiltro(ipParametro, ipValor);
+                      vaPanel.AutoSize:=false;
+                      vaPanel.AutoSize := true;
+                      Exit;
+                    end;
+                end;
+            end;
+        end;
+    end;
+end;
+
+procedure TfrmBasicoCrud.pprAdicionarPanelFiltro(ipContainer: TWinControl; ipParametro: String; ipValor: Variant);
+var
+  vaPanel: TPanel;
+  vaButton: TcxButton;
+  vaLabel: TcxLabel;
+  vaWidth:Integer;
+begin
+  // criando panel
+  vaPanel := TPanel.Create(Self); // vai ser destruido junto do form
+  vaPanel.Parent := ipContainer;
+  vaPanel.Caption := ipParametro; // usado para achar o registro no dictionary depois
+  vaPanel.Align := alRight;
+  vaPanel.BevelOuter := bvNone;
+  vaPanel.BorderStyle := bsSingle;
+  vaPanel.ShowCaption := False;
+
+  vaButton := TcxButton.Create(Self);
+//  vaButton.Parent := vaPanel;
+//  vaButton.Left := 0;
+//  vaButton.Top := 0;
+  vaButton.Width := 25;
+  //vaButton.Align := alRight;
+  vaButton.Caption := '';
+  vaButton.OptionsImage.Images := dmPrincipal.imgIcons_16;
+  vaButton.OptionsImage.ImageIndex := 5;
+  vaButton.SpeedButtonOptions.CanBeFocused := False;
+  vaButton.SpeedButtonOptions.Transparent := True;
+  vaButton.OnClick := pprRemoverPanelFiltro;
+
+  vaLabel := TcxLabel.Create(Self);
+  vaLabel.Parent := vaPanel;
+  vaLabel.Margins.Left := 0;
+  vaLabel.Margins.Top := 0;
+  vaLabel.Margins.Bottom := 0;
+  vaLabel.Caption := fprMontarTextoPanelFiltro(ipParametro, ipValor);
+  vaLabel.AlignWithMargins := True;
+  vaLabel.Transparent := True;
+  vaLabel.Left := vaButton.Width;
+
+  vaPanel.AutoSize := True;
+  vaWidth := vaPanel.Width;
+  vaPanel.AutoSize := false;
+
+
+  vaButton.Parent := vaPanel;
+  vaLabel.Align := alClient;
+  vaButton.Align := alRight;
+  vaPanel.AutoSize := true;
+end;
+
+procedure TfrmBasicoCrud.pprAdicionarFiltro;
+var
+  vaCds: TRFClientDataSet;
+  I: Integer;
+  vaContemFiltro: Boolean;
+begin
+  vaCds := TRFClientDataSet.Create(nil);
+  FAdicionarFiltros := False;
+  try
+    pprValidarPesquisa;
+    pprCarregarParametrosPesquisa(vaCds);
+    for I := 0 to vaCds.Parametros.Count - 1 do
+      begin
+        vaContemFiltro := FFiltrosPesquisa.ContainsKey(vaCds.Parametros[I]);
+
+        FFiltrosPesquisa.AddOrSetValue(vaCds.Parametros[I], vaCds.ValoresParametros[I]);
+
+        ppvConfigurarPanelFiltro;
+
+        if vaContemFiltro then
+          pprAtualizarPanelFiltro(vaCds.Parametros[I], vaCds.ValoresParametros[I])
+        else
+          pprAdicionarPanelFiltro(pnFiltros, vaCds.Parametros[I], vaCds.ValoresParametros[I]);
+      end;
+  finally
+    FAdicionarFiltros := True;
+    vaCds.Free;
+  end;
 end;
 
 procedure TfrmBasicoCrud.pprAfterSalvar(ipAcaoExecutada: TDataSetState);
@@ -457,6 +642,16 @@ begin
   end;
 end;
 
+procedure TfrmBasicoCrud.ppvConfigurarPanelFiltro;
+begin
+  // nao vou destrui ele aqui, vou deixar isso para o form
+  pnFiltros.Visible := FFiltrosPesquisa.Count > 0;
+  if not pnFiltros.Visible then
+    pnPesquisa.Height := 43
+  else
+    pnPesquisa.Height := 69;
+end;
+
 procedure TfrmBasicoCrud.ppuConfigurarPesquisa(ipPesquisarPor: Integer;
   ipValor: String);
 begin
@@ -482,7 +677,7 @@ end;
 
 procedure TfrmBasicoCrud.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 var
-  vaKey:String;
+  vaKey: String;
 begin
   ipCds.ppuLimparParametros;
   if cbPesquisarPor.EditValue = Ord(tppTodos) then
@@ -494,10 +689,13 @@ begin
   else if (cbPesquisarPor.EditValue = Ord(tppData)) then
     ipCds.ppuAddParametro(TParametros.coData, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 
-//  for vaKey in FFiltrosPesquisa.Keys do
-//    begin
-//     ipCds.ppuAddParametro(vaKey, FFiltrosPesquisa.Items[vaKey]);
-//    end;
+  if FAdicionarFiltros then
+    begin
+      for vaKey in FFiltrosPesquisa.Keys do
+        begin
+          ipCds.ppuAddParametro(vaKey, FFiltrosPesquisa.Items[vaKey]);
+        end;
+    end;
 end;
 
 procedure TfrmBasicoCrud.pprEfetuarPesquisa;
@@ -787,7 +985,7 @@ begin
   ppuRetornar(True);
 end;
 
-procedure TfrmBasicoCrud.SetFiltrosPesquisa(const Value: TDictionary<String,Variant>);
+procedure TfrmBasicoCrud.SetFiltrosPesquisa(const Value: TDictionary<String, Variant>);
 begin
   FFiltrosPesquisa := Value;
 end;
@@ -831,7 +1029,7 @@ procedure TfrmBasicoCrud.pprConfigurarLabelsCamposObrigatorios();
 var
   vaField: TField;
   I: Integer;
-  vaContext: TRTTIContext;
+  vaContext: TRttiContext;
   vaLabel: TLabel;
   vaProp: TRttiProperty;
   vaDataBind, vaDataSource: TObject;
@@ -845,7 +1043,7 @@ begin
           vaLabel := TLabel(Components[I]);
           if Assigned(vaLabel.FocusControl) then
             begin
-              vaContext := TRTTIContext.Create;
+              vaContext := TRttiContext.Create;
               vaProp := vaContext.GetType(vaLabel.FocusControl.ClassType).GetProperty('DataBinding');
               if Assigned(vaProp) then
                 begin
@@ -878,7 +1076,7 @@ end;
 function TfrmBasicoCrud.fprProcurarControlePorFieldName(ipFieldName: string): TWinControl;
 var
   I: Integer;
-  vaContext: TRTTIContext;
+  vaContext: TRttiContext;
   vaProp: TRttiProperty;
   vaDataBind: TObject;
   vaFieldName: string;
@@ -888,7 +1086,7 @@ begin
     begin
       if Components[I] is TcxCustomEdit then
         begin
-          vaContext := TRTTIContext.Create;
+          vaContext := TRttiContext.Create;
           vaProp := vaContext.GetType(Components[I].ClassType).GetProperty('DataBinding');
           if Assigned(vaProp) then
             begin

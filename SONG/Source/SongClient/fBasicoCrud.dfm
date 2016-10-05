@@ -3,6 +3,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
+  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -27,7 +28,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Left = 0
         Top = 0
         Width = 976
-        Height = 61
+        Height = 69
         Align = alTop
         TabOrder = 0
         object pnEditsPesquisa: TPanel
@@ -218,26 +219,27 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Left = 1
           Top = 43
           Width = 974
-          Height = 17
+          Height = 25
           Align = alBottom
           TabOrder = 2
-          ExplicitLeft = 208
-          ExplicitTop = 21
-          ExplicitWidth = 185
+          Visible = False
+          ExplicitTop = 39
         end
       end
       object pnGrid: TPanel
         Left = 0
-        Top = 61
+        Top = 69
         Width = 976
-        Height = 387
+        Height = 379
         Align = alClient
         TabOrder = 1
+        ExplicitTop = 61
+        ExplicitHeight = 387
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
           Width = 974
-          Height = 385
+          Height = 377
           Align = alClient
           Images = dmPrincipal.imgIcons_16
           TabOrder = 0
@@ -245,6 +247,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
+          ExplicitTop = 0
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -314,10 +317,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0
@@ -433,6 +432,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object Ac_Adicionar_Filtro_Pesquisa: TAction
       Category = 'Master'
       Caption = 'Adicionar filtro de pesquisa'
+      OnExecute = Ac_Adicionar_Filtro_PesquisaExecute
     end
   end
   object dsMaster: TDataSource
@@ -448,5 +448,8 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   object pmPesquisa: TPopupMenu
     Left = 656
     Top = 168
+    object Adicionarfiltrodepesquisa1: TMenuItem
+      Action = Ac_Adicionar_Filtro_Pesquisa
+    end
   end
 end

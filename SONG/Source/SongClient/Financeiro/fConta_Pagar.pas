@@ -17,7 +17,8 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
   System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
-  cxCheckBox, Vcl.ExtDlgs, fFornecedor, fPlano_Contas, Vcl.Menus;
+  cxCheckBox, Vcl.ExtDlgs, fFornecedor, fPlano_Contas, Vcl.Menus, cxLabel,
+  cxButtons;
 
 type
   TContaPagar = class(TModelo)
@@ -414,6 +415,7 @@ end;
 procedure TfrmContaPagar.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
+
   if cbPesquisarPor.EditValue = coPesquisaDescricao then
     ipCds.ppuAddParametro(TParametros.coDescricao, EditPesquisa.Text)
   else if cbPesquisarPor.EditValue = coPesquisaFornecedor then

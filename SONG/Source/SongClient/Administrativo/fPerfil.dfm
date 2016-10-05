@@ -1,6 +1,5 @@
 inherited frmPerfil: TfrmPerfil
   Caption = 'Perfis de Usu'#225'rio'
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -33,6 +32,8 @@ inherited frmPerfil: TfrmPerfil
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
+          ExplicitTop = 1
+          ExplicitHeight = 144
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -112,10 +113,6 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6

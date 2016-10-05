@@ -192,19 +192,21 @@ inherited frmContaPagar: TfrmContaPagar
         end
         inherited pnFiltros: TPanel
           Width = 984
+          ExplicitTop = 43
           ExplicitWidth = 984
         end
       end
       inherited pnGrid: TPanel
         Width = 986
-        Height = 402
+        Height = 394
         ExplicitWidth = 986
-        ExplicitHeight = 401
+        ExplicitHeight = 394
         inherited cxGridRegistros: TcxGrid
           Width = 984
-          Height = 167
+          Height = 159
+          ExplicitTop = 1
           ExplicitWidth = 984
-          ExplicitHeight = 167
+          ExplicitHeight = 159
           inherited viewRegistros: TcxGridDBTableView
             DataController.Summary.FooterSummaryItems = <
               item
@@ -291,15 +293,15 @@ inherited frmContaPagar: TfrmContaPagar
           end
         end
         inherited cxSplitter1: TcxSplitter
-          Top = 168
+          Top = 160
           Width = 984
-          ExplicitTop = 185
+          ExplicitTop = 160
           ExplicitWidth = 984
         end
         inherited pnDetail: TPanel
-          Top = 174
+          Top = 166
           Width = 984
-          ExplicitTop = 191
+          ExplicitTop = 166
           ExplicitWidth = 984
           inherited pcDetails: TcxPageControl
             Width = 982
@@ -626,10 +628,6 @@ inherited frmContaPagar: TfrmContaPagar
           object tabInfoGeral: TcxTabSheet
             Caption = 'Informa'#231#245'es Gerais'
             ImageIndex = 0
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label3: TLabel
               Left = 5
               Top = 2
@@ -925,10 +923,6 @@ inherited frmContaPagar: TfrmContaPagar
           object tabVinculo: TcxTabSheet
             Caption = 'V'#237'nculos'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnVinculoTop: TPanel
               Left = 0
               Top = 0

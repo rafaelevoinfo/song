@@ -16,7 +16,8 @@ uses
   Datasnap.DBClient, uControleAcesso, System.Generics.Collections, cxCheckBox,
   uUtils, MidasLib, dmuLookup, dmuPrincipal, cxTL, cxTLdxBarBuiltInMenu,
   cxInplaceContainer, cxDBTL, cxTLData, uTypes, System.TypInfo, cxGroupBox,
-  cxRadioGroup, cxLabel, cxDBLabel, cxLocalization, Vcl.ExtDlgs;
+  cxRadioGroup, cxLabel, cxDBLabel, cxLocalization, Vcl.ExtDlgs, Vcl.Menus,
+  cxButtons;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)

@@ -11,9 +11,28 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       ExplicitTop = 0
       ExplicitWidth = 0
       ExplicitHeight = 0
+      inherited pnPesquisa: TPanel
+        inherited pnFiltros: TPanel
+          inherited Panel1: TPanel
+            Left = 660
+            inherited cxLabel1: TcxLabel
+              AnchorX = 76
+              AnchorY = 12
+            end
+          end
+          inherited Panel2: TPanel
+            Left = 763
+            ExplicitLeft = 660
+            inherited cxLabel2: TcxLabel
+              AnchorX = 183
+              AnchorY = 10
+            end
+          end
+        end
+      end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          Height = 152
+          Height = 144
           ExplicitHeight = 152
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
@@ -21,7 +40,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
         object cxSplitter1: TcxSplitter
           Left = 1
-          Top = 153
+          Top = 145
           Width = 974
           Height = 6
           AlignSplitter = salBottom
@@ -30,7 +49,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
         object pnDetail: TPanel
           Left = 1
-          Top = 159
+          Top = 151
           Width = 974
           Height = 227
           Align = alBottom
