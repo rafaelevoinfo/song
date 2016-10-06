@@ -236,11 +236,11 @@ type
     ppDBText13: TppDBText;
     ppLine3: TppLine;
     ppLabel12: TppLabel;
-    ppSystemVariable2: TppSystemVariable;
     btnPesquisar_Pessoa_Responsavel: TButton;
     Ac_Pesquisar_Responsavel: TAction;
     viewRegistrosNOME_SOLICITANTE: TcxGridDBColumn;
     viewRegistrosNOME_RESPONSAVEL: TcxGridDBColumn;
+    ppDBText14: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure viewRegistrosSTATUSPropertiesEditValueChanged(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);

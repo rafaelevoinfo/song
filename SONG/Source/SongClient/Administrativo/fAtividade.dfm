@@ -233,10 +233,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailComentario: TcxTabSheet [0]
               Caption = 'Coment'#225'rios'
               ImageIndex = 4
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -383,10 +379,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -493,10 +485,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailVinculo: TcxTabSheet
               Caption = 'Atividades v'#237'nculadas'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesDetailVinculo: TPanel
                 Left = 0
                 Top = 0
@@ -618,10 +606,6 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailArquivo: TcxTabSheet
               Caption = 'Arquivos'
               ImageIndex = 3
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -1048,10 +1032,6 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailProjeto: TcxTabSheet
       Caption = 'tabCadastroDetailProjeto'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnCadastroDetailProjeto: TPanel
         Left = 0
         Top = 0
@@ -1150,10 +1130,6 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailVinculo: TcxTabSheet
       Caption = 'tabCadastroDetailVinculo'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnCadastroVinculo: TPanel
         Left = 0
         Top = 50
@@ -1271,10 +1247,6 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailArquivo: TcxTabSheet
       Caption = 'tabCadastroDetailArquivo'
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnCadastroDetailArquivo: TPanel
         Left = 0
         Top = 0
@@ -1382,10 +1354,6 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailComentario: TcxTabSheet
       Caption = 'tabCadastroDetailComentario'
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnCadastroDetailComentario: TPanel
         Left = 0
         Top = 0
@@ -1806,7 +1774,7 @@ inherited frmAtividade: TfrmAtividade
         mmHeight = 233315
         mmLeft = 0
         mmTop = 0
-        mmWidth = 194205
+        mmWidth = 196321
         BandType = 4
         LayerName = Foreground
         mmBottomOffset = 0
@@ -1825,7 +1793,7 @@ inherited frmAtividade: TfrmAtividade
           FormField = False
           Transparent = True
           mmHeight = 4233
-          mmLeft = 1784
+          mmLeft = 2510
           mmTop = 12964
           mmWidth = 11906
           BandType = 4
@@ -1845,9 +1813,9 @@ inherited frmAtividade: TfrmAtividade
           Transparent = True
           DataPipelineName = 'DBPipeAtividade'
           mmHeight = 4233
-          mmLeft = 14749
+          mmLeft = 14991
           mmTop = 12964
-          mmWidth = 46831
+          mmWidth = 45941
           BandType = 4
           LayerName = Foreground
         end
@@ -1864,9 +1832,9 @@ inherited frmAtividade: TfrmAtividade
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 5027
-          mmLeft = 79687
+          mmLeft = 1443
           mmTop = 2425
-          mmWidth = 35983
+          mmWidth = 194349
           BandType = 4
           LayerName = Foreground
         end
@@ -1884,9 +1852,9 @@ inherited frmAtividade: TfrmAtividade
           Transparent = True
           DataPipelineName = 'DBPipeAtividade'
           mmHeight = 4233
-          mmLeft = 90684
+          mmLeft = 89716
           mmTop = 12964
-          mmWidth = 38100
+          mmWidth = 33193
           BandType = 4
           LayerName = Foreground
         end
@@ -1902,7 +1870,7 @@ inherited frmAtividade: TfrmAtividade
           FormField = False
           Transparent = True
           mmHeight = 4233
-          mmLeft = 63168
+          mmLeft = 62200
           mmTop = 12964
           mmWidth = 26723
           BandType = 4
@@ -1922,9 +1890,9 @@ inherited frmAtividade: TfrmAtividade
           Transparent = True
           DataPipelineName = 'DBPipeAtividade'
           mmHeight = 4233
-          mmLeft = 160333
+          mmLeft = 154527
           mmTop = 12964
-          mmWidth = 32544
+          mmWidth = 40169
           BandType = 4
           LayerName = Foreground
         end
@@ -1940,7 +1908,7 @@ inherited frmAtividade: TfrmAtividade
           FormField = False
           Transparent = True
           mmHeight = 4233
-          mmLeft = 129377
+          mmLeft = 123571
           mmTop = 12964
           mmWidth = 30427
           BandType = 4
@@ -1958,7 +1926,7 @@ inherited frmAtividade: TfrmAtividade
           FormField = False
           Transparent = True
           mmHeight = 5027
-          mmLeft = 1415
+          mmLeft = 2383
           mmTop = 24386
           mmWidth = 22754
           BandType = 4
@@ -1978,7 +1946,7 @@ inherited frmAtividade: TfrmAtividade
           Transparent = True
           DataPipelineName = 'DBPipeAtividade'
           mmHeight = 4233
-          mmLeft = 25227
+          mmLeft = 26195
           mmTop = 24387
           mmWidth = 144992
           BandType = 4
@@ -1996,7 +1964,7 @@ inherited frmAtividade: TfrmAtividade
           FormField = False
           Transparent = True
           mmHeight = 5027
-          mmLeft = 1415
+          mmLeft = 2383
           mmTop = 30208
           mmWidth = 28046
           BandType = 4
@@ -2016,7 +1984,7 @@ inherited frmAtividade: TfrmAtividade
           Transparent = True
           DataPipelineName = 'DBPipeAtividade'
           mmHeight = 4233
-          mmLeft = 30256
+          mmLeft = 31224
           mmTop = 30209
           mmWidth = 139965
           BandType = 4
@@ -2034,9 +2002,9 @@ inherited frmAtividade: TfrmAtividade
           FormField = False
           Transparent = True
           mmHeight = 4233
-          mmLeft = 85196
-          mmTop = 36248
-          mmWidth = 20505
+          mmLeft = 89209
+          mmTop = 47096
+          mmWidth = 20373
           BandType = 4
           LayerName = Foreground
         end
@@ -2055,9 +2023,9 @@ inherited frmAtividade: TfrmAtividade
           RemoveEmptyLines = False
           Transparent = True
           DataPipelineName = 'DBPipeAtividade'
-          mmHeight = 144318
+          mmHeight = 135178
           mmLeft = 2379
-          mmTop = 42334
+          mmTop = 52797
           mmWidth = 189710
           BandType = 4
           LayerName = Foreground
@@ -2166,19 +2134,23 @@ inherited frmAtividade: TfrmAtividade
           BandType = 4
           LayerName = Foreground
         end
-        object ppSystemVariable2: TppSystemVariable
+        object ppDBText14: TppDBText
           DesignLayer = ppDesignLayer1
-          UserName = 'SystemVariable2'
+          UserName = 'DBText201'
+          DataField = 'NOME'
+          DataPipeline = DBPipeAtividade
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 10
-          Font.Style = []
+          Font.Size = 12
+          Font.Style = [fsBold]
+          ParentDataPipeline = False
           Transparent = True
+          DataPipelineName = 'DBPipeAtividade'
           mmHeight = 4233
-          mmLeft = 141288
-          mmTop = 214960
-          mmWidth = 20505
+          mmLeft = 2381
+          mmTop = 41215
+          mmWidth = 190500
           BandType = 4
           LayerName = Foreground
         end
@@ -2385,156 +2357,194 @@ inherited frmAtividade: TfrmAtividade
     Left = 904
     Top = 124
     object DBPipeAtividadeppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_SOLICITANTE'
       FieldName = 'ID_SOLICITANTE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField4: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_RESPONSAVEL'
       FieldName = 'ID_RESPONSAVEL'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField5: TppField
-      Alignment = taRightJustify
       FieldAlias = 'STATUS'
       FieldName = 'STATUS'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField6: TppField
       FieldAlias = 'DATA_INICIAL'
       FieldName = 'DATA_INICIAL'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 5
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField7: TppField
       FieldAlias = 'DATA_FINAL'
       FieldName = 'DATA_FINAL'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 6
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField8: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_PROJETO'
       FieldName = 'ID_PROJETO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 7
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField9: TppField
       FieldAlias = 'NOME_PROJETO'
       FieldName = 'NOME_PROJETO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 8
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField10: TppField
       FieldAlias = 'DESCRICAO'
       FieldName = 'DESCRICAO'
-      FieldLength = 1000
-      DisplayWidth = 1000
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField11: TppField
       FieldAlias = 'DATA_CADASTRO'
       FieldName = 'DATA_CADASTRO'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 10
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField12: TppField
       FieldAlias = 'DATA_ALTERACAO'
       FieldName = 'DATA_ALTERACAO'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 11
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField13: TppField
       FieldAlias = 'DATA_FINALIZACAO'
       FieldName = 'DATA_FINALIZACAO'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 12
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField14: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_AREA_ATUACAO'
       FieldName = 'ID_AREA_ATUACAO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 13
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField15: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID_AREA_EXECUCAO'
       FieldName = 'ID_AREA_EXECUCAO'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 14
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField16: TppField
       FieldAlias = 'AREA_ATUACAO'
       FieldName = 'AREA_ATUACAO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 15
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField17: TppField
       FieldAlias = 'AREA_EXECUCAO'
       FieldName = 'AREA_EXECUCAO'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 16
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField18: TppField
       FieldAlias = 'NOME_SOLICITANTE'
       FieldName = 'NOME_SOLICITANTE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 17
+      Searchable = False
+      Sortable = False
     end
     object DBPipeAtividadeppField19: TppField
       FieldAlias = 'NOME_RESPONSAVEL'
       FieldName = 'NOME_RESPONSAVEL'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 18
+      Searchable = False
+      Sortable = False
     end
   end
   object DBPipeOrganizacao: TppDBPipeline

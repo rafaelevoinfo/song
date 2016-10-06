@@ -100,7 +100,7 @@ inherited frmPrincipal: TfrmPrincipal
     Left = 40
     Top = 272
     object ComprasVendas1: TMenuItem
-      Caption = 'Compras e Vendas'
+      Caption = 'Compras/Vendas e Servi'#231'os'
       object SolicitaodeCompra2: TMenuItem
         Action = Ac_Solicitacao_Compra
       end
