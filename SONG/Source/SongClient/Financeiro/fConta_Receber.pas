@@ -17,7 +17,7 @@ uses
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCalc, cxCurrencyEdit,
   cxSpinEdit, dxCheckGroupBox, Datasnap.DBClient, uClientDataSet, uUtils,
   System.Math, System.DateUtils, uMensagem, System.Generics.Collections,
-  Vcl.ExtDlgs, fCliente;
+  Vcl.ExtDlgs, fCliente, Vcl.Menus;
 
 type
   TContaReceber = class(TModelo)
@@ -156,8 +156,8 @@ type
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprExecutarCancelar; override;
-    procedure pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela); override;
-    procedure pprCarregarDadosModelo;override;
+    procedure pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela); override;
+    procedure pprCarregarDadosModelo; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -168,6 +168,7 @@ type
     coPesquisaClienteFinanciador = 6;
     coPesquisaPlanoConta = 7;
     coPesquisaFundo = 8;
+    coPesquisaDataVencimento = 9;
 
   end;
 
@@ -217,7 +218,7 @@ begin
   FIdsParcelasCancelar.Clear;
 end;
 
-procedure TfrmContaReceber.pprBeforeExcluir(ipId:Integer; ipAcao: TAcaoTela);
+procedure TfrmContaReceber.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
 begin
   inherited;
   dmPrincipal.FuncoesFinanceiro.ppuCancelarTodosRecebimentosContaReceber(ipId);
@@ -240,7 +241,7 @@ end;
 
 procedure TfrmContaReceber.pprCarregarDadosModelo;
 var
-  vaContaReceber:TContaReceber;
+  vaContaReceber: TContaReceber;
 begin
   inherited;
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TContaReceber) then
@@ -270,6 +271,8 @@ begin
     ipCds.ppuAddParametro(TParametros.coPlanoConta, cbPesquisaPlanoConta.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaFundo then
     ipCds.ppuAddParametro(TParametros.coFundo, cbPesquisaFundo.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaDataVencimento then
+    ipCds.ppuAddParametro(TParametros.coDataVencimento, DateToStr(EditDataInicialPesquisa.Date) + ';' + DateToStr(EditDataFinalPesquisa.Date));
 end;
 
 procedure TfrmContaReceber.pprEfetuarPesquisa;
@@ -449,10 +452,10 @@ begin
 end;
 
 procedure TfrmContaReceber.cbClienteKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
-  if key = VK_F2 then
+  if Key = VK_F2 then
     ppvAdicionarCliente;
 end;
 
@@ -582,7 +585,7 @@ begin
 
   FIdsParcelasCancelar := TList<Integer>.Create;
 
-  PesquisaPadrao := Ord(tppData);
+  PesquisaPadrao := coPesquisaDataVencimento;
 
   EditDataInicialPesquisa.Date := Now;
   EditDataFinalPesquisa.Date := IncDay(Now, 7);
@@ -608,15 +611,18 @@ begin
   cbPesquisaClienteFinanciador.Visible := cbPesquisarPor.EditValue = coPesquisaClienteFinanciador;
   cbPesquisaPlanoConta.Visible := cbPesquisarPor.EditValue = coPesquisaPlanoConta;
   cbPesquisaFundo.Visible := cbPesquisarPor.EditValue = coPesquisaFundo;
+  pnData.Visible := pnData.Visible or (cbPesquisarPor.EditValue = coPesquisaDataVencimento);
   EditPesquisa.Visible := EditPesquisa.Visible and
-    (not(cbPesquisaClienteFinanciador.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaFundo.Visible));
+    (not(cbPesquisaClienteFinanciador.Visible or cbPesquisaPlanoConta.Visible or cbPesquisaFundo.Visible or pnData.Visible));
 
   if cbPesquisaClienteFinanciador.Visible then
     Result := cbPesquisaClienteFinanciador
   else if cbPesquisaPlanoConta.Visible then
     Result := cbPesquisaPlanoConta
-  else if cbFundo.Visible then
-    Result := cbFundo;
+  else if cbPesquisaFundo.Visible then
+    Result := cbPesquisaFundo
+  else if pnData.Visible then
+    Result := pnData;
 end;
 
 function TfrmContaReceber.fprGetPermissao: string;

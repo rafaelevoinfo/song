@@ -16,7 +16,7 @@ uses
   cxDBLookupComboBox, uClientDataSet, System.TypInfo, uControleAcesso,
   uExceptions, dmuLookup, uTypes, cxCurrencyEdit, cxDBEdit, dmuPrincipal,
   Datasnap.DBClient, System.DateUtils, cxCheckBox, cxCheckComboBox, uUtils,
-  Vcl.ExtDlgs;
+  Vcl.ExtDlgs, Vcl.Menus;
 
 type
   TfrmTransferenciaFinanceira = class(TfrmBasicoCrud)
@@ -89,6 +89,7 @@ type
     procedure pprValidarDados; override;
     procedure pprBeforeSalvar; override;
     function fprHabilitarAlterar: Boolean; override;
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
   public
     procedure ppuIncluir; override;
   public const
@@ -203,6 +204,15 @@ end;
 function TfrmTransferenciaFinanceira.fprHabilitarAlterar: Boolean;
 begin
   Result := false;
+end;
+
+function TfrmTransferenciaFinanceira.fprMontarTextoPanelFiltro(
+  ipParametro: String; ipValor: Variant): String;
+begin
+  if ipParametro = TParametros.coTipo then
+    Result := 'Tipos de Transferência = ' + cbTipoTransferenciaPesquisa.Text
+  else
+    Result := inherited;
 end;
 
 procedure TfrmTransferenciaFinanceira.pprBeforeSalvar;

@@ -1,6 +1,7 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
   ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
+  ExplicitWidth = 320
   ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
@@ -11,29 +12,10 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       ExplicitTop = 0
       ExplicitWidth = 0
       ExplicitHeight = 0
-      inherited pnPesquisa: TPanel
-        inherited pnFiltros: TPanel
-          inherited Panel1: TPanel
-            Left = 660
-            inherited cxLabel1: TcxLabel
-              AnchorX = 76
-              AnchorY = 12
-            end
-          end
-          inherited Panel2: TPanel
-            Left = 763
-            ExplicitLeft = 660
-            inherited cxLabel2: TcxLabel
-              AnchorX = 183
-              AnchorY = 10
-            end
-          end
-        end
-      end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
           Height = 144
-          ExplicitHeight = 152
+          ExplicitHeight = 144
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
           end
@@ -204,6 +186,12 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
         end
       end
     end
+    inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
     object tabCadastroDetail: TcxTabSheet
       Caption = 'tabCadastroDetail'
       ImageIndex = 2
@@ -318,7 +306,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
       OnUpdate = Ac_Alterar_DetailUpdate
     end
   end
-  object dsDetail: TDataSource [4]
+  object dsDetail: TDataSource [3]
     Left = 424
     Top = 240
   end

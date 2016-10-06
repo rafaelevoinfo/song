@@ -418,6 +418,8 @@ begin
       Result := cbPesquisarPor.Text + ' entre ' + DateToStr(TUtils.fpuExtrairData(ipValor, 0)) +
         ' e ' + DateToStr(TUtils.fpuExtrairData(ipValor, 1));
     end
+  else if (ipParametro = TParametros.coStatus) or (ipParametro = TParametros.coAtivo) then
+    Result := 'Status = '+rgStatus.Properties.Items[rgStatus.ItemIndex].Caption
   else if ipParametro = TParametros.coTodos then
     Result := 'Todos'
   else
@@ -478,8 +480,7 @@ begin
                   if vaPanel.Controls[j] is TcxLabel then
                     begin
                       TcxLabel(vaPanel.Controls[j]).Caption := fprMontarTextoPanelFiltro(ipParametro, ipValor);
-                      vaPanel.AutoSize:=false;
-                      vaPanel.AutoSize := true;
+                      TcxLabel(vaPanel.Controls[j]).Left := -10000;
                       Exit;
                     end;
                 end;
@@ -493,10 +494,11 @@ var
   vaPanel: TPanel;
   vaButton: TcxButton;
   vaLabel: TcxLabel;
-  vaWidth:Integer;
+  vaWidth: Integer;
 begin
   // criando panel
   vaPanel := TPanel.Create(Self); // vai ser destruido junto do form
+  // vaPanel.Width := 350;
   vaPanel.Parent := ipContainer;
   vaPanel.Caption := ipParametro; // usado para achar o registro no dictionary depois
   vaPanel.Align := alRight;
@@ -505,11 +507,9 @@ begin
   vaPanel.ShowCaption := False;
 
   vaButton := TcxButton.Create(Self);
-//  vaButton.Parent := vaPanel;
-//  vaButton.Left := 0;
-//  vaButton.Top := 0;
+  vaButton.Parent := vaPanel;
+  vaButton.Align := alRight;
   vaButton.Width := 25;
-  //vaButton.Align := alRight;
   vaButton.Caption := '';
   vaButton.OptionsImage.Images := dmPrincipal.imgIcons_16;
   vaButton.OptionsImage.ImageIndex := 5;
@@ -525,17 +525,11 @@ begin
   vaLabel.Caption := fprMontarTextoPanelFiltro(ipParametro, ipValor);
   vaLabel.AlignWithMargins := True;
   vaLabel.Transparent := True;
-  vaLabel.Left := vaButton.Width;
+
+  vaLabel.Align := alRight;
+  vaLabel.Left := -10000;
 
   vaPanel.AutoSize := True;
-  vaWidth := vaPanel.Width;
-  vaPanel.AutoSize := false;
-
-
-  vaButton.Parent := vaPanel;
-  vaLabel.Align := alClient;
-  vaButton.Align := alRight;
-  vaPanel.AutoSize := true;
 end;
 
 procedure TfrmBasicoCrud.pprAdicionarFiltro;
@@ -543,6 +537,7 @@ var
   vaCds: TRFClientDataSet;
   I: Integer;
   vaContemFiltro: Boolean;
+  vaValor,vaOperador:String;
 begin
   vaCds := TRFClientDataSet.Create(nil);
   FAdicionarFiltros := False;
@@ -552,16 +547,26 @@ begin
     for I := 0 to vaCds.Parametros.Count - 1 do
       begin
         vaContemFiltro := FFiltrosPesquisa.ContainsKey(vaCds.Parametros[I]);
-
-        FFiltrosPesquisa.AddOrSetValue(vaCds.Parametros[I], vaCds.ValoresParametros[I]);
-
-        ppvConfigurarPanelFiltro;
+        TUtils.ppuExtrairValorOperadorParametro(vaCds.ValoresParametros[i],vaValor,vaOperador,TParametros.coDelimitador);
 
         if vaContemFiltro then
-          pprAtualizarPanelFiltro(vaCds.Parametros[I], vaCds.ValoresParametros[I])
+          FFiltrosPesquisa.Items[vaCds.Parametros[I]] := vaValor
         else
-          pprAdicionarPanelFiltro(pnFiltros, vaCds.Parametros[I], vaCds.ValoresParametros[I]);
+          FFiltrosPesquisa.Add(vaCds.Parametros[I], vaValor);
+
+        if I = 0 then
+          begin
+            ppvConfigurarPanelFiltro;
+            Application.ProcessMessages;
+          end;
+
+        if vaContemFiltro then
+          pprAtualizarPanelFiltro(vaCds.Parametros[I], vaValor)
+        else
+          pprAdicionarPanelFiltro(pnFiltros, vaCds.Parametros[I], vaValor);
       end;
+
+    // ppvConfigurarPanelFiltro;
   finally
     FAdicionarFiltros := True;
     vaCds.Free;

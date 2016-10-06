@@ -16,7 +16,7 @@ uses
   System.DateUtils, System.TypInfo, uControleAcesso, dmuLookup, cxDBEdit,
   cxCalc, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uClientDataSet,
   uExceptions, dmuPrincipal, uUtils, System.Generics.Collections, uMensagem,
-  Vcl.ExtDlgs;
+  Vcl.ExtDlgs, Vcl.Menus;
 
 type
   TSaida = class(TModelo)
@@ -105,6 +105,7 @@ type
     procedure pprValidarDados; override;
     procedure pprValidarDadosDetail; override;
     procedure pprExecutarSalvarDetail; override;
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuIncluir; override;
@@ -480,7 +481,7 @@ procedure TfrmSaida.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
   if cbPesquisaEspecie.Visible and (not VarIsNull(cbPesquisaEspecie.EditValue)) then
-    ipCds.ppuAddParametro(TParametros.coEspecie, cbPesquisaEspecie.EditValue, TParametros.coEspecie, true);
+    ipCds.ppuAddParametro(TParametros.coEspecie, cbPesquisaEspecie.EditValue);
 
   if cbPesquisarPor.EditValue = coPesquisaItem then
     ipCds.ppuAddParametro(TParametros.coItem, cbPesquisaItem.EditValue)
@@ -511,6 +512,15 @@ end;
 function TfrmSaida.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estSaida));
+end;
+
+function TfrmSaida.fprMontarTextoPanelFiltro(ipParametro: String;
+  ipValor: Variant): String;
+begin
+  if ipParametro = TParametros.coEspecie then
+    Result := 'Espécie = ' + cbPesquisaEspecie.Text
+  else
+    Result := inherited;
 end;
 
 function TfrmSaida.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;

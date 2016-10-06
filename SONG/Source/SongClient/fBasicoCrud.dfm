@@ -223,7 +223,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           Align = alBottom
           TabOrder = 2
           Visible = False
-          ExplicitTop = 39
         end
       end
       object pnGrid: TPanel
@@ -233,8 +232,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
         Height = 379
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 61
-        ExplicitHeight = 387
         object cxGridRegistros: TcxGrid
           Left = 1
           Top = 1
@@ -247,7 +244,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
           LockedStateImageOptions.ShowText = True
           LockedStateImageOptions.Text = 'Pesquisando...'
           LookAndFeel.NativeStyle = False
-          ExplicitTop = 0
           object viewRegistros: TcxGridDBTableView
             OnDblClick = viewRegistrosDblClick
             Navigator.Buttons.CustomButtons = <>

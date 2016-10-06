@@ -18,7 +18,7 @@ uses
   uControleAcesso, System.TypInfo, uMensagem, uExceptions, uUtils, fCompra,
   dmuPrincipal, Vcl.ExtDlgs, fItem, ppDB, ppDBPipe, ppParameter, ppDesignLayer,
   ppModule, raCodMod, ppCtrls, ppBands, ppVar, ppPrnabl, ppClass, ppCache,
-  ppComm, ppRelatv, ppProd, ppReport, ppStrtch, ppMemo, ppTableGrid;
+  ppComm, ppRelatv, ppProd, ppReport, ppStrtch, ppMemo, ppTableGrid, Vcl.Menus;
 
 type
   TfrmSolicitacaoCompra = class(TfrmBasicoCrudMasterDetail)
@@ -192,6 +192,8 @@ type
     procedure pprBeforeIncluirDetail; override;
     procedure pprBeforeAlterarDetail; override;
     procedure pprBeforeExcluirDetail(ipId: Integer); override;
+
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
 
   public
     procedure ppuIncluir; override;
@@ -457,6 +459,15 @@ end;
 function TfrmSolicitacaoCompra.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoEstoque), Ord(estSolicitacaoCompra));
+end;
+
+function TfrmSolicitacaoCompra.fprMontarTextoPanelFiltro(ipParametro: String;
+  ipValor: Variant): String;
+begin
+  if (ipParametro = TParametros.coStatus) then
+    Result := 'Status = '+cbStatusPesquisa.Text
+  else
+    Result := inherited;
 end;
 
 procedure TfrmSolicitacaoCompra.pprAfterSalvar(ipAcaoExecutada: TDataSetState);

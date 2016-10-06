@@ -100,9 +100,6 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
         inherited pnBotoes: TPanel
           Width = 435
           ExplicitWidth = 435
-          inherited btnUtilizar: TButton
-            ExplicitLeft = 188
-          end
         end
       end
       inherited pnGrid: TPanel
@@ -198,10 +195,6 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label5: TLabel
           Left = 152

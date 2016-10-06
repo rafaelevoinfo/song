@@ -336,7 +336,9 @@ begin
       else if ipParam.Name = TParametros.coVenda then
         Result := TSQLGenerator.fpuFilterInteger(Result, 'VENDA_ITEM', 'ID_VENDA', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coItem then
-        Result := TSQLGenerator.fpuFilterInteger(Result, 'SAIDA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador);
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'SAIDA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'SAIDA_ITEM', 'ID_ESPECIE', vaValor.ToInteger, vaOperador);
 
     end
   else if (ipTabela = 'ITEM_PATRIMONIO') then

@@ -16,7 +16,7 @@ uses
   uUtils, Datasnap.DBClient, fmGrids, uTypes, uClientDataSet,
   System.TypInfo, uControleAcesso, cxRadioGroup, dmuPrincipal, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dmuLookup, cxMemo, cxCheckBox,
-  cxCheckComboBox, Vcl.CustomizeDlg, cxLocalization, Vcl.ExtDlgs;
+  cxCheckComboBox, Vcl.CustomizeDlg, cxLocalization, Vcl.ExtDlgs, Vcl.Menus;
 
 type
   TfrmPessoa = class(TfrmBasicoCrudMasterDetail)
@@ -98,6 +98,7 @@ type
     function fprHabilitarAlterar: Boolean; override;
 
     function fprGetPermissao: String; override;
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
   public
     procedure ppuIncluirDetail; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
@@ -201,6 +202,15 @@ end;
 function TfrmPessoa.fprHabilitarAlterar: Boolean;
 begin
   Result := inherited and dmAdministrativo.cdsPessoa.Active and (dmAdministrativo.cdsPessoaATIVO.AsInteger = 0);
+end;
+
+function TfrmPessoa.fprMontarTextoPanelFiltro(ipParametro: String;
+  ipValor: Variant): String;
+begin
+  if ipParametro = TParametros.coTipo then
+    Result := 'Tipos de Vínculos = ' + cbTipoVinculoPesquisa.Text
+  else
+    Result := inherited;
 end;
 
 procedure TfrmPessoa.frameGridsbtnAddTodosClick(Sender: TObject);

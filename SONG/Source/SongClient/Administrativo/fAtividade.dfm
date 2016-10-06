@@ -6,7 +6,7 @@ inherited frmAtividade: TfrmAtividade
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -223,12 +223,20 @@ inherited frmAtividade: TfrmAtividade
             end
           end
         end
+        inherited cxSplitter1: TcxSplitter
+          ExplicitTop = 145
+        end
         inherited pnDetail: TPanel
+          ExplicitTop = 151
           inherited pcDetails: TcxPageControl
             OnChange = pcDetailsChange
             object tabDetailComentario: TcxTabSheet [0]
               Caption = 'Coment'#225'rios'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -375,6 +383,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailProjeto: TcxTabSheet
               Caption = 'Projetos vinculados'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -481,6 +493,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailVinculo: TcxTabSheet
               Caption = 'Atividades v'#237'nculadas'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesDetailVinculo: TPanel
                 Left = 0
                 Top = 0
@@ -602,6 +618,10 @@ inherited frmAtividade: TfrmAtividade
             object tabDetailArquivo: TcxTabSheet
               Caption = 'Arquivos'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -1028,6 +1048,10 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailProjeto: TcxTabSheet
       Caption = 'tabCadastroDetailProjeto'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnCadastroDetailProjeto: TPanel
         Left = 0
         Top = 0
@@ -1126,6 +1150,10 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailVinculo: TcxTabSheet
       Caption = 'tabCadastroDetailVinculo'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnCadastroVinculo: TPanel
         Left = 0
         Top = 50
@@ -1243,6 +1271,10 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailArquivo: TcxTabSheet
       Caption = 'tabCadastroDetailArquivo'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnCadastroDetailArquivo: TPanel
         Left = 0
         Top = 0
@@ -1350,6 +1382,10 @@ inherited frmAtividade: TfrmAtividade
     object tabCadastroDetailComentario: TcxTabSheet
       Caption = 'tabCadastroDetailComentario'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnCadastroDetailComentario: TPanel
         Left = 0
         Top = 0
@@ -1478,14 +1514,14 @@ inherited frmAtividade: TfrmAtividade
     Left = 312
     Top = 124
   end
-  inherited fdExportDialog: TSaveTextFileDialog
-    Left = 312
-    Top = 232
-  end
   inherited dsDetail: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Pessoa
     Left = 164
     Top = 124
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 312
+    Top = 232
   end
   object dsAtividade_Projeto: TDataSource
     DataSet = dmAdministrativo.cdsAtividade_Projeto

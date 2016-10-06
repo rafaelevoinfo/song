@@ -1,4 +1,5 @@
 inherited frmContaReceber: TfrmContaReceber
+  ActiveControl = btnIncluir
   Caption = 'Contas a Receber'
   OnDestroy = FormDestroy
   ExplicitWidth = 1000
@@ -6,6 +7,7 @@ inherited frmContaReceber: TfrmContaReceber
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -51,6 +53,10 @@ inherited frmContaReceber: TfrmContaReceber
                 Value = 2
               end
               item
+                Description = 'Data'
+                Value = 4
+              end
+              item
                 Description = 'Descri'#231#227'o'
                 Value = 5
               end
@@ -64,7 +70,7 @@ inherited frmContaReceber: TfrmContaReceber
               end
               item
                 Description = 'Data de Vencimento'
-                Value = 4
+                Value = 9
               end
               item
                 Description = 'Conta'
@@ -180,7 +186,11 @@ inherited frmContaReceber: TfrmContaReceber
             end
           end
         end
+        inherited cxSplitter1: TcxSplitter
+          ExplicitTop = 145
+        end
         inherited pnDetail: TPanel
+          ExplicitTop = 151
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Parcelas'
@@ -265,10 +275,6 @@ inherited frmContaReceber: TfrmContaReceber
             object tabVinculos: TcxTabSheet
               Caption = 'V'#237'nculos'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object cxGrid3: TcxGrid
                 Left = 0
                 Top = 0

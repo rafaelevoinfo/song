@@ -16,7 +16,7 @@ uses
   dmuViveiro, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, dmuLookup,
   uTypes, uClientDataSet, System.DateUtils, cxCalc, cxDBEdit, cxSpinEdit,
   cxMemo, fPessoa, dmuPrincipal, uUtils, uExceptions, fBasicoCrud,
-  fBasicoCrudMasterDetail, fCanteiro, Vcl.ExtDlgs;
+  fBasicoCrudMasterDetail, fCanteiro, Vcl.ExtDlgs, Vcl.Menus;
 
 type
   TLoteMuda = class(TLote)
@@ -134,6 +134,8 @@ type
     procedure pprDefinirTabDetailCadastro; override;
     procedure pprBeforeAlterarDetail; override;
     procedure pprCarregarDadosModeloDetail; override;
+
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
 
   public
     procedure ppuIncluir; override;
@@ -405,6 +407,15 @@ end;
 function TfrmLoteMuda.fprGetPermissao: String;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(vivLoteMuda));
+end;
+
+function TfrmLoteMuda.fprMontarTextoPanelFiltro(ipParametro: String;
+  ipValor: Variant): String;
+begin
+  if ipParametro = TParametros.coEspecie then
+    Result := 'Espécie = ' + cbEspeciePesquisa.Text
+  else
+    Result := inherited;
 end;
 
 { TLoteMuda }

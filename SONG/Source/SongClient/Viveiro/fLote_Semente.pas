@@ -17,7 +17,7 @@ uses
   Datasnap.DBClient, dmuLookup, uClientDataSet, uTypes, System.TypInfo,
   uControleAcesso, fPessoa, uUtils, System.DateUtils, uMensagem,
   fBasicoCrudMasterDetail, cxSplitter, dmuPrincipal, cxMemo, cxSpinEdit,
-  fCanteiro, System.Generics.Collections, Vcl.ExtDlgs;
+  fCanteiro, System.Generics.Collections, Vcl.ExtDlgs, Vcl.Menus;
 
 type
   TLoteSemente = class(TLote)
@@ -30,6 +30,7 @@ type
     procedure SetIdLoteOrigem(const Value: Integer);
     procedure SetIdCamaraFria(const Value: Integer);
     procedure SetMatrizes(const Value: TList<Integer>);
+
   public
     constructor Create;
     Destructor Destroy; override;
@@ -201,6 +202,8 @@ type
     procedure pprCarregarDadosModelo; override;
 
     procedure pprBeforeIncluir; override;
+
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
   public
     procedure ppuIncluir; override;
     procedure ppuIncluirDetail; override;
@@ -882,6 +885,15 @@ begin
   if not Result then
     Result := dmViveiro.cdsLote_Semente_Matriz.Active and ((dmViveiro.cdsLote_Semente_Matriz.State in [dsEdit, dsInsert]) or
       (dmViveiro.cdsLote_Semente_Matriz.ChangeCount > 0));
+end;
+
+function TfrmLoteSemente.fprMontarTextoPanelFiltro(ipParametro: String;
+ipValor: Variant): String;
+begin
+  if ipParametro = TParametros.coEspecie then
+    Result := 'Espécie = ' + cbEspeciePesquisa.Text
+  else
+    Result := inherited;
 end;
 
 function TfrmLoteSemente.fpuExcluirDetail(ipIds: TArray<Integer>): Boolean;

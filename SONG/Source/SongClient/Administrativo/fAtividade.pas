@@ -19,7 +19,7 @@ uses
   System.RegularExpressions, System.DateUtils, cxLocalization, System.Types,
   fAreaAtuacao, uExceptions, Datasnap.DBClient, ppDB, ppDBPipe, ppParameter,
   ppDesignLayer, ppVar, ppCtrls, ppBands, ppPrnabl, ppClass, ppCache, ppComm,
-  ppRelatv, ppProd, ppReport, ppStrtch, ppRegion, ppMemo;
+  ppRelatv, ppProd, ppReport, ppStrtch, ppRegion, ppMemo, Vcl.Menus;
 
 type
   TfrmAtividade = class(TfrmBasicoCrudMasterDetail)
@@ -301,6 +301,8 @@ type
     procedure pprBeforeIncluir; override;
 
     procedure pprCarregarProjetos(ipIdEspecifico: Integer = 0);
+
+    function fprMontarTextoPanelFiltro(ipParametro: String; ipValor: Variant): String; override;
   public
     procedure ppuIncluir; override;
     procedure ppuAlterarDetail(ipId: Integer); override;
@@ -761,6 +763,15 @@ end;
 function TfrmAtividade.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoAdministrativo), Ord(admAtividade));
+end;
+
+function TfrmAtividade.fprMontarTextoPanelFiltro(ipParametro: String;
+  ipValor: Variant): String;
+begin
+  if ipParametro = TParametros.coProjeto then
+    Result := 'Projetos = ' + cbProjetosPesquisa.Text
+  else
+    Result := inherited;
 end;
 
 procedure TfrmAtividade.pcDetailsChange(Sender: TObject);

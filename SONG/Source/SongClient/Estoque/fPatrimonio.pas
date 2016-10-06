@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls, cxPC, dmuEstoque, uTypes, uControleAcesso, System.TypInfo,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, fItemPatrimonio,
   uClientDataSet, dmuLookup, cxCurrencyEdit, cxDBEdit, cxSpinEdit, uMensagem,
-  uExceptions, cxMemo, uUtils, Vcl.ExtDlgs, dmuPrincipal;
+  uExceptions, cxMemo, uUtils, Vcl.ExtDlgs, dmuPrincipal, Vcl.Menus;
 
 type
   TfrmPatrimonio = class(TfrmBasicoCrud)
@@ -223,16 +223,16 @@ end;
 procedure TfrmPatrimonio.pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet);
 begin
   inherited;
-  dmEstoque.cdsPatrimonio.ppuAddParametro(TParametros.coStatus, rgStatus.ItemIndex);
+  ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.ItemIndex);
 
   if (cbPesquisarPor.Editvalue = coPesqItem) then
-    dmEstoque.cdsPatrimonio.ppuAddParametro(TParametros.coItem, cbPesquisaItem.Editvalue)
+    ipCds.ppuAddParametro(TParametros.coItem, cbPesquisaItem.Editvalue)
   else if cbPesquisarPor.Editvalue = coPesqLocalizacao then
-    dmEstoque.cdsPatrimonio.ppuAddParametro(TParametros.coLocalizacao, EditPesquisa.Text)
+    ipCds.ppuAddParametro(TParametros.coLocalizacao, EditPesquisa.Text)
   else if cbPesquisarPor.Editvalue = coPesqNotaFiscal then
-    dmEstoque.cdsPatrimonio.ppuAddParametro(TParametros.coNotaFiscal, EditPesquisa.Text)
+    ipCds.ppuAddParametro(TParametros.coNotaFiscal, EditPesquisa.Text)
   else if cbPesquisarPor.Editvalue = coPesqIdentificacao then
-    dmEstoque.cdsPatrimonio.ppuAddParametro(TParametros.coIdentificacao, EditPesquisa.Text);
+    ipCds.ppuAddParametro(TParametros.coIdentificacao, EditPesquisa.Text);
 end;
 
 procedure TfrmPatrimonio.pprValidarPesquisa;

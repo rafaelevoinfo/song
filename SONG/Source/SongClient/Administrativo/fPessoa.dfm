@@ -1,8 +1,10 @@
 inherited frmPessoa: TfrmPessoa
+  ActiveControl = btnIncluir
   Caption = 'Pessoas'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -159,10 +161,18 @@ inherited frmPessoa: TfrmPessoa
             end
           end
         end
+        inherited cxSplitter1: TcxSplitter
+          ExplicitTop = 145
+        end
         inherited pnDetail: TPanel
+          ExplicitTop = 151
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Perfis da Pessoa'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -494,6 +504,10 @@ inherited frmPessoa: TfrmPessoa
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         inline frameGrids: TframeGrids
           Left = 0
@@ -540,21 +554,17 @@ inherited frmPessoa: TfrmPessoa
               ExplicitWidth = 48
               ExplicitHeight = 377
               inherited btnAdd: TButton
-                Width = 48
                 ExplicitWidth = 48
               end
               inherited btnAddTodos: TButton
-                Width = 48
                 OnClick = frameGridsbtnAddTodosClick
                 ExplicitWidth = 48
               end
               inherited btnRemover: TButton
-                Width = 48
                 OnClick = frameGridsbtnRemoverClick
                 ExplicitWidth = 48
               end
               inherited btnRemoverTodos: TButton
-                Width = 48
                 ExplicitWidth = 48
               end
             end
@@ -597,6 +607,7 @@ inherited frmPessoa: TfrmPessoa
                 Left = 505
                 Width = 108
                 Caption = 'Perfis selecionados'
+                ExplicitLeft = 505
                 ExplicitWidth = 108
               end
             end

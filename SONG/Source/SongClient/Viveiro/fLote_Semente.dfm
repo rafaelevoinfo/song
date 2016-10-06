@@ -1,4 +1,5 @@
 inherited frmLoteSemente: TfrmLoteSemente
+  ActiveControl = btnIncluir
   Caption = 'Lotes de Sementes'
   ClientWidth = 1037
   ExplicitWidth = 1053
@@ -7,6 +8,7 @@ inherited frmLoteSemente: TfrmLoteSemente
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Width = 1037
+    Properties.ActivePage = tabPesquisa
     ExplicitWidth = 1037
     ClientRectRight = 1033
     inherited tabPesquisa: TcxTabSheet
@@ -117,6 +119,10 @@ inherited frmLoteSemente: TfrmLoteSemente
             WordWrap = True
           end
         end
+        inherited pnFiltros: TPanel
+          Width = 1027
+          ExplicitWidth = 1027
+        end
       end
       inherited pnGrid: TPanel
         Width = 1029
@@ -223,10 +229,12 @@ inherited frmLoteSemente: TfrmLoteSemente
         end
         inherited cxSplitter1: TcxSplitter
           Width = 1027
+          ExplicitTop = 145
           ExplicitWidth = 1027
         end
         inherited pnDetail: TPanel
           Width = 1027
+          ExplicitTop = 151
           ExplicitWidth = 1027
           inherited pcDetails: TcxPageControl
             Width = 1025
@@ -582,7 +590,7 @@ inherited frmLoteSemente: TfrmLoteSemente
                   Width = 110
                   Height = 15
                   Caption = 'Matr'#237'zes desse lote'
-                  ExplicitLeft = 505
+                  ExplicitLeft = 531
                   ExplicitWidth = 110
                 end
               end
@@ -1023,13 +1031,13 @@ inherited frmLoteSemente: TfrmLoteSemente
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsLote_Semente
   end
-  inherited fdExportDialog: TSaveTextFileDialog
-    Left = 616
-    Top = 272
-  end
   inherited dsDetail: TDataSource
     DataSet = dmViveiro.cdsSemeadura
     Left = 344
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 616
+    Top = 272
   end
   object cdsLocalMatrizes: TClientDataSet
     Aggregates = <>

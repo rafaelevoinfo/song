@@ -1,44 +1,52 @@
 inherited frmSaida: TfrmSaida
-  ActiveControl = btnSalvar
+  ActiveControl = btnIncluir
   Caption = 'Sa'#237'da'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
-          Left = 428
-          Width = 547
+          Left = 429
+          Width = 546
           ExplicitLeft = 428
-          ExplicitWidth = 547
+          ExplicitWidth = 546
           inherited Label1: TLabel
-            Left = 4
-            ExplicitLeft = 4
+            Left = 141
+            ExplicitLeft = 141
           end
           object Label8: TLabel [1]
-            Left = 135
+            Left = 5
             Top = 4
             Width = 36
             Height = 13
             Caption = 'Esp'#233'cie'
           end
           inherited rgStatus: TcxRadioGroup [2]
-            Left = 5
+            Left = 4
             Top = 38
-            ExplicitLeft = 5
+            TabOrder = 3
+            ExplicitLeft = 4
             ExplicitTop = 38
           end
           inherited pnData: TPanel [3]
-            Left = 319
-            ExplicitLeft = 319
+            Left = 318
+            TabOrder = 2
+            ExplicitLeft = 318
           end
           inherited EditPesquisa: TcxButtonEdit [4]
-            Left = 271
-            ExplicitLeft = 271
+            Left = 270
+            ExplicitLeft = 270
           end
           inherited cbPesquisarPor: TcxImageComboBox [5]
-            Left = 2
+            Left = 139
             Properties.Items = <
               item
                 Description = 'Todos'
@@ -66,14 +74,16 @@ inherited frmSaida: TfrmSaida
                 Description = 'Id da Venda'
                 Value = 7
               end>
-            ExplicitLeft = 2
+            TabOrder = 1
+            ExplicitLeft = 139
           end
           inherited btnPesquisar: TButton [6]
-            Left = 447
-            ExplicitLeft = 447
+            Left = 446
+            TabOrder = 7
+            ExplicitLeft = 446
           end
           object cbPesquisaItem: TcxLookupComboBox
-            Left = 271
+            Left = 270
             Top = 21
             RepositoryItem = dmLookup.repLcbItem
             Properties.ListColumns = <>
@@ -82,7 +92,7 @@ inherited frmSaida: TfrmSaida
             Width = 175
           end
           object cbPesquisaTipoSaida: TcxImageComboBox
-            Left = 273
+            Left = 272
             Top = 20
             RepositoryItem = dmLookup.repIcbTipoSaida
             Properties.Items = <>
@@ -91,11 +101,11 @@ inherited frmSaida: TfrmSaida
             Width = 175
           end
           object cbPesquisaEspecie: TcxLookupComboBox
-            Left = 132
+            Left = 2
             Top = 20
             RepositoryItem = dmLookup.repLcbEspecie
             Properties.ListColumns = <>
-            TabOrder = 7
+            TabOrder = 0
             Width = 137
           end
         end
@@ -134,7 +144,11 @@ inherited frmSaida: TfrmSaida
             end
           end
         end
+        inherited cxSplitter1: TcxSplitter
+          ExplicitTop = 145
+        end
         inherited pnDetail: TPanel
+          ExplicitTop = 151
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
@@ -227,6 +241,10 @@ inherited frmSaida: TfrmSaida
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label4: TLabel
           Left = 6
@@ -293,6 +311,10 @@ inherited frmSaida: TfrmSaida
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label5: TLabel
           Left = 7

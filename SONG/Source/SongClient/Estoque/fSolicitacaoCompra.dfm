@@ -7,6 +7,7 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -248,7 +249,11 @@ inherited frmSolicitacaoCompra: TfrmSolicitacaoCompra
             end
           end
         end
+        inherited cxSplitter1: TcxSplitter
+          ExplicitTop = 145
+        end
         inherited pnDetail: TPanel
+          ExplicitTop = 151
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
