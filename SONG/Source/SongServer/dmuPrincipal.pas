@@ -18,6 +18,7 @@ uses System.SysUtils, System.Classes,
   DbxCompressionFilter, MidasLib, Datasnap.Midas;
 
 type
+
   TSessaoUsuario = class
   private
     FId: Integer;
