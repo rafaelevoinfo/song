@@ -1247,4 +1247,185 @@ inherited smEstoque: TsmEstoque
       Size = 100
     end
   end
+  object qModelo_Orcamento: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Modelo_Orcamento.Id,'
+      '       Modelo_Orcamento.Nome,'
+      '       Modelo_Orcamento.Descricao,'
+      '       Modelo_Orcamento.Modelo'
+      'from Modelo_Orcamento  '
+      '&WHERE')
+    Left = 520
+    Top = 312
+    MacroData = <
+      item
+        Value = 'WHERE ID = 0'
+        Name = 'WHERE'
+      end>
+    object qModelo_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qModelo_OrcamentoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qModelo_OrcamentoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object qModelo_OrcamentoMODELO: TBlobField
+      FieldName = 'MODELO'
+      Origin = 'MODELO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qOrcamento: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Orcamento.Id,'
+      '       Orcamento.Id_Modelo_Orcamento,'
+      '       Modelo_Orcamento.Nome,'
+      '       Orcamento.Id_Responsavel,'
+      '       Pessoa.Nome as Responsavel,'
+      '       Orcamento.Id_Cliente,'
+      '       Fin_For_Cli.Razao_Social as Cliente,'
+      '       Orcamento.Data'
+      'from Orcamento  '
+      
+        'inner join modelo_orcamento on (modelo_orcamento.id = orcamento.' +
+        'id_modelo_orcamento)'
+      'inner join pessoa on (pessoa.id = orcamento.id_responsavel)'
+      
+        'inner join fin_for_cli on (fin_for_cli.id = orcamento.id_cliente' +
+        ')'
+      '&WHERE')
+    Left = 664
+    Top = 232
+    MacroData = <
+      item
+        Value = 'where orcamento.id = 0'
+        Name = 'WHERE'
+      end>
+    object qOrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrcamentoID_MODELO_ORCAMENTO: TIntegerField
+      FieldName = 'ID_MODELO_ORCAMENTO'
+      Origin = 'ID_MODELO_ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrcamentoNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qOrcamentoID_RESPONSAVEL: TIntegerField
+      FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrcamentoRESPONSAVEL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qOrcamentoID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrcamentoCLIENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CLIENTE'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qOrcamentoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
+  object qOrcamento_Orcamento: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Orcamento.Id,'
+      '       Orcamento.Orcamento'
+      'from Orcamento  '
+      'where orcamento.id = :ID')
+    Left = 656
+    Top = 304
+    ParamData = <
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end>
+  end
+  object qOrcamento_Valor: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Orcamento_Valor.Id,'
+      '       Orcamento_Valor.Id_Orcamento,'
+      '       Orcamento_Valor.Campo,'
+      '       Orcamento_Valor.Valor'
+      'from Orcamento_Valor  '
+      'where orcamento_valor.id_orcamento = :ID_ORCAMENTO')
+    Left = 664
+    Top = 376
+    ParamData = <
+      item
+        Name = 'ID_ORCAMENTO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qOrcamento_ValorID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrcamento_ValorID_ORCAMENTO: TIntegerField
+      FieldName = 'ID_ORCAMENTO'
+      Origin = 'ID_ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrcamento_ValorCAMPO: TStringField
+      FieldName = 'CAMPO'
+      Origin = 'CAMPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 60
+    end
+    object qOrcamento_ValorVALOR: TStringField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 250
+    end
+  end
 end

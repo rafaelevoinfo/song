@@ -75,7 +75,7 @@ type
   TPermissaoViveiro = (vivEspecie, vivMatriz, vivLoteSemente, vivCanteiro, vivLoteMuda, vivFamiliaBotanica,
    vivCamaraFria, vivTipoEspecie, vivMixMuda);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
-    estSaida, estVenda, estLocalUso);
+    estSaida, estVenda, estLocalUso, estModeloOrcamento, estOrcamento);
   TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento);
   TPermissaoPatrimonio = (patItem, patPatrimonio);
   TPermissaoRelatorio = (relFinanceiro, relAdministrativo, relViveiro, relPatrimonio);
@@ -178,6 +178,8 @@ begin
   plAddEstoque(estAnalizarSolicitacaoCompra, 'Solicitação de Compras - Aprovar/Negar');
   plAddEstoque(estCompra, 'Compras');
   plAddEstoque(estVenda, 'Vendas');
+  plAddEstoque(estModeloOrcamento, 'Modelos de Orçamento');
+  plAddEstoque(estOrcamento, 'Orçamentos');
   FItems.Add('Compras e Vendas', vaPermissoes);
 
   // Viveiro

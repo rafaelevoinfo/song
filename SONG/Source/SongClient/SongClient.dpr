@@ -71,7 +71,8 @@ uses
   fDoacao in 'Financeiro\fDoacao.pas' {frmDoacao},
   fAreaAtuacao in 'Administrativo\fAreaAtuacao.pas' {frmAreaAtuacao},
   fTipoEspecie in 'Viveiro\fTipoEspecie.pas' {frmTipoEspecie},
-  fMix_Muda in 'Viveiro\fMix_Muda.pas' {frmMixMuda};
+  fMix_Muda in 'Viveiro\fMix_Muda.pas' {frmMixMuda},
+  fmEditor in 'Frames\fmEditor.pas' {frameEditor: TFrame};
 
 {$R Localization.RES}
 {$R *.res}
