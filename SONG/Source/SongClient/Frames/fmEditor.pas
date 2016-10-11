@@ -8,13 +8,14 @@ uses
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   dxSkinsCore, dxSkinBlack, Vcl.ExtActns, Vcl.StdCtrls, System.Actions,
   Vcl.ActnList, Vcl.StdActns, cxSpinEdit, cxMaskEdit, cxDropDownEdit,
-  cxFontNameComboBox, cxGroupBox, Vcl.ExtCtrls, cxTextEdit, cxMemo, cxRichEdit;
+  cxFontNameComboBox, cxGroupBox, Vcl.ExtCtrls, cxTextEdit, cxMemo, cxRichEdit,
+  uUtils, cxDBRichEdit, Vcl.ComCtrls;
 
 type
   TframeEditor = class(TFrame)
     pnFormatacao: TPanel;
     gbFonte: TcxGroupBox;
-    cxFontNameComboBox1: TcxFontNameComboBox;
+    cbFonte: TcxFontNameComboBox;
     EditFonteSize: TcxSpinEdit;
     ActionList1: TActionList;
     FormatRichEditBold1: TRichEditBold;
@@ -24,7 +25,7 @@ type
     FormatRichEditAlignRight1: TRichEditAlignRight;
     FormatRichEditAlignCenter1: TRichEditAlignCenter;
     gbAlinhamento: TcxGroupBox;
-    Button1: TButton;
+    btnAlinhamentoEsquerda: TButton;
     btnAlinhamentoCentro: TButton;
     btnAlinhamentoDireita: TButton;
     btnNegrito: TButton;
@@ -33,21 +34,26 @@ type
     FormatRichEditBullets1: TRichEditBullets;
     btnBullet: TButton;
     pnRich: TPanel;
-    Rich: TcxRichEdit;
-    procedure EditFonteSizePropertiesEditValueChanged(Sender: TObject);
+    Rich: TcxDBRichEdit;
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure ppuIniciar;
   end;
 
 implementation
 
 {$R *.dfm}
 
-procedure TframeEditor.EditFonteSizePropertiesEditValueChanged(Sender: TObject);
+{ TframeEditor }
+
+procedure TframeEditor.ppuIniciar;
 begin
-  Rich.Style.Font.
+  Rich.Width := TUtils.fpuCentimetroToPixel(21); // A4 = 21cm de largura
+  Rich.Left := Trunc((pnRich.Width/2)-(Rich.Width/2));
+
+  Rich.Top := 0;
+  Rich.Height := pnRich.Height;
 end;
 
 end.

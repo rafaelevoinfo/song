@@ -116,6 +116,9 @@ inherited frmPrincipal: TfrmPrincipal
       object Fornecedores2: TMenuItem
         Action = Ac_Fornecedor
       end
+      object ModelosdeOramento1: TMenuItem
+        Action = Ac_Modelo_Orcamento
+      end
     end
     object Estoque1: TMenuItem
       Caption = 'Estoque'
@@ -510,6 +513,11 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = 'Mix de Mudas'
       ImageIndex = 51
       OnExecute = Ac_Mix_MudaExecute
+    end
+    object Ac_Modelo_Orcamento: TAction
+      Category = 'CompraVenda'
+      Caption = 'Modelos de Or'#231'amento'
+      OnExecute = Ac_Modelo_OrcamentoExecute
     end
   end
   object dxSkinController1: TdxSkinController

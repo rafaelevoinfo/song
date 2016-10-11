@@ -12,23 +12,25 @@ object frameEditor: TframeEditor
     Align = alTop
     TabOrder = 0
     object gbFonte: TcxGroupBox
-      Left = 1
+      AlignWithMargins = True
+      Left = 4
       Top = 1
+      Margins.Top = 0
+      Margins.Bottom = 0
       Align = alLeft
       Caption = 'Fonte'
       TabOrder = 0
       Height = 71
-      Width = 184
-      object cxFontNameComboBox1: TcxFontNameComboBox
+      Width = 180
+      object cbFonte: TcxFontNameComboBox
         Left = 3
         Top = 16
         TabOrder = 0
         Width = 121
       end
       object EditFonteSize: TcxSpinEdit
-        Left = 130
-        Top = 17
-        Properties.OnEditValueChanged = EditFonteSizePropertiesEditValueChanged
+        Left = 126
+        Top = 16
         TabOrder = 1
         Width = 49
       end
@@ -61,14 +63,14 @@ object frameEditor: TframeEditor
       end
     end
     object gbAlinhamento: TcxGroupBox
-      Left = 185
+      Left = 187
       Top = 1
       Align = alLeft
       Caption = 'Par'#225'grafo'
       TabOrder = 1
       Height = 71
       Width = 80
-      object Button1: TButton
+      object btnAlinhamentoEsquerda: TButton
         Left = 2
         Top = 38
         Width = 25
@@ -113,25 +115,22 @@ object frameEditor: TframeEditor
     Width = 722
     Height = 423
     Align = alClient
+    Color = clGray
+    ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 272
-    ExplicitTop = 232
-    ExplicitWidth = 185
-    ExplicitHeight = 41
-    object Rich: TcxRichEdit
-      Left = 96
+    object Rich: TcxDBRichEdit
+      AlignWithMargins = True
+      Left = 3
       Top = 0
+      Margins.Top = 0
+      Margins.Bottom = 0
       Properties.ScrollBars = ssVertical
-      Style.LookAndFeel.NativeStyle = False
+      Style.BorderStyle = ebsUltraFlat
       Style.Shadow = True
-      Style.TextStyle = []
       Style.TransparentBorder = True
-      StyleDisabled.LookAndFeel.NativeStyle = False
-      StyleFocused.LookAndFeel.NativeStyle = False
-      StyleHot.LookAndFeel.NativeStyle = False
       TabOrder = 0
       Height = 423
-      Width = 505
+      Width = 481
     end
   end
   object ActionList1: TActionList

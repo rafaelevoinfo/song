@@ -1016,4 +1016,36 @@ inherited dmEstoque: TdmEstoque
       Size = 100
     end
   end
+  object cdsModelo_Orcamento: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqModelo_Orcamento'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 688
+    Top = 240
+    object cdsModelo_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsModelo_OrcamentoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsModelo_OrcamentoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 1000
+    end
+    object cdsModelo_OrcamentoMODELO: TBlobField
+      DisplayLabel = 'Modelo'
+      FieldName = 'MODELO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+  end
 end

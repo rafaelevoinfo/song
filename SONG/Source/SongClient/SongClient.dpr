@@ -72,7 +72,9 @@ uses
   fAreaAtuacao in 'Administrativo\fAreaAtuacao.pas' {frmAreaAtuacao},
   fTipoEspecie in 'Viveiro\fTipoEspecie.pas' {frmTipoEspecie},
   fMix_Muda in 'Viveiro\fMix_Muda.pas' {frmMixMuda},
-  fmEditor in 'Frames\fmEditor.pas' {frameEditor: TFrame};
+  fmEditor in 'Frames\fmEditor.pas' {frameEditor: TFrame},
+  fModeloOrcamento in 'Estoque\fModeloOrcamento.pas' {frmModeloOrcamento},
+  fOrcamento in 'Estoque\fOrcamento.pas' {frmOrcamento};
 
 {$R Localization.RES}
 {$R *.res}

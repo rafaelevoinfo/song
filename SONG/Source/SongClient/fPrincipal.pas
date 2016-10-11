@@ -128,6 +128,8 @@ type
     ipodeEspcie1: TMenuItem;
     Ac_Mix_Muda: TAction;
     MixdeMudas1: TMenuItem;
+    Ac_Modelo_Orcamento: TAction;
+    ModelosdeOramento1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -176,6 +178,7 @@ type
     procedure Ac_Area_AtuacaoExecute(Sender: TObject);
     procedure Ac_Tipo_EspecieExecute(Sender: TObject);
     procedure Ac_Mix_MudaExecute(Sender: TObject);
+    procedure Ac_Modelo_OrcamentoExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -191,7 +194,7 @@ var
 implementation
 
 uses
-  fBasicoCrud;
+  fBasicoCrud, fModeloOrcamento;
 
 {$R *.dfm}
 
@@ -395,6 +398,12 @@ procedure TfrmPrincipal.Ac_Mix_MudaExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmMixMuda>(pcPrincipal, TfrmMixMuda, frmMixMuda);
+end;
+
+procedure TfrmPrincipal.Ac_Modelo_OrcamentoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmModeloOrcamento>(pcPrincipal, TfrmModeloOrcamento, frmModeloOrcamento);
 end;
 
 procedure TfrmPrincipal.Ac_NotificacaoExecute(Sender: TObject);

@@ -158,6 +158,11 @@ type
     cdsVendaCALC_CLIENTE: TStringField;
     cdsPatrimonioID_PESSOA_RESPONSAVEL: TIntegerField;
     cdsPatrimonioRESPONSAVEL: TStringField;
+    cdsModelo_Orcamento: TRFClientDataSet;
+    cdsModelo_OrcamentoID: TIntegerField;
+    cdsModelo_OrcamentoNOME: TStringField;
+    cdsModelo_OrcamentoDESCRICAO: TStringField;
+    cdsModelo_OrcamentoMODELO: TBlobField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

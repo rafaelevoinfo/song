@@ -53,6 +53,8 @@ type
     class function fpuCalcularDepreciacao(ipDataAquisicao: TDateTime; ipValorInicial: Double; ipTaxaDepreciacaoAnual: Integer): Double;
 
     class function fpuGetValorPorExtenso(ipValor: Real): string;
+
+    class function fpuCentimetroToPixel(ipCm:Double):Integer;
   end;
 
 const
@@ -316,6 +318,14 @@ begin
         end;
     end;
 
+end;
+
+class function TUtils.fpuCentimetroToPixel(ipCm: Double): Integer;
+var
+  vaPixelPorCm:Double;
+begin
+  vaPixelPorCm := Screen.PixelsPerInch / 2.54;//1 inch = 2,54cm
+  Result := Trunc(vaPixelPorCm * ipCm);
 end;
 
 class function TUtils.fpuConverterStringToArrayInteger(ipValor: string; ipDelimitador: string): TArray<Integer>;

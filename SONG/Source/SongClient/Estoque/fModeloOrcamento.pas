@@ -13,12 +13,23 @@ uses
   cxGridTableView, cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid,
   cxGroupBox, cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox,
   cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, fmEditor,
-  uControleAcesso, System.TypInfo;
+  uControleAcesso, System.TypInfo, dmuEstoque, cxMemo, cxDBEdit, uTypes;
 
 type
   TfrmModeloOrcamento = class(TfrmBasicoCrud)
-    frameEditor1: TframeEditor;
+    frameEditor: TframeEditor;
+    viewRegistrosID: TcxGridDBColumn;
+    viewRegistrosNOME: TcxGridDBColumn;
+    pnNomeDescricao: TPanel;
+    EditNome: TcxDBTextEdit;
+    Label3: TLabel;
+    EditDescricao: TcxDBMemo;
+    Label4: TLabel;
+    Label5: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure tabCadastroShow(Sender: TObject);
   private
+    dmEstoque: TdmEstoque;
   protected
     function fprGetPermissao: string; override;
   public
@@ -34,9 +45,26 @@ implementation
 
 { TfrmModeloOrcamento }
 
+procedure TfrmModeloOrcamento.FormCreate(Sender: TObject);
+begin
+  dmEstoque := TdmEstoque.Create(Self);
+  dmEstoque.name := '';
+
+  inherited;
+
+  PesquisaPadrao := Ord(tppTodos);
+
+end;
+
 function TfrmModeloOrcamento.fprGetPermissao: string;
 begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(estModeloOrcamento));
+end;
+
+procedure TfrmModeloOrcamento.tabCadastroShow(Sender: TObject);
+begin
+  inherited;
+  frameEditor.ppuIniciar;
 end;
 
 end.
