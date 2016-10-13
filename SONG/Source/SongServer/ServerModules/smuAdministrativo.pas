@@ -157,9 +157,7 @@ type
     qProjeto_AreaID: TIntegerField;
     qProjeto_AreaID_PROJETO: TIntegerField;
     qProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
-    qProjeto_RubricaGASTO: TFMTBCDField;
     qProjeto_RubricaRECEBIDO: TBCDField;
-    qProjeto_RubricaAPROVISIONADO: TFMTBCDField;
     qOrganizacaoLOGO: TBlobField;
     qFundo: TRfQuery;
     qFundoID: TIntegerField;
@@ -173,14 +171,10 @@ type
     qProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField;
     qPessoaCEP: TStringField;
     qFundoREQUER_AUTORIZACAO: TSmallintField;
-    qProjeto_RubricaSALDO_REAL: TFMTBCDField;
-    qProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
     qAtividadeDATA_CADASTRO: TSQLTimeStampField;
     qAtividadeDATA_ALTERACAO: TSQLTimeStampField;
-    qProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField;
     qProjeto_RubricaCALC_VALOR_GASTO: TBCDField;
     qProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
-    qProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     qOrganizacaoSITE: TStringField;
     qOrganizacaoEMAIL: TStringField;
     qAtividadeDATA_FINALIZACAO: TSQLTimeStampField;
@@ -199,6 +193,12 @@ type
     qOrganizacaoLOGO_SECUNDARIA: TBlobField;
     qAtividadeNOME_SOLICITANTE: TStringField;
     qAtividadeNOME_RESPONSAVEL: TStringField;
+    qProjeto_RubricaGASTO: TBCDField;
+    qProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField;
+    qProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    qProjeto_RubricaAPROVISIONADO: TBCDField;
+    qProjeto_RubricaSALDO_REAL: TBCDField;
+    qProjeto_RubricaSALDO_PREVISTO: TBCDField;
     procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
     procedure dspqAtividadeAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;

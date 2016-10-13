@@ -116,7 +116,6 @@ type
     ppDBText3: TppDBText;
     ppDBText4: TppDBText;
     ppDBText5: TppDBText;
-    ppDBText9: TppDBText;
     ppFooterBand1: TppFooterBand;
     ppLabel2: TppLabel;
     ppDBText6: TppDBText;
@@ -469,6 +468,13 @@ type
     chkTodasContaContabil: TcxCheckBox;
     ppLabel65: TppLabel;
     ppLabel66: TppLabel;
+    ppDBText77: TppDBText;
+    ppLabel67: TppLabel;
+    ppDBText78: TppDBText;
+    ppLabel68: TppLabel;
+    ppDBText79: TppDBText;
+    ppDBCalc22: TppDBCalc;
+    ppDBCalc23: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure Ac_GerarRelatorioExecute(Sender: TObject);
     procedure chkTodosSaldosProjetosPropertiesEditValueChanged(Sender: TObject);

@@ -13,12 +13,7 @@ type
     cdsSaldo_RubricaID_PROJETO: TIntegerField;
     cdsSaldo_RubricaNOME_PROJETO: TStringField;
     cdsSaldo_RubricaNOME_RUBRICA: TStringField;
-    cdsSaldo_RubricaRECEBIDO: TBCDField;
-    cdsSaldo_RubricaGASTO: TFMTBCDField;
-    cdsSaldo_RubricaAPROVISIONADO: TFMTBCDField;
-    cdsSaldo_RubricaSALDO_REAL: TFMTBCDField;
     dsSaldo_Rubrica: TDataSource;
-    cdsSaldo_RubricaORCAMENTO: TBCDField;
     cdsSaldo_Semente_Muda: TRFClientDataSet;
     dsSaldo_Semente_Muda: TDataSource;
     cdsSaldo_Semente_MudaNOME: TStringField;
@@ -216,6 +211,13 @@ type
     cdsSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField;
     cdsSaldo_Semente_MudaID: TIntegerField;
     cdsSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField;
+    cdsSaldo_RubricaORCAMENTO: TBCDField;
+    cdsSaldo_RubricaGASTO: TBCDField;
+    cdsSaldo_RubricaGASTO_TRANSFERENCIA: TBCDField;
+    cdsSaldo_RubricaRECEBIDO: TBCDField;
+    cdsSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    cdsSaldo_RubricaAPROVISIONADO: TBCDField;
+    cdsSaldo_RubricaSALDO_REAL: TBCDField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);

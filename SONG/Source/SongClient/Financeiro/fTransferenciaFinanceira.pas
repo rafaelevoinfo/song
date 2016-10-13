@@ -66,13 +66,13 @@ type
     IntegerField1: TIntegerField;
     cdsLocalRubricasOrigemNOME_RUBRICA: TStringField;
     cdsLocalRubricasDestinoNOME_RUBRICA: TStringField;
-    cdsLocalRubricasOrigemSALDO_REAL: TFMTBCDField;
-    cdsLocalRubricasDestinoSALDO_REAL: TFMTBCDField;
     Label5: TLabel;
     cbTipoTransferencia: TcxDBImageComboBox;
     viewRegistrosTIPO: TcxGridDBColumn;
     Label6: TLabel;
     cbTipoTransferenciaPesquisa: TcxCheckComboBox;
+    cdsLocalRubricasOrigemSALDO_REAL: TBCDField;
+    cdsLocalRubricasDestinoSALDO_REAL: TBCDField;
     procedure FormCreate(Sender: TObject);
     procedure cbProjetoOrigemPropertiesEditValueChanged(Sender: TObject);
     procedure cbProjetoDestinoPropertiesEditValueChanged(Sender: TObject);

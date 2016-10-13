@@ -1,7 +1,6 @@
 inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
   Caption = 'Relat'#243'rios Financeiros'
   ClientWidth = 1028
-  ExplicitTop = -165
   ExplicitWidth = 1044
   PixelsPerInch = 96
   TextHeight = 13
@@ -696,174 +695,143 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 848
     Top = 296
     object DBPipeMovimentacaoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_MOVIMENTACAO'
       FieldName = 'ID_MOVIMENTACAO'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField2: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ORGANIZACAO'
       FieldName = 'ID_ORGANIZACAO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField3: TppField
       FieldAlias = 'NOME_ORGANIZACAO'
       FieldName = 'NOME_ORGANIZACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField4: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ORIGEM_RECURSO'
       FieldName = 'ID_ORIGEM_RECURSO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField5: TppField
       FieldAlias = 'ID_UNICO_ORIGEM_RECURSO'
       FieldName = 'ID_UNICO_ORIGEM_RECURSO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 19
+      DisplayWidth = 19
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField6: TppField
       FieldAlias = 'ORIGEM_RECURSO'
       FieldName = 'ORIGEM_RECURSO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField7: TppField
+      Alignment = taRightJustify
       FieldAlias = 'TIPO'
       FieldName = 'TIPO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField8: TppField
       FieldAlias = 'DESCRICAO_TIPO'
       FieldName = 'DESCRICAO_TIPO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 8
+      DisplayWidth = 8
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField9: TppField
       FieldAlias = 'DESCRICAO_MOVIMENTACAO'
       FieldName = 'DESCRICAO_MOVIMENTACAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 124
+      DisplayWidth = 124
       Position = 8
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField10: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDate
+      DisplayWidth = 10
       Position = 9
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField11: TppField
       FieldAlias = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldName = 'DATA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtDate
+      DisplayWidth = 10
       Position = 10
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField12: TppField
+      Alignment = taRightJustify
       FieldAlias = 'FORMA_PAGAMENTO_RECEBIMENTO'
       FieldName = 'FORMA_PAGAMENTO_RECEBIMENTO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 11
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField13: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL'
       FieldName = 'VALOR_TOTAL'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 12
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField14: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_TOTAL_PAGO_RECEBIDO'
       FieldName = 'VALOR_TOTAL_PAGO_RECEBIDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 13
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField15: TppField
+      Alignment = taRightJustify
       FieldAlias = 'CALC_VALOR_RESTANTE'
       FieldName = 'CALC_VALOR_RESTANTE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 14
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField16: TppField
+      Alignment = taRightJustify
       FieldAlias = 'CALC_SALDO'
       FieldName = 'CALC_SALDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 15
-      Searchable = False
-      Sortable = False
     end
     object DBPipeMovimentacaoppField17: TppField
       FieldAlias = 'CALC_DESCRICAO_FORMA_PGTO'
       FieldName = 'CALC_DESCRICAO_FORMA_PGTO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 120
+      DisplayWidth = 120
       Position = 16
-      Searchable = False
-      Sortable = False
     end
   end
   object dsView_Movimentacao_Financeira: TDataSource
@@ -2258,15 +2226,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeRubrica'
         mmHeight = 4763
-        mmLeft = 135466
+        mmLeft = 153367
         mmTop = 0
-        mmWidth = 30000
+        mmWidth = 17559
         BandType = 4
         LayerName = BandLayer5
       end
@@ -2279,15 +2247,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeRubrica'
         mmHeight = 4763
-        mmLeft = 42333
+        mmLeft = 41540
         mmTop = 0
-        mmWidth = 30000
+        mmWidth = 23458
         BandType = 4
         LayerName = BandLayer5
       end
@@ -2300,15 +2268,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeRubrica'
         mmHeight = 4763
-        mmLeft = 104512
+        mmLeft = 114188
         mmTop = 0
-        mmWidth = 30000
+        mmWidth = 20205
         BandType = 4
         LayerName = BandLayer5
       end
@@ -2320,7 +2288,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
@@ -2341,36 +2309,78 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeRubrica'
         mmHeight = 4763
-        mmLeft = 166950
+        mmLeft = 172455
         mmTop = 0
-        mmWidth = 30000
+        mmWidth = 24294
         BandType = 4
         LayerName = BandLayer5
       end
-      object ppDBText9: TppDBText
+      object ppDBText77: TppDBText
         DesignLayer = ppDesignLayer1
-        UserName = 'DBText2'
+        UserName = 'DBText77'
         DataField = 'RECEBIDO'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
-        Font.Size = 8
+        Font.Size = 7
         Font.Style = []
         Transparent = True
         VerticalAlignment = avCenter
         DataPipelineName = 'DBPipeRubrica'
         mmHeight = 4763
-        mmLeft = 73288
+        mmLeft = 66411
         mmTop = 0
-        mmWidth = 30000
+        mmWidth = 22369
+        BandType = 4
+        LayerName = BandLayer5
+      end
+      object ppDBText78: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText78'
+        DataField = 'RECEBIDO_TRANSFERENCIA'
+        DataPipeline = DBPipeRubrica
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeRubrica'
+        mmHeight = 4763
+        mmLeft = 89959
+        mmTop = 0
+        mmWidth = 23820
+        BandType = 4
+        LayerName = BandLayer5
+      end
+      object ppDBText79: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText79'
+        DataField = 'GASTO_TRANSFERENCIA'
+        DataPipeline = DBPipeRubrica
+        DisplayFormat = '$ ,0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 7
+        Font.Style = []
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'DBPipeRubrica'
+        mmHeight = 4763
+        mmLeft = 135073
+        mmTop = 0
+        mmWidth = 17559
         BandType = 4
         LayerName = BandLayer5
       end
@@ -2484,14 +2494,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
+          mmHeight = 2910
           mmLeft = 2117
-          mmTop = 5820
-          mmWidth = 10848
+          mmTop = 5821
+          mmWidth = 9525
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2503,14 +2513,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
+          mmHeight = 2910
           mmLeft = 42333
           mmTop = 5821
-          mmWidth = 16140
+          mmWidth = 12965
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2522,14 +2532,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 73288
+          mmHeight = 2910
+          mmLeft = 66033
           mmTop = 5821
-          mmWidth = 13494
+          mmWidth = 11377
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2541,14 +2551,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 104510
+          mmHeight = 2910
+          mmLeft = 114542
           mmTop = 5821
-          mmWidth = 8467
+          mmWidth = 6879
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2560,14 +2570,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 135466
+          mmHeight = 2910
+          mmLeft = 153368
           mmTop = 5821
-          mmWidth = 21167
+          mmWidth = 17462
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2579,14 +2589,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 166950
+          mmHeight = 2910
+          mmLeft = 172515
           mmTop = 5821
-          mmWidth = 14817
+          mmWidth = 12965
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2620,6 +2630,44 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           mmLeft = 1588
           mmTop = 529
           mmWidth = 193146
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppLabel67: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label67'
+          Caption = 'Recebido por Transf.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 7
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 2910
+          mmLeft = 89452
+          mmTop = 5821
+          mmWidth = 25400
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppLabel68: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label68'
+          Caption = 'Gasto Transf.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 7
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 2910
+          mmLeft = 134544
+          mmTop = 5821
+          mmWidth = 15875
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -2659,7 +2707,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           ResetGroup = ppGroup1
           Transparent = True
@@ -2667,7 +2715,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           mmHeight = 4498
           mmLeft = 42333
           mmTop = 794
-          mmWidth = 29898
+          mmWidth = 22610
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer5
@@ -2675,21 +2723,21 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc17: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc17'
-          DataField = 'RECEBIDO'
+          DataField = 'RECEBIDO_TRANSFERENCIA'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           ResetGroup = ppGroup1
           Transparent = True
           DataPipelineName = 'DBPipeRubrica'
           mmHeight = 4498
-          mmLeft = 73290
-          mmTop = 794
-          mmWidth = 29898
+          mmLeft = 89452
+          mmTop = 749
+          mmWidth = 24295
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer5
@@ -2703,15 +2751,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           ResetGroup = ppGroup1
           Transparent = True
           DataPipelineName = 'DBPipeRubrica'
           mmHeight = 4498
-          mmLeft = 104511
-          mmTop = 794
-          mmWidth = 29898
+          mmLeft = 114490
+          mmTop = 552
+          mmWidth = 19964
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer5
@@ -2725,15 +2773,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           ResetGroup = ppGroup1
           Transparent = True
           DataPipelineName = 'DBPipeRubrica'
           mmHeight = 4498
-          mmLeft = 135467
-          mmTop = 794
-          mmWidth = 29898
+          mmLeft = 153456
+          mmTop = 552
+          mmWidth = 17562
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer5
@@ -2747,15 +2795,59 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 7
           Font.Style = [fsBold]
           ResetGroup = ppGroup1
           Transparent = True
           DataPipelineName = 'DBPipeRubrica'
           mmHeight = 4498
-          mmLeft = 166952
-          mmTop = 795
-          mmWidth = 29898
+          mmLeft = 172456
+          mmTop = 553
+          mmWidth = 24534
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppDBCalc22: TppDBCalc
+          DesignLayer = ppDesignLayer1
+          UserName = 'DBCalc22'
+          DataField = 'RECEBIDO'
+          DataPipeline = DBPipeRubrica
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 7
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup1
+          Transparent = True
+          DataPipelineName = 'DBPipeRubrica'
+          mmHeight = 4498
+          mmLeft = 66169
+          mmTop = 574
+          mmWidth = 22490
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppDBCalc23: TppDBCalc
+          DesignLayer = ppDesignLayer1
+          UserName = 'DBCalc23'
+          DataField = 'GASTO_TRANSFERENCIA'
+          DataPipeline = DBPipeRubrica
+          DisplayFormat = '$ ,0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 7
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup1
+          Transparent = True
+          DataPipelineName = 'DBPipeRubrica'
+          mmHeight = 4498
+          mmLeft = 135248
+          mmTop = 597
+          mmWidth = 17440
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer5
@@ -2781,94 +2873,99 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     Left = 664
     Top = 312
     object DBPipeRubricappField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_RUBRICA'
       FieldName = 'ID_RUBRICA'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeRubricappField2: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_PROJETO'
       FieldName = 'ID_PROJETO'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeRubricappField3: TppField
       FieldAlias = 'NOME_PROJETO'
       FieldName = 'NOME_PROJETO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeRubricappField4: TppField
       FieldAlias = 'NOME_RUBRICA'
       FieldName = 'NOME_RUBRICA'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 123
+      DisplayWidth = 123
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeRubricappField5: TppField
-      FieldAlias = 'RECEBIDO'
-      FieldName = 'RECEBIDO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 4
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeRubricappField6: TppField
-      FieldAlias = 'GASTO'
-      FieldName = 'GASTO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 5
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeRubricappField7: TppField
-      FieldAlias = 'APROVISIONADO'
-      FieldName = 'APROVISIONADO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 6
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeRubricappField8: TppField
-      FieldAlias = 'SALDO_REAL'
-      FieldName = 'SALDO_REAL'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 7
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeRubricappField9: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ORCAMENTO'
       FieldName = 'ORCAMENTO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 4
+    end
+    object DBPipeRubricappField6: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'GASTO'
+      FieldName = 'GASTO'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 5
+    end
+    object DBPipeRubricappField7: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'GASTO_TRANSFERENCIA'
+      FieldName = 'GASTO_TRANSFERENCIA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 6
+    end
+    object DBPipeRubricappField8: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'RECEBIDO'
+      FieldName = 'RECEBIDO'
+      FieldLength = 4
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 7
+    end
+    object DBPipeRubricappField9: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'RECEBIDO_TRANSFERENCIA'
+      FieldName = 'RECEBIDO_TRANSFERENCIA'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 8
-      Searchable = False
-      Sortable = False
+    end
+    object DBPipeRubricappField10: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'APROVISIONADO'
+      FieldName = 'APROVISIONADO'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 9
+    end
+    object DBPipeRubricappField11: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'SALDO_REAL'
+      FieldName = 'SALDO_REAL'
+      FieldLength = 4
+      DataType = dtDouble
+      DisplayWidth = 19
+      Position = 10
     end
   end
   object DBPipeOrganizacao: TppDBPipeline

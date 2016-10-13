@@ -37,39 +37,51 @@ inherited dmRelatorio: TdmRelatorio
       ReadOnly = True
       Size = 123
     end
-    object cdsSaldo_RubricaRECEBIDO: TBCDField
-      FieldName = 'RECEBIDO'
-      Origin = 'VALOR_RECEBIDO'
-      ProviderFlags = []
-      Precision = 18
-    end
-    object cdsSaldo_RubricaGASTO: TFMTBCDField
-      FieldName = 'GASTO'
-      Origin = 'VALOR_GASTO'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object cdsSaldo_RubricaAPROVISIONADO: TFMTBCDField
-      FieldName = 'APROVISIONADO'
-      Origin = 'VALOR_APROVISIONADO'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object cdsSaldo_RubricaSALDO_REAL: TFMTBCDField
-      FieldName = 'SALDO_REAL'
-      Origin = 'SALDO_REAL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
     object cdsSaldo_RubricaORCAMENTO: TBCDField
       FieldName = 'ORCAMENTO'
-      Origin = 'ORCAMENTO'
       ProviderFlags = []
       Precision = 18
       Size = 2
+    end
+    object cdsSaldo_RubricaGASTO: TBCDField
+      FieldName = 'GASTO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaldo_RubricaGASTO_TRANSFERENCIA: TBCDField
+      FieldName = 'GASTO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaldo_RubricaRECEBIDO: TBCDField
+      FieldName = 'RECEBIDO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object cdsSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField
+      FieldName = 'RECEBIDO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaldo_RubricaAPROVISIONADO: TBCDField
+      FieldName = 'APROVISIONADO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsSaldo_RubricaSALDO_REAL: TBCDField
+      FieldName = 'SALDO_REAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
     end
   end
   object dsSaldo_Rubrica: TDataSource
@@ -1045,6 +1057,7 @@ inherited dmRelatorio: TdmRelatorio
     end
   end
   object cdsView_Movimentacao_Financeira: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqView_Movimentacao_Financeira'

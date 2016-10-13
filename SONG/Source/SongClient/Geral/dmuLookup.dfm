@@ -1511,13 +1511,12 @@ inherited dmLookup: TdmLookup
       ReadOnly = True
       Size = 123
     end
-    object cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField
+    object cdslkRubrica_AtividadeSALDO_REAL: TBCDField
       DisplayLabel = 'Saldo'
       FieldName = 'SALDO_REAL'
       ReadOnly = True
       currency = True
       Precision = 18
-      Size = 6
     end
   end
   object cdslkProjeto_Area: TRFClientDataSet
@@ -1856,18 +1855,17 @@ inherited dmLookup: TdmLookup
       Precision = 18
       Size = 2
     end
-    object cdslkProjeto_RubricaSALDO_REAL: TFMTBCDField
-      DisplayLabel = 'Saldo'
-      FieldName = 'SALDO_REAL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
     object cdslkProjeto_RubricaNOME_RUBRICA: TStringField
       DisplayLabel = 'Nome'
       FieldName = 'NOME_RUBRICA'
       ProviderFlags = []
       Size = 123
+    end
+    object cdslkProjeto_RubricaSALDO_REAL: TBCDField
+      DisplayLabel = 'Saldo'
+      FieldName = 'SALDO_REAL'
+      ProviderFlags = []
+      Precision = 18
     end
   end
   object cdslkLocal_Uso: TRFClientDataSet

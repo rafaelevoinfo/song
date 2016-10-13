@@ -1156,9 +1156,10 @@ inherited dmAdministrativo: TdmAdministrativo
       end
       item
         Name = 'GASTO'
-        DataType = ftFMTBcd
+        Attributes = [faReadonly]
+        DataType = ftBCD
         Precision = 18
-        Size = 6
+        Size = 2
       end
       item
         Name = 'RECEBIDO'
@@ -1167,31 +1168,35 @@ inherited dmAdministrativo: TdmAdministrativo
         Size = 4
       end
       item
-        Name = 'APROVISIONADO'
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 6
-      end
-      item
-        Name = 'SALDO_REAL'
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 6
-      end
-      item
-        Name = 'SALDO_PREVISTO'
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 6
-      end
-      item
         Name = 'GASTO_TRANSFERENCIA'
+        Attributes = [faReadonly]
         DataType = ftBCD
         Precision = 18
         Size = 2
       end
       item
         Name = 'RECEBIDO_TRANSFERENCIA'
+        Attributes = [faReadonly]
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'APROVISIONADO'
+        Attributes = [faReadonly]
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'SALDO_REAL'
+        Attributes = [faReadonly]
+        DataType = ftBCD
+        Precision = 18
+        Size = 4
+      end
+      item
+        Name = 'SALDO_PREVISTO'
         Attributes = [faReadonly]
         DataType = ftBCD
         Precision = 18
@@ -1265,52 +1270,25 @@ inherited dmAdministrativo: TdmAdministrativo
       ReadOnly = True
       Size = 100
     end
-    object cdsProjeto_RubricaGASTO: TFMTBCDField
+    object cdsProjeto_RubricaGASTO: TBCDField
       DisplayLabel = 'Valor Gasto'
       FieldName = 'GASTO'
-      Origin = 'GASTO'
       ProviderFlags = []
-      currency = True
+      ReadOnly = True
       Precision = 18
-      Size = 6
+      Size = 2
     end
     object cdsProjeto_RubricaRECEBIDO: TBCDField
       DisplayLabel = 'Valor Recebido'
       FieldName = 'RECEBIDO'
-      Origin = 'RECEBIDO'
       ProviderFlags = []
-      currency = True
       Precision = 18
-    end
-    object cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField
-      DisplayLabel = 'Valor Aprovisionado'
-      FieldName = 'APROVISIONADO'
-      Origin = 'APROVISIONADO'
-      ProviderFlags = []
-      currency = True
-      Precision = 18
-      Size = 6
-    end
-    object cdsProjeto_RubricaSALDO_REAL: TFMTBCDField
-      DisplayLabel = 'Saldo Real'
-      FieldName = 'SALDO_REAL'
-      ProviderFlags = []
-      currency = True
-      Precision = 18
-      Size = 6
-    end
-    object cdsProjeto_RubricaSALDO_PREVISTO: TFMTBCDField
-      DisplayLabel = 'Saldo Previsto'
-      FieldName = 'SALDO_PREVISTO'
-      ProviderFlags = []
-      currency = True
-      Precision = 18
-      Size = 6
     end
     object cdsProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField
-      DisplayLabel = 'Valor Transferido'
+      DisplayLabel = 'Gasto com Transfer'#234'ncia'
       FieldName = 'GASTO_TRANSFERENCIA'
       ProviderFlags = []
+      ReadOnly = True
       Precision = 18
       Size = 2
     end
@@ -1318,6 +1296,30 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Recebido por Transfer'#234'ncia'
       FieldName = 'RECEBIDO_TRANSFERENCIA'
       ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_RubricaAPROVISIONADO: TBCDField
+      DisplayLabel = 'Valor Aprovisionado'
+      FieldName = 'APROVISIONADO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_RubricaSALDO_REAL: TBCDField
+      DisplayLabel = 'Saldo Real'
+      FieldName = 'SALDO_REAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object cdsProjeto_RubricaSALDO_PREVISTO: TBCDField
+      DisplayLabel = 'Saldo Previsto'
+      FieldName = 'SALDO_PREVISTO'
+      ProviderFlags = []
+      ReadOnly = True
       Precision = 18
       Size = 2
     end

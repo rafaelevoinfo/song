@@ -201,7 +201,8 @@ var
 begin
   if InputQuery('Informe a senha de ativação', 'Senha de Ativação', vaSenha) then
     begin
-      if TUtils.fpuCriptografarSha1(vaSenha) = '7CF0488FBF273704444494B01527892C37C2C59A' then
+     // if TUtils.fpuCriptografarSha1(vaSenha) = '7CF0488FBF273704444494B01527892C37C2C59A' then
+      if TUtils.fpuCriptografarSha1(vaSenha) = 'B9E1A487D8637AFF926C6E5C2C056EB5E771113B' then
         begin
           if Tfile.Exists(coLicenca) then
             Tfile.Delete(coLicenca);

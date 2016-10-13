@@ -192,7 +192,6 @@ type
     cdslkProjeto_Rubrica: TRFClientDataSet;
     cdslkProjeto_RubricaID: TIntegerField;
     cdslkProjeto_RubricaORCAMENTO: TBCDField;
-    cdslkProjeto_RubricaSALDO_REAL: TFMTBCDField;
     cdslkProjeto_RubricaNOME_RUBRICA: TStringField;
     cdslkLote_SementeID_ESPECIE: TIntegerField;
     cdslkLote_MudaID_ESPECIE: TIntegerField;
@@ -249,7 +248,6 @@ type
     cdslkDoadorID_PESSOA_DOADORA: TIntegerField;
     cdslkDoadorNOME: TStringField;
     cdslkDoadorTOTAL: TBCDField;
-    cdslkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
     cdslkOrganizacaoENDERECO: TStringField;
     cdslkOrganizacaoBAIRRO: TStringField;
     cdslkOrganizacaoCOMPLEMENTO: TStringField;
@@ -283,6 +281,8 @@ type
     dslkTipo_Especie: TDataSource;
     cdslkTipo_EspecieID: TIntegerField;
     cdslkTipo_EspecieNOME: TStringField;
+    cdslkProjeto_RubricaSALDO_REAL: TBCDField;
+    cdslkRubrica_AtividadeSALDO_REAL: TBCDField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

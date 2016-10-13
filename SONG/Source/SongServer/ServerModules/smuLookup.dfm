@@ -725,9 +725,9 @@ inherited smLookup: TsmLookup
         'left join atividade on (projeto_rubrica.id_projeto = atividade.i' +
         'd_projeto)'
       
-        'left join view_rubrica_projeto on (view_rubrica_projeto.id_rubri' +
-        'ca = rubrica.id and view_rubrica_projeto.id_projeto = projeto_ru' +
-        'brica.id_projeto)'
+        'inner join view_rubrica_projeto on (view_rubrica_projeto.id_rubr' +
+        'ica = rubrica.id and view_rubrica_projeto.id_projeto = projeto_r' +
+        'ubrica.id_projeto)'
       '&WHERE'
       'order by Rubrica.Nome')
     Left = 624
@@ -752,14 +752,13 @@ inherited smLookup: TsmLookup
       ReadOnly = True
       Size = 123
     end
-    object qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField
+    object qlkRubrica_AtividadeSALDO_REAL: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'SALDO_REAL'
       Origin = 'SALDO_REAL'
       ProviderFlags = []
       ReadOnly = True
       Precision = 18
-      Size = 6
     end
   end
   object qlkProjeto_Area: TRFQuery
@@ -1069,9 +1068,9 @@ inherited smLookup: TsmLookup
       'from Projeto_Rubrica'
       'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       
-        'left join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proje' +
-        'to = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rubr' +
-        'ica = Projeto_Rubrica.Id_Rubrica)'
+        'inner join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proj' +
+        'eto = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rub' +
+        'rica = Projeto_Rubrica.Id_Rubrica)'
       '&WHERE ')
     Left = 744
     Top = 304
@@ -1094,15 +1093,6 @@ inherited smLookup: TsmLookup
       Precision = 18
       Size = 2
     end
-    object qlkProjeto_RubricaSALDO_REAL: TFMTBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'SALDO_REAL'
-      Origin = 'SALDO_REAL'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-      Size = 6
-    end
     object qlkProjeto_RubricaNOME_RUBRICA: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'NOME_RUBRICA'
@@ -1110,6 +1100,13 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       ReadOnly = True
       Size = 123
+    end
+    object qlkProjeto_RubricaSALDO_REAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_REAL'
+      Origin = 'SALDO_REAL'
+      ProviderFlags = []
+      Precision = 18
     end
   end
   object qlkLocal_Uso: TRFQuery

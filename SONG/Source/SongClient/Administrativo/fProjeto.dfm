@@ -1,11 +1,17 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailArea
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -76,8 +82,8 @@ inherited frmProjeto: TfrmProjeto
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          Height = 129
-          ExplicitHeight = 129
+          Height = 121
+          ExplicitHeight = 121
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -124,22 +130,25 @@ inherited frmProjeto: TfrmProjeto
           end
         end
         inherited cxSplitter1: TcxSplitter
-          Top = 130
-          ExplicitTop = 147
+          Top = 122
+          ExplicitTop = 122
         end
         inherited pnDetail: TPanel
-          Top = 136
+          Top = 128
           Height = 250
-          ExplicitTop = 153
+          ExplicitTop = 128
           ExplicitHeight = 250
           inherited pcDetails: TcxPageControl
             Height = 248
-            Properties.ActivePage = tabDetailArea
+            Properties.ActivePage = tabDetailFinanciador
             OnChange = pcDetailsChange
             ExplicitHeight = 248
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -170,10 +179,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -278,10 +283,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailRubrica: TcxTabSheet
               Caption = 'Rubricas'
               ImageIndex = 4
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel7: TPanel
                 Left = 0
                 Top = 0
@@ -349,6 +350,18 @@ inherited frmProjeto: TfrmProjeto
                       Kind = skSum
                       FieldName = 'SALDO_PREVISTO'
                       Column = ColumnRubricasCALC_SALDO_PREVISTO
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'RECEBIDO_TRANSFERENCIA'
+                      Column = viewRubricasRECEBIDO_TRANSFERENCIA
+                    end
+                    item
+                      Format = 'R$ ,0.00'
+                      Kind = skSum
+                      FieldName = 'GASTO_TRANSFERENCIA'
+                      Column = viewRubricasGASTO_TRANSFERENCIA
                     end>
                   DataController.Summary.SummaryGroups = <>
                   FilterRow.Visible = True
@@ -367,7 +380,6 @@ inherited frmProjeto: TfrmProjeto
                     DataBinding.FieldName = 'ID'
                     Visible = False
                     Options.Editing = False
-                    Width = 34
                   end
                   object viewRubricasID_RUBRICA: TcxGridDBColumn
                     DataBinding.FieldName = 'ID_RUBRICA'
@@ -386,16 +398,28 @@ inherited frmProjeto: TfrmProjeto
                     Width = 128
                   end
                   object viewRubricasRECEBIDO: TcxGridDBColumn
-                    DataBinding.FieldName = 'CALC_VALOR_RECEBIDO'
+                    DataBinding.FieldName = 'RECEBIDO'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
                     Width = 128
                   end
-                  object viewRubricasGASTO: TcxGridDBColumn
-                    DataBinding.FieldName = 'CALC_VALOR_GASTO'
+                  object viewRubricasRECEBIDO_TRANSFERENCIA: TcxGridDBColumn
+                    DataBinding.FieldName = 'RECEBIDO_TRANSFERENCIA'
                     RepositoryItem = dmLookup.repCurPadrao
                     Options.Editing = False
-                    Width = 128
+                    Width = 137
+                  end
+                  object viewRubricasGASTO: TcxGridDBColumn
+                    DataBinding.FieldName = 'GASTO'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                    Width = 103
+                  end
+                  object viewRubricasGASTO_TRANSFERENCIA: TcxGridDBColumn
+                    DataBinding.FieldName = 'GASTO_TRANSFERENCIA'
+                    RepositoryItem = dmLookup.repCurPadrao
+                    Options.Editing = False
+                    Width = 133
                   end
                   object ColumnRubricasCALC_SALDO_REAL: TcxGridDBColumn
                     DataBinding.FieldName = 'SALDO_REAL'
@@ -464,10 +488,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailFinanciador: TcxTabSheet
               Caption = 'Financiadores'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel2: TPanel
                 Left = 0
                 Top = 0
@@ -634,7 +654,7 @@ inherited frmProjeto: TfrmProjeto
                       Column = viewPagamentosVALOR
                     end
                     item
-                      Format = '0 %'
+                      Format = '0.00 %'
                       Kind = skSum
                       FieldName = 'PERCENTUAL'
                       Column = viewPagamentosPERCENTUAL
@@ -688,10 +708,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailArea: TcxTabSheet
               Caption = #193'reas de Atua'#231#227'o'
               ImageIndex = 5
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -790,10 +806,6 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -922,6 +934,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1059,6 +1075,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1099,10 +1119,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailOrganizacao: TcxTabSheet
       Caption = 'tabCadastroDetailOrganizacao'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -1175,10 +1191,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailFinanciador: TcxTabSheet
       Caption = 'tabCadastroDetailFinanciador'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -1330,12 +1342,12 @@ inherited frmProjeto: TfrmProjeto
               Height = 23
               Action = Ac_Incluir_Pagamento
               Images = dmPrincipal.imgIcons_16
-              TabOrder = 0
+              TabOrder = 5
             end
             object EditDataPagamento: TcxDateEdit
               Left = 435
               Top = 20
-              TabOrder = 4
+              TabOrder = 3
               Width = 121
             end
             object EditValorPagamento: TcxCurrencyEdit
@@ -1343,7 +1355,7 @@ inherited frmProjeto: TfrmProjeto
               Top = 20
               RepositoryItem = dmLookup.repCurPadrao
               Properties.OnEditValueChanged = EditValorPagamentoPropertiesEditValueChanged
-              TabOrder = 3
+              TabOrder = 2
               Width = 134
             end
             object EditPercentualPagamento: TcxCalcEdit
@@ -1353,7 +1365,7 @@ inherited frmProjeto: TfrmProjeto
               Enabled = False
               Properties.BeepOnError = False
               Properties.DisplayFormat = ',0.00 %'
-              TabOrder = 5
+              TabOrder = 4
               Width = 120
             end
             object cbProjetoOrganizacao: TcxLookupComboBox
@@ -1368,7 +1380,7 @@ inherited frmProjeto: TfrmProjeto
                   FieldName = 'NOME'
                 end>
               Properties.ListSource = dmLookup.dslkProjeto_Organizcao
-              TabOrder = 1
+              TabOrder = 0
               Width = 145
             end
             object cbFormaPagamento: TcxImageComboBox
@@ -1376,7 +1388,7 @@ inherited frmProjeto: TfrmProjeto
               Top = 20
               RepositoryItem = dmLookup.repIcbFormaPagamento
               Properties.Items = <>
-              TabOrder = 2
+              TabOrder = 1
               Width = 142
             end
           end
@@ -1398,7 +1410,19 @@ inherited frmProjeto: TfrmProjeto
               Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
               DataController.DataSource = dsFinanciador_Pagto
               DataController.Summary.DefaultGroupSummaryItems = <>
-              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <
+                item
+                  Format = ',0.00 %'
+                  Kind = skSum
+                  FieldName = 'PERCENTUAL'
+                  Column = viewPagamentosCadastroPERCENTUAL
+                end
+                item
+                  Format = '$ ,0.00'
+                  Kind = skSum
+                  FieldName = 'VALOR'
+                  Column = viewPagamentosCadastroVALOR
+                end>
               DataController.Summary.SummaryGroups = <>
               FilterRow.Visible = True
               OptionsCustomize.ColumnsQuickCustomization = True
@@ -1408,6 +1432,8 @@ inherited frmProjeto: TfrmProjeto
               OptionsData.Inserting = False
               OptionsSelection.MultiSelect = True
               OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+              OptionsView.Footer = True
+              OptionsView.FooterAutoHeight = True
               OptionsView.GroupByBox = False
               object viewPagamentosCadastroID: TcxGridDBColumn
                 DataBinding.FieldName = 'ID'
@@ -1428,14 +1454,14 @@ inherited frmProjeto: TfrmProjeto
                 DataBinding.FieldName = 'VALOR'
                 RepositoryItem = dmLookup.repCurPadrao
                 Options.Editing = False
-                Width = 154
+                Width = 181
               end
               object viewPagamentosCadastroPERCENTUAL: TcxGridDBColumn
                 DataBinding.FieldName = 'PERCENTUAL'
                 PropertiesClassName = 'TcxCalcEditProperties'
                 Properties.DisplayFormat = ',0.00 %'
                 Options.Editing = False
-                Width = 61
+                Width = 89
               end
               object ViewPagamentosCadastroEXCLUIR: TcxGridDBColumn
                 Caption = 'Excluir'
@@ -1486,10 +1512,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailDocumento: TcxTabSheet
       Caption = 'tabCadastroDetailDocumento'
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -1581,10 +1603,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailRubrica: TcxTabSheet
       Caption = 'tabCadastroDetailRubrica'
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0
@@ -1674,10 +1692,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailArea: TcxTabSheet
       Caption = 'tabCadastroDetailArea'
       ImageIndex = 7
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel9: TPanel
         Left = 0
         Top = 0
@@ -1809,6 +1823,10 @@ inherited frmProjeto: TfrmProjeto
     DataSet = dmAdministrativo.cdsProjeto_Pessoa
     Left = 664
     Top = 152
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 504
+    Top = 176
   end
   object dsOrganizacao: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Organizacao

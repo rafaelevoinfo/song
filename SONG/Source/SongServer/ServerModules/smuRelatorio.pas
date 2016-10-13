@@ -17,11 +17,6 @@ type
     qSaldo_RubricaID_PROJETO: TIntegerField;
     qSaldo_RubricaNOME_PROJETO: TStringField;
     qSaldo_RubricaNOME_RUBRICA: TStringField;
-    qSaldo_RubricaRECEBIDO: TBCDField;
-    qSaldo_RubricaGASTO: TFMTBCDField;
-    qSaldo_RubricaAPROVISIONADO: TFMTBCDField;
-    qSaldo_RubricaSALDO_REAL: TFMTBCDField;
-    qSaldo_RubricaORCAMENTO: TBCDField;
     qSaldo_Semente_Muda: TRFQuery;
     qSaldo_Semente_MudaNOME: TStringField;
     qSaldo_Semente_MudaNOME_CIENTIFICO: TStringField;
@@ -203,6 +198,13 @@ type
     qSaldo_Semente_MudaID_FAMILIA_BOTANICA: TIntegerField;
     qSaldo_Semente_MudaID: TIntegerField;
     qSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField;
+    qSaldo_RubricaORCAMENTO: TBCDField;
+    qSaldo_RubricaGASTO: TBCDField;
+    qSaldo_RubricaGASTO_TRANSFERENCIA: TBCDField;
+    qSaldo_RubricaRECEBIDO: TBCDField;
+    qSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    qSaldo_RubricaAPROVISIONADO: TBCDField;
+    qSaldo_RubricaSALDO_REAL: TBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
   private

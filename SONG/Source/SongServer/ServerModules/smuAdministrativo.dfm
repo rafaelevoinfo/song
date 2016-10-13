@@ -1280,9 +1280,9 @@ inherited smAdministrativo: TsmAdministrativo
       'from Projeto_Rubrica'
       'inner join Rubrica on (Rubrica.Id = Projeto_Rubrica.Id_Rubrica)'
       
-        'left join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proje' +
-        'to = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rubr' +
-        'ica = Projeto_Rubrica.Id_Rubrica)'
+        'inner join View_Rubrica_Projeto on (View_Rubrica_Projeto.Id_Proj' +
+        'eto = Projeto_Rubrica.Id_Projeto and View_Rubrica_Projeto.Id_Rub' +
+        'rica = Projeto_Rubrica.Id_Rubrica)'
       'where Projeto_Rubrica.Id_Projeto = :Id_Projeto   ')
     Left = 224
     Top = 288
@@ -1327,13 +1327,14 @@ inherited smAdministrativo: TsmAdministrativo
       ReadOnly = True
       Size = 100
     end
-    object qProjeto_RubricaGASTO: TFMTBCDField
+    object qProjeto_RubricaGASTO: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'GASTO'
       Origin = 'GASTO'
       ProviderFlags = []
+      ReadOnly = True
       Precision = 18
-      Size = 6
+      Size = 2
     end
     object qProjeto_RubricaRECEBIDO: TBCDField
       AutoGenerateValue = arDefault
@@ -1342,35 +1343,12 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = []
       Precision = 18
     end
-    object qProjeto_RubricaAPROVISIONADO: TFMTBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'APROVISIONADO'
-      Origin = 'APROVISIONADO'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object qProjeto_RubricaSALDO_REAL: TFMTBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'SALDO_REAL'
-      Origin = 'SALDO_REAL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object qProjeto_RubricaSALDO_PREVISTO: TFMTBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'SALDO_PREVISTO'
-      Origin = 'SALDO_PREVISTO'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
     object qProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'GASTO_TRANSFERENCIA'
       Origin = 'GASTO_TRANSFERENCIA'
       ProviderFlags = []
+      ReadOnly = True
       Precision = 18
       Size = 2
     end
@@ -1378,6 +1356,32 @@ inherited smAdministrativo: TsmAdministrativo
       AutoGenerateValue = arDefault
       FieldName = 'RECEBIDO_TRANSFERENCIA'
       Origin = 'RECEBIDO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaAPROVISIONADO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'APROVISIONADO'
+      Origin = 'APROVISIONADO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaSALDO_REAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_REAL'
+      Origin = 'SALDO_REAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object qProjeto_RubricaSALDO_PREVISTO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_PREVISTO'
+      Origin = 'SALDO_PREVISTO'
       ProviderFlags = []
       ReadOnly = True
       Precision = 18

@@ -158,9 +158,6 @@ type
     cdsProjeto_AreaID: TIntegerField;
     cdsProjeto_AreaID_PROJETO: TIntegerField;
     cdsProjeto_Financiador_PagtoPERCENTUAL: TBCDField;
-    cdsProjeto_RubricaGASTO: TFMTBCDField;
-    cdsProjeto_RubricaRECEBIDO: TBCDField;
-    cdsProjeto_RubricaAPROVISIONADO: TFMTBCDField;
     cdsProjeto_RubricaAGG_SOMA_ORCAMENTO: TAggregateField;
     cdsOrganizacaoLOGO: TBlobField;
     cdsFundo: TRFClientDataSet;
@@ -176,12 +173,8 @@ type
     cdsProjeto_Financiador_PagtoFORMA_PAGTO: TSmallintField;
     cdsPessoaCEP: TStringField;
     cdsFundoREQUER_AUTORIZACAO: TSmallintField;
-    cdsProjeto_RubricaSALDO_REAL: TFMTBCDField;
-    cdsProjeto_RubricaSALDO_PREVISTO: TFMTBCDField;
     cdsAtividadeDATA_CADASTRO: TSQLTimeStampField;
     cdsAtividadeDATA_ALTERACAO: TSQLTimeStampField;
-    cdsProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField;
-    cdsProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     cdsProjeto_RubricaCALC_VALOR_GASTO: TBCDField;
     cdsProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField;
     cdsOrganizacaoSITE: TStringField;
@@ -204,6 +197,13 @@ type
     cdsOrganizacaoLOGO_SECUNDARIA: TBlobField;
     cdsAtividadeNOME_SOLICITANTE: TStringField;
     cdsAtividadeNOME_RESPONSAVEL: TStringField;
+    cdsProjeto_RubricaGASTO: TBCDField;
+    cdsProjeto_RubricaRECEBIDO: TBCDField;
+    cdsProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField;
+    cdsProjeto_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
+    cdsProjeto_RubricaAPROVISIONADO: TBCDField;
+    cdsProjeto_RubricaSALDO_REAL: TBCDField;
+    cdsProjeto_RubricaSALDO_PREVISTO: TBCDField;
   private
     { Private declarations }
   public

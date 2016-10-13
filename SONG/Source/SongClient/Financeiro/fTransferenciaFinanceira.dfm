@@ -195,6 +195,10 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label5: TLabel
           Left = 152
@@ -481,11 +485,11 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       FieldName = 'NOME_RUBRICA'
       Size = 123
     end
-    object cdsLocalRubricasOrigemSALDO_REAL: TFMTBCDField
+    object cdsLocalRubricasOrigemSALDO_REAL: TBCDField
       DisplayLabel = 'Saldo'
       FieldName = 'SALDO_REAL'
       currency = True
-      Size = 0
+      Precision = 18
     end
   end
   object dsLocalRubricasDestino: TDataSource
@@ -506,11 +510,11 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       FieldName = 'NOME_RUBRICA'
       Size = 123
     end
-    object cdsLocalRubricasDestinoSALDO_REAL: TFMTBCDField
+    object cdsLocalRubricasDestinoSALDO_REAL: TBCDField
       DisplayLabel = 'Saldo'
       FieldName = 'SALDO_REAL'
       currency = True
-      Size = 0
+      Precision = 18
     end
   end
 end

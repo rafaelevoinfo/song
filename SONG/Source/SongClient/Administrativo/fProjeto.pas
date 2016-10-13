@@ -152,7 +152,6 @@ type
     cxGridDBColumn7: TcxGridDBColumn;
     cxGridLevel5: TcxGridLevel;
     dsRubrica: TDataSource;
-    viewRubricasID: TcxGridDBColumn;
     viewRubricasID_RUBRICA: TcxGridDBColumn;
     viewRubricasORCAMENTO: TcxGridDBColumn;
     viewRubricasNOME_RUBRICA: TcxGridDBColumn;
@@ -210,6 +209,9 @@ type
     cbAreaAtuacao: TcxDBLookupComboBox;
     btnAdicionarAreaAtuacao: TButton;
     Ac_Adicionar_Area_Atuacao: TAction;
+    viewRubricasGASTO_TRANSFERENCIA: TcxGridDBColumn;
+    viewRubricasRECEBIDO_TRANSFERENCIA: TcxGridDBColumn;
+    viewRubricasID: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -458,7 +460,7 @@ procedure TfrmProjeto.cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
-  if key = VK_F2 then
+  if Key = VK_F2 then
     ppvAdicionarAreaAtuacao;
 end;
 
@@ -514,7 +516,7 @@ begin
   inherited;
   if not VarIsNull(EditValorPagamento.EditValue) then
     begin
-      EditPercentualPagamento.EditValue := (EditValorPagamento.EditValue * 100) / dmAdministrativo.cdsProjetoORCAMENTO.AsFloat;
+      EditPercentualPagamento.EditValue := RoundTo((EditValorPagamento.EditValue * 100) / dmAdministrativo.cdsProjetoORCAMENTO.AsFloat, -2);
       EditPercentualPagamento.PostEditValue;
     end
   else
@@ -547,7 +549,7 @@ end;
 
 procedure TfrmProjeto.ppvCarregarAreasAtuacao;
 begin
-  dmLookup.cdslkArea_Atuacao.ppuDataRequest([TParametros.coTodos],['NAO_IMPORTA']);
+  dmLookup.cdslkArea_Atuacao.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
 end;
 
 procedure TfrmProjeto.ppvCarregarContasCorrentes();
@@ -620,11 +622,11 @@ var
 begin
   inherited;
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Area then
-    begin      
+    begin
       if not dmPrincipal.FuncoesAdm.fpuValidarAreaProjeto(dmAdministrativo.cdsProjetoID.AsInteger,
         dmAdministrativo.cdsProjeto_AreaID_AREA_ATUACAO.AsInteger) then
         begin
-          raise TControlException.Create('Á área informada já esta cadastrada para este projeto. Por favor escolha outra.',cbAreaAtuacao);
+          raise TControlException.Create('Á área informada já esta cadastrada para este projeto. Por favor escolha outra.', cbAreaAtuacao);
         end;
     end
   else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Rubrica then
@@ -653,10 +655,13 @@ begin
       if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat < 0 then
         raise TControlException.Create('Informe um valor a ser financiado.', EditOrcamentoRubrica);
 
+      if CompareValue(dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat, dmAdministrativo.cdsProjetoORCAMENTO.AsFloat) = GreaterThanValue then
+        raise TControlException.Create('O valor financiado não pode ser superior ao valor do projeto.', EditValorFinanciar);
+
       if (dmAdministrativo.cdsProjeto_Financiador_Pagto.RecordCount > 0) then
         begin
-          if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat <
-            StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0) then
+          if CompareValue(dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat,
+            StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0)) = LessThanValue then
             raise Exception.Create('A soma de todas as parcelas não pode ser superior ao valor a financiar.');
         end;
     end;

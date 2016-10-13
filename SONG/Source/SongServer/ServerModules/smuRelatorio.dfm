@@ -12,39 +12,28 @@ inherited smRelatorio: TsmRelatorio
       'select distinct view_rubrica_projeto.id_rubrica,'
       '                view_rubrica_projeto.id_projeto,'
       '                view_rubrica_projeto.nome_projeto,'
-      '                Rubrica.Nome as Nome_Rubrica,'
+      '                view_rubrica_projeto.Nome_Rubrica,'
       '                view_rubrica_projeto.orcamento,'
-      '                case'
       
-        '                    when view_rubrica_projeto.valor_gasto_transf' +
-        'erido > view_rubrica_projeto.valor_recebido_transferido then'
+        '                coalesce(view_rubrica_projeto.valor_gasto,0) as ' +
+        'Gasto,'
       
-        '                        view_rubrica_projeto.valor_gasto + (view' +
-        '_rubrica_projeto.valor_gasto_transferido - view_rubrica_projeto.' +
-        'valor_recebido_transferido)'
-      '                       else'
-      '                        view_rubrica_projeto.valor_gasto'
-      '                end as Gasto,'
-      '                 case'
+        '                coalesce(view_rubrica_projeto.valor_gasto_transf' +
+        'erido,0) as Gasto_Transferencia,'
       
-        '                    when view_rubrica_projeto.valor_gasto_transf' +
-        'erido < view_rubrica_projeto.valor_recebido_transferido then'
+        '                coalesce(view_rubrica_projeto.valor_recebido,0) ' +
+        'as Recebido,'
       
-        '                        view_rubrica_projeto.valor_recebido + (v' +
-        'iew_rubrica_projeto.valor_recebido_transferido - view_rubrica_pr' +
-        'ojeto.valor_gasto_transferido)'
-      '                       else'
-      '                        view_rubrica_projeto.valor_recebido'
-      '                end as Recebido,'
+        '                coalesce(view_rubrica_projeto.valor_recebido_tra' +
+        'nsferido,0) as Recebido_Transferencia,'
       
-        '                view_rubrica_projeto.valor_aprovisionado as Apro' +
-        'visionado,'
-      '                view_rubrica_projeto.saldo_real'
+        '                coalesce(view_rubrica_projeto.valor_aprovisionad' +
+        'o,0) as Aprovisionado,'
+      
+        '                coalesce(view_rubrica_projeto.saldo_real,0) as S' +
+        'aldo_Real'
       ''
       'from view_rubrica_projeto'
-      
-        'inner join rubrica on (rubrica.id = view_rubrica_projeto.id_rubr' +
-        'ica)'
       
         'where (view_rubrica_projeto.id_projeto = :Id_Projeto) or (:ID_PR' +
         'OJETO IS null)'
@@ -85,39 +74,63 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Size = 123
     end
-    object qSaldo_RubricaRECEBIDO: TBCDField
-      FieldName = 'RECEBIDO'
-      Origin = 'VALOR_RECEBIDO'
-      ProviderFlags = []
-      Precision = 18
-    end
-    object qSaldo_RubricaGASTO: TFMTBCDField
-      FieldName = 'GASTO'
-      Origin = 'VALOR_GASTO'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object qSaldo_RubricaAPROVISIONADO: TFMTBCDField
-      FieldName = 'APROVISIONADO'
-      Origin = 'VALOR_APROVISIONADO'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object qSaldo_RubricaSALDO_REAL: TFMTBCDField
-      FieldName = 'SALDO_REAL'
-      Origin = 'SALDO_REAL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
     object qSaldo_RubricaORCAMENTO: TBCDField
       FieldName = 'ORCAMENTO'
       Origin = 'ORCAMENTO'
-      ProviderFlags = []
       Precision = 18
       Size = 2
+    end
+    object qSaldo_RubricaGASTO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'GASTO'
+      Origin = 'GASTO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qSaldo_RubricaGASTO_TRANSFERENCIA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'GASTO_TRANSFERENCIA'
+      Origin = 'GASTO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qSaldo_RubricaRECEBIDO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'RECEBIDO'
+      Origin = 'RECEBIDO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object qSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'RECEBIDO_TRANSFERENCIA'
+      Origin = 'RECEBIDO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qSaldo_RubricaAPROVISIONADO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'APROVISIONADO'
+      Origin = 'APROVISIONADO'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qSaldo_RubricaSALDO_REAL: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'SALDO_REAL'
+      Origin = 'SALDO_REAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
     end
   end
   object qSaldo_Semente_Muda: TRFQuery

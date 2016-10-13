@@ -118,7 +118,6 @@ type
     qlkProjeto_Rubrica: TRFQuery;
     qlkProjeto_RubricaID: TIntegerField;
     qlkProjeto_RubricaORCAMENTO: TBCDField;
-    qlkProjeto_RubricaSALDO_REAL: TFMTBCDField;
     qlkProjeto_RubricaNOME_RUBRICA: TStringField;
     qlkLote_MudaID_ESPECIE: TIntegerField;
     qlkLote_SementeID_ESPECIE: TIntegerField;
@@ -160,7 +159,6 @@ type
     qlkDoadorID_PESSOA_DOADORA: TIntegerField;
     qlkDoadorNOME: TStringField;
     qlkDoadorTOTAL: TBCDField;
-    qlkRubrica_AtividadeSALDO_REAL: TFMTBCDField;
     qlkOrganizacaoENDERECO: TStringField;
     qlkOrganizacaoBAIRRO: TStringField;
     qlkOrganizacaoCOMPLEMENTO: TStringField;
@@ -183,6 +181,8 @@ type
     qlkTipo_Especie: TRFQuery;
     qlkTipo_EspecieID: TIntegerField;
     qlkTipo_EspecieNOME: TStringField;
+    qlkProjeto_RubricaSALDO_REAL: TBCDField;
+    qlkRubrica_AtividadeSALDO_REAL: TBCDField;
   private
     { Private declarations }
   protected

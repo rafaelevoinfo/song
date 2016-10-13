@@ -38,7 +38,7 @@ type
     procedure ppuCancelarTodosRecebimentosContaReceber(ipIdContaReceber: Integer);
 
     function fpuSaldoRealRubrica(ipIdProjeto, ipIdRubrica: Integer): Double;
-    function fpuValidarCadastroRubricaProjeto(ipIdIgnorar, ipIdProjeto, ipIdRubrica:integer):Boolean;
+    function fpuValidarCadastroRubricaProjeto(ipIdIgnorar, ipIdProjeto, ipIdRubrica: Integer): Boolean;
 
   end;
 
@@ -52,9 +52,9 @@ implementation
 { TsmFuncoesFinanceiro }
 
 function TsmFuncoesFinanceiro.fpuValidarCadastroRubricaProjeto(ipIdIgnorar, ipIdProjeto,
-  ipIdRubrica: integer): Boolean;
+  ipIdRubrica: Integer): Boolean;
 begin
-   Result := fprValidarCamposUnicos('PROJETO_RUBRICA',['ID_PROJETO','ID_RUBRICA'],[ipIdProjeto.ToString, ipIdRubrica.ToString],ipIdIgnorar);
+  Result := fprValidarCamposUnicos('PROJETO_RUBRICA', ['ID_PROJETO', 'ID_RUBRICA'], [ipIdProjeto.ToString, ipIdRubrica.ToString], ipIdIgnorar);
 end;
 
 function TsmFuncoesFinanceiro.fpuVerificarDependenciasPlanoConta(
@@ -341,12 +341,12 @@ var
 
     if (not vaDataSet.Eof) and (vaDataSet.FieldByName('SALDO').AsFloat < ipValor) and (not ipIncrementar) then
       begin
-        if (not ipContaReceber) then
+        if ipContaReceber then // cancelando um pagamento
+          raise Exception.Create('Não é possível reabrir esta parcela pois a conta ' + ipDataSetVinculo.FieldByName('NOME_FUNDO').AsString +
+            ' não possui saldo suficiente.')
+        else   //quitando uma conta
           raise Exception.Create('A conta ' + ipDataSetVinculo.FieldByName('NOME_FUNDO').AsString +
             ' não possui saldo suficiente para quitar essa parcela.')
-        else if ipContaReceber then // cancelando um pagamento
-          raise Exception.Create('Não é possível reabrir esta parcela pois a conta ' + ipDataSetVinculo.FieldByName('NOME_FUNDO').AsString +
-            ' não possui saldo suficiente.');
       end;
 
     if ipIncrementar then
@@ -592,9 +592,9 @@ begin
     procedure(ipDataSet: TRFQuery)
     begin
       ipDataSet.SQL.Text :=
-        'Select conta_receber_parcela.id '+
-        ' from conta_receber_parcela '+
-        ' where conta_receber_parcela.id_conta_receber = :id_conta_receber and '+
+        'Select conta_receber_parcela.id ' +
+        ' from conta_receber_parcela ' +
+        ' where conta_receber_parcela.id_conta_receber = :id_conta_receber and ' +
         '       conta_receber_parcela.status = 1';
       ipDataSet.ParamByName('ID_CONTA_RECEBER').AsInteger := ipIdContaReceber;
       ipDataSet.Open();
@@ -630,9 +630,9 @@ begin
     procedure(ipDataSet: TRFQuery)
     begin
       ipDataSet.SQL.Text :=
-        ' Select conta_pagar_parcela.id '+
-        ' from conta_pagar_parcela '+
-        ' where conta_pagar_parcela.id_conta_pagar = :id_conta_pagar and '+
+        ' Select conta_pagar_parcela.id ' +
+        ' from conta_pagar_parcela ' +
+        ' where conta_pagar_parcela.id_conta_pagar = :id_conta_pagar and ' +
         '       conta_pagar_parcela.status = 1';
       ipDataSet.ParamByName('ID_CONTA_PAGAR').AsInteger := ipIdContaPagar;
       ipDataSet.Open();
