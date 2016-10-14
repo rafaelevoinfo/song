@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTypes, cxMemo;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTypes, cxMemo, cxRichEdit,
+  cxDBRichEdit;
 
 type
   TfrmBasico = class(TForm)
@@ -25,12 +26,16 @@ implementation
 
 procedure TfrmBasico.FormKeyPress(Sender: TObject; var Key: Char);
 var
-  vaCurrentControl:TWinControl;
+  vaCurrentControl: TWinControl;
 begin
   vaCurrentControl := ActiveControl;
 
-  if (Key = Char(VK_RETURN)) and (not (vaCurrentControl is TcxCustomInnerMemo)) then
-    Self.SelectNext(vaCurrentControl, True, True);
+  if (Key = Char(VK_RETURN)) and (not(vaCurrentControl is TcxCustomInnerMemo)) and
+    (not(vaCurrentControl is TcxRichEdit)) and (not(vaCurrentControl is TcxDBRichEdit)) and
+    (not(vaCurrentControl is TcxRichInnerEdit)) then
+    begin
+      Self.SelectNext(vaCurrentControl, True, True);
+    end;
 end;
 
 procedure TfrmBasico.FormShow(Sender: TObject);

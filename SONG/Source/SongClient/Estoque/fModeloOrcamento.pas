@@ -13,7 +13,8 @@ uses
   cxGridTableView, cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid,
   cxGroupBox, cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox,
   cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, fmEditor,
-  uControleAcesso, System.TypInfo, dmuEstoque, cxMemo, cxDBEdit, uTypes;
+  uControleAcesso, System.TypInfo, dmuEstoque, cxMemo, cxDBEdit, uTypes,
+  dmuPrincipal, uExceptions;
 
 type
   TfrmModeloOrcamento = class(TfrmBasicoCrud)
@@ -26,12 +27,19 @@ type
     EditDescricao: TcxDBMemo;
     Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
+    EditMarcador: TcxTextEdit;
+    btnAdicionarMarcador: TButton;
+    Ac_Add_Marcador: TAction;
     procedure FormCreate(Sender: TObject);
+    procedure Ac_Add_MarcadorExecute(Sender: TObject);
     procedure tabCadastroShow(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
+    procedure ppvLimparControls;
   protected
     function fprGetPermissao: string; override;
+   
   public
     { Public declarations }
   end;
@@ -44,6 +52,15 @@ implementation
 {$R *.dfm}
 
 { TfrmModeloOrcamento }
+
+procedure TfrmModeloOrcamento.Ac_Add_MarcadorExecute(Sender: TObject);
+begin
+  inherited;
+  if Trim(EditMarcador.Text)='' then
+    raise TControlException.Create('Informe o nome do marcador.',EditMarcador);
+
+  frameEditor.Rich.SelText := coInicioMarcador+ EditMarcador.Text+coFimMarcador;
+end;
 
 procedure TfrmModeloOrcamento.FormCreate(Sender: TObject);
 begin
@@ -61,10 +78,16 @@ begin
   Result := GetEnumName(TypeInfo(TPermissaoViveiro), Ord(estModeloOrcamento));
 end;
 
+procedure TfrmModeloOrcamento.ppvLimparControls;
+begin
+  frameEditor.ppuIniciar;
+//  EditMarcador.Clear;
+end;
+
 procedure TfrmModeloOrcamento.tabCadastroShow(Sender: TObject);
 begin
   inherited;
-  frameEditor.ppuIniciar;
+  ppvLimparControls;
 end;
 
 end.

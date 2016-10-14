@@ -51,35 +51,35 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
       inherited pnEditsCadastro: TPanel
         inline frameEditor: TframeEditor
           Left = 1
-          Top = 133
+          Top = 185
           Width = 974
-          Height = 264
+          Height = 212
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 1
-          ExplicitTop = 133
+          ExplicitTop = 185
           ExplicitWidth = 974
-          ExplicitHeight = 264
-          inherited pnFormatacao: TPanel
-            Width = 974
-            ExplicitWidth = 974
-          end
+          ExplicitHeight = 212
           inherited pnRich: TPanel
             Width = 974
-            Height = 191
+            Height = 190
             ExplicitWidth = 974
-            ExplicitHeight = 191
+            ExplicitHeight = 190
             inherited Rich: TcxDBRichEdit
               DataBinding.DataField = 'MODELO'
               DataBinding.DataSource = dsMaster
             end
+          end
+          inherited ToolBar1: TToolBar
+            Width = 974
+            ExplicitWidth = 974
           end
         end
         object pnNomeDescricao: TPanel
           Left = 1
           Top = 1
           Width = 974
-          Height = 132
+          Height = 184
           Align = alTop
           TabOrder = 1
           object Label3: TLabel
@@ -100,10 +100,17 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
           end
           object Label5: TLabel
             Left = 6
-            Top = 115
+            Top = 163
             Width = 34
             Height = 13
             Caption = 'Modelo'
+          end
+          object Label6: TLabel
+            Left = 6
+            Top = 116
+            Width = 45
+            Height = 13
+            Caption = 'Marcador'
           end
           object EditNome: TcxDBTextEdit
             Left = 4
@@ -122,6 +129,22 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
             Height = 56
             Width = 669
           end
+          object EditMarcador: TcxTextEdit
+            Left = 4
+            Top = 130
+            TabOrder = 2
+            TextHint = 'Digite aqui o nome do marcador que deseja incluir'
+            Width = 253
+          end
+          object btnAdicionarMarcador: TButton
+            Left = 260
+            Top = 130
+            Width = 125
+            Height = 21
+            Action = Ac_Add_Marcador
+            Images = dmPrincipal.imgIcons_16
+            TabOrder = 3
+          end
         end
       end
     end
@@ -129,6 +152,12 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
   inherited ActionList1: TActionList
     Left = 280
     Top = 248
+    object Ac_Add_Marcador: TAction
+      Category = 'Master'
+      Caption = 'Adicionar Marcador'
+      ImageIndex = 3
+      OnExecute = Ac_Add_MarcadorExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmEstoque.cdsModelo_Orcamento

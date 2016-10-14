@@ -4,136 +4,97 @@ object frameEditor: TframeEditor
   Width = 722
   Height = 496
   TabOrder = 0
-  object pnFormatacao: TPanel
-    Left = 0
-    Top = 0
-    Width = 722
-    Height = 73
-    Align = alTop
-    TabOrder = 0
-    object gbFonte: TcxGroupBox
-      AlignWithMargins = True
-      Left = 4
-      Top = 1
-      Margins.Top = 0
-      Margins.Bottom = 0
-      Align = alLeft
-      Caption = 'Fonte'
-      TabOrder = 0
-      Height = 71
-      Width = 180
-      object cbFonte: TcxFontNameComboBox
-        Left = 3
-        Top = 16
-        TabOrder = 0
-        Width = 121
-      end
-      object EditFonteSize: TcxSpinEdit
-        Left = 126
-        Top = 16
-        TabOrder = 1
-        Width = 49
-      end
-      object btnNegrito: TButton
-        Left = 3
-        Top = 37
-        Width = 25
-        Height = 25
-        Action = FormatRichEditBold1
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 2
-      end
-      object btnItalico: TButton
-        Left = 27
-        Top = 37
-        Width = 25
-        Height = 25
-        Action = FormatRichEditItalic1
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 3
-      end
-      object btnSublinhado: TButton
-        Left = 51
-        Top = 37
-        Width = 25
-        Height = 25
-        Action = FormatRichEditUnderline1
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 4
-      end
-    end
-    object gbAlinhamento: TcxGroupBox
-      Left = 187
-      Top = 1
-      Align = alLeft
-      Caption = 'Par'#225'grafo'
-      TabOrder = 1
-      Height = 71
-      Width = 80
-      object btnAlinhamentoEsquerda: TButton
-        Left = 2
-        Top = 38
-        Width = 25
-        Height = 25
-        Action = FormatRichEditAlignLeft1
-        ImageIndex = 52
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 0
-      end
-      object btnAlinhamentoCentro: TButton
-        Left = 26
-        Top = 38
-        Width = 25
-        Height = 25
-        Action = FormatRichEditAlignCenter1
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 1
-      end
-      object btnAlinhamentoDireita: TButton
-        Left = 50
-        Top = 38
-        Width = 25
-        Height = 25
-        Action = FormatRichEditAlignRight1
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 2
-      end
-      object btnBullet: TButton
-        Left = 2
-        Top = 13
-        Width = 25
-        Height = 25
-        Action = FormatRichEditBullets1
-        Images = dmPrincipal.imgIcons_16
-        TabOrder = 3
-      end
-    end
-  end
   object pnRich: TPanel
     Left = 0
-    Top = 73
+    Top = 22
     Width = 722
-    Height = 423
+    Height = 474
     Align = alClient
     Color = clGray
     ParentBackground = False
-    TabOrder = 1
+    TabOrder = 0
     object Rich: TcxDBRichEdit
-      AlignWithMargins = True
-      Left = 3
-      Top = 0
-      Margins.Top = 0
+      Left = 114
+      Top = 6
       Margins.Bottom = 0
+      Properties.HideScrollBars = False
       Properties.ScrollBars = ssVertical
+      Properties.WantTabs = True
+      Properties.OnSelectionChange = RichPropertiesSelectionChange
       Style.BorderStyle = ebsUltraFlat
       Style.Shadow = True
       Style.TransparentBorder = True
       TabOrder = 0
       Height = 423
-      Width = 481
+      Width = 480
     end
   end
-  object ActionList1: TActionList
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 722
+    Height = 22
+    AutoSize = True
+    ButtonWidth = 25
+    Caption = 'ToolBar1'
+    DrawingStyle = dsGradient
+    Images = dmPrincipal.imgIcons_16
+    Indent = 5
+    List = True
+    TabOrder = 1
+    object btnBold: TToolButton
+      Left = 5
+      Top = 0
+      Action = FormatRichEditBold1
+    end
+    object btnItalico: TToolButton
+      Left = 30
+      Top = 0
+      Action = FormatRichEditItalic1
+    end
+    object btnSublinhado: TToolButton
+      Left = 55
+      Top = 0
+      Action = FormatRichEditUnderline1
+    end
+    object btnMarcador: TToolButton
+      Left = 80
+      Top = 0
+      Action = FormatRichEditBullets1
+    end
+    object btnAlinharEsquerda: TToolButton
+      Left = 105
+      Top = 0
+      Action = FormatRichEditAlignLeft1
+    end
+    object btnAlinharCentro: TToolButton
+      Left = 130
+      Top = 0
+      Action = FormatRichEditAlignCenter1
+    end
+    object btnAlinharDireita: TToolButton
+      Left = 155
+      Top = 0
+      Action = FormatRichEditAlignRight1
+    end
+    object cbFonte: TcxFontNameComboBox
+      Left = 180
+      Top = 0
+      Properties.ImmediatePost = True
+      Properties.OnEditValueChanged = cbFontePropertiesEditValueChanged
+      TabOrder = 0
+      Width = 121
+    end
+    object EditFonteSize: TcxSpinEdit
+      Left = 301
+      Top = 0
+      Properties.ImmediatePost = True
+      Properties.OnEditValueChanged = EditFonteSizePropertiesEditValueChanged
+      TabOrder = 1
+      Width = 49
+    end
+  end
+  object ActionListEditor: TActionList
     Images = dmPrincipal.imgIcons_16
     Left = 72
     Top = 128
@@ -162,7 +123,7 @@ object frameEditor: TframeEditor
       Category = 'Format'
       AutoCheck = True
       Hint = 'Align Left|Aligns text at the left indent'
-      ImageIndex = 54
+      ImageIndex = 52
     end
     object FormatRichEditAlignRight1: TRichEditAlignRight
       Category = 'Format'
