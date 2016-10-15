@@ -21,7 +21,7 @@ uses
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
-  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie, fMix_Muda;
+  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie, fMix_Muda, fOrcamento;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -130,6 +130,8 @@ type
     MixdeMudas1: TMenuItem;
     Ac_Modelo_Orcamento: TAction;
     ModelosdeOramento1: TMenuItem;
+    Ac_Orcamento: TAction;
+    Oramento1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -179,6 +181,7 @@ type
     procedure Ac_Tipo_EspecieExecute(Sender: TObject);
     procedure Ac_Mix_MudaExecute(Sender: TObject);
     procedure Ac_Modelo_OrcamentoExecute(Sender: TObject);
+    procedure Ac_OrcamentoExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -410,6 +413,12 @@ procedure TfrmPrincipal.Ac_NotificacaoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmNotificacao>(pcPrincipal, TfrmNotificacao, frmNotificacao);
+end;
+
+procedure TfrmPrincipal.Ac_OrcamentoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmOrcamento>(pcPrincipal, TfrmOrcamento, frmOrcamento);
 end;
 
 procedure TfrmPrincipal.Ac_OrganizacaoExecute(Sender: TObject);

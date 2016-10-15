@@ -280,6 +280,8 @@ type
   TTipoAgenda = (taPessoal, taOutra);
   TTipoEvento = (teEventoAgenda, teEventoAtividade);
 
+  TMarcadorOrcamento = (moEspecie,moNomeCientifico, moFamiliaBotanica,moTamanho, moQtdeMuda, moValorUnitarioMuda, moValorTotalMuda, moCustomizado);
+
 const
   // mensagens customizadas do windows
   MSG_AFTER_SHOW = WM_USER + 1;
@@ -303,6 +305,8 @@ const
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
     'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Eventos de Agendas');
+  MarcadorOrcamento: array[TMarcadorOrcamento] of String = ('Espécie','Nome Científico',
+  'Família Botânica','Tamanho', 'Quantidade de Mudas','Valor Unitário da Muda', 'Valor Total da Muda','Customizado');
 
 implementation
 

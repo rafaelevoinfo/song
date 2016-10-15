@@ -119,6 +119,9 @@ inherited frmPrincipal: TfrmPrincipal
       object ModelosdeOramento1: TMenuItem
         Action = Ac_Modelo_Orcamento
       end
+      object Oramento1: TMenuItem
+        Action = Ac_Orcamento
+      end
     end
     object Estoque1: TMenuItem
       Caption = 'Estoque'
@@ -518,6 +521,11 @@ inherited frmPrincipal: TfrmPrincipal
       Category = 'CompraVenda'
       Caption = 'Modelos de Or'#231'amento'
       OnExecute = Ac_Modelo_OrcamentoExecute
+    end
+    object Ac_Orcamento: TAction
+      Category = 'CompraVenda'
+      Caption = 'Or'#231'amento'
+      OnExecute = Ac_OrcamentoExecute
     end
   end
   object dxSkinController1: TdxSkinController

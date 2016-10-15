@@ -31,15 +31,17 @@ type
     EditMarcador: TcxTextEdit;
     btnAdicionarMarcador: TButton;
     Ac_Add_Marcador: TAction;
+    cbMarcador: TcxImageComboBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Add_MarcadorExecute(Sender: TObject);
     procedure tabCadastroShow(Sender: TObject);
+    procedure cbMarcadorPropertiesEditValueChanged(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     procedure ppvLimparControls;
   protected
     function fprGetPermissao: string; override;
-   
+
   public
     { Public declarations }
   end;
@@ -54,15 +56,37 @@ implementation
 { TfrmModeloOrcamento }
 
 procedure TfrmModeloOrcamento.Ac_Add_MarcadorExecute(Sender: TObject);
+var
+  vaMarcador: String;
 begin
   inherited;
-  if Trim(EditMarcador.Text)='' then
-    raise TControlException.Create('Informe o nome do marcador.',EditMarcador);
+  if VarIsNull(cbMarcador.EditValue) then
+    raise TControlException.Create('Informe o marcador.', cbMarcador);
 
-  frameEditor.Rich.SelText := coInicioMarcador+ EditMarcador.Text+coFimMarcador;
+  if (cbMarcador.EditValue = Ord(moCustomizado)) then
+    begin
+      if (Trim(EditMarcador.Text) = '') then
+        raise TControlException.Create('Informe o nome do marcador.', EditMarcador);
+
+      vaMarcador := EditMarcador.Text;
+    end
+  else
+    vaMarcador := cbMarcador.Properties.Items[cbMarcador.SelectedItem].Description;
+
+  frameEditor.Rich.SelText := coInicioMarcador + vaMarcador + coFimMarcador;
+end;
+
+procedure TfrmModeloOrcamento.cbMarcadorPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  EditMarcador.Enabled := (not VarIsNull(cbMarcador.EditValue)) and (cbMarcador.EditValue = Ord(moCustomizado));
 end;
 
 procedure TfrmModeloOrcamento.FormCreate(Sender: TObject);
+var
+  i: TMarcadorOrcamento;
+  vaMarcador: TcxImageComboBoxItem;
 begin
   dmEstoque := TdmEstoque.Create(Self);
   dmEstoque.name := '';
@@ -71,6 +95,13 @@ begin
 
   PesquisaPadrao := Ord(tppTodos);
 
+  cbMarcador.Properties.Items.Clear;
+  for i := Low(TMarcadorOrcamento) to High(TMarcadorOrcamento) do
+    begin
+      vaMarcador := cbMarcador.Properties.Items.Add;
+      vaMarcador.Value := Ord(i);
+      vaMarcador.Description := MarcadorOrcamento[i];
+    end;
 end;
 
 function TfrmModeloOrcamento.fprGetPermissao: string;
@@ -81,7 +112,7 @@ end;
 procedure TfrmModeloOrcamento.ppvLimparControls;
 begin
   frameEditor.ppuIniciar;
-//  EditMarcador.Clear;
+  EditMarcador.Clear;
 end;
 
 procedure TfrmModeloOrcamento.tabCadastroShow(Sender: TObject);

@@ -47,6 +47,7 @@ type
     coResponsavelDespesa = 'RESPONSAVEL_DESPESA';
     coLoteSemente = 'LOTE_SEMENTE';
     coVencida = 'VENCIDA';
+    coCliente = 'CLIENTE';
 
     coTipo = 'TIPO';
     coTipoItem = 'TIPO_ITEM';

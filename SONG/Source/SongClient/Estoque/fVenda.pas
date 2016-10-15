@@ -19,7 +19,7 @@ uses
   System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
   ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
   ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod, ppUtils,
-  System.Generics.Collections;
+  System.Generics.Collections, Vcl.Menus;
 
 type
   TVenda = class(TModelo)
@@ -293,7 +293,7 @@ begin
   else if cbPesquisarPor.EditValue = coPesquisaVendedor then
     ipCds.ppuAddParametro(TParametros.coVendedor, cbPesquisaPessoa.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCliente then
-    ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaCliente.EditValue);
+    ipCds.ppuAddParametro(TParametros.coCliente, cbPesquisaCliente.EditValue);
 end;
 
 procedure TfrmVenda.ppReciboAfterPrint(Sender: TObject);

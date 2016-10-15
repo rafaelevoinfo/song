@@ -773,7 +773,7 @@ inherited smEstoque: TsmEstoque
     OnCalcFields = qVendaCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Venda.Id,'
+      'select distinct Venda.Id,'
       '       Venda.Id_Cliente,'
       '       Fin_For_Cli.razao_social as Cliente,'
       '       coalesce(Fin_For_Cli.CPF_CNPJ, cliente.cpf) as Cpf_Cnpj,'
@@ -799,11 +799,10 @@ inherited smEstoque: TsmEstoque
         '         when (Select count(*) from conta_receber where conta_re' +
         'ceber.id_venda = venda.id) > 0 then 1'
       '         else 0'
-      '       end Gerou_Conta_Receber'
-      '       '
-      ''
+      '       end Gerou_Conta_Receber      '
       'from Venda '
       'inner join fin_for_cli on (fin_for_cli.id = Venda.id_cliente)'
+      'inner join venda_item on (venda.id = venda_item.id_venda)'
       
         'left join pessoa cliente on (fin_for_cli.id_contato = cliente.id' +
         ')'

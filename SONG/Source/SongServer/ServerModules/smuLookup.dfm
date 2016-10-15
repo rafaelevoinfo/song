@@ -1470,4 +1470,55 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
+  object qlkModelo_Orcamento: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select MODELO_ORCAMENTO.ID,'
+      '       MODELO_ORCAMENTO.NOME'
+      'from MODELO_ORCAMENTO ')
+    Left = 472
+    Top = 432
+    object qlkModelo_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qlkModelo_OrcamentoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object qModelo_Orcamento_Orcamento: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select MODELO_ORCAMENTO.ID,'
+      '       MODELO_ORCAMENTO.MODELO'
+      'from MODELO_ORCAMENTO '
+      'where MODELO_ORCAMENTO.ID = :ID')
+    Left = 616
+    Top = 440
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qModelo_Orcamento_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object qModelo_Orcamento_OrcamentoMODELO: TBlobField
+      FieldName = 'MODELO'
+      Origin = 'MODELO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
 end

@@ -346,6 +346,15 @@ begin
       else if ipParam.Name = TParametros.coFornecedor then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador)
     end
+  else if (ipTabela = 'VENDA') then
+    begin
+      if ipParam.Name = TParametros.coItem then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'VENDA_ITEM', 'ID_ITEM', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coVendedor then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_PESSOA_VENDEU', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coCliente then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_CLIENTE', vaValor, vaOperador)
+    end
   else if (ipTabela = 'SAIDA') then
     begin
       if ipParam.Name = TParametros.coData then
@@ -382,17 +391,27 @@ begin
       else if ipParam.Name = TParametros.coNotaFiscal then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'NOTA_FISCAL', vaValor, vaOperador)
     end
+  else if (ipTabela = 'ORCAMENTO') then
+    begin
+      if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador)
+      else if ipParam.Name = TParametros.coVendedor then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_RESPONSAVEL', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coCliente then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_CLIENTE', vaValor, vaOperador)
+    end;
 end;
 
 procedure TsmEstoque.qEntrada_ItemCalcFields(DataSet: TDataSet);
 var
-  vaField:TField;
+  vaField: TField;
 begin
   inherited;
   DataSet.FieldByName('CALC_QTDE').AsString := FormatFloat(',0.00', DataSet.FieldByName('QTDE').AsFloat) + ' ' + DataSet.FieldByName('UNIDADE').AsString;
   vaField := DataSet.FindField('CALC_VALOR_TOTAL');
   if Assigned(vaField) then
-    vaField.AsFloat := DataSet.FieldByName('QTDE').AsFloat*DataSet.FieldByName('VALOR_UNITARIO').AsFloat;
+    vaField.AsFloat := DataSet.FieldByName('QTDE').AsFloat * DataSet.FieldByName('VALOR_UNITARIO').AsFloat;
 
 end;
 
@@ -406,7 +425,7 @@ end;
 procedure TsmEstoque.qVendaCalcFields(DataSet: TDataSet);
 begin
   inherited;
-  qVendaCALC_VALOR_EXTENSO.AsString := '('+TUtils.fpuGetValorPorExtenso(qVendaVALOR_TOTAL.AsFloat)+')';
+  qVendaCALC_VALOR_EXTENSO.AsString := '(' + TUtils.fpuGetValorPorExtenso(qVendaVALOR_TOTAL.AsFloat) + ')';
 end;
 
 end.

@@ -183,6 +183,12 @@ type
     qlkTipo_EspecieNOME: TStringField;
     qlkProjeto_RubricaSALDO_REAL: TBCDField;
     qlkRubrica_AtividadeSALDO_REAL: TBCDField;
+    qlkModelo_Orcamento: TRFQuery;
+    qModelo_Orcamento_Orcamento: TRFQuery;
+    qlkModelo_OrcamentoID: TIntegerField;
+    qlkModelo_OrcamentoNOME: TStringField;
+    qModelo_Orcamento_OrcamentoID: TIntegerField;
+    qModelo_Orcamento_OrcamentoMODELO: TBlobField;
   private
     { Private declarations }
   protected

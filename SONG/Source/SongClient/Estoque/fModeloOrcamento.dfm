@@ -51,9 +51,9 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
       inherited pnEditsCadastro: TPanel
         inline frameEditor: TframeEditor
           Left = 1
-          Top = 185
+          Top = 174
           Width = 974
-          Height = 212
+          Height = 223
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 1
@@ -62,7 +62,7 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
           ExplicitHeight = 212
           inherited pnRich: TPanel
             Width = 974
-            Height = 190
+            Height = 201
             ExplicitWidth = 974
             ExplicitHeight = 190
             inherited Rich: TcxDBRichEdit
@@ -79,7 +79,7 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
           Left = 1
           Top = 1
           Width = 974
-          Height = 184
+          Height = 173
           Align = alTop
           TabOrder = 1
           object Label3: TLabel
@@ -100,7 +100,7 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
           end
           object Label5: TLabel
             Left = 6
-            Top = 163
+            Top = 155
             Width = 34
             Height = 13
             Caption = 'Modelo'
@@ -130,20 +130,29 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
             Width = 669
           end
           object EditMarcador: TcxTextEdit
-            Left = 4
+            Left = 196
             Top = 130
-            TabOrder = 2
+            Enabled = False
+            TabOrder = 3
             TextHint = 'Digite aqui o nome do marcador que deseja incluir'
             Width = 253
           end
           object btnAdicionarMarcador: TButton
-            Left = 260
+            Left = 452
             Top = 130
             Width = 125
             Height = 21
             Action = Ac_Add_Marcador
             Images = dmPrincipal.imgIcons_16
-            TabOrder = 3
+            TabOrder = 4
+          end
+          object cbMarcador: TcxImageComboBox
+            Left = 4
+            Top = 130
+            Properties.Items = <>
+            Properties.OnEditValueChanged = cbMarcadorPropertiesEditValueChanged
+            TabOrder = 2
+            Width = 189
           end
         end
       end
@@ -161,5 +170,9 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
   end
   inherited dsMaster: TDataSource
     DataSet = dmEstoque.cdsModelo_Orcamento
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 456
+    Top = 288
   end
 end

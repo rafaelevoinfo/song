@@ -1048,4 +1048,115 @@ inherited dmEstoque: TdmEstoque
       Required = True
     end
   end
+  object cdsOrcamento: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqOrcamento'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 32
+    Top = 312
+    object cdsOrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsOrcamentoID_MODELO_ORCAMENTO: TIntegerField
+      DisplayLabel = 'Id do Modelo'
+      FieldName = 'ID_MODELO_ORCAMENTO'
+      Required = True
+    end
+    object cdsOrcamentoNOME: TStringField
+      DisplayLabel = 'Nome do Modelo'
+      FieldName = 'NOME'
+      Size = 100
+    end
+    object cdsOrcamentoID_RESPONSAVEL: TIntegerField
+      DisplayLabel = 'Id do Respons'#225'vel'
+      FieldName = 'ID_RESPONSAVEL'
+      Required = True
+    end
+    object cdsOrcamentoRESPONSAVEL: TStringField
+      DisplayLabel = 'Respons'#225'vel'
+      FieldName = 'RESPONSAVEL'
+      Size = 100
+    end
+    object cdsOrcamentoID_CLIENTE: TIntegerField
+      DisplayLabel = 'Id do Cliente'
+      FieldName = 'ID_CLIENTE'
+      Required = True
+    end
+    object cdsOrcamentoCLIENTE: TStringField
+      DisplayLabel = 'Cliente'
+      FieldName = 'CLIENTE'
+      Size = 100
+    end
+    object cdsOrcamentoDATA: TSQLTimeStampField
+      DisplayLabel = 'Data'
+      FieldName = 'DATA'
+      Required = True
+    end
+  end
+  object cdsOrcamento_Orcamento: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID'
+    MasterFields = 'ID'
+    MasterSource = dsOrcamento
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqOrcamento_Orcamento'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 232
+    Top = 312
+    object cdsOrcamento_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsOrcamento_OrcamentoORCAMENTO: TBlobField
+      DisplayLabel = 'Or'#231'amento'
+      FieldName = 'ORCAMENTO'
+      Required = True
+    end
+  end
+  object dsOrcamento: TDataSource
+    DataSet = cdsOrcamento
+    Left = 112
+    Top = 312
+  end
+  object cdsOrcamento_Valor: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ORCAMENTO'
+    MasterFields = 'ID'
+    MasterSource = dsOrcamento
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqOrcamento_Valor'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    Left = 360
+    Top = 312
+    object cdsOrcamento_ValorID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsOrcamento_ValorID_ORCAMENTO: TIntegerField
+      DisplayLabel = 'Id do Or'#231'amento'
+      FieldName = 'ID_ORCAMENTO'
+      Required = True
+    end
+    object cdsOrcamento_ValorCAMPO: TStringField
+      DisplayLabel = 'Campo'
+      FieldName = 'CAMPO'
+      Required = True
+      Size = 60
+    end
+    object cdsOrcamento_ValorVALOR: TStringField
+      DisplayLabel = 'Valor'
+      FieldName = 'VALOR'
+      Required = True
+      Size = 250
+    end
+  end
 end
