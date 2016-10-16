@@ -1,17 +1,38 @@
 inherited frmOrcamento: TfrmOrcamento
+  ActiveControl = btnIncluir
   Caption = 'Or'#231'amento'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
             ExplicitLeft = 4
+          end
+          object cbPesquisaCliente: TcxLookupComboBox [1]
+            Left = 136
+            Top = 20
+            RepositoryItem = dmLookup.repLcbFinForCli
+            Properties.ListColumns = <>
+            TabOrder = 5
+            Visible = False
+            Width = 176
+          end
+          object cbPesquisaVendedor: TcxLookupComboBox [2]
+            Left = 136
+            Top = 20
+            RepositoryItem = dmLookup.repLcbPessoa
+            Properties.ListColumns = <>
+            TabOrder = 6
+            Visible = False
+            Width = 176
           end
           inherited pnData: TPanel
             Left = 183
@@ -57,24 +78,6 @@ inherited frmOrcamento: TfrmOrcamento
             Top = 39
             ExplicitLeft = 6
             ExplicitTop = 39
-          end
-          object cbPesquisaCliente: TcxLookupComboBox
-            Left = 136
-            Top = 20
-            RepositoryItem = dmLookup.repLcbFinForCli
-            Properties.ListColumns = <>
-            TabOrder = 5
-            Visible = False
-            Width = 176
-          end
-          object cbPesquisaVendedor: TcxLookupComboBox
-            Left = 136
-            Top = 21
-            RepositoryItem = dmLookup.repLcbPessoa
-            Properties.ListColumns = <>
-            TabOrder = 6
-            Visible = False
-            Width = 176
           end
         end
       end
@@ -122,10 +125,6 @@ inherited frmOrcamento: TfrmOrcamento
     end
     inherited tabCadastro: TcxTabSheet
       OnShow = tabCadastroShow
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnEditsCadastroTop: TPanel
           Left = 1
@@ -135,9 +134,6 @@ inherited frmOrcamento: TfrmOrcamento
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 302
-          ExplicitTop = 20
-          ExplicitWidth = 185
           object Label3: TLabel
             Left = 528
             Top = 2
@@ -157,10 +153,10 @@ inherited frmOrcamento: TfrmOrcamento
           object lbl2: TLabel
             Left = 193
             Top = 2
-            Width = 71
+            Width = 94
             Height = 13
-            Caption = 'Data da Venda'
-            FocusControl = EditDataVenda
+            Caption = 'Data do Or'#231'amento'
+            FocusControl = EditDataOrcamento
           end
           object lbl5: TLabel
             Left = 4
@@ -194,11 +190,13 @@ inherited frmOrcamento: TfrmOrcamento
           object cbModelo: TcxDBLookupComboBox
             Left = 526
             Top = 16
+            RepositoryItem = dmLookup.repLcbModelo_Orcamento
             DataBinding.DataField = 'ID_MODELO_ORCAMENTO'
             DataBinding.DataSource = dsMaster
             Properties.ListColumns = <>
+            Properties.OnEditValueChanged = cbModeloPropertiesEditValueChanged
             TabOrder = 4
-            Width = 199
+            Width = 243
           end
           object cbVendedor: TcxDBLookupComboBox
             Left = 315
@@ -210,7 +208,7 @@ inherited frmOrcamento: TfrmOrcamento
             TabOrder = 3
             Width = 209
           end
-          object EditDataVenda: TcxDBDateEdit
+          object EditDataOrcamento: TcxDBDateEdit
             Left = 191
             Top = 16
             RepositoryItem = dmLookup.repDateDataPadrao
@@ -228,14 +226,14 @@ inherited frmOrcamento: TfrmOrcamento
           Align = alClient
           TabOrder = 1
           ExplicitLeft = 1
-          ExplicitTop = 83
+          ExplicitTop = 145
           ExplicitWidth = 974
-          ExplicitHeight = 314
+          ExplicitHeight = 252
           inherited pnRich: TPanel
             Width = 974
             Height = 230
             ExplicitWidth = 974
-            ExplicitHeight = 190
+            ExplicitHeight = 230
             inherited Rich: TcxDBRichEdit
               DataBinding.DataField = 'ORCAMENTO'
               DataBinding.DataSource = dsOrcamento_Orcamento

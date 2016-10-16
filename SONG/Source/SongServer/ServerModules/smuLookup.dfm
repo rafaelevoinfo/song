@@ -1492,7 +1492,7 @@ inherited smLookup: TsmLookup
       Size = 100
     end
   end
-  object qModelo_Orcamento_Orcamento: TRFQuery
+  object qlkModelo_Orcamento_Orcamento: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select MODELO_ORCAMENTO.ID,'
@@ -1508,13 +1508,13 @@ inherited smLookup: TsmLookup
         ParamType = ptInput
         Value = Null
       end>
-    object qModelo_Orcamento_OrcamentoID: TIntegerField
+    object qlkModelo_Orcamento_OrcamentoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = []
       Required = True
     end
-    object qModelo_Orcamento_OrcamentoMODELO: TBlobField
+    object qlkModelo_Orcamento_OrcamentoMODELO: TBlobField
       FieldName = 'MODELO'
       Origin = 'MODELO'
       ProviderFlags = []

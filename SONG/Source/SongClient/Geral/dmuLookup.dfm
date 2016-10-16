@@ -1,7 +1,7 @@
 inherited dmLookup: TdmLookup
   OldCreateOrder = True
-  Height = 905
-  Width = 1015
+  Height = 961
+  Width = 1054
   object Repositorio: TcxEditRepository
     Left = 48
     Top = 16
@@ -869,6 +869,19 @@ inherited dmLookup: TdmLookup
           FieldName = 'NOME'
         end>
       Properties.ListSource = dslkTipo_Especie
+    end
+    object repLcbModelo_Orcamento: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          Width = 200
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkModelo_Orcamento
     end
   end
   object dslkPerfil: TDataSource
@@ -2187,5 +2200,53 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkTipo_Especie
     Left = 488
     Top = 440
+  end
+  object cdslkModelo_Orcamento: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqlkModelo_Orcamento'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 928
+    Top = 784
+    object cdslkModelo_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkModelo_OrcamentoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object cdslkModelo_Orcamento_Orcamento: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID'
+    MasterFields = 'ID'
+    MasterSource = dslkModelo_Orcamento
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqlkModelo_Orcamento_Orcamento'
+    RemoteServer = dmPrincipal.ProviderLookup
+    RFNomeTabela = 'MODELO_ORCAMENTO'
+    Left = 872
+    Top = 848
+    object cdslkModelo_Orcamento_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdslkModelo_Orcamento_OrcamentoMODELO: TBlobField
+      FieldName = 'MODELO'
+      ProviderFlags = []
+      Required = True
+    end
+  end
+  object dslkModelo_Orcamento: TDataSource
+    DataSet = cdslkModelo_Orcamento
+    Left = 712
+    Top = 848
   end
 end

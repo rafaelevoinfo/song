@@ -283,6 +283,14 @@ type
     cdslkTipo_EspecieNOME: TStringField;
     cdslkProjeto_RubricaSALDO_REAL: TBCDField;
     cdslkRubrica_AtividadeSALDO_REAL: TBCDField;
+    cdslkModelo_Orcamento: TRFClientDataSet;
+    cdslkModelo_OrcamentoID: TIntegerField;
+    cdslkModelo_OrcamentoNOME: TStringField;
+    cdslkModelo_Orcamento_Orcamento: TRFClientDataSet;
+    dslkModelo_Orcamento: TDataSource;
+    cdslkModelo_Orcamento_OrcamentoID: TIntegerField;
+    cdslkModelo_Orcamento_OrcamentoMODELO: TBlobField;
+    repLcbModelo_Orcamento: TcxEditRepositoryLookupComboBoxItem;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;
@@ -296,6 +304,8 @@ type
     procedure ppuPesquisarPessoa(ipEditResultado: TcxDBLookupComboBox; ipTipos: TRelacionamentosPessoa);
 
     procedure ppuAbrirCache(ipCds: TRFClientDataSet);
+    procedure ppuSalvarCache(ipCds: TRFClientDataSet);
+    function fpuGetDiretorioCache: String;
     procedure ppuCarregarCidades();
   public const
     coCache = '\Cache\';
@@ -314,6 +324,22 @@ uses
 {$R *.dfm}
 
 
+procedure TdmLookup.ppuSalvarCache(ipCds: TRFClientDataSet);
+var
+  vaTabela, vaDiretorio, vaFile: String;
+begin
+  if ipCds.Active then
+    begin
+      vaDiretorio := fpuGetDiretorioCache;
+      vaFile := vaDiretorio + ipCds.Name;
+
+      if not TDirectory.Exists(vaDiretorio) then
+        TDirectory.CreateDirectory(vaDiretorio);
+
+      ipCds.SaveToFile(vaFile);
+    end;
+end;
+
 procedure TdmLookup.ppuAbrirCache(ipCds: TRFClientDataSet);
 var
   vaTabela, vaDiretorio, vaFile: String;
@@ -323,13 +349,17 @@ begin
     Exit;
   try
 
-    vaDiretorio := TDirectory.GetCurrentDirectory + coCache;
+    vaDiretorio := fpuGetDiretorioCache;
     vaFile := vaDiretorio + ipCds.Name;
     if TFile.Exists(vaFile) and TRegex.IsMatch(ipCds.Name, '^cds.+', [roIgnoreCase]) then
       begin
         // verificando se houve alteracoes
         vaUltimaAlteracao := TFile.GetLastWriteTime(vaFile);
-        vaTabela := TRegex.Replace(ipCds.Name, '^cds(lk)?', '', [roIgnoreCase]).ToUpper;
+        if ipCds.RFNomeTabela <> '' then
+          vaTabela := ipCds.RFNomeTabela
+        else
+          vaTabela := TRegex.Replace(ipCds.Name, '^cds(lk)?', '', [roIgnoreCase]).ToUpper;
+
         if dmPrincipal.FuncoesGeral.fpuVerificarAlteracao(vaTabela, DateTimeToStr(vaUltimaAlteracao)) then
           ipCds.ppuDataRequest()
         else
@@ -345,10 +375,7 @@ begin
     ipCds.ppuDataRequest();
   end;
 
-  if not TDirectory.Exists(vaDiretorio) then
-    TDirectory.CreateDirectory(vaDiretorio);
-
-  ipCds.SaveToFile(vaFile);
+  ppuSalvarCache(ipCds);
 end;
 
 procedure TdmLookup.ppuCarregarCidades;
@@ -357,7 +384,7 @@ begin
     Exit;
 
   dmPrincipal.cdslkCidade.ppuLimparParametros;
-  dmPrincipal.cdslkCidade.ppuAddParametro(TParametros.coTodos,'NAO_IMPORTA');
+  dmPrincipal.cdslkCidade.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   ppuAbrirCache(dmPrincipal.cdslkCidade);
 end;
 
@@ -478,6 +505,11 @@ begin
       vaItem.Description := TiposNotificacao[vaTipoNotificacao];
     end;
 
+end;
+
+function TdmLookup.fpuGetDiretorioCache: String;
+begin
+  Result := TDirectory.GetCurrentDirectory + coCache;
 end;
 
 end.

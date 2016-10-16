@@ -178,6 +178,8 @@ type
     qOrcamento_ValorID_ORCAMENTO: TIntegerField;
     qOrcamento_ValorCAMPO: TStringField;
     qOrcamento_ValorVALOR: TStringField;
+    qOrcamento_OrcamentoID: TIntegerField;
+    qOrcamento_OrcamentoORCAMENTO: TBlobField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;

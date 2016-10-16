@@ -88,9 +88,11 @@ type
     FRFApplyAutomatico: Boolean;
     FPerdeuConexao: Boolean;
     FOnTratarErroRede: TOnErroRede;
+    FRFNomeTabela: String;
     procedure SetRFApplyAutomatico(const Value: Boolean);
     procedure SetPerdeuConexao(const Value: Boolean);
     procedure SetOnTratarErroRede(const Value: TOnErroRede);
+    procedure SetRFNomeTabela(const Value: String);
   protected
     procedure InternalDelete; override;
     procedure pprChecarReconexao;
@@ -125,6 +127,7 @@ type
   published
     property RFApplyAutomatico: Boolean read FRFApplyAutomatico write SetRFApplyAutomatico default true;
     property OnTratarErroRede: TOnErroRede read FOnTratarErroRede write SetOnTratarErroRede;
+    property RFNomeTabela:String read FRFNomeTabela write SetRFNomeTabela;
   end;
 
 procedure Register;
@@ -373,6 +376,11 @@ end;
 procedure TRFClientDataSet.SetRFApplyAutomatico(const Value: Boolean);
 begin
   FRFApplyAutomatico := Value;
+end;
+
+procedure TRFClientDataSet.SetRFNomeTabela(const Value: String);
+begin
+  FRFNomeTabela := Value;
 end;
 
 end.

@@ -1053,6 +1053,7 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqOrcamento'
     RemoteServer = dmPrincipal.ProviderEstoque
+    RFApplyAutomatico = False
     Left = 32
     Top = 312
     object cdsOrcamentoID: TIntegerField
@@ -1097,10 +1098,6 @@ inherited dmEstoque: TdmEstoque
   end
   object cdsOrcamento_Orcamento: TRFClientDataSet
     Aggregates = <>
-    IndexFieldNames = 'ID'
-    MasterFields = 'ID'
-    MasterSource = dsOrcamento
-    PacketRecords = 0
     Params = <
       item
         DataType = ftInteger
@@ -1109,16 +1106,18 @@ inherited dmEstoque: TdmEstoque
       end>
     ProviderName = 'dspqOrcamento_Orcamento'
     RemoteServer = dmPrincipal.ProviderEstoque
+    RFApplyAutomatico = False
     Left = 232
     Top = 312
     object cdsOrcamento_OrcamentoID: TIntegerField
       FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsOrcamento_OrcamentoORCAMENTO: TBlobField
       DisplayLabel = 'Or'#231'amento'
       FieldName = 'ORCAMENTO'
-      Required = True
+      ProviderFlags = [pfInUpdate]
     end
   end
   object dsOrcamento: TDataSource
@@ -1135,6 +1134,7 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqOrcamento_Valor'
     RemoteServer = dmPrincipal.ProviderEstoque
+    RFApplyAutomatico = False
     Left = 360
     Top = 312
     object cdsOrcamento_ValorID: TIntegerField

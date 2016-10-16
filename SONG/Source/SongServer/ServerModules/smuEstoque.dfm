@@ -1379,8 +1379,20 @@ inherited smEstoque: TsmEstoque
     ParamData = <
       item
         Name = 'ID'
+        DataType = ftInteger
         ParamType = ptInput
       end>
+    object qOrcamento_OrcamentoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrcamento_OrcamentoORCAMENTO: TBlobField
+      FieldName = 'ORCAMENTO'
+      Origin = 'ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object qOrcamento_Valor: TRFQuery
     Connection = dmPrincipal.conSong
