@@ -1,10 +1,9 @@
 inherited frmOrcamento: TfrmOrcamento
-  ActiveControl = btnIncluir
   Caption = 'Or'#231'amento'
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -86,38 +85,163 @@ inherited frmOrcamento: TfrmOrcamento
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
+              Options.Editing = False
               Width = 43
             end
             object viewRegistrosID_MODELO_ORCAMENTO: TcxGridDBColumn [1]
               DataBinding.FieldName = 'ID_MODELO_ORCAMENTO'
               Visible = False
+              Options.Editing = False
               Width = 79
             end
             object viewRegistrosDATA: TcxGridDBColumn [2]
               DataBinding.FieldName = 'DATA'
+              Options.Editing = False
               Width = 86
             end
             object viewRegistrosNOME: TcxGridDBColumn [3]
               DataBinding.FieldName = 'NOME'
+              Options.Editing = False
               Width = 201
             end
             object viewRegistrosID_RESPONSAVEL: TcxGridDBColumn [4]
               DataBinding.FieldName = 'ID_RESPONSAVEL'
               Visible = False
+              Options.Editing = False
               Width = 94
             end
             object viewRegistrosRESPONSAVEL: TcxGridDBColumn [5]
               DataBinding.FieldName = 'RESPONSAVEL'
+              Options.Editing = False
               Width = 200
             end
             object viewRegistrosID_CLIENTE: TcxGridDBColumn [6]
               DataBinding.FieldName = 'ID_CLIENTE'
               Visible = False
+              Options.Editing = False
               Width = 78
             end
             object viewRegistrosCLIENTE: TcxGridDBColumn [7]
               DataBinding.FieldName = 'CLIENTE'
+              Options.Editing = False
               Width = 198
+            end
+          end
+        end
+        inherited pnDetail: TPanel
+          inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabOrcamentoCustomizado
+            inherited tabDetail: TcxTabSheet
+              Caption = 'Itens do Or'#231'amento'
+              inherited cxGridRegistrosDetail: TcxGrid
+                inherited viewRegistrosDetail: TcxGridDBTableView
+                  object viewRegistrosDetailID: TcxGridDBColumn [0]
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailID_ITEM: TcxGridDBColumn [1]
+                    DataBinding.FieldName = 'ID_ITEM'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailITEM: TcxGridDBColumn [2]
+                    DataBinding.FieldName = 'ITEM'
+                    Options.Editing = False
+                    Width = 189
+                  end
+                  object viewRegistrosDetailID_ESPECIE: TcxGridDBColumn [3]
+                    DataBinding.FieldName = 'ID_ESPECIE'
+                    Visible = False
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailESPECIE: TcxGridDBColumn [4]
+                    DataBinding.FieldName = 'ESPECIE'
+                    Options.Editing = False
+                    Width = 303
+                  end
+                  object viewRegistrosDetailQTDE: TcxGridDBColumn [5]
+                    DataBinding.FieldName = 'QTDE'
+                    Options.Editing = False
+                  end
+                  object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [6]
+                    DataBinding.FieldName = 'VALOR_UNITARIO'
+                    Options.Editing = False
+                  end
+                end
+              end
+            end
+            object tabOrcamentoCustomizado: TcxTabSheet
+              Caption = 'Campos Customizados'
+              ImageIndex = 1
+              object Panel1: TPanel
+                Left = 0
+                Top = 0
+                Width = 965
+                Height = 25
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = 8
+                object btnIncluirCampoCustomizado: TButton
+                  Left = 1
+                  Top = 1
+                  Width = 200
+                  Height = 23
+                  Action = Ac_Incluir_Campo_Customizado
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 0
+                end
+              end
+              object cxGrid1: TcxGrid
+                Left = 0
+                Top = 25
+                Width = 965
+                Height = 170
+                Align = alClient
+                Images = dmPrincipal.imgIcons_16
+                TabOrder = 1
+                LockedStateImageOptions.Effect = lsieDark
+                LockedStateImageOptions.ShowText = True
+                LockedStateImageOptions.Text = 'Pesquisando...'
+                ExplicitLeft = 3
+                ExplicitTop = 30
+                object viewCamposCustomizados: TcxGridDBTableView
+                  OnDblClick = viewRegistrosDetailDblClick
+                  Navigator.Buttons.CustomButtons = <>
+                  Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  DataController.DataSource = dsOrcamento_Customizado
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  FilterRow.Visible = True
+                  OptionsCustomize.ColumnsQuickCustomization = True
+                  OptionsData.CancelOnExit = False
+                  OptionsData.Deleting = False
+                  OptionsData.DeletingConfirmation = False
+                  OptionsData.Editing = False
+                  OptionsData.Inserting = False
+                  OptionsSelection.MultiSelect = True
+                  OptionsView.NoDataToDisplayInfoText = '<Sem dados para mostrar>'
+                  OptionsView.GroupByBox = False
+                  object viewCamposCustomizadosID: TcxGridDBColumn
+                    DataBinding.FieldName = 'ID'
+                    Options.Editing = False
+                  end
+                  object viewCamposCustomizadosCAMPO: TcxGridDBColumn
+                    DataBinding.FieldName = 'CAMPO'
+                    Options.Editing = False
+                    Width = 307
+                  end
+                  object viewCamposCustomizadosCONTEUDO: TcxGridDBColumn
+                    DataBinding.FieldName = 'CONTEUDO'
+                    Options.Editing = False
+                    Width = 449
+                  end
+                end
+                object cxGridLevel2: TcxGridLevel
+                  GridView = viewCamposCustomizados
+                end
+              end
             end
           end
         end
@@ -218,55 +342,252 @@ inherited frmOrcamento: TfrmOrcamento
             Width = 121
           end
         end
-        inline frameEditor: TframeEditor
-          Left = 1
-          Top = 145
-          Width = 974
-          Height = 252
+      end
+    end
+    inherited tabCadastroDetail: TcxTabSheet
+      inherited pnEditsCadastroDetail: TPanel
+        object pcCadastroDetail: TcxPageControl
+          Left = 0
+          Top = 0
+          Width = 976
+          Height = 398
           Align = alClient
-          TabOrder = 1
-          ExplicitLeft = 1
-          ExplicitTop = 145
-          ExplicitWidth = 974
-          ExplicitHeight = 252
-          inherited pnRich: TPanel
-            Width = 974
-            Height = 230
-            ExplicitWidth = 974
-            ExplicitHeight = 230
-            inherited Rich: TcxDBRichEdit
-              DataBinding.DataField = 'ORCAMENTO'
-              DataBinding.DataSource = dsOrcamento_Orcamento
+          TabOrder = 0
+          Properties.ActivePage = tabCadastroItem
+          Properties.CustomButtons.Buttons = <>
+          ClientRectBottom = 393
+          ClientRectLeft = 2
+          ClientRectRight = 971
+          ClientRectTop = 25
+          object tabCadastroItem: TcxTabSheet
+            Caption = 'Itens do Or'#231'amento'
+            ImageIndex = 0
+            ExplicitLeft = 3
+            ExplicitTop = 27
+            object Label4: TLabel
+              Left = 7
+              Top = 8
+              Width = 22
+              Height = 13
+              Caption = 'Item'
+              FocusControl = cbItem
+            end
+            object lbl6: TLabel
+              Left = 485
+              Top = 8
+              Width = 64
+              Height = 13
+              Caption = 'Valor Unit'#225'rio'
+              FocusControl = EditValorUnitario
+            end
+            object Label7: TLabel
+              Left = 609
+              Top = 8
+              Width = 56
+              Height = 13
+              Caption = 'Quantidade'
+              FocusControl = EditQtde
+            end
+            object lbUnidade: TLabel
+              Left = 730
+              Top = 31
+              Width = 19
+              Height = 13
+              Caption = 'Und'
+            end
+            object lb2: TLabel
+              AlignWithMargins = True
+              Left = 253
+              Top = 9
+              Width = 36
+              Height = 13
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 2
+              Caption = 'Esp'#233'cie'
+              FocusControl = cbEspecie
+            end
+            object cbItem: TcxDBLookupComboBox
+              Left = 5
+              Top = 24
+              RepositoryItem = dmLookup.repLcbItem
+              DataBinding.DataField = 'ID_ITEM'
+              DataBinding.DataSource = dsDetail
+              Properties.ListColumns = <>
+              TabOrder = 0
+              Width = 244
+            end
+            object EditValorUnitario: TcxDBCurrencyEdit
+              Left = 484
+              Top = 24
+              RepositoryItem = dmLookup.repCurPadrao
+              DataBinding.DataField = 'VALOR_UNITARIO'
+              DataBinding.DataSource = dsDetail
+              TabOrder = 1
+              Width = 121
+            end
+            object EditQtde: TcxDBCalcEdit
+              Left = 607
+              Top = 24
+              RepositoryItem = dmLookup.repCalcPadrao
+              DataBinding.DataField = 'QTDE'
+              DataBinding.DataSource = dsDetail
+              TabOrder = 2
+              Width = 121
+            end
+            object cbEspecie: TcxDBLookupComboBox
+              Left = 250
+              Top = 24
+              RepositoryItem = dmLookup.repLcbEspecie
+              DataBinding.DataField = 'ID_ESPECIE'
+              DataBinding.DataSource = dsDetail
+              Properties.ListColumns = <>
+              Properties.ListOptions.SyncMode = True
+              Properties.OnEditValueChanged = cbEspeciePropertiesEditValueChanged
+              TabOrder = 3
+              Width = 233
+            end
+            object btnConfigurarCamposCustomizados: TButton
+              Left = 5
+              Top = 51
+              Width = 202
+              Height = 40
+              Action = Ac_Configurar_Campos_Customizado
+              Images = dmPrincipal.imgIcons_32
+              TabOrder = 4
             end
           end
-          inherited ToolBar1: TToolBar
-            Width = 974
-            ExplicitWidth = 974
+          object tabCadastroCampoCustomizavel: TcxTabSheet
+            Caption = 'Campos Customizados'
+            ImageIndex = 2
+            object ScrollCampos: TcxScrollBox
+              Left = 0
+              Top = 41
+              Width = 969
+              Height = 327
+              Align = alClient
+              TabOrder = 0
+              ExplicitTop = 0
+              ExplicitHeight = 368
+              object RichAux: TcxRichEdit
+                Left = 3
+                Top = 64
+                Lines.Strings = (
+                  'RichAux')
+                TabOrder = 0
+                Visible = False
+                Height = 121
+                Width = 385
+              end
+            end
+            object pnBotoesCustomizado: TPanel
+              Left = 0
+              Top = 0
+              Width = 969
+              Height = 41
+              Align = alTop
+              BevelOuter = bvNone
+              TabOrder = 1
+              ExplicitLeft = 392
+              ExplicitTop = 168
+              ExplicitWidth = 185
+              object btnAplicarCampos: TButton
+                Left = 0
+                Top = 0
+                Width = 145
+                Height = 41
+                Action = Ac_Aplicar_Campos_Customizado
+                Align = alLeft
+                Images = dmPrincipal.imgIcons_32
+                TabOrder = 0
+              end
+            end
           end
-        end
-        object ScrollCampos: TcxScrollBox
-          Left = 1
-          Top = 42
-          Width = 974
-          Height = 103
-          Align = alTop
-          TabOrder = 2
+          object tabPreVisualizacao: TcxTabSheet
+            Caption = 'Pr'#233'-Visualiza'#231#227'o do Or'#231'amento'
+            ImageIndex = 1
+            inline frameEditor: TframeEditor
+              Left = 0
+              Top = 0
+              Width = 969
+              Height = 368
+              Align = alClient
+              TabOrder = 0
+              ExplicitWidth = 969
+              ExplicitHeight = 368
+              inherited pnRich: TPanel
+                Width = 969
+                Height = 346
+                ExplicitWidth = 969
+                ExplicitHeight = 346
+                inherited Rich: TcxDBRichEdit
+                  Left = 105
+                  DataBinding.DataField = 'ORCAMENTO'
+                  DataBinding.DataSource = dsOrcamento_Orcamento
+                  ExplicitLeft = 105
+                end
+              end
+              inherited ToolBar1: TToolBar
+                Width = 969
+                ExplicitWidth = 969
+              end
+            end
+          end
         end
       end
     end
   end
   inherited ActionList1: TActionList
+    Left = 64
+    Top = 216
+    inherited Ac_Salvar_Incluir_Detail: TAction
+      OnUpdate = Ac_Salvar_Incluir_DetailUpdate
+    end
     object Ac_Adicionar_Cliente: TAction
       ImageIndex = 3
       OnExecute = Ac_Adicionar_ClienteExecute
     end
+    object Ac_Incluir_Campo_Customizado: TAction
+      Category = 'Detail'
+      Caption = 'Configurar Campos Customiz'#225'veis'
+      ImageIndex = 47
+      OnExecute = Ac_Incluir_Campo_CustomizadoExecute
+    end
+    object Ac_Aplicar_Campos_Customizado: TAction
+      Category = 'Detail'
+      Caption = 'Montar Or'#231'amento'
+      ImageIndex = 15
+      OnExecute = Ac_Aplicar_Campos_CustomizadoExecute
+    end
+    object Ac_Configurar_Campos_Customizado: TAction
+      Category = 'Detail'
+      Caption = 'Configurar Campos Customizados'
+      ImageIndex = 47
+      OnExecute = Ac_Configurar_Campos_CustomizadoExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmEstoque.cdsOrcamento
+    Left = 264
+    Top = 168
+  end
+  inherited dsDetail: TDataSource
+    DataSet = dmEstoque.cdsOrcamento_Item
+    Left = 344
+    Top = 344
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 504
+    Top = 344
   end
   object dsOrcamento_Orcamento: TDataSource
     DataSet = dmEstoque.cdsOrcamento_Orcamento
     Left = 360
     Top = 192
+  end
+  object dsOrcamento_Customizado: TDataSource
+    DataSet = dmEstoque.cdsOrcamento_Customizado
+    Left = 552
+    Top = 176
   end
 end

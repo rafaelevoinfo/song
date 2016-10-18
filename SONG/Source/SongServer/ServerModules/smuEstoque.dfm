@@ -1394,15 +1394,15 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qOrcamento_Valor: TRFQuery
+  object qOrcamento_Customizado: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Orcamento_Valor.Id,'
-      '       Orcamento_Valor.Id_Orcamento,'
-      '       Orcamento_Valor.Campo,'
-      '       Orcamento_Valor.Valor'
-      'from Orcamento_Valor  '
-      'where orcamento_valor.id_orcamento = :ID_ORCAMENTO')
+      'select Orcamento_Customizado.Id,'
+      '       Orcamento_Customizado.Id_Orcamento,'
+      '       Orcamento_Customizado.Campo,'
+      '       Orcamento_Customizado.Conteudo'
+      'from Orcamento_Customizado  '
+      'where Orcamento_Customizado.id_orcamento = :ID_ORCAMENTO')
     Left = 664
     Top = 376
     ParamData = <
@@ -1412,31 +1412,104 @@ inherited smEstoque: TsmEstoque
         ParamType = ptInput
         Value = Null
       end>
-    object qOrcamento_ValorID: TIntegerField
+    object qOrcamento_CustomizadoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qOrcamento_ValorID_ORCAMENTO: TIntegerField
+    object qOrcamento_CustomizadoID_ORCAMENTO: TIntegerField
       FieldName = 'ID_ORCAMENTO'
       Origin = 'ID_ORCAMENTO'
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-    object qOrcamento_ValorCAMPO: TStringField
+    object qOrcamento_CustomizadoCAMPO: TStringField
       FieldName = 'CAMPO'
       Origin = 'CAMPO'
       ProviderFlags = [pfInUpdate]
       Required = True
-      Size = 60
+      Size = 100
     end
-    object qOrcamento_ValorVALOR: TStringField
-      FieldName = 'VALOR'
-      Origin = 'VALOR'
+    object qOrcamento_CustomizadoCONTEUDO: TStringField
+      FieldName = 'CONTEUDO'
+      Origin = 'CONTEUDO'
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 250
+    end
+  end
+  object qOrcamento_Item: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select ORCAMENTO_ITEM.ID,'
+      '       ORCAMENTO_ITEM.ID_ORCAMENTO,'
+      '       ORCAMENTO_ITEM.ID_ITEM,'
+      '       Item.nome as Item,'
+      '       ORCAMENTO_ITEM.ID_ESPECIE,'
+      '       Especie.nome as especie,'
+      '       ORCAMENTO_ITEM.QTDE,'
+      '       ORCAMENTO_ITEM.VALOR_UNITARIO'
+      'from ORCAMENTO_ITEM '
+      'INNER join item on (item.id = orcamento_item.id_item)'
+      'inner join especie on (especie.id = orcamento_item.id_especie)'
+      'where ORCAMENTO_ITEM.id_orcamento = :ID_ORCAMENTO')
+    Left = 776
+    Top = 240
+    ParamData = <
+      item
+        Name = 'ID_ORCAMENTO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qOrcamento_ItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrcamento_ItemID_ORCAMENTO: TIntegerField
+      FieldName = 'ID_ORCAMENTO'
+      Origin = 'ID_ORCAMENTO'
+      Required = True
+    end
+    object qOrcamento_ItemID_ITEM: TIntegerField
+      FieldName = 'ID_ITEM'
+      Origin = 'ID_ITEM'
+      Required = True
+    end
+    object qOrcamento_ItemID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qOrcamento_ItemQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Required = True
+      Precision = 18
+    end
+    object qOrcamento_ItemVALOR_UNITARIO: TBCDField
+      FieldName = 'VALOR_UNITARIO'
+      Origin = 'VALOR_UNITARIO'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object qOrcamento_ItemITEM: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ITEM'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qOrcamento_ItemESPECIE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'ESPECIE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

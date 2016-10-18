@@ -1053,7 +1053,6 @@ inherited dmEstoque: TdmEstoque
     Params = <>
     ProviderName = 'dspqOrcamento'
     RemoteServer = dmPrincipal.ProviderEstoque
-    RFApplyAutomatico = False
     Left = 32
     Top = 312
     object cdsOrcamentoID: TIntegerField
@@ -1125,38 +1124,104 @@ inherited dmEstoque: TdmEstoque
     Left = 112
     Top = 312
   end
-  object cdsOrcamento_Valor: TRFClientDataSet
+  object cdsOrcamento_Customizado: TRFClientDataSet
     Aggregates = <>
     IndexFieldNames = 'ID_ORCAMENTO'
     MasterFields = 'ID'
     MasterSource = dsOrcamento
     PacketRecords = 0
     Params = <>
-    ProviderName = 'dspqOrcamento_Valor'
+    ProviderName = 'dspqOrcamento_Customizado'
     RemoteServer = dmPrincipal.ProviderEstoque
     RFApplyAutomatico = False
     Left = 360
     Top = 312
-    object cdsOrcamento_ValorID: TIntegerField
+    object cdsOrcamento_CustomizadoID: TIntegerField
       FieldName = 'ID'
       Required = True
     end
-    object cdsOrcamento_ValorID_ORCAMENTO: TIntegerField
+    object cdsOrcamento_CustomizadoID_ORCAMENTO: TIntegerField
       DisplayLabel = 'Id do Or'#231'amento'
       FieldName = 'ID_ORCAMENTO'
       Required = True
     end
-    object cdsOrcamento_ValorCAMPO: TStringField
+    object cdsOrcamento_CustomizadoCAMPO: TStringField
       DisplayLabel = 'Campo'
       FieldName = 'CAMPO'
+      ProviderFlags = [pfInUpdate]
       Required = True
-      Size = 60
+      Size = 100
     end
-    object cdsOrcamento_ValorVALOR: TStringField
-      DisplayLabel = 'Valor'
-      FieldName = 'VALOR'
+    object cdsOrcamento_CustomizadoCONTEUDO: TStringField
+      DisplayLabel = 'Conte'#250'do'
+      FieldName = 'CONTEUDO'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 250
+    end
+  end
+  object cdsOrcamento_Item: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ORCAMENTO'
+    MasterFields = 'ID'
+    MasterSource = dsOrcamento
+    PacketRecords = 0
+    Params = <>
+    ProviderName = 'dspqOrcamento_Item'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    RFApplyAutomatico = False
+    Left = 496
+    Top = 320
+    object cdsOrcamento_ItemID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsOrcamento_ItemID_ORCAMENTO: TIntegerField
+      DisplayLabel = 'Id do Or'#231'amento'
+      FieldName = 'ID_ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsOrcamento_ItemID_ITEM: TIntegerField
+      DisplayLabel = 'Id do Item'
+      FieldName = 'ID_ITEM'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsOrcamento_ItemID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsOrcamento_ItemQTDE: TBCDField
+      DisplayLabel = 'Qtde'
+      FieldName = 'QTDE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+    end
+    object cdsOrcamento_ItemVALOR_UNITARIO: TBCDField
+      DisplayLabel = 'Valor Unit'#225'rio'
+      FieldName = 'VALOR_UNITARIO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsOrcamento_ItemITEM: TStringField
+      DisplayLabel = 'Item'
+      FieldName = 'ITEM'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsOrcamento_ItemESPECIE: TStringField
+      DisplayLabel = 'Esp'#233'cie'
+      FieldName = 'ESPECIE'
+      ProviderFlags = []
+      Size = 100
     end
   end
 end

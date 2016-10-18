@@ -167,6 +167,7 @@ end;
 
 function TdmPrincipal.fpvGetProxyByClassName(ipClassName: String): TDSAdminClient;
 begin
+  Result := nil;
   if ipClassName = FFuncoesGeral.ClassName then
     Result := FFuncoesGeral
   else if ipClassName = FFuncoesAdministrativo.ClassName then

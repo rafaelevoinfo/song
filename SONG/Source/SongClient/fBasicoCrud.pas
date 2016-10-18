@@ -494,7 +494,6 @@ var
   vaPanel: TPanel;
   vaButton: TcxButton;
   vaLabel: TcxLabel;
-  vaWidth: Integer;
 begin
   // criando panel
   vaPanel := TPanel.Create(Self); // vai ser destruido junto do form

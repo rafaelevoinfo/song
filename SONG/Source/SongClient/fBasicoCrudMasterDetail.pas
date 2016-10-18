@@ -68,7 +68,7 @@ type
   protected
     procedure pprBeforeSalvarDetail; virtual;
     procedure pprExecutarSalvarDetail; virtual;
-    procedure pprAfterSalvarDetail; virtual;
+    procedure pprAfterSalvarDetail(ipAcaoExecutada: TDataSetState); virtual;
     function fprHabilitarSalvarDetail(): Boolean; virtual;
     function fprHabilitarIncluirDetail: Boolean; virtual;
     function fprHabilitarAlterarDetail: Boolean; virtual;
@@ -149,7 +149,7 @@ var
   i: Integer;
 begin
   Result := nil;
-  for i := 0 to ipControl.ControlCount-1 do
+  for i := 0 to ipControl.ControlCount - 1 do
     begin
       if ipControl.Controls[i] is TcxGrid then
         Result := ipControl.Controls[i] as TcxGrid
@@ -250,7 +250,7 @@ procedure TfrmBasicoCrudMasterDetail.FormCreate(Sender: TObject);
 begin
   inherited;
   pcDetails.ActivePageIndex := 0;
-  btnExportar_Excel_Detail.Left := pnDetail.Width-(btnExportar_Excel_Detail.Width+5);
+  btnExportar_Excel_Detail.Left := pnDetail.Width - (btnExportar_Excel_Detail.Width + 5);
   if pnBotoesCadastroDetail.TabOrder = 0 then
     pnBotoesCadastroDetail.TabOrder := 1;
 end;
@@ -275,7 +275,7 @@ begin
   Result := dsDetail.DataSet.Active and ((dsDetail.DataSet.State in [dsEdit, dsInsert]) or (TClientDataSet(dsDetail.DataSet).ChangeCount > 0));
 end;
 
-procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail;
+procedure TfrmBasicoCrudMasterDetail.pprAfterSalvarDetail(ipAcaoExecutada: TDataSetState);
 begin
   if ModoExecucao in [meSomenteCadastro, meSomenteEdicao] then
     FIdDetailEscolhido := dsDetail.DataSet.FieldByName(TBancoDados.coId).AsInteger;
@@ -362,7 +362,7 @@ begin
     mePesquisaRealizada:
       btnIncluirDetail.Visible := False;
     meSomenteCadastro:
-      btnSalvarIncluirDetail.Visible := false;
+      btnSalvarIncluirDetail.Visible := False;
   end;
 end;
 
@@ -448,10 +448,13 @@ begin
 end;
 
 procedure TfrmBasicoCrudMasterDetail.ppuSalvarDetail;
+var
+  vaState: TDataSetState;
 begin
+  vaState := dsDetail.DataSet.State;
   pprBeforeSalvarDetail;
   pprExecutarSalvarDetail;
-  pprAfterSalvarDetail;
+  pprAfterSalvarDetail(vaState);
 end;
 
 procedure TfrmBasicoCrudMasterDetail.SetIdDetailEscolhido(const Value: Integer);

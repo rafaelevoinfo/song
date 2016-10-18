@@ -326,7 +326,7 @@ uses
 
 procedure TdmLookup.ppuSalvarCache(ipCds: TRFClientDataSet);
 var
-  vaTabela, vaDiretorio, vaFile: String;
+  vaDiretorio, vaFile: String;
 begin
   if ipCds.Active then
     begin
