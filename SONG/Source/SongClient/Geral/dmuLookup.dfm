@@ -216,6 +216,12 @@ inherited dmLookup: TdmLookup
       Properties.ListColumns = <
         item
           FieldName = 'NOME'
+        end
+        item
+          FieldName = 'QTDE_SEMENTE_ESTOQUE'
+        end
+        item
+          FieldName = 'QTDE_MUDA_PRONTA'
         end>
       Properties.ListSource = dslkEspecie
     end

@@ -94,6 +94,7 @@ type
     procedure Ac_Aplicar_Campos_CustomizadoExecute(Sender: TObject);
     procedure Ac_Configurar_Campos_CustomizadoExecute(Sender: TObject);
     procedure Ac_Salvar_Incluir_DetailUpdate(Sender: TObject);
+    procedure tabPreVisualizacaoShow(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -109,7 +110,6 @@ type
     function fprGetPermissao: String; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
-    
 
     procedure pprAfterSalvarDetail(ipAcaoExecutada: TDataSetState); override;
 
@@ -163,6 +163,8 @@ begin
       dmEstoque.cdsOrcamento_Orcamento.Post;
 
       ppvSubstituirCamposOrcamento;
+
+      pcCadastroDetail.ActivePage := tabPreVisualizacao;
     end;
 end;
 
@@ -177,17 +179,19 @@ end;
 
 procedure TfrmOrcamento.ppvSubstituirCamposOrcamento;
 var
-  vaCampo, vaConteudo, vaOrcamento: String;
+  vaCampo, vaConteudo: String;
+  j: Integer;
 begin
-  vaOrcamento := frameEditor.Rich.Lines.Text;
   for vaCampo in FCamposCustomizados.Keys do
     begin
       vaConteudo := FCamposCustomizados.Items[vaCampo].Text;
-
-      vaOrcamento := StringReplace(vaOrcamento, coInicioMarcador + vaCampo + coFimMarcador, vaConteudo, [rfReplaceAll]);
+      for j := 0 to frameEditor.Rich.Lines.Count - 1 do
+        begin
+          frameEditor.Rich.Lines[j] := StringReplace(frameEditor.Rich.Lines[j],
+            coInicioMarcador + vaCampo + coFimMarcador, vaConteudo, [rfReplaceAll]);
+        end;
 
     end;
-  frameEditor.Rich.Lines.Text := vaOrcamento;
 end;
 
 procedure TfrmOrcamento.Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
@@ -195,7 +199,7 @@ begin
   inherited;
   ppvCarregarCamposCustomizados;
 
-  pcPrincipal.ActivePage := tabDetail;
+  pcPrincipal.ActivePage := tabCadastroDetail;
   pcCadastroDetail.ActivePage := tabCadastroCampoCustomizavel;
 end;
 
@@ -255,7 +259,7 @@ var
   vaModelo: TStream;
   vaMatchesCampo: TMatchCollection;
   vaMatchCampo: TMatch;
-  vaCampo, vaConteudo: String;
+  vaConteudo: String;
   i: Integer;
 begin
   ppvLimparEditsCamposCustomizados;
@@ -282,17 +286,19 @@ begin
                 if not FCamposCustomizados.ContainsKey(vaMatchCampo.Value) then
                   begin
                     vaConteudo := '';
-                    if dmEstoque.cdsOrcamento_Customizado.Locate(dmEstoque.cdsOrcamento_CustomizadoCAMPO.FieldName, vaCampo, [loCaseInsensitive]) then
+                    if dmEstoque.cdsOrcamento_Customizado.Locate(dmEstoque.cdsOrcamento_CustomizadoCAMPO.FieldName, vaMatchCampo.Value, [loCaseInsensitive])
+                    then
                       vaConteudo := dmEstoque.cdsOrcamento_CustomizadoCONTEUDO.AsString
                     else
                       begin
                         dmEstoque.cdsOrcamento_Customizado.Append;
                         dmEstoque.cdsOrcamento_CustomizadoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('ORCAMENTO_CUSTOMIZADO');
-                        dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString := vaCampo;
+                        dmEstoque.cdsOrcamento_CustomizadoID_ORCAMENTO.AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
+                        dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString := vaMatchCampo.Value;
                         dmEstoque.cdsOrcamento_Customizado.Post;
                       end;
 
-                    ppvAdicionarCampoCustomizado(vaCampo, vaConteudo);
+                    ppvAdicionarCampoCustomizado(vaMatchCampo.Value, vaConteudo);
                   end;
               end;
           end;
@@ -325,11 +331,13 @@ var
 begin
 
   vaPanel := TPanel.Create(Self);
+  vaPanel.Parent := ScrollCampos;
   vaPanel.Width := 0;
   vaPanel.Height := 22;
   vaPanel.Caption := '';
   vaPanel.Align := alTop;
-  vaPanel.Parent := ScrollCampos;
+  vaPanel.Top := 100000;
+
 
   // vaPanelCampo := TPanel.Create(Self);
   // vaPanelCampo.Parent := vaPanel;
@@ -346,8 +354,10 @@ begin
   // vaPanel.Width := vaPanel.Width + vaPanelCampo.Width;
 
   vaLabel := TLabel.Create(Self);
+  vaLabel.AutoSize := false;
   vaLabel.Caption := ipCampo;
   vaLabel.Height := 21;
+  vaLabel.Width := 200;
   vaLabel.Align := AlLeft;
   vaLabel.Parent := vaPanel;
 
@@ -443,12 +453,11 @@ begin
   FCamposCustomizados := TDictionary<String, TcxTextEdit>.Create;
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
 
-  dmLookup.cdslkItem.ppuAddParametro(TParametros.coTipo, Ord(tiMuda).ToString + ', ' + Ord(tiSemente).ToString());
-  dmLookup.cdslkItem.ppuDataRequest();
-  
+  dmLookup.cdslkItem.ppuDataRequest([TParametros.coTipo], [Ord(tiMuda).ToString + coDelimitadorPadrao + Ord(tiSemente).ToString()]);
+
   dmLookup.cdslkModelo_Orcamento.ppuAddParametro(TParametros.coTodos, 'NAO_IMPORTA');
   dmLookup.ppuAbrirCache(dmLookup.cdslkModelo_Orcamento);
-  
+
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   ppvCarregarClientes;
 end;
@@ -583,6 +592,12 @@ begin
 end;
 
 procedure TfrmOrcamento.tabCadastroShow(Sender: TObject);
+begin
+  inherited;
+  frameEditor.ppuIniciar;
+end;
+
+procedure TfrmOrcamento.tabPreVisualizacaoShow(Sender: TObject);
 begin
   inherited;
   frameEditor.ppuIniciar;

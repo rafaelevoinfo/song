@@ -1057,41 +1057,57 @@ inherited dmEstoque: TdmEstoque
     Top = 312
     object cdsOrcamentoID: TIntegerField
       FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsOrcamentoID_MODELO_ORCAMENTO: TIntegerField
       DisplayLabel = 'Id do Modelo'
       FieldName = 'ID_MODELO_ORCAMENTO'
+      Origin = 'ID_MODELO_ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsOrcamentoNOME: TStringField
       DisplayLabel = 'Nome do Modelo'
       FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
       Size = 100
     end
     object cdsOrcamentoID_RESPONSAVEL: TIntegerField
       DisplayLabel = 'Id do Respons'#225'vel'
       FieldName = 'ID_RESPONSAVEL'
+      Origin = 'ID_RESPONSAVEL'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsOrcamentoRESPONSAVEL: TStringField
       DisplayLabel = 'Respons'#225'vel'
       FieldName = 'RESPONSAVEL'
+      Origin = 'NOME'
+      ProviderFlags = []
       Size = 100
     end
     object cdsOrcamentoID_CLIENTE: TIntegerField
       DisplayLabel = 'Id do Cliente'
       FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object cdsOrcamentoCLIENTE: TStringField
       DisplayLabel = 'Cliente'
       FieldName = 'CLIENTE'
+      Origin = 'RAZAO_SOCIAL'
+      ProviderFlags = []
       Size = 100
     end
     object cdsOrcamentoDATA: TSQLTimeStampField
       DisplayLabel = 'Data'
       FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
   end
@@ -1124,49 +1140,18 @@ inherited dmEstoque: TdmEstoque
     Left = 112
     Top = 312
   end
-  object cdsOrcamento_Customizado: TRFClientDataSet
-    Aggregates = <>
-    IndexFieldNames = 'ID_ORCAMENTO'
-    MasterFields = 'ID'
-    MasterSource = dsOrcamento
-    PacketRecords = 0
-    Params = <>
-    ProviderName = 'dspqOrcamento_Customizado'
-    RemoteServer = dmPrincipal.ProviderEstoque
-    RFApplyAutomatico = False
-    Left = 360
-    Top = 312
-    object cdsOrcamento_CustomizadoID: TIntegerField
-      FieldName = 'ID'
-      Required = True
-    end
-    object cdsOrcamento_CustomizadoID_ORCAMENTO: TIntegerField
-      DisplayLabel = 'Id do Or'#231'amento'
-      FieldName = 'ID_ORCAMENTO'
-      Required = True
-    end
-    object cdsOrcamento_CustomizadoCAMPO: TStringField
-      DisplayLabel = 'Campo'
-      FieldName = 'CAMPO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 100
-    end
-    object cdsOrcamento_CustomizadoCONTEUDO: TStringField
-      DisplayLabel = 'Conte'#250'do'
-      FieldName = 'CONTEUDO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 250
-    end
-  end
   object cdsOrcamento_Item: TRFClientDataSet
     Aggregates = <>
     IndexFieldNames = 'ID_ORCAMENTO'
     MasterFields = 'ID'
     MasterSource = dsOrcamento
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_ORCAMENTO'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqOrcamento_Item'
     RemoteServer = dmPrincipal.ProviderEstoque
     RFApplyAutomatico = False
@@ -1222,6 +1207,47 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'ESPECIE'
       ProviderFlags = []
       Size = 100
+    end
+  end
+  object cdsOrcamento_Customizado: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ORCAMENTO'
+    MasterFields = 'ID'
+    MasterSource = dsOrcamento
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_ORCAMENTO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqOrcamento_Customizado'
+    RemoteServer = dmPrincipal.ProviderEstoque
+    RFApplyAutomatico = False
+    Left = 352
+    Top = 328
+    object cdsOrcamento_CustomizadoID: TIntegerField
+      FieldName = 'ID'
+      Required = True
+    end
+    object cdsOrcamento_CustomizadoID_ORCAMENTO: TIntegerField
+      DisplayLabel = 'Id do Or'#231'amento'
+      FieldName = 'ID_ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsOrcamento_CustomizadoCAMPO: TStringField
+      DisplayLabel = 'Campo'
+      FieldName = 'CAMPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsOrcamento_CustomizadoCONTEUDO: TStringField
+      DisplayLabel = 'Conte'#250'do'
+      FieldName = 'CONTEUDO'
+      ProviderFlags = [pfInUpdate]
+      Size = 250
     end
   end
 end

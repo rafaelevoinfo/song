@@ -1394,51 +1394,6 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
     end
   end
-  object qOrcamento_Customizado: TRFQuery
-    Connection = dmPrincipal.conSong
-    SQL.Strings = (
-      'select Orcamento_Customizado.Id,'
-      '       Orcamento_Customizado.Id_Orcamento,'
-      '       Orcamento_Customizado.Campo,'
-      '       Orcamento_Customizado.Conteudo'
-      'from Orcamento_Customizado  '
-      'where Orcamento_Customizado.id_orcamento = :ID_ORCAMENTO')
-    Left = 664
-    Top = 376
-    ParamData = <
-      item
-        Name = 'ID_ORCAMENTO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qOrcamento_CustomizadoID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object qOrcamento_CustomizadoID_ORCAMENTO: TIntegerField
-      FieldName = 'ID_ORCAMENTO'
-      Origin = 'ID_ORCAMENTO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
-    object qOrcamento_CustomizadoCAMPO: TStringField
-      FieldName = 'CAMPO'
-      Origin = 'CAMPO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 100
-    end
-    object qOrcamento_CustomizadoCONTEUDO: TStringField
-      FieldName = 'CONTEUDO'
-      Origin = 'CONTEUDO'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-      Size = 250
-    end
-  end
   object qOrcamento_Item: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
@@ -1510,6 +1465,49 @@ inherited smEstoque: TsmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+  end
+  object qOrcamento_Customizado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Orcamento_Customizado.Id,'
+      '       Orcamento_Customizado.Id_Orcamento,'
+      '       Orcamento_Customizado.Campo,'
+      '       Orcamento_Customizado.Conteudo'
+      'from Orcamento_Customizado  '
+      'where Orcamento_Customizado.id_orcamento = :ID_ORCAMENTO')
+    Left = 664
+    Top = 368
+    ParamData = <
+      item
+        Name = 'ID_ORCAMENTO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qOrcamento_CustomizadoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qOrcamento_CustomizadoID_ORCAMENTO: TIntegerField
+      FieldName = 'ID_ORCAMENTO'
+      Origin = 'ID_ORCAMENTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qOrcamento_CustomizadoCAMPO: TStringField
+      FieldName = 'CAMPO'
+      Origin = 'CAMPO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qOrcamento_CustomizadoCONTEUDO: TStringField
+      FieldName = 'CONTEUDO'
+      Origin = 'CONTEUDO'
+      ProviderFlags = [pfInUpdate]
+      Size = 250
     end
   end
 end

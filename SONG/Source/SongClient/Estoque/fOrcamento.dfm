@@ -1,10 +1,18 @@
 inherited frmOrcamento: TfrmOrcamento
+  ActiveControl = btnIncluir
   Caption = 'Or'#231'amento'
   OnDestroy = FormDestroy
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -20,7 +28,7 @@ inherited frmOrcamento: TfrmOrcamento
             Top = 20
             RepositoryItem = dmLookup.repLcbFinForCli
             Properties.ListColumns = <>
-            TabOrder = 5
+            TabOrder = 4
             Visible = False
             Width = 176
           end
@@ -29,7 +37,7 @@ inherited frmOrcamento: TfrmOrcamento
             Top = 20
             RepositoryItem = dmLookup.repLcbPessoa
             Properties.ListColumns = <>
-            TabOrder = 6
+            TabOrder = 5
             Visible = False
             Width = 176
           end
@@ -39,6 +47,7 @@ inherited frmOrcamento: TfrmOrcamento
           end
           inherited EditPesquisa: TcxButtonEdit
             Left = 135
+            TabOrder = 3
             ExplicitLeft = 135
           end
           inherited cbPesquisarPor: TcxImageComboBox
@@ -66,15 +75,18 @@ inherited frmOrcamento: TfrmOrcamento
                 Description = 'Respons'#225'vel'
                 Value = 6
               end>
+            TabOrder = 2
             ExplicitLeft = 2
           end
           inherited btnPesquisar: TButton
             Left = 311
+            TabOrder = 1
             ExplicitLeft = 311
           end
           inherited rgStatus: TcxRadioGroup
             Left = 6
             Top = 39
+            TabOrder = 6
             ExplicitLeft = 6
             ExplicitTop = 39
           end
@@ -133,6 +145,10 @@ inherited frmOrcamento: TfrmOrcamento
             Properties.ActivePage = tabOrcamentoCustomizado
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens do Or'#231'amento'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -180,7 +196,6 @@ inherited frmOrcamento: TfrmOrcamento
                 Height = 25
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = 8
                 object btnIncluirCampoCustomizado: TButton
                   Left = 1
                   Top = 1
@@ -203,8 +218,6 @@ inherited frmOrcamento: TfrmOrcamento
                 LockedStateImageOptions.Effect = lsieDark
                 LockedStateImageOptions.ShowText = True
                 LockedStateImageOptions.Text = 'Pesquisando...'
-                ExplicitLeft = 3
-                ExplicitTop = 30
                 object viewCamposCustomizados: TcxGridDBTableView
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
@@ -249,6 +262,10 @@ inherited frmOrcamento: TfrmOrcamento
     end
     inherited tabCadastro: TcxTabSheet
       OnShow = tabCadastroShow
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object pnEditsCadastroTop: TPanel
           Left = 1
@@ -345,6 +362,10 @@ inherited frmOrcamento: TfrmOrcamento
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object pcCadastroDetail: TcxPageControl
           Left = 0
@@ -353,7 +374,7 @@ inherited frmOrcamento: TfrmOrcamento
           Height = 398
           Align = alClient
           TabOrder = 0
-          Properties.ActivePage = tabCadastroItem
+          Properties.ActivePage = tabPreVisualizacao
           Properties.CustomButtons.Buttons = <>
           ClientRectBottom = 393
           ClientRectLeft = 2
@@ -362,8 +383,6 @@ inherited frmOrcamento: TfrmOrcamento
           object tabCadastroItem: TcxTabSheet
             Caption = 'Itens do Or'#231'amento'
             ImageIndex = 0
-            ExplicitLeft = 3
-            ExplicitTop = 27
             object Label4: TLabel
               Left = 7
               Top = 8
@@ -423,7 +442,7 @@ inherited frmOrcamento: TfrmOrcamento
               RepositoryItem = dmLookup.repCurPadrao
               DataBinding.DataField = 'VALOR_UNITARIO'
               DataBinding.DataSource = dsDetail
-              TabOrder = 1
+              TabOrder = 2
               Width = 121
             end
             object EditQtde: TcxDBCalcEdit
@@ -432,7 +451,7 @@ inherited frmOrcamento: TfrmOrcamento
               RepositoryItem = dmLookup.repCalcPadrao
               DataBinding.DataField = 'QTDE'
               DataBinding.DataSource = dsDetail
-              TabOrder = 2
+              TabOrder = 3
               Width = 121
             end
             object cbEspecie: TcxDBLookupComboBox
@@ -444,7 +463,7 @@ inherited frmOrcamento: TfrmOrcamento
               Properties.ListColumns = <>
               Properties.ListOptions.SyncMode = True
               Properties.OnEditValueChanged = cbEspeciePropertiesEditValueChanged
-              TabOrder = 3
+              TabOrder = 1
               Width = 233
             end
             object btnConfigurarCamposCustomizados: TButton
@@ -467,8 +486,6 @@ inherited frmOrcamento: TfrmOrcamento
               Height = 327
               Align = alClient
               TabOrder = 0
-              ExplicitTop = 0
-              ExplicitHeight = 368
               object RichAux: TcxRichEdit
                 Left = 3
                 Top = 64
@@ -488,9 +505,6 @@ inherited frmOrcamento: TfrmOrcamento
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 1
-              ExplicitLeft = 392
-              ExplicitTop = 168
-              ExplicitWidth = 185
               object btnAplicarCampos: TButton
                 Left = 0
                 Top = 0
@@ -506,6 +520,7 @@ inherited frmOrcamento: TfrmOrcamento
           object tabPreVisualizacao: TcxTabSheet
             Caption = 'Pr'#233'-Visualiza'#231#227'o do Or'#231'amento'
             ImageIndex = 1
+            OnShow = tabPreVisualizacaoShow
             inline frameEditor: TframeEditor
               Left = 0
               Top = 0

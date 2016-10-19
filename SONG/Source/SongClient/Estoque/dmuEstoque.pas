@@ -166,7 +166,6 @@ type
     cdsOrcamento: TRFClientDataSet;
     cdsOrcamento_Orcamento: TRFClientDataSet;
     dsOrcamento: TDataSource;
-    cdsOrcamento_Customizado: TRFClientDataSet;
     cdsOrcamentoID: TIntegerField;
     cdsOrcamentoID_MODELO_ORCAMENTO: TIntegerField;
     cdsOrcamentoNOME: TStringField;
@@ -177,10 +176,6 @@ type
     cdsOrcamentoDATA: TSQLTimeStampField;
     cdsOrcamento_OrcamentoID: TIntegerField;
     cdsOrcamento_OrcamentoORCAMENTO: TBlobField;
-    cdsOrcamento_CustomizadoID: TIntegerField;
-    cdsOrcamento_CustomizadoID_ORCAMENTO: TIntegerField;
-    cdsOrcamento_CustomizadoCAMPO: TStringField;
-    cdsOrcamento_CustomizadoCONTEUDO: TStringField;
     cdsOrcamento_Item: TRFClientDataSet;
     cdsOrcamento_ItemID: TIntegerField;
     cdsOrcamento_ItemID_ORCAMENTO: TIntegerField;
@@ -190,6 +185,11 @@ type
     cdsOrcamento_ItemVALOR_UNITARIO: TBCDField;
     cdsOrcamento_ItemITEM: TStringField;
     cdsOrcamento_ItemESPECIE: TStringField;
+    cdsOrcamento_Customizado: TRFClientDataSet;
+    cdsOrcamento_CustomizadoID: TIntegerField;
+    cdsOrcamento_CustomizadoID_ORCAMENTO: TIntegerField;
+    cdsOrcamento_CustomizadoCAMPO: TStringField;
+    cdsOrcamento_CustomizadoCONTEUDO: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

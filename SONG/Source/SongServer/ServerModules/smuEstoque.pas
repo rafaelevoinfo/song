@@ -173,7 +173,6 @@ type
     qOrcamentoCLIENTE: TStringField;
     qOrcamentoDATA: TSQLTimeStampField;
     qOrcamento_Orcamento: TRFQuery;
-    qOrcamento_Customizado: TRFQuery;
     qOrcamento_OrcamentoID: TIntegerField;
     qOrcamento_OrcamentoORCAMENTO: TBlobField;
     qOrcamento_Item: TRFQuery;
@@ -183,12 +182,13 @@ type
     qOrcamento_ItemID_ESPECIE: TIntegerField;
     qOrcamento_ItemQTDE: TBCDField;
     qOrcamento_ItemVALOR_UNITARIO: TBCDField;
+    qOrcamento_ItemITEM: TStringField;
+    qOrcamento_ItemESPECIE: TStringField;
+    qOrcamento_Customizado: TRFQuery;
     qOrcamento_CustomizadoID: TIntegerField;
     qOrcamento_CustomizadoID_ORCAMENTO: TIntegerField;
     qOrcamento_CustomizadoCAMPO: TStringField;
     qOrcamento_CustomizadoCONTEUDO: TStringField;
-    qOrcamento_ItemITEM: TStringField;
-    qOrcamento_ItemESPECIE: TStringField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
