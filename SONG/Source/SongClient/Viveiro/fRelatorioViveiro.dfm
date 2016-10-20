@@ -187,8 +187,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
             ExplicitWidth = 848
             ExplicitHeight = 320
             inherited cxGrid1: TcxGrid
-              Width = 397
-              Height = 318
               ExplicitWidth = 397
               ExplicitHeight = 318
               inherited viewEsquerda: TcxGridDBTableView
@@ -196,9 +194,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited pnBotoes: TPanel
-              Left = 398
-              Width = 42
-              Height = 318
               ExplicitLeft = 398
               ExplicitWidth = 42
               ExplicitHeight = 318
@@ -220,9 +215,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
               end
             end
             inherited cxGrid2: TcxGrid
-              Left = 440
-              Width = 407
-              Height = 318
               ExplicitLeft = 440
               ExplicitWidth = 407
               ExplicitHeight = 318
@@ -257,7 +249,6 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
                 ExplicitWidth = 114
               end
               inherited lbInfoGridDireita: TLabel
-                Left = 439
                 Width = 124
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 504
@@ -1378,35 +1369,122 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     Left = 504
     Top = 65528
     object DBPipeOrganizacaoppField1: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField3: TppField
       FieldAlias = 'CNPJ'
       FieldName = 'CNPJ'
-      FieldLength = 14
-      DisplayWidth = 14
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object DBPipeOrganizacaoppField4: TppField
       FieldAlias = 'LOGO'
       FieldName = 'LOGO'
       FieldLength = 0
-      DataType = dtBLOB
-      DisplayWidth = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField5: TppField
+      FieldAlias = 'ENDERECO'
+      FieldName = 'ENDERECO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField6: TppField
+      FieldAlias = 'BAIRRO'
+      FieldName = 'BAIRRO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField7: TppField
+      FieldAlias = 'COMPLEMENTO'
+      FieldName = 'COMPLEMENTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField8: TppField
+      FieldAlias = 'TELEFONE'
+      FieldName = 'TELEFONE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField9: TppField
+      FieldAlias = 'SITE'
+      FieldName = 'SITE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 8
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField10: TppField
+      FieldAlias = 'EMAIL'
+      FieldName = 'EMAIL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField11: TppField
+      FieldAlias = 'CIDADE'
+      FieldName = 'CIDADE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField12: TppField
+      FieldAlias = 'LOGO_SECUNDARIA'
+      FieldName = 'LOGO_SECUNDARIA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 11
       Searchable = False
       Sortable = False
     end
@@ -2608,38 +2686,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 0
         LayerName = BandLayer5
       end
-      object ppSystemVariable7: TppSystemVariable
+      object ppDBImage10: TppDBImage
         DesignLayer = ppDesignLayer3
-        UserName = 'SystemVariable1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 182562
-        mmTop = 13439
-        mmWidth = 14287
-        BandType = 0
-        LayerName = BandLayer5
-      end
-      object ppSystemVariable8: TppSystemVariable
-        DesignLayer = ppDesignLayer3
-        UserName = 'SystemVariable3'
-        VarType = vtTime
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 185209
-        mmTop = 16880
-        mmWidth = 11113
+        UserName = 'DBImage10'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO_SECUNDARIA'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 165365
+        mmTop = 0
+        mmWidth = 30692
         BandType = 0
         LayerName = BandLayer5
       end
@@ -2675,6 +2737,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText101'
         DataField = 'DATA'
         DataPipeline = DBPipeLote_Muda_Comprado
+        DisplayFormat = 'dd/mm/yyyy'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -2724,7 +2787,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmHeight = 4763
         mmLeft = 26988
         mmTop = 0
-        mmWidth = 89429
+        mmWidth = 44498
         BandType = 4
         LayerName = BandLayer5
       end
@@ -2745,6 +2808,25 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmLeft = 160602
         mmTop = 0
         mmWidth = 34925
+        BandType = 4
+        LayerName = BandLayer5
+      end
+      object ppDBText61: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText61'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeLote_Muda_Comprado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeLote_Muda_Comprado'
+        mmHeight = 4763
+        mmLeft = 72783
+        mmTop = 0
+        mmWidth = 42863
         BandType = 4
         LayerName = BandLayer5
       end
@@ -2833,6 +2915,41 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 8
         LayerName = BandLayer5
       end
+      object ppSystemVariable7: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 152136
+        mmTop = 794
+        mmWidth = 14288
+        BandType = 8
+        LayerName = BandLayer5
+      end
+      object ppSystemVariable8: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 166688
+        mmTop = 794
+        mmWidth = 11113
+        BandType = 8
+        LayerName = BandLayer5
+      end
     end
     object ppSummaryBand3: TppSummaryBand
       Background.Brush.Style = bsClear
@@ -2900,7 +3017,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBCalc13'
         DataField = 'QTDE'
         DataPipeline = DBPipeLote_Muda_Comprado
-        DisplayFormat = ',0'
+        DisplayFormat = ',0 Und'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -2917,7 +3034,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       end
     end
     object ppGroup2: TppGroup
-      BreakName = 'ID_ESPECIE'
+      BreakName = 'CALC_MES'
       DataPipeline = DBPipeLote_Muda_Comprado
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
@@ -3044,7 +3161,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         object ppDBText22: TppDBText
           DesignLayer = ppDesignLayer3
           UserName = 'DBText22'
-          DataField = 'ESPECIE'
+          DataField = 'CALC_MES'
           DataPipeline = DBPipeLote_Muda_Comprado
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -3057,6 +3174,25 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           mmLeft = 2381
           mmTop = 529
           mmWidth = 193940
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer5
+        end
+        object ppLabel61: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label61'
+          Caption = 'Esp'#233'cie'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 73290
+          mmTop = 5292
+          mmWidth = 11377
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer5
@@ -3213,8 +3349,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipeLote_Muda_CompradoppField9: TppField
-      FieldAlias = 'DATA'
-      FieldName = 'DATA'
+      FieldAlias = 'QTDE'
+      FieldName = 'QTDE'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -3223,12 +3359,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipeLote_Muda_CompradoppField10: TppField
-      FieldAlias = 'QTDE'
-      FieldName = 'QTDE'
+      FieldAlias = 'CALC_MES'
+      FieldName = 'CALC_MES'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeLote_Muda_CompradoppField11: TppField
+      FieldAlias = 'DATA'
+      FieldName = 'DATA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
       Searchable = False
       Sortable = False
     end
@@ -3338,38 +3484,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 0
         LayerName = BandLayer6
       end
-      object ppSystemVariable13: TppSystemVariable
+      object ppDBImage12: TppDBImage
         DesignLayer = ppDesignLayer5
-        UserName = 'SystemVariable1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 182562
-        mmTop = 13439
-        mmWidth = 14287
-        BandType = 0
-        LayerName = BandLayer6
-      end
-      object ppSystemVariable14: TppSystemVariable
-        DesignLayer = ppDesignLayer5
-        UserName = 'SystemVariable3'
-        VarType = vtTime
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 185209
-        mmTop = 16880
-        mmWidth = 11113
+        UserName = 'DBImage12'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO_SECUNDARIA'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 166159
+        mmTop = 0
+        mmWidth = 30692
         BandType = 0
         LayerName = BandLayer6
       end
@@ -3405,6 +3535,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText101'
         DataField = 'DATA'
         DataPipeline = DBPipeLote_Semente_Comprado
+        DisplayFormat = 'dd/mm/yyyy'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3452,9 +3583,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         DataPipelineName = 'DBPipeLote_Semente_Comprado'
         mmHeight = 4763
-        mmLeft = 26988
+        mmLeft = 26020
         mmTop = 0
-        mmWidth = 89429
+        mmWidth = 48828
         BandType = 4
         LayerName = BandLayer6
       end
@@ -3475,6 +3606,25 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmLeft = 160602
         mmTop = 0
         mmWidth = 34925
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText63: TppDBText
+        DesignLayer = ppDesignLayer5
+        UserName = 'DBText63'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeLote_Semente_Comprado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeLote_Semente_Comprado'
+        mmHeight = 4763
+        mmLeft = 76026
+        mmTop = 0
+        mmWidth = 40654
         BandType = 4
         LayerName = BandLayer6
       end
@@ -3563,6 +3713,41 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 8
         LayerName = BandLayer6
       end
+      object ppSystemVariable13: TppSystemVariable
+        DesignLayer = ppDesignLayer5
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 153194
+        mmTop = 794
+        mmWidth = 14288
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppSystemVariable14: TppSystemVariable
+        DesignLayer = ppDesignLayer5
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 168011
+        mmTop = 794
+        mmWidth = 11113
+        BandType = 8
+        LayerName = BandLayer6
+      end
     end
     object ppSummaryBand4: TppSummaryBand
       Background.Brush.Style = bsClear
@@ -3647,7 +3832,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       end
     end
     object ppGroup3: TppGroup
-      BreakName = 'ID_ESPECIE'
+      BreakName = 'CALC_MES'
       DataPipeline = DBPipeLote_Semente_Comprado
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
@@ -3707,7 +3892,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 26988
+          mmLeft = 26020
           mmTop = 5295
           mmWidth = 16933
           BandType = 3
@@ -3774,7 +3959,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         object ppDBText36: TppDBText
           DesignLayer = ppDesignLayer5
           UserName = 'DBText22'
-          DataField = 'ESPECIE'
+          DataField = 'CALC_MES'
           DataPipeline = DBPipeLote_Semente_Comprado
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -3787,6 +3972,25 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           mmLeft = 2381
           mmTop = 529
           mmWidth = 193940
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer6
+        end
+        object ppLabel64: TppLabel
+          DesignLayer = ppDesignLayer5
+          UserName = 'Label64'
+          Caption = 'Esp'#233'cie'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 76026
+          mmTop = 5292
+          mmWidth = 11377
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer6
@@ -3953,12 +4157,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipeLote_Semente_CompradoppField10: TppField
+      FieldAlias = 'CALC_MES'
+      FieldName = 'CALC_MES'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeLote_Semente_CompradoppField11: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
-      Position = 9
+      Position = 10
       Searchable = False
       Sortable = False
     end
@@ -4073,38 +4287,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 0
         LayerName = BandLayer7
       end
-      object ppSystemVariable16: TppSystemVariable
+      object ppDBImage11: TppDBImage
         DesignLayer = ppDesignLayer6
-        UserName = 'SystemVariable1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 182562
-        mmTop = 13439
-        mmWidth = 14287
-        BandType = 0
-        LayerName = BandLayer7
-      end
-      object ppSystemVariable17: TppSystemVariable
-        DesignLayer = ppDesignLayer6
-        UserName = 'SystemVariable3'
-        VarType = vtTime
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 185209
-        mmTop = 16880
-        mmWidth = 11113
+        UserName = 'DBImage11'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO_SECUNDARIA'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 166159
+        mmTop = 0
+        mmWidth = 30692
         BandType = 0
         LayerName = BandLayer7
       end
@@ -4150,7 +4348,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmHeight = 4763
         mmLeft = 2115
         mmTop = 0
-        mmWidth = 22754
+        mmWidth = 20445
         BandType = 4
         LayerName = BandLayer7
       end
@@ -4187,9 +4385,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         DataPipelineName = 'DBPipeLote_Semente_Vendido'
         mmHeight = 4763
-        mmLeft = 26988
+        mmLeft = 23359
         mmTop = 0
-        mmWidth = 89429
+        mmWidth = 46904
         BandType = 4
         LayerName = BandLayer7
       end
@@ -4210,6 +4408,25 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmLeft = 160602
         mmTop = 0
         mmWidth = 34925
+        BandType = 4
+        LayerName = BandLayer7
+      end
+      object ppDBText62: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText62'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeLote_Semente_Vendido
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeLote_Semente_Vendido'
+        mmHeight = 4763
+        mmLeft = 71399
+        mmTop = 0
+        mmWidth = 44975
         BandType = 4
         LayerName = BandLayer7
       end
@@ -4298,11 +4515,46 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 8
         LayerName = BandLayer7
       end
+      object ppSystemVariable16: TppSystemVariable
+        DesignLayer = ppDesignLayer6
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 149754
+        mmTop = 552
+        mmWidth = 14288
+        BandType = 8
+        LayerName = BandLayer7
+      end
+      object ppSystemVariable17: TppSystemVariable
+        DesignLayer = ppDesignLayer6
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 164571
+        mmTop = 552
+        mmWidth = 11113
+        BandType = 8
+        LayerName = BandLayer7
+      end
     end
     object ppSummaryBand5: TppSummaryBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 5027
+      mmHeight = 10583
       mmPrintPosition = 0
       object ppDBCalc7: TppDBCalc
         DesignLayer = ppDesignLayer6
@@ -4318,9 +4570,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         DataPipelineName = 'DBPipeLote_Semente_Vendido'
         mmHeight = 4498
-        mmLeft = 160602
-        mmTop = 0
-        mmWidth = 34925
+        mmLeft = 158269
+        mmTop = 5080
+        mmWidth = 38004
         BandType = 7
         LayerName = BandLayer7
       end
@@ -4337,14 +4589,52 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         mmHeight = 4233
         mmLeft = 127265
-        mmTop = 0
+        mmTop = 5080
         mmWidth = 28310
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppLabel63: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label63'
+        Caption = 'Total de Sementes:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 123174
+        mmTop = 265
+        mmWidth = 32544
+        BandType = 7
+        LayerName = BandLayer7
+      end
+      object ppDBCalc19: TppDBCalc
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBCalc19'
+        DataField = 'QTDE'
+        DataPipeline = DBPipeLote_Semente_Vendido
+        DisplayFormat = ',0.00 Kg'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'DBPipeLote_Semente_Vendido'
+        mmHeight = 4498
+        mmLeft = 157788
+        mmTop = 265
+        mmWidth = 38725
         BandType = 7
         LayerName = BandLayer7
       end
     end
     object ppGroup4: TppGroup
-      BreakName = 'ID_ESPECIE'
+      BreakName = 'CALC_MES'
       DataPipeline = DBPipeLote_Semente_Vendido
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
@@ -4366,9 +4656,29 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           UserName = 'Shape1'
           Brush.Color = clGray
           mmHeight = 4763
-          mmLeft = 1852
+          mmLeft = 1610
           mmTop = 529
           mmWidth = 194998
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer7
+        end
+        object ppDBText44: TppDBText
+          DesignLayer = ppDesignLayer6
+          UserName = 'DBText22'
+          DataField = 'CALC_MES'
+          DataPipeline = DBPipeLote_Semente_Vendido
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 11
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeLote_Semente_Vendido'
+          mmHeight = 4763
+          mmLeft = 2623
+          mmTop = 529
+          mmWidth = 193940
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer7
@@ -4404,7 +4714,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 26988
+          mmLeft = 23359
           mmTop = 5292
           mmWidth = 10318
           BandType = 3
@@ -4468,22 +4778,21 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           GroupNo = 0
           LayerName = BandLayer7
         end
-        object ppDBText44: TppDBText
+        object ppLabel60: TppLabel
           DesignLayer = ppDesignLayer6
-          UserName = 'DBText22'
-          DataField = 'ESPECIE'
-          DataPipeline = DBPipeLote_Semente_Vendido
+          UserName = 'Label60'
+          Caption = 'Esp'#233'cie'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 11
+          Font.Size = 8
           Font.Style = [fsBold]
+          FormField = False
           Transparent = True
-          DataPipelineName = 'DBPipeLote_Semente_Vendido'
-          mmHeight = 4763
-          mmLeft = 2381
-          mmTop = 529
-          mmWidth = 193940
+          mmHeight = 3704
+          mmLeft = 71399
+          mmTop = 5292
+          mmWidth = 11377
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer7
@@ -4513,6 +4822,28 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           mmLeft = 160602
           mmTop = 0
           mmWidth = 34925
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer7
+        end
+        object ppDBCalc20: TppDBCalc
+          DesignLayer = ppDesignLayer6
+          UserName = 'DBCalc20'
+          DataField = 'QTDE'
+          DataPipeline = DBPipeLote_Semente_Vendido
+          DisplayFormat = ',0.00 kg'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup4
+          Transparent = True
+          DataPipelineName = 'DBPipeLote_Semente_Vendido'
+          mmHeight = 4498
+          mmLeft = 118004
+          mmTop = 0
+          mmWidth = 14913
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer7
@@ -4618,8 +4949,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField9: TppField
-      FieldAlias = 'DATA'
-      FieldName = 'DATA'
+      FieldAlias = 'CLIENTE'
+      FieldName = 'CLIENTE'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
@@ -4628,12 +4959,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
       Sortable = False
     end
     object DBPipeLote_Semente_VendidoppField10: TppField
-      FieldAlias = 'CLIENTE'
-      FieldName = 'CLIENTE'
+      FieldAlias = 'CALC_MES'
+      FieldName = 'CALC_MES'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
       Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeLote_Semente_VendidoppField11: TppField
+      FieldAlias = 'DATA'
+      FieldName = 'DATA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
       Searchable = False
       Sortable = False
     end
@@ -4649,104 +4990,94 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     Left = 224
     Top = 280
     object DBPipeLote_Muda_VendidoppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID'
       FieldName = 'ID'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField2: TppField
       FieldAlias = 'NOME'
       FieldName = 'NOME'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField3: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField4: TppField
       FieldAlias = 'ESPECIE'
       FieldName = 'ESPECIE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField5: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_CLIENTE'
       FieldName = 'ID_CLIENTE'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField6: TppField
+      Alignment = taRightJustify
       FieldAlias = 'QTDE'
       FieldName = 'QTDE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 5
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField7: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR_UNITARIO'
       FieldName = 'VALOR_UNITARIO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 6
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField8: TppField
+      Alignment = taRightJustify
       FieldAlias = 'VALOR'
       FieldName = 'VALOR'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 4
+      DataType = dtDouble
+      DisplayWidth = 19
       Position = 7
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLote_Muda_VendidoppField9: TppField
+      FieldAlias = 'CLIENTE'
+      FieldName = 'CLIENTE'
+      FieldLength = 203
+      DisplayWidth = 203
+      Position = 8
+    end
+    object DBPipeLote_Muda_VendidoppField10: TppField
+      FieldAlias = 'CALC_MES'
+      FieldName = 'CALC_MES'
+      FieldLength = 30
+      DisplayWidth = 30
+      Position = 9
+    end
+    object DBPipeLote_Muda_VendidoppField11: TppField
       FieldAlias = 'DATA'
       FieldName = 'DATA'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 8
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeLote_Muda_VendidoppField10: TppField
-      FieldAlias = 'CLIENTE'
-      FieldName = 'CLIENTE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 9
-      Searchable = False
-      Sortable = False
+      DataType = dtDateTime
+      DisplayWidth = 34
+      Position = 10
     end
   end
   object ppLote_Muda_Vendido: TppReport
@@ -4809,7 +5140,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
     object ppHeaderBand7: TppHeaderBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 21431
+      mmHeight = 21696
       mmPrintPosition = 0
       object ppLbTituloLoteMudaVendida: TppLabel
         DesignLayer = ppDesignLayer7
@@ -4849,38 +5180,22 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 0
         LayerName = BandLayer8
       end
-      object ppSystemVariable19: TppSystemVariable
+      object ppDBImage9: TppDBImage
         DesignLayer = ppDesignLayer7
-        UserName = 'SystemVariable1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 182562
-        mmTop = 13439
-        mmWidth = 14287
-        BandType = 0
-        LayerName = BandLayer8
-      end
-      object ppSystemVariable20: TppSystemVariable
-        DesignLayer = ppDesignLayer7
-        UserName = 'SystemVariable3'
-        VarType = vtTime
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taCentered
-        Transparent = True
-        mmHeight = 3704
-        mmLeft = 185209
-        mmTop = 16880
-        mmWidth = 11113
+        UserName = 'DBImage9'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO_SECUNDARIA'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 21431
+        mmLeft = 165629
+        mmTop = 0
+        mmWidth = 30692
         BandType = 0
         LayerName = BandLayer8
       end
@@ -4916,6 +5231,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         UserName = 'DBText101'
         DataField = 'DATA'
         DataPipeline = DBPipeLote_Muda_Vendido
+        DisplayFormat = 'dd/mm/yyyy'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -4926,7 +5242,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         mmHeight = 4763
         mmLeft = 2115
         mmTop = 0
-        mmWidth = 22754
+        mmWidth = 20445
         BandType = 4
         LayerName = BandLayer8
       end
@@ -4963,9 +5279,9 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         Transparent = True
         DataPipelineName = 'DBPipeLote_Muda_Vendido'
         mmHeight = 4763
-        mmLeft = 26988
+        mmLeft = 23844
         mmTop = 0
-        mmWidth = 89429
+        mmWidth = 48825
         BandType = 4
         LayerName = BandLayer8
       end
@@ -4989,11 +5305,30 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 4
         LayerName = BandLayer8
       end
+      object ppDBText52: TppDBText
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBText22'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeLote_Muda_Vendido
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'DBPipeLote_Muda_Vendido'
+        mmHeight = 4763
+        mmLeft = 73274
+        mmTop = 0
+        mmWidth = 42829
+        BandType = 4
+        LayerName = BandLayer8
+      end
     end
     object ppFooterBand7: TppFooterBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 5027
+      mmHeight = 5292
       mmPrintPosition = 0
       object ppLabel43: TppLabel
         DesignLayer = ppDesignLayer7
@@ -5074,11 +5409,46 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         BandType = 8
         LayerName = BandLayer8
       end
+      object ppSystemVariable19: TppSystemVariable
+        DesignLayer = ppDesignLayer7
+        UserName = 'SystemVariable1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 151168
+        mmTop = 552
+        mmWidth = 14288
+        BandType = 8
+        LayerName = BandLayer8
+      end
+      object ppSystemVariable20: TppSystemVariable
+        DesignLayer = ppDesignLayer7
+        UserName = 'SystemVariable3'
+        VarType = vtTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 166249
+        mmTop = 552
+        mmWidth = 11113
+        BandType = 8
+        LayerName = BandLayer8
+      end
     end
     object ppSummaryBand6: TppSummaryBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 5027
+      mmHeight = 11377
       mmPrintPosition = 0
       object ppDBCalc9: TppDBCalc
         DesignLayer = ppDesignLayer7
@@ -5095,7 +5465,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         DataPipelineName = 'DBPipeLote_Muda_Vendido'
         mmHeight = 4498
         mmLeft = 160602
-        mmTop = 0
+        mmTop = 5805
         mmWidth = 34925
         BandType = 7
         LayerName = BandLayer8
@@ -5112,39 +5482,97 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
         FormField = False
         Transparent = True
         mmHeight = 4233
-        mmLeft = 127265
-        mmTop = 0
+        mmLeft = 131377
+        mmTop = 5805
         mmWidth = 28310
         BandType = 7
         LayerName = BandLayer8
       end
+      object ppLabel62: TppLabel
+        DesignLayer = ppDesignLayer7
+        UserName = 'Label62'
+        Caption = 'Total de Mudas:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 132519
+        mmTop = 681
+        mmWidth = 26723
+        BandType = 7
+        LayerName = BandLayer8
+      end
+      object ppDBCalc17: TppDBCalc
+        DesignLayer = ppDesignLayer7
+        UserName = 'DBCalc17'
+        DataField = 'QTDE'
+        DataPipeline = DBPipeLote_Muda_Comprado
+        DisplayFormat = ',0 Und'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'DBPipeLote_Muda_Comprado'
+        mmHeight = 4498
+        mmLeft = 160565
+        mmTop = 681
+        mmWidth = 34925
+        BandType = 7
+        LayerName = BandLayer8
+      end
     end
-    object ppGroup5: TppGroup
-      BreakName = 'ID_ESPECIE'
+    object ppGroup6: TppGroup
+      BreakName = 'CALC_MES'
       DataPipeline = DBPipeLote_Muda_Vendido
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
       KeepTogether = True
       OutlineSettings.CreateNode = True
       StartOnOddPage = False
-      UserName = 'Group2'
+      UserName = 'Group6'
       mmNewColumnThreshold = 0
       mmNewPageThreshold = 0
       DataPipelineName = 'DBPipeLote_Muda_Vendido'
       NewFile = False
-      object ppGroupHeaderBand5: TppGroupHeaderBand
+      object ppGroupHeaderBand6: TppGroupHeaderBand
         Background.Brush.Style = bsClear
         mmBottomOffset = 0
-        mmHeight = 9790
+        mmHeight = 10319
         mmPrintPosition = 0
         object ppShape5: TppShape
           DesignLayer = ppDesignLayer7
           UserName = 'Shape1'
           Brush.Color = clGray
           mmHeight = 4763
-          mmLeft = 1852
+          mmLeft = 1723
           mmTop = 529
-          mmWidth = 194998
+          mmWidth = 195482
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer8
+        end
+        object ppDBText58: TppDBText
+          DesignLayer = ppDesignLayer7
+          UserName = 'DBText58'
+          DataField = 'CALC_MES'
+          DataPipeline = DBPipeLote_Muda_Vendido
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 11
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeLote_Muda_Vendido'
+          mmHeight = 4763
+          mmLeft = 2157
+          mmTop = 529
+          mmWidth = 193387
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer8
@@ -5162,7 +5590,7 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           Transparent = True
           mmHeight = 3704
           mmLeft = 2117
-          mmTop = 5292
+          mmTop = 5956
           mmWidth = 20373
           BandType = 3
           GroupNo = 0
@@ -5180,9 +5608,28 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 26988
-          mmTop = 5292
-          mmWidth = 10318
+          mmLeft = 24077
+          mmTop = 5956
+          mmWidth = 10319
+          BandType = 3
+          GroupNo = 0
+          LayerName = BandLayer8
+        end
+        object ppLabel59: TppLabel
+          DesignLayer = ppDesignLayer7
+          UserName = 'Label59'
+          Caption = 'Esp'#233'cie'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 73335
+          mmTop = 5956
+          mmWidth = 11377
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer8
@@ -5199,8 +5646,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 117739
-          mmTop = 5295
+          mmLeft = 117520
+          mmTop = 5956
           mmWidth = 7673
           BandType = 3
           GroupNo = 0
@@ -5218,8 +5665,8 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 133350
-          mmTop = 5295
+          mmLeft = 133131
+          mmTop = 5956
           mmWidth = 19579
           BandType = 3
           GroupNo = 0
@@ -5237,39 +5684,19 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 160868
-          mmTop = 5295
+          mmLeft = 160912
+          mmTop = 5956
           mmWidth = 15610
           BandType = 3
           GroupNo = 0
           LayerName = BandLayer8
         end
-        object ppDBText52: TppDBText
-          DesignLayer = ppDesignLayer7
-          UserName = 'DBText22'
-          DataField = 'ESPECIE'
-          DataPipeline = DBPipeLote_Muda_Vendido
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 11
-          Font.Style = [fsBold]
-          Transparent = True
-          DataPipelineName = 'DBPipeLote_Muda_Vendido'
-          mmHeight = 4763
-          mmLeft = 2381
-          mmTop = 529
-          mmWidth = 193940
-          BandType = 3
-          GroupNo = 0
-          LayerName = BandLayer8
-        end
       end
-      object ppGroupFooterBand5: TppGroupFooterBand
+      object ppGroupFooterBand6: TppGroupFooterBand
         Background.Brush.Style = bsClear
         HideWhenOneDetail = False
         mmBottomOffset = 0
-        mmHeight = 4763
+        mmHeight = 5292
         mmPrintPosition = 0
         object ppDBCalc10: TppDBCalc
           DesignLayer = ppDesignLayer7
@@ -5282,13 +5709,35 @@ inherited frmRelatorioViveiro: TfrmRelatorioViveiro
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          ResetGroup = ppGroup5
+          ResetGroup = ppGroup6
           Transparent = True
           DataPipelineName = 'DBPipeLote_Muda_Vendido'
           mmHeight = 4498
-          mmLeft = 160602
-          mmTop = 0
+          mmLeft = 160451
+          mmTop = 597
           mmWidth = 34925
+          BandType = 5
+          GroupNo = 0
+          LayerName = BandLayer8
+        end
+        object ppDBCalc18: TppDBCalc
+          DesignLayer = ppDesignLayer7
+          UserName = 'DBCalc18'
+          DataField = 'QTDE'
+          DataPipeline = DBPipeLote_Muda_Vendido
+          DisplayFormat = ',0'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup6
+          Transparent = True
+          DataPipelineName = 'DBPipeLote_Muda_Vendido'
+          mmHeight = 4498
+          mmLeft = 117740
+          mmTop = 529
+          mmWidth = 15153
           BandType = 5
           GroupNo = 0
           LayerName = BandLayer8

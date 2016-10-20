@@ -90,6 +90,7 @@ inherited dmRelatorio: TdmRelatorio
     Top = 96
   end
   object cdsSaldo_Semente_Muda: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <
       item
@@ -156,6 +157,7 @@ inherited dmRelatorio: TdmRelatorio
     end
     object cdsSaldo_Semente_MudaQTDE_FAMILIA: TIntegerField
       FieldName = 'QTDE_FAMILIA'
+      Origin = 'QTDE_FAMILIA'
       ProviderFlags = []
     end
   end
@@ -740,6 +742,7 @@ inherited dmRelatorio: TdmRelatorio
   end
   object cdsLote_Muda_Comprado: TRFClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'DATA'
     Params = <>
     ProviderName = 'dspqLote_Muda_Comprado'
     RemoteServer = dmPrincipal.ProviderRelatorio
@@ -797,11 +800,6 @@ inherited dmRelatorio: TdmRelatorio
       ReadOnly = True
       Precision = 18
     end
-    object cdsLote_Muda_CompradoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      Required = True
-    end
     object cdsLote_Muda_CompradoQTDE: TBCDField
       FieldName = 'QTDE'
       Origin = 'QTDE'
@@ -810,9 +808,19 @@ inherited dmRelatorio: TdmRelatorio
       Precision = 18
       Size = 2
     end
+    object cdsLote_Muda_CompradoCALC_MES: TStringField
+      FieldName = 'CALC_MES'
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsLote_Muda_CompradoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      ReadOnly = True
+    end
   end
   object cdsLote_Semente_Comprado: TRFClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'DATA'
     Params = <>
     ProviderName = 'dspqLote_Semente_Comprado'
     RemoteServer = dmPrincipal.ProviderRelatorio
@@ -862,9 +870,14 @@ inherited dmRelatorio: TdmRelatorio
       ReadOnly = True
       Precision = 18
     end
-    object cdsLote_Semente_CompradoDATA: TDateField
+    object cdsLote_Semente_CompradoCALC_MES: TStringField
+      FieldName = 'CALC_MES'
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsLote_Semente_CompradoDATA: TSQLTimeStampField
       FieldName = 'DATA'
-      Required = True
+      ReadOnly = True
     end
   end
   object cdsGasto_Plano_Contas_Detalhado: TRFClientDataSet
@@ -937,6 +950,7 @@ inherited dmRelatorio: TdmRelatorio
   end
   object cdsLote_Semente_Vendido: TRFClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'DATA'
     Params = <>
     ProviderName = 'dspqLote_Semente_Vendido'
     RemoteServer = dmPrincipal.ProviderRelatorio
@@ -981,22 +995,29 @@ inherited dmRelatorio: TdmRelatorio
       Required = True
       Precision = 18
     end
-    object cdsLote_Semente_VendidoDATA: TDateField
-      FieldName = 'DATA'
-      Required = True
-    end
     object cdsLote_Semente_VendidoCLIENTE: TStringField
       FieldName = 'CLIENTE'
       Size = 203
     end
+    object cdsLote_Semente_VendidoCALC_MES: TStringField
+      FieldName = 'CALC_MES'
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsLote_Semente_VendidoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Required = True
+    end
   end
   object cdsLote_Muda_Vendido: TRFClientDataSet
+    Active = True
     Aggregates = <>
+    IndexFieldNames = 'DATA'
     Params = <>
     ProviderName = 'dspqLote_Muda_Vendido'
     RemoteServer = dmPrincipal.ProviderRelatorio
-    Left = 496
-    Top = 288
+    Left = 488
+    Top = 304
     object cdsLote_Muda_VendidoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -1045,19 +1066,24 @@ inherited dmRelatorio: TdmRelatorio
       Required = True
       Precision = 18
     end
-    object cdsLote_Muda_VendidoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      Required = True
-    end
     object cdsLote_Muda_VendidoCLIENTE: TStringField
       FieldName = 'CLIENTE'
       Origin = 'CLIENTE'
       Size = 203
     end
+    object cdsLote_Muda_VendidoCALC_MES: TStringField
+      FieldName = 'CALC_MES'
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsLote_Muda_VendidoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+      DisplayFormat = 'dd/mm/yyyy'
+    end
   end
   object cdsView_Movimentacao_Financeira: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqView_Movimentacao_Financeira'

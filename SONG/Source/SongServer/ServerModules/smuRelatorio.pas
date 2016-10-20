@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery,
-  Datasnap.DBClient, uClientDataSet, uUtils, uSQLGenerator, uTypes;
+  Datasnap.DBClient, uClientDataSet, uUtils, uSQLGenerator, uTypes,
+  System.DateUtils;
 
 type
   TsmRelatorio = class(TsmBasico)
@@ -108,7 +109,6 @@ type
     qLote_Muda_CompradoFORNECEDOR: TStringField;
     qLote_Muda_CompradoVALOR_UNITARIO: TBCDField;
     qLote_Muda_CompradoVALOR: TBCDField;
-    qLote_Muda_CompradoDATA: TDateField;
     qLote_Semente_Comprado: TRFQuery;
     qLote_Semente_CompradoID: TIntegerField;
     qLote_Semente_CompradoNOME: TStringField;
@@ -118,7 +118,6 @@ type
     qLote_Semente_CompradoFORNECEDOR: TStringField;
     qLote_Semente_CompradoVALOR_UNITARIO: TBCDField;
     qLote_Semente_CompradoVALOR: TBCDField;
-    qLote_Semente_CompradoDATA: TDateField;
     qGasto_Plano_Contas_Detalhado: TRFQuery;
     qGasto_Plano_Contas_DetalhadoID: TIntegerField;
     qGasto_Plano_Contas_DetalhadoNOME: TStringField;
@@ -141,7 +140,6 @@ type
     qLote_Muda_VendidoQTDE: TBCDField;
     qLote_Muda_VendidoVALOR_UNITARIO: TBCDField;
     qLote_Muda_VendidoVALOR: TBCDField;
-    qLote_Muda_VendidoDATA: TDateField;
     qLote_Semente_VendidoID: TIntegerField;
     qLote_Semente_VendidoNOME: TStringField;
     qLote_Semente_VendidoID_ESPECIE: TIntegerField;
@@ -150,7 +148,6 @@ type
     qLote_Semente_VendidoQTDE: TBCDField;
     qLote_Semente_VendidoVALOR_UNITARIO: TBCDField;
     qLote_Semente_VendidoVALOR: TBCDField;
-    qLote_Semente_VendidoDATA: TDateField;
     qLote_Muda_CompradoQTDE: TBCDField;
     qLote_Semente_CompradoQTDE: TBCDField;
     qLote_Muda_VendidoCLIENTE: TStringField;
@@ -205,8 +202,17 @@ type
     qSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     qSaldo_RubricaAPROVISIONADO: TBCDField;
     qSaldo_RubricaSALDO_REAL: TBCDField;
+    qLote_Muda_VendidoCALC_MES: TStringField;
+    qLote_Muda_CompradoCALC_MES: TStringField;
+    qLote_Semente_CompradoCALC_MES: TStringField;
+    qLote_Semente_VendidoCALC_MES: TStringField;
+    qLote_Muda_VendidoDATA: TSQLTimeStampField;
+    qLote_Semente_VendidoDATA: TSQLTimeStampField;
+    qLote_Muda_CompradoDATA: TSQLTimeStampField;
+    qLote_Semente_CompradoDATA: TSQLTimeStampField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
+    procedure qLote_Muda_VendidoCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   protected
@@ -399,6 +405,15 @@ begin
       else if ipParam.Name = TParametros.coSaldoPositivo then
         Result := Result + ' ((Especie.Qtde_Semente_Estoque > 0) OR (Especie.Qtde_Muda_Pronta > 0) OR (Especie.Qtde_Muda_Desenvolvimento > 0)) ' + vaOperador;
     end
+end;
+
+procedure TsmRelatorio.qLote_Muda_VendidoCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  DataSet.FieldByName('CALC_MES').AsString := FormatDateTime('mmmm "de" yyyy',DataSet.FieldByName('DATA').AsDateTime);
+  DataSet.FieldByName('CALC_MES').AsString := Copy(DataSet.FieldByName('CALC_MES').AsString,1,1).ToUpper+ Copy(DataSet.FieldByName('CALC_MES').AsString,2);
+
+
 end;
 
 procedure TsmRelatorio.qPatrimonioCalcFields(DataSet: TDataSet);

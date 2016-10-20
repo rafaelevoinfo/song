@@ -145,10 +145,10 @@ inherited smRelatorio: TsmRelatorio
       '       Especie.Qtde_Semente_Estoque,'
       '       Especie.Qtde_Muda_Pronta,'
       '       Especie.Qtde_Muda_Desenvolvimento,'
-      '       (select count(distinct especie.Id_Familia_Botanica)'
+      '       cast((select count(distinct especie.Id_Familia_Botanica)'
       '         from Especie'
       '        where especie.id_familia_botanica is not null'
-      '              &AND) as Qtde_Familia'
+      '              &AND) as Integer) as Qtde_Familia'
       'from Especie'
       
         'left join familia_botanica on (especie.id_familia_botanica = fam' +
@@ -1050,6 +1050,7 @@ inherited smRelatorio: TsmRelatorio
       end>
   end
   object qLote_Muda_Comprado: TRFQuery
+    OnCalcFields = qLote_Muda_VendidoCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Muda.Id,'
@@ -1068,7 +1069,7 @@ inherited smRelatorio: TsmRelatorio
       '       compra_item.qtde,'
       '       compra_item.valor_unitario,'
       '       (compra_item.valor_unitario * compra_item.qtde) as valor,'
-      '       Lote_Muda.Data'
+      '       Compra.Data'
       'from Lote_Muda'
       
         'inner join Compra_Item on (Compra_Item.Id = Lote_Muda.Id_Compra_' +
@@ -1083,8 +1084,8 @@ inherited smRelatorio: TsmRelatorio
       '      Item.Tipo = 2--2=Muda'
       '&AND'
       'order by Lote_Muda.Id_Especie  ')
-    Left = 600
-    Top = 136
+    Left = 712
+    Top = 304
     MacroData = <
       item
         Value = Null
@@ -1147,11 +1148,6 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Precision = 18
     end
-    object qLote_Muda_CompradoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      Required = True
-    end
     object qLote_Muda_CompradoQTDE: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'QTDE'
@@ -1161,8 +1157,22 @@ inherited smRelatorio: TsmRelatorio
       Precision = 18
       Size = 2
     end
+    object qLote_Muda_CompradoCALC_MES: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_MES'
+      Size = 30
+      Calculated = True
+    end
+    object qLote_Muda_CompradoDATA: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
   object qLote_Semente_Comprado: TRFQuery
+    OnCalcFields = qLote_Muda_VendidoCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Semente.Id,'
@@ -1182,7 +1192,7 @@ inherited smRelatorio: TsmRelatorio
       '       compra_item.qtde,'
       '       compra_item.valor_unitario,'
       '       (compra_item.valor_unitario * compra_item.qtde) as valor,'
-      '       Lote_Semente.Data'
+      '       Compra.Data'
       'from Lote_Semente'
       
         'inner join Compra_Item on (Compra_Item.Id = Lote_Semente.Id_Comp' +
@@ -1197,8 +1207,8 @@ inherited smRelatorio: TsmRelatorio
       '      Item.tipo = 1'
       '&AND'
       'order by Lote_Semente.Id_Especie  ')
-    Left = 744
-    Top = 136
+    Left = 848
+    Top = 312
     MacroData = <
       item
         Value = Null
@@ -1261,11 +1271,6 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Precision = 18
     end
-    object qLote_Semente_CompradoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      Required = True
-    end
     object qLote_Semente_CompradoQTDE: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'QTDE'
@@ -1274,6 +1279,19 @@ inherited smRelatorio: TsmRelatorio
       ReadOnly = True
       Precision = 18
       Size = 2
+    end
+    object qLote_Semente_CompradoCALC_MES: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_MES'
+      Size = 30
+      Calculated = True
+    end
+    object qLote_Semente_CompradoDATA: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      ProviderFlags = []
+      ReadOnly = True
     end
   end
   object qGasto_Plano_Contas_Detalhado: TRFQuery
@@ -1414,6 +1432,7 @@ inherited smRelatorio: TsmRelatorio
     end
   end
   object qLote_Semente_Vendido: TRFQuery
+    OnCalcFields = qLote_Muda_VendidoCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Semente.Id,'
@@ -1433,7 +1452,7 @@ inherited smRelatorio: TsmRelatorio
       '       Venda_Item.Qtde,'
       '       Venda_Item.Valor_Unitario,'
       '       (Venda_Item.Valor_Unitario * Venda_Item.Qtde) as Valor,'
-      '       Lote_Semente.Data'
+      '       Venda.Data'
       'from Venda_Item'
       
         'inner join Lote_Semente on (Venda_Item.Id_Lote_Semente = Lote_Se' +
@@ -1443,8 +1462,8 @@ inherited smRelatorio: TsmRelatorio
       'inner join Fin_For_Cli on (Venda.Id_Cliente = Fin_For_Cli.Id)'
       '&WHERE'
       'order by Lote_Semente.Id_Especie  ')
-    Left = 56
-    Top = 232
+    Left = 456
+    Top = 312
     MacroData = <
       item
         Value = 'where venda_item.id = 0'
@@ -1498,18 +1517,25 @@ inherited smRelatorio: TsmRelatorio
       Required = True
       Precision = 18
     end
-    object qLote_Semente_VendidoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      Required = True
-    end
     object qLote_Semente_VendidoCLIENTE: TStringField
       FieldName = 'CLIENTE'
       Origin = 'CLIENTE'
       Size = 203
     end
+    object qLote_Semente_VendidoCALC_MES: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_MES'
+      Size = 30
+      Calculated = True
+    end
+    object qLote_Semente_VendidoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
   end
   object qLote_Muda_Vendido: TRFQuery
+    OnCalcFields = qLote_Muda_VendidoCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Lote_Muda.Id,'
@@ -1528,7 +1554,7 @@ inherited smRelatorio: TsmRelatorio
       '       Venda_Item.Qtde,'
       '       Venda_Item.Valor_Unitario,'
       '       (Venda_Item.Valor_Unitario * Venda_Item.Qtde) as Valor,'
-      '       Lote_Muda.Data'
+      '       Venda.Data'
       'from Venda_Item'
       'inner join Lote_Muda on (Venda_Item.Id_Lote_Muda = Lote_Muda.Id)'
       'inner join Venda on (Venda.Id = Venda_Item.Id_Venda)'
@@ -1536,8 +1562,8 @@ inherited smRelatorio: TsmRelatorio
       'inner join Fin_For_Cli on (Venda.Id_Cliente = Fin_For_Cli.Id)'
       '&WHERE'
       'order by Lote_Muda.Id_Especie')
-    Left = 216
-    Top = 232
+    Left = 312
+    Top = 320
     MacroData = <
       item
         Value = 'where venda_item.id = 0'
@@ -1591,15 +1617,21 @@ inherited smRelatorio: TsmRelatorio
       Required = True
       Precision = 18
     end
-    object qLote_Muda_VendidoDATA: TDateField
-      FieldName = 'DATA'
-      Origin = '"DATA"'
-      Required = True
-    end
     object qLote_Muda_VendidoCLIENTE: TStringField
       FieldName = 'CLIENTE'
       Origin = 'CLIENTE'
       Size = 203
+    end
+    object qLote_Muda_VendidoCALC_MES: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_MES'
+      Size = 30
+      Calculated = True
+    end
+    object qLote_Muda_VendidoDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
     end
   end
   object qView_Movimentacao_Financeira: TRFQuery
@@ -1891,8 +1923,8 @@ inherited smRelatorio: TsmRelatorio
         'edor)  '
       '&WHERE'
       'order by Fin_For_Cli.Razao_Social')
-    Left = 328
-    Top = 280
+    Left = 72
+    Top = 232
     MacroData = <
       item
         Value = 'WHERE VIEW_CONTA_PAGAR.ID = 0'

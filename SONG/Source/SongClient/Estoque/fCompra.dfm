@@ -1,10 +1,12 @@
 inherited frmCompra: TfrmCompra
+  ActiveControl = btnIncluir
   Caption = 'Compras'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -14,7 +16,7 @@ inherited frmCompra: TfrmCompra
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
-          ExplicitLeft = 564
+          ExplicitLeft = 562
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -88,6 +90,10 @@ inherited frmCompra: TfrmCompra
               item
                 Description = 'Fornecedor'
                 Value = 8
+              end
+              item
+                Description = 'Esp'#233'cie'
+                Value = 9
               end>
             TabOrder = 2
             ExplicitLeft = 2
@@ -103,6 +109,15 @@ inherited frmCompra: TfrmCompra
             TabOrder = 7
             ExplicitLeft = 6
             ExplicitTop = 33
+          end
+          object cbPesquisaEspecie: TcxLookupComboBox
+            Left = 137
+            Top = 20
+            RepositoryItem = dmLookup.repLcbEspecie
+            Properties.ListColumns = <>
+            TabOrder = 8
+            Visible = False
+            Width = 174
           end
         end
         inherited pnBotoes: TPanel
@@ -268,6 +283,10 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 200

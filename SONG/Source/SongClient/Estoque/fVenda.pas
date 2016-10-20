@@ -177,6 +177,7 @@ type
     ppDesignLayer1: TppDesignLayer;
     ppEditValorTotal: TppDBText;
     ppSystemVariable1: TppSystemVariable;
+    cbPesquisaEspecie: TcxLookupComboBox;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
@@ -227,6 +228,7 @@ type
     coPesquisaItem = 7;
     coPesquisaVendedor = 5;
     coPesquisaCliente = 6;
+    coPesquisaEspecie = 8;
   end;
 
 var
@@ -293,7 +295,9 @@ begin
   else if cbPesquisarPor.EditValue = coPesquisaVendedor then
     ipCds.ppuAddParametro(TParametros.coVendedor, cbPesquisaPessoa.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCliente then
-    ipCds.ppuAddParametro(TParametros.coCliente, cbPesquisaCliente.EditValue);
+    ipCds.ppuAddParametro(TParametros.coCliente, cbPesquisaCliente.EditValue)
+  else if cbPesquisarPor.EditValue = coPesquisaEspecie then
+    ipCds.ppuAddParametro(TParametros.coEspecie, cbPesquisaEspecie.EditValue);
 end;
 
 procedure TfrmVenda.ppReciboAfterPrint(Sender: TObject);
@@ -352,6 +356,9 @@ begin
 
   if cbPesquisaCliente.Visible and (VarIsNull(cbPesquisaCliente.EditValue)) then
     raise Exception.Create('Informe o cliente a ser pesquisado.');
+
+  if cbPesquisaEspecie.Visible and (VarIsNull(cbPesquisaEspecie.EditValue)) then
+    raise Exception.Create('Informe a espécie a ser pesquisada.');
 end;
 
 procedure TfrmVenda.pprBeforeExcluir(ipId: Integer; ipAcao: TAcaoTela);
@@ -421,15 +428,18 @@ begin
   cbPesquisaPessoa.Visible := (cbPesquisarPor.EditValue = coPesquisaVendedor);
   cbItemPesquisa.Visible := cbPesquisarPor.EditValue = coPesquisaItem;
   cbPesquisaCliente.Visible := cbPesquisarPor.EditValue = coPesquisaCliente;
+  cbPesquisaEspecie.Visible := cbPesquisarPor.EditValue = coPesquisaEspecie;
 
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbItemPesquisa.Visible or cbPesquisaPessoa.Visible or cbPesquisaCliente.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaEspecie.Visible or cbItemPesquisa.Visible or cbPesquisaPessoa.Visible or cbPesquisaCliente.Visible));
 
   if cbPesquisaPessoa.Visible then
     Result := cbPesquisaPessoa
   else if cbItemPesquisa.Visible then
     Result := cbItemPesquisa
   else if cbPesquisaCliente.Visible then
-    Result := cbPesquisaCliente;
+    Result := cbPesquisaCliente
+  else if cbPesquisaEspecie.Visible then
+    Result := cbPesquisaEspecie;
 end;
 
 procedure TfrmVenda.Ac_Adicionar_ClienteExecute(Sender: TObject);

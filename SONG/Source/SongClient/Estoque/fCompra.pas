@@ -17,7 +17,7 @@ uses
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxCurrencyEdit,
   uMensagem, cxCalc, uExceptions, fEntrada, fLote_Muda, fConta_Pagar,
   dmuPrincipal, System.RegularExpressions, fLote_Semente, Vcl.ExtDlgs, fItem,
-  fFornecedor;
+  fFornecedor, Vcl.Menus;
 
 type
   TCompra = class(TModelo)
@@ -88,6 +88,7 @@ type
     Ac_Adicionar_Fornecedor: TAction;
     viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
     viewRegistrosGEROU_CONTA_PAGAR: TcxGridDBColumn;
+    cbPesquisaEspecie: TcxLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Produto_EntregueUpdate(Sender: TObject);
     procedure Ac_Produto_EntregueExecute(Sender: TObject);
@@ -146,6 +147,7 @@ type
     coPesquisaComprador = 5;
     coPesquisaCodigoRastreio = 7;
     coPesquisaFornecedor = 8;
+    coPesquisaEspecie = 9;
     { Public declarations }
   end;
 
@@ -370,15 +372,18 @@ begin
   cbPesquisaPessoa.Visible := (cbPesquisarPor.EditValue = coPesquisaComprador);
   cbItemPesquisa.Visible := cbPesquisarPor.EditValue = coPesquisaItem;
   cbPesquisaFornecedor.Visible := cbPesquisarPor.EditValue = coPesquisaFornecedor;
+  cbPesquisaEspecie.Visible := cbPesquisarPor.EditValue = coPesquisaEspecie;
 
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbItemPesquisa.Visible or cbPesquisaPessoa.Visible or cbPesquisaFornecedor.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaEspecie.Visible or cbItemPesquisa.Visible or cbPesquisaPessoa.Visible or cbPesquisaFornecedor.Visible));
 
   if cbPesquisaPessoa.Visible then
     Result := cbPesquisaPessoa
   else if cbItemPesquisa.Visible then
     Result := cbItemPesquisa
   else if cbPesquisaFornecedor.Visible then
-    Result := cbPesquisaFornecedor;
+    Result := cbPesquisaFornecedor
+  else if cbPesquisaEspecie.Visible then
+    Result := cbPesquisaEspecie;
 end;
 
 function TfrmCompra.fprGetPermissao: string;
@@ -647,6 +652,8 @@ begin
     ipCds.ppuAddParametro(TParametros.coFornecedor, cbPesquisaFornecedor.EditValue)
   else if cbPesquisarPor.EditValue = coPesquisaCodigoRastreio then
     ipCds.ppuAddParametro(TParametros.coCodigoRastreio, EditPesquisa.Text)
+  else if cbPesquisarPor.EditValue = coPesquisaEspecie then
+    ipCds.ppuAddParametro(TParametros.coEspecie, cbPesquisaEspecie.EditValue)
 end;
 
 procedure TfrmCompra.pprExecutarSalvar;

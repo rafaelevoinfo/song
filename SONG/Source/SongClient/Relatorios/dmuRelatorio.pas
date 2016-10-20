@@ -122,7 +122,6 @@ type
     cdsLote_Semente_CompradoQTDE: TBCDField;
     cdsLote_Semente_CompradoVALOR_UNITARIO: TBCDField;
     cdsLote_Semente_CompradoVALOR: TBCDField;
-    cdsLote_Semente_CompradoDATA: TDateField;
     cdsLote_Muda_CompradoID: TIntegerField;
     cdsLote_Muda_CompradoNOME: TStringField;
     cdsLote_Muda_CompradoID_ESPECIE: TIntegerField;
@@ -131,7 +130,6 @@ type
     cdsLote_Muda_CompradoFORNECEDOR: TStringField;
     cdsLote_Muda_CompradoVALOR_UNITARIO: TBCDField;
     cdsLote_Muda_CompradoVALOR: TBCDField;
-    cdsLote_Muda_CompradoDATA: TDateField;
     cdsGasto_Plano_Contas_Detalhado: TRFClientDataSet;
     cdsGasto_Plano_Contas_DetalhadoID: TIntegerField;
     cdsGasto_Plano_Contas_DetalhadoNOME: TStringField;
@@ -156,7 +154,6 @@ type
     cdsLote_Muda_VendidoQTDE: TBCDField;
     cdsLote_Muda_VendidoVALOR_UNITARIO: TBCDField;
     cdsLote_Muda_VendidoVALOR: TBCDField;
-    cdsLote_Muda_VendidoDATA: TDateField;
     cdsLote_Muda_VendidoCLIENTE: TStringField;
     cdsLote_Semente_VendidoID: TIntegerField;
     cdsLote_Semente_VendidoNOME: TStringField;
@@ -166,7 +163,6 @@ type
     cdsLote_Semente_VendidoQTDE: TBCDField;
     cdsLote_Semente_VendidoVALOR_UNITARIO: TBCDField;
     cdsLote_Semente_VendidoVALOR: TBCDField;
-    cdsLote_Semente_VendidoDATA: TDateField;
     cdsLote_Semente_VendidoCLIENTE: TStringField;
     cdsView_Movimentacao_Financeira: TRFClientDataSet;
     cdsView_Movimentacao_FinanceiraID_MOVIMENTACAO: TIntegerField;
@@ -218,6 +214,14 @@ type
     cdsSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     cdsSaldo_RubricaAPROVISIONADO: TBCDField;
     cdsSaldo_RubricaSALDO_REAL: TBCDField;
+    cdsLote_Muda_CompradoCALC_MES: TStringField;
+    cdsLote_Muda_CompradoDATA: TSQLTimeStampField;
+    cdsLote_Semente_CompradoCALC_MES: TStringField;
+    cdsLote_Semente_CompradoDATA: TSQLTimeStampField;
+    cdsLote_Semente_VendidoCALC_MES: TStringField;
+    cdsLote_Semente_VendidoDATA: TSQLTimeStampField;
+    cdsLote_Muda_VendidoCALC_MES: TStringField;
+    cdsLote_Muda_VendidoDATA: TSQLTimeStampField;
     procedure cdsSaldo_Semente_MudaCalcFields(DataSet: TDataSet);
     procedure cdsTrasnferencia_FinanceiraCalcFields(DataSet: TDataSet);
     procedure cdsGasto_AtividadeCalcFields(DataSet: TDataSet);

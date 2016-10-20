@@ -802,7 +802,7 @@ inherited smEstoque: TsmEstoque
       '       end Gerou_Conta_Receber      '
       'from Venda '
       'inner join fin_for_cli on (fin_for_cli.id = Venda.id_cliente)'
-      'inner join venda_item on (venda.id = venda_item.id_venda)'
+      'left join venda_item on (venda.id = venda_item.id_venda)'
       
         'left join pessoa cliente on (fin_for_cli.id_contato = cliente.id' +
         ')'

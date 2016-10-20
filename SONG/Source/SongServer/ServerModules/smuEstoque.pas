@@ -356,6 +356,8 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'CODIGO_RASTREIO', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coFornecedor then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_FORNECEDOR', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'COMPRA_ITEM', 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
     end
   else if (ipTabela = 'VENDA') then
     begin
@@ -365,6 +367,12 @@ begin
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_PESSOA_VENDEU', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coCliente then
         Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_CLIENTE', vaValor, vaOperador)
+      else if ipParam.Name = TParametros.coEspecie then
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'VENDA_ITEM', 'ID_ESPECIE', vaValor.ToInteger, vaOperador)
+      else if ipParam.Name = TParametros.coData then
+        Result := TSQLGenerator.fpuFilterData(Result, ipTabela, 'DATA', TUtils.fpuExtrairData(vaValor, 0), TUtils.fpuExtrairData(vaValor, 1),
+          vaOperador)
+
     end
   else if (ipTabela = 'SAIDA') then
     begin
