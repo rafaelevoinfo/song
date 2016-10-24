@@ -17,7 +17,7 @@ uses
   cxDBLookupComboBox, uClientDataSet, dmuPrincipal, cxDBEdit, fCliente,
   cxScrollBox, fmEditor, uMensagem, System.RegularExpressions,
   fBasicoCrudMasterDetail, cxSplitter, cxCalc, cxCurrencyEdit, cxMemo,
-  cxRichEdit, System.Generics.Collections, uExceptions, uUtils;
+  cxRichEdit, System.Generics.Collections, uExceptions, uUtils, fSaida;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -77,11 +77,10 @@ type
     viewCamposCustomizadosCONTEUDO: TcxGridDBColumn;
     Ac_Incluir_Campo_Customizado: TAction;
     RichAux: TcxRichEdit;
-    pnBotoesCustomizado: TPanel;
-    btnAplicarCampos: TButton;
-    Ac_Aplicar_Campos_Customizado: TAction;
-    btnConfigurarCamposCustomizados: TButton;
-    Ac_Configurar_Campos_Customizado: TAction;
+    btnRetornarConfiguracaoCampos: TButton;
+    Ac_Retornar_Configuracao_Campos: TAction;
+    btnGerar_Saida: TButton;
+    Ac_Gerar_Saida: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -91,14 +90,18 @@ type
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Ac_Aplicar_Campos_CustomizadoExecute(Sender: TObject);
-    procedure Ac_Configurar_Campos_CustomizadoExecute(Sender: TObject);
     procedure Ac_Salvar_Incluir_DetailUpdate(Sender: TObject);
     procedure tabPreVisualizacaoShow(Sender: TObject);
+    procedure Ac_Salvar_DetailUpdate(Sender: TObject);
+    procedure Ac_Salvar_DetailExecute(Sender: TObject);
+    procedure Ac_Retornar_Configuracao_CamposExecute(Sender: TObject);
+    procedure pcCadastroDetailChange(Sender: TObject);
+    procedure btnGerar_SaidaClick(Sender: TObject);
+    procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
-    FCamposCustomizados: TDictionary<String, TcxTextEdit>;
+    FMarcadoresCustomizados: TDictionary<String, TcxTextEdit>;
     procedure ppvCarregarClientes;
     procedure ppvAdicionarCliente;
     procedure ppvLimparEditsCamposCustomizados;
@@ -106,6 +109,8 @@ type
     procedure ppvAdicionarCampoCustomizado(ipCampo: String; ipConteudo: String = '');
     function fpvLocalizarModeloOrcamento(ipIdModelo: Integer): Boolean;
     procedure ppvSubstituirCamposOrcamento;
+    procedure ppvMontarOrcamento;
+    procedure ppvGerarSaida;
   protected
     function fprGetPermissao: String; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -142,9 +147,72 @@ begin
   ppvAdicionarCliente;
 end;
 
-procedure TfrmOrcamento.Ac_Aplicar_Campos_CustomizadoExecute(Sender: TObject);
+procedure TfrmOrcamento.ppvSubstituirCamposOrcamento;
+var
+  vaMarcador, vaConteudo: String;
+  vaPos: Integer;
+begin
+  dmEstoque.cdsOrcamento_Orcamento.Edit;
+
+  for vaMarcador in FMarcadoresCustomizados.Keys do
+    begin
+      vaConteudo := FMarcadoresCustomizados.Items[vaMarcador].Text;
+      vaPos := 0;
+      while vaPos <> -1 do
+        begin
+          vaPos := frameEditor.Rich.FindTexT(coInicioMarcador + vaMarcador + coFimMarcador, 0, Length(frameEditor.Rich.Text), []);
+          if vaPos <> -1 then
+            begin
+              frameEditor.Rich.SelStart := vaPos;
+              frameEditor.Rich.SelLength := Length(coInicioMarcador + vaMarcador + coFimMarcador);
+              frameEditor.Rich.SelText := vaConteudo;
+            end;
+        end;
+    end;
+
+end;
+
+procedure TfrmOrcamento.Ac_Gerar_SaidaUpdate(Sender: TObject);
 begin
   inherited;
+  TAction(Sender).Enabled := dmEstoque.cdsOrcamento.Active and dmEstoque.cdsOrcamentoID_SAIDA.IsNull and dmEstoque.cdsOrcamentoID_VENDA.IsNull;
+end;
+
+procedure TfrmOrcamento.Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
+begin
+  inherited;
+  ppvCarregarCamposCustomizados;
+
+  pcPrincipal.ActivePage := tabCadastroDetail;
+  pcCadastroDetail.ActivePage := tabCadastroCampoCustomizavel;
+end;
+
+procedure TfrmOrcamento.Ac_Retornar_Configuracao_CamposExecute(Sender: TObject);
+begin
+  inherited;
+  pcCadastroDetail.ActivePage := tabCadastroCampoCustomizavel;
+end;
+
+procedure TfrmOrcamento.Ac_Salvar_DetailExecute(Sender: TObject);
+begin
+  if pcCadastroDetail.ActivePage = tabCadastroItem then
+    begin
+      ppuSalvarDetail;
+      ppvCarregarCamposCustomizados;
+      pcCadastroDetail.ActivePage := tabCadastroCampoCustomizavel;
+    end
+  else if pcCadastroDetail.ActivePage = tabCadastroCampoCustomizavel then
+    begin
+      ppuSalvarDetail;
+      ppvMontarOrcamento;
+      pcCadastroDetail.ActivePage := tabPreVisualizacao;
+    end
+  else
+    inherited;
+end;
+
+procedure TfrmOrcamento.ppvMontarOrcamento;
+begin
   if fpvLocalizarModeloOrcamento(dmEstoque.cdsOrcamentoID_MODELO_ORCAMENTO.AsInteger) then
     begin
       dmEstoque.cdsOrcamento_Orcamento.Close;
@@ -163,44 +231,19 @@ begin
       dmEstoque.cdsOrcamento_Orcamento.Post;
 
       ppvSubstituirCamposOrcamento;
-
-      pcCadastroDetail.ActivePage := tabPreVisualizacao;
     end;
 end;
 
-procedure TfrmOrcamento.Ac_Configurar_Campos_CustomizadoExecute(
-  Sender: TObject);
+procedure TfrmOrcamento.Ac_Salvar_DetailUpdate(Sender: TObject);
 begin
   inherited;
-  ppvCarregarCamposCustomizados;
+  if pcCadastroDetail.ActivePage = tabCadastroItem then
+    Ac_Salvar_Detail.Caption := 'Salvar/Configurar Campos Customizados'
+  else if pcCadastroDetail.ActivePage = tabCadastroCampoCustomizavel then
+    Ac_Salvar_Detail.Caption := 'Salvar/Montar Orçamento'
+  else
+    Ac_Salvar_Detail.Caption := 'Salvar';
 
-  pcCadastroDetail.ActivePage := tabCadastroCampoCustomizavel;
-end;
-
-procedure TfrmOrcamento.ppvSubstituirCamposOrcamento;
-var
-  vaCampo, vaConteudo: String;
-  j: Integer;
-begin
-  for vaCampo in FCamposCustomizados.Keys do
-    begin
-      vaConteudo := FCamposCustomizados.Items[vaCampo].Text;
-      for j := 0 to frameEditor.Rich.Lines.Count - 1 do
-        begin
-          frameEditor.Rich.Lines[j] := StringReplace(frameEditor.Rich.Lines[j],
-            coInicioMarcador + vaCampo + coFimMarcador, vaConteudo, [rfReplaceAll]);
-        end;
-
-    end;
-end;
-
-procedure TfrmOrcamento.Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
-begin
-  inherited;
-  ppvCarregarCamposCustomizados;
-
-  pcPrincipal.ActivePage := tabCadastroDetail;
-  pcCadastroDetail.ActivePage := tabCadastroCampoCustomizavel;
 end;
 
 procedure TfrmOrcamento.Ac_Salvar_Incluir_DetailUpdate(Sender: TObject);
@@ -209,6 +252,82 @@ begin
     TAction(Sender).Enabled := fprHabilitarSalvarDetail
   else
     TAction(Sender).Enabled := false;
+end;
+
+procedure TfrmOrcamento.btnGerar_SaidaClick(Sender: TObject);
+begin
+  inherited;
+  if TMensagem.fpuPerguntar('Tem certeza que deseja gerar uma saída para este orçamento?', ppSimNao) = rpSim then
+    begin
+      ppvGerarSaida;
+    end;
+end;
+
+procedure TfrmOrcamento.ppvGerarSaida;
+var
+  vaFrmSaida: TfrmSaida;
+  vaSaida: TSaida;
+  vaItem: TItem;
+  vaIdSaida: Integer;
+begin
+  inherited;
+
+  vaFrmSaida := TfrmSaida.Create(nil);
+  try
+    try
+      vaFrmSaida.ModoSilencioso := True;
+      vaSaida := TSaida.Create;
+      vaSaida.Data := Now;
+      vaSaida.Tipo := tsPlantio;
+
+      vaFrmSaida.ppuConfigurarModoExecucao(meSomenteCadastro, vaSaida);
+      vaFrmSaida.ppuIncluir;
+      vaFrmSaida.ppuSalvar;
+
+      vaIdSaida := vaFrmSaida.IdEscolhido;
+    except
+      on e: Exception do
+        begin
+          TMensagem.ppuShowException('Não foi possível gerar a saída deste orçamento.', e);
+          Exit;
+        end;
+    end;
+
+    try
+      dmEstoque.cdsOrcamento_Item.First;
+      while not dmEstoque.cdsOrcamento_Item.Eof do
+        begin
+          vaItem := TItem.Create;
+          vaItem.Id := dmEstoque.cdsOrcamento_ItemID_ITEM.AsInteger;
+          vaItem.IdEspecie := dmEstoque.cdsOrcamento_ItemID_ESPECIE.AsInteger;
+          // vaItem.IdLoteMuda := dmEstoque.cdsOrcamento_ItemID_LOTE_MUDA.AsInteger;
+          // vaItem.IdLoteSemente := dmEstoque.cdsOrcamento_ItemID_LOTE_SEMENTE.AsInteger;
+          vaItem.Qtde := dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
+
+          vaFrmSaida.Modelo := vaItem;
+          vaFrmSaida.ppuIncluirDetail;
+          vaFrmSaida.ppuSalvarDetail;
+
+          dmEstoque.cdsOrcamento_Item.Next;
+        end;
+    except
+      on e: Exception do
+        begin
+          TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+          Exit;
+        end;
+    end;
+
+    TMensagem.ppuShowMessage('Saída gerada com sucesso.');
+
+    dmEstoque.cdsOrcamento.Edit;
+    dmEstoque.cdsOrcamentoID_SAIDA.AsInteger := vaIdSaida;
+    dmEstoque.cdsOrcamento.Post;
+
+  finally
+    vaFrmSaida.Free;
+  end;
+
 end;
 
 procedure TfrmOrcamento.cbClienteKeyDown(Sender: TObject; var Key: Word;
@@ -249,8 +368,10 @@ begin
         end;
 
       if dmLookup.cdslkModelo_Orcamento_Orcamento.RecordCount > 0 then
-        Result := true;
-    end;
+        Result := True;
+    end
+  else
+    raise Exception.Create('Não foi possível encontrar o modelo para montar o orçamento.');
 
 end;
 
@@ -274,7 +395,7 @@ begin
         vaModelo.Position := 0;
         RichAux.Lines.LoadFromStream(vaModelo);
 
-        FCamposCustomizados.Clear;
+        FMarcadoresCustomizados.Clear;
 
         for i := 0 to RichAux.Lines.Count - 1 do
           begin
@@ -283,7 +404,7 @@ begin
 
             for vaMatchCampo in vaMatchesCampo do
               begin
-                if not FCamposCustomizados.ContainsKey(vaMatchCampo.Value) then
+                if not FMarcadoresCustomizados.ContainsKey(vaMatchCampo.Value) then
                   begin
                     vaConteudo := '';
                     if dmEstoque.cdsOrcamento_Customizado.Locate(dmEstoque.cdsOrcamento_CustomizadoCAMPO.FieldName, vaMatchCampo.Value, [loCaseInsensitive])
@@ -306,7 +427,7 @@ begin
         dmEstoque.cdsOrcamento_Customizado.First;
         while dmEstoque.cdsOrcamento_Customizado.Eof do
           begin
-            if not FCamposCustomizados.ContainsKey(dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString) then
+            if not FMarcadoresCustomizados.ContainsKey(dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString) then
               dmEstoque.cdsOrcamento_Customizado.Delete
             else
               dmEstoque.cdsOrcamento_Customizado.Next;
@@ -368,7 +489,7 @@ begin
   if ipConteudo <> '' then
     vaEdit.Text := ipConteudo;
 
-  FCamposCustomizados.AddOrSetValue(ipCampo, vaEdit);
+  FMarcadoresCustomizados.AddOrSetValue(ipCampo, vaEdit);
 end;
 
 procedure TfrmOrcamento.ppvLimparEditsCamposCustomizados;
@@ -394,7 +515,7 @@ end;
 procedure TfrmOrcamento.cbModeloPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
-  if (pcPrincipal.ActivePage = tabCadastro) and dmEstoque.cdsOrcamento_Customizado.Active then
+  if (pcPrincipal.ActivePage = tabCadastro) and dmEstoque.cdsOrcamento_Customizado.active then
     begin
       if (dmEstoque.cdsOrcamento_Customizado.RecordCount > 0) then
         begin
@@ -402,7 +523,7 @@ begin
             'Se o modelo for alterado estes campos serão perdidos.' +
             slinebreak + 'Tem certeza que deseja alterar o modelo?', ppSimNao) = rpNao then
             begin
-              cbModelo.LockChangeEvents(true);
+              cbModelo.LockChangeEvents(True);
               try
                 cbModelo.EditValue := dmEstoque.cdsOrcamentoID_MODELO_ORCAMENTO.AsInteger;
                 cbModelo.PostEditValue;
@@ -448,9 +569,9 @@ begin
 
   PesquisaPadrao := Ord(tppData);
 
-  pcCadastroDetail.Properties.HideTabs := true;
+  pcCadastroDetail.Properties.HideTabs := True;
 
-  FCamposCustomizados := TDictionary<String, TcxTextEdit>.Create;
+  FMarcadoresCustomizados := TDictionary<String, TcxTextEdit>.Create;
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
 
   dmLookup.cdslkItem.ppuDataRequest([TParametros.coTipo], [Ord(tiMuda).ToString + coDelimitadorPadrao + Ord(tiSemente).ToString()]);
@@ -465,12 +586,19 @@ end;
 procedure TfrmOrcamento.FormDestroy(Sender: TObject);
 begin
   inherited;
-  FCamposCustomizados.Free;
+  FMarcadoresCustomizados.Free;
+end;
+
+procedure TfrmOrcamento.pcCadastroDetailChange(Sender: TObject);
+begin
+  inherited;
+  btnRetornarConfiguracaoCampos.Visible := pcCadastroDetail.ActivePage = tabPreVisualizacao;
 end;
 
 procedure TfrmOrcamento.pprAfterSalvarDetail(ipAcaoExecutada: TDataSetState);
 var
   vaOrcamento: TBytesStream;
+  vaMarcador: String;
 begin
   inherited;
   // fazendo um refresh para recalcular o saldo
@@ -483,9 +611,24 @@ begin
     end
   else if pcCadastroDetail.ActivePage = tabCadastroCampoCustomizavel then
     begin
-      if ipAcaoExecutada = dsInsert then
+      for vaMarcador in FMarcadoresCustomizados.Keys do
         begin
-          // se estava incluindo nao posso dar apply pq o codigo estara o mesmo do cds principal o que causaria um key violation
+          if dmEstoque.cdsOrcamento_Customizado.Locate(dmEstoque.cdsOrcamento_CustomizadoCAMPO.FieldName, vaMarcador, [loCaseInsensitive]) then
+            begin
+              dmEstoque.cdsOrcamento_Customizado.Edit;
+              dmEstoque.cdsOrcamento_CustomizadoCONTEUDO.AsString := FMarcadoresCustomizados.Items[vaMarcador].Text;
+              dmEstoque.cdsOrcamento_Customizado.Post;
+            end;
+        end;
+
+      if dmEstoque.cdsOrcamento_Customizado.ChangeCount > 0 then
+        dmEstoque.cdsOrcamento_Customizado.ApplyUpdates(0);
+    end
+  else if pcCadastroDetail.ActivePage = tabPreVisualizacao then
+    begin
+      // se estava incluindo nao posso dar apply pq o codigo estara o mesmo do cds principal o que causaria um key violation
+      if dmEstoque.cdsOrcamento_OrcamentoID.AsInteger = 1 then
+        begin
           vaOrcamento := TBytesStream.Create;
           try
             dmEstoque.cdsOrcamento_Orcamento.Edit;
@@ -504,11 +647,6 @@ begin
           end;
         end;
 
-      if dmEstoque.cdsOrcamento_Customizado.ChangeCount > 0 then
-        dmEstoque.cdsOrcamento_Customizado.ApplyUpdates(0);
-    end
-  else if pcCadastroDetail.ActivePage = tabPreVisualizacao then
-    begin
       if dmEstoque.cdsOrcamento_Orcamento.ChangeCount > 0 then
         dmEstoque.cdsOrcamento_Orcamento.ApplyUpdates(0);
     end;
@@ -567,7 +705,7 @@ end;
 procedure TfrmOrcamento.ppuIncluir;
 begin
   inherited;
-  dmEstoque.cdsOrcamentoDATA.AsDateTime := now;
+  dmEstoque.cdsOrcamentoDATA.AsDateTime := Now;
 end;
 
 procedure TfrmOrcamento.ppuIncluirDetail;
@@ -580,7 +718,7 @@ procedure TfrmOrcamento.ppuRetornar;
 begin
   dmEstoque.cdsOrcamento_Item.CancelUpdates;
   dmEstoque.cdsOrcamento_Customizado.CancelUpdates;
-  if dmEstoque.cdsOrcamento_Orcamento.Active then
+  if dmEstoque.cdsOrcamento_Orcamento.active then
     dmEstoque.cdsOrcamento_Orcamento.CancelUpdates;
 
   inherited;
@@ -588,7 +726,7 @@ end;
 
 procedure TfrmOrcamento.ppvCarregarClientes;
 begin
-  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, true);
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
 end;
 
 procedure TfrmOrcamento.tabCadastroShow(Sender: TObject);
@@ -627,7 +765,7 @@ begin
   if pcCadastroDetail.ActivePage = tabCadastroItem then
     Result := inherited
   else
-    Result := true;
+    Result := True;
 end;
 
 end.

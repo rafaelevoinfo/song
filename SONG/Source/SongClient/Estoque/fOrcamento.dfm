@@ -91,6 +91,28 @@ inherited frmOrcamento: TfrmOrcamento
             ExplicitTop = 39
           end
         end
+        inherited pnBotoes: TPanel
+          inherited btnUtilizar: TButton
+            Left = 290
+          end
+          object btnGerar_Saida: TButton
+            AlignWithMargins = True
+            Left = 188
+            Top = 1
+            Width = 100
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Gerar_Saida
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 3
+            WordWrap = True
+            OnClick = btnGerar_SaidaClick
+          end
+        end
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
@@ -366,6 +388,34 @@ inherited frmOrcamento: TfrmOrcamento
       ExplicitTop = 24
       ExplicitWidth = 976
       ExplicitHeight = 448
+      inherited pnBotoesCadastroDetail: TPanel
+        inherited btnSalvarDetail: TButton
+          Width = 181
+          WordWrap = True
+          ExplicitWidth = 181
+        end
+        inherited btnCancelarDetail: TButton
+          Left = 311
+          ExplicitLeft = 311
+        end
+        inherited btnSalvarIncluirDetail: TButton
+          Left = 191
+          ExplicitLeft = 191
+        end
+        object btnRetornarConfiguracaoCampos: TButton
+          AlignWithMargins = True
+          Left = 402
+          Top = 4
+          Width = 143
+          Height = 42
+          Action = Ac_Retornar_Configuracao_Campos
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 3
+          Visible = False
+          WordWrap = True
+        end
+      end
       inherited pnEditsCadastroDetail: TPanel
         object pcCadastroDetail: TcxPageControl
           Left = 0
@@ -374,8 +424,9 @@ inherited frmOrcamento: TfrmOrcamento
           Height = 398
           Align = alClient
           TabOrder = 0
-          Properties.ActivePage = tabPreVisualizacao
+          Properties.ActivePage = tabCadastroCampoCustomizavel
           Properties.CustomButtons.Buttons = <>
+          OnChange = pcCadastroDetailChange
           ClientRectBottom = 393
           ClientRectLeft = 2
           ClientRectRight = 971
@@ -466,24 +517,15 @@ inherited frmOrcamento: TfrmOrcamento
               TabOrder = 1
               Width = 233
             end
-            object btnConfigurarCamposCustomizados: TButton
-              Left = 5
-              Top = 51
-              Width = 202
-              Height = 40
-              Action = Ac_Configurar_Campos_Customizado
-              Images = dmPrincipal.imgIcons_32
-              TabOrder = 4
-            end
           end
           object tabCadastroCampoCustomizavel: TcxTabSheet
             Caption = 'Campos Customizados'
             ImageIndex = 2
             object ScrollCampos: TcxScrollBox
               Left = 0
-              Top = 41
+              Top = 0
               Width = 969
-              Height = 327
+              Height = 368
               Align = alClient
               TabOrder = 0
               object RichAux: TcxRichEdit
@@ -495,25 +537,6 @@ inherited frmOrcamento: TfrmOrcamento
                 Visible = False
                 Height = 121
                 Width = 385
-              end
-            end
-            object pnBotoesCustomizado: TPanel
-              Left = 0
-              Top = 0
-              Width = 969
-              Height = 41
-              Align = alTop
-              BevelOuter = bvNone
-              TabOrder = 1
-              object btnAplicarCampos: TButton
-                Left = 0
-                Top = 0
-                Width = 145
-                Height = 41
-                Action = Ac_Aplicar_Campos_Customizado
-                Align = alLeft
-                Images = dmPrincipal.imgIcons_32
-                TabOrder = 0
               end
             end
           end
@@ -553,8 +576,10 @@ inherited frmOrcamento: TfrmOrcamento
     end
   end
   inherited ActionList1: TActionList
-    Left = 64
-    Top = 216
+    Left = 168
+    inherited Ac_Salvar_Detail: TAction
+      Caption = 'Salvar/Configurar Campos Customzados'
+    end
     inherited Ac_Salvar_Incluir_Detail: TAction
       OnUpdate = Ac_Salvar_Incluir_DetailUpdate
     end
@@ -568,17 +593,17 @@ inherited frmOrcamento: TfrmOrcamento
       ImageIndex = 47
       OnExecute = Ac_Incluir_Campo_CustomizadoExecute
     end
-    object Ac_Aplicar_Campos_Customizado: TAction
-      Category = 'Detail'
-      Caption = 'Montar Or'#231'amento'
-      ImageIndex = 15
-      OnExecute = Ac_Aplicar_Campos_CustomizadoExecute
-    end
-    object Ac_Configurar_Campos_Customizado: TAction
+    object Ac_Retornar_Configuracao_Campos: TAction
       Category = 'Detail'
       Caption = 'Configurar Campos Customizados'
       ImageIndex = 47
-      OnExecute = Ac_Configurar_Campos_CustomizadoExecute
+      OnExecute = Ac_Retornar_Configuracao_CamposExecute
+    end
+    object Ac_Gerar_Saida: TAction
+      Category = 'Master'
+      Caption = 'Sair do Estoque'
+      ImageIndex = 26
+      OnUpdate = Ac_Gerar_SaidaUpdate
     end
   end
   inherited dsMaster: TDataSource

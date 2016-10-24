@@ -1110,6 +1110,14 @@ inherited dmEstoque: TdmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object cdsOrcamentoID_VENDA: TIntegerField
+      DisplayLabel = 'Id da Venda'
+      FieldName = 'ID_VENDA'
+    end
+    object cdsOrcamentoID_SAIDA: TIntegerField
+      DisplayLabel = 'Id da Sa'#237'da'
+      FieldName = 'ID_SAIDA'
+    end
   end
   object cdsOrcamento_Orcamento: TRFClientDataSet
     Aggregates = <>
@@ -1207,6 +1215,12 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'ESPECIE'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsOrcamento_ItemTAMANHO: TBCDField
+      DisplayLabel = 'Tamanho'
+      FieldName = 'TAMANHO'
+      Precision = 18
+      Size = 2
     end
   end
   object cdsOrcamento_Customizado: TRFClientDataSet

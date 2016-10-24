@@ -215,12 +215,15 @@ inherited dmLookup: TdmLookup
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
+          Width = 200
           FieldName = 'NOME'
         end
         item
+          Width = 150
           FieldName = 'QTDE_SEMENTE_ESTOQUE'
         end
         item
+          Width = 150
           FieldName = 'QTDE_MUDA_PRONTA'
         end>
       Properties.ListSource = dslkEspecie

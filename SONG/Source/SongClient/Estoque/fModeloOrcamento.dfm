@@ -1,10 +1,8 @@
 inherited frmModeloOrcamento: TfrmModeloOrcamento
-  ActiveControl = btnSalvar
   Caption = 'Modelos de Or'#231'amento'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -57,14 +55,14 @@ inherited frmModeloOrcamento: TfrmModeloOrcamento
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 1
-          ExplicitTop = 185
+          ExplicitTop = 174
           ExplicitWidth = 974
-          ExplicitHeight = 212
+          ExplicitHeight = 223
           inherited pnRich: TPanel
             Width = 974
             Height = 201
             ExplicitWidth = 974
-            ExplicitHeight = 190
+            ExplicitHeight = 201
             inherited Rich: TcxDBRichEdit
               DataBinding.DataField = 'MODELO'
               DataBinding.DataSource = dsMaster

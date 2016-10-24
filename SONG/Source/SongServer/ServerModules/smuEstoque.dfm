@@ -1298,7 +1298,9 @@ inherited smEstoque: TsmEstoque
       '       Pessoa.Nome as Responsavel,'
       '       Orcamento.Id_Cliente,'
       '       Fin_For_Cli.Razao_Social as Cliente,'
-      '       Orcamento.Data'
+      '       Orcamento.Data,'
+      '       Orcamento.Id_Venda,'
+      '       Orcamento.Id_Saida'
       'from Orcamento  '
       
         'inner join modelo_orcamento on (modelo_orcamento.id = orcamento.' +
@@ -1366,6 +1368,16 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qOrcamentoID_VENDA: TIntegerField
+      FieldName = 'ID_VENDA'
+      Origin = 'ID_VENDA'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qOrcamentoID_SAIDA: TIntegerField
+      FieldName = 'ID_SAIDA'
+      Origin = 'ID_SAIDA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object qOrcamento_Orcamento: TRFQuery
     Connection = dmPrincipal.conSong
@@ -1404,7 +1416,8 @@ inherited smEstoque: TsmEstoque
       '       ORCAMENTO_ITEM.ID_ESPECIE,'
       '       Especie.nome as especie,'
       '       ORCAMENTO_ITEM.QTDE,'
-      '       ORCAMENTO_ITEM.VALOR_UNITARIO'
+      '       ORCAMENTO_ITEM.VALOR_UNITARIO,'
+      '       ORCAMENTO_ITEM.TAMANHO'
       'from ORCAMENTO_ITEM '
       'INNER join item on (item.id = orcamento_item.id_item)'
       'inner join especie on (especie.id = orcamento_item.id_especie)'
@@ -1465,6 +1478,13 @@ inherited smEstoque: TsmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qOrcamento_ItemTAMANHO: TBCDField
+      FieldName = 'TAMANHO'
+      Origin = 'TAMANHO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 18
+      Size = 2
     end
   end
   object qOrcamento_Customizado: TRFQuery

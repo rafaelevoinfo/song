@@ -190,6 +190,9 @@ type
     cdsOrcamento_CustomizadoID_ORCAMENTO: TIntegerField;
     cdsOrcamento_CustomizadoCAMPO: TStringField;
     cdsOrcamento_CustomizadoCONTEUDO: TStringField;
+    cdsOrcamento_ItemTAMANHO: TBCDField;
+    cdsOrcamentoID_VENDA: TIntegerField;
+    cdsOrcamentoID_SAIDA: TIntegerField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

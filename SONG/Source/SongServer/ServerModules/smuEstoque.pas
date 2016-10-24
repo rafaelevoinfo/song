@@ -189,6 +189,9 @@ type
     qOrcamento_CustomizadoID_ORCAMENTO: TIntegerField;
     qOrcamento_CustomizadoCAMPO: TStringField;
     qOrcamento_CustomizadoCONTEUDO: TStringField;
+    qOrcamento_ItemTAMANHO: TBCDField;
+    qOrcamentoID_VENDA: TIntegerField;
+    qOrcamentoID_SAIDA: TIntegerField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;

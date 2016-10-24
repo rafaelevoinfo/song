@@ -118,11 +118,9 @@ inherited frmPrincipal: TfrmPrincipal
       end
       object ModelosdeOramento1: TMenuItem
         Action = Ac_Modelo_Orcamento
-        Visible = False
       end
       object Oramento1: TMenuItem
         Action = Ac_Orcamento
-        Visible = False
       end
     end
     object Estoque1: TMenuItem
