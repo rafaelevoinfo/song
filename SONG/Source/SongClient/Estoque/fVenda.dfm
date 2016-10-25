@@ -1,22 +1,16 @@
 inherited frmVenda: TfrmVenda
   ActiveControl = btnIncluir
   Caption = 'Vendas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
-          ExplicitLeft = 562
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -234,10 +228,6 @@ inherited frmVenda: TfrmVenda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -322,10 +312,6 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9
@@ -411,10 +397,6 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -497,7 +479,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 81
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -505,7 +487,6 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Semente'
               FocusControl = cbLoteSemente
-              ExplicitWidth = 81
             end
             object cbLoteSemente: TcxDBLookupComboBox
               Left = 0
@@ -533,7 +514,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 65
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -541,7 +522,6 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Muda'
               FocusControl = cbLoteMuda
-              ExplicitWidth = 65
             end
             object cbLoteMuda: TcxDBLookupComboBox
               Left = 0
@@ -568,7 +548,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 182
+              Width = 36
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -576,7 +556,6 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
-              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0

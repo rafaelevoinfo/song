@@ -1,17 +1,11 @@
 inherited frmLoteMuda: TfrmLoteMuda
   ActiveControl = btnIncluir
   Caption = 'Lotes de Mudas'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -200,10 +194,6 @@ inherited frmLoteMuda: TfrmLoteMuda
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Classifica'#231#245'es'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
-              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -240,10 +230,6 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -462,10 +448,6 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 5
@@ -551,10 +533,6 @@ inherited frmLoteMuda: TfrmLoteMuda
     object tabCadastroCanteiro: TcxTabSheet
       Caption = 'tabCadastroCanteiro'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lb1: TLabel
         Left = 5
         Top = 56

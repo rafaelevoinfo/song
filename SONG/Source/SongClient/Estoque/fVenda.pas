@@ -19,7 +19,7 @@ uses
   System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
   ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
   ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod, ppUtils,
-  System.Generics.Collections, Vcl.Menus;
+  System.Generics.Collections, Vcl.Menus, Datasnap.DBClient;
 
 type
   TVenda = class(TModelo)
@@ -204,6 +204,7 @@ type
     procedure ppvCarregarPrecoPadrao;
     procedure ppvAdicionarCliente;
     procedure ppvCarregarClientes;
+    function fpvSelecionarLote(ipCdsLote: TClientDataSet; ipFieldSaldo: String): Integer;
 
   protected
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -262,18 +263,103 @@ begin
     end;
 end;
 
+function TfrmVenda.fpvSelecionarLote(ipCdsLote: TClientDataSet; ipFieldSaldo: String): Integer;
+var
+  vaItem: TItem;
+  vaMaiorQtde: Double;
+  vaIdLote: Integer;
+begin
+  Result := 0;
+  vaMaiorQtde := 0;
+
+  vaItem := TItem(Modelo);
+  // vamos tentar achar um lote que contenha a quantidade suficiente, se nao achar teremos de distribuir entre varios
+  ipCdsLote.First;
+  while not ipCdsLote.Eof do
+    begin
+      if ipCdsLote.FieldByName(ipFieldSaldo).AsFloat > vaMaiorQtde then
+        begin
+          Result := ipCdsLote.FieldByName(TBancoDados.coId).AsInteger;
+
+          vaMaiorQtde := ipCdsLote.FieldByName(ipFieldSaldo).AsFloat;
+        end;
+
+      if vaMaiorQtde >= vaItem.Qtde then
+        break;
+
+      ipCdsLote.Next;
+    end;
+
+end;
+
 procedure TfrmVenda.pprCarregarDadosModeloDetail;
 var
   vaItem: TItem;
+  vaTipo: TTipoItem;
+  vaQtdeRestante: Double;
 begin
   inherited;
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
     begin
       vaItem := TItem(Modelo);
+      if not dmLookup.cdslkItem.Locate(TBancoDados.coId, vaItem.Id, []) then
+        raise Exception.Create('Não foi possível encontrar o item informado.');
+
+      vaTipo := TTipoItem(dmLookup.cdslkItemTIPO.AsInteger);
+
       dmEstoque.cdsVenda_ItemID_ITEM.AsInteger := vaItem.Id;
       dmEstoque.cdsVenda_ItemQTDE.AsFloat := vaItem.Qtde;
       if vaItem.IdEspecie <> 0 then
         dmEstoque.cdsVenda_ItemID_ESPECIE.AsInteger := vaItem.IdEspecie;
+
+      if vaItem.ValorUnitario <> 0 then
+        dmEstoque.cdsVenda_ItemVALOR_UNITARIO.AsFloat := vaItem.ValorUnitario;
+
+      if (vaTipo in [tiMuda, tiSemente]) then
+        begin
+          if (vaItem.IdLoteMuda = 0) and (vaItem.IdLoteSemente = 0) then
+            begin
+              // temos que localizar lotes que sejam suficientes para a qtde informada
+              ppvCarregarLotes;
+              if vaTipo = tiMuda then
+                vaItem.IdLoteMuda := fpvSelecionarLote(dmLookup.cdslkLote_Muda, dmLookup.cdslkLote_MudaSALDO.FieldName)
+              else // semente
+                vaItem.IdLoteSemente := fpvSelecionarLote(dmLookup.cdslkLote_Semente, dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.FieldName)
+            end;
+
+          if vaTipo = tiMuda then
+            begin
+              if dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, vaItem.IdLoteMuda, []) then
+                begin
+                  if dmLookup.cdslkLote_MudaSALDO.AsInteger < vaItem.Qtde then
+                    begin
+                      vaQtdeRestante := vaItem.Qtde - dmLookup.cdslkLote_MudaSALDO.AsInteger;
+                      dmEstoque.cdsVenda_ItemQTDE.AsFloat := dmLookup.cdslkLote_MudaSALDO.AsInteger;
+                    end
+                  else
+                    dmEstoque.cdsVenda_ItemQTDE.AsFloat := vaItem.Qtde;
+                end
+              else
+                raise Exception.Create('Não foi possível encontrar lotes de mudas da espécie ' + dmLookup.cdslkEspecieNOME.AsString +
+                  ' com saldo suficiente para a quantidade solicitada.')
+            end
+          else if vaTipo = tiSemente then
+            begin
+              if dmLookup.cdslkLote_Semente.Locate(TBancoDados.coId, vaItem.IdLoteSemente, []) then
+                begin
+                  if dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.AsFloat < vaItem.Qtde then
+                    begin
+                      vaQtdeRestante := vaItem.Qtde - dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.AsFloat;
+                      dmEstoque.cdsVenda_ItemQTDE.AsFloat := dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.AsFloat;
+                    end
+                  else
+                    dmEstoque.cdsVenda_ItemQTDE.AsFloat := vaItem.Qtde;
+                end
+              else
+                raise Exception.Create('Não foi possível encontrar lotes de sementes da espécie ' + dmLookup.cdslkEspecieNOME.AsString +
+                  ' com saldo suficiente para a quantidade solicitada.')
+            end;
+        end;
 
       if vaItem.IdLoteMuda <> 0 then
         dmEstoque.cdsVenda_ItemID_LOTE_MUDA.AsInteger := vaItem.IdLoteMuda;
@@ -281,8 +367,19 @@ begin
       if vaItem.IdLoteSemente <> 0 then
         dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.AsInteger := vaItem.IdLoteSemente;
 
-      if vaItem.ValorUnitario <> 0 then
-        dmEstoque.cdsVenda_ItemVALOR_UNITARIO.AsFloat := vaItem.ValorUnitario;
+      // tem que ser as ultimas coisas dessa funcao
+      if vaQtdeRestante > 0 then
+        begin
+          ppuSalvarDetail;
+
+          if vaTipo = tiMuda then
+            vaItem.IdLoteMuda := 0
+          else
+            vaItem.IdLoteSemente := 0;
+          vaItem.Qtde := vaQtdeRestante;
+
+          ppuIncluirDetail;
+        end;
 
     end;
 end;
@@ -430,7 +527,8 @@ begin
   cbPesquisaCliente.Visible := cbPesquisarPor.EditValue = coPesquisaCliente;
   cbPesquisaEspecie.Visible := cbPesquisarPor.EditValue = coPesquisaEspecie;
 
-  EditPesquisa.Visible := EditPesquisa.Visible and (not(cbPesquisaEspecie.Visible or cbItemPesquisa.Visible or cbPesquisaPessoa.Visible or cbPesquisaCliente.Visible));
+  EditPesquisa.Visible := EditPesquisa.Visible and
+    (not(cbPesquisaEspecie.Visible or cbItemPesquisa.Visible or cbPesquisaPessoa.Visible or cbPesquisaCliente.Visible));
 
   if cbPesquisaPessoa.Visible then
     Result := cbPesquisaPessoa
@@ -591,7 +689,7 @@ begin
 
         try
           dmEstoque.cdsVenda_Item.First;
-          while not dmEstoque.cdsVenda_Item.eof do
+          while not dmEstoque.cdsVenda_Item.Eof do
             begin
               vaItem := TItem.Create;
               vaItem.Id := dmEstoque.cdsVenda_ItemID_ITEM.AsInteger;

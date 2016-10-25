@@ -17,7 +17,7 @@ uses
   cxDBLookupComboBox, uClientDataSet, dmuPrincipal, cxDBEdit, fCliente,
   cxScrollBox, fmEditor, uMensagem, System.RegularExpressions,
   fBasicoCrudMasterDetail, cxSplitter, cxCalc, cxCurrencyEdit, cxMemo,
-  cxRichEdit, System.Generics.Collections, uExceptions, uUtils, fSaida;
+  cxRichEdit, System.Generics.Collections, uExceptions, uUtils, fSaida, fVenda;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -81,6 +81,8 @@ type
     Ac_Retornar_Configuracao_Campos: TAction;
     btnGerar_Saida: TButton;
     Ac_Gerar_Saida: TAction;
+    btnGerar_Venda: TButton;
+    Ac_Gerar_Venda: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -96,8 +98,9 @@ type
     procedure Ac_Salvar_DetailExecute(Sender: TObject);
     procedure Ac_Retornar_Configuracao_CamposExecute(Sender: TObject);
     procedure pcCadastroDetailChange(Sender: TObject);
-    procedure btnGerar_SaidaClick(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
+    procedure Ac_Gerar_VendaExecute(Sender: TObject);
+    procedure Ac_Gerar_SaidaExecute(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -110,7 +113,6 @@ type
     function fpvLocalizarModeloOrcamento(ipIdModelo: Integer): Boolean;
     procedure ppvSubstituirCamposOrcamento;
     procedure ppvMontarOrcamento;
-    procedure ppvGerarSaida;
   protected
     function fprGetPermissao: String; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -124,6 +126,7 @@ type
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: Integer); override;
+    procedure ppuAlterarDetail(ipId:Integer);override;
     procedure ppuRetornar; override;
     procedure ppuIncluirDetail; override;
     { Public declarations }
@@ -172,10 +175,161 @@ begin
 
 end;
 
+procedure TfrmOrcamento.Ac_Gerar_SaidaExecute(Sender: TObject);
+var
+  vaFrmSaida: TfrmSaida;
+  vaSaida: TSaida;
+  vaItem: TItem;
+  vaIdSaida: Integer;
+begin
+  inherited;
+  if (dmEstoque.cdsOrcamentoID_VENDA.IsNull and dmEstoque.cdsOrcamentoID_SAIDA.IsNull) then
+    begin
+      if TMensagem.fpuPerguntar('Tem certeza que deseja gerar uma saída para este orçamento?', ppSimNao) = rpSim then
+        begin
+          vaIdSaida := 0;
+          vaFrmSaida := TfrmSaida.Create(nil);
+          try
+            try
+              vaFrmSaida.ModoSilencioso := True;
+              vaSaida := TSaida.Create;
+              vaSaida.Data := Now;
+              vaSaida.Tipo := tsConsumo;
+
+              vaFrmSaida.ppuConfigurarModoExecucao(meSomenteCadastro, vaSaida);
+              vaFrmSaida.ppuIncluir;
+              vaFrmSaida.ppuSalvar;
+
+              vaIdSaida := vaFrmSaida.IdEscolhido;
+            except
+              on e: Exception do
+                begin
+                  TMensagem.ppuShowException('Não foi possível gerar a saída deste orçamento.', e);
+                  Exit;
+                end;
+            end;
+
+            try
+              dmEstoque.cdsOrcamento_Item.First;
+              while not dmEstoque.cdsOrcamento_Item.eof do
+                begin
+                  vaItem := TItem.Create;
+                  vaItem.Id := dmEstoque.cdsOrcamento_ItemID_ITEM.AsInteger;
+                  vaItem.IdEspecie := dmEstoque.cdsOrcamento_ItemID_ESPECIE.AsInteger;
+                  vaItem.Qtde := dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
+
+                  vaFrmSaida.Modelo := vaItem;
+                  vaFrmSaida.ppuIncluirDetail;
+                  vaFrmSaida.ppuSalvarDetail;
+
+                  dmEstoque.cdsOrcamento_Item.Next;
+                end;
+            except
+              on e: Exception do
+                begin
+                  TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+                  Exit;
+                end;
+            end;
+
+            TMensagem.ppuShowMessage('Saída gerada com sucesso.');
+
+          finally
+            vaFrmSaida.Free;
+            // mesmo que tenha dado erro nos itens, a saida ja foi gerada, entao vou vincular
+            if vaIdSaida <> 0 then
+              begin
+                dmEstoque.cdsOrcamento.Edit;
+                dmEstoque.cdsOrcamentoID_SAIDA.AsInteger := vaIdSaida;
+                dmEstoque.cdsOrcamento.Post;
+              end;
+          end;
+        end;
+    end
+  else
+    raise Exception.Create('Já existe uma venda ou saída vinculada a este orçamento.');
+
+
+end;
+
 procedure TfrmOrcamento.Ac_Gerar_SaidaUpdate(Sender: TObject);
 begin
   inherited;
   TAction(Sender).Enabled := dmEstoque.cdsOrcamento.Active and dmEstoque.cdsOrcamentoID_SAIDA.IsNull and dmEstoque.cdsOrcamentoID_VENDA.IsNull;
+end;
+
+procedure TfrmOrcamento.Ac_Gerar_VendaExecute(Sender: TObject);
+var
+  vaFrmVenda: TfrmVenda;
+  vaVenda: TVenda;
+  vaItem: TItem;
+begin
+  inherited;
+  if (dmEstoque.cdsOrcamentoID_VENDA.IsNull and dmEstoque.cdsOrcamentoID_SAIDA.IsNull) then
+    begin
+      vaFrmVenda := TfrmVenda.Create(nil);
+      try
+        try
+          vaFrmVenda.ModoSilencioso := True;
+          vaVenda := TVenda.Create;
+          vaVenda.Data := dmEstoque.cdsOrcamentoDATA.AsDateTime;
+          vaVenda.IdCliente := dmEstoque.cdsOrcamentoID_CLIENTE.AsInteger;
+          vaVenda.IdVendedor := dmEstoque.cdsOrcamentoID_RESPONSAVEL.AsInteger;
+
+          vaFrmVenda.ppuConfigurarModoExecucao(meSomenteCadastro, vaVenda);
+          vaFrmVenda.ppuIncluir;
+          vaFrmVenda.ppuSalvar;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Não foi possível gerar a venda deste mix.', e);
+              Exit;
+            end;
+        end;
+
+        try
+          dmEstoque.cdsOrcamento_Item.First;
+          while not dmEstoque.cdsOrcamento_Item.eof do
+            begin
+              vaItem := TItem.Create;
+              vaItem.Id := dmEstoque.cdsOrcamento_ItemID_ITEM.AsInteger;
+              vaItem.IdEspecie := dmEstoque.cdsOrcamento_ItemID_ESPECIE.AsInteger;
+              vaItem.Qtde := dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
+
+              if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, vaItem.IdEspecie, []) then
+                vaItem.ValorUnitario := dmLookup.cdslkEspecieVALOR_MUDA.AsFloat;
+
+              vaFrmVenda.Modelo := vaItem;
+              vaFrmVenda.ppuIncluirDetail;
+              // se nao tiver valor configurado irei abrir a tela para o usuario informar
+              if vaItem.ValorUnitario = 0 then
+                vaFrmVenda.ShowModal
+              else
+                vaFrmVenda.ppuSalvarDetail;
+
+              dmEstoque.cdsOrcamento_Item.Next;
+            end;
+        except
+          on e: Exception do
+            begin
+              TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+              Exit;
+            end;
+        end;
+
+        dmEstoque.cdsOrcamento.Edit;
+        dmEstoque.cdsOrcamentoID_VENDA.AsInteger := vaFrmVenda.IdEscolhido;
+        dmEstoque.cdsOrcamento.Post;
+
+        TMensagem.ppuShowMessage('Venda gerada com sucesso.');
+
+      finally
+        vaFrmVenda.Free;
+      end;
+    end
+  else
+    raise Exception.Create('Já existe uma venda ou saída vinculada a este orçamento.');
+
 end;
 
 procedure TfrmOrcamento.Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
@@ -219,7 +373,7 @@ begin
       dmEstoque.cdsOrcamento_Orcamento.ParamByName('ID').AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
       dmEstoque.cdsOrcamento_Orcamento.Open;
 
-      if dmEstoque.cdsOrcamento_Orcamento.Eof then
+      if dmEstoque.cdsOrcamento_Orcamento.eof then
         begin
           dmEstoque.cdsOrcamento_Orcamento.Append;
           dmEstoque.cdsOrcamento_OrcamentoID.AsInteger := 1; // apenas para conseguir fazer o post
@@ -252,82 +406,6 @@ begin
     TAction(Sender).Enabled := fprHabilitarSalvarDetail
   else
     TAction(Sender).Enabled := false;
-end;
-
-procedure TfrmOrcamento.btnGerar_SaidaClick(Sender: TObject);
-begin
-  inherited;
-  if TMensagem.fpuPerguntar('Tem certeza que deseja gerar uma saída para este orçamento?', ppSimNao) = rpSim then
-    begin
-      ppvGerarSaida;
-    end;
-end;
-
-procedure TfrmOrcamento.ppvGerarSaida;
-var
-  vaFrmSaida: TfrmSaida;
-  vaSaida: TSaida;
-  vaItem: TItem;
-  vaIdSaida: Integer;
-begin
-  inherited;
-
-  vaFrmSaida := TfrmSaida.Create(nil);
-  try
-    try
-      vaFrmSaida.ModoSilencioso := True;
-      vaSaida := TSaida.Create;
-      vaSaida.Data := Now;
-      vaSaida.Tipo := tsPlantio;
-
-      vaFrmSaida.ppuConfigurarModoExecucao(meSomenteCadastro, vaSaida);
-      vaFrmSaida.ppuIncluir;
-      vaFrmSaida.ppuSalvar;
-
-      vaIdSaida := vaFrmSaida.IdEscolhido;
-    except
-      on e: Exception do
-        begin
-          TMensagem.ppuShowException('Não foi possível gerar a saída deste orçamento.', e);
-          Exit;
-        end;
-    end;
-
-    try
-      dmEstoque.cdsOrcamento_Item.First;
-      while not dmEstoque.cdsOrcamento_Item.Eof do
-        begin
-          vaItem := TItem.Create;
-          vaItem.Id := dmEstoque.cdsOrcamento_ItemID_ITEM.AsInteger;
-          vaItem.IdEspecie := dmEstoque.cdsOrcamento_ItemID_ESPECIE.AsInteger;
-          // vaItem.IdLoteMuda := dmEstoque.cdsOrcamento_ItemID_LOTE_MUDA.AsInteger;
-          // vaItem.IdLoteSemente := dmEstoque.cdsOrcamento_ItemID_LOTE_SEMENTE.AsInteger;
-          vaItem.Qtde := dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
-
-          vaFrmSaida.Modelo := vaItem;
-          vaFrmSaida.ppuIncluirDetail;
-          vaFrmSaida.ppuSalvarDetail;
-
-          dmEstoque.cdsOrcamento_Item.Next;
-        end;
-    except
-      on e: Exception do
-        begin
-          TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
-          Exit;
-        end;
-    end;
-
-    TMensagem.ppuShowMessage('Saída gerada com sucesso.');
-
-    dmEstoque.cdsOrcamento.Edit;
-    dmEstoque.cdsOrcamentoID_SAIDA.AsInteger := vaIdSaida;
-    dmEstoque.cdsOrcamento.Post;
-
-  finally
-    vaFrmSaida.Free;
-  end;
-
 end;
 
 procedure TfrmOrcamento.cbClienteKeyDown(Sender: TObject; var Key: Word;
@@ -425,7 +503,7 @@ begin
           end;
 
         dmEstoque.cdsOrcamento_Customizado.First;
-        while dmEstoque.cdsOrcamento_Customizado.Eof do
+        while dmEstoque.cdsOrcamento_Customizado.eof do
           begin
             if not FMarcadoresCustomizados.ContainsKey(dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString) then
               dmEstoque.cdsOrcamento_Customizado.Delete
@@ -515,7 +593,7 @@ end;
 procedure TfrmOrcamento.cbModeloPropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
-  if (pcPrincipal.ActivePage = tabCadastro) and dmEstoque.cdsOrcamento_Customizado.active then
+  if (pcPrincipal.ActivePage = tabCadastro) and dmEstoque.cdsOrcamento_Customizado.Active then
     begin
       if (dmEstoque.cdsOrcamento_Customizado.RecordCount > 0) then
         begin
@@ -702,6 +780,12 @@ begin
   inherited;
 end;
 
+procedure TfrmOrcamento.ppuAlterarDetail(ipId: Integer);
+begin
+  inherited;
+  pcCadastroDetail.ActivePage := tabCadastroItem;
+end;
+
 procedure TfrmOrcamento.ppuIncluir;
 begin
   inherited;
@@ -718,7 +802,7 @@ procedure TfrmOrcamento.ppuRetornar;
 begin
   dmEstoque.cdsOrcamento_Item.CancelUpdates;
   dmEstoque.cdsOrcamento_Customizado.CancelUpdates;
-  if dmEstoque.cdsOrcamento_Orcamento.active then
+  if dmEstoque.cdsOrcamento_Orcamento.Active then
     dmEstoque.cdsOrcamento_Orcamento.CancelUpdates;
 
   inherited;

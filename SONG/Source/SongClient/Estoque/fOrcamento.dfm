@@ -2,17 +2,11 @@ inherited frmOrcamento: TfrmOrcamento
   ActiveControl = btnIncluir
   Caption = 'Or'#231'amento'
   OnDestroy = FormDestroy
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -92,12 +86,15 @@ inherited frmOrcamento: TfrmOrcamento
           end
         end
         inherited pnBotoes: TPanel
+          Width = 557
+          ExplicitWidth = 557
           inherited btnUtilizar: TButton
-            Left = 290
+            Left = 377
+            ExplicitLeft = 377
           end
           object btnGerar_Saida: TButton
             AlignWithMargins = True
-            Left = 188
+            Left = 275
             Top = 1
             Width = 100
             Height = 40
@@ -110,7 +107,22 @@ inherited frmOrcamento: TfrmOrcamento
             Images = dmPrincipal.imgIcons_32
             TabOrder = 3
             WordWrap = True
-            OnClick = btnGerar_SaidaClick
+          end
+          object btnGerar_Venda: TButton
+            AlignWithMargins = True
+            Left = 188
+            Top = 1
+            Width = 85
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Gerar_Venda
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 4
+            WordWrap = True
           end
         end
       end
@@ -164,7 +176,6 @@ inherited frmOrcamento: TfrmOrcamento
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabOrcamentoCustomizado
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens do Or'#231'amento'
               ExplicitLeft = 2
@@ -384,10 +395,6 @@ inherited frmOrcamento: TfrmOrcamento
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         inherited btnSalvarDetail: TButton
           Width = 181
@@ -601,8 +608,16 @@ inherited frmOrcamento: TfrmOrcamento
     end
     object Ac_Gerar_Saida: TAction
       Category = 'Master'
-      Caption = 'Sair do Estoque'
+      Caption = 'Gerar Sa'#237'da do Estoque'
       ImageIndex = 26
+      OnExecute = Ac_Gerar_SaidaExecute
+      OnUpdate = Ac_Gerar_SaidaUpdate
+    end
+    object Ac_Gerar_Venda: TAction
+      Category = 'Master'
+      Caption = 'Gerar Venda'
+      ImageIndex = 27
+      OnExecute = Ac_Gerar_VendaExecute
       OnUpdate = Ac_Gerar_SaidaUpdate
     end
   end

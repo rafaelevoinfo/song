@@ -16,7 +16,7 @@ uses
   System.DateUtils, System.TypInfo, uControleAcesso, dmuLookup, cxDBEdit,
   cxCalc, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, uClientDataSet,
   uExceptions, dmuPrincipal, uUtils, System.Generics.Collections, uMensagem,
-  Vcl.ExtDlgs, Vcl.Menus;
+  Vcl.ExtDlgs, Vcl.Menus, Datasnap.DBClient;
 
 type
   TSaida = class(TModelo)
@@ -88,6 +88,7 @@ type
     dmLookup: TdmLookup;
     procedure ppvConfigurarEdits;
     procedure ppvCarregarLotes;
+    function fpvSelecionarLote(ipCdsLote: TClientDataSet; ipFieldSaldo: String): Integer;
 
   protected
     procedure pprValidarPesquisa; override;
@@ -182,7 +183,7 @@ begin
   vaState := dmEstoque.cdsSaida_Item.State;
   vaIdItemAnterior := StrToIntDef(VarToStrDef(dmEstoque.cdsSaida_ItemID_ITEM.OldValue, '0'), 0);
   vaQtdeAnterior := StrToFloatDef(VarToStrDef(dmEstoque.cdsSaida_ItemQTDE.OldValue, '0'), 0);
- 
+
   inherited;
 
   if vaState = dsInsert then
@@ -198,44 +199,131 @@ begin
           dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, 0);
         end
       else
-        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat,vaQtdeAnterior);
+        dmPrincipal.FuncoesEstoque.ppuAtualizarSaldoItem(dmEstoque.cdsSaida_ItemID_ITEM.AsInteger, dmEstoque.cdsSaida_ItemQTDE.AsFloat, vaQtdeAnterior);
 
     end;
 
 end;
 
+function TfrmSaida.fpvSelecionarLote(ipCdsLote: TClientDataSet; ipFieldSaldo: String): Integer;
+var
+  vaItem: TItem;
+  vaMaiorQtde: Double;
+begin
+  Result := 0;
+  vaMaiorQtde := 0;
+
+  vaItem := TItem(Modelo);
+  // vamos tentar achar um lote que contenha a quantidade suficiente, se nao achar teremos de distribuir entre varios
+  ipCdsLote.First;
+  while not ipCdsLote.Eof do
+    begin
+      if ipCdsLote.FieldByName(ipFieldSaldo).AsFloat > vaMaiorQtde then
+        begin
+
+          Result := ipCdsLote.FieldByName(TBancoDados.coId).AsInteger;
+
+          vaMaiorQtde := ipCdsLote.FieldByName(ipFieldSaldo).AsFloat;
+        end;
+
+      if vaMaiorQtde >= vaItem.Qtde then
+        break;
+
+      ipCdsLote.Next;
+    end;
+end;
+
 procedure TfrmSaida.pprCarregarDadosModeloDetail;
 var
   vaItem: TItem;
-
-  procedure plSetEdit(ipEdit: TcxCustomEdit; ipValor: Variant);
-  begin
-    if not VarIsNull(ipValor) then
-      begin
-        ipEdit.EditValue := ipValor;
-        ipEdit.PostEditValue;
-      end;
-  end;
-
+  vaIdLote: Integer;
+  vaQtdeRestante: Double;
+  vaTipo: TTipoItem;
 begin
   inherited;
+  vaQtdeRestante := 0;
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
     begin
       vaItem := TItem(Modelo);
-      plSetEdit(cbItem, vaItem.Id);
-      plSetEdit(EditQtde, vaItem.Qtde);
+      if not dmLookup.cdslkItem.Locate(TBancoDados.coId, vaItem.Id, []) then
+        raise Exception.Create('Não foi possível encontrar o item informado.');
+
+      vaTipo := TTipoItem(dmLookup.cdslkItemTIPO.AsInteger);
+
+      dmEstoque.cdsSaida_ItemID_ITEM.AsInteger := vaItem.Id;
+      dmEstoque.cdsSaida_ItemQTDE.AsFloat := vaItem.Qtde;
 
       if vaItem.IdEspecie <> 0 then
-        plSetEdit(cbEspecie, vaItem.IdEspecie);
-
-      if vaItem.IdLoteMuda <> 0 then
-        plSetEdit(cbLoteMuda, vaItem.IdLoteMuda);
-
-      if vaItem.IdLoteSemente <> 0 then
-        plSetEdit(cbLoteSemente, vaItem.IdLoteSemente);
+        dmEstoque.cdsSaida_ItemID_ESPECIE.AsInteger := vaItem.IdEspecie;
 
       if vaItem.IdItemCompraVenda <> 0 then
         dmEstoque.cdsSaida_ItemID_VENDA_ITEM.AsInteger := vaItem.IdItemCompraVenda;
+
+      if (vaTipo in [tiMuda, tiSemente]) then
+        begin
+          if (vaItem.IdLoteMuda = 0) and (vaItem.IdLoteSemente = 0) then
+            begin
+              // temos que localizar lotes que sejam suficientes para a qtde informada
+              ppvCarregarLotes;
+              if vaTipo = tiMuda then
+                vaItem.IdLoteMuda := fpvSelecionarLote(dmLookup.cdslkLote_Muda, dmLookup.cdslkLote_MudaSALDO.FieldName)
+              else // semente
+                vaItem.IdLoteSemente := fpvSelecionarLote(dmLookup.cdslkLote_Semente, dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.FieldName)
+            end;
+
+          if vaTipo = tiMuda then
+            begin
+              if dmLookup.cdslkLote_Muda.Locate(TBancoDados.coId, vaItem.IdLoteMuda, []) then
+                begin
+                  if dmLookup.cdslkLote_MudaSALDO.AsInteger < vaItem.Qtde then
+                    begin
+                      vaQtdeRestante := vaItem.Qtde - dmLookup.cdslkLote_MudaSALDO.AsInteger;
+                      dmEstoque.cdsSaida_ItemQTDE.AsFloat := dmLookup.cdslkLote_MudaSALDO.AsInteger;
+                    end
+                  else
+                    dmEstoque.cdsSaida_ItemQTDE.AsFloat := vaItem.Qtde;
+                end
+              else
+                raise Exception.Create('Não foi possível encontrar lotes de mudas da espécie ' + dmLookup.cdslkEspecieNOME.AsString +
+                  ' com saldo suficiente para a quantidade solicitada.')
+            end
+          else if vaTipo = tiSemente then
+            begin
+              if dmLookup.cdslkLote_Semente.Locate(TBancoDados.coId, vaItem.IdLoteSemente, []) then
+                begin
+                  if dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.AsFloat < vaItem.Qtde then
+                    begin
+                      vaQtdeRestante := vaItem.Qtde - dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.AsFloat;
+                      dmEstoque.cdsSaida_ItemQTDE.AsFloat := dmLookup.cdslkLote_SementeQTDE_ARMAZENADA.AsFloat;
+                    end
+                  else
+                    dmEstoque.cdsSaida_ItemQTDE.AsFloat := vaItem.Qtde;
+                end
+              else
+                raise Exception.Create('Não foi possível encontrar lotes de sementes da espécie ' + dmLookup.cdslkEspecieNOME.AsString +
+                  ' com saldo suficiente para a quantidade solicitada.')
+            end;
+        end;
+
+      if vaItem.IdLoteMuda <> 0 then
+        dmEstoque.cdsSaida_ItemID_LOTE_MUDA.AsInteger := vaItem.IdLoteMuda;
+
+      if vaItem.IdLoteSemente <> 0 then
+        dmEstoque.cdsSaida_ItemID_LOTE_SEMENTE.AsInteger := vaItem.IdLoteSemente;
+
+      // tem que ser as ultimas coisas dessa funcao
+      if vaQtdeRestante > 0 then
+        begin
+          ppuSalvarDetail;
+
+          if vaTipo = tiMuda then
+            vaItem.IdLoteMuda := 0
+          else
+            vaItem.IdLoteSemente := 0;
+          vaItem.Qtde := vaQtdeRestante;
+
+          ppuIncluirDetail;
+        end;
     end;
 end;
 
@@ -515,7 +603,7 @@ begin
 end;
 
 function TfrmSaida.fprMontarTextoPanelFiltro(ipParametro: String;
-  ipValor: Variant): String;
+ipValor: Variant): String;
 begin
   if ipParametro = TParametros.coEspecie then
     Result := 'Espécie = ' + cbPesquisaEspecie.Text

@@ -212,18 +212,19 @@ inherited dmLookup: TdmLookup
       Properties.ClearKey = 46
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownSizeable = True
+      Properties.DropDownWidth = 900
       Properties.KeyFieldNames = 'ID'
       Properties.ListColumns = <
         item
-          Width = 200
+          Width = 300
           FieldName = 'NOME'
         end
         item
-          Width = 150
+          Width = 300
           FieldName = 'QTDE_SEMENTE_ESTOQUE'
         end
         item
-          Width = 150
+          Width = 300
           FieldName = 'QTDE_MUDA_PRONTA'
         end>
       Properties.ListSource = dslkEspecie
