@@ -192,6 +192,8 @@ type
     qOrcamento_ItemTAMANHO: TBCDField;
     qOrcamentoID_VENDA: TIntegerField;
     qOrcamentoID_SAIDA: TIntegerField;
+    qOrcamento_ItemNOME_CIENTIFICO: TStringField;
+    qOrcamento_ItemFAMILIA_BOTANICA: TStringField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;

@@ -193,6 +193,8 @@ type
     cdsOrcamento_ItemTAMANHO: TBCDField;
     cdsOrcamentoID_VENDA: TIntegerField;
     cdsOrcamentoID_SAIDA: TIntegerField;
+    cdsOrcamento_ItemNOME_CIENTIFICO: TStringField;
+    cdsOrcamento_ItemFAMILIA_BOTANICA: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

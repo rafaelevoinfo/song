@@ -172,16 +172,57 @@ inherited frmOrcamento: TfrmOrcamento
               Options.Editing = False
               Width = 198
             end
+            object ColumnImprimir: TcxGridDBColumn
+              Caption = 'Imprimir'
+              PropertiesClassName = 'TcxButtonEditProperties'
+              Properties.Buttons = <
+                item
+                  Action = Ac_Imprimir
+                  Default = True
+                  Kind = bkEllipsis
+                end>
+              Properties.ViewStyle = vsButtonsOnly
+              MinWidth = 64
+              Options.Filtering = False
+              Options.ShowEditButtons = isebAlways
+              Options.GroupFooters = False
+              Options.Grouping = False
+              Options.HorzSizing = False
+              Options.Moving = False
+              VisibleForCustomization = False
+            end
           end
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
+            Properties.ActivePage = tabOrcamentoCustomizado
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens do Or'#231'amento'
               ExplicitLeft = 2
               ExplicitTop = 25
               ExplicitWidth = 965
               ExplicitHeight = 195
+              inherited pnBotoesDetail: TPanel
+                inherited btnUtilizarDetailSelecionado: TButton
+                  Left = 211
+                end
+                object btnEditarOrcamento: TButton
+                  AlignWithMargins = True
+                  Left = 82
+                  Top = 2
+                  Width = 127
+                  Height = 21
+                  Margins.Left = 0
+                  Margins.Top = 1
+                  Margins.Right = 2
+                  Margins.Bottom = 1
+                  Action = Ac_Editar_Orcamento
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 2
+                  WordWrap = True
+                end
+              end
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -238,6 +279,23 @@ inherited frmOrcamento: TfrmOrcamento
                   Align = alLeft
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 0
+                end
+                object btnEditar_Orcamento2: TButton
+                  AlignWithMargins = True
+                  Left = 201
+                  Top = 2
+                  Width = 127
+                  Height = 21
+                  Margins.Left = 0
+                  Margins.Top = 1
+                  Margins.Right = 2
+                  Margins.Bottom = 1
+                  Action = Ac_Editar_Orcamento
+                  Align = alLeft
+                  Images = dmPrincipal.imgIcons_16
+                  TabOrder = 1
+                  WordWrap = True
+                  ExplicitLeft = 82
                 end
               end
               object cxGrid1: TcxGrid
@@ -450,24 +508,24 @@ inherited frmOrcamento: TfrmOrcamento
               FocusControl = cbItem
             end
             object lbl6: TLabel
-              Left = 485
-              Top = 8
+              Left = 7
+              Top = 48
               Width = 64
               Height = 13
               Caption = 'Valor Unit'#225'rio'
               FocusControl = EditValorUnitario
             end
             object Label7: TLabel
-              Left = 609
-              Top = 8
+              Left = 130
+              Top = 48
               Width = 56
               Height = 13
               Caption = 'Quantidade'
               FocusControl = EditQtde
             end
             object lbUnidade: TLabel
-              Left = 730
-              Top = 31
+              Left = 251
+              Top = 71
               Width = 19
               Height = 13
               Caption = 'Und'
@@ -484,6 +542,18 @@ inherited frmOrcamento: TfrmOrcamento
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
             end
+            object Label5: TLabel
+              AlignWithMargins = True
+              Left = 488
+              Top = 8
+              Width = 68
+              Height = 13
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 2
+              Caption = 'Tamanho (cm)'
+              FocusControl = cbEspecie
+            end
             object cbItem: TcxDBLookupComboBox
               Left = 5
               Top = 24
@@ -495,21 +565,21 @@ inherited frmOrcamento: TfrmOrcamento
               Width = 244
             end
             object EditValorUnitario: TcxDBCurrencyEdit
-              Left = 484
-              Top = 24
+              Left = 5
+              Top = 64
               RepositoryItem = dmLookup.repCurPadrao
               DataBinding.DataField = 'VALOR_UNITARIO'
               DataBinding.DataSource = dsDetail
-              TabOrder = 2
+              TabOrder = 3
               Width = 121
             end
             object EditQtde: TcxDBCalcEdit
-              Left = 607
-              Top = 24
+              Left = 128
+              Top = 64
               RepositoryItem = dmLookup.repCalcPadrao
               DataBinding.DataField = 'QTDE'
               DataBinding.DataSource = dsDetail
-              TabOrder = 3
+              TabOrder = 4
               Width = 121
             end
             object cbEspecie: TcxDBLookupComboBox
@@ -523,6 +593,17 @@ inherited frmOrcamento: TfrmOrcamento
               Properties.OnEditValueChanged = cbEspeciePropertiesEditValueChanged
               TabOrder = 1
               Width = 233
+            end
+            object EditTamanho: TcxDBCalcEdit
+              Left = 487
+              Top = 24
+              DataBinding.DataField = 'TAMANHO'
+              DataBinding.DataSource = dsDetail
+              Properties.ClearKey = 46
+              Properties.DisplayFormat = ',0.00 cm'
+              Properties.UseThousandSeparator = True
+              TabOrder = 2
+              Width = 121
             end
           end
           object tabCadastroCampoCustomizavel: TcxTabSheet
@@ -583,7 +664,8 @@ inherited frmOrcamento: TfrmOrcamento
     end
   end
   inherited ActionList1: TActionList
-    Left = 168
+    Left = 184
+    Top = 168
     inherited Ac_Salvar_Detail: TAction
       Caption = 'Salvar/Configurar Campos Customzados'
     end
@@ -620,6 +702,17 @@ inherited frmOrcamento: TfrmOrcamento
       OnExecute = Ac_Gerar_VendaExecute
       OnUpdate = Ac_Gerar_SaidaUpdate
     end
+    object Ac_Imprimir: TAction
+      Category = 'Master'
+      ImageIndex = 19
+      OnExecute = Ac_ImprimirExecute
+    end
+    object Ac_Editar_Orcamento: TAction
+      Caption = 'Editar Or'#231'amento'
+      ImageIndex = 1
+      OnExecute = Ac_Editar_OrcamentoExecute
+      OnUpdate = Ac_Editar_OrcamentoUpdate
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmEstoque.cdsOrcamento
@@ -644,5 +737,541 @@ inherited frmOrcamento: TfrmOrcamento
     DataSet = dmEstoque.cdsOrcamento_Customizado
     Left = 552
     Top = 176
+  end
+  object DBPipeOrganizacao: TppDBPipeline
+    DataSource = dmLookup.dslkOrganizacao
+    UserName = 'DBPipeOrganizacao'
+    Left = 120
+    Top = 160
+    object DBPipeOrganizacaoppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeOrganizacaoppField2: TppField
+      FieldAlias = 'NOME'
+      FieldName = 'NOME'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 1
+    end
+    object DBPipeOrganizacaoppField3: TppField
+      FieldAlias = 'CNPJ'
+      FieldName = 'CNPJ'
+      FieldLength = 14
+      DisplayWidth = 14
+      Position = 2
+    end
+    object DBPipeOrganizacaoppField4: TppField
+      FieldAlias = 'LOGO'
+      FieldName = 'LOGO'
+      FieldLength = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeOrganizacaoppField5: TppField
+      FieldAlias = 'ENDERECO'
+      FieldName = 'ENDERECO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 4
+    end
+    object DBPipeOrganizacaoppField6: TppField
+      FieldAlias = 'BAIRRO'
+      FieldName = 'BAIRRO'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 5
+    end
+    object DBPipeOrganizacaoppField7: TppField
+      FieldAlias = 'COMPLEMENTO'
+      FieldName = 'COMPLEMENTO'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 6
+    end
+    object DBPipeOrganizacaoppField8: TppField
+      FieldAlias = 'TELEFONE'
+      FieldName = 'TELEFONE'
+      FieldLength = 20
+      DisplayWidth = 20
+      Position = 7
+    end
+    object DBPipeOrganizacaoppField9: TppField
+      FieldAlias = 'SITE'
+      FieldName = 'SITE'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 8
+    end
+    object DBPipeOrganizacaoppField10: TppField
+      FieldAlias = 'EMAIL'
+      FieldName = 'EMAIL'
+      FieldLength = 100
+      DisplayWidth = 100
+      Position = 9
+    end
+    object DBPipeOrganizacaoppField11: TppField
+      FieldAlias = 'CIDADE'
+      FieldName = 'CIDADE'
+      FieldLength = 120
+      DisplayWidth = 120
+      Position = 10
+    end
+    object DBPipeOrganizacaoppField12: TppField
+      FieldAlias = 'LOGO_SECUNDARIA'
+      FieldName = 'LOGO_SECUNDARIA'
+      FieldLength = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
+      Position = 11
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object ppOrcamento: TppReport
+    AutoStop = False
+    DataPipeline = DBPipeOrcamento
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    Units = utScreenPixels
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<Texto a localizar>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 32
+    Top = 160
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'DBPipeOrcamento'
+    object ppHeaderBand1: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 25135
+      mmPrintPosition = 0
+      object ppDBText1: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText1'
+        AutoSize = True
+        DataField = 'NOME'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 13
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 5027
+        mmLeft = 45508
+        mmTop = 4763
+        mmWidth = 99749
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText2'
+        AutoSize = True
+        DataField = 'CNPJ'
+        DataPipeline = DBPipeOrganizacao
+        DisplayFormat = '000\.000\.0000\/00-00;0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 3969
+        mmLeft = 66940
+        mmTop = 13758
+        mmWidth = 29369
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel2: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label2'
+        Caption = 'CNPJ:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 56092
+        mmTop = 13493
+        mmWidth = 10054
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel3: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label3'
+        Caption = 'Insc. Est.: Isento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 105040
+        mmTop = 13758
+        mmWidth = 24342
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine1: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line1'
+        Border.Color = clBlue
+        Pen.Color = 10485760
+        Pen.Width = 3
+        Weight = 2.000000000000000000
+        mmHeight = 1323
+        mmLeft = 13229
+        mmTop = 23283
+        mmWidth = 163513
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBImage2: TppDBImage
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBImage2'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO_SECUNDARIA'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 19579
+        mmLeft = 151342
+        mmTop = 2646
+        mmWidth = 25400
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBImage1: TppDBImage
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBImage1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        DataField = 'LOGO'
+        DataPipeline = DBPipeOrganizacao
+        GraphicType = 'AutoDetect'
+        ParentDataPipeline = False
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 19579
+        mmLeft = 13179
+        mmTop = 2556
+        mmWidth = 25400
+        BandType = 0
+        LayerName = Foreground
+      end
+    end
+    object ppDetailBand1: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 28310
+      mmPrintPosition = 0
+      object ppDBRichText1: TppDBRichText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBRichText1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ExportRTFAsBitmap = False
+        DataField = 'ORCAMENTO'
+        DataPipeline = DBPipeOrcamento
+        RemoveEmptyLines = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrcamento'
+        mmHeight = 27421
+        mmLeft = 3175
+        mmTop = 265
+        mmWidth = 191703
+        BandType = 4
+        LayerName = Foreground
+        mmBottomOffset = 0
+        mmOverFlowOffset = 0
+        mmStopPosition = 0
+        mmMinHeight = 0
+      end
+    end
+    object ppFooterBand1: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 13228
+      mmPrintPosition = 0
+      object ppShape1: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape1'
+        mmHeight = 12700
+        mmLeft = 13229
+        mmTop = 265
+        mmWidth = 163513
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText5'
+        DataField = 'ENDERECO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 21960
+        mmTop = 1583
+        mmWidth = 42069
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText6'
+        DataField = 'BAIRRO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 64822
+        mmTop = 1583
+        mmWidth = 29369
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText7'
+        DataField = 'COMPLEMENTO'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 94456
+        mmTop = 1584
+        mmWidth = 46831
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText8'
+        DataField = 'CIDADE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 142350
+        mmTop = 1583
+        mmWidth = 24077
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText9'
+        HyperlinkEnabled = False
+        DataField = 'SITE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 29898
+        mmTop = 6611
+        mmWidth = 32015
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText10'
+        HyperlinkEnabled = False
+        DataField = 'EMAIL'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 63500
+        mmTop = 6615
+        mmWidth = 42069
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText101'
+        HyperlinkEnabled = False
+        DataField = 'TELEFONE'
+        DataPipeline = DBPipeOrganizacao
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'DBPipeOrganizacao'
+        mmHeight = 4498
+        mmLeft = 124617
+        mmTop = 6615
+        mmWidth = 23548
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppLabel6: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label6'
+        Caption = 'Fone (Fax):'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10040115
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 106363
+        mmTop = 6615
+        mmWidth = 17727
+        BandType = 8
+        LayerName = Foreground
+      end
+    end
+    object ppDesignLayers1: TppDesignLayers
+      object ppDesignLayer1: TppDesignLayer
+        UserName = 'Foreground'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList1: TppParameterList
+    end
+  end
+  object DBPipeOrcamento: TppDBPipeline
+    DataSource = dsOrcamento_Orcamento
+    UserName = 'DBPipeOrcamento'
+    Left = 224
+    Top = 120
+    object DBPipeOrcamentoppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'ID'
+      FieldName = 'ID'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 0
+      Position = 0
+    end
+    object DBPipeOrcamentoppField2: TppField
+      FieldAlias = 'ORCAMENTO'
+      FieldName = 'ORCAMENTO'
+      FieldLength = 0
+      DataType = dtBLOB
+      DisplayWidth = 10
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
   end
 end

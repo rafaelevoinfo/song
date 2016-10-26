@@ -1222,6 +1222,18 @@ inherited dmEstoque: TdmEstoque
       Precision = 18
       Size = 2
     end
+    object cdsOrcamento_ItemNOME_CIENTIFICO: TStringField
+      DisplayLabel = 'Nome Cient'#237'fico'
+      FieldName = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsOrcamento_ItemFAMILIA_BOTANICA: TStringField
+      DisplayLabel = 'Fam'#237'lia Bot'#226'nica'
+      FieldName = 'FAMILIA_BOTANICA'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdsOrcamento_Customizado: TRFClientDataSet
     Aggregates = <>

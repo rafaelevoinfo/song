@@ -17,7 +17,22 @@ uses
   cxDBLookupComboBox, uClientDataSet, dmuPrincipal, cxDBEdit, fCliente,
   cxScrollBox, fmEditor, uMensagem, System.RegularExpressions,
   fBasicoCrudMasterDetail, cxSplitter, cxCalc, cxCurrencyEdit, cxMemo,
-  cxRichEdit, System.Generics.Collections, uExceptions, uUtils, fSaida, fVenda;
+  cxRichEdit, System.Generics.Collections, uExceptions, uUtils, fSaida, fVenda,
+  cxRichEditUtils, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, System.Math, ppParameter, ppDesignLayer, ppVar, ppCtrls,
+  ppBands, ppPrnabl, ppClass, ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv,
+  ppDBPipe, ppStrtch, ppRichTx;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -83,6 +98,39 @@ type
     Ac_Gerar_Saida: TAction;
     btnGerar_Venda: TButton;
     Ac_Gerar_Venda: TAction;
+    EditTamanho: TcxDBCalcEdit;
+    Label5: TLabel;
+    ColumnImprimir: TcxGridDBColumn;
+    Ac_Imprimir: TAction;
+    DBPipeOrganizacao: TppDBPipeline;
+    ppOrcamento: TppReport;
+    ppHeaderBand1: TppHeaderBand;
+    ppDBText1: TppDBText;
+    ppDBText2: TppDBText;
+    ppLabel2: TppLabel;
+    ppLabel3: TppLabel;
+    ppLine1: TppLine;
+    ppDBImage2: TppDBImage;
+    ppDBImage1: TppDBImage;
+    ppDetailBand1: TppDetailBand;
+    ppFooterBand1: TppFooterBand;
+    ppShape1: TppShape;
+    ppDBText5: TppDBText;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppDBText10: TppDBText;
+    ppDBText11: TppDBText;
+    ppLabel6: TppLabel;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppParameterList1: TppParameterList;
+    DBPipeOrcamento: TppDBPipeline;
+    ppDBRichText1: TppDBRichText;
+    btnEditarOrcamento: TButton;
+    Ac_Editar_Orcamento: TAction;
+    btnEditar_Orcamento2: TButton;
     procedure FormCreate(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -101,6 +149,9 @@ type
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure Ac_Gerar_VendaExecute(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
+    procedure Ac_ImprimirExecute(Sender: TObject);
+    procedure Ac_Editar_OrcamentoExecute(Sender: TObject);
+    procedure Ac_Editar_OrcamentoUpdate(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -113,6 +164,7 @@ type
     function fpvLocalizarModeloOrcamento(ipIdModelo: Integer): Boolean;
     procedure ppvSubstituirCamposOrcamento;
     procedure ppvMontarOrcamento;
+    function fpvInserirTabelaEspecies: String;
   protected
     function fprGetPermissao: String; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -126,7 +178,7 @@ type
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: Integer); override;
-    procedure ppuAlterarDetail(ipId:Integer);override;
+    procedure ppuAlterarDetail(ipId: Integer); override;
     procedure ppuRetornar; override;
     procedure ppuIncluirDetail; override;
     { Public declarations }
@@ -154,6 +206,8 @@ procedure TfrmOrcamento.ppvSubstituirCamposOrcamento;
 var
   vaMarcador, vaConteudo: String;
   vaPos: Integer;
+  ATableParams: TcxRichEditTableParams;
+  AIndex: Integer;
 begin
   dmEstoque.cdsOrcamento_Orcamento.Edit;
 
@@ -173,6 +227,121 @@ begin
         end;
     end;
 
+  vaPos := 0;
+  vaConteudo := '';
+  while vaPos <> -1 do
+    begin
+      vaPos := frameEditor.Rich.FindTexT(coInicioMarcador + MarcadorOrcamento[moTabelaEspecie] + coFimMarcador, 0, Length(frameEditor.Rich.Text), []);
+      if vaPos <> -1 then
+        begin
+          frameEditor.Rich.SelStart := vaPos;
+          frameEditor.Rich.SelLength := Length(coInicioMarcador + vaMarcador + coFimMarcador);
+          if vaConteudo = '' then
+            vaConteudo := fpvInserirTabelaEspecies;
+
+          frameEditor.Rich.SelText := vaConteudo;
+        end;
+    end;
+  // frameEditor.Rich.Text := vaConteudo;
+  frameEditor.Rich.SelStart := 0;
+end;
+
+function TfrmOrcamento.fpvInserirTabelaEspecies: String;
+const
+  vaQuebraLinha: String = Char(13) + Char(10);
+  vaCellWidth: Integer = 1500;
+  vaCellIndent: Integer = 100;
+  vaQtdeColuna = 7;
+var
+  i, vaLinha, vaColuna: Integer;
+
+  function flAddBold(ipTexto:String):String;
+  begin
+   Exit('\b '+ipTexto+'\b0');
+  end;
+begin
+  Result := '{\rtf1\ansi\ansicpg1251' + vaQuebraLinha;
+  for vaLinha := 0 to dmEstoque.cdsOrcamento_Item.RecordCount do
+    begin
+      if vaLinha > 0 then
+        dmEstoque.cdsOrcamento_Item.RecNo := vaLinha;
+
+      Result := Result + '\trowd\trgaph' + IntToStr(vaCellIndent) + vaQuebraLinha;
+      i := 0;
+      for vaColuna := 0 to vaQtdeColuna - 1 do
+        begin
+          Inc(i);
+          Result := Result + '\clbrdrt\brdrs\clbrdrl\brdrs\clbrdrb\brdrs\clbrdrr\brdrs\cellx' +
+            IntToStr(i * vaCellWidth) + vaQuebraLinha;
+        end;
+
+      Result := Result + '\pard\intbl' + vaQuebraLinha;
+
+      for vaColuna := 0 to vaQtdeColuna - 1 do
+        begin
+          if vaLinha = 0 then
+            begin
+              case vaColuna of
+                0:
+                  Result := Result + flAddBold('NOME DA ESPÉCIE');
+                1:
+                  Result := Result + flAddBold('NOME CIENTÍFICO');
+                2:
+                  Result := Result + flAddBold('FAMÍLIA BOTÂNICA');
+                3:
+                  Result := Result + flAddBold('TAMANHO');
+                4:
+                  Result := Result + flAddBold('QUANT');
+                5:
+                  Result := Result + flAddBold('PREÇO UNITÁRIO');
+              else // valor total
+                Result := Result + flAddBold('PREÇO TOTAL');
+              end;
+            end
+          else
+            begin
+              case vaColuna of
+                0:
+                  Result := Result + dmEstoque.cdsOrcamento_ItemESPECIE.AsString;
+                1:
+                  Result := Result + dmEstoque.cdsOrcamento_ItemNOME_CIENTIFICO.AsString;
+                2:
+                  Result := Result + dmEstoque.cdsOrcamento_ItemFAMILIA_BOTANICA.AsString;
+                3:
+                  Result := Result + FormatFloat(',0.00', dmEstoque.cdsOrcamento_ItemTAMANHO.AsFloat);
+                4:
+                  Result := Result + FormatFloat(',0', dmEstoque.cdsOrcamento_ItemTAMANHO.AsFloat);
+                5:
+                  Result := Result + FormatFloat('R$ ,0.00', dmEstoque.cdsOrcamento_ItemVALOR_UNITARIO.AsFloat);
+              else // valor total
+                Result := Result + FormatFloat('R$ ,0.00',
+                  RoundTo(dmEstoque.cdsOrcamento_ItemVALOR_UNITARIO.AsFloat * dmEstoque.cdsOrcamento_ItemQTDE.AsFloat, -2));
+              end;
+            end;
+
+          Result := Result + '\cell' + vaQuebraLinha;
+        end;
+
+      Result := Result + '\row' + vaQuebraLinha;
+    end;
+  Result := Result + '}';
+end;
+
+procedure TfrmOrcamento.Ac_Editar_OrcamentoExecute(Sender: TObject);
+begin
+  inherited;
+  dmEstoque.cdsOrcamento_Orcamento.Close;
+  dmEstoque.cdsOrcamento_Orcamento.ParamByName('ID').AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
+  dmEstoque.cdsOrcamento_Orcamento.Open;
+
+  pcPrincipal.ActivePage := tabCadastroDetail;
+  pcCadastroDetail.ActivePage := tabPreVisualizacao;
+end;
+
+procedure TfrmOrcamento.Ac_Editar_OrcamentoUpdate(Sender: TObject);
+begin
+  inherited;
+  TAction(Sender).Enabled := fprHabilitarAlterar;
 end;
 
 procedure TfrmOrcamento.Ac_Gerar_SaidaExecute(Sender: TObject);
@@ -248,7 +417,6 @@ begin
     end
   else
     raise Exception.Create('Já existe uma venda ou saída vinculada a este orçamento.');
-
 
 end;
 
@@ -330,6 +498,19 @@ begin
   else
     raise Exception.Create('Já existe uma venda ou saída vinculada a este orçamento.');
 
+end;
+
+procedure TfrmOrcamento.Ac_ImprimirExecute(Sender: TObject);
+begin
+  inherited;
+  if not dmLookup.cdslkOrganizacao.Active then
+    dmLookup.cdslkOrganizacao.Open;
+
+  dmEstoque.cdsOrcamento_Orcamento.Close;
+  dmEstoque.cdsOrcamento_Orcamento.ParamByName('ID').AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
+  dmEstoque.cdsOrcamento_Orcamento.Open;
+
+  ppOrcamento.PrintReport;
 end;
 
 procedure TfrmOrcamento.Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
@@ -482,28 +663,31 @@ begin
 
             for vaMatchCampo in vaMatchesCampo do
               begin
-                if not FMarcadoresCustomizados.ContainsKey(vaMatchCampo.Value) then
+                if vaMatchCampo.Value <> MarcadorOrcamento[moTabelaEspecie] then
                   begin
-                    vaConteudo := '';
-                    if dmEstoque.cdsOrcamento_Customizado.Locate(dmEstoque.cdsOrcamento_CustomizadoCAMPO.FieldName, vaMatchCampo.Value, [loCaseInsensitive])
-                    then
-                      vaConteudo := dmEstoque.cdsOrcamento_CustomizadoCONTEUDO.AsString
-                    else
+                    if not FMarcadoresCustomizados.ContainsKey(vaMatchCampo.Value) then
                       begin
-                        dmEstoque.cdsOrcamento_Customizado.Append;
-                        dmEstoque.cdsOrcamento_CustomizadoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('ORCAMENTO_CUSTOMIZADO');
-                        dmEstoque.cdsOrcamento_CustomizadoID_ORCAMENTO.AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
-                        dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString := vaMatchCampo.Value;
-                        dmEstoque.cdsOrcamento_Customizado.Post;
-                      end;
+                        vaConteudo := '';
+                        if dmEstoque.cdsOrcamento_Customizado.Locate(dmEstoque.cdsOrcamento_CustomizadoCAMPO.FieldName, vaMatchCampo.Value, [loCaseInsensitive])
+                        then
+                          vaConteudo := dmEstoque.cdsOrcamento_CustomizadoCONTEUDO.AsString
+                        else
+                          begin
+                            dmEstoque.cdsOrcamento_Customizado.Append;
+                            dmEstoque.cdsOrcamento_CustomizadoID.AsInteger := dmPrincipal.FuncoesGeral.fpuGetId('ORCAMENTO_CUSTOMIZADO');
+                            dmEstoque.cdsOrcamento_CustomizadoID_ORCAMENTO.AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
+                            dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString := vaMatchCampo.Value;
+                            dmEstoque.cdsOrcamento_Customizado.Post;
+                          end;
 
-                    ppvAdicionarCampoCustomizado(vaMatchCampo.Value, vaConteudo);
+                        ppvAdicionarCampoCustomizado(vaMatchCampo.Value, vaConteudo);
+                      end;
                   end;
               end;
           end;
 
         dmEstoque.cdsOrcamento_Customizado.First;
-        while dmEstoque.cdsOrcamento_Customizado.eof do
+        while not dmEstoque.cdsOrcamento_Customizado.eof do
           begin
             if not FMarcadoresCustomizados.ContainsKey(dmEstoque.cdsOrcamento_CustomizadoCAMPO.AsString) then
               dmEstoque.cdsOrcamento_Customizado.Delete

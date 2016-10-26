@@ -1417,10 +1417,15 @@ inherited smEstoque: TsmEstoque
       '       Especie.nome as especie,'
       '       ORCAMENTO_ITEM.QTDE,'
       '       ORCAMENTO_ITEM.VALOR_UNITARIO,'
-      '       ORCAMENTO_ITEM.TAMANHO'
+      '       ORCAMENTO_ITEM.TAMANHO,'
+      '       Especie.nome_cientifico,'
+      '       Familia_Botanica.nome as Familia_botanica'
       'from ORCAMENTO_ITEM '
       'INNER join item on (item.id = orcamento_item.id_item)'
       'inner join especie on (especie.id = orcamento_item.id_especie)'
+      
+        'inner join Familia_Botanica on (especie.id_Familia_Botanica = Fa' +
+        'milia_Botanica.id)'
       'where ORCAMENTO_ITEM.id_orcamento = :ID_ORCAMENTO')
     Left = 776
     Top = 240
@@ -1485,6 +1490,20 @@ inherited smEstoque: TsmEstoque
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 2
+    end
+    object qOrcamento_ItemNOME_CIENTIFICO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_CIENTIFICO'
+      Origin = 'NOME_CIENTIFICO'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qOrcamento_ItemFAMILIA_BOTANICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'FAMILIA_BOTANICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qOrcamento_Customizado: TRFQuery
