@@ -1,12 +1,14 @@
 inherited frmOrcamento: TfrmOrcamento
-  ActiveControl = btnIncluir
   Caption = 'Or'#231'amento'
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -179,8 +181,9 @@ inherited frmOrcamento: TfrmOrcamento
                 item
                   Action = Ac_Imprimir
                   Default = True
-                  Kind = bkEllipsis
+                  Kind = bkGlyph
                 end>
+              Properties.Images = dmPrincipal.imgIcons_16
               Properties.ViewStyle = vsButtonsOnly
               MinWidth = 64
               Options.Filtering = False
@@ -205,6 +208,7 @@ inherited frmOrcamento: TfrmOrcamento
               inherited pnBotoesDetail: TPanel
                 inherited btnUtilizarDetailSelecionado: TButton
                   Left = 211
+                  ExplicitLeft = 211
                 end
                 object btnEditarOrcamento: TButton
                   AlignWithMargins = True
@@ -263,6 +267,10 @@ inherited frmOrcamento: TfrmOrcamento
             object tabOrcamentoCustomizado: TcxTabSheet
               Caption = 'Campos Customizados'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -295,7 +303,6 @@ inherited frmOrcamento: TfrmOrcamento
                   Images = dmPrincipal.imgIcons_16
                   TabOrder = 1
                   WordWrap = True
-                  ExplicitLeft = 82
                 end
               end
               object cxGrid1: TcxGrid
@@ -489,7 +496,7 @@ inherited frmOrcamento: TfrmOrcamento
           Height = 398
           Align = alClient
           TabOrder = 0
-          Properties.ActivePage = tabCadastroCampoCustomizavel
+          Properties.ActivePage = tabPreVisualizacao
           Properties.CustomButtons.Buttons = <>
           OnChange = pcCadastroDetailChange
           ClientRectBottom = 393
@@ -499,6 +506,10 @@ inherited frmOrcamento: TfrmOrcamento
           object tabCadastroItem: TcxTabSheet
             Caption = 'Itens do Or'#231'amento'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label4: TLabel
               Left = 7
               Top = 8
@@ -616,16 +627,16 @@ inherited frmOrcamento: TfrmOrcamento
               Height = 368
               Align = alClient
               TabOrder = 0
-              object RichAux: TcxRichEdit
-                Left = 3
-                Top = 64
-                Lines.Strings = (
-                  'RichAux')
-                TabOrder = 0
-                Visible = False
-                Height = 121
-                Width = 385
-              end
+            end
+            object RichAux: TcxRichEdit
+              Left = 195
+              Top = 74
+              Lines.Strings = (
+                'RichAux')
+              TabOrder = 1
+              Visible = False
+              Height = 289
+              Width = 518
             end
           end
           object tabPreVisualizacao: TcxTabSheet
@@ -851,7 +862,7 @@ inherited frmOrcamento: TfrmOrcamento
     PrinterSetup.mmPaperHeight = 297000
     PrinterSetup.mmPaperWidth = 210000
     PrinterSetup.PaperSize = 9
-    Units = utScreenPixels
+    Units = utMillimeters
     ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
@@ -896,7 +907,7 @@ inherited frmOrcamento: TfrmOrcamento
     object ppHeaderBand1: TppHeaderBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 25135
+      mmHeight = 26458
       mmPrintPosition = 0
       object ppDBText1: TppDBText
         DesignLayer = ppDesignLayer1
@@ -1033,6 +1044,7 @@ inherited frmOrcamento: TfrmOrcamento
     object ppDetailBand1: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      PrintHeight = phDynamic
       mmBottomOffset = 0
       mmHeight = 28310
       mmPrintPosition = 0
@@ -1044,16 +1056,16 @@ inherited frmOrcamento: TfrmOrcamento
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = []
-        ExportRTFAsBitmap = False
+        ExportRTFAsBitmap = True
         DataField = 'ORCAMENTO'
         DataPipeline = DBPipeOrcamento
         RemoveEmptyLines = False
-        Transparent = True
+        Stretch = True
         DataPipelineName = 'DBPipeOrcamento'
-        mmHeight = 27421
-        mmLeft = 3175
+        mmHeight = 26458
+        mmLeft = 9381
         mmTop = 265
-        mmWidth = 191703
+        mmWidth = 178955
         BandType = 4
         LayerName = Foreground
         mmBottomOffset = 0
