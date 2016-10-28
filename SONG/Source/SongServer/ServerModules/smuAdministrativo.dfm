@@ -1,6 +1,6 @@
 inherited smAdministrativo: TsmAdministrativo
   OldCreateOrder = True
-  Height = 364
+  Height = 416
   Width = 593
   object qPessoa: TRFQuery
     Connection = dmPrincipal.conSong
@@ -1569,6 +1569,65 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
+    end
+  end
+  object qProjeto_Finan_Pagto_Rubrica: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Projeto_finan_pagto_rubrica.Id,'
+      '       Projeto_finan_pagto_rubrica.Id_projeto_rubrica,'
+      '       Rubrica.Nome as Rubrica,'
+      '       Projeto_finan_pagto_rubrica.Id_projeto_financiador_pagto,'
+      '       Projeto_finan_pagto_rubrica.Valor'
+      'from Projeto_finan_pagto_rubrica'
+      
+        'inner join Projeto_rubrica on (Projeto_rubrica.Id = Projeto_fina' +
+        'n_pagto_rubrica.Id_projeto_rubrica)'
+      'inner join Rubrica on (Rubrica.Id = Projeto_rubrica.Id_rubrica)'
+      
+        'where Projeto_finan_pagto_rubrica.Id_projeto_financiador_pagto =' +
+        ' :Id_projeto_financiador_pagto   ')
+    Left = 72
+    Top = 352
+    ParamData = <
+      item
+        Name = 'ID_PROJETO_FINANCIADOR_PAGTO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qProjeto_Finan_Pagto_RubricaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA'
+      Origin = 'ID_PROJETO_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_Finan_Pagto_RubricaRUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qProjeto_Finan_Pagto_RubricaID_PROJETO_FINANCIADOR_PAGTO: TIntegerField
+      FieldName = 'ID_PROJETO_FINANCIADOR_PAGTO'
+      Origin = 'ID_PROJETO_FINANCIADOR_PAGTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qProjeto_Finan_Pagto_RubricaVALOR: TBCDField
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Precision = 18
+      Size = 2
     end
   end
 end

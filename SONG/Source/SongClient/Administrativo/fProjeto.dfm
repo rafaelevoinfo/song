@@ -1,17 +1,11 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -146,9 +140,6 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
-              ExplicitLeft = 2
-              ExplicitTop = 25
-              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -678,6 +669,7 @@ inherited frmProjeto: TfrmProjeto
                   end
                   object viewPagamentosNOME_ORGANIZACAO: TcxGridDBColumn
                     DataBinding.FieldName = 'NOME_ORGANIZACAO'
+                    Visible = False
                     Options.Editing = False
                     Width = 145
                   end
@@ -698,6 +690,20 @@ inherited frmProjeto: TfrmProjeto
                     Properties.DisplayFormat = ',0.00 %'
                     Options.Editing = False
                     Width = 78
+                  end
+                  object ColumnRatear: TcxGridDBColumn
+                    Caption = 'Valor por Rubrica'
+                    PropertiesClassName = 'TcxButtonEditProperties'
+                    Properties.Buttons = <
+                      item
+                        Action = Ac_Ratear_Pagto_Rubrica
+                        Default = True
+                        Kind = bkGlyph
+                      end>
+                    Properties.Images = dmPrincipal.imgIcons_16
+                    Properties.ViewStyle = vsButtonsOnly
+                    Options.ShowEditButtons = isebAlways
+                    Width = 105
                   end
                 end
                 object cxGridLevel2: TcxGridLevel
@@ -934,10 +940,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -1075,10 +1077,6 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1772,6 +1770,160 @@ inherited frmProjeto: TfrmProjeto
         end
       end
     end
+    object tabCadastroDetailPagtoRubrica: TcxTabSheet
+      Caption = 'tabCadastroDetailPagtoRubrica'
+      ImageIndex = 8
+      ExplicitLeft = 3
+      ExplicitTop = 25
+      object pnCadastroDetailPagtoRubrica: TPanel
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 50
+        Align = alTop
+        TabOrder = 0
+        ExplicitTop = 8
+        object btnSalvarPagtoRubrica: TButton
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Salvar_Pagto_Rubrica
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 0
+        end
+        object btnCancelarPagtoRubrica: TButton
+          AlignWithMargins = True
+          Left = 95
+          Top = 4
+          Width = 85
+          Height = 42
+          Action = Ac_Cancelar_Detail
+          Align = alLeft
+          Images = dmPrincipal.imgIcons_32
+          TabOrder = 1
+          ExplicitLeft = 215
+        end
+      end
+      inline frameGrids: TframeGrids
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 398
+        Align = alClient
+        TabOrder = 1
+        ExplicitWidth = 976
+        ExplicitHeight = 398
+        inherited gpGrids: TGridPanel
+          Width = 976
+          Height = 379
+          ControlCollection = <
+            item
+              Column = 0
+              Control = frameGrids.cxGrid1
+              Row = 0
+            end
+            item
+              Column = 1
+              Control = frameGrids.pnBotoes
+              Row = 0
+            end
+            item
+              Column = 2
+              Control = frameGrids.cxGrid2
+              Row = 0
+            end>
+          TabOrder = 1
+          ExplicitWidth = 976
+          ExplicitHeight = 379
+          inherited cxGrid1: TcxGrid
+            Width = 457
+            Height = 377
+            ExplicitWidth = 457
+            ExplicitHeight = 377
+          end
+          inherited pnBotoes: TPanel
+            Left = 458
+            Width = 48
+            Height = 377
+            ExplicitLeft = 458
+            ExplicitWidth = 48
+            ExplicitHeight = 377
+            inherited btnAdd: TButton
+              ExplicitWidth = 48
+            end
+            inherited btnAddTodos: TButton
+              ExplicitWidth = 48
+            end
+            inherited btnRemover: TButton
+              ExplicitWidth = 48
+            end
+            inherited btnRemoverTodos: TButton
+              ExplicitWidth = 48
+            end
+          end
+          inherited cxGrid2: TcxGrid
+            Left = 506
+            Width = 469
+            Height = 377
+            ExplicitLeft = 506
+            ExplicitWidth = 469
+            ExplicitHeight = 377
+            inherited viewDireita: TcxGridDBTableView
+              OptionsData.Editing = True
+              OptionsView.Footer = True
+              OptionsView.FooterAutoHeight = True
+            end
+          end
+        end
+        inherited pnLabels: TPanel
+          Width = 976
+          TabOrder = 0
+          ExplicitWidth = 976
+          inherited gpLabels: TGridPanel
+            Width = 974
+            ControlCollection = <
+              item
+                Column = 0
+                Control = frameGrids.lbInfoGridEsquerda
+                Row = 0
+              end
+              item
+                Column = 2
+                Control = frameGrids.lbInfoGridDireita
+                Row = 0
+              end>
+            ExplicitWidth = 974
+            inherited lbInfoGridEsquerda: TLabel
+              Width = 49
+              Caption = 'Rubricas'
+              ExplicitWidth = 49
+            end
+            inherited lbInfoGridDireita: TLabel
+              Left = 505
+              Width = 125
+              Caption = 'Rubricas selecionadas'
+              ExplicitLeft = 505
+              ExplicitWidth = 125
+            end
+          end
+        end
+        inherited dsEsquerda: TDataSource
+          DataSet = cdsLocalProjeto_Rubrica
+        end
+        inherited dsDireita: TDataSource
+          DataSet = dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica
+          Left = 728
+          Top = 232
+        end
+        inherited ActionListFrame: TActionList
+          Left = 168
+          Top = 224
+        end
+      end
+    end
   end
   inherited ActionList1: TActionList
     Left = 88
@@ -1815,28 +1967,46 @@ inherited frmProjeto: TfrmProjeto
       ImageIndex = 3
       OnExecute = Ac_Adicionar_Area_AtuacaoExecute
     end
+    object Ac_Ratear_Pagto_Rubrica: TAction
+      Category = 'Detail'
+      Caption = 'Ac_Ratear_Pagto_Financiador'
+      ImageIndex = 29
+      OnExecute = Ac_Ratear_Pagto_RubricaExecute
+    end
+    object Ac_Salvar_Pagto_Rubrica: TAction
+      Category = 'Detail'
+      Caption = 'Salvar'
+      ImageIndex = 4
+      OnExecute = Ac_Salvar_Pagto_RubricaExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmAdministrativo.cdsProjeto
+    Left = 232
+    Top = 32
   end
   inherited dsDetail: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Pessoa
-    Left = 664
-    Top = 152
+    Left = 904
+    Top = 40
   end
   inherited fdExportDialog: TSaveTextFileDialog
     Left = 504
     Top = 176
   end
+  inherited pmPesquisa: TPopupMenu
+    Left = 832
+    Top = 40
+  end
   object dsOrganizacao: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Organizacao
-    Left = 384
-    Top = 200
+    Left = 736
+    Top = 32
   end
   object dsFinanciador: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Financiador
-    Left = 312
-    Top = 152
+    Left = 304
+    Top = 24
   end
   object dsDocumento: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Documento
@@ -1844,26 +2014,41 @@ inherited frmProjeto: TfrmProjeto
     Top = 144
   end
   object FileDialog: TOpenTextFileDialog
-    Left = 384
-    Top = 144
+    Left = 664
+    Top = 32
   end
   object dsFinanciador_Pagto: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Financiador_Pagto
-    Left = 552
-    Top = 144
+    Left = 480
+    Top = 24
   end
   object SaveDialogDocumento: TSaveDialog
-    Left = 440
-    Top = 104
+    Left = 376
+    Top = 24
   end
   object dsRubrica: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Rubrica
-    Left = 544
-    Top = 336
+    Left = 792
+    Top = 16
   end
   object dsArea: TDataSource
     DataSet = dmAdministrativo.cdsProjeto_Area
-    Left = 488
-    Top = 184
+    Left = 576
+    Top = 24
+  end
+  object cdsLocalProjeto_Rubrica: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 512
+    Top = 216
+    object cdsLocalProjeto_RubricaID: TIntegerField
+      FieldName = 'ID'
+    end
+    object cdsLocalProjeto_RubricaRUBRICA: TStringField
+      DisplayLabel = 'Rubrica'
+      FieldName = 'RUBRICA'
+      ProviderFlags = []
+      Size = 300
+    end
   end
 end

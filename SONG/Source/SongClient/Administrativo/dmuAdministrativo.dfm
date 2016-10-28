@@ -555,6 +555,7 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayLabel = 'Valor a Financiar'
       FieldName = 'VALOR_FINANCIADO'
       Required = True
+      currency = True
       Precision = 18
       Size = 2
     end
@@ -1226,7 +1227,12 @@ inherited dmAdministrativo: TdmAdministrativo
     MasterFields = 'ID'
     MasterSource = dsProjeto
     PacketRecords = 0
-    Params = <>
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_PROJETO'
+        ParamType = ptInput
+      end>
     ProviderName = 'dspqProjeto_Rubrica'
     RemoteServer = dmPrincipal.ProviderAdministrativo
     StoreDefs = True
@@ -1491,5 +1497,99 @@ inherited dmAdministrativo: TdmAdministrativo
     DataSet = cdsArea_Atuacao
     Left = 48
     Top = 112
+  end
+  object cdsProjeto_Finan_Pagto_Rubrica: TRFClientDataSet
+    Aggregates = <>
+    AggregatesActive = True
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_PROJETO_RUBRICA'
+        DataType = ftInteger
+      end
+      item
+        Name = 'RUBRICA'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'ID_PROJETO_FINANCIADOR_PAGTO'
+        DataType = ftInteger
+      end
+      item
+        Name = 'VALOR'
+        DataType = ftBCD
+        Precision = 18
+        Size = 2
+      end>
+    IndexDefs = <
+      item
+        Name = 'ORDER_BY_ID_PROJETO_FINANCIADOR_PAGTO'
+        Fields = 'ID_PROJETO_FINANCIADOR_PAGTO'
+        GroupingLevel = 1
+      end>
+    IndexName = 'ORDER_BY_ID_PROJETO_FINANCIADOR_PAGTO'
+    MasterFields = 'ID'
+    MasterSource = dsProjeto_Financiador_Pagto
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_PROJETO_FINANCIADOR_PAGTO'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqProjeto_Finan_Pagto_Rubrica'
+    RemoteServer = dmPrincipal.ProviderAdministrativo
+    StoreDefs = True
+    RFApplyAutomatico = False
+    Left = 328
+    Top = 408
+    object cdsProjeto_Finan_Pagto_RubricaID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA: TIntegerField
+      FieldName = 'ID_PROJETO_RUBRICA'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_Finan_Pagto_RubricaRUBRICA: TStringField
+      DisplayLabel = 'Rubrica'
+      FieldName = 'RUBRICA'
+      ProviderFlags = []
+      Size = 300
+    end
+    object cdsProjeto_Finan_Pagto_RubricaID_PROJETO_FINANCIADOR_PAGTO: TIntegerField
+      FieldName = 'ID_PROJETO_FINANCIADOR_PAGTO'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object cdsProjeto_Finan_Pagto_RubricaVALOR: TBCDField
+      DisplayLabel = 'Valor'
+      FieldName = 'VALOR'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object cdsProjeto_Finan_Pagto_RubricaAGG_SOMA_VALOR: TAggregateField
+      DisplayLabel = 'Soma dos Valores'
+      FieldName = 'AGG_SOMA_VALOR'
+      Active = True
+      DisplayName = ''
+      Expression = 'SUM(VALOR)'
+      GroupingLevel = 1
+      IndexName = 'ORDER_BY_ID_PROJETO_FINANCIADOR_PAGTO'
+    end
+  end
+  object dsProjeto_Financiador_Pagto: TDataSource
+    DataSet = cdsProjeto_Financiador_Pagto
+    Left = 496
+    Top = 408
   end
 end

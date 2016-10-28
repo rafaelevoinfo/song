@@ -17,7 +17,7 @@ uses
   dmuPrincipal, uControleAcesso, System.TypInfo, uClientDataSet, uUtils,
   uExceptions, Vcl.ExtDlgs, System.IOUtils, cxCurrencyEdit, cxLocalization,
   cxCheckBox, uMensagem, System.Math, System.Types, Datasnap.DBClient,
-  fAreaAtuacao, Vcl.Menus;
+  fAreaAtuacao, Vcl.Menus, fmGrids;
 
 type
   TfrmProjeto = class(TfrmBasicoCrudMasterDetail)
@@ -212,6 +212,17 @@ type
     viewRubricasGASTO_TRANSFERENCIA: TcxGridDBColumn;
     viewRubricasRECEBIDO_TRANSFERENCIA: TcxGridDBColumn;
     viewRubricasID: TcxGridDBColumn;
+    ColumnRatear: TcxGridDBColumn;
+    Ac_Ratear_Pagto_Rubrica: TAction;
+    tabCadastroDetailPagtoRubrica: TcxTabSheet;
+    pnCadastroDetailPagtoRubrica: TPanel;
+    btnSalvarPagtoRubrica: TButton;
+    btnCancelarPagtoRubrica: TButton;
+    frameGrids: TframeGrids;
+    Ac_Salvar_Pagto_Rubrica: TAction;
+    cdsLocalProjeto_Rubrica: TClientDataSet;
+    cdsLocalProjeto_RubricaID: TIntegerField;
+    cdsLocalProjeto_RubricaRUBRICA: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -232,6 +243,8 @@ type
     procedure Ac_Adicionar_Area_AtuacaoExecute(Sender: TObject);
     procedure cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure Ac_Ratear_Pagto_RubricaExecute(Sender: TObject);
+    procedure Ac_Salvar_Pagto_RubricaExecute(Sender: TObject);
   private
     dmAdministrativo: TdmAdministrativo;
     dmLookup: TdmLookup;
@@ -244,6 +257,9 @@ type
     procedure ppvFiltrarProjetoOrganizacao;
     procedure ppvAdicionarAreaAtuacao;
     procedure ppvCarregarAreasAtuacao;
+    procedure ppvConfigurarGridsPagtoRubrica;
+    procedure ppvCarregarPagtoRubricas;
+    procedure ppvCarregarProjetoRubricaLocal;
     { Private declarations }
   protected
     function fprGetPermissao: string; override;
@@ -266,6 +282,8 @@ type
   public
     procedure ppuBaixarArquivo(ipId: Integer);
     procedure ppuIncluirDetail; override;
+
+    procedure ppuRetornar(ipAtualizar: Boolean); override;
   public const
     coPesqPorStatus = 4;
 
@@ -456,8 +474,65 @@ begin
   TUtils.fpuFocar(EditValorPagamento);
 end;
 
+procedure TfrmProjeto.Ac_Ratear_Pagto_RubricaExecute(Sender: TObject);
+begin
+  inherited;
+  ppvCarregarPagtoRubricas;
+  ppvCarregarProjetoRubricaLocal;
+
+  pcPrincipal.ActivePage := tabCadastroDetailPagtoRubrica;
+end;
+
+procedure TfrmProjeto.Ac_Salvar_Pagto_RubricaExecute(Sender: TObject);
+begin
+  inherited;
+  ppuSalvarDetail;
+  ppuRetornar(false);
+end;
+
+procedure TfrmProjeto.ppvCarregarProjetoRubricaLocal;
+begin
+  if not dmAdministrativo.cdsProjeto_Rubrica.Active then
+    dmAdministrativo.cdsProjeto_Rubrica.Open;
+
+  if cdsLocalProjeto_Rubrica.Active then
+    cdsLocalProjeto_Rubrica.EmptyDataSet
+  else
+    cdsLocalProjeto_Rubrica.CreateDataSet;
+
+  cdsLocalProjeto_Rubrica.DisableControls;
+  dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.DisableControls;
+  try
+    TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Rubrica,
+      procedure
+      begin
+        cdsLocalProjeto_Rubrica.Append;
+        cdsLocalProjeto_RubricaID.AsInteger := dmAdministrativo.cdsProjeto_RubricaID.AsInteger;
+        cdsLocalProjeto_RubricaRUBRICA.AsString := dmAdministrativo.cdsProjeto_RubricaNOME_RUBRICA.AsString;
+        cdsLocalProjeto_Rubrica.Post;
+      end);
+
+    TUtils.ppuPercorrerCds(dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica,
+      procedure
+      begin
+        if cdsLocalProjeto_Rubrica.Locate(TBancoDados.coId, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA.AsInteger, []) then
+          cdsLocalProjeto_Rubrica.Delete;
+      end);
+  finally
+    dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.EnableControls;
+    cdsLocalProjeto_Rubrica.EnableControls;
+  end;
+
+end;
+
+procedure TfrmProjeto.ppvCarregarPagtoRubricas;
+begin
+  dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.Close;
+  dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.Open;
+end;
+
 procedure TfrmProjeto.cbAreaAtuacaoKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -465,7 +540,7 @@ begin
 end;
 
 procedure TfrmProjeto.cbContaCorrenteKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -473,7 +548,7 @@ begin
 end;
 
 procedure TfrmProjeto.cbFinanciadorKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -482,7 +557,7 @@ end;
 
 procedure TfrmProjeto.viewRubricasCustomDrawCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
-  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
 var
   vaPercentualGasto: Double;
 begin
@@ -516,7 +591,7 @@ begin
   inherited;
   if not VarIsNull(EditValorPagamento.EditValue) then
     begin
-      EditPercentualPagamento.EditValue := RoundTo((EditValorPagamento.EditValue * 100) / dmAdministrativo.cdsProjetoORCAMENTO.AsFloat, -2);
+      EditPercentualPagamento.EditValue := RoundTo((EditValorPagamento.EditValue * 100) / dmAdministrativo.cdsProjetoORCAMENTO.AsCurrency, -2);
       EditPercentualPagamento.PostEditValue;
     end
   else
@@ -545,6 +620,36 @@ begin
   ppvCarregarFinanciadores;
   ppvCarregarContasCorrentes;
 
+  ppvConfigurarGridsPagtoRubrica;
+
+end;
+
+procedure TfrmProjeto.ppvConfigurarGridsPagtoRubrica;
+var
+  vaColumn: TcxGridDBColumn;
+  vaSomaValor: TcxDataSummaryItem;
+begin
+  // Esquerda
+  frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'ID', false, false);
+  frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'RUBRICA', true, false);
+  // Direita
+  frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA.FieldName, false, false);
+  frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaRUBRICA.FieldName, true, false);
+  vaColumn := frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaVALOR.FieldName, true, true);
+  // mapeando
+  frameGrids.ppuMapearFields('ID', dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA.FieldName);
+  frameGrids.ppuMapearFields('RUBRICA', dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaRUBRICA.FieldName);
+
+  vaSomaValor := frameGrids.viewDireita.DataController.Summary.FooterSummaryItems.Add(vaColumn, spFooter, skSum);
+  vaSomaValor.Format := 'R$ ,0.00';
+
+  frameGrids.OnAddRemoveRegistro := procedure(ipDataSetOrigem, ipDataSetDestino: TDataSet; ipTipo: TTipoAcao)
+    begin
+      if ipTipo = tcAdd then
+        begin
+          ipDataSetDestino.FieldByName(dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaVALOR.FieldName).AsFloat := 0;
+        end;
+    end;
 end;
 
 procedure TfrmProjeto.ppvCarregarAreasAtuacao;
@@ -567,8 +672,8 @@ begin
   cbStatusPesquisa.Visible := cbPesquisarPor.EditValue = coPesqPorStatus;
   if cbStatusPesquisa.Visible then
     begin
-      EditPesquisa.Visible := False;
-      pnData.Visible := False;
+      EditPesquisa.Visible := false;
+      pnData.Visible := false;
       Result := cbStatusPesquisa;
     end
   else
@@ -652,17 +757,26 @@ begin
     end
   else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     begin
-      if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat < 0 then
-        raise TControlException.Create('Informe um valor a ser financiado.', EditOrcamentoRubrica);
-
-      if CompareValue(dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat, dmAdministrativo.cdsProjetoORCAMENTO.AsFloat) = GreaterThanValue then
-        raise TControlException.Create('O valor financiado não pode ser superior ao valor do projeto.', EditValorFinanciar);
-
-      if (dmAdministrativo.cdsProjeto_Financiador_Pagto.RecordCount > 0) then
+      if pcPrincipal.ActivePage = tabCadastroDetailPagtoRubrica then
         begin
-          if CompareValue(dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat,
-            StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0)) = LessThanValue then
-            raise Exception.Create('A soma de todas as parcelas não pode ser superior ao valor a financiar.');
+          if CompareValue(StrToFloatDef(dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaAGG_SOMA_VALOR.AsString, 0),
+            dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat) = GreaterThanValue then
+            raise Exception.Create('O valor total das rubricas não pode ser superior ao valor do financiamento.');
+        end
+      else
+        begin
+          if dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat < 0 then
+            raise TControlException.Create('Informe um valor a ser financiado.', EditOrcamentoRubrica);
+
+          if CompareValue(dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat, dmAdministrativo.cdsProjetoORCAMENTO.AsFloat) = GreaterThanValue then
+            raise TControlException.Create('O valor financiado não pode ser superior ao valor do projeto.', EditValorFinanciar);
+
+          if (dmAdministrativo.cdsProjeto_Financiador_Pagto.RecordCount > 0) then
+            begin
+              if CompareValue(dmAdministrativo.cdsProjeto_FinanciadorVALOR_FINANCIADO.AsFloat,
+                StrToFloatDef(dmAdministrativo.cdsProjeto_Financiador_PagtoTOTAL.AsString, 0)) = LessThanValue then
+                raise Exception.Create('A soma de todas as parcelas não pode ser superior ao valor a financiar.');
+            end;
         end;
     end;
 end;
@@ -725,8 +839,13 @@ end;
 
 procedure TfrmProjeto.pprEfetuarCancelarDetail;
 begin
+  if dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.Active and ((dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.State in [dsInsert, dsEdit]) or
+    (dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.ChangeCount > 0)) then
+    dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.CancelUpdates;
+
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     dmAdministrativo.cdsProjeto_Financiador_Pagto.CancelUpdates;
+
   inherited;
 end;
 
@@ -777,6 +896,12 @@ begin
   if dmAdministrativo.cdsProjeto_Rubrica.ChangeCount > 0 then
     dmAdministrativo.cdsProjeto_Rubrica.ApplyUpdates(0);
 
+  if dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.ChangeCount > 0 then
+    begin
+      dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.ApplyUpdates(0);
+      dmAdministrativo.cdsProjeto_Rubrica.Refresh; // atualiza os valores
+    end;
+
 end;
 
 procedure TfrmProjeto.pprValidarPesquisa;
@@ -812,6 +937,12 @@ begin
     EditCaminhoDocumento.Text := ''
   else if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Financiador then
     ppvLimparEditsPagamento;
+end;
+
+procedure TfrmProjeto.ppuRetornar(ipAtualizar: Boolean);
+begin
+  inherited;
+  dmAdministrativo.cdsProjeto_Finan_Pagto_Rubrica.Close;
 end;
 
 procedure TfrmProjeto.ppvLimparEditsPagamento;

@@ -199,6 +199,12 @@ type
     qProjeto_RubricaAPROVISIONADO: TBCDField;
     qProjeto_RubricaSALDO_REAL: TBCDField;
     qProjeto_RubricaSALDO_PREVISTO: TBCDField;
+    qProjeto_Finan_Pagto_Rubrica: TRFQuery;
+    qProjeto_Finan_Pagto_RubricaID: TIntegerField;
+    qProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA: TIntegerField;
+    qProjeto_Finan_Pagto_RubricaRUBRICA: TStringField;
+    qProjeto_Finan_Pagto_RubricaID_PROJETO_FINANCIADOR_PAGTO: TIntegerField;
+    qProjeto_Finan_Pagto_RubricaVALOR: TBCDField;
     procedure qProjeto_RubricaCalcFields(DataSet: TDataSet);
     procedure dspqAtividadeAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;

@@ -204,6 +204,14 @@ type
     cdsProjeto_RubricaAPROVISIONADO: TBCDField;
     cdsProjeto_RubricaSALDO_REAL: TBCDField;
     cdsProjeto_RubricaSALDO_PREVISTO: TBCDField;
+    cdsProjeto_Finan_Pagto_Rubrica: TRFClientDataSet;
+    cdsProjeto_Finan_Pagto_RubricaID: TIntegerField;
+    cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA: TIntegerField;
+    cdsProjeto_Finan_Pagto_RubricaRUBRICA: TStringField;
+    cdsProjeto_Finan_Pagto_RubricaID_PROJETO_FINANCIADOR_PAGTO: TIntegerField;
+    cdsProjeto_Finan_Pagto_RubricaVALOR: TBCDField;
+    dsProjeto_Financiador_Pagto: TDataSource;
+    cdsProjeto_Finan_Pagto_RubricaAGG_SOMA_VALOR: TAggregateField;
   private
     { Private declarations }
   public
