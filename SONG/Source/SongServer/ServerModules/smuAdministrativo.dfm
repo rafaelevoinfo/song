@@ -1319,14 +1319,6 @@ inherited smAdministrativo: TsmAdministrativo
       Precision = 18
       Size = 2
     end
-    object qProjeto_RubricaNOME_RUBRICA: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'NOME_RUBRICA'
-      Origin = 'NOME'
-      ProviderFlags = []
-      ReadOnly = True
-      Size = 100
-    end
     object qProjeto_RubricaGASTO: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'GASTO'
@@ -1336,17 +1328,19 @@ inherited smAdministrativo: TsmAdministrativo
       Precision = 18
       Size = 2
     end
-    object qProjeto_RubricaRECEBIDO: TBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'RECEBIDO'
-      Origin = 'RECEBIDO'
-      ProviderFlags = []
-      Precision = 18
-    end
     object qProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'GASTO_TRANSFERENCIA'
       Origin = 'GASTO_TRANSFERENCIA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object qProjeto_RubricaRECEBIDO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'RECEBIDO'
+      Origin = 'RECEBIDO'
       ProviderFlags = []
       ReadOnly = True
       Precision = 18
@@ -1377,6 +1371,7 @@ inherited smAdministrativo: TsmAdministrativo
       ProviderFlags = []
       ReadOnly = True
       Precision = 18
+      Size = 2
     end
     object qProjeto_RubricaSALDO_PREVISTO: TBCDField
       AutoGenerateValue = arDefault
@@ -1387,17 +1382,25 @@ inherited smAdministrativo: TsmAdministrativo
       Precision = 18
       Size = 2
     end
-    object qProjeto_RubricaCALC_VALOR_GASTO: TBCDField
+    object qProjeto_RubricaNOME_RUBRICA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_RUBRICA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object qProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField
       FieldKind = fkCalculated
-      FieldName = 'CALC_VALOR_GASTO'
+      FieldName = 'CALC_VALOR_RECEBIDO'
       ProviderFlags = []
       Precision = 18
       Size = 6
       Calculated = True
     end
-    object qProjeto_RubricaCALC_VALOR_RECEBIDO: TBCDField
+    object qProjeto_RubricaCALC_VALOR_GASTO: TBCDField
       FieldKind = fkCalculated
-      FieldName = 'CALC_VALOR_RECEBIDO'
+      FieldName = 'CALC_VALOR_GASTO'
       ProviderFlags = []
       Precision = 18
       Size = 6

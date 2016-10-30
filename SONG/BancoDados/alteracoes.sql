@@ -164,3 +164,214 @@ REFERENCES PROJETO_FINANCIADOR_PAGTO(ID)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
+
+
+create or alter view View_valores_rubrica_projeto (
+    Id_rubrica,
+    Id_projeto,
+    Nome_projeto,
+    Nome_rubrica,
+    Orcamento,
+    Valor_gasto,
+    Valor_gasto_transferido,
+    Valor_recebido,
+    Valor_recebido_transferido,
+    Valor_aprovisionado)
+as
+select distinct Projeto_rubrica.Id_rubrica,
+                Projeto_rubrica.Id_projeto,
+                Projeto.Nome as Nome_projeto,
+                Rubrica.Nome as Nome_rubrica,
+                Projeto_rubrica.Orcamento,
+                --VALOR GASTO
+                coalesce(sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica), 0) as Valor_gasto,
+                --VALOR GASTO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_origem = Projeto_rubrica.Id), 0) as Valor_gasto_transferido,
+                --VALOR RECEBIDO
+                coalesce((select sum(Projeto_finan_pagto_rubrica.Valor)
+                          from Projeto_finan_pagto_rubrica
+                          where Projeto_finan_pagto_rubrica.Id_projeto_rubrica = projeto_rubrica.id), 0) as Valor_recebido,
+                --VALOR RECEBIDO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_destino = Projeto_rubrica.Id), 0) as Valor_recebido_transferido,
+                --VALOR APROVISIONADO
+
+                coalesce((sum(View_conta_pagar.Valor) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)) - (sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)), 0) as Valor_aprovisionado
+from Projeto_rubrica
+inner join Projeto on (Projeto.Id = Projeto_rubrica.Id_projeto)
+inner join Rubrica on (Rubrica.Id = Projeto_rubrica.Id_rubrica)
+left join View_conta_pagar on (View_conta_pagar.Id_origem_recurso = Projeto_rubrica.Id_projeto and
+      View_conta_pagar.Id_rubrica_origem = Projeto_rubrica.Id_rubrica and
+      View_conta_pagar.Tipo_origem = 0)
+
+order by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica;
+
+
+
+CREATE OR ALTER VIEW VIEW_RUBRICA_PROJETO(
+    ID_RUBRICA,
+    ID_PROJETO,
+    NOME_PROJETO,
+    NOME_RUBRICA,
+    ORCAMENTO,
+    VALOR_GASTO,
+    VALOR_GASTO_TRANSFERIDO,
+    VALOR_RECEBIDO,
+    VALOR_RECEBIDO_TRANSFERIDO,
+    VALOR_APROVISIONADO,
+    SALDO_REAL,
+    SALDO_PREVISTO)
+AS
+select distinct View_Valores_Rubrica_Projeto.Id_Rubrica,
+                View_Valores_Rubrica_Projeto.Id_Projeto,
+                View_Valores_Rubrica_Projeto.Nome_Projeto,
+                View_Valores_Rubrica_Projeto.Nome_Rubrica,
+                View_Valores_Rubrica_Projeto.orcamento,
+                View_Valores_Rubrica_Projeto.Valor_Gasto,
+                View_Valores_Rubrica_Projeto.valor_gasto_transferido,
+                View_Valores_Rubrica_Projeto.Valor_Recebido,
+                View_Valores_Rubrica_Projeto.valor_recebido_transferido,
+                View_Valores_Rubrica_Projeto.valor_aprovisionado,
+                (View_Valores_Rubrica_Projeto.Valor_Recebido+ View_Valores_Rubrica_Projeto.valor_recebido_transferido)-
+                 (View_Valores_Rubrica_Projeto.Valor_Gasto+View_Valores_Rubrica_Projeto.valor_gasto_transferido) as Saldo_Real,
+                (View_Valores_Rubrica_Projeto.Orcamento+View_Valores_Rubrica_Projeto.valor_recebido_transferido) -
+                 (View_Valores_Rubrica_Projeto.Valor_Gasto + View_Valores_Rubrica_Projeto.valor_gasto_transferido +
+                  View_Valores_Rubrica_Projeto.valor_aprovisionado) as Saldo_Previsto
+
+from View_Valores_Rubrica_Projeto
+;
+
+
+
+create or alter view View_valores_rubrica_projeto (
+    Id_rubrica,
+    Id_projeto,
+    Nome_projeto,
+    Nome_rubrica,
+    Orcamento,
+    Valor_gasto,
+    Valor_gasto_transferido,
+    Valor_recebido,
+    Valor_recebido_transferido,
+    Valor_aprovisionado)
+as
+select distinct Projeto_rubrica.Id_rubrica,
+                Projeto_rubrica.Id_projeto,
+                Projeto.Nome as Nome_projeto,
+                Rubrica.Nome as Nome_rubrica,
+                Projeto_rubrica.Orcamento,
+                --VALOR GASTO
+                coalesce(sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica), 0) as Valor_gasto,
+                --VALOR GASTO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_origem = Projeto_rubrica.Id), 0) as Valor_gasto_transferido,
+                --VALOR RECEBIDO
+                coalesce(0, 0) as Valor_recebido,
+                --VALOR RECEBIDO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_destino = Projeto_rubrica.Id), 0) as Valor_recebido_transferido,
+                --VALOR APROVISIONADO
+
+                coalesce((sum(View_conta_pagar.Valor) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)) - (sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)), 0) as Valor_aprovisionado
+from Projeto_rubrica
+inner join Projeto on (Projeto.Id = Projeto_rubrica.Id_projeto)
+inner join Rubrica on (Rubrica.Id = Projeto_rubrica.Id_rubrica)
+left join View_conta_pagar on (View_conta_pagar.Id_origem_recurso = Projeto_rubrica.Id_projeto and
+      View_conta_pagar.Id_rubrica_origem = Projeto_rubrica.Id_rubrica and
+      View_conta_pagar.Tipo_origem = 0)
+
+order by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica;
+
+
+
+create or alter view View_valores_rubrica_projeto (
+    Id_rubrica,
+    Id_projeto,
+    Nome_projeto,
+    Nome_rubrica,
+    Orcamento,
+    Valor_gasto,
+    Valor_gasto_transferido,
+    Valor_recebido,
+    Valor_recebido_transferido,
+    Valor_aprovisionado)
+as
+select distinct Projeto_rubrica.Id_rubrica,
+                Projeto_rubrica.Id_projeto,
+                Projeto.Nome as Nome_projeto,
+                Rubrica.Nome as Nome_rubrica,
+                Projeto_rubrica.Orcamento,
+                --VALOR GASTO
+                coalesce(sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica), 0) as Valor_gasto,
+                --VALOR GASTO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_origem = Projeto_rubrica.Id), 0) as Valor_gasto_transferido,
+                --VALOR RECEBIDO
+                coalesce(0, 0) as Valor_recebido,
+                --VALOR RECEBIDO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_destino = Projeto_rubrica.Id), 0) as Valor_recebido_transferido,
+                --VALOR APROVISIONADO
+
+                coalesce((sum(View_conta_pagar.Valor) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)) - (sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)), 0) as Valor_aprovisionado
+from Projeto_rubrica
+inner join Projeto on (Projeto.Id = Projeto_rubrica.Id_projeto)
+inner join Rubrica on (Rubrica.Id = Projeto_rubrica.Id_rubrica)
+left join View_conta_pagar on (View_conta_pagar.Id_origem_recurso = Projeto_rubrica.Id_projeto and
+      View_conta_pagar.Id_rubrica_origem = Projeto_rubrica.Id_rubrica and
+      View_conta_pagar.Tipo_origem = 0)
+
+order by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica;
+
+
+
+create or alter view View_valores_rubrica_projeto (
+    Id_rubrica,
+    Id_projeto,
+    Nome_projeto,
+    Nome_rubrica,
+    Orcamento,
+    Valor_gasto,
+    Valor_gasto_transferido,
+    Valor_recebido,
+    Valor_recebido_transferido,
+    Valor_aprovisionado)
+as
+select distinct Projeto_rubrica.Id_rubrica,
+                Projeto_rubrica.Id_projeto,
+                Projeto.Nome as Nome_projeto,
+                Rubrica.Nome as Nome_rubrica,
+                Projeto_rubrica.Orcamento,
+                --VALOR GASTO
+                coalesce(sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica), 0) as Valor_gasto,
+                --VALOR GASTO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_origem = Projeto_rubrica.Id), 0) as Valor_gasto_transferido,
+                --VALOR RECEBIDO
+                coalesce((select sum(Projeto_finan_pagto_rubrica.Valor)
+                          from Projeto_finan_pagto_rubrica
+                          where Projeto_finan_pagto_rubrica.Id_projeto_rubrica = projeto_rubrica.id), 0) as Valor_recebido,
+                --VALOR RECEBIDO TRANSFERIDO
+                coalesce((select sum(Transferencia_financeira.Valor)
+                          from Transferencia_financeira
+                          where Transferencia_financeira.Id_projeto_rubrica_destino = Projeto_rubrica.Id), 0) as Valor_recebido_transferido,
+                --VALOR APROVISIONADO
+
+                coalesce((sum(View_conta_pagar.Valor) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)) - (sum(View_conta_pagar.Valor_pago) over(partition by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica)), 0) as Valor_aprovisionado
+from Projeto_rubrica
+inner join Projeto on (Projeto.Id = Projeto_rubrica.Id_projeto)
+inner join Rubrica on (Rubrica.Id = Projeto_rubrica.Id_rubrica)
+left join View_conta_pagar on (View_conta_pagar.Id_origem_recurso = Projeto_rubrica.Id_projeto and
+      View_conta_pagar.Id_rubrica_origem = Projeto_rubrica.Id_rubrica and
+      View_conta_pagar.Tipo_origem = 0)
+
+order by Projeto_rubrica.Id_projeto, Projeto_rubrica.Id_rubrica;
+

@@ -1,11 +1,17 @@
 inherited frmProjeto: TfrmProjeto
   ActiveControl = nil
   Caption = 'Projetos'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastroDetailRubrica
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 556
@@ -140,6 +146,9 @@ inherited frmProjeto: TfrmProjeto
             ClientRectBottom = 243
             inherited tabDetail: TcxTabSheet
               Caption = 'Pessoas Envolvidas'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
               ExplicitHeight = 218
               inherited cxGridRegistrosDetail: TcxGrid
                 Height = 193
@@ -1077,6 +1086,10 @@ inherited frmProjeto: TfrmProjeto
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label9: TLabel
           Left = 5
@@ -1773,8 +1786,6 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailPagtoRubrica: TcxTabSheet
       Caption = 'tabCadastroDetailPagtoRubrica'
       ImageIndex = 8
-      ExplicitLeft = 3
-      ExplicitTop = 25
       object pnCadastroDetailPagtoRubrica: TPanel
         Left = 0
         Top = 0
@@ -1782,7 +1793,6 @@ inherited frmProjeto: TfrmProjeto
         Height = 50
         Align = alTop
         TabOrder = 0
-        ExplicitTop = 8
         object btnSalvarPagtoRubrica: TButton
           AlignWithMargins = True
           Left = 4
@@ -1804,21 +1814,21 @@ inherited frmProjeto: TfrmProjeto
           Align = alLeft
           Images = dmPrincipal.imgIcons_32
           TabOrder = 1
-          ExplicitLeft = 215
         end
       end
       inline frameGrids: TframeGrids
         Left = 0
-        Top = 50
+        Top = 74
         Width = 976
-        Height = 398
+        Height = 374
         Align = alClient
         TabOrder = 1
+        ExplicitTop = 50
         ExplicitWidth = 976
         ExplicitHeight = 398
         inherited gpGrids: TGridPanel
           Width = 976
-          Height = 379
+          Height = 355
           ControlCollection = <
             item
               Column = 0
@@ -1839,15 +1849,13 @@ inherited frmProjeto: TfrmProjeto
           ExplicitWidth = 976
           ExplicitHeight = 379
           inherited cxGrid1: TcxGrid
-            Width = 457
-            Height = 377
+            Height = 353
+            ExplicitLeft = 2
             ExplicitWidth = 457
             ExplicitHeight = 377
           end
           inherited pnBotoes: TPanel
-            Left = 458
-            Width = 48
-            Height = 377
+            Height = 353
             ExplicitLeft = 458
             ExplicitWidth = 48
             ExplicitHeight = 377
@@ -1865,9 +1873,7 @@ inherited frmProjeto: TfrmProjeto
             end
           end
           inherited cxGrid2: TcxGrid
-            Left = 506
-            Width = 469
-            Height = 377
+            Height = 353
             ExplicitLeft = 506
             ExplicitWidth = 469
             ExplicitHeight = 377
@@ -1902,7 +1908,6 @@ inherited frmProjeto: TfrmProjeto
               ExplicitWidth = 49
             end
             inherited lbInfoGridDireita: TLabel
-              Left = 505
               Width = 125
               Caption = 'Rubricas selecionadas'
               ExplicitLeft = 505
@@ -1921,6 +1926,43 @@ inherited frmProjeto: TfrmProjeto
         inherited ActionListFrame: TActionList
           Left = 168
           Top = 224
+        end
+      end
+      object pnInfoPagto: TPanel
+        Left = 0
+        Top = 50
+        Width = 976
+        Height = 24
+        Align = alTop
+        TabOrder = 2
+        object Label24: TLabel
+          Left = 4
+          Top = 4
+          Width = 158
+          Height = 13
+          Caption = 'Valor Pago pelo Financiador:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label25: TLabel
+          Left = 12
+          Top = 10
+          Width = 3
+          Height = 13
+        end
+        object EditVisualizacaoValorPagoFinanciador: TcxDBCurrencyEdit
+          Left = 165
+          Top = 1
+          RepositoryItem = dmLookup.repCurPadrao
+          DataBinding.DataField = 'VALOR'
+          DataBinding.DataSource = dsFinanciador_Pagto
+          Enabled = False
+          TabOrder = 0
+          Width = 242
         end
       end
     end
@@ -2049,6 +2091,9 @@ inherited frmProjeto: TfrmProjeto
       FieldName = 'RUBRICA'
       ProviderFlags = []
       Size = 300
+    end
+    object cdsLocalProjeto_RubricaVALOR: TCurrencyField
+      FieldName = 'VALOR'
     end
   end
 end

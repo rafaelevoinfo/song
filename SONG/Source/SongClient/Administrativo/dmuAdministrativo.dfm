@@ -1289,6 +1289,7 @@ inherited dmAdministrativo: TdmAdministrativo
       FieldName = 'RECEBIDO'
       ProviderFlags = []
       Precision = 18
+      Size = 2
     end
     object cdsProjeto_RubricaGASTO_TRANSFERENCIA: TBCDField
       DisplayLabel = 'Gasto com Transfer'#234'ncia'
@@ -1320,6 +1321,7 @@ inherited dmAdministrativo: TdmAdministrativo
       ProviderFlags = []
       ReadOnly = True
       Precision = 18
+      Size = 2
     end
     object cdsProjeto_RubricaSALDO_PREVISTO: TBCDField
       DisplayLabel = 'Saldo Previsto'
@@ -1527,11 +1529,11 @@ inherited dmAdministrativo: TdmAdministrativo
       end>
     IndexDefs = <
       item
-        Name = 'ORDER_BY_ID_PROJETO_FINANCIADOR_PAGTO'
+        Name = 'ORDER_BY_FINAN_PAGTO'
         Fields = 'ID_PROJETO_FINANCIADOR_PAGTO'
         GroupingLevel = 1
       end>
-    IndexName = 'ORDER_BY_ID_PROJETO_FINANCIADOR_PAGTO'
+    IndexName = 'ORDER_BY_FINAN_PAGTO'
     MasterFields = 'ID'
     MasterSource = dsProjeto_Financiador_Pagto
     PacketRecords = 0
@@ -1584,7 +1586,7 @@ inherited dmAdministrativo: TdmAdministrativo
       DisplayName = ''
       Expression = 'SUM(VALOR)'
       GroupingLevel = 1
-      IndexName = 'ORDER_BY_ID_PROJETO_FINANCIADOR_PAGTO'
+      IndexName = 'ORDER_BY_FINAN_PAGTO'
     end
   end
   object dsProjeto_Financiador_Pagto: TDataSource

@@ -223,6 +223,11 @@ type
     cdsLocalProjeto_Rubrica: TClientDataSet;
     cdsLocalProjeto_RubricaID: TIntegerField;
     cdsLocalProjeto_RubricaRUBRICA: TStringField;
+    pnInfoPagto: TPanel;
+    Label24: TLabel;
+    Label25: TLabel;
+    EditVisualizacaoValorPagoFinanciador: TcxDBCurrencyEdit;
+    cdsLocalProjeto_RubricaVALOR: TCurrencyField;
     procedure FormCreate(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
     procedure Ac_CarregarArquivoExecute(Sender: TObject);
@@ -509,6 +514,8 @@ begin
         cdsLocalProjeto_Rubrica.Append;
         cdsLocalProjeto_RubricaID.AsInteger := dmAdministrativo.cdsProjeto_RubricaID.AsInteger;
         cdsLocalProjeto_RubricaRUBRICA.AsString := dmAdministrativo.cdsProjeto_RubricaNOME_RUBRICA.AsString;
+        cdsLocalProjeto_RubricaVALOR.AsFloat := dmAdministrativo.cdsProjeto_RubricaORCAMENTO.AsFloat *
+          (dmAdministrativo.cdsProjeto_Financiador_PagtoPERCENTUAL.AsFloat / 100);
         cdsLocalProjeto_Rubrica.Post;
       end);
 
@@ -632,24 +639,18 @@ begin
   // Esquerda
   frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'ID', false, false);
   frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'RUBRICA', true, false);
+  frameGrids.fpuAdicionarField(frameGrids.viewEsquerda, 'VALOR', false, false);
   // Direita
   frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA.FieldName, false, false);
   frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaRUBRICA.FieldName, true, false);
-  vaColumn := frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaVALOR.FieldName, true, true);
+  vaColumn := frameGrids.fpuAdicionarField(frameGrids.viewDireita, dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaVALOR.FieldName, true, true, dmLookup.repCurPadrao);
   // mapeando
   frameGrids.ppuMapearFields('ID', dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaID_PROJETO_RUBRICA.FieldName);
   frameGrids.ppuMapearFields('RUBRICA', dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaRUBRICA.FieldName);
+  frameGrids.ppuMapearFields('VALOR', dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaVALOR.FieldName);
 
   vaSomaValor := frameGrids.viewDireita.DataController.Summary.FooterSummaryItems.Add(vaColumn, spFooter, skSum);
   vaSomaValor.Format := 'R$ ,0.00';
-
-  frameGrids.OnAddRemoveRegistro := procedure(ipDataSetOrigem, ipDataSetDestino: TDataSet; ipTipo: TTipoAcao)
-    begin
-      if ipTipo = tcAdd then
-        begin
-          ipDataSetDestino.FieldByName(dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaVALOR.FieldName).AsFloat := 0;
-        end;
-    end;
 end;
 
 procedure TfrmProjeto.ppvCarregarAreasAtuacao;
@@ -760,8 +761,8 @@ begin
       if pcPrincipal.ActivePage = tabCadastroDetailPagtoRubrica then
         begin
           if CompareValue(StrToFloatDef(dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaAGG_SOMA_VALOR.AsString, 0),
-            dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat) = GreaterThanValue then
-            raise Exception.Create('O valor total das rubricas não pode ser superior ao valor do financiamento.');
+            dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat) <> EqualsValue then
+            raise Exception.Create('O valor total das rubricas deve ser exatamente o valor pago pelo financiador.');
         end
       else
         begin
