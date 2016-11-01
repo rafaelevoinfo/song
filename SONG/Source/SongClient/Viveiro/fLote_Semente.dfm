@@ -3,7 +3,6 @@ inherited frmLoteSemente: TfrmLoteSemente
   Caption = 'Lotes de Sementes'
   ClientWidth = 1037
   ExplicitWidth = 1053
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -12,10 +11,7 @@ inherited frmLoteSemente: TfrmLoteSemente
     ExplicitWidth = 1037
     ClientRectRight = 1033
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1029
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         Width = 1029
         ExplicitWidth = 1029
@@ -229,12 +225,10 @@ inherited frmLoteSemente: TfrmLoteSemente
         end
         inherited cxSplitter1: TcxSplitter
           Width = 1027
-          ExplicitTop = 145
           ExplicitWidth = 1027
         end
         inherited pnDetail: TPanel
           Width = 1027
-          ExplicitTop = 151
           ExplicitWidth = 1027
           inherited pcDetails: TcxPageControl
             Width = 1025
@@ -309,6 +303,10 @@ inherited frmLoteSemente: TfrmLoteSemente
             object tabDetailGerminacao: TcxTabSheet
               Caption = 'Hist'#243'rico de Germina'#231#227'o'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pn1: TPanel
                 Left = 0
                 Top = 0
@@ -412,6 +410,10 @@ inherited frmLoteSemente: TfrmLoteSemente
               Caption = 'Matrizes'
               ImageIndex = 2
               OnShow = tabDetailMatrizesShow
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object cxGrid2: TcxGrid
                 Left = 0
                 Top = 0
@@ -581,14 +583,12 @@ inherited frmLoteSemente: TfrmLoteSemente
                 ExplicitWidth = 1023
                 inherited lbInfoGridEsquerda: TLabel
                   Width = 131
-                  Height = 15
                   Caption = 'Matrizes dessa esp'#233'cie'
                   ExplicitWidth = 131
                 end
                 inherited lbInfoGridDireita: TLabel
                   Left = 531
                   Width = 110
-                  Height = 15
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 531
                   ExplicitWidth = 110
@@ -737,10 +737,7 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1029
-      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         Width = 1029
         ExplicitWidth = 1029
@@ -885,6 +882,10 @@ inherited frmLoteSemente: TfrmLoteSemente
     object tabCadastroGerminacao: TcxTabSheet
       Caption = 'tabCadastroGerminacao'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastroGerminacao: TPanel
         Left = 0
         Top = 0

@@ -1407,6 +1407,7 @@ inherited smEstoque: TsmEstoque
     end
   end
   object qOrcamento_Item: TRFQuery
+    OnCalcFields = qOrcamento_ItemCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select ORCAMENTO_ITEM.ID,'
@@ -1504,6 +1505,12 @@ inherited smEstoque: TsmEstoque
       Origin = 'NOME'
       ProviderFlags = []
       Size = 100
+    end
+    object qOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_VALOR_TOTAL'
+      ProviderFlags = []
+      Calculated = True
     end
   end
   object qOrcamento_Customizado: TRFQuery

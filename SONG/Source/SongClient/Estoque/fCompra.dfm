@@ -1,22 +1,16 @@
 inherited frmCompra: TfrmCompra
   ActiveControl = btnIncluir
   Caption = 'Compras'
-  ExplicitWidth = 1000
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
           Width = 411
-          ExplicitLeft = 562
+          ExplicitLeft = 564
           ExplicitWidth = 411
           inherited Label1: TLabel
             Left = 4
@@ -218,6 +212,7 @@ inherited frmCompra: TfrmCompra
               DataBinding.FieldName = 'GEROU_CONTA_PAGAR'
               RepositoryItem = dmLookup.RepIcbNaoSim
               OnCustomDrawCell = viewRegistrosGEROU_CONTA_PAGARCustomDrawCell
+              Options.Editing = False
               Width = 106
             end
             object viewRegistrosCODIGO_RASTREIO: TcxGridDBColumn [10]
@@ -423,10 +418,6 @@ inherited frmCompra: TfrmCompra
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
-      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7

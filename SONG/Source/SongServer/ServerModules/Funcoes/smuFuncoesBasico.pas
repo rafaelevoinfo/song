@@ -45,7 +45,11 @@ begin
   qId.Connection := dmPrincipal.Connection;
 
   qId.Close;
-  qId.MacroByName('GENERATOR').AsRaw := 'GEN_' + ipTabela.ToUpper;
+  if (ipTabela.ToUpper = 'LOTE_SEMENTE') or (ipTabela.ToUpper = 'LOTE_MUDA') then
+    qId.MacroByName('GENERATOR').AsRaw := 'GEN_LOTE_SEMENTE_MUDA'
+  else
+    qId.MacroByName('GENERATOR').AsRaw := 'GEN_' + ipTabela.ToUpper;
+
   qId.Open();
 
   Result := qIdID.AsInteger;

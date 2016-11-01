@@ -533,6 +533,10 @@ inherited frmLoteMuda: TfrmLoteMuda
     object tabCadastroCanteiro: TcxTabSheet
       Caption = 'tabCadastroCanteiro'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lb1: TLabel
         Left = 5
         Top = 56

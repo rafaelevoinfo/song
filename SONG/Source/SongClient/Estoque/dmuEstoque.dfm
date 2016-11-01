@@ -634,6 +634,7 @@ inherited dmEstoque: TdmEstoque
     Top = 16
   end
   object cdsVenda: TRFClientDataSet
+    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqVenda'
@@ -1233,6 +1234,11 @@ inherited dmEstoque: TdmEstoque
       FieldName = 'FAMILIA_BOTANICA'
       ProviderFlags = []
       Size = 100
+    end
+    object cdsOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField
+      DisplayLabel = 'Valor Total'
+      FieldName = 'CALC_VALOR_TOTAL'
+      ReadOnly = True
     end
   end
   object cdsOrcamento_Customizado: TRFClientDataSet

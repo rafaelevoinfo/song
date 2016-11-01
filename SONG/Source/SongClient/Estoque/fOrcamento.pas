@@ -18,21 +18,17 @@ uses
   cxScrollBox, fmEditor, uMensagem, System.RegularExpressions,
   fBasicoCrudMasterDetail, cxSplitter, cxCalc, cxCurrencyEdit, cxMemo,
   cxRichEdit, System.Generics.Collections, uExceptions, uUtils, fSaida, fVenda,
-  cxRichEditUtils, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
-  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
-  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
-  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
-  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
-  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
-  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
-  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
-  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
-  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
-  dxSkinsDefaultPainters, dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, System.Math, ppParameter, ppDesignLayer, ppVar, ppCtrls,
+  cxRichEditUtils,
+  dxSkinOffice2007Black, System.Math, ppParameter, ppDesignLayer, ppVar, ppCtrls,
   ppBands, ppPrnabl, ppClass, ppCache, ppProd, ppReport, ppDB, ppComm, ppRelatv,
-  ppDBPipe, ppStrtch, ppRichTx;
+  ppDBPipe, ppStrtch, ppRichTx, Datasnap.DBClient, ppTableGrid, ppSubRpt,
+  ppModule, raCodMod, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap,
+  dxPrnDev, dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns,
+  dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv,
+  dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxExtDBEditorLnks,
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
+  dxSkinsdxRibbonPainter, dxPSCore, dxPSContainerLnk, cxDBRichEdit, dxPSRELnk,
+  dxPScxExtComCtrlsLnk;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -131,6 +127,71 @@ type
     Ac_Editar_Orcamento: TAction;
     btnEditar_Orcamento2: TButton;
     RichAux: TcxRichEdit;
+    cdsLocalOrcamento: TClientDataSet;
+    cdsLocalOrcamentoINICIO: TBlobField;
+    cdsLocalOrcamentoFIM: TBlobField;
+    DBPipeItens: TppDBPipeline;
+    ppSubReport1: TppSubReport;
+    ppChildReport1: TppChildReport;
+    dsLocalOrcamento: TDataSource;
+    ppDBRichText2: TppDBRichText;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppTitleBand1: TppTitleBand;
+    ppDetailBand2: TppDetailBand;
+    ppSummaryBand1: TppSummaryBand;
+    ppTableGrid1: TppTableGrid;
+    ppTableRow1: TppTableRow;
+    ppTableColumn1: TppTableColumn;
+    ppTableCell1: TppTableCell;
+    ppTableColumn2: TppTableColumn;
+    ppTableCell3: TppTableCell;
+    ppTableColumn3: TppTableColumn;
+    ppTableCell5: TppTableCell;
+    ppTableColumn4: TppTableColumn;
+    ppTableCell7: TppTableCell;
+    ppTableColumn5: TppTableColumn;
+    ppTableCell9: TppTableCell;
+    ppTableColumn6: TppTableColumn;
+    ppTableCell11: TppTableCell;
+    ppTableColumn7: TppTableColumn;
+    ppTableCell13: TppTableCell;
+    ppTableGrid2: TppTableGrid;
+    ppTableRow2: TppTableRow;
+    ppTableCell2: TppTableCell;
+    ppTableCell4: TppTableCell;
+    ppTableCell6: TppTableCell;
+    ppTableCell8: TppTableCell;
+    ppTableCell10: TppTableCell;
+    ppTableCell12: TppTableCell;
+    ppTableCell14: TppTableCell;
+    ppTableColumn8: TppTableColumn;
+    ppTableColumn9: TppTableColumn;
+    ppTableColumn10: TppTableColumn;
+    ppTableColumn11: TppTableColumn;
+    ppTableColumn12: TppTableColumn;
+    ppTableColumn13: TppTableColumn;
+    ppTableColumn14: TppTableColumn;
+    ppLabel1: TppLabel;
+    ppLabel4: TppLabel;
+    ppLabel5: TppLabel;
+    ppDBText3: TppDBText;
+    ppDBText4: TppDBText;
+    ppDBText12: TppDBText;
+    ppLabel8: TppLabel;
+    ppLabel7: TppLabel;
+    ppLabel9: TppLabel;
+    ppLabel10: TppLabel;
+    ppDBText13: TppDBText;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppVariable1: TppVariable;
+    raCodeModule1: TraCodeModule;
+    raCodeModule2: TraCodeModule;
+    viewRegistrosDetailTAMANHO: TcxGridDBColumn;
+    viewRegistrosDetailNOME_CIENTIFICO: TcxGridDBColumn;
+    viewRegistrosDetailFAMILIA_BOTANICA: TcxGridDBColumn;
+    viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -162,7 +223,7 @@ type
     procedure ppvCarregarMarcadoresCustomizados;
     procedure ppvAdicionarCampoCustomizado(ipCampo: String; ipConteudo: String = '');
     function fpvLocalizarModeloOrcamento(ipIdModelo: Integer): Boolean;
-    procedure ppvSubstituirCamposOrcamento;
+    procedure ppvSubstituirMarcadoresOrcamento;
     procedure ppvMontarOrcamento;
     function fpvInserirTabelaEspecies: String;
   protected
@@ -202,12 +263,13 @@ begin
   ppvAdicionarCliente;
 end;
 
-procedure TfrmOrcamento.ppvSubstituirCamposOrcamento;
+procedure TfrmOrcamento.ppvSubstituirMarcadoresOrcamento;
 var
   vaMarcador, vaConteudo: String;
   vaPos: Integer;
   ATableParams: TcxRichEditTableParams;
   AIndex: Integer;
+  vaValorTotal: Currency;
 
   procedure plSubstituir(ipMarcador, ipConteudo: String);
   begin
@@ -230,48 +292,32 @@ begin
   for vaMarcador in FMarcadoresCustomizados.Keys do
     begin
       vaConteudo := FMarcadoresCustomizados.Items[vaMarcador].Text;
-      vaPos := 0;
-      while vaPos <> -1 do
-        begin
-          vaPos := frameEditor.Rich.FindTexT(coInicioMarcador + vaMarcador + coFimMarcador, 0, Length(frameEditor.Rich.Text), []);
-          if vaPos <> -1 then
-            begin
-              frameEditor.Rich.SelStart := vaPos;
-              frameEditor.Rich.SelLength := Length(coInicioMarcador + vaMarcador + coFimMarcador);
-              frameEditor.Rich.SelText := vaConteudo;
-            end;
-        end;
+      plSubstituir(vaMarcador, vaConteudo);
     end;
 
-  vaPos := 0;
-  vaConteudo := '';
-  while vaPos <> -1 do
-    begin
-      vaMarcador := MarcadorOrcamento[moTabelaEspecie];
-      vaPos := frameEditor.Rich.FindTexT(coInicioMarcador + vaMarcador + coFimMarcador, 0, Length(frameEditor.Rich.Text), []);
-      if vaPos <> -1 then
-        begin
-          frameEditor.Rich.SelStart := vaPos;
-          frameEditor.Rich.SelLength := Length(coInicioMarcador + vaMarcador + coFimMarcador);
-
-          if vaConteudo = '' then
-            vaConteudo := fpvInserirTabelaEspecies;
-
-          frameEditor.Rich.SelText := vaConteudo;
-        end;
-    end;
+  // vaConteudo := fpvInserirTabelaEspecies;
+  // plSubstituir(MarcadorOrcamento[moTabelaEspecie], vaConteudo);
 
   plSubstituir(MarcadorOrcamento[moDataOrcamento], DateToStr(dmEstoque.cdsOrcamentoDATA.AsDateTime));
+  plSubstituir(MarcadorOrcamento[moDataOrcamentoExtenso], FormatDateTime('dd "de" mmmm "de" yyyy', dmEstoque.cdsOrcamentoDATA.AsDateTime));
   plSubstituir(MarcadorOrcamento[moCliente], dmEstoque.cdsOrcamentoCLIENTE.AsString);
   plSubstituir(MarcadorOrcamento[moResponsavel], dmEstoque.cdsOrcamentoRESPONSAVEL.AsString);
+
+  TUtils.ppuPercorrerCds(dmEstoque.cdsOrcamento_Item,
+    procedure
+    begin
+      vaValorTotal := vaValorTotal + dmEstoque.cdsOrcamento_ItemCALC_VALOR_TOTAL.AsCurrency;
+    end);
+  plSubstituir(MarcadorOrcamento[moValorTotal], FormatFloat('R$ ,0.00', vaValorTotal));
+  plSubstituir(MarcadorOrcamento[moValorTotalExtenso], TUtils.fpuGetValorPorExtenso(vaValorTotal));
 end;
 
 function TfrmOrcamento.fpvInserirTabelaEspecies: String;
 const
-  vaQuebraLinha: String = Char(13) + Char(10);
-  vaCellWidth: Integer = 1680;
-  vaCellIndent: Integer = 100;
-  vaQtdeColuna = 7;
+  coQuebraLinha: String = Char(13) + Char(10);
+  coCellWidth: Integer = 1680;
+  coCellIndent: Integer = 100;
+  coQtdeColuna = 7;
 var
   i, vaLinha, vaColuna: Integer;
 
@@ -284,30 +330,30 @@ begin
   // vamos fazer um refresh para garantir que vai conter todas as informacoes necessarias
   dmEstoque.cdsOrcamento_Item.Refresh;
 
-  Result := '{\rtf1\ansi\ansicpg1251' + vaQuebraLinha;
+  Result := '{\rtf1\ansi\ansicpg1251 ' + coQuebraLinha;
   for vaLinha := 0 to dmEstoque.cdsOrcamento_Item.RecordCount do
     begin
       if vaLinha > 0 then
         dmEstoque.cdsOrcamento_Item.RecNo := vaLinha;
 
-      Result := Result + '\trowd\trgaph' + IntToStr(vaCellIndent) + vaQuebraLinha;
+      Result := Result + '\trowd\trgaph' + IntToStr(coCellIndent) + coQuebraLinha;
       i := 0;
-      for vaColuna := 0 to vaQtdeColuna - 1 do
+      for vaColuna := 0 to coQtdeColuna - 1 do
         begin
           Inc(i);
           Result := Result + '\clbrdrt\brdrs\clbrdrl\brdrs\clbrdrb\brdrs\clbrdrr\brdrs\cellx' +
-            IntToStr(i * vaCellWidth) + vaQuebraLinha;
+            IntToStr(i * coCellWidth) + coQuebraLinha;
         end;
 
-      Result := Result + '\pard\intbl' + vaQuebraLinha;
+      Result := Result + '\pard\intbl' + coQuebraLinha;
 
-      for vaColuna := 0 to vaQtdeColuna - 1 do
+      for vaColuna := 0 to coQtdeColuna - 1 do
         begin
           if vaLinha = 0 then
             begin
               case vaColuna of
                 0:
-                  Result := Result + flAddBold('NOME DA ESPÉCIE');
+                  Result := Result + flAddBold('ESPÉCIE');
                 1:
                   Result := Result + flAddBold('NOME CIENTÍFICO');
                 2:
@@ -343,10 +389,10 @@ begin
               end;
             end;
 
-          Result := Result + '\cell' + vaQuebraLinha;
+          Result := Result + '\cell' + coQuebraLinha;
         end;
 
-      Result := Result + '\row' + vaQuebraLinha;
+      Result := Result + '\row' + coQuebraLinha;
     end;
   Result := Result + '}';
 end;
@@ -525,6 +571,8 @@ begin
 end;
 
 procedure TfrmOrcamento.Ac_ImprimirExecute(Sender: TObject);
+var
+  vaPos: Integer;
 begin
   inherited;
   if not dmLookup.cdslkOrganizacao.Active then
@@ -534,7 +582,35 @@ begin
   dmEstoque.cdsOrcamento_Orcamento.ParamByName('ID').AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
   dmEstoque.cdsOrcamento_Orcamento.Open;
 
-  ppOrcamento.PrintReport;
+  if cdsLocalOrcamento.Active then
+    cdsLocalOrcamento.EmptyDataSet
+  else
+    cdsLocalOrcamento.CreateDataSet;
+
+  cdsLocalOrcamento.Append;
+  // vamos pegar o texto ate o marcador das espécies
+  vaPos := frameEditor.Rich.FindTexT(MarcadorOrcamento[moTabelaEspecie],1,Length(frameEditor.Rich.Text),[]);
+  if vaPos > 0 then
+    begin
+      frameEditor.Rich.SelStart := 1;
+      frameEditor.Rich.SelLength := vaPos;
+      cdsLocalOrcamentoINICIO.AsString := frameEditor.Rich.SelText;
+
+      //Copy(dmEstoque.cdsOrcamento_OrcamentoORCAMENTO.AsString, 1, vaPos);
+      frameEditor.Rich.SelStart := vaPos+length(MarcadorOrcamento[moTabelaEspecie]);
+      frameEditor.Rich.SelLength := Length(frameEditor.Rich.Text)-frameEditor.Rich.SelStart;
+      cdsLocalOrcamentoFIM.AsString := frameEditor.Rich.SelText;
+    end;
+
+  cdsLocalOrcamento.Post;
+
+  dmEstoque.cdsOrcamento_Item.DisableControls;
+  try
+    ppOrcamento.PrintReport;
+  finally
+    dmEstoque.cdsOrcamento_Item.EnableControls;
+  end;
+
 end;
 
 procedure TfrmOrcamento.Ac_Incluir_Campo_CustomizadoExecute(Sender: TObject);
@@ -592,7 +668,7 @@ begin
       dmEstoque.cdsOrcamento_OrcamentoORCAMENTO.Assign(dmLookup.cdslkModelo_Orcamento_OrcamentoMODELO);
       dmEstoque.cdsOrcamento_Orcamento.Post;
 
-      ppvSubstituirCamposOrcamento;
+      ppvSubstituirMarcadoresOrcamento;
     end;
 end;
 
@@ -617,7 +693,7 @@ begin
 end;
 
 procedure TfrmOrcamento.cbClienteKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+Shift: TShiftState);
 begin
   inherited;
   if Key = VK_F2 then
@@ -667,6 +743,8 @@ var
   vaMatchesCampo: TMatchCollection;
   vaMatchCampo: TMatch;
   vaConteudo: String;
+  i: TMarcadorOrcamento;
+  vaMarcadorCustomizado: Boolean;
 begin
   ppvLimparEditsCamposCustomizados;
 
@@ -692,8 +770,18 @@ begin
 
         for vaMatchCampo in vaMatchesCampo do
           begin
-            if (vaMatchCampo.Value <> MarcadorOrcamento[moTabelaEspecie]) and (vaMatchCampo.Value <> MarcadorOrcamento[moDataOrcamento]) and
-              (vaMatchCampo.Value <> MarcadorOrcamento[moCliente]) and (vaMatchCampo.Value <> MarcadorOrcamento[moResponsavel]) then
+            vaMarcadorCustomizado := true;
+            for i := Low(TMarcadorOrcamento) to High(TMarcadorOrcamento) do
+              begin
+                if i <> moCustomizado then
+                  begin
+                    vaMarcadorCustomizado := vaMarcadorCustomizado and (MarcadorOrcamento[i] <> vaMatchCampo.Value);
+                    if not vaMarcadorCustomizado then
+                      break;
+                  end;
+              end;
+
+            if vaMarcadorCustomizado then
               begin
                 if not FMarcadoresCustomizados.ContainsKey(vaMatchCampo.Value) then
                   begin

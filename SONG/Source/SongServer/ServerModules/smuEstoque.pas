@@ -9,7 +9,8 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, uUtils, uClientDataSet, uSQLGenerator,
-  Datasnap.Provider, System.Generics.Collections, Datasnap.DBClient;
+  Datasnap.Provider, System.Generics.Collections, Datasnap.DBClient, ppMath,
+  System.Math;
 
 type
   TsmEstoque = class(TsmBasico)
@@ -194,6 +195,7 @@ type
     qOrcamentoID_SAIDA: TIntegerField;
     qOrcamento_ItemNOME_CIENTIFICO: TStringField;
     qOrcamento_ItemFAMILIA_BOTANICA: TStringField;
+    qOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;
@@ -206,6 +208,7 @@ type
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qEntrada_ItemCalcFields(DataSet: TDataSet);
     procedure qVendaCalcFields(DataSet: TDataSet);
+    procedure qOrcamento_ItemCalcFields(DataSet: TDataSet);
   private
     FIdsEspecies: TList<Integer>;
   protected
@@ -437,6 +440,12 @@ begin
   if Assigned(vaField) then
     vaField.AsFloat := DataSet.FieldByName('QTDE').AsFloat * DataSet.FieldByName('VALOR_UNITARIO').AsFloat;
 
+end;
+
+procedure TsmEstoque.qOrcamento_ItemCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  qOrcamento_ItemCALC_VALOR_TOTAL.AsCurrency := RoundTo(qOrcamento_ItemQTDE.AsFloat * qOrcamento_ItemVALOR_UNITARIO.AsFloat,-2);
 end;
 
 procedure TsmEstoque.qPatrimonioCalcFields(DataSet: TDataSet);

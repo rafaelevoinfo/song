@@ -195,6 +195,7 @@ type
     cdsOrcamentoID_SAIDA: TIntegerField;
     cdsOrcamento_ItemNOME_CIENTIFICO: TStringField;
     cdsOrcamento_ItemFAMILIA_BOTANICA: TStringField;
+    cdsOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

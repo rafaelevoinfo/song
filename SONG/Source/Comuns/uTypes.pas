@@ -134,7 +134,7 @@ type
     property IdLoteMuda: Integer read FIdLoteMuda write SetIdLoteMuda;
     property IdLoteSemente: Integer read FIdLoteSemente write SetIdLoteSemente;
     property Qtde: Double read FQtde write SetQtde;
-    property ValorUnitario:Double read FValorUnitario write SetValorUnitario;
+    property ValorUnitario: Double read FValorUnitario write SetValorUnitario;
   end;
 
   TLote = class(TModelo)
@@ -269,8 +269,8 @@ type
 
   TTipoSaida = (tsVenda, tsConsumo, tsPerda, tsPlantio, tsOutro);
 
-  //ficou errado quando foi feito, para nao ter q fazer update no banco inteiro vamos começar com o valor 1
-  TFormaPagamento = (fpTransferencia=1, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro,fpBoleto, fpOutro);
+  // ficou errado quando foi feito, para nao ter q fazer update no banco inteiro vamos começar com o valor 1
+  TFormaPagamento = (fpTransferencia = 1, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro, fpBoleto, fpOutro);
 
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
@@ -280,7 +280,8 @@ type
   TTipoAgenda = (taPessoal, taOutra);
   TTipoEvento = (teEventoAgenda, teEventoAtividade);
 
-  TMarcadorOrcamento = (moTabelaEspecie, moDataOrcamento, moCliente, moResponsavel, moCustomizado);
+  TMarcadorOrcamento = (moTabelaEspecie, moDataOrcamento, moDataOrcamentoExtenso,
+    moCliente, moResponsavel, moValorTotal, moValorTotalExtenso, moCustomizado);
 
 const
   // mensagens customizadas do windows
@@ -305,7 +306,8 @@ const
   TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
     'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Eventos de Agendas');
-  MarcadorOrcamento: array[TMarcadorOrcamento] of String = ('Tabela de Espécies','Data do Orçamento', 'Cliente', 'Responsável', 'Customizado');
+  MarcadorOrcamento: array [TMarcadorOrcamento] of String = ('Tabela de Espécies',
+    'Data do Orçamento', 'Data do Orçamento por Extenso', 'Cliente', 'Responsável', 'Valor Total', 'Valor Total por Extenso', 'Customizado');
 
 implementation
 

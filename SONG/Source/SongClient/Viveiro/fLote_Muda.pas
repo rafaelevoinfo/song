@@ -249,6 +249,8 @@ begin
     begin
       vaLote := TLoteMuda(Modelo);
       dmViveiro.cdsLote_Muda.Edit;
+      if vaLote.Id <> 0 then
+        dmViveiro.cdsLote_MudaID.AsInteger := vaLote.Id;
 
       if (vaLote.Nome <> '') and (dmViveiro.cdsLote_MudaNOME.AsString <> vaLote.Nome) then
         dmViveiro.cdsLote_MudaNOME.AsString := vaLote.Nome;

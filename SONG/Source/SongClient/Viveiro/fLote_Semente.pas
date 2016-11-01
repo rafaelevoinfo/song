@@ -334,6 +334,7 @@ begin
     dmViveiro.cdsGerminacao.Last; // ultimo registro cadastrado
 
     vaLoteMuda := TLoteMuda.Create;
+    vaLoteMuda.Id := dmViveiro.cdsLote_SementeID.AsInteger;
     vaLoteMuda.IdLoteSemente := dmViveiro.cdsLote_SementeID.AsInteger;
 
     vaLoteMuda.Qtde := dmViveiro.cdsGerminacaoQTDE_GERMINADA.AsInteger;
