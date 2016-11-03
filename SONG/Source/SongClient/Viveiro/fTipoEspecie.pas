@@ -13,7 +13,8 @@ uses
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxGroupBox,
   cxRadioGroup, Vcl.StdCtrls, cxDropDownEdit, cxImageComboBox, cxTextEdit,
   cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC, dmuViveiro, cxMemo, cxDBEdit,
-  uControleAcesso, System.TypInfo, dmuPrincipal, uTypes;
+  uControleAcesso, System.TypInfo, dmuPrincipal, uTypes, dmuLookup, cxCheckBox,
+  Vcl.Menus;
 
 type
   TfrmTipoEspecie = class(TfrmBasicoCrud)
@@ -23,12 +24,16 @@ type
     Label4: TLabel;
     viewRegistrosID: TcxGridDBColumn;
     viewRegistrosNOME: TcxGridDBColumn;
+    chkNativa: TcxDBCheckBox;
+    viewRegistrosNATIVA: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
+    dmLookup: TdmLookup;
   protected
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
+    procedure ppuIncluir;override;
   public
 
   end;
@@ -45,6 +50,9 @@ procedure TfrmTipoEspecie.FormCreate(Sender: TObject);
 begin
   dmViveiro := TdmViveiro.Create(Self);
   dmViveiro.Name := '';
+
+  dmLookup := TdmLookup.Create(Self);
+  dmLookup.Name := '';
   inherited;
 
   PesquisaPadrao := Ord(tppTodos);
@@ -61,6 +69,12 @@ begin
   inherited;
   if not dmPrincipal.FuncoesViveiro.fpuValidarNomeTipoEspecie(dmViveiro.cdsTipo_EspecieID.AsInteger, dmViveiro.cdsTipo_EspecieNOME.AsString) then
     raise Exception.Create('Já existe um tipo de espécie com este nome. Por favor, informe outro nome.');
+end;
+
+procedure TfrmTipoEspecie.ppuIncluir;
+begin
+  inherited;
+  dmViveiro.cdsTipo_EspecieNATIVA.AsInteger := 0;
 end;
 
 end.

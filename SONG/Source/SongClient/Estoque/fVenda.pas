@@ -687,30 +687,35 @@ begin
             end;
         end;
 
+        dmEstoque.cdsVenda_Item.DisableControls;
         try
-          dmEstoque.cdsVenda_Item.First;
-          while not dmEstoque.cdsVenda_Item.Eof do
-            begin
-              vaItem := TItem.Create;
-              vaItem.Id := dmEstoque.cdsVenda_ItemID_ITEM.AsInteger;
-              vaItem.IdEspecie := dmEstoque.cdsVenda_ItemID_ESPECIE.AsInteger;
-              vaItem.IdLoteMuda := dmEstoque.cdsVenda_ItemID_LOTE_MUDA.AsInteger;
-              vaItem.IdLoteSemente := dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.AsInteger;
-              vaItem.IdItemCompraVenda := dmEstoque.cdsVenda_ItemID.AsInteger;
-              vaItem.Qtde := dmEstoque.cdsVenda_ItemQTDE.AsFloat;
+          try
+            dmEstoque.cdsVenda_Item.First;
+            while not dmEstoque.cdsVenda_Item.Eof do
+              begin
+                vaItem := TItem.Create;
+                vaItem.Id := dmEstoque.cdsVenda_ItemID_ITEM.AsInteger;
+                vaItem.IdEspecie := dmEstoque.cdsVenda_ItemID_ESPECIE.AsInteger;
+                vaItem.IdLoteMuda := dmEstoque.cdsVenda_ItemID_LOTE_MUDA.AsInteger;
+                vaItem.IdLoteSemente := dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.AsInteger;
+                vaItem.IdItemCompraVenda := dmEstoque.cdsVenda_ItemID.AsInteger;
+                vaItem.Qtde := dmEstoque.cdsVenda_ItemQTDE.AsFloat;
 
-              vaFrmSaida.Modelo := vaItem;
-              vaFrmSaida.ppuIncluirDetail;
-              vaFrmSaida.ppuSalvarDetail;
+                vaFrmSaida.Modelo := vaItem;
+                vaFrmSaida.ppuIncluirDetail;
+                vaFrmSaida.ppuSalvarDetail;
 
-              dmEstoque.cdsVenda_Item.Next;
-            end;
-        except
-          on e: Exception do
-            begin
-              TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
-              Exit;
-            end;
+                dmEstoque.cdsVenda_Item.Next;
+              end;
+          except
+            on e: Exception do
+              begin
+                TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+                Exit;
+              end;
+          end;
+        finally
+          dmEstoque.cdsVenda_Item.EnableControls;
         end;
 
         TMensagem.ppuShowMessage('Saída gerada com sucesso.');

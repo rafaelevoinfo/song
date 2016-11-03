@@ -129,11 +129,13 @@ begin
     Exit;
 
   dsEsquerda.DataSet.DisableControls;
+  dsDireita.DataSet.DisableControls;
   try
     dsEsquerda.DataSet.First;
     while not dsEsquerda.DataSet.Eof do
       Ac_Add.Execute;
   finally
+    dsDireita.DataSet.EnableControls;
     dsEsquerda.DataSet.EnableControls;
   end;
 end;
@@ -231,11 +233,13 @@ begin
     Exit;
 
   dsDireita.DataSet.DisableControls;
+  dsEsquerda.DataSet.DisableControls;
   try
     dsDireita.DataSet.First;
     while not dsDireita.DataSet.Eof do
       Ac_Remover.Execute;
   finally
+    dsEsquerda.DataSet.EnableControls;
     dsDireita.DataSet.EnableControls;
   end;
 

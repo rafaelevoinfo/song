@@ -18,7 +18,7 @@ uses
   uControleAcesso, uClientDataSet, uTypes, uExceptions, fSaida, uMensagem,
   fVenda, ppParameter, ppDesignLayer, ppProd, ppClass, ppReport, ppComm,
   ppRelatv, ppDB, ppDBPipe, ppVar, ppCtrls, ppPrnabl, ppBands, ppCache,
-  Vcl.Menus, ppStrtch, ppSubRpt;
+  Vcl.Menus, ppStrtch, ppSubRpt, cxSpinEdit;
 
 type
   TfrmMixMuda = class(TfrmBasicoCrudMasterDetail)
@@ -126,6 +126,8 @@ type
     ppLabel4: TppLabel;
     ppColumnHeaderBand1: TppColumnHeaderBand;
     ppColumnFooterBand1: TppColumnFooterBand;
+    Label6: TLabel;
+    EditQtdeCarrinho: TcxSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure EditQtdePropertiesEditValueChanged(Sender: TObject);
@@ -138,6 +140,7 @@ type
     procedure Ac_Gerar_VendaExecute(Sender: TObject);
     procedure Ac_ImprimirExecute(Sender: TObject);
     procedure Ac_ImprimirUpdate(Sender: TObject);
+    procedure EditQtdeCarrinhoPropertiesEditValueChanged(Sender: TObject);
   private
     FIdItemMuda: integer;
     FCalcularQuantidades: Boolean;
@@ -257,6 +260,7 @@ var
   vaFrmVenda: TfrmVenda;
   vaVenda: TVenda;
   vaItem: TItem;
+  vaIdVenda: integer;
 begin
   inherited;
   if (dmViveiro.cdsMix_MudaID_VENDA.IsNull and dmViveiro.cdsMix_MudaID_SAIDA.IsNull) then
@@ -273,6 +277,13 @@ begin
           vaFrmVenda.ppuConfigurarModoExecucao(meSomenteCadastro, vaVenda);
           vaFrmVenda.ppuIncluir;
           vaFrmVenda.ppuSalvar;
+
+          vaIdVenda := vaFrmVenda.IdEscolhido;
+          vaFrmVenda.ppuConfigurarPesquisa(Ord(tppId), vaIdVenda.ToString());
+          vaFrmVenda.ppuPesquisar;
+          if vaFrmVenda.dsMaster.DataSet.FieldByName(TBancoDados.coId).AsInteger <> vaIdVenda then
+            raise Exception.Create('Não foi possível encontrar a venda gerada.');
+
         except
           on e: Exception do
             begin
@@ -281,40 +292,46 @@ begin
             end;
         end;
 
+        // nao posso dar disable por causa do master detail
+        viewRegistrosDetail.BeginUpdate(lsimImmediate);
         try
-          dmViveiro.cdsMix_Muda_Especie.First;
-          while not dmViveiro.cdsMix_Muda_Especie.eof do
-            begin
-              dmViveiro.cdsMix_Muda_Especie_Lote.First;
-              while not dmViveiro.cdsMix_Muda_Especie_Lote.eof do
-                begin
-                  vaItem := TItem.Create;
-                  vaItem.Id := FIdItemMuda;
-                  vaItem.IdEspecie := dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.AsInteger;
-                  vaItem.IdLoteMuda := dmViveiro.cdsMix_Muda_Especie_LoteID_LOTE_MUDA.AsInteger;
-                  vaItem.Qtde := dmViveiro.cdsMix_Muda_Especie_LoteQTDE.AsInteger;
-                  if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, vaItem.IdEspecie, []) then
-                    vaItem.ValorUnitario := dmLookup.cdslkEspecieVALOR_MUDA.AsFloat;
+          try
+            dmViveiro.cdsMix_Muda_Especie.First;
+            while not dmViveiro.cdsMix_Muda_Especie.eof do
+              begin
+                dmViveiro.cdsMix_Muda_Especie_Lote.First;
+                while not dmViveiro.cdsMix_Muda_Especie_Lote.eof do
+                  begin
+                    vaItem := TItem.Create;
+                    vaItem.Id := FIdItemMuda;
+                    vaItem.IdEspecie := dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.AsInteger;
+                    vaItem.IdLoteMuda := dmViveiro.cdsMix_Muda_Especie_LoteID_LOTE_MUDA.AsInteger;
+                    vaItem.Qtde := dmViveiro.cdsMix_Muda_Especie_LoteQTDE.AsInteger;
+                    if dmLookup.cdslkEspecie.Locate(TBancoDados.coId, vaItem.IdEspecie, []) then
+                      vaItem.ValorUnitario := dmLookup.cdslkEspecieVALOR_MUDA.AsFloat;
 
-                  vaFrmVenda.Modelo := vaItem;
-                  vaFrmVenda.ppuIncluirDetail;
-                  // se nao tiver valor configurado irei abrir a tela para o usuario informar
-                  if vaItem.ValorUnitario = 0 then
-                    vaFrmVenda.ShowModal
-                  else
-                    vaFrmVenda.ppuSalvarDetail;
+                    vaFrmVenda.Modelo := vaItem;
+                    vaFrmVenda.ppuIncluirDetail;
+                    // se nao tiver valor configurado irei abrir a tela para o usuario informar
+                    if vaItem.ValorUnitario = 0 then
+                      vaFrmVenda.ShowModal
+                    else
+                      vaFrmVenda.ppuSalvarDetail;
 
-                  dmViveiro.cdsMix_Muda_Especie_Lote.Next;
-                end;
+                    dmViveiro.cdsMix_Muda_Especie_Lote.Next;
+                  end;
 
-              dmViveiro.cdsMix_Muda_Especie.Next;
-            end;
-        except
-          on e: Exception do
-            begin
-              TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
-              Exit;
-            end;
+                dmViveiro.cdsMix_Muda_Especie.Next;
+              end;
+          except
+            on e: Exception do
+              begin
+                TMensagem.ppuShowException('Houve um erro ao incluir os itens da saída. Será necessário inclui-los manualmente.', e);
+                Exit;
+              end;
+          end;
+        finally
+          viewRegistrosDetail.EndUpdate;
         end;
 
         dmViveiro.cdsMix_Muda.Edit;
@@ -339,14 +356,14 @@ begin
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.ParamByName('ID_MIX_MUDA').AsInteger := dmViveiro.cdsMix_MudaID.AsInteger;
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Open;
 
-  ppSubReportRocambole.Visible := true;
+  ppSubReportRocambole.Visible := True;
   try
     cdsQtdeMudaRocambole.Data := dmPrincipal.FuncoesViveiro.fpuCalcularQtdeMudasRocambole(dmViveiro.cdsMix_MudaID.AsInteger);
   except
     on e: Exception do
       begin
         ppSubReportRocambole.Visible := false;
-        //mesmo se der erro ao calcular a quantidade de mudas por rocambole, ainda irei imprimir
+        // mesmo se der erro ao calcular a quantidade de mudas por rocambole, ainda irei imprimir
         TMensagem.ppuShowException(e);
         if not cdsQtdeMudaRocambole.Active then
           cdsQtdeMudaRocambole.CreateDataSet
@@ -398,11 +415,31 @@ begin
 
 end;
 
+procedure TfrmMixMuda.EditQtdeCarrinhoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if (pcPrincipal.ActivePage = tabCadastro) and not VarIsNull(EditQtdeCarrinho.EditValue) then
+    begin
+      if not(dmViveiro.cdsMix_Muda.State in [dsEdit, dsInsert]) then
+        dmViveiro.cdsMix_Muda.Edit;
+
+      dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger := (EditQtdeCarrinho.EditValue * coMudasPorCarrinho);
+    end;
+end;
+
 procedure TfrmMixMuda.EditQtdePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastro then
-    FCalcularQuantidades := True;
+    begin
+      FCalcularQuantidades := True;
+      if dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger mod coMudasPorCarrinho = 0 then
+        begin
+          EditQtdeCarrinho.EditValue := dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger div coMudasPorCarrinho;
+          EditQtdeCarrinho.PostEditValue;
+        end;
+    end;
 end;
 
 procedure TfrmMixMuda.FormCreate(Sender: TObject);
@@ -487,16 +524,27 @@ end;
 
 procedure TfrmMixMuda.pprValidarDados;
 var
-  vaTotalMudasDisponiveis: integer;
+  vaTotalMudasDisponiveis, vaQtdeMinimaEspecie: integer;
 begin
   inherited;
   if dmViveiro.cdsMix_Muda_Especie.RecordCount = 0 then
     raise Exception.Create('É necessário selecionar pelo menos uma espécie.');
 
+  if dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger < coMudasPorCarrinho then
+    raise TControlException.Create('A quantidade minima para se fazer um mix é de ' + coMudasPorCarrinho.ToString + ' mudas.', EditQtde);
+
+  if dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger mod coMudasPorCarrinho <> 0 then
+    raise TControlException.Create('A quantidade de mudas deve ser um número multiplo de ' + coMudasPorCarrinho.ToString, EditQtde);
+
   vaTotalMudasDisponiveis := 0;
+  vaQtdeMinimaEspecie := (dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger div coMudasPorCarrinho);
   TUtils.ppuPercorrerCds(dmViveiro.cdsMix_Muda_Especie,
     procedure
     begin
+      if dmViveiro.cdsMix_Muda_EspecieQTDE_MUDA_PRONTA.AsInteger < vaQtdeMinimaEspecie then
+        raise Exception.Create('A espécie ' + dmViveiro.cdsMix_Muda_EspecieESPECIE.AsString + ' deve possuir pelo menos ' + vaQtdeMinimaEspecie.ToString() +
+          ' mudas prontas' + slinebreak + 'para plantio para poder fazer parte do mix.');
+
       inc(vaTotalMudasDisponiveis, dmViveiro.cdsMix_Muda_EspecieQTDE_MUDA_PRONTA.AsInteger);
     end);
 
@@ -515,15 +563,20 @@ begin
     cdsLocalEspecie.CreateDataSet;
 
   ppvCarregarEspeciesAndSaldos; // atualiza os saldoss
-  TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
-    procedure
-    begin
-      if (not dmViveiro.cdsMix_Muda_Especie.Locate(dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.FieldName, dmLookup.cdslkEspecieID.AsInteger, [])) and
-        (dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger > 0) then
-        begin
-          ppvIncluirEspecieCdsLocal;
-        end;
-    end);
+  cdsLocalEspecie.DisableControls;
+  try
+    TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
+      procedure
+      begin
+        if (not dmViveiro.cdsMix_Muda_Especie.Locate(dmViveiro.cdsMix_Muda_EspecieID_ESPECIE.FieldName, dmLookup.cdslkEspecieID.AsInteger, [])) and
+          (dmLookup.cdslkEspecieNATIVA.AsInteger = 1) and (dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger > 0) then
+          begin
+            ppvIncluirEspecieCdsLocal;
+          end;
+      end);
+  finally
+    cdsLocalEspecie.EnableControls;
+  end;
 
   ppvConfigurarEdits;
 end;
@@ -542,14 +595,20 @@ begin
   dmViveiro.cdsMix_MudaDATA.AsDateTime := now;
 
   ppvCarregarEspeciesAndSaldos; // atualiza os saldos
-  TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
-    procedure
-    begin
-      if dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger > 0 then
-        begin
-          ppvIncluirEspecieCdsLocal;
-        end;
-    end);
+
+  cdsLocalEspecie.DisableControls;
+  try
+    TUtils.ppuPercorrerCds(dmLookup.cdslkEspecie,
+      procedure
+      begin
+        if (dmLookup.cdslkEspecieNATIVA.AsInteger = 1) and (dmLookup.cdslkEspecieQTDE_MUDA_PRONTA.AsInteger > 0) then
+          begin
+            ppvIncluirEspecieCdsLocal;
+          end;
+      end);
+  finally
+    cdsLocalEspecie.EnableControls;
+  end;
 
   ppvConfigurarEdits;
 

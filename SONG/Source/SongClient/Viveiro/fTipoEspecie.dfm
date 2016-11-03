@@ -1,10 +1,8 @@
 inherited frmTipoEspecie: TfrmTipoEspecie
-  ActiveControl = btnIncluir
   Caption = 'Tipo de Esp'#233'cie'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
@@ -36,6 +34,11 @@ inherited frmTipoEspecie: TfrmTipoEspecie
             end
             object viewRegistrosNOME: TcxGridDBColumn [1]
               DataBinding.FieldName = 'NOME'
+              Options.Editing = False
+            end
+            object viewRegistrosNATIVA: TcxGridDBColumn [2]
+              DataBinding.FieldName = 'NATIVA'
+              RepositoryItem = dmLookup.RepIcbNaoSim
               Options.Editing = False
             end
           end
@@ -79,6 +82,19 @@ inherited frmTipoEspecie: TfrmTipoEspecie
           TabOrder = 1
           Height = 89
           Width = 581
+        end
+        object chkNativa: TcxDBCheckBox
+          Left = 306
+          Top = 26
+          RepositoryItem = dmLookup.RepChkNaoSim
+          Caption = 'Nativa do Cerrado'
+          DataBinding.DataField = 'NATIVA'
+          DataBinding.DataSource = dsMaster
+          Properties.NullStyle = nssUnchecked
+          Properties.ValueChecked = 1
+          Properties.ValueUnchecked = 0
+          TabOrder = 2
+          Width = 121
         end
       end
     end

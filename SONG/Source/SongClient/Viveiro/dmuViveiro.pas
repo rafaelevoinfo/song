@@ -173,6 +173,7 @@ type
     cdsMix_Muda_Especie_Lote_CanteiroCLIENTE: TStringField;
     cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField;
     cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField;
+    cdsTipo_EspecieNATIVA: TSmallintField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

@@ -124,18 +124,13 @@ inherited frmMixMuda: TfrmMixMuda
             WordWrap = True
           end
         end
-        inherited pnFiltros: TPanel
-          ExplicitLeft = 1
-          ExplicitTop = 43
-          ExplicitWidth = 974
-        end
       end
       inherited pnGrid: TPanel
-        Height = 522
-        ExplicitHeight = 522
+        Height = 514
+        ExplicitHeight = 514
         inherited cxGridRegistros: TcxGrid
-          Height = 287
-          ExplicitHeight = 287
+          Height = 279
+          ExplicitHeight = 279
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
@@ -195,12 +190,12 @@ inherited frmMixMuda: TfrmMixMuda
           end
         end
         inherited cxSplitter1: TcxSplitter
-          Top = 288
-          ExplicitTop = 288
+          Top = 280
+          ExplicitTop = 280
         end
         inherited pnDetail: TPanel
-          Top = 294
-          ExplicitTop = 294
+          Top = 286
+          ExplicitTop = 286
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Esp'#233'cies'
@@ -322,9 +317,6 @@ inherited frmMixMuda: TfrmMixMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 976
       ExplicitHeight = 583
       inherited pnEditsCadastro: TPanel
         Height = 533
@@ -338,15 +330,15 @@ inherited frmMixMuda: TfrmMixMuda
           BevelOuter = bvNone
           TabOrder = 0
           object Label3: TLabel
-            Left = 3
+            Left = 115
             Top = 46
-            Width = 77
+            Width = 160
             Height = 13
-            Caption = 'Qtde. de Mudas'
+            Caption = 'Qtde. de Mudas (Multiplo de 400)'
             FocusControl = EditQtde
           end
           object Label4: TLabel
-            Left = 91
+            Left = 283
             Top = 46
             Width = 102
             Height = 13
@@ -384,6 +376,14 @@ inherited frmMixMuda: TfrmMixMuda
             Height = 13
             Caption = 'Cliente (F2)'
             FocusControl = cbCliente
+          end
+          object Label6: TLabel
+            Left = 3
+            Top = 46
+            Width = 92
+            Height = 13
+            Caption = 'Qtde. de Carrinhos'
+            FocusControl = EditQtde
           end
           object btnAdicionarCliente: TButton
             Left = 166
@@ -429,29 +429,36 @@ inherited frmMixMuda: TfrmMixMuda
             Top = 102
             DataBinding.DataField = 'DESCRICAO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 6
+            TabOrder = 7
             Height = 62
             Width = 525
           end
           object EditQtde: TcxDBCalcEdit
-            Left = 1
+            Left = 113
             Top = 63
-            RepositoryItem = dmLookup.repCalcPadrao
+            RepositoryItem = dmLookup.repCalcInteiro
             DataBinding.DataField = 'QTDE_MUDA'
             DataBinding.DataSource = dsMaster
             Properties.OnEditValueChanged = EditQtdePropertiesEditValueChanged
-            TabOrder = 4
-            Width = 82
+            TabOrder = 5
+            Width = 162
           end
           object EditQtdeRocambole: TcxDBCalcEdit
-            Left = 89
+            Left = 281
             Top = 63
             RepositoryItem = dmLookup.repCalcPadrao
             DataBinding.DataField = 'QTDE_MUDA_ROCAMBOLE'
             DataBinding.DataSource = dsMaster
             Properties.OnEditValueChanged = EditQtdePropertiesEditValueChanged
-            TabOrder = 5
+            TabOrder = 6
             Width = 104
+          end
+          object EditQtdeCarrinho: TcxSpinEdit
+            Left = 3
+            Top = 63
+            Properties.OnEditValueChanged = EditQtdeCarrinhoPropertiesEditValueChanged
+            TabOrder = 4
+            Width = 106
           end
         end
         inline frameGrids: TframeGrids
@@ -488,10 +495,15 @@ inherited frmMixMuda: TfrmMixMuda
             ExplicitWidth = 974
             ExplicitHeight = 344
             inherited cxGrid1: TcxGrid
+              Width = 456
+              Height = 342
               ExplicitWidth = 456
               ExplicitHeight = 342
             end
             inherited pnBotoes: TPanel
+              Left = 457
+              Width = 48
+              Height = 342
               ExplicitLeft = 457
               ExplicitWidth = 48
               ExplicitHeight = 342
@@ -509,6 +521,9 @@ inherited frmMixMuda: TfrmMixMuda
               end
             end
             inherited cxGrid2: TcxGrid
+              Left = 505
+              Width = 468
+              Height = 342
               ExplicitLeft = 505
               ExplicitWidth = 468
               ExplicitHeight = 342
@@ -541,6 +556,7 @@ inherited frmMixMuda: TfrmMixMuda
                 ExplicitWidth = 229
               end
               inherited lbInfoGridDireita: TLabel
+                Left = 504
                 Width = 124
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 504
@@ -605,16 +621,17 @@ inherited frmMixMuda: TfrmMixMuda
   end
   inherited dsMaster: TDataSource
     DataSet = dmViveiro.cdsMix_Muda
+    Left = 560
     Top = 128
-  end
-  inherited fdExportDialog: TSaveTextFileDialog
-    Left = 568
-    Top = 184
   end
   inherited dsDetail: TDataSource
     DataSet = dmViveiro.cdsMix_Muda_Especie
     Left = 352
     Top = 144
+  end
+  inherited fdExportDialog: TSaveTextFileDialog
+    Left = 568
+    Top = 184
   end
   object cdsLocalEspecie: TClientDataSet [5]
     Aggregates = <>

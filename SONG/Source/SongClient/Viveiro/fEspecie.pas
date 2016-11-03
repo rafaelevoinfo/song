@@ -16,7 +16,7 @@ uses
   cxMemo, cxDBEdit, uClientDataSet, cxLocalization, cxCalc, cxCurrencyEdit,
   dmuLookup, cxSpinEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   Vcl.ExtDlgs, cxCheckBox, cxCheckGroup, uUtils, uExceptions, cxCheckComboBox,
-  fFamilia_Botanica;
+  fFamilia_Botanica, Vcl.Menus;
 
 type
   TfrmEspecie = class(TfrmBasicoCrud)

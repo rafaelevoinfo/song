@@ -406,8 +406,12 @@ inherited smLookup: TsmLookup
       '       Especie.Qtde_Muda_Pronta,'
       '       Especie.Qtde_Muda_Desenvolvimento,'
       '       Especie.Qtde_Semente_Tubete,'
-      '       Especie.Peso_Medio_Semente'
+      '       Especie.Peso_Medio_Semente,'
+      '       Tipo_Especie.Nativa'
       'from especie'
+      
+        'left join tipo_especie on (especie.id_tipo_especie = tipo_especi' +
+        'e.id)'
       '&where'
       'order by Especie.nome')
     Left = 40
@@ -476,6 +480,13 @@ inherited smLookup: TsmLookup
       Origin = 'PESO_MEDIO_SEMENTE'
       ProviderFlags = []
       Precision = 18
+    end
+    object qlkEspecieNATIVA: TSmallintField
+      AutoGenerateValue = arDefault
+      FieldName = 'NATIVA'
+      Origin = 'NATIVA'
+      ProviderFlags = []
+      ReadOnly = True
     end
   end
   object qlkMatriz: TRFQuery
@@ -1446,7 +1457,8 @@ inherited smLookup: TsmLookup
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Tipo_Especie.Id,'
-      '       Tipo_Especie.Nome'
+      '       Tipo_Especie.Nome,'
+      '       Tipo_Especie.Nativa'
       'from Tipo_Especie '
       '&WHERE')
     Left = 352
@@ -1468,6 +1480,11 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
       Size = 100
+    end
+    object qlkTipo_EspecieNATIVA: TSmallintField
+      FieldName = 'NATIVA'
+      Origin = 'NATIVA'
+      ProviderFlags = []
     end
   end
   object qlkModelo_Orcamento: TRFQuery

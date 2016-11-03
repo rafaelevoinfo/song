@@ -76,6 +76,8 @@ type
 
     coCategoria = 'CATEGORIA';
     coSaldoPositivo = 'SALDO_POSITIVO';
+
+    coNativa = 'ESPECIE_NATIVA_CERRADO';
   end;
 
   TOnErroRede = function(e: Exception): Boolean of object;

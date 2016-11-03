@@ -1272,6 +1272,11 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Precision = 18
     end
+    object cdslkEspecieNATIVA: TSmallintField
+      FieldName = 'NATIVA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
   object dslkEspecie: TDataSource
     DataSet = cdslkEspecie
@@ -2204,6 +2209,11 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Required = True
       Size = 100
+    end
+    object cdslkTipo_EspecieNATIVA: TSmallintField
+      DisplayLabel = 'Nativa'
+      FieldName = 'NATIVA'
+      ProviderFlags = []
     end
   end
   object dslkTipo_Especie: TDataSource

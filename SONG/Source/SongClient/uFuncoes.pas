@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 02/10/2016 22:35:51
+// 02/11/2016 20:12:48
 //
 
 unit uFuncoes;
@@ -200,6 +200,7 @@ type
     FqPatrimonioCalcFieldsCommand: TDBXCommand;
     FqEntrada_ItemCalcFieldsCommand: TDBXCommand;
     FqVendaCalcFieldsCommand: TDBXCommand;
+    FqOrcamento_ItemCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -209,6 +210,7 @@ type
     procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
     procedure qEntrada_ItemCalcFields(DataSet: TDataSet); virtual;
     procedure qVendaCalcFields(DataSet: TDataSet); virtual;
+    procedure qOrcamento_ItemCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -224,6 +226,7 @@ type
     FfpuBuscarItensSaidaCommand: TDBXCommand;
     FfpuBuscarItemSaidaCommand: TDBXCommand;
     FppuAtualizarSaldoItemCommand: TDBXCommand;
+    FppuValidarClassificacaoCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -243,6 +246,7 @@ type
     function fpuBuscarItensSaida(ipIdVenda: Integer): string; virtual;
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer; virtual;
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair: Double; ipQtdeSomar: Double); virtual;
+    procedure ppuValidarClassificacao(ipIdLoteMuda: Integer; ipQtde: Integer); virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -254,6 +258,7 @@ type
   private
     FqPatrimonioCalcFieldsCommand: TDBXCommand;
     FqView_Movimentacao_FinanceiraCalcFieldsCommand: TDBXCommand;
+    FqLote_Muda_VendidoCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -261,6 +266,7 @@ type
     destructor Destroy; override;
     procedure qPatrimonioCalcFields(DataSet: TDataSet); virtual;
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet); virtual;
+    procedure qLote_Muda_VendidoCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -1543,6 +1549,19 @@ begin
   FqVendaCalcFieldsCommand.ExecuteUpdate;
 end;
 
+procedure TsmEstoqueClient.qOrcamento_ItemCalcFields(DataSet: TDataSet);
+begin
+  if FqOrcamento_ItemCalcFieldsCommand = nil then
+  begin
+    FqOrcamento_ItemCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqOrcamento_ItemCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqOrcamento_ItemCalcFieldsCommand.Text := 'TsmEstoque.qOrcamento_ItemCalcFields';
+    FqOrcamento_ItemCalcFieldsCommand.Prepare;
+  end;
+  FqOrcamento_ItemCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqOrcamento_ItemCalcFieldsCommand.ExecuteUpdate;
+end;
+
 procedure TsmEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1587,6 +1606,7 @@ begin
   FqPatrimonioCalcFieldsCommand.DisposeOf;
   FqEntrada_ItemCalcFieldsCommand.DisposeOf;
   FqVendaCalcFieldsCommand.DisposeOf;
+  FqOrcamento_ItemCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1734,6 +1754,20 @@ begin
   FppuAtualizarSaldoItemCommand.ExecuteUpdate;
 end;
 
+procedure TsmFuncoesEstoqueClient.ppuValidarClassificacao(ipIdLoteMuda: Integer; ipQtde: Integer);
+begin
+  if FppuValidarClassificacaoCommand = nil then
+  begin
+    FppuValidarClassificacaoCommand := FDBXConnection.CreateCommand;
+    FppuValidarClassificacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuValidarClassificacaoCommand.Text := 'TsmFuncoesEstoque.ppuValidarClassificacao';
+    FppuValidarClassificacaoCommand.Prepare;
+  end;
+  FppuValidarClassificacaoCommand.Parameters[0].Value.SetInt32(ipIdLoteMuda);
+  FppuValidarClassificacaoCommand.Parameters[1].Value.SetInt32(ipQtde);
+  FppuValidarClassificacaoCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesEstoqueClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1839,6 +1873,7 @@ begin
   FfpuBuscarItensSaidaCommand.DisposeOf;
   FfpuBuscarItemSaidaCommand.DisposeOf;
   FppuAtualizarSaldoItemCommand.DisposeOf;
+  FppuValidarClassificacaoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
@@ -1871,6 +1906,19 @@ begin
   end;
   FqView_Movimentacao_FinanceiraCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
   FqView_Movimentacao_FinanceiraCalcFieldsCommand.ExecuteUpdate;
+end;
+
+procedure TsmRelatorioClient.qLote_Muda_VendidoCalcFields(DataSet: TDataSet);
+begin
+  if FqLote_Muda_VendidoCalcFieldsCommand = nil then
+  begin
+    FqLote_Muda_VendidoCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqLote_Muda_VendidoCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqLote_Muda_VendidoCalcFieldsCommand.Text := 'TsmRelatorio.qLote_Muda_VendidoCalcFields';
+    FqLote_Muda_VendidoCalcFieldsCommand.Prepare;
+  end;
+  FqLote_Muda_VendidoCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqLote_Muda_VendidoCalcFieldsCommand.ExecuteUpdate;
 end;
 
 procedure TsmRelatorioClient.DSServerModuleCreate(Sender: TObject);
@@ -1915,6 +1963,7 @@ destructor TsmRelatorioClient.Destroy;
 begin
   FqPatrimonioCalcFieldsCommand.DisposeOf;
   FqView_Movimentacao_FinanceiraCalcFieldsCommand.DisposeOf;
+  FqLote_Muda_VendidoCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

@@ -27,6 +27,8 @@ type
     function fpuBuscarItemSaida(ipIdVendaItem: Integer): Integer;
 
     procedure ppuAtualizarSaldoItem(ipIdItem: Integer; ipQtdeSubtrair, ipQtdeSomar: Double);
+
+    procedure ppuValidarClassificacao(ipIdLoteMuda,ipQtde:Integer);
   end;
 
 var
@@ -224,6 +226,25 @@ begin
 
   if Connection.InTransaction then
     Connection.Commit;
+end;
+
+procedure TsmFuncoesEstoque.ppuValidarClassificacao(ipIdLoteMuda,
+  ipQtde: Integer);
+begin
+  pprEncapsularConsulta(procedure (ipDataSet:TRFQuery)
+  begin
+    ipDataSet.SQL.Text := 'select Lote_muda.Saldo' +
+                          ' from Lote_muda' +
+                          ' where Lote_muda.Id = :Id ';
+    ipDataSet.ParamByName('ID').AsInteger := ipIdLoteMuda;
+    ipDataSet.Open();
+    if ipDataSet.Eof then
+      raise Exception.Create('Nenhum lote foi encontrado.');
+
+    if ipQtde > ipDataSet.FieldByName('SALDO').AsInteger then
+      raise Exception.Create('A quantidade classificada não pode ser superior ao saldo do lote.');
+
+  end);
 end;
 
 end.

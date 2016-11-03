@@ -354,8 +354,12 @@ begin
   inherited;
   if dsDetail.DataSet = dmViveiro.cdsClassificacao then
     begin
-      if dmViveiro.cdsClassificacaoQTDE.AsInteger > dmViveiro.cdsLote_MudaQTDE_INICIAL.AsInteger then
-        raise TControlException.Create('A quantidade classificada não pode ser superior a quantidade inicial.', EditQtdeClassificada);
+      try
+        dmPrincipal.FuncoesEstoque.ppuValidarClassificacao(dmViveiro.cdsLote_MudaID.AsInteger, dmViveiro.cdsClassificacaoQTDE.AsInteger);
+      except
+        on E: Exception do
+          raise TControlException.Create(E.Message, EditQtdeClassificada);
+      end;
     end;
 end;
 

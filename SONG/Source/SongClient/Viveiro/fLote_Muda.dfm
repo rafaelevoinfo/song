@@ -1,11 +1,17 @@
 inherited frmLoteMuda: TfrmLoteMuda
   ActiveControl = btnIncluir
   Caption = 'Lotes de Mudas'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 418
@@ -170,6 +176,7 @@ inherited frmLoteMuda: TfrmLoteMuda
             end
             object viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn [10]
               DataBinding.FieldName = 'RAZAO_SOCIAL'
+              Options.Editing = False
               Width = 150
             end
             object viewRegistrosSTATUS: TcxGridDBColumn [11]
@@ -190,10 +197,13 @@ inherited frmLoteMuda: TfrmLoteMuda
         end
         inherited pnDetail: TPanel
           inherited pcDetails: TcxPageControl
-            Properties.ActivePage = tabDetailCanteiros
             OnChange = pcDetailsChange
             inherited tabDetail: TcxTabSheet
               Caption = 'Classifica'#231#245'es'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -230,6 +240,10 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -448,6 +462,10 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label8: TLabel
           Left = 5
@@ -468,9 +486,9 @@ inherited frmLoteMuda: TfrmLoteMuda
         object Label9: TLabel
           Left = 335
           Top = 8
-          Width = 86
+          Width = 167
           Height = 13
-          Caption = 'Quantidade (Und)'
+          Caption = 'Quantidade Classificada (Perdidas)'
           FocusControl = EditQtdeClassificada
         end
         object Label11: TLabel
@@ -517,7 +535,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           DataBinding.DataSource = dsDetail
           Properties.DisplayFormat = ',0'
           TabOrder = 3
-          Width = 115
+          Width = 169
         end
         object EditObservacaoClassificacao: TcxDBMemo
           Left = 3
@@ -526,7 +544,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           DataBinding.DataSource = dsDetail
           TabOrder = 4
           Height = 63
-          Width = 445
+          Width = 499
         end
       end
     end

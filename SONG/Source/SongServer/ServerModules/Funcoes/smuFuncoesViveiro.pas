@@ -192,7 +192,7 @@ var
   vaEspecie: TEspecie;
   vaDataSet: TRFQuery;
   vaDataAtual, vaDataPrevisao, vaDataMudaPronta, vaDataMudaGerminada: TDateTime;
-  vaQtdeMudaPronta, vaQtdeMudaGerminada: Integer;
+  vaQtdeMudaPronta, vaQtdeMudaGerminada, vaQtdeAplicadaTaxa: Integer;
 
   function flGetEspecie(ipId: Integer): TEspecie;
   var
@@ -226,7 +226,7 @@ begin
       cdsPrevisaoProducao.EmptyDataSet
     else
       cdsPrevisaoProducao.CreateDataSet;
-    // ********************CONTABILIZANDO AS MUDAS QUE SERAO GERADAS A PARTIR DAS SEMENTES QUE SERAO SEMADAS***********
+    // ********************CONTABILIZANDO AS MUDAS QUE SERAO GERADAS A PARTIR DAS SEMENTES QUE SERAO SEMEADAS***********
     // nao posso pegar aqui a quantidad de muda em desenvolvimento  pois isso causaria uma duplicação quando
     // chegasse na parte do codigo que calcula essas mudas. Portanto, vou deixar pra contabiliar somente lá.
     vaDataSet.SQL.Text := 'select Especie.Id,' +
@@ -334,13 +334,13 @@ begin
 
     vaDataSet.Close;
     vaDataSet.SQL.Text := 'select Lote_Muda.Id_Especie,' +
-      '       (select first 1 classificacao.qtde' +
+      '                           Lote_Muda.Qtde_Inicial, ' +
+      '       (select sum(classificacao.qtde)' +
       '                  from classificacao' +
-      '                  where classificacao.id_lote_muda = lote_muda.Id' +
-      '                  order by classificacao.Data desc) AS Qtde_Classificada, ' +
-      '       (Lote_Muda.Qtde_Inicial - coalesce((select sum(Saida_Item.Qtde)' +
+      '         where classificacao.id_lote_muda = lote_muda.Id) AS Qtde_Classificada, ' +
+      '       coalesce((select sum(Saida_Item.Qtde)' +
       '                                  from Saida_Item' +
-      '                                  where Saida_Item.Id_Lote_Muda = Lote_Muda.Id),0)) as Saldo,' +
+      '                                  where Saida_Item.Id_Lote_Muda = Lote_Muda.Id),0) as Qtde_Saida,' +
       '       Lote_Muda.Data' +
       ' from Lote_Muda' +
       ' where Lote_Muda.Id_Especie in (' + vaEspecies + ') and' +
@@ -353,23 +353,25 @@ begin
         if cdsPrevisaoProducao.Locate(cdsPrevisaoProducaoID.FieldName, vaEspecie.Id, []) then
           begin
             cdsPrevisaoProducao.Edit;
-            vaQtdeMudaPronta := Trunc(vaDataSet.FieldByName('SALDO').AsInteger * (vaEspecie.TaxaClassificacao / 100));
-            // Se apos o calculo a qtde de muda pronta ainda for maior do que a quant já classificada então significa q
-            // a taxa de classificacao nao funcionou, porntato vou pegar o valor da qtde_classficada
-            if (vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger <> 0) and (vaQtdeMudaPronta > vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger) then
-              vaQtdeMudaPronta := vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger;
+            vaQtdeAplicadaTaxa := Trunc(vaDataSet.FieldByName('QTDE_INICIAL').AsInteger * (vaEspecie.TaxaClassificacao / 100));
+            // se o valor da qtde inicial aplicada a taxa de classificacao for maior do que a qtde inicial menos a qtde ja classicada, então vou pegar o valor ja classificado
+            if (vaQtdeAplicadaTaxa) > (vaDataSet.FieldByName('QTDE_INICIAL').AsInteger - vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger) then
+              vaQtdeMudaPronta := vaDataSet.FieldByName('QTDE_INICIAL').AsInteger -
+                (vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger + vaDataSet.FieldByName('QTDE_SAIDA').AsInteger)
+            else
+              vaQtdeMudaPronta := vaQtdeAplicadaTaxa - vaDataSet.FieldByName('QTDE_SAIDA').AsInteger;
+
+            if vaQtdeMudaPronta < 0 then
+              vaQtdeMudaPronta := 0;
 
             vaDataMudaPronta := IncDay(vaDataSet.FieldByName('DATA').AsDateTime, vaEspecie.TempoDesenvolvimento);
             if vaDataMudaPronta <= vaDataPrevisao then
               cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_PRONTA.AsInteger + vaQtdeMudaPronta
             else // nao vai da tempo de ficarem prontas, entao vou pegar a quantidade ja classificada ate o momento
               begin
-                if vaDataSet.FieldByName('QTDE_CLASSIFICADA').IsNull then
-                  cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger +
-                    vaDataSet.FieldByName('SALDO').AsInteger
-                else
-                  cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger +
-                    vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger;
+                cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger := cdsPrevisaoProducaoQTDE_MUDA_DESENVOLVIMENTO.AsInteger +
+                  (vaDataSet.FieldByName('QTDE_INICIAL').AsInteger - (vaDataSet.FieldByName('QTDE_CLASSIFICADA').AsInteger + vaDataSet.FieldByName('QTDE_SAIDA')
+                  .AsInteger));
               end;
 
             cdsPrevisaoProducao.Post;
@@ -388,7 +390,7 @@ function TsmFuncoesViveiro.fpuCalcularQtdeMudasRocambole(
   ipIdMixMuda: Integer): OleVariant;
 var
   vaDataSet: TRFQuery;
-  vaQtdeMudaRocambole,vaQtdeTotalRocambole, vaQtdeRocambole, vaIdRocambole: Integer;
+  vaQtdeMudaRocambole, vaQtdeTotalRocambole, vaQtdeRocambole, vaIdRocambole: Integer;
 begin
 
   if not cdsQtdeMudaRocambole.Active then
@@ -522,8 +524,22 @@ procedure TsmFuncoesViveiro.ppuCalcularQuantidadeMudasMix(
   ipIdMixMuda: Integer);
 var
   vaDataSet, vaDataSetLote: TRFQuery;
-  vaQtdeTotalMudas, vaQtdeCalculada, vaQtdeSomada, vaQtdeIncluir: Integer;
+  vaQtdeCarrinho, vaQtdeTotalMudas, vaQtdeCalculada, vaQtdeSomada, vaQtdeIncluir: Integer;
+  vaMenorValor, vaMaiorValor: Integer;
   vaPercentual: Double;
+
+  function flMenorMaiorDivisivel(ipValor: Integer; ipMenor: Boolean): Integer;
+  begin
+    while ipValor mod vaQtdeCarrinho <> 0 do
+      begin
+        if ipMenor then
+          Dec(ipValor)
+        else
+          Inc(ipValor);
+      end;
+    Exit(ipValor);
+  end;
+
 begin
   vaQtdeTotalMudas := 0;
   vaQtdeSomada := 0;
@@ -558,9 +574,16 @@ begin
       if vaQtdeTotalMudas < vaDataSet.FieldByName('Qtde_Muda').AsInteger then
         raise Exception.Create('As espécies selecionadas não possuem mudas suficientes para a quantidade de saidas.');
 
+      vaQtdeCarrinho := vaDataSet.FieldByName('Qtde_Muda').AsInteger div coMudasPorCarrinho;
+
       vaDataSet.First;
       while not vaDataSet.Eof do
         begin
+          // tem que ter pelo menos uma muda por carrinho
+          if vaDataSet.FieldByName('Qtde_Muda_Pronta').AsInteger < vaQtdeCarrinho then
+            raise Exception.Create('A espécie ' + vaDataSet.FieldByName('NOME_ESPECIE').AsString + ' deve possuir pelo menos ' + vaQtdeCarrinho.ToString +
+              ' mudas prontas para ser possível realizar o mix');
+
           vaPercentual := vaDataSet.FieldByName('Qtde_Muda_Pronta').AsInteger / vaQtdeTotalMudas;
           if vaDataSet.RecNo = vaDataSet.RecordCount then // ultimo registro
             vaQtdeCalculada := vaDataSet.FieldByName('Qtde_Muda').AsInteger - vaQtdeSomada
@@ -568,12 +591,35 @@ begin
             vaQtdeCalculada := Trunc(vaDataSet.FieldByName('Qtde_Muda').AsInteger * vaPercentual);
 
           // se a quantidade em estoque for muito baixa em relacao ao total pode dar valores muitos pequenos, por isso
-          // tenho essa condicao para garantir pelo menos uma muda
+          // tenho essa condicao para garantir pelo menos uma muda por carrinho
           if vaQtdeCalculada < 1 then
-            vaQtdeCalculada := 1;
+            vaQtdeCalculada := vaQtdeCarrinho;
+
+          vaMenorValor := -1;
+          vaMaiorValor := -1;
+          if vaQtdeCalculada mod vaQtdeCarrinho <> 0 then
+            begin
+              vaMenorValor := flMenorMaiorDivisivel(vaQtdeCalculada, True);
+              vaMaiorValor := flMenorMaiorDivisivel(vaQtdeCalculada, false);
+              if vaMenorValor <= 0 then
+                vaQtdeCalculada := vaMaiorValor
+              else
+                begin
+                  // vamos ver que esta mais proximo
+                  if (vaQtdeCalculada - vaMenorValor) < (vaMaiorValor - vaQtdeCalculada) then
+                    vaQtdeCalculada := vaMenorValor
+                  else
+                    vaQtdeCalculada := vaMaiorValor;
+                end;
+            end;
 
           if (vaQtdeSomada + vaQtdeCalculada) > vaDataSet.FieldByName('QTDE_MUDA').AsInteger then
-            vaQtdeCalculada := vaDataSet.FieldByName('QTDE_MUDA').AsInteger - vaQtdeSomada;
+            begin
+              vaQtdeCalculada := vaMenorValor;
+              if (vaMenorValor <= 0) or ((vaQtdeSomada + vaQtdeCalculada) > vaDataSet.FieldByName('QTDE_MUDA').AsInteger) then
+                // espero que nunca aconteca
+                raise Exception.Create('Não foi possível calcular a quantidade de mudas de cada espécie. Procure o administrador do sistema.');
+            end;
 
           Inc(vaQtdeSomada, vaQtdeCalculada);
 

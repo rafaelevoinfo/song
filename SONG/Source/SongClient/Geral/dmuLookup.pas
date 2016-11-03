@@ -291,6 +291,8 @@ type
     cdslkModelo_Orcamento_OrcamentoID: TIntegerField;
     cdslkModelo_Orcamento_OrcamentoMODELO: TBlobField;
     repLcbModelo_Orcamento: TcxEditRepositoryLookupComboBoxItem;
+    cdslkTipo_EspecieNATIVA: TSmallintField;
+    cdslkEspecieNATIVA: TSmallintField;
     procedure cdslkConta_CorrenteCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
     procedure cdslkDoadorBeforeApplyUpdates(Sender: TObject;

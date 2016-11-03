@@ -997,7 +997,8 @@ inherited smViveiro: TsmViveiro
     SQL.Strings = (
       'select Tipo_Especie.Id,'
       '       Tipo_Especie.Nome,'
-      '       Tipo_Especie.Descricao'
+      '       Tipo_Especie.Descricao,'
+      '       Tipo_Especie.nativa'
       'from Tipo_Especie '
       '&WHERE')
     Left = 112
@@ -1025,6 +1026,11 @@ inherited smViveiro: TsmViveiro
       Origin = 'DESCRICAO'
       ProviderFlags = [pfInUpdate]
       Size = 1000
+    end
+    object qTipo_EspecieNATIVA: TSmallintField
+      FieldName = 'NATIVA'
+      Origin = 'NATIVA'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qMix_Muda: TRFQuery

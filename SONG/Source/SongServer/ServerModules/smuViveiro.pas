@@ -177,6 +177,7 @@ type
     qMix_Muda_Especie_Lote_CanteiroCLIENTE: TStringField;
     qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField;
     qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField;
+    qTipo_EspecieNATIVA: TSmallintField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);

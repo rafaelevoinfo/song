@@ -189,6 +189,8 @@ type
     qlkModelo_OrcamentoNOME: TStringField;
     qlkModelo_Orcamento_OrcamentoID: TIntegerField;
     qlkModelo_Orcamento_OrcamentoMODELO: TBlobField;
+    qlkTipo_EspecieNATIVA: TSmallintField;
+    qlkEspecieNATIVA: TSmallintField;
   private
     { Private declarations }
   protected
@@ -277,9 +279,9 @@ begin
   else if ipTabela = 'RUBRICA_ATIVIDADE' then
     begin
       if ipParam.Name = TParametros.coAtividade then
-        Result := TSQLGenerator.fpuFilterInteger(Result,'ATIVIDADE','ID',vaValor.ToInteger,vaOperador)
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'ATIVIDADE', 'ID', vaValor.ToInteger, vaOperador)
       else if ipParam.Name = TParametros.coProjeto then
-        Result := TSQLGenerator.fpuFilterInteger(Result,'PROJETO_RUBRICA','ID_PROJETO',vaValor.ToInteger,vaOperador);
+        Result := TSQLGenerator.fpuFilterInteger(Result, 'PROJETO_RUBRICA', 'ID_PROJETO', vaValor.ToInteger, vaOperador);
     end
   else if ipTabela = 'PROJETO_AREA' then
     begin
@@ -311,9 +313,9 @@ begin
       else if ipParam.Name = TParametros.coPossuiEstoque then
         begin
           if StrToBool(vaValor) then
-            Result := Result+ ' (LOTE_SEMENTE.QTDE_ARMAZENADA > 0) '+vaOperador
+            Result := Result + ' (LOTE_SEMENTE.QTDE_ARMAZENADA > 0) ' + vaOperador
           else
-            Result := Result+ ' (LOTE_SEMENTE.QTDE_ARMAZENADA <= 0) '+vaOperador;
+            Result := Result + ' (LOTE_SEMENTE.QTDE_ARMAZENADA <= 0) ' + vaOperador;
         end
       else if ipParam.Name = TParametros.coStatus then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'STATUS', vaValor.ToInteger, vaOperador);
@@ -327,15 +329,26 @@ begin
       else if ipParam.Name = TParametros.coPossuiEstoque then
         begin
           if StrToBool(vaValor) then
-            Result := Result+ ' LOTE_MUDA.SALDO > 0 '+vaOperador
+            Result := Result + ' LOTE_MUDA.SALDO > 0 ' + vaOperador
           else
-            Result := Result+ ' LOTE_MUDA.SALDO <= 0) '+vaOperador;
+            Result := Result + ' LOTE_MUDA.SALDO <= 0) ' + vaOperador;
         end
     end
   else if (ipTabela = 'PROJETO_RUBRICA') then
     begin
       if ipParam.Name = TParametros.coProjeto then
         Result := TSQLGenerator.fpuFilterInteger(Result, ipTabela, 'ID_PROJETO', vaValor.ToInteger, vaOperador)
+    end
+  else if ipTabela = 'ESPECIE' then
+    begin
+      if ipParam.Name = TParametros.coNativa then
+        begin
+          if vaValor.ToInteger = 0 then
+            Result := Result + ' ((TIPO_ESPECIE.NATIVA is NULL) or (TIPO_ESPECIE.NATIVA=0))'
+          else
+            Result := TSQLGenerator.fpuFilterInteger(Result, 'TIPO_ESPECIE', 'NATIVA', vaValor.ToInteger, vaOperador)
+        end;
+
     end;
 end;
 

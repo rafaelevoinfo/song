@@ -800,6 +800,12 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 1000
     end
+    object cdsTipo_EspecieNATIVA: TSmallintField
+      Alignment = taLeftJustify
+      DisplayLabel = 'Nativa'
+      FieldName = 'NATIVA'
+      ProviderFlags = [pfInUpdate]
+    end
   end
   object cdsMix_Muda: TRFClientDataSet
     Aggregates = <>
