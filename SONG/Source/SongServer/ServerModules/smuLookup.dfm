@@ -768,8 +768,8 @@ inherited smLookup: TsmLookup
       FieldName = 'SALDO_REAL'
       Origin = 'SALDO_REAL'
       ProviderFlags = []
-      ReadOnly = True
       Precision = 18
+      Size = 2
     end
   end
   object qlkProjeto_Area: TRFQuery
@@ -1118,6 +1118,7 @@ inherited smLookup: TsmLookup
       Origin = 'SALDO_REAL'
       ProviderFlags = []
       Precision = 18
+      Size = 2
     end
   end
   object qlkLocal_Uso: TRFQuery

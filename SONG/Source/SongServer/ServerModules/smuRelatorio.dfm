@@ -98,14 +98,6 @@ inherited smRelatorio: TsmRelatorio
       Precision = 18
       Size = 2
     end
-    object qSaldo_RubricaRECEBIDO: TBCDField
-      AutoGenerateValue = arDefault
-      FieldName = 'RECEBIDO'
-      Origin = 'RECEBIDO'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-    end
     object qSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'RECEBIDO_TRANSFERENCIA'
@@ -124,13 +116,21 @@ inherited smRelatorio: TsmRelatorio
       Precision = 18
       Size = 2
     end
+    object qSaldo_RubricaRECEBIDO: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'RECEBIDO'
+      Origin = 'RECEBIDO'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
     object qSaldo_RubricaSALDO_REAL: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'SALDO_REAL'
       Origin = 'SALDO_REAL'
       ProviderFlags = []
-      ReadOnly = True
       Precision = 18
+      Size = 2
     end
   end
   object qSaldo_Semente_Muda: TRFQuery

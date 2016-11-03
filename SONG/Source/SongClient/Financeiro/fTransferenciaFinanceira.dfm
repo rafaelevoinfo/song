@@ -490,6 +490,7 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       FieldName = 'SALDO_REAL'
       currency = True
       Precision = 18
+      Size = 2
     end
   end
   object dsLocalRubricasDestino: TDataSource
@@ -515,6 +516,7 @@ inherited frmTransferenciaFinanceira: TfrmTransferenciaFinanceira
       FieldName = 'SALDO_REAL'
       currency = True
       Precision = 18
+      Size = 2
     end
   end
 end

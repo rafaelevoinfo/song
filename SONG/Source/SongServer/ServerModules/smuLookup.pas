@@ -182,7 +182,6 @@ type
     qlkTipo_EspecieID: TIntegerField;
     qlkTipo_EspecieNOME: TStringField;
     qlkProjeto_RubricaSALDO_REAL: TBCDField;
-    qlkRubrica_AtividadeSALDO_REAL: TBCDField;
     qlkModelo_Orcamento: TRFQuery;
     qlkModelo_Orcamento_Orcamento: TRFQuery;
     qlkModelo_OrcamentoID: TIntegerField;
@@ -191,6 +190,7 @@ type
     qlkModelo_Orcamento_OrcamentoMODELO: TBlobField;
     qlkTipo_EspecieNATIVA: TSmallintField;
     qlkEspecieNATIVA: TSmallintField;
+    qlkRubrica_AtividadeSALDO_REAL: TBCDField;
   private
     { Private declarations }
   protected

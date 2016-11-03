@@ -1545,6 +1545,7 @@ inherited dmLookup: TdmLookup
       ReadOnly = True
       currency = True
       Precision = 18
+      Size = 2
     end
   end
   object cdslkProjeto_Area: TRFClientDataSet
@@ -1894,6 +1895,7 @@ inherited dmLookup: TdmLookup
       FieldName = 'SALDO_REAL'
       ProviderFlags = []
       Precision = 18
+      Size = 2
     end
   end
   object cdslkLocal_Uso: TRFClientDataSet

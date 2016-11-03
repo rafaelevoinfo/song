@@ -62,6 +62,7 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
       ReadOnly = True
       Precision = 18
+      Size = 2
     end
     object cdsSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField
       FieldName = 'RECEBIDO_TRANSFERENCIA'
@@ -82,6 +83,7 @@ inherited dmRelatorio: TdmRelatorio
       ProviderFlags = []
       ReadOnly = True
       Precision = 18
+      Size = 2
     end
   end
   object dsSaldo_Rubrica: TDataSource

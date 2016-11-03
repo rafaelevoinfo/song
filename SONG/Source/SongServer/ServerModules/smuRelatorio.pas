@@ -198,10 +198,8 @@ type
     qSaldo_RubricaORCAMENTO: TBCDField;
     qSaldo_RubricaGASTO: TBCDField;
     qSaldo_RubricaGASTO_TRANSFERENCIA: TBCDField;
-    qSaldo_RubricaRECEBIDO: TBCDField;
     qSaldo_RubricaRECEBIDO_TRANSFERENCIA: TBCDField;
     qSaldo_RubricaAPROVISIONADO: TBCDField;
-    qSaldo_RubricaSALDO_REAL: TBCDField;
     qLote_Muda_VendidoCALC_MES: TStringField;
     qLote_Muda_CompradoCALC_MES: TStringField;
     qLote_Semente_CompradoCALC_MES: TStringField;
@@ -210,6 +208,8 @@ type
     qLote_Semente_VendidoDATA: TSQLTimeStampField;
     qLote_Muda_CompradoDATA: TSQLTimeStampField;
     qLote_Semente_CompradoDATA: TSQLTimeStampField;
+    qSaldo_RubricaRECEBIDO: TBCDField;
+    qSaldo_RubricaSALDO_REAL: TBCDField;
     procedure qPatrimonioCalcFields(DataSet: TDataSet);
     procedure qView_Movimentacao_FinanceiraCalcFields(DataSet: TDataSet);
     procedure qLote_Muda_VendidoCalcFields(DataSet: TDataSet);
