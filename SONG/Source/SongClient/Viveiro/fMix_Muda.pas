@@ -128,6 +128,8 @@ type
     ppColumnFooterBand1: TppColumnFooterBand;
     Label6: TLabel;
     EditQtdeCarrinho: TcxSpinEdit;
+    ppDBText9: TppDBText;
+    ppLabel6: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure EditQtdePropertiesEditValueChanged(Sender: TObject);

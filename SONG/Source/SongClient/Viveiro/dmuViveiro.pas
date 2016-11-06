@@ -174,6 +174,7 @@ type
     cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField;
     cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField;
     cdsTipo_EspecieNATIVA: TSmallintField;
+    cdsMix_Muda_Especie_Lote_CanteiroCALC_QTDE_CARRINHO: TIntegerField;
     procedure cdsEspecieCalcFields(DataSet: TDataSet);
   private
     { Private declarations }

@@ -11,7 +11,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, dmuPrincipal, uUtils, uClientDataSet,
   uSQLGenerator, Datasnap.Provider, Datasnap.DBClient, Datasnap.DSAuth,
-  Datasnap.DSSession;
+  Datasnap.DSSession, uTypes;
 
 type
   TsmViveiro = class(TsmBasico)
@@ -178,6 +178,7 @@ type
     qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA: TIntegerField;
     qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField;
     qTipo_EspecieNATIVA: TSmallintField;
+    qMix_Muda_Especie_Lote_CanteiroCALC_QTDE_CARRINHO: TIntegerField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -193,6 +194,7 @@ type
     procedure dspqClassificacaoAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
+    procedure qMix_Muda_Especie_Lote_CanteiroCalcFields(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -381,6 +383,13 @@ begin
         Result := Result + ' (lote_Muda.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
           QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
     end;
+end;
+
+procedure TsmViveiro.qMix_Muda_Especie_Lote_CanteiroCalcFields(
+  DataSet: TDataSet);
+begin
+  inherited;
+  qMix_Muda_Especie_Lote_CanteiroCALC_QTDE_CARRINHO.AsInteger := qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_RETIRAR.AsInteger div (qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA.AsInteger div coMudasPorCarrinho);
 end;
 
 end.

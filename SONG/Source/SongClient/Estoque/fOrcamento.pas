@@ -28,7 +28,8 @@ uses
   dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxExtDBEditorLnks,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
   dxSkinsdxRibbonPainter, dxPSCore, dxPSContainerLnk, cxDBRichEdit, dxPSRELnk,
-  dxPScxExtComCtrlsLnk;
+  dxPScxExtComCtrlsLnk, frxClass, frxDBSet, frxRich, Vcl.DBCtrls, frxExportPDF,
+  System.IOUtils;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -127,13 +128,9 @@ type
     Ac_Editar_Orcamento: TAction;
     btnEditar_Orcamento2: TButton;
     RichAux: TcxRichEdit;
-    cdsLocalOrcamento: TClientDataSet;
-    cdsLocalOrcamentoINICIO: TBlobField;
-    cdsLocalOrcamentoFIM: TBlobField;
     DBPipeItens: TppDBPipeline;
     ppSubReport1: TppSubReport;
     ppChildReport1: TppChildReport;
-    dsLocalOrcamento: TDataSource;
     ppDBRichText2: TppDBRichText;
     ppDesignLayers2: TppDesignLayers;
     ppDesignLayer2: TppDesignLayer;
@@ -192,6 +189,17 @@ type
     viewRegistrosDetailNOME_CIENTIFICO: TcxGridDBColumn;
     viewRegistrosDetailFAMILIA_BOTANICA: TcxGridDBColumn;
     viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn;
+    frxDBOrcamento: TfrxDBDataset;
+    frxReport: TfrxReport;
+    frxRichObject: TfrxRichObject;
+    frxDBOrganizacao: TfrxDBDataset;
+    btnEnviarEmail: TButton;
+    Ac_Enviar_Email: TAction;
+    pnCorpoEmail: TPanel;
+    mmoCorpoEmail: TMemo;
+    pnBotoesCorpoEmail: TPanel;
+    btnOk: TButton;
+    btnRetornar: TButton;
     procedure FormCreate(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -213,6 +221,7 @@ type
     procedure Ac_ImprimirExecute(Sender: TObject);
     procedure Ac_Editar_OrcamentoExecute(Sender: TObject);
     procedure Ac_Editar_OrcamentoUpdate(Sender: TObject);
+    procedure Ac_Enviar_EmailExecute(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -226,6 +235,7 @@ type
     procedure ppvSubstituirMarcadoresOrcamento;
     procedure ppvMontarOrcamento;
     function fpvInserirTabelaEspecies: String;
+    procedure ppvPrepararImpressao;
   protected
     function fprGetPermissao: String; override;
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -295,8 +305,8 @@ begin
       plSubstituir(vaMarcador, vaConteudo);
     end;
 
-  // vaConteudo := fpvInserirTabelaEspecies;
-  // plSubstituir(MarcadorOrcamento[moTabelaEspecie], vaConteudo);
+  vaConteudo := fpvInserirTabelaEspecies;
+  plSubstituir(MarcadorOrcamento[moTabelaEspecie], vaConteudo);
 
   plSubstituir(MarcadorOrcamento[moDataOrcamento], DateToStr(dmEstoque.cdsOrcamentoDATA.AsDateTime));
   plSubstituir(MarcadorOrcamento[moDataOrcamentoExtenso], FormatDateTime('dd "de" mmmm "de" yyyy', dmEstoque.cdsOrcamentoDATA.AsDateTime));
@@ -310,13 +320,13 @@ begin
     end);
   plSubstituir(MarcadorOrcamento[moValorTotal], FormatFloat('R$ ,0.00', vaValorTotal));
   plSubstituir(MarcadorOrcamento[moValorTotalExtenso], TUtils.fpuGetValorPorExtenso(vaValorTotal));
+  dmEstoque.cdsOrcamento_Orcamento.Post;
 end;
 
 function TfrmOrcamento.fpvInserirTabelaEspecies: String;
 const
   coQuebraLinha: String = Char(13) + Char(10);
-  coCellWidth: Integer = 1680;
-  coCellIndent: Integer = 100;
+  coCellWidth: Integer = 1550; // 1680;
   coQtdeColuna = 7;
 var
   i, vaLinha, vaColuna: Integer;
@@ -336,12 +346,16 @@ begin
       if vaLinha > 0 then
         dmEstoque.cdsOrcamento_Item.RecNo := vaLinha;
 
-      Result := Result + '\trowd\trgaph' + IntToStr(coCellIndent) + coQuebraLinha;
+      // Result := Result + '\trowd\trgaph' + IntToStr(coCellIndent) +'\trleft-70\trbrdrl\brdrs\brdrw10'+ coQuebraLinha;
+      Result := Result +
+        '\trowd\trgaph70\trleft-70\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl70\trpaddr70\trpaddfl3\trpaddfr3'
+        + coQuebraLinha;
       i := 0;
       for vaColuna := 0 to coQtdeColuna - 1 do
         begin
           Inc(i);
-          Result := Result + '\clbrdrt\brdrs\clbrdrl\brdrs\clbrdrb\brdrs\clbrdrr\brdrs\cellx' +
+          // Result := Result + '\clbrdrt\brdrs\clbrdrl\brdrs\clbrdrb\brdrs\clbrdrr\brdrs\cellx' +
+          Result := Result + '\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx' +
             IntToStr(i * coCellWidth) + coQuebraLinha;
         end;
 
@@ -414,6 +428,67 @@ begin
   TAction(Sender).Enabled := fprHabilitarAlterar;
 end;
 
+procedure TfrmOrcamento.Ac_Enviar_EmailExecute(Sender: TObject);
+var
+  vaExportPDF: TfrxPDFExport;
+  vaFile: TBytesStream;
+  vaMatchPrimeiroNome: TMatch;
+  vaForm: Tform;
+begin
+  inherited;
+  mmoCorpoEmail.Lines.Clear;
+
+  vaForm := TUtils.fpuEncapsularPanelForm('Informe o texto do e-mail', pnCorpoEmail);
+  try
+    if vaForm.ShowModal = mrOk then
+      begin
+
+        ppvPrepararImpressao;
+
+        vaExportPDF := TfrxPDFExport.Create(nil);
+        try
+          vaMatchPrimeiroNome := TRegex.Match(dmEstoque.cdsOrcamentoCLIENTE.AsString, '^.+?(?=\s)', [roIgnoreCase]);
+          if vaMatchPrimeiroNome.Success then
+            vaExportPDF.FileName := 'orcamento_' + vaMatchPrimeiroNome.Value.ToLower + '.pdf'
+          else
+            vaExportPDF.FileName := 'orcamento.pdf';
+
+          vaExportPDF.Compressed := true;
+          vaExportPDF.PrintOptimized := true;
+//          vaExportPDF.EmbeddedFonts := true;
+          vaExportPDF.Quality := 90;
+          vaExportPDF.ShowDialog := false;
+          vaExportPDF.ShowProgress := false;
+
+          frxReport.PrepareReport();
+          frxReport.Export(vaExportPDF);
+          if Tfile.Exists(vaExportPDF.FileName) then
+            begin
+              //nao usei TfileStream para nao travar o arquivo e consequentemente nao conseguir deletar
+              vaFile := TBytesStream.Create();
+              try
+                vaFile.LoadFromFile(vaExportPDF.FileName);
+                vaFile.Position := 0;
+                dmPrincipal.FuncoesGeral.ppuEnviarEmail('Orçamento - Viveiro de Mudas da Oréades', mmoCorpoEmail.Lines.Text, 'rafaelevoinfo@gmail.com',
+                  vaExportPDF.FileName, vaFile);
+
+                TMensagem.ppuShowMessage('O cliente estará recebendo o e-mail em alguns instantes.');
+              finally
+                TFile.Delete(vaExportPDF.FileName);
+              end;
+            end;
+        finally
+          vaExportPDF.Free;
+        end;
+      end;
+  finally
+    pnCorpoEmail.Visible := false;
+    pnCorpoEmail.Parent := Self;
+
+    vaForm.Free;
+  end;
+end;
+
 procedure TfrmOrcamento.Ac_Gerar_SaidaExecute(Sender: TObject);
 var
   vaFrmSaida: TfrmSaida;
@@ -430,7 +505,7 @@ begin
           vaFrmSaida := TfrmSaida.Create(nil);
           try
             try
-              vaFrmSaida.ModoSilencioso := True;
+              vaFrmSaida.ModoSilencioso := true;
               vaSaida := TSaida.Create;
               vaSaida.Data := Now;
               vaSaida.Tipo := tsConsumo;
@@ -508,7 +583,7 @@ begin
       vaFrmVenda := TfrmVenda.Create(nil);
       try
         try
-          vaFrmVenda.ModoSilencioso := True;
+          vaFrmVenda.ModoSilencioso := true;
           vaVenda := TVenda.Create;
           vaVenda.Data := dmEstoque.cdsOrcamentoDATA.AsDateTime;
           vaVenda.IdCliente := dmEstoque.cdsOrcamentoID_CLIENTE.AsInteger;
@@ -570,46 +645,21 @@ begin
 
 end;
 
-procedure TfrmOrcamento.Ac_ImprimirExecute(Sender: TObject);
-var
-  vaPos: Integer;
+procedure TfrmOrcamento.ppvPrepararImpressao;
 begin
-  inherited;
   if not dmLookup.cdslkOrganizacao.Active then
     dmLookup.cdslkOrganizacao.Open;
 
   dmEstoque.cdsOrcamento_Orcamento.Close;
   dmEstoque.cdsOrcamento_Orcamento.ParamByName('ID').AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
   dmEstoque.cdsOrcamento_Orcamento.Open;
+end;
 
-  if cdsLocalOrcamento.Active then
-    cdsLocalOrcamento.EmptyDataSet
-  else
-    cdsLocalOrcamento.CreateDataSet;
-
-  cdsLocalOrcamento.Append;
-  // vamos pegar o texto ate o marcador das espécies
-  vaPos := frameEditor.Rich.FindTexT(MarcadorOrcamento[moTabelaEspecie],1,Length(frameEditor.Rich.Text),[]);
-  if vaPos > 0 then
-    begin
-      frameEditor.Rich.SelStart := 1;
-      frameEditor.Rich.SelLength := vaPos;
-      cdsLocalOrcamentoINICIO.AsString := frameEditor.Rich.SelText;
-
-      //Copy(dmEstoque.cdsOrcamento_OrcamentoORCAMENTO.AsString, 1, vaPos);
-      frameEditor.Rich.SelStart := vaPos+length(MarcadorOrcamento[moTabelaEspecie]);
-      frameEditor.Rich.SelLength := Length(frameEditor.Rich.Text)-frameEditor.Rich.SelStart;
-      cdsLocalOrcamentoFIM.AsString := frameEditor.Rich.SelText;
-    end;
-
-  cdsLocalOrcamento.Post;
-
-  dmEstoque.cdsOrcamento_Item.DisableControls;
-  try
-    ppOrcamento.PrintReport;
-  finally
-    dmEstoque.cdsOrcamento_Item.EnableControls;
-  end;
+procedure TfrmOrcamento.Ac_ImprimirExecute(Sender: TObject);
+begin
+  inherited;
+  ppvPrepararImpressao;
+  frxReport.ShowReport;
 
 end;
 
@@ -666,7 +716,6 @@ begin
         dmEstoque.cdsOrcamento_Orcamento.Edit;
 
       dmEstoque.cdsOrcamento_OrcamentoORCAMENTO.Assign(dmLookup.cdslkModelo_Orcamento_OrcamentoMODELO);
-      dmEstoque.cdsOrcamento_Orcamento.Post;
 
       ppvSubstituirMarcadoresOrcamento;
     end;
@@ -730,7 +779,7 @@ begin
         end;
 
       if dmLookup.cdslkModelo_Orcamento_Orcamento.RecordCount > 0 then
-        Result := True;
+        Result := true;
     end
   else
     raise Exception.Create('Não foi possível encontrar o modelo para montar o orçamento.');
@@ -759,13 +808,13 @@ begin
         vaModelo.Position := 0;
         RichAux.Lines.LoadFromStream(vaModelo);
         // vamos remover o RTF para conseguir encontrar os marcadores
-        RichAux.Properties.PlainText := True;
+        RichAux.Properties.PlainText := true;
         vaModelo.Clear;
         RichAux.Lines.SaveToStream(vaModelo);
 
         FMarcadoresCustomizados.Clear;
 
-        vaMatchesCampo := TRegEx.Matches(vaModelo.DataString, '(?<=' + TRegEx.Escape(coInicioMarcador) + ').+?(?=' + TRegEx.Escape(coFimMarcador) + ')',
+        vaMatchesCampo := TRegex.Matches(vaModelo.DataString, '(?<=' + TRegex.Escape(coInicioMarcador) + ').+?(?=' + TRegex.Escape(coFimMarcador) + ')',
           [roIgnoreCase, roSingleLine]);
 
         for vaMatchCampo in vaMatchesCampo do
@@ -902,7 +951,7 @@ begin
             'Se o modelo for alterado estes campos serão perdidos.' +
             slinebreak + 'Tem certeza que deseja alterar o modelo?', ppSimNao) = rpNao then
             begin
-              cbModelo.LockChangeEvents(True);
+              cbModelo.LockChangeEvents(true);
               try
                 cbModelo.EditValue := dmEstoque.cdsOrcamentoID_MODELO_ORCAMENTO.AsInteger;
                 cbModelo.PostEditValue;
@@ -949,7 +998,7 @@ begin
   PesquisaPadrao := Ord(tppData);
 
   pcCadastroDetail.ActivePage := tabCadastroItem;
-  pcCadastroDetail.Properties.HideTabs := True;
+  pcCadastroDetail.Properties.HideTabs := true;
 
   FMarcadoresCustomizados := TDictionary<String, TcxTextEdit>.Create;
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
@@ -1115,7 +1164,7 @@ end;
 
 procedure TfrmOrcamento.ppvCarregarClientes;
 begin
-  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, True);
+  dmLookup.cdslkFin_For_Cli.ppuDataRequest([TParametros.coTipo], [Ord(tfCliente)], TOperadores.coAnd, true);
 end;
 
 procedure TfrmOrcamento.tabCadastroShow(Sender: TObject);
@@ -1154,7 +1203,10 @@ begin
   if pcCadastroDetail.ActivePage = tabCadastroItem then
     Result := inherited
   else
-    Result := True;
+    Result := true;
 end;
+
+// initialization
+// RegisterClass(TfrxRichView);
 
 end.

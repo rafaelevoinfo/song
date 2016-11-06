@@ -1081,5 +1081,10 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = []
       Required = True
     end
+    object cdsMix_Muda_Especie_Lote_CanteiroCALC_QTDE_CARRINHO: TIntegerField
+      DisplayLabel = 'Qtde. de Mudas por Carrinho'
+      FieldName = 'CALC_QTDE_CARRINHO'
+      ProviderFlags = []
+    end
   end
 end

@@ -2,7 +2,6 @@ inherited frmOrcamento: TfrmOrcamento
   ActiveControl = btnIncluir
   Caption = 'Or'#231'amento'
   OnDestroy = FormDestroy
-  ExplicitTop = -103
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
@@ -96,8 +95,8 @@ inherited frmOrcamento: TfrmOrcamento
           Width = 557
           ExplicitWidth = 557
           inherited btnUtilizar: TButton
-            Left = 377
-            ExplicitLeft = 377
+            Left = 479
+            ExplicitLeft = 479
           end
           object btnGerar_Saida: TButton
             AlignWithMargins = True
@@ -114,6 +113,7 @@ inherited frmOrcamento: TfrmOrcamento
             Images = dmPrincipal.imgIcons_32
             TabOrder = 3
             WordWrap = True
+            ExplicitLeft = 377
           end
           object btnGerar_Venda: TButton
             AlignWithMargins = True
@@ -130,6 +130,24 @@ inherited frmOrcamento: TfrmOrcamento
             Images = dmPrincipal.imgIcons_32
             TabOrder = 4
             WordWrap = True
+          end
+          object btnEnviarEmail: TButton
+            AlignWithMargins = True
+            Left = 377
+            Top = 1
+            Width = 100
+            Height = 40
+            Margins.Left = 0
+            Margins.Top = 1
+            Margins.Right = 2
+            Margins.Bottom = 1
+            Action = Ac_Enviar_Email
+            Align = alLeft
+            Images = dmPrincipal.imgIcons_32
+            TabOrder = 5
+            WordWrap = True
+            ExplicitLeft = 403
+            ExplicitTop = -2
           end
         end
       end
@@ -712,6 +730,62 @@ inherited frmOrcamento: TfrmOrcamento
       end
     end
   end
+  object pnCorpoEmail: TPanel [1]
+    Left = 8
+    Top = 70
+    Width = 486
+    Height = 219
+    TabOrder = 1
+    Visible = False
+    object mmoCorpoEmail: TMemo
+      Left = 1
+      Top = 1
+      Width = 484
+      Height = 176
+      Align = alClient
+      Lines.Strings = (
+        'mmoCorpoEmail')
+      TabOrder = 0
+      ExplicitLeft = -2
+      ExplicitTop = 0
+    end
+    object pnBotoesCorpoEmail: TPanel
+      Left = 1
+      Top = 177
+      Width = 484
+      Height = 41
+      Align = alBottom
+      TabOrder = 1
+      ExplicitLeft = 152
+      ExplicitTop = 88
+      ExplicitWidth = 185
+      object btnOk: TButton
+        Left = 360
+        Top = 1
+        Width = 123
+        Height = 39
+        Align = alRight
+        Caption = 'Enviar'
+        ImageIndex = 60
+        Images = dmPrincipal.imgIcons_32
+        ModalResult = 1
+        TabOrder = 0
+      end
+      object btnRetornar: TButton
+        Left = 237
+        Top = 1
+        Width = 123
+        Height = 39
+        Align = alRight
+        Caption = 'Cancelar'
+        ImageIndex = 5
+        Images = dmPrincipal.imgIcons_32
+        ModalResult = 2
+        TabOrder = 1
+        ExplicitLeft = 360
+      end
+    end
+  end
   inherited ActionList1: TActionList
     Left = 184
     Top = 168
@@ -762,6 +836,12 @@ inherited frmOrcamento: TfrmOrcamento
       OnExecute = Ac_Editar_OrcamentoExecute
       OnUpdate = Ac_Editar_OrcamentoUpdate
     end
+    object Ac_Enviar_Email: TAction
+      Category = 'Master'
+      Caption = 'Enviar por E-Mail'
+      ImageIndex = 60
+      OnExecute = Ac_Enviar_EmailExecute
+    end
   end
   inherited dsMaster: TDataSource
     DataSet = dmEstoque.cdsOrcamento
@@ -798,7 +878,7 @@ inherited frmOrcamento: TfrmOrcamento
       FieldName = 'ID'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 0
     end
     object DBPipeOrganizacaoppField2: TppField
@@ -964,7 +1044,7 @@ inherited frmOrcamento: TfrmOrcamento
         mmHeight = 5027
         mmLeft = 45508
         mmTop = 4763
-        mmWidth = 99749
+        mmWidth = 83609
         BandType = 0
         LayerName = Foreground
       end
@@ -2088,7 +2168,6 @@ inherited frmOrcamento: TfrmOrcamento
     end
   end
   object DBPipeOrcamento: TppDBPipeline
-    DataSource = dsLocalOrcamento
     UserName = 'DBPipeOrcamento'
     Left = 224
     Top = 120
@@ -2111,18 +2190,6 @@ inherited frmOrcamento: TfrmOrcamento
       Position = 1
       Searchable = False
       Sortable = False
-    end
-  end
-  object cdsLocalOrcamento: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 488
-    Top = 240
-    object cdsLocalOrcamentoINICIO: TBlobField
-      FieldName = 'INICIO'
-    end
-    object cdsLocalOrcamentoFIM: TBlobField
-      FieldName = 'FIM'
     end
   end
   object DBPipeItens: TppDBPipeline
@@ -2226,9 +2293,343 @@ inherited frmOrcamento: TfrmOrcamento
       Position = 10
     end
   end
-  object dsLocalOrcamento: TDataSource
-    DataSet = cdsLocalOrcamento
-    Left = 464
-    Top = 296
+  object frxDBOrcamento: TfrxDBDataset
+    UserName = 'frxDBOrcamento'
+    CloseDataSource = False
+    DataSet = dmEstoque.cdsOrcamento_Orcamento
+    BCDToCurrency = False
+    Left = 134
+    Top = 371
+  end
+  object frxReport: TfrxReport
+    Version = '5.1.5'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.AllowEdit = False
+    PreviewOptions.Buttons = [pbPrint, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PreviewOptions.ZoomMode = zmPageWidth
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42679.744301643500000000
+    ReportOptions.LastChange = 42679.744301643500000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 62
+    Top = 371
+    Datasets = <
+      item
+        DataSet = frxDBOrcamento
+        DataSetName = 'frxDBOrcamento'
+      end
+      item
+        DataSet = frxDBOrganizacao
+        DataSetName = 'frxDBOrganizacao'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Height = 264.567100000000000000
+        Top = 166.299320000000000000
+        Width = 718.110700000000000000
+        DataSet = frxDBOrcamento
+        DataSetName = 'frxDBOrcamento'
+        RowCount = 0
+        Stretched = True
+        object Rich1: TfrxRichView
+          Left = 3.779530000000000000
+          Width = 702.992580000000000000
+          Height = 264.567100000000000000
+          StretchMode = smActualHeight
+          AllowExpressions = False
+          DataField = 'ORCAMENTO'
+          DataSet = frxDBOrcamento
+          DataSetName = 'frxDBOrcamento'
+          GapX = 2.000000000000000000
+          GapY = 1.000000000000000000
+          Wysiwyg = False
+          RichEdit = {
+            7B5C727466315C616E73695C616E7369637067313235325C64656666305C6E6F
+            7569636F6D7061745C6465666C616E67313034367B5C666F6E7474626C7B5C66
+            305C666E696C5C666368617273657430205461686F6D613B7D7D0D0A7B5C636F
+            6C6F7274626C203B5C726564305C677265656E305C626C7565303B7D0D0A7B5C
+            2A5C67656E657261746F722052696368656432302031302E302E31343339337D
+            5C766965776B696E64345C756331200D0A5C706172645C6366315C66305C6673
+            31365C7061720D0A7D0D0A00}
+        end
+      end
+      object PageHeader1: TfrxPageHeader
+        FillType = ftBrush
+        Height = 86.929190000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Picture1: TfrxPictureView
+          Align = baLeft
+          Top = 3.779530000000001000
+          Width = 117.165430000000000000
+          Height = 79.370130000000000000
+          DataField = 'LOGO'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object Picture2: TfrxPictureView
+          Align = baRight
+          Left = 608.504330000000000000
+          Width = 109.606370000000000000
+          Height = 83.149660000000000000
+          DataField = 'LOGO_SECUNDARIA'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object frxDBOrganizacaoNOME: TfrxMemoView
+          Align = baCenter
+          Left = 132.283550000000000000
+          Top = 3.779530000000001000
+          Width = 453.543600000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'NOME'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."NOME"]')
+          ParentFont = False
+        end
+        object Memo1: TfrxMemoView
+          Align = baLeft
+          Left = 162.519790000000000000
+          Top = 22.677180000000000000
+          Width = 181.417440000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'CNPJ'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."CNPJ"]')
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          Align = baLeft
+          Left = 117.165430000000000000
+          Top = 22.677180000000000000
+          Width = 45.354360000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            'CNPJ:')
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          Align = baRight
+          Left = 502.677490000000000000
+          Top = 22.677180000000000000
+          Width = 105.826840000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            'Insc. Est.: Isento')
+          ParentFont = False
+        end
+      end
+      object PageFooter1: TfrxPageFooter
+        FillType = ftBrush
+        Height = 49.133890000000000000
+        Top = 536.693260000000000000
+        Width = 718.110700000000000000
+        object Memo4: TfrxMemoView
+          Left = 68.031540000000010000
+          Top = 3.779530000000022000
+          Width = 147.401670000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'ENDERECO'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."ENDERECO"]')
+          ParentFont = False
+        end
+        object Memo5: TfrxMemoView
+          Align = baLeft
+          Left = 215.433210000000000000
+          Top = 3.779530000000022000
+          Width = 181.417440000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'BAIRRO'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."BAIRRO"]')
+          ParentFont = False
+        end
+        object Memo6: TfrxMemoView
+          Align = baLeft
+          Left = 396.850650000000000000
+          Top = 3.779530000000022000
+          Width = 181.417440000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'COMPLEMENTO'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."COMPLEMENTO"]')
+          ParentFont = False
+        end
+        object Memo7: TfrxMemoView
+          Align = baLeft
+          Left = 578.268090000000000000
+          Top = 3.779530000000022000
+          Width = 136.063080000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'CIDADE'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."CIDADE"]')
+          ParentFont = False
+        end
+        object Memo8: TfrxMemoView
+          Left = 102.047310000000000000
+          Top = 22.677180000000020000
+          Width = 181.417440000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'SITE'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."SITE"]')
+          ParentFont = False
+        end
+        object Memo9: TfrxMemoView
+          Align = baLeft
+          Left = 283.464750000000000000
+          Top = 22.677180000000020000
+          Width = 181.417440000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'EMAIL'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."EMAIL"]')
+          ParentFont = False
+        end
+        object Memo10: TfrxMemoView
+          Align = baLeft
+          Left = 464.882190000000000000
+          Top = 22.677180000000020000
+          Width = 181.417440000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'TELEFONE'
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            '[frxDBOrganizacao."TELEFONE"]')
+          ParentFont = False
+        end
+      end
+      object DetailData1: TfrxDetailData
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 453.543600000000000000
+        Width = 718.110700000000000000
+        RowCount = 0
+      end
+    end
+  end
+  object frxRichObject: TfrxRichObject
+    Left = 222
+    Top = 379
+  end
+  object frxDBOrganizacao: TfrxDBDataset
+    UserName = 'frxDBOrganizacao'
+    CloseDataSource = False
+    DataSet = dmLookup.cdslkOrganizacao
+    BCDToCurrency = False
+    Left = 136
+    Top = 304
   end
 end

@@ -40,7 +40,6 @@ object dmPrincipal: TdmPrincipal
       'CharacterSet=WIN1252'
       'DriverID=FB')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     Left = 192
     Top = 40

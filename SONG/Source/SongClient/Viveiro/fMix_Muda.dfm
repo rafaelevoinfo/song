@@ -317,6 +317,9 @@ inherited frmMixMuda: TfrmMixMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
       ExplicitHeight = 583
       inherited pnEditsCadastro: TPanel
         Height = 533
@@ -495,15 +498,10 @@ inherited frmMixMuda: TfrmMixMuda
             ExplicitWidth = 974
             ExplicitHeight = 344
             inherited cxGrid1: TcxGrid
-              Width = 456
-              Height = 342
               ExplicitWidth = 456
               ExplicitHeight = 342
             end
             inherited pnBotoes: TPanel
-              Left = 457
-              Width = 48
-              Height = 342
               ExplicitLeft = 457
               ExplicitWidth = 48
               ExplicitHeight = 342
@@ -521,9 +519,6 @@ inherited frmMixMuda: TfrmMixMuda
               end
             end
             inherited cxGrid2: TcxGrid
-              Left = 505
-              Width = 468
-              Height = 342
               ExplicitLeft = 505
               ExplicitWidth = 468
               ExplicitHeight = 342
@@ -556,7 +551,6 @@ inherited frmMixMuda: TfrmMixMuda
                 ExplicitWidth = 229
               end
               inherited lbInfoGridDireita: TLabel
-                Left = 504
                 Width = 124
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 504
@@ -975,13 +969,13 @@ inherited frmMixMuda: TfrmMixMuda
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = []
-        TextAlignment = taCentered
+        TextAlignment = taRightJustified
         Transparent = True
         DataPipelineName = 'DBPipeLotesCanteiro'
         mmHeight = 4763
-        mmLeft = 136524
+        mmLeft = 136862
         mmTop = 242
-        mmWidth = 16597
+        mmWidth = 20686
         BandType = 4
         LayerName = Foreground
       end
@@ -1010,7 +1004,28 @@ inherited frmMixMuda: TfrmMixMuda
         mmHeight = 4763
         mmLeft = 75655
         mmTop = 265
-        mmWidth = 59652
+        mmWidth = 59171
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText9'
+        DataField = 'CALC_QTDE_CARRINHO'
+        DataPipeline = DBPipeLotesCanteiro
+        DisplayFormat = ',0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'DBPipeLotesCanteiro'
+        mmHeight = 4763
+        mmLeft = 159544
+        mmTop = 265
+        mmWidth = 36320
         BandType = 4
         LayerName = Foreground
       end
@@ -1324,9 +1339,28 @@ inherited frmMixMuda: TfrmMixMuda
           FormField = False
           Transparent = True
           mmHeight = 3704
-          mmLeft = 136790
+          mmLeft = 141552
           mmTop = 7938
           mmWidth = 16404
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppLabel6: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label7'
+          Caption = 'Quantidade por Carrinho'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3704
+          mmLeft = 160867
+          mmTop = 7938
+          mmWidth = 35719
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
@@ -1356,54 +1390,43 @@ inherited frmMixMuda: TfrmMixMuda
     Left = 88
     Top = 304
     object DBPipeLotesCanteiroppField1: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_CANTEIRO'
       FieldName = 'ID_CANTEIRO'
       FieldLength = 0
-      DataType = dtNotKnown
+      DataType = dtInteger
       DisplayWidth = 0
       Position = 0
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLotesCanteiroppField2: TppField
       FieldAlias = 'CANTEIRO'
       FieldName = 'CANTEIRO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 1
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLotesCanteiroppField3: TppField
+      Alignment = taRightJustify
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      DataType = dtInteger
+      DisplayWidth = 10
       Position = 2
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLotesCanteiroppField4: TppField
       FieldAlias = 'ESPECIE'
       FieldName = 'ESPECIE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 3
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLotesCanteiroppField5: TppField
       FieldAlias = 'LOTE'
       FieldName = 'LOTE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
+      FieldLength = 100
+      DisplayWidth = 100
       Position = 4
-      Searchable = False
-      Sortable = False
     end
     object DBPipeLotesCanteiroppField6: TppField
       Alignment = taRightJustify
@@ -1411,7 +1434,7 @@ inherited frmMixMuda: TfrmMixMuda
       FieldName = 'QTDE_MUDA_RETIRAR'
       FieldLength = 0
       DataType = dtInteger
-      DisplayWidth = 0
+      DisplayWidth = 10
       Position = 5
     end
     object DBPipeLotesCanteiroppField7: TppField
@@ -1463,6 +1486,15 @@ inherited frmMixMuda: TfrmMixMuda
       DataType = dtInteger
       DisplayWidth = 10
       Position = 11
+    end
+    object DBPipeLotesCanteiroppField13: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'CALC_QTDE_CARRINHO'
+      FieldName = 'CALC_QTDE_CARRINHO'
+      FieldLength = 0
+      DataType = dtInteger
+      DisplayWidth = 10
+      Position = 12
     end
   end
   object dsMix_Muda_Especie_Lote_Canteiro: TDataSource [10]

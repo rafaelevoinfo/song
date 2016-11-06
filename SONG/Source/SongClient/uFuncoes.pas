@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 02/11/2016 20:12:48
+// 05/11/2016 23:43:39
 //
 
 unit uFuncoes;
@@ -30,6 +30,7 @@ type
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
     FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -41,6 +42,7 @@ type
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
     function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -98,11 +100,13 @@ type
 
   TsmViveiroClient = class(TDSAdminClient)
   private
+    FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
+    procedure qMix_Muda_Especie_Lote_CanteiroCalcFields(DataSet: TDataSet); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -126,6 +130,7 @@ type
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
     FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -149,6 +154,7 @@ type
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
     function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -170,6 +176,7 @@ type
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
     FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -191,6 +198,7 @@ type
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
     function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -231,6 +239,7 @@ type
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
     FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -251,6 +260,7 @@ type
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
     function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -276,6 +286,7 @@ type
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
     FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -285,6 +296,7 @@ type
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
     function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -307,6 +319,7 @@ type
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
     FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
     FDSServerModuleCreateCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -319,6 +332,7 @@ type
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
     function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean; virtual;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream); virtual;
     procedure DSServerModuleCreate(Sender: TObject); virtual;
   end;
 
@@ -465,6 +479,23 @@ begin
   Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+procedure TsmFuncoesGeralClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesGeral.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesGeralClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -511,6 +542,7 @@ begin
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
   FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -832,6 +864,19 @@ begin
   inherited;
 end;
 
+procedure TsmViveiroClient.qMix_Muda_Especie_Lote_CanteiroCalcFields(DataSet: TDataSet);
+begin
+  if FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand = nil then
+  begin
+    FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand := FDBXConnection.CreateCommand;
+    FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand.Text := 'TsmViveiro.qMix_Muda_Especie_Lote_CanteiroCalcFields';
+    FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand.Prepare;
+  end;
+  FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand.Parameters[0].Value.SetDBXReader(TDBXDataSetReader.Create(DataSet, FInstanceOwner), True);
+  FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand.ExecuteUpdate;
+end;
+
 procedure TsmViveiroClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -872,6 +917,7 @@ end;
 
 destructor TsmViveiroClient.Destroy;
 begin
+  FqMix_Muda_Especie_Lote_CanteiroCalcFieldsCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1142,6 +1188,23 @@ begin
   Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+procedure TsmFuncoesViveiroClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesViveiro.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesViveiroClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1200,6 +1263,7 @@ begin
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
   FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1425,6 +1489,23 @@ begin
   Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+procedure TsmFuncoesFinanceiroClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesFinanceiro.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesFinanceiroClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1481,6 +1562,7 @@ begin
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
   FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -1823,6 +1905,23 @@ begin
   Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+procedure TsmFuncoesEstoqueClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesEstoque.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesEstoqueClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -1878,6 +1977,7 @@ begin
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
   FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -2023,6 +2123,23 @@ begin
   Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+procedure TsmFuncoesRelatorioClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesRelatorio.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesRelatorioClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -2067,6 +2184,7 @@ begin
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
   FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;
@@ -2228,6 +2346,23 @@ begin
   Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
 end;
 
+procedure TsmFuncoesSistemaClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesSistema.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesSistemaClient.DSServerModuleCreate(Sender: TObject);
 begin
   if FDSServerModuleCreateCommand = nil then
@@ -2275,6 +2410,7 @@ begin
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;
   FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
   FDSServerModuleCreateCommand.DisposeOf;
   inherited;
 end;

@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, smuBasico, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, uEnviarEmail;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, uEnviarEmail,
+  uUtils;
 
 type
   TsmFuncoesBasico = class(TsmBasico)
@@ -15,12 +16,14 @@ type
     qIdID: TIntegerField;
   private
   protected
-    procedure pprEnviarEmail(ipAssunto, ipMsg, ipDestinatario: String);
+
   public
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean;
     function fpuVerificarAlteracao(ipTabela,ipUltimaSincronizacao: String): Boolean;
+
+    procedure ppuEnviarEmail(ipAssunto, ipMsg, ipDestinatario: String; ipNomeAnexo:String; ipAnexo:TStream);
   end;
 
 var
@@ -81,10 +84,12 @@ begin
   Result := vaResult;
 end;
 
-procedure TsmFuncoesBasico.pprEnviarEmail(ipAssunto, ipMsg,
-  ipDestinatario: String);
+procedure TsmFuncoesBasico.ppuEnviarEmail(ipAssunto, ipMsg,
+  ipDestinatario: String; ipNomeAnexo:String; ipAnexo:TStream);
 var
   vaEnviarEmail: TEnviarEmail;
+  vaAnexo:TAnexoItem;
+  vaArquivoAnexo:TBytesStream;
 begin
   vaEnviarEmail := TEnviarEmail.Create(true);
   vaEnviarEmail.FreeOnTerminate := true;
@@ -101,6 +106,17 @@ begin
 
   vaEnviarEmail.EMail.Assunto := ipAssunto;
   vaEnviarEmail.EMail.Mensagem := ipMsg;
+
+  if Assigned(ipAnexo) then
+    begin
+      vaAnexo := vaEnviarEmail.EMail.Anexo.Add;
+      vaAnexo.NomeArquivo := ipNomeAnexo;
+      vaArquivoAnexo := TBytesStream.Create;
+      TUtils.ppuCopyStreamToByteStream(ipAnexo, vaArquivoAnexo);
+      vaArquivoAnexo.Position := 0;
+
+      vaAnexo.Arquivo := vaArquivoAnexo;
+    end;
   vaEnviarEmail.Start;
 end;
 

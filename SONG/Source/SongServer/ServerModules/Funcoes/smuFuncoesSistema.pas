@@ -54,7 +54,7 @@ begin
       if (ipDataSetNoficiacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
         (ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString <> '') then
         begin
-          pprEnviarEmail(TiposNotificacao[ipTipo], ipMsg, ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString);
+          ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString,'',nil);
         end;
       ipDataSetNoficiacaoPessoa.next;
     end;
@@ -80,7 +80,7 @@ var
             if (qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
               (qNotificacao_Pessoa.FieldByName('Email').AsString <> '') then
               begin
-                pprEnviarEmail(TiposNotificacao[ipTipo], ipMsg, qNotificacao_Pessoa.FieldByName('Email').AsString);
+                ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, qNotificacao_Pessoa.FieldByName('Email').AsString,'',nil);
               end;
             qNotificacao_Pessoa.next;
           end;
@@ -772,7 +772,7 @@ begin
                         // se for o server q estiver solicitanto o envio de email eu irei enviar somente os eventos das agendas
                         // publicas e da propria agenda pessoal
                         if (ipIdPessoa <> -1) or (not vaDataSetAgendaPessoa.Eof) then
-                          pprEnviarEmail(TiposNotificacao[tnEventoAgenda], vaMsg, ipDataSetNotificacaoPessoa.FieldByName('Email').AsString);
+                          ppuEnviarEmail(TiposNotificacao[tnEventoAgenda], vaMsg, ipDataSetNotificacaoPessoa.FieldByName('Email').AsString,'',nil);
                       end;
                     ipDataSetNotificacaoPessoa.next;
                   end;

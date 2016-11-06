@@ -1261,6 +1261,7 @@ inherited smViveiro: TsmViveiro
     end
   end
   object qMix_Muda_Especie_Lote_Canteiro: TRFQuery
+    OnCalcFields = qMix_Muda_Especie_Lote_CanteiroCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Canteiro.Id as Id_Canteiro,'
@@ -1423,6 +1424,11 @@ inherited smViveiro: TsmViveiro
       Origin = 'QTDE_MUDA_ROCAMBOLE'
       ProviderFlags = []
       Required = True
+    end
+    object qMix_Muda_Especie_Lote_CanteiroCALC_QTDE_CARRINHO: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'CALC_QTDE_CARRINHO'
+      Calculated = True
     end
   end
 end
