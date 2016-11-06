@@ -113,7 +113,6 @@ inherited frmOrcamento: TfrmOrcamento
             Images = dmPrincipal.imgIcons_32
             TabOrder = 3
             WordWrap = True
-            ExplicitLeft = 377
           end
           object btnGerar_Venda: TButton
             AlignWithMargins = True
@@ -146,8 +145,6 @@ inherited frmOrcamento: TfrmOrcamento
             Images = dmPrincipal.imgIcons_32
             TabOrder = 5
             WordWrap = True
-            ExplicitLeft = 403
-            ExplicitTop = -2
           end
         end
       end
@@ -739,15 +736,15 @@ inherited frmOrcamento: TfrmOrcamento
     Visible = False
     object mmoCorpoEmail: TMemo
       Left = 1
-      Top = 1
+      Top = 57
       Width = 484
-      Height = 176
+      Height = 120
       Align = alClient
       Lines.Strings = (
         'mmoCorpoEmail')
       TabOrder = 0
-      ExplicitLeft = -2
-      ExplicitTop = 0
+      ExplicitTop = 1
+      ExplicitHeight = 176
     end
     object pnBotoesCorpoEmail: TPanel
       Left = 1
@@ -756,9 +753,6 @@ inherited frmOrcamento: TfrmOrcamento
       Height = 41
       Align = alBottom
       TabOrder = 1
-      ExplicitLeft = 152
-      ExplicitTop = 88
-      ExplicitWidth = 185
       object btnOk: TButton
         Left = 360
         Top = 1
@@ -782,7 +776,34 @@ inherited frmOrcamento: TfrmOrcamento
         Images = dmPrincipal.imgIcons_32
         ModalResult = 2
         TabOrder = 1
-        ExplicitLeft = 360
+      end
+    end
+    object pnEmail: TPanel
+      Left = 1
+      Top = 1
+      Width = 484
+      Height = 56
+      Align = alTop
+      TabOrder = 2
+      object Label6: TLabel
+        Left = 2
+        Top = 2
+        Width = 243
+        Height = 13
+        Caption = 'Selecione o e-mail para enviou ou informe um novo'
+      end
+      object Label8: TLabel
+        Left = 1
+        Top = 40
+        Width = 129
+        Height = 13
+        Caption = 'Mensagem do e-mail'
+      end
+      object cbEmails: TcxComboBox
+        Left = 0
+        Top = 18
+        TabOrder = 0
+        Width = 481
       end
     end
   end
@@ -867,1432 +888,6 @@ inherited frmOrcamento: TfrmOrcamento
     Left = 552
     Top = 176
   end
-  object DBPipeOrganizacao: TppDBPipeline
-    DataSource = dmLookup.dslkOrganizacao
-    UserName = 'DBPipeOrganizacao'
-    Left = 120
-    Top = 160
-    object DBPipeOrganizacaoppField1: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'ID'
-      FieldName = 'ID'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 0
-    end
-    object DBPipeOrganizacaoppField2: TppField
-      FieldAlias = 'NOME'
-      FieldName = 'NOME'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 1
-    end
-    object DBPipeOrganizacaoppField3: TppField
-      FieldAlias = 'CNPJ'
-      FieldName = 'CNPJ'
-      FieldLength = 14
-      DisplayWidth = 14
-      Position = 2
-    end
-    object DBPipeOrganizacaoppField4: TppField
-      FieldAlias = 'LOGO'
-      FieldName = 'LOGO'
-      FieldLength = 0
-      DataType = dtBLOB
-      DisplayWidth = 10
-      Position = 3
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeOrganizacaoppField5: TppField
-      FieldAlias = 'ENDERECO'
-      FieldName = 'ENDERECO'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 4
-    end
-    object DBPipeOrganizacaoppField6: TppField
-      FieldAlias = 'BAIRRO'
-      FieldName = 'BAIRRO'
-      FieldLength = 20
-      DisplayWidth = 20
-      Position = 5
-    end
-    object DBPipeOrganizacaoppField7: TppField
-      FieldAlias = 'COMPLEMENTO'
-      FieldName = 'COMPLEMENTO'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 6
-    end
-    object DBPipeOrganizacaoppField8: TppField
-      FieldAlias = 'TELEFONE'
-      FieldName = 'TELEFONE'
-      FieldLength = 20
-      DisplayWidth = 20
-      Position = 7
-    end
-    object DBPipeOrganizacaoppField9: TppField
-      FieldAlias = 'SITE'
-      FieldName = 'SITE'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 8
-    end
-    object DBPipeOrganizacaoppField10: TppField
-      FieldAlias = 'EMAIL'
-      FieldName = 'EMAIL'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 9
-    end
-    object DBPipeOrganizacaoppField11: TppField
-      FieldAlias = 'CIDADE'
-      FieldName = 'CIDADE'
-      FieldLength = 120
-      DisplayWidth = 120
-      Position = 10
-    end
-    object DBPipeOrganizacaoppField12: TppField
-      FieldAlias = 'LOGO_SECUNDARIA'
-      FieldName = 'LOGO_SECUNDARIA'
-      FieldLength = 0
-      DataType = dtBLOB
-      DisplayWidth = 10
-      Position = 11
-      Searchable = False
-      Sortable = False
-    end
-  end
-  object ppOrcamento: TppReport
-    AutoStop = False
-    DataPipeline = DBPipeOrcamento
-    PrinterSetup.BinName = 'Default'
-    PrinterSetup.DocumentName = 'Report'
-    PrinterSetup.PaperName = 'A4'
-    PrinterSetup.PrinterName = 'Default'
-    PrinterSetup.SaveDeviceSettings = False
-    PrinterSetup.mmMarginBottom = 6350
-    PrinterSetup.mmMarginLeft = 6350
-    PrinterSetup.mmMarginRight = 6350
-    PrinterSetup.mmMarginTop = 6350
-    PrinterSetup.mmPaperHeight = 297000
-    PrinterSetup.mmPaperWidth = 210000
-    PrinterSetup.PaperSize = 9
-    Units = utMillimeters
-    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
-    DeviceType = 'Screen'
-    DefaultFileDeviceType = 'PDF'
-    EmailSettings.ReportFormat = 'PDF'
-    LanguageID = 'Default'
-    OpenFile = False
-    OutlineSettings.CreateNode = True
-    OutlineSettings.CreatePageNodes = True
-    OutlineSettings.Enabled = True
-    OutlineSettings.Visible = True
-    ThumbnailSettings.Enabled = True
-    ThumbnailSettings.Visible = True
-    ThumbnailSettings.DeadSpace = 30
-    PDFSettings.EmbedFontOptions = [efUseSubset]
-    PDFSettings.EncryptSettings.AllowCopy = True
-    PDFSettings.EncryptSettings.AllowInteract = True
-    PDFSettings.EncryptSettings.AllowModify = True
-    PDFSettings.EncryptSettings.AllowPrint = True
-    PDFSettings.EncryptSettings.Enabled = False
-    PDFSettings.EncryptSettings.KeyLength = kl40Bit
-    PDFSettings.FontEncoding = feAnsi
-    PDFSettings.ImageCompressionLevel = 25
-    PreviewFormSettings.WindowState = wsMaximized
-    PreviewFormSettings.ZoomSetting = zsPageWidth
-    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
-    RTFSettings.DefaultFont.Color = clWindowText
-    RTFSettings.DefaultFont.Height = -13
-    RTFSettings.DefaultFont.Name = 'Arial'
-    RTFSettings.DefaultFont.Style = []
-    TextFileName = '($MyDocuments)\Report.pdf'
-    TextSearchSettings.DefaultString = '<Texto a localizar>'
-    TextSearchSettings.Enabled = True
-    XLSSettings.AppName = 'ReportBuilder'
-    XLSSettings.Author = 'ReportBuilder'
-    XLSSettings.Subject = 'Report'
-    XLSSettings.Title = 'Report'
-    Left = 32
-    Top = 160
-    Version = '16.02'
-    mmColumnWidth = 0
-    DataPipelineName = 'DBPipeOrcamento'
-    object ppHeaderBand1: TppHeaderBand
-      Background.Brush.Style = bsClear
-      mmBottomOffset = 0
-      mmHeight = 26458
-      mmPrintPosition = 0
-      object ppDBText1: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText1'
-        AutoSize = True
-        DataField = 'NOME'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 13
-        Font.Style = [fsBold]
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 5027
-        mmLeft = 45508
-        mmTop = 4763
-        mmWidth = 83609
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppDBText2: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText2'
-        AutoSize = True
-        DataField = 'CNPJ'
-        DataPipeline = DBPipeOrganizacao
-        DisplayFormat = '000\.000\.0000\/00-00;0'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 9
-        Font.Style = [fsBold]
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 3969
-        mmLeft = 66940
-        mmTop = 13758
-        mmWidth = 29369
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppLabel2: TppLabel
-        DesignLayer = ppDesignLayer1
-        UserName = 'Label2'
-        Caption = 'CNPJ:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = [fsBold]
-        FormField = False
-        Transparent = True
-        mmHeight = 4233
-        mmLeft = 56092
-        mmTop = 13493
-        mmWidth = 10054
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppLabel3: TppLabel
-        DesignLayer = ppDesignLayer1
-        UserName = 'Label3'
-        Caption = 'Insc. Est.: Isento'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 9
-        Font.Style = [fsBold]
-        FormField = False
-        Transparent = True
-        mmHeight = 3969
-        mmLeft = 105040
-        mmTop = 13758
-        mmWidth = 24342
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppLine1: TppLine
-        DesignLayer = ppDesignLayer1
-        UserName = 'Line1'
-        Border.Color = clBlue
-        Pen.Color = 10485760
-        Pen.Width = 3
-        Weight = 2.000000000000000000
-        mmHeight = 1323
-        mmLeft = 13229
-        mmTop = 23283
-        mmWidth = 163513
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppDBImage2: TppDBImage
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBImage2'
-        AlignHorizontal = ahCenter
-        AlignVertical = avCenter
-        MaintainAspectRatio = False
-        Stretch = True
-        DataField = 'LOGO_SECUNDARIA'
-        DataPipeline = DBPipeOrganizacao
-        GraphicType = 'AutoDetect'
-        ParentDataPipeline = False
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 19579
-        mmLeft = 151342
-        mmTop = 2646
-        mmWidth = 25400
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppDBImage1: TppDBImage
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBImage1'
-        AlignHorizontal = ahCenter
-        AlignVertical = avCenter
-        MaintainAspectRatio = False
-        Stretch = True
-        DataField = 'LOGO'
-        DataPipeline = DBPipeOrganizacao
-        GraphicType = 'AutoDetect'
-        ParentDataPipeline = False
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 19579
-        mmLeft = 13179
-        mmTop = 2556
-        mmWidth = 25400
-        BandType = 0
-        LayerName = Foreground
-      end
-    end
-    object ppDetailBand1: TppDetailBand
-      Background1.Brush.Style = bsClear
-      Background2.Brush.Style = bsClear
-      PrintHeight = phDynamic
-      mmBottomOffset = 0
-      mmHeight = 29633
-      mmPrintPosition = 0
-      object ppDBRichText1: TppDBRichText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBRichText1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ExportRTFAsBitmap = True
-        DataField = 'INICIO'
-        DataPipeline = DBPipeOrcamento
-        RemoveEmptyLines = False
-        Stretch = True
-        DataPipelineName = 'DBPipeOrcamento'
-        mmHeight = 12267
-        mmLeft = 9381
-        mmTop = 265
-        mmWidth = 178955
-        BandType = 4
-        LayerName = Foreground
-        mmBottomOffset = 0
-        mmOverFlowOffset = 0
-        mmStopPosition = 0
-        mmMinHeight = 0
-      end
-      object ppSubReport1: TppSubReport
-        DesignLayer = ppDesignLayer1
-        UserName = 'SubReport1'
-        ExpandAll = False
-        NewPrintJob = False
-        OutlineSettings.CreateNode = True
-        ShiftRelativeTo = ppDBRichText1
-        TraverseAllData = False
-        DataPipelineName = 'DBPipeItens'
-        mmHeight = 5027
-        mmLeft = 0
-        mmTop = 12481
-        mmWidth = 197300
-        BandType = 4
-        LayerName = Foreground
-        mmBottomOffset = 0
-        mmOverFlowOffset = 0
-        mmStopPosition = 0
-        mmMinHeight = 0
-        object ppChildReport1: TppChildReport
-          AutoStop = False
-          DataPipeline = DBPipeItens
-          PrinterSetup.BinName = 'Default'
-          PrinterSetup.DocumentName = 'Report'
-          PrinterSetup.PaperName = 'A4'
-          PrinterSetup.PrinterName = 'Default'
-          PrinterSetup.SaveDeviceSettings = False
-          PrinterSetup.mmMarginBottom = 6350
-          PrinterSetup.mmMarginLeft = 6350
-          PrinterSetup.mmMarginRight = 6350
-          PrinterSetup.mmMarginTop = 6350
-          PrinterSetup.mmPaperHeight = 297000
-          PrinterSetup.mmPaperWidth = 210000
-          PrinterSetup.PaperSize = 9
-          Units = utMillimeters
-          Version = '16.02'
-          mmColumnWidth = 0
-          DataPipelineName = 'DBPipeItens'
-          object ppTitleBand1: TppTitleBand
-            Background.Brush.Style = bsClear
-            mmBottomOffset = 0
-            mmHeight = 6350
-            mmPrintPosition = 0
-            object ppTableGrid2: TppTableGrid
-              DesignLayer = ppDesignLayer2
-              UserName = 'TableGrid2'
-              DefaultColWidth = 12.699999809265140000
-              DefaultRowHeight = 12.699999809265140000
-              mmHeight = 6254
-              mmLeft = 12639
-              mmTop = 400
-              mmWidth = 183184
-              BandType = 1
-              LayerName = Foreground1
-              mmBottomOffset = 0
-              mmOverFlowOffset = 0
-              mmStopPosition = 0
-              mmMinHeight = 0
-              mmDefaultRowHeight = 12700
-              mmDefaultColWidth = 12700
-              object ppTableRow2: TppTableRow
-                DesignLayer = ppDesignLayer2
-                UserName = 'TableRow2'
-                mmHeight = 6254
-                mmLeft = 0
-                mmTop = 0
-                mmWidth = 48948
-                BandType = 4
-                LayerName = Foreground1
-                mmBottomOffset = 0
-                mmOverFlowOffset = 0
-                mmStopPosition = 0
-                mmMinHeight = 0
-                object ppTableCell2: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell2'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel4: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label4'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Esp'#233'cie'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4234
-                    mmLeft = 13758
-                    mmTop = 2043
-                    mmWidth = 22933
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell4: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell4'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 6254
-                  mmLeft = 37688
-                  mmTop = 0
-                  mmWidth = 34154
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel5: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label5'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Nome Cient'#237'fico'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4233
-                    mmLeft = 38629
-                    mmTop = 2123
-                    mmWidth = 32280
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell6: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell6'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel8: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label8'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Fam'#237'lia Bot'#226'nica'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4233
-                    mmLeft = 73142
-                    mmTop = 1852
-                    mmWidth = 28840
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell8: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell8'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel1: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label1'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Tamanho'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4233
-                    mmLeft = 104098
-                    mmTop = 1852
-                    mmWidth = 22933
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell10: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell10'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel9: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label9'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Quantidade'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4233
-                    mmLeft = 129147
-                    mmTop = 1852
-                    mmWidth = 17199
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell12: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell12'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel10: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label10'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Pre'#231'o Unit'#225'rio'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4233
-                    mmLeft = 148432
-                    mmTop = 1852
-                    mmWidth = 21697
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell14: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell14'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppLabel7: TppLabel
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Label7'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    Caption = 'Pre'#231'o Total'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = [fsBold]
-                    FormField = False
-                    TextAlignment = taCentered
-                    Transparent = True
-                    VerticalAlignment = avCenter
-                    mmHeight = 4233
-                    mmLeft = 172275
-                    mmTop = 1852
-                    mmWidth = 22490
-                    BandType = 1
-                    LayerName = Foreground1
-                  end
-                end
-              end
-              object ppTableColumn8: TppTableColumn
-                mmWidth = 25049
-              end
-              object ppTableColumn9: TppTableColumn
-                mmWidth = 34396
-              end
-              object ppTableColumn10: TppTableColumn
-                mmWidth = 30956
-              end
-              object ppTableColumn11: TppTableColumn
-                mmWidth = 25049
-              end
-              object ppTableColumn12: TppTableColumn
-                mmWidth = 19315
-              end
-              object ppTableColumn13: TppTableColumn
-                mmWidth = 23813
-              end
-              object ppTableColumn14: TppTableColumn
-                mmWidth = 24606
-              end
-            end
-          end
-          object ppDetailBand2: TppDetailBand
-            Background1.Brush.Style = bsClear
-            Background2.Brush.Style = bsClear
-            mmBottomOffset = 0
-            mmHeight = 5292
-            mmPrintPosition = 0
-            object ppTableGrid1: TppTableGrid
-              DesignLayer = ppDesignLayer2
-              UserName = 'TableGrid1'
-              DefaultColWidth = 12.699999809265140000
-              DefaultRowHeight = 12.699999809265140000
-              mmHeight = 5292
-              mmLeft = 12713
-              mmTop = 0
-              mmWidth = 182847
-              BandType = 4
-              LayerName = Foreground1
-              mmBottomOffset = 0
-              mmOverFlowOffset = 0
-              mmStopPosition = 0
-              mmMinHeight = 0
-              mmDefaultRowHeight = 12700
-              mmDefaultColWidth = 12700
-              object ppTableRow1: TppTableRow
-                DesignLayer = ppDesignLayer2
-                UserName = 'TableRow1'
-                mmHeight = 5292
-                mmLeft = 0
-                mmTop = 0
-                mmWidth = 48948
-                BandType = 4
-                LayerName = Foreground1
-                mmBottomOffset = 0
-                mmOverFlowOffset = 0
-                mmStopPosition = 0
-                mmMinHeight = 0
-                object ppTableCell1: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell1'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppDBText3: TppDBText
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'DBText3'
-                    Anchors = [atLeft, atRight]
-                    DataField = 'ESPECIE'
-                    DataPipeline = DBPipeItens
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    DataPipelineName = 'DBPipeItens'
-                    mmHeight = 4233
-                    mmLeft = 13291
-                    mmTop = 529
-                    mmWidth = 24003
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell3: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell3'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppDBText12: TppDBText
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'DBText12'
-                    Anchors = [atLeft, atRight]
-                    DataField = 'NOME_CIENTIFICO'
-                    DataPipeline = DBPipeItens
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    DataPipelineName = 'DBPipeItens'
-                    mmHeight = 4233
-                    mmLeft = 38485
-                    mmTop = 529
-                    mmWidth = 32895
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell5: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell5'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppDBText13: TppDBText
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'DBText13'
-                    Anchors = [atLeft, atRight]
-                    DataField = 'FAMILIA_BOTANICA'
-                    DataPipeline = DBPipeItens
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    DataPipelineName = 'DBPipeItens'
-                    mmHeight = 4233
-                    mmLeft = 72351
-                    mmTop = 529
-                    mmWidth = 29990
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell7: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell7'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppDBText4: TppDBText
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'DBText4'
-                    Anchors = [atLeft, atRight]
-                    DataField = 'TAMANHO'
-                    DataPipeline = DBPipeItens
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    DataPipelineName = 'DBPipeItens'
-                    mmHeight = 4233
-                    mmLeft = 103967
-                    mmTop = 529
-                    mmWidth = 22963
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell9: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell9'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppDBText15: TppDBText
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'DBText15'
-                    Anchors = [atLeft, atRight]
-                    DataField = 'QTDE'
-                    DataPipeline = DBPipeItens
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    DataPipelineName = 'DBPipeItens'
-                    mmHeight = 4233
-                    mmLeft = 129032
-                    mmTop = 529
-                    mmWidth = 17235
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell11: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell11'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppDBText16: TppDBText
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'DBText16'
-                    Anchors = [atLeft, atRight]
-                    DataField = 'VALOR_UNITARIO'
-                    DataPipeline = DBPipeItens
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    DataPipelineName = 'DBPipeItens'
-                    mmHeight = 4233
-                    mmLeft = 148383
-                    mmTop = 529
-                    mmWidth = 21727
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-                object ppTableCell13: TppTableCell
-                  DesignLayer = ppDesignLayer2
-                  UserName = 'TableCell13'
-                  Border.BorderPositions = [bpLeft, bpTop, bpRight, bpBottom]
-                  Border.Visible = True
-                  Border.Weight = 1.000000000000000000
-                  Brush.Style = bsClear
-                  Padding = 1.057999968528748000
-                  mmHeight = 23548
-                  mmLeft = 0
-                  mmTop = 0
-                  mmWidth = 48948
-                  BandType = 4
-                  LayerName = Foreground1
-                  mmBottomOffset = 0
-                  mmOverFlowOffset = 0
-                  mmStopPosition = 0
-                  mmMinHeight = 0
-                  mmPadding = 1058
-                  object ppVariable1: TppVariable
-                    DesignLayer = ppDesignLayer2
-                    UserName = 'Variable1'
-                    Anchors = [atLeft, atRight]
-                    AutoSize = False
-                    BlankWhenZero = False
-                    CalcOrder = 0
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Name = 'Arial'
-                    Font.Size = 8
-                    Font.Style = []
-                    Transparent = True
-                    mmHeight = 3704
-                    mmLeft = 172240
-                    mmTop = 1058
-                    mmWidth = 22262
-                    BandType = 4
-                    LayerName = Foreground1
-                  end
-                end
-              end
-              object ppTableColumn1: TppTableColumn
-                mmWidth = 25079
-              end
-              object ppTableColumn2: TppTableColumn
-                mmWidth = 34131
-              end
-              object ppTableColumn3: TppTableColumn
-                mmWidth = 30986
-              end
-              object ppTableColumn4: TppTableColumn
-                mmWidth = 25079
-              end
-              object ppTableColumn5: TppTableColumn
-                mmWidth = 19351
-              end
-              object ppTableColumn6: TppTableColumn
-                mmWidth = 23843
-              end
-              object ppTableColumn7: TppTableColumn
-                mmWidth = 24378
-              end
-            end
-          end
-          object ppSummaryBand1: TppSummaryBand
-            Background.Brush.Style = bsClear
-            mmBottomOffset = 0
-            mmHeight = 0
-            mmPrintPosition = 0
-          end
-          object raCodeModule1: TraCodeModule
-            ProgramStream = {
-              01060F5472614576656E7448616E646C65720B50726F6772616D4E616D65060F
-              5661726961626C65314F6E43616C630B50726F6772616D54797065070B747450
-              726F63656475726506536F75726365068D70726F636564757265205661726961
-              626C65314F6E43616C63287661722056616C75653A2056617269616E74293B0D
-              0A626567696E0D0A0D0A202056616C7565203A3D526F756E64546F2844425069
-              70654974656E735B2756414C4F525F554E49544152494F275D2A204442506970
-              654974656E735B2751544445275D2C2032293B200D0A0D0A656E643B0D0A0D43
-              6F6D706F6E656E744E616D6506095661726961626C6531094576656E744E616D
-              6506064F6E43616C63074576656E7449440221084361726574506F7301020002
-              00000000}
-          end
-          object ppDesignLayers2: TppDesignLayers
-            object ppDesignLayer2: TppDesignLayer
-              UserName = 'Foreground1'
-              LayerType = ltBanded
-              Index = 0
-            end
-          end
-        end
-      end
-      object ppDBRichText2: TppDBRichText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBRichText2'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ExportRTFAsBitmap = True
-        DataField = 'FIM'
-        DataPipeline = DBPipeOrcamento
-        RemoveEmptyLines = False
-        ShiftRelativeTo = ppSubReport1
-        Stretch = True
-        DataPipelineName = 'DBPipeOrcamento'
-        mmHeight = 12171
-        mmLeft = 9260
-        mmTop = 17198
-        mmWidth = 178859
-        BandType = 4
-        LayerName = Foreground
-        mmBottomOffset = 0
-        mmOverFlowOffset = 0
-        mmStopPosition = 0
-        mmMinHeight = 0
-      end
-    end
-    object ppFooterBand1: TppFooterBand
-      Background.Brush.Style = bsClear
-      mmBottomOffset = 0
-      mmHeight = 13228
-      mmPrintPosition = 0
-      object ppShape1: TppShape
-        DesignLayer = ppDesignLayer1
-        UserName = 'Shape1'
-        mmHeight = 12700
-        mmLeft = 13229
-        mmTop = 265
-        mmWidth = 163513
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText5: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText5'
-        DataField = 'ENDERECO'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 21960
-        mmTop = 1583
-        mmWidth = 42069
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText6: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText6'
-        DataField = 'BAIRRO'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 64822
-        mmTop = 1583
-        mmWidth = 29369
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText7: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText7'
-        DataField = 'COMPLEMENTO'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 94456
-        mmTop = 1584
-        mmWidth = 46831
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText8: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText8'
-        DataField = 'CIDADE'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 142350
-        mmTop = 1583
-        mmWidth = 24077
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText9: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText9'
-        HyperlinkEnabled = False
-        DataField = 'SITE'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 29898
-        mmTop = 6611
-        mmWidth = 32015
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText10: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText10'
-        HyperlinkEnabled = False
-        DataField = 'EMAIL'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 63500
-        mmTop = 6615
-        mmWidth = 42069
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppDBText11: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText101'
-        HyperlinkEnabled = False
-        DataField = 'TELEFONE'
-        DataPipeline = DBPipeOrganizacao
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        ParentDataPipeline = False
-        Transparent = True
-        DataPipelineName = 'DBPipeOrganizacao'
-        mmHeight = 4498
-        mmLeft = 124617
-        mmTop = 6615
-        mmWidth = 23548
-        BandType = 8
-        LayerName = Foreground
-      end
-      object ppLabel6: TppLabel
-        DesignLayer = ppDesignLayer1
-        UserName = 'Label6'
-        Caption = 'Fone (Fax):'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 10040115
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        FormField = False
-        Transparent = True
-        mmHeight = 4233
-        mmLeft = 106363
-        mmTop = 6615
-        mmWidth = 17727
-        BandType = 8
-        LayerName = Foreground
-      end
-    end
-    object raCodeModule2: TraCodeModule
-      ProgramStream = {00}
-    end
-    object ppDesignLayers1: TppDesignLayers
-      object ppDesignLayer1: TppDesignLayer
-        UserName = 'Foreground'
-        LayerType = ltBanded
-        Index = 0
-      end
-    end
-    object ppParameterList1: TppParameterList
-    end
-  end
-  object DBPipeOrcamento: TppDBPipeline
-    UserName = 'DBPipeOrcamento'
-    Left = 224
-    Top = 120
-    object DBPipeOrcamentoppField1: TppField
-      FieldAlias = 'INICIO'
-      FieldName = 'INICIO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 0
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeOrcamentoppField2: TppField
-      FieldAlias = 'FIM'
-      FieldName = 'FIM'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 1
-      Searchable = False
-      Sortable = False
-    end
-  end
-  object DBPipeItens: TppDBPipeline
-    DataSource = dsDetail
-    UserName = 'DBPipeItens'
-    Left = 520
-    Top = 104
-    object DBPipeItensppField1: TppField
-      FieldAlias = 'ID'
-      FieldName = 'ID'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 0
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeItensppField2: TppField
-      FieldAlias = 'ID_ORCAMENTO'
-      FieldName = 'ID_ORCAMENTO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 1
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeItensppField3: TppField
-      FieldAlias = 'ID_ITEM'
-      FieldName = 'ID_ITEM'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 2
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeItensppField4: TppField
-      FieldAlias = 'ID_ESPECIE'
-      FieldName = 'ID_ESPECIE'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 3
-      Searchable = False
-      Sortable = False
-    end
-    object DBPipeItensppField5: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTDE'
-      FieldName = 'QTDE'
-      FieldLength = 0
-      DataType = dtDouble
-      DisplayWidth = 0
-      Position = 4
-    end
-    object DBPipeItensppField6: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'VALOR_UNITARIO'
-      FieldName = 'VALOR_UNITARIO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 5
-    end
-    object DBPipeItensppField7: TppField
-      FieldAlias = 'ITEM'
-      FieldName = 'ITEM'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 6
-    end
-    object DBPipeItensppField8: TppField
-      FieldAlias = 'ESPECIE'
-      FieldName = 'ESPECIE'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 7
-    end
-    object DBPipeItensppField9: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'TAMANHO'
-      FieldName = 'TAMANHO'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 19
-      Position = 8
-    end
-    object DBPipeItensppField10: TppField
-      FieldAlias = 'NOME_CIENTIFICO'
-      FieldName = 'NOME_CIENTIFICO'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 9
-    end
-    object DBPipeItensppField11: TppField
-      FieldAlias = 'FAMILIA_BOTANICA'
-      FieldName = 'FAMILIA_BOTANICA'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 10
-    end
-  end
   object frxDBOrcamento: TfrxDBDataset
     UserName = 'frxDBOrcamento'
     CloseDataSource = False
@@ -2340,14 +935,14 @@ inherited frmOrcamento: TfrmOrcamento
       PaperHeight = 297.000000000000000000
       PaperSize = 9
       LeftMargin = 10.000000000000000000
-      RightMargin = 10.000000000000000000
+      RightMargin = 8.000000000000000000
       TopMargin = 10.000000000000000000
       BottomMargin = 10.000000000000000000
       object MasterData1: TfrxMasterData
         FillType = ftBrush
         Height = 264.567100000000000000
         Top = 166.299320000000000000
-        Width = 718.110700000000000000
+        Width = 725.669760000000000000
         DataSet = frxDBOrcamento
         DataSetName = 'frxDBOrcamento'
         RowCount = 0
@@ -2378,7 +973,7 @@ inherited frmOrcamento: TfrmOrcamento
         FillType = ftBrush
         Height = 86.929190000000000000
         Top = 18.897650000000000000
-        Width = 718.110700000000000000
+        Width = 725.669760000000000000
         object Picture1: TfrxPictureView
           Align = baLeft
           Top = 3.779530000000001000
@@ -2393,7 +988,7 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object Picture2: TfrxPictureView
           Align = baRight
-          Left = 608.504330000000000000
+          Left = 616.063390000000000000
           Width = 109.606370000000000000
           Height = 83.149660000000000000
           DataField = 'LOGO_SECUNDARIA'
@@ -2405,7 +1000,7 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object frxDBOrganizacaoNOME: TfrxMemoView
           Align = baCenter
-          Left = 132.283550000000000000
+          Left = 136.063080000000000000
           Top = 3.779530000000001000
           Width = 453.543600000000000000
           Height = 18.897650000000000000
@@ -2423,43 +1018,9 @@ inherited frmOrcamento: TfrmOrcamento
             '[frxDBOrganizacao."NOME"]')
           ParentFont = False
         end
-        object Memo1: TfrxMemoView
-          Align = baLeft
-          Left = 162.519790000000000000
-          Top = 22.677180000000000000
-          Width = 181.417440000000000000
-          Height = 18.897650000000000000
-          AutoWidth = True
-          DataField = 'CNPJ'
-          DataSet = frxDBOrganizacao
-          DataSetName = 'frxDBOrganizacao'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlue
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8W = (
-            '[frxDBOrganizacao."CNPJ"]')
-          ParentFont = False
-        end
-        object Memo3: TfrxMemoView
-          Align = baLeft
-          Left = 117.165430000000000000
-          Top = 22.677180000000000000
-          Width = 45.354360000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlue
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8W = (
-            'CNPJ:')
-          ParentFont = False
-        end
         object Memo2: TfrxMemoView
           Align = baRight
-          Left = 502.677490000000000000
+          Left = 510.236550000000000000
           Top = 22.677180000000000000
           Width = 105.826840000000000000
           Height = 18.897650000000000000
@@ -2473,14 +1034,33 @@ inherited frmOrcamento: TfrmOrcamento
             'Insc. Est.: Isento')
           ParentFont = False
         end
+        object FormatMaskText: TfrxMemoView
+          Align = baLeft
+          Left = 117.165430000000000000
+          Top = 22.677180000000000000
+          Width = 381.732530000000000000
+          Height = 18.897650000000000000
+          DataSet = frxDBOrganizacao
+          DataSetName = 'frxDBOrganizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Memo.UTF8W = (
+            
+              'CNPJ: [FormatMaskText('#39'00\.000\.000\/0000\-00;0;_'#39',<frxDBOrganiz' +
+              'acao."CNPJ">)]')
+          ParentFont = False
+        end
       end
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
         Height = 49.133890000000000000
         Top = 536.693260000000000000
-        Width = 718.110700000000000000
+        Width = 725.669760000000000000
         object Memo4: TfrxMemoView
-          Left = 68.031540000000010000
+          Left = 107.047310000000000000
           Top = 3.779530000000022000
           Width = 147.401670000000000000
           Height = 18.897650000000000000
@@ -2499,7 +1079,7 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object Memo5: TfrxMemoView
           Align = baLeft
-          Left = 215.433210000000000000
+          Left = 254.448980000000000000
           Top = 3.779530000000022000
           Width = 181.417440000000000000
           Height = 18.897650000000000000
@@ -2518,7 +1098,7 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object Memo6: TfrxMemoView
           Align = baLeft
-          Left = 396.850650000000000000
+          Left = 435.866420000000000000
           Top = 3.779530000000022000
           Width = 181.417440000000000000
           Height = 18.897650000000000000
@@ -2537,9 +1117,9 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object Memo7: TfrxMemoView
           Align = baLeft
-          Left = 578.268090000000000000
+          Left = 617.283860000000000000
           Top = 3.779530000000022000
-          Width = 136.063080000000000000
+          Width = 83.149660000000000000
           Height = 18.897650000000000000
           AutoWidth = True
           DataField = 'CIDADE'
@@ -2555,9 +1135,9 @@ inherited frmOrcamento: TfrmOrcamento
           ParentFont = False
         end
         object Memo8: TfrxMemoView
-          Left = 102.047310000000000000
+          Left = 159.181200000000000000
           Top = 22.677180000000020000
-          Width = 181.417440000000000000
+          Width = 166.299320000000000000
           Height = 18.897650000000000000
           AutoWidth = True
           DataField = 'SITE'
@@ -2574,7 +1154,7 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object Memo9: TfrxMemoView
           Align = baLeft
-          Left = 283.464750000000000000
+          Left = 325.480520000000000000
           Top = 22.677180000000020000
           Width = 181.417440000000000000
           Height = 18.897650000000000000
@@ -2593,7 +1173,7 @@ inherited frmOrcamento: TfrmOrcamento
         end
         object Memo10: TfrxMemoView
           Align = baLeft
-          Left = 464.882190000000000000
+          Left = 506.897960000000000000
           Top = 22.677180000000020000
           Width = 181.417440000000000000
           Height = 18.897650000000000000
@@ -2615,7 +1195,7 @@ inherited frmOrcamento: TfrmOrcamento
         FillType = ftBrush
         Height = 22.677180000000000000
         Top = 453.543600000000000000
-        Width = 718.110700000000000000
+        Width = 725.669760000000000000
         RowCount = 0
       end
     end

@@ -281,7 +281,7 @@ type
   TTipoEvento = (teEventoAgenda, teEventoAtividade);
 
   TMarcadorOrcamento = (moTabelaEspecie, moDataOrcamento, moDataOrcamentoExtenso,
-    moCliente, moResponsavel, moValorTotal, moValorTotalExtenso, moCustomizado);
+    moCliente, moResponsavel, moValorTotal, moValorTotalExtenso, moTotalItens, moCustomizado);
 
 const
   // mensagens customizadas do windows
@@ -296,6 +296,7 @@ const
   coDelimitadorPadrao = ';';
 
   coRegexUniqueKey = '"UNQ\d+_.+?"'; // pega o nome da unique key
+  coRegexEmail = '.+?@.+?\..+';
   coMudasPorCarrinho = 400;
 
   AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar', 'Inativar');
@@ -308,7 +309,8 @@ const
     'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
     'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Eventos de Agendas');
   MarcadorOrcamento: array [TMarcadorOrcamento] of String = ('Tabela de Espécies',
-    'Data do Orçamento', 'Data do Orçamento por Extenso', 'Cliente', 'Responsável', 'Valor Total', 'Valor Total por Extenso', 'Customizado');
+    'Data do Orçamento', 'Data do Orçamento por Extenso', 'Cliente', 'Responsável', 'Valor Total', 'Valor Total por Extenso',
+    'Total de Itens', 'Customizado');
 
 implementation
 

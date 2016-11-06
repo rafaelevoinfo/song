@@ -520,11 +520,13 @@ inherited frmPrincipal: TfrmPrincipal
     object Ac_Modelo_Orcamento: TAction
       Category = 'CompraVenda'
       Caption = 'Modelos de Or'#231'amento'
+      ImageIndex = 61
       OnExecute = Ac_Modelo_OrcamentoExecute
     end
     object Ac_Orcamento: TAction
       Category = 'CompraVenda'
       Caption = 'Or'#231'amento'
+      ImageIndex = 62
       OnExecute = Ac_OrcamentoExecute
     end
   end

@@ -1300,7 +1300,9 @@ inherited smEstoque: TsmEstoque
       '       Fin_For_Cli.Razao_Social as Cliente,'
       '       Orcamento.Data,'
       '       Orcamento.Id_Venda,'
-      '       Orcamento.Id_Saida'
+      '       Orcamento.Id_Saida,'
+      '       Fin_For_Cli.email as email_cliente,'
+      '       contato.email as email_contato'
       'from Orcamento  '
       
         'inner join modelo_orcamento on (modelo_orcamento.id = orcamento.' +
@@ -1308,6 +1310,9 @@ inherited smEstoque: TsmEstoque
       'inner join pessoa on (pessoa.id = orcamento.id_responsavel)'
       
         'inner join fin_for_cli on (fin_for_cli.id = orcamento.id_cliente' +
+        ')'
+      
+        'left join pessoa contato on (contato.id = fin_for_cli.id_contato' +
         ')'
       '&WHERE')
     Left = 664
@@ -1377,6 +1382,20 @@ inherited smEstoque: TsmEstoque
       FieldName = 'ID_SAIDA'
       Origin = 'ID_SAIDA'
       ProviderFlags = [pfInUpdate]
+    end
+    object qOrcamentoEMAIL_CLIENTE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'EMAIL_CLIENTE'
+      Origin = 'EMAIL'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qOrcamentoEMAIL_CONTATO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'EMAIL_CONTATO'
+      Origin = 'EMAIL'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qOrcamento_Orcamento: TRFQuery

@@ -196,6 +196,8 @@ type
     cdsOrcamento_ItemNOME_CIENTIFICO: TStringField;
     cdsOrcamento_ItemFAMILIA_BOTANICA: TStringField;
     cdsOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField;
+    cdsOrcamentoEMAIL_CLIENTE: TStringField;
+    cdsOrcamentoEMAIL_CONTATO: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

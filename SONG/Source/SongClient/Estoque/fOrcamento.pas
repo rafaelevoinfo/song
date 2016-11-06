@@ -29,7 +29,7 @@ uses
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
   dxSkinsdxRibbonPainter, dxPSCore, dxPSContainerLnk, cxDBRichEdit, dxPSRELnk,
   dxPScxExtComCtrlsLnk, frxClass, frxDBSet, frxRich, Vcl.DBCtrls, frxExportPDF,
-  System.IOUtils;
+  System.IOUtils, System.MaskUtils;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -98,93 +98,10 @@ type
     Label5: TLabel;
     ColumnImprimir: TcxGridDBColumn;
     Ac_Imprimir: TAction;
-    DBPipeOrganizacao: TppDBPipeline;
-    ppOrcamento: TppReport;
-    ppHeaderBand1: TppHeaderBand;
-    ppDBText1: TppDBText;
-    ppDBText2: TppDBText;
-    ppLabel2: TppLabel;
-    ppLabel3: TppLabel;
-    ppLine1: TppLine;
-    ppDBImage2: TppDBImage;
-    ppDBImage1: TppDBImage;
-    ppDetailBand1: TppDetailBand;
-    ppFooterBand1: TppFooterBand;
-    ppShape1: TppShape;
-    ppDBText5: TppDBText;
-    ppDBText6: TppDBText;
-    ppDBText7: TppDBText;
-    ppDBText8: TppDBText;
-    ppDBText9: TppDBText;
-    ppDBText10: TppDBText;
-    ppDBText11: TppDBText;
-    ppLabel6: TppLabel;
-    ppDesignLayers1: TppDesignLayers;
-    ppDesignLayer1: TppDesignLayer;
-    ppParameterList1: TppParameterList;
-    DBPipeOrcamento: TppDBPipeline;
-    ppDBRichText1: TppDBRichText;
     btnEditarOrcamento: TButton;
     Ac_Editar_Orcamento: TAction;
     btnEditar_Orcamento2: TButton;
     RichAux: TcxRichEdit;
-    DBPipeItens: TppDBPipeline;
-    ppSubReport1: TppSubReport;
-    ppChildReport1: TppChildReport;
-    ppDBRichText2: TppDBRichText;
-    ppDesignLayers2: TppDesignLayers;
-    ppDesignLayer2: TppDesignLayer;
-    ppTitleBand1: TppTitleBand;
-    ppDetailBand2: TppDetailBand;
-    ppSummaryBand1: TppSummaryBand;
-    ppTableGrid1: TppTableGrid;
-    ppTableRow1: TppTableRow;
-    ppTableColumn1: TppTableColumn;
-    ppTableCell1: TppTableCell;
-    ppTableColumn2: TppTableColumn;
-    ppTableCell3: TppTableCell;
-    ppTableColumn3: TppTableColumn;
-    ppTableCell5: TppTableCell;
-    ppTableColumn4: TppTableColumn;
-    ppTableCell7: TppTableCell;
-    ppTableColumn5: TppTableColumn;
-    ppTableCell9: TppTableCell;
-    ppTableColumn6: TppTableColumn;
-    ppTableCell11: TppTableCell;
-    ppTableColumn7: TppTableColumn;
-    ppTableCell13: TppTableCell;
-    ppTableGrid2: TppTableGrid;
-    ppTableRow2: TppTableRow;
-    ppTableCell2: TppTableCell;
-    ppTableCell4: TppTableCell;
-    ppTableCell6: TppTableCell;
-    ppTableCell8: TppTableCell;
-    ppTableCell10: TppTableCell;
-    ppTableCell12: TppTableCell;
-    ppTableCell14: TppTableCell;
-    ppTableColumn8: TppTableColumn;
-    ppTableColumn9: TppTableColumn;
-    ppTableColumn10: TppTableColumn;
-    ppTableColumn11: TppTableColumn;
-    ppTableColumn12: TppTableColumn;
-    ppTableColumn13: TppTableColumn;
-    ppTableColumn14: TppTableColumn;
-    ppLabel1: TppLabel;
-    ppLabel4: TppLabel;
-    ppLabel5: TppLabel;
-    ppDBText3: TppDBText;
-    ppDBText4: TppDBText;
-    ppDBText12: TppDBText;
-    ppLabel8: TppLabel;
-    ppLabel7: TppLabel;
-    ppLabel9: TppLabel;
-    ppLabel10: TppLabel;
-    ppDBText13: TppDBText;
-    ppDBText15: TppDBText;
-    ppDBText16: TppDBText;
-    ppVariable1: TppVariable;
-    raCodeModule1: TraCodeModule;
-    raCodeModule2: TraCodeModule;
     viewRegistrosDetailTAMANHO: TcxGridDBColumn;
     viewRegistrosDetailNOME_CIENTIFICO: TcxGridDBColumn;
     viewRegistrosDetailFAMILIA_BOTANICA: TcxGridDBColumn;
@@ -200,6 +117,10 @@ type
     pnBotoesCorpoEmail: TPanel;
     btnOk: TButton;
     btnRetornar: TButton;
+    pnEmail: TPanel;
+    Label6: TLabel;
+    cbEmails: TcxComboBox;
+    Label8: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cbClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -280,6 +201,7 @@ var
   ATableParams: TcxRichEditTableParams;
   AIndex: Integer;
   vaValorTotal: Currency;
+  vaQtdeTotal: Double;
 
   procedure plSubstituir(ipMarcador, ipConteudo: String);
   begin
@@ -297,6 +219,8 @@ var
   end;
 
 begin
+  vaQtdeTotal := 0;
+  vaValorTotal := 0;
   dmEstoque.cdsOrcamento_Orcamento.Edit;
 
   for vaMarcador in FMarcadoresCustomizados.Keys do
@@ -317,16 +241,19 @@ begin
     procedure
     begin
       vaValorTotal := vaValorTotal + dmEstoque.cdsOrcamento_ItemCALC_VALOR_TOTAL.AsCurrency;
+      vaQtdeTotal := vaQtdeTotal + dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
     end);
   plSubstituir(MarcadorOrcamento[moValorTotal], FormatFloat('R$ ,0.00', vaValorTotal));
   plSubstituir(MarcadorOrcamento[moValorTotalExtenso], TUtils.fpuGetValorPorExtenso(vaValorTotal));
+  plSubstituir(MarcadorOrcamento[moTotalItens], FormatFloat(',0',vaQtdeTotal));
+
   dmEstoque.cdsOrcamento_Orcamento.Post;
 end;
 
 function TfrmOrcamento.fpvInserirTabelaEspecies: String;
 const
   coQuebraLinha: String = Char(13) + Char(10);
-  coCellWidth: Integer = 1550; // 1680;
+  coCellWidth: Integer = 1525; // 1680;
   coQtdeColuna = 7;
 var
   i, vaLinha, vaColuna: Integer;
@@ -348,7 +275,7 @@ begin
 
       // Result := Result + '\trowd\trgaph' + IntToStr(coCellIndent) +'\trleft-70\trbrdrl\brdrs\brdrw10'+ coQuebraLinha;
       Result := Result +
-        '\trowd\trgaph70\trleft-70\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl70\trpaddr70\trpaddfl3\trpaddfr3'
+        '\trowd\trgaph50\trleft-50\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl70\trpaddr70\trpaddfl3\trpaddfr3'
         + coQuebraLinha;
       i := 0;
       for vaColuna := 0 to coQtdeColuna - 1 do
@@ -437,49 +364,63 @@ var
 begin
   inherited;
   mmoCorpoEmail.Lines.Clear;
+  cbEmails.Properties.Items.Clear;
 
-  vaForm := TUtils.fpuEncapsularPanelForm('Informe o texto do e-mail', pnCorpoEmail);
+  if not dmEstoque.cdsOrcamentoEMAIL_CLIENTE.IsNull then
+    cbEmails.Properties.Items.Add(dmEstoque.cdsOrcamentoEMAIL_CLIENTE.AsString);
+
+  if not dmEstoque.cdsOrcamentoEMAIL_CONTATO.IsNull then
+    cbEmails.Properties.Items.Add(dmEstoque.cdsOrcamentoEMAIL_CONTATO.AsString);
+
+  if cbEmails.Properties.Items.Count > 0 then
+    cbEmails.ItemIndex := 0;
+
+  vaForm := TUtils.fpuEncapsularPanelForm('Configurações para enviou do e-mail', pnCorpoEmail);
   try
     if vaForm.ShowModal = mrOk then
       begin
+        if TRegex.IsMatch(cbEmails.Text, coRegexEmail, [roIgnoreCase]) then
+          begin
+            ppvPrepararImpressao;
 
-        ppvPrepararImpressao;
+            vaExportPDF := TfrxPDFExport.Create(nil);
+            try
+              vaMatchPrimeiroNome := TRegex.Match(dmEstoque.cdsOrcamentoCLIENTE.AsString, '^.+?(?=\s)', [roIgnoreCase]);
+              if vaMatchPrimeiroNome.Success then
+                vaExportPDF.FileName := 'orcamento_' + vaMatchPrimeiroNome.Value.ToLower + '.pdf'
+              else
+                vaExportPDF.FileName := 'orcamento.pdf';
 
-        vaExportPDF := TfrxPDFExport.Create(nil);
-        try
-          vaMatchPrimeiroNome := TRegex.Match(dmEstoque.cdsOrcamentoCLIENTE.AsString, '^.+?(?=\s)', [roIgnoreCase]);
-          if vaMatchPrimeiroNome.Success then
-            vaExportPDF.FileName := 'orcamento_' + vaMatchPrimeiroNome.Value.ToLower + '.pdf'
-          else
-            vaExportPDF.FileName := 'orcamento.pdf';
+              vaExportPDF.Compressed := true;
+              vaExportPDF.PrintOptimized := true;
+              // vaExportPDF.EmbeddedFonts := true;
+              vaExportPDF.Quality := 90;
+              vaExportPDF.ShowDialog := false;
+              vaExportPDF.ShowProgress := false;
 
-          vaExportPDF.Compressed := true;
-          vaExportPDF.PrintOptimized := true;
-//          vaExportPDF.EmbeddedFonts := true;
-          vaExportPDF.Quality := 90;
-          vaExportPDF.ShowDialog := false;
-          vaExportPDF.ShowProgress := false;
+              frxReport.PrepareReport();
+              frxReport.Export(vaExportPDF);
+              if Tfile.Exists(vaExportPDF.FileName) then
+                begin
+                  // nao usei TfileStream para nao travar o arquivo e consequentemente nao conseguir deletar
+                  vaFile := TBytesStream.Create();
+                  try
+                    vaFile.LoadFromFile(vaExportPDF.FileName);
+                    vaFile.Position := 0;
+                    dmPrincipal.FuncoesGeral.ppuEnviarEmail('Orçamento - Viveiro de Mudas da Oréades', mmoCorpoEmail.Lines.Text, cbEmails.Text,
+                      vaExportPDF.FileName, vaFile);
 
-          frxReport.PrepareReport();
-          frxReport.Export(vaExportPDF);
-          if Tfile.Exists(vaExportPDF.FileName) then
-            begin
-              //nao usei TfileStream para nao travar o arquivo e consequentemente nao conseguir deletar
-              vaFile := TBytesStream.Create();
-              try
-                vaFile.LoadFromFile(vaExportPDF.FileName);
-                vaFile.Position := 0;
-                dmPrincipal.FuncoesGeral.ppuEnviarEmail('Orçamento - Viveiro de Mudas da Oréades', mmoCorpoEmail.Lines.Text, 'rafaelevoinfo@gmail.com',
-                  vaExportPDF.FileName, vaFile);
-
-                TMensagem.ppuShowMessage('O cliente estará recebendo o e-mail em alguns instantes.');
-              finally
-                TFile.Delete(vaExportPDF.FileName);
-              end;
+                    TMensagem.ppuShowMessage('O cliente estará recebendo o e-mail em alguns instantes.');
+                  finally
+                    Tfile.Delete(vaExportPDF.FileName);
+                  end;
+                end;
+            finally
+              vaExportPDF.Free;
             end;
-        finally
-          vaExportPDF.Free;
-        end;
+          end
+        else
+          TMensagem.ppuShowException('E-mail não informado ou inválido.', nil);
       end;
   finally
     pnCorpoEmail.Visible := false;

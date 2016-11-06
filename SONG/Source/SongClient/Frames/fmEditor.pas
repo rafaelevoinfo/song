@@ -66,7 +66,7 @@ end;
 
 procedure TframeEditor.ppuIniciar;
 begin
-  Rich.Width := TUtils.fpuCentimetroToPixel(21)+23; //23 é por causa do scroll. A4 = 21cm de largura
+  Rich.Width := TUtils.fpuCentimetroToPixel(19)+23; //23 é por causa do scroll. A4 = 21cm de largura  - 2cm de margins
   Rich.Left := Trunc((pnRich.Width / 2) - (Rich.Width / 2));
 
   Rich.Top := 2;

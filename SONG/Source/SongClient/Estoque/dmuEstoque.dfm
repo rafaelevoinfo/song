@@ -634,7 +634,6 @@ inherited dmEstoque: TdmEstoque
     Top = 16
   end
   object cdsVenda: TRFClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ProviderName = 'dspqVenda'
@@ -1118,6 +1117,18 @@ inherited dmEstoque: TdmEstoque
     object cdsOrcamentoID_SAIDA: TIntegerField
       DisplayLabel = 'Id da Sa'#237'da'
       FieldName = 'ID_SAIDA'
+    end
+    object cdsOrcamentoEMAIL_CLIENTE: TStringField
+      DisplayLabel = 'E-Mail do Cliente'
+      FieldName = 'EMAIL_CLIENTE'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdsOrcamentoEMAIL_CONTATO: TStringField
+      DisplayLabel = 'E-Mail do Contato'
+      FieldName = 'EMAIL_CONTATO'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object cdsOrcamento_Orcamento: TRFClientDataSet
