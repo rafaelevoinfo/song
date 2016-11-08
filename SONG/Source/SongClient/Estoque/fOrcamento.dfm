@@ -285,6 +285,7 @@ inherited frmOrcamento: TfrmOrcamento
                   end
                   object viewRegistrosDetailTAMANHO: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'TAMANHO'
+                    Options.Editing = False
                   end
                   object viewRegistrosDetailID_ESPECIE: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'ID_ESPECIE'
@@ -299,15 +300,18 @@ inherited frmOrcamento: TfrmOrcamento
                   object viewRegistrosDetailNOME_CIENTIFICO: TcxGridDBColumn [6]
                     DataBinding.FieldName = 'NOME_CIENTIFICO'
                     Visible = False
+                    Options.Editing = False
                     Width = 150
                   end
                   object viewRegistrosDetailFAMILIA_BOTANICA: TcxGridDBColumn [7]
                     DataBinding.FieldName = 'FAMILIA_BOTANICA'
                     Visible = False
+                    Options.Editing = False
                     Width = 150
                   end
                   object viewRegistrosDetailQTDE: TcxGridDBColumn [8]
                     DataBinding.FieldName = 'QTDE'
+                    RepositoryItem = dmLookup.repCalcPadrao
                     Options.Editing = False
                   end
                   object viewRegistrosDetailVALOR_UNITARIO: TcxGridDBColumn [9]
@@ -316,6 +320,7 @@ inherited frmOrcamento: TfrmOrcamento
                   end
                   object viewRegistrosDetailCALC_VALOR_TOTAL: TcxGridDBColumn [10]
                     DataBinding.FieldName = 'CALC_VALOR_TOTAL'
+                    Options.Editing = False
                     Width = 103
                   end
                 end
@@ -553,7 +558,7 @@ inherited frmOrcamento: TfrmOrcamento
           Height = 398
           Align = alClient
           TabOrder = 0
-          Properties.ActivePage = tabPreVisualizacao
+          Properties.ActivePage = tabCadastroItem
           Properties.CustomButtons.Buttons = <>
           OnChange = pcCadastroDetailChange
           ClientRectBottom = 393
@@ -729,7 +734,7 @@ inherited frmOrcamento: TfrmOrcamento
   end
   object pnCorpoEmail: TPanel [1]
     Left = 8
-    Top = 70
+    Top = 190
     Width = 486
     Height = 219
     TabOrder = 1
@@ -743,8 +748,6 @@ inherited frmOrcamento: TfrmOrcamento
       Lines.Strings = (
         'mmoCorpoEmail')
       TabOrder = 0
-      ExplicitTop = 1
-      ExplicitHeight = 176
     end
     object pnBotoesCorpoEmail: TPanel
       Left = 1
@@ -795,7 +798,7 @@ inherited frmOrcamento: TfrmOrcamento
       object Label8: TLabel
         Left = 1
         Top = 40
-        Width = 129
+        Width = 97
         Height = 13
         Caption = 'Mensagem do e-mail'
       end

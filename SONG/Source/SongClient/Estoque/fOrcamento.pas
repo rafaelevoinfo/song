@@ -321,7 +321,7 @@ begin
                 3:
                   Result := Result + FormatFloat(',0.00', dmEstoque.cdsOrcamento_ItemTAMANHO.AsFloat);
                 4:
-                  Result := Result + FormatFloat(',0', dmEstoque.cdsOrcamento_ItemTAMANHO.AsFloat);
+                  Result := Result + FormatFloat(',0', dmEstoque.cdsOrcamento_ItemQTDE.AsFloat);
                 5:
                   Result := Result + FormatFloat('R$ ,0.00', dmEstoque.cdsOrcamento_ItemVALOR_UNITARIO.AsFloat);
               else // valor total
