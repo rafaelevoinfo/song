@@ -7,41 +7,242 @@ object frmPrincipal: TfrmPrincipal
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   DesignerMasterStyle = 3
-  object Label1: TLabel
-    Align = Top
+  object pnTop: TPanel
+    Align = MostTop
     Size.Width = 404.000000000000000000
-    Size.Height = 41.000000000000000000
-    Size.PlatformDefault = False
-    TextSettings.HorzAlign = Center
-    Text = 'SONG Mobile'
-  end
-  object btnMatriz: TButton
-    Align = Top
-    Position.Y = 41.000000000000000000
-    Size.Width = 404.000000000000000000
-    Size.Height = 44.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 3
-    Text = 'Matrizes'
-    OnClick = btnMatrizClick
-  end
-  object btnLotes: TButton
-    Align = Top
-    Position.Y = 85.000000000000000000
-    Size.Width = 404.000000000000000000
-    Size.Height = 44.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 2
-    Text = 'Matrizes'
-  end
-  object btnSincronizar: TButton
-    Align = Top
-    Position.Y = 129.000000000000000000
-    Size.Width = 404.000000000000000000
-    Size.Height = 44.000000000000000000
+    Size.Height = 49.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Text = 'Lotes de Semente'
+    object btnAdicionar: TButton
+      Action = Ac_Adicionar
+      Align = MostRight
+      ControlType = Platform
+      Enabled = True
+      ImageIndex = -1
+      Position.X = 356.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'addtoolbutton'
+      TabOrder = 1
+      Visible = True
+    end
+    object btnSincronizar: TButton
+      Action = Ac_Sincronizar
+      Align = Right
+      ControlType = Platform
+      Enabled = True
+      ImageIndex = 0
+      Position.X = 308.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'actiontoolbutton'
+      TabOrder = 0
+      Visible = True
+    end
+    object lbTitulo: TLabel
+      Align = Left
+      Position.X = 50.000000000000000000
+      Size.Width = 233.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'SONG Mobile'
+    end
+    object imgLogo: TImage
+      MultiResBitmap.Height = 32
+      MultiResBitmap.Width = 32
+      MultiResBitmap = <
+        item
+          Width = 32
+          Height = 32
+          PNG = {
+            89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+            F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+            0470494441545847ED975B681C5518C7FF6726D9DDA4893697D554BCC4DA876A
+            080A4A20F862154AA5D69722E94B692A124102A150E805843E2845E943B060DB
+            0DF482B7547D1214B4A2A0582D8D542D11EBDA15DB92D4B6BB9B4D76F636BB33
+            7EDF9933C9D9D94D29B511417F307BBE73FDFFCF774E26BBF8CF2354A993C310
+            9A547C6B89D1DAC032AFE2A11BE822E169152F2D31D202FEE4D0E00FE20E295E
+            0256A7C3C077AA75A918C265FA6CE7D0CBC0105C593253C08E6D9DC8D290FBBA
+            EFC78EC1D370D7A8BE1B610E58DFDB8C6736F4A12D12A5851D3815C0151524A6
+            CEE1AB1317F0F9590B58416363106C204F062272B262DBD351845B1CCC4C9711
+            6A6DC4E30F3F858175C78127D48045D839D08E66338AD96C12B64DC2AE814A81
+            4B3AF83603E12617E532EF5AE0B5F7AF0163C80B3C8F0A1AE68FC223038C6CEA
+            40039D46B849209B72D11811083539D83B9E5283346C60DFD67EFC71F51CDC8A
+            80630B9821A0A5C34185EAB47D944B6484C4473FA6F9FECD2BC3316AC499DBA9
+            CF72512A0814732E9ADB1DE4D302B95981E1756D6AD002BB9F7D08BF9EFF05C5
+            8C81D6A88B65F48468B7B98C40818E243FE7C09A11187D43136748BB565C91B3
+            044A1907A59C806D9968EEAA9029E0B65007505083888DF7B6636A8A2E8E3011
+            59EEC222A32C6ACD5262F2F4D03A05CA28C758E5CDD159D400EFBC48E2255A20
+            4746CA5983044CA452690C6F88AA517C44646A8589C6B0039BCEBB48E2850C9D
+            35CD2F9089BC342270F87452CDA8665103EF7E9BA205C98455A6928C64C9845D
+            41814A67AE418D22F14E83524FBBCC9250D644914BDA6D91B2C56DC59C83A33F
+            D61767163580E5C00787676416EC3C1929BAB0E7045ABB4C5805BA75446FB203
+            07BFB906EB4A1445329BA7DD97280B7CF625BA2FE36349BC17AF73693544D53B
+            40E11E72215E14B2347A055E7F79043F5D7E0BE1880993529DBCE4E0C30B690C
+            DCBD12C72F25D4AC9BA3CA000BAEDCD583C4DE49D5B2001BC217AA426C7C6E35
+            22ED25BC13FF7B066A8EC01767417ED2D91C3E39F3B5348727A9433DC9E92EBC
+            BDFDBC1CAB33D83F88235B8EA89A47985E283C9F9F89DD13AAD5633E0352801B
+            78A74483D180EE07EEC16FF1DF659DDF5ECE21C78BD5F1F8F87398E03AFA381D
+            BF5F66C01FF4D1C497B2E4BA7DC0467C7B42C626FD8D937FD9F7D2B19DB2D459
+            4C24334A2F008D9389932A5A40666055E78388BFFAF3FCCEF41D317A9B1F0745
+            F57E263826B8A68FCC008BDF089B1F1D51512D41433ABA78CF5D3D38B5EB94CC
+            30230D04DD1DDDF4A98AAA19FFE1808A16D0E75ECF84CFE4D424FABAFBE41D63
+            AAEE0097BCE096356B65EC3FBE48E9CDA22C83043710C45FBF1E351978A17F58
+            D6F587F1173971E67B5906D1D7F0D1DBF40DE918FC3F59C592B1C1FD30842107
+            A6F6E5B067FD2B5593D61E7C4C45B55C4C5D54D102F58CCD43DADC5BF52D38E8
+            D0E7BA0BDD2C31587C04CD5ECD83851ED9D32FCBFD9F1D93E592887BB4F82B47
+            290B5754FCCF1093DF8AD3F2121257A9E14E152F3D31FA1940E21CD6CB6D96B2
+            51F5EBE59611A3B58156AFF23FFF0A80BF000E53EF74D833A38F000000004945
+            4E44AE426082}
+          FileName = 'C:\Users\rafae\Repositorios\SONG\Source\Imagens\logo.png'
+        end>
+      Align = MostLeft
+      Size.Width = 50.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object tbcPrincipal: TTabControl
+    Align = Client
+    FullSize = True
+    Size.Width = 404.000000000000000000
+    Size.Height = 431.000000000000000000
+    Size.PlatformDefault = False
+    TabHeight = 49.000000000000000000
+    TabIndex = 1
+    TabOrder = 3
+    TabPosition = PlatformDefault
+    object tabLotes: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 202.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Lotes'
+      object lvLotes: TListView
+        ItemAppearanceClassName = 'TListItemAppearance'
+        ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
+        HeaderAppearanceClassName = 'TListHeaderObjects'
+        FooterAppearanceClassName = 'TListHeaderObjects'
+        Align = Client
+        Size.Width = 404.000000000000000000
+        Size.Height = 382.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+      end
+    end
+    object tabMatrizes: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 202.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Matrizes'
+      object lvMatrizes: TListView
+        Touch.InteractiveGestures = [LongTap]
+        OnGesture = lvMatrizesGesture
+        ItemAppearanceClassName = 'TListItemAppearance'
+        ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
+        HeaderAppearanceClassName = 'TListHeaderObjects'
+        FooterAppearanceClassName = 'TListHeaderObjects'
+        Align = Client
+        Size.Width = 404.000000000000000000
+        Size.Height = 382.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        PullToRefresh = True
+        PullRefreshWait = True
+      end
+    end
+  end
+  object ActionList1: TActionList
+    Left = 80
+    Top = 168
+    object Ac_Adicionar: TAction
+      Text = 'Adicionar'
+      OnExecute = Ac_AdicionarExecute
+    end
+    object Ac_Sincronizar: TAction
+      ImageIndex = 0
+      ImageIndex = 0
+    end
+  end
+  object Connection: TFDConnection
+    Params.Strings = (
+      
+        'Database=C:\Users\rafae\Repositorios\SONG\BancoDados\song_mobile' +
+        '.db'
+      'DriverID=SQLite')
+    ConnectedStoredUsage = []
+    Connected = True
+    LoginPrompt = False
+    BeforeConnect = ConnectionBeforeConnect
+    Left = 56
+    Top = 248
+  end
+  object BindSourceMatriz: TBindSourceDB
+    DataSet = qMatriz
+    ScopeMappings = <>
+    Left = 272
+    Top = 152
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 180
+    Top = 165
+    object LinkFillControlToFieldNOME: TLinkFillControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceMatriz
+      FieldName = 'NOME'
+      Control = lvMatrizes
+      Track = True
+      FillDataSource = BindSourceMatriz
+      FillDisplayFieldName = 'NOME'
+      AutoFill = True
+      FillExpressions = <>
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 312
+    Top = 320
+  end
+  object FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink
+    Left = 48
+    Top = 320
+  end
+  object qMatriz: TRFQuery
+    Active = True
+    Connection = Connection
+    SQL.Strings = (
+      'select ID,'
+      '       NOME '
+      'from MATRIZ')
+    Left = 264
+    Top = 216
+    object qMatrizID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object qMatrizNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
   end
 end

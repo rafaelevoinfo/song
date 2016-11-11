@@ -88,8 +88,6 @@ type
     btnPesquisar_Pessoa_Semeadura: TButton;
     Label10: TLabel;
     EditDataClassificacao: TcxDBDateEdit;
-    Label9: TLabel;
-    EditQtdeClassificada: TcxDBSpinEdit;
     Label11: TLabel;
     EditObservacaoClassificacao: TcxDBMemo;
     tabCadastroCanteiro: TcxTabSheet;
@@ -109,14 +107,23 @@ type
     viewCanteirosID_CANTEIRO: TcxGridDBColumn;
     viewCanteirosNOME_CANTEIRO: TcxGridDBColumn;
     viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn;
+    pnQtdeMuda: TPanel;
+    pnQtdeMudaPerdida: TPanel;
+    Label9: TLabel;
+    EditQtdeClassificada: TcxDBSpinEdit;
+    pnQtdeMudaAtual: TPanel;
+    Label12: TLabel;
+    EditQtdeMudaAtual: TcxSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure cbPessoaClassificouKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Ac_Pesquisar_Pessoa_ClassificouExecute(Sender: TObject);
     procedure pcDetailsChange(Sender: TObject);
+    procedure EditQtdeMudaAtualPropertiesEditValueChanged(Sender: TObject);
   private
     dmViveiro: TdmViveiro;
     dmLookup: TdmLookup;
+    procedure ppvLimparEditQtdeMudaAtual;
   protected
     function fprGetPermissao: String; override;
     procedure pprCarregarParametrosPesquisa(ipCds: TRFClientDataSet); override;
@@ -139,6 +146,8 @@ type
 
   public
     procedure ppuIncluir; override;
+    procedure ppuIncluirDetail; override;
+    procedure ppuAlterarDetail(ipId: Integer); override;
     procedure ppuRetornar(ipAtualizar: Boolean); override;
 
   public const
@@ -167,6 +176,22 @@ begin
   inherited;
   if Key = VK_F2 then
     dmLookup.ppuPesquisarPessoa(cbPessoaClassificou, coTiposPessoaPadrao);
+end;
+
+procedure TfrmLoteMuda.EditQtdeMudaAtualPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    begin
+      if not(dmViveiro.cdsClassificacao.State in [dsEdit, dsInsert]) then
+        dmViveiro.cdsClassificacao.Edit;
+
+      if dmViveiro.cdsClassificacao.State = dsInsert then
+        dmViveiro.cdsClassificacaoQTDE.AsInteger := dmViveiro.cdsLote_MudaSALDO.AsInteger - StrToIntDef(VarToStr(EditQtdeMudaAtual.Value), 0)
+      else
+        dmViveiro.cdsClassificacaoQTDE.AsInteger := (dmViveiro.cdsLote_MudaSALDO.AsInteger + dmViveiro.cdsClassificacaoQTDE.AsInteger) - StrToIntDef(VarToStr(EditQtdeMudaAtual.Value), 0);
+    end;
 end;
 
 procedure TfrmLoteMuda.FormCreate(Sender: TObject);
@@ -354,6 +379,8 @@ begin
   inherited;
   if dsDetail.DataSet = dmViveiro.cdsClassificacao then
     begin
+      if True then
+
       try
         dmPrincipal.FuncoesEstoque.ppuValidarClassificacao(dmViveiro.cdsLote_MudaID.AsInteger, dmViveiro.cdsClassificacaoQTDE.AsInteger);
       except
@@ -369,6 +396,26 @@ begin
   if cbPesquisaStatusMuda.visible and VarIsNull(cbPesquisaStatusMuda.EditValue) then
     raise TControlException.Create('Informe o status a ser pesquisado.', cbPesquisaStatusMuda);
 
+end;
+
+procedure TfrmLoteMuda.ppuAlterarDetail(ipId: Integer);
+begin
+  inherited;
+  if dsDetail.DataSet = dmViveiro.cdsClassificacao then
+    begin
+      ppvLimparEditQtdeMudaAtual
+    end;
+
+end;
+
+procedure TfrmLoteMuda.ppvLimparEditQtdeMudaAtual;
+begin
+  EditQtdeMudaAtual.LockChangeEvents(true);
+  try
+    EditQtdeMudaAtual.Clear;
+  finally
+    EditQtdeMudaAtual.LockChangeEvents(false, false);
+  end;
 end;
 
 procedure TfrmLoteMuda.ppuIncluir;
@@ -387,6 +434,15 @@ begin
     dmViveiro.cdsLote_MudaNOME.AsString := 'Lote ' + dmViveiro.cdsLote_MudaID.AsString
   else
     dmViveiro.cdsLote_MudaNOME.AsString := dmViveiro.cdsLote_MudaNOME.AsString + ' ' + dmViveiro.cdsLote_MudaID.AsString;
+end;
+
+procedure TfrmLoteMuda.ppuIncluirDetail;
+begin
+  inherited;
+  if dsDetail.DataSet = dmViveiro.cdsClassificacao then
+    begin
+      ppvLimparEditQtdeMudaAtual;
+    end;
 end;
 
 procedure TfrmLoteMuda.ppuRetornar(ipAtualizar: Boolean);

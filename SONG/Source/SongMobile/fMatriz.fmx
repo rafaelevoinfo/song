@@ -4,11 +4,12 @@ object frmMatriz: TfrmMatriz
   Caption = 'Form2'
   ClientHeight = 480
   ClientWidth = 640
+  Position = Designed
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  DesignerMasterStyle = 0
+  DesignerMasterStyle = 3
   object pnPrincipal: TPanel
     Align = Client
     Size.Width = 640.000000000000000000
@@ -17,13 +18,13 @@ object frmMatriz: TfrmMatriz
     TabOrder = 1
     object tbAcao: TToolBar
       Size.Width = 640.000000000000000000
-      Size.Height = 40.000000000000000000
+      Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object btnRetornar: TButton
         Align = Left
-        Size.Width = 41.000000000000000000
-        Size.Height = 40.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'backtoolbutton'
         TabOrder = 0
@@ -33,7 +34,7 @@ object frmMatriz: TfrmMatriz
         Align = Right
         Position.X = 592.000000000000000000
         Size.Width = 48.000000000000000000
-        Size.Height = 40.000000000000000000
+        Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'additembutton'
         TabOrder = 1
@@ -41,9 +42,9 @@ object frmMatriz: TfrmMatriz
       end
       object btnSincronizar: TButton
         Align = Right
-        Position.X = 512.000000000000000000
-        Size.Width = 80.000000000000000000
-        Size.Height = 40.000000000000000000
+        Position.X = 544.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'composetoolbutton'
         TabOrder = 2
@@ -55,56 +56,5 @@ object frmMatriz: TfrmMatriz
       StartValue = 0.000000000000000000
       StopValue = 0.000000000000000000
     end
-  end
-  object ImageList1: TImageList
-    Source = <
-      item
-        MultiResBitmap.LoadSize = 2
-        MultiResBitmap = <
-          item
-            Scale = 2.000000000000000000
-            Width = 32
-            Height = 32
-            PNG = {
-              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
-              F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
-              02C4494441545847ED963F6853411CC77F772F0D82A33839E8A010C4BA58C42A
-              9476B0699BA44EE2E026D48E0ED241697D492D75281DDCAC22B838E82234294D
-              EBA07650870A6211027650AC38382B687BF7F37E97DF9397F4DEEB0B45BAE403
-              21F7FBF2EEEECBFDF9FD0EDAB4D96B04FF2722EF573320B11F5074A38493526D
-              1E265D7B1D5F84860F20F00D68B15C290DD46C87042432909B2A1F922A35A284
-              BAEC41EA28CB4E146CAD7BE83DD6DED68385F1C2379623D9D1406EAA7A1A949E
-              9042E6594A84465DF1A437333F915D61C989E4FF48D2805F41C8131C26860C2B
-              D4D3C3B7977A5872126B205F5A2A3C1B1FFC9E52D8A7013E938688AB085044D4
-              BDBF151CA01FB5EB1AAEDA8E8C04714E6935465BC8D23622B780261702E711C5
-              70C5CF962FF88B4794274610E4A3855BFD9FF8B3067293CBC724EAEB66D45196
-              EA2096CAFE6091A306B619F05FF8A9772B67076972964CFFBA89AB73AB1DF747
-              BB365976727E6669FFBE5F381B364107D31CE282EB76346CC18D27770F364F4E
-              504C2BB2D3E4C4F3B1EC4F2DE46C783BECCDA1EBEBA0C1C05A2D73A679F280C0
-              0487B1D82D12A2C2611D933BB8D5C03F03C19E73E8A4151380FA25B72C94B8B8
-              D9803D0349260F139C090E5BEE1F40E388DD74DE8D89A0BFF31AE626AB1FCDDE
-              1CE7D07CAC7B2BFED02B0E23496A226CDE99886C610923642FB762A14169700E
-              9D34AF9CD380AD6A6110F39464388A25CE04E99D99DA5B0E2D6E03A6A452F2E0
-              C89C7ED145198E920C4B915CF49FA65D26283ED5F37AF1CEA56B3F58B244A6E2
-              4269B16866F639AC8330474926361583BA024A3C2C9706D68333D1BCEC61220D
-              D802A2BC7BCD65D866384A32E69EFFD1728DB4B4D49DF69C98ADA2D532D286C9
-              BF7D8189A8C98948030495522AA954D5586A858D4DA5BBABA5A10D8E9DB8CF00
-              438F094FC89BF4B8602931A6CFFBB4F422CB7040EC0A04ECE9932CCCFF7894B6
-              69B3C700FC05C05B756DA6010D3D0000000049454E44AE426082}
-            FileName = 'C:\Users\rafae\Repositorios\SONG\Source\Imagens\sync.png'
-          end>
-        Name = 'sync'
-      end>
-    Destination = <
-      item
-        Layers = <
-          item
-            Name = 'sync'
-            SourceRect.Right = 32.000000000000000000
-            SourceRect.Bottom = 32.000000000000000000
-          end>
-      end>
-    Left = 280
-    Top = 48
   end
 end

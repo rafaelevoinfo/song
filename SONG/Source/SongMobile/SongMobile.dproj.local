@@ -2,11 +2,12 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2016/08/15 00:30:17.000.235,=C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2016/08/15 00:34:53.000.434,C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.fmx=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fPrincipal.fmx</Transaction>
-    <Transaction>2016/08/15 00:34:53.000.434,C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fPrincipal.pas</Transaction>
-    <Transaction>2016/08/15 00:35:03.000.063,C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\SongMobile.dproj</Transaction>
-    <Transaction>2016/08/17 23:42:22.314,=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit2.pas</Transaction>
-    <Transaction>2016/08/17 23:42:28.562,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fMatriz.fmx=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit2.fmx</Transaction>
-    <Transaction>2016/08/17 23:42:28.562,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fMatriz.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit2.pas</Transaction>
+    <Transaction>2016/08/15 00:34:53.000.434,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fPrincipal.fmx=C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>2016/08/15 00:34:53.000.434,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fPrincipal.pas=C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/08/15 00:35:03.000.063,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\SongMobile.dproj=C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2016/08/17 23:42:22.000.314,=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit2.pas</Transaction>
+    <Transaction>2016/08/17 23:42:28.000.562,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit2.fmx=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fMatriz.fmx</Transaction>
+    <Transaction>2016/08/17 23:42:28.000.562,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit2.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fMatriz.pas</Transaction>
   </Transactions>
+	<MobileDevice>0014668696-Android</MobileDevice>
 </BorlandProject>

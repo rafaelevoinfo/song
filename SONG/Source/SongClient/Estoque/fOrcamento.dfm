@@ -329,6 +329,10 @@ inherited frmOrcamento: TfrmOrcamento
             object tabOrcamentoCustomizado: TcxTabSheet
               Caption = 'Campos Customizados'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -568,6 +572,10 @@ inherited frmOrcamento: TfrmOrcamento
           object tabCadastroItem: TcxTabSheet
             Caption = 'Itens do Or'#231'amento'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label4: TLabel
               Left = 7
               Top = 8

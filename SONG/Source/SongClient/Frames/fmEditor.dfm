@@ -18,6 +18,7 @@ object frameEditor: TframeEditor
       Top = 6
       Margins.Bottom = 0
       Properties.HideScrollBars = False
+      Properties.RichEditClass = recRichEdit20
       Properties.ScrollBars = ssVertical
       Properties.WantTabs = True
       Properties.OnSelectionChange = RichPropertiesSelectionChange

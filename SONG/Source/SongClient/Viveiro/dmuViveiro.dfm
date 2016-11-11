@@ -685,7 +685,7 @@ inherited dmViveiro: TdmViveiro
       Required = True
     end
     object cdsClassificacaoQTDE: TIntegerField
-      DisplayLabel = 'Quantidade'
+      DisplayLabel = 'Qtde. Perdida'
       FieldName = 'QTDE'
       ProviderFlags = [pfInUpdate]
       Required = True

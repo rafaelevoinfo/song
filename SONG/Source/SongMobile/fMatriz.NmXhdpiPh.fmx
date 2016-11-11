@@ -7,18 +7,11 @@ inherited frmMatriz_NmXhdpiPh: TfrmMatriz_NmXhdpiPh
     Size.Height = 615.000000000000000000
     inherited tbAcao: TToolBar
       Size.Width = 400.000000000000000000
-      Size.Height = 48.000000000000000000
-      inherited btnRetornar: TButton
-        Size.Width = 48.000000000000000000
-        Size.Height = 48.000000000000000000
-      end
       inherited btnIncluir: TButton
-        Size.Height = 48.000000000000000000
+        Position.X = 352.000000000000000000
       end
       inherited btnSincronizar: TButton
         Position.X = 304.000000000000000000
-        Size.Width = 48.000000000000000000
-        Size.Height = 48.000000000000000000
       end
     end
   end

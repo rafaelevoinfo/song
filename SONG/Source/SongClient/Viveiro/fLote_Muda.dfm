@@ -1,12 +1,10 @@
 inherited frmLoteMuda: TfrmLoteMuda
-  ActiveControl = btnIncluir
   Caption = 'Lotes de Mudas'
   ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -240,10 +238,6 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -352,6 +346,10 @@ inherited frmLoteMuda: TfrmLoteMuda
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 5
@@ -467,6 +465,7 @@ inherited frmLoteMuda: TfrmLoteMuda
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
+        ExplicitTop = 52
         object Label8: TLabel
           Left = 5
           Top = 8
@@ -482,14 +481,6 @@ inherited frmLoteMuda: TfrmLoteMuda
           Height = 13
           Caption = 'Data da Classifica'#231#227'o'
           FocusControl = EditDataClassificacao
-        end
-        object Label9: TLabel
-          Left = 335
-          Top = 8
-          Width = 167
-          Height = 13
-          Caption = 'Quantidade Classificada (Perdidas)'
-          FocusControl = EditQtdeClassificada
         end
         object Label11: TLabel
           Left = 5
@@ -517,7 +508,7 @@ inherited frmLoteMuda: TfrmLoteMuda
           Height = 21
           Action = Ac_Pesquisar_Pessoa_Classificou
           Images = dmPrincipal.imgIcons_16
-          TabOrder = 1
+          TabOrder = 2
           TabStop = False
         end
         object EditDataClassificacao: TcxDBDateEdit
@@ -525,17 +516,8 @@ inherited frmLoteMuda: TfrmLoteMuda
           Top = 23
           DataBinding.DataField = 'DATA'
           DataBinding.DataSource = dsDetail
-          TabOrder = 2
+          TabOrder = 1
           Width = 121
-        end
-        object EditQtdeClassificada: TcxDBSpinEdit
-          Left = 333
-          Top = 23
-          DataBinding.DataField = 'QTDE'
-          DataBinding.DataSource = dsDetail
-          Properties.DisplayFormat = ',0'
-          TabOrder = 3
-          Width = 169
         end
         object EditObservacaoClassificacao: TcxDBMemo
           Left = 3
@@ -544,17 +526,72 @@ inherited frmLoteMuda: TfrmLoteMuda
           DataBinding.DataSource = dsDetail
           TabOrder = 4
           Height = 63
-          Width = 499
+          Width = 678
+        end
+        object pnQtdeMuda: TPanel
+          Left = 333
+          Top = 6
+          Width = 332
+          Height = 41
+          BevelOuter = bvNone
+          TabOrder = 3
+          object pnQtdeMudaPerdida: TPanel
+            Left = 133
+            Top = 0
+            Width = 177
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 1
+            ExplicitLeft = 136
+            object Label9: TLabel
+              Left = 4
+              Top = 1
+              Width = 149
+              Height = 13
+              Caption = 'Quantidade de Mudas Perdidas'
+              FocusControl = EditQtdeClassificada
+            end
+            object EditQtdeClassificada: TcxDBSpinEdit
+              Left = 3
+              Top = 17
+              DataBinding.DataField = 'QTDE'
+              DataBinding.DataSource = dsDetail
+              Properties.DisplayFormat = ',0'
+              TabOrder = 0
+              Width = 150
+            end
+          end
+          object pnQtdeMudaAtual: TPanel
+            Left = 0
+            Top = 0
+            Width = 133
+            Height = 41
+            Align = alLeft
+            AutoSize = True
+            BevelOuter = bvNone
+            TabOrder = 0
+            object Label12: TLabel
+              Left = 0
+              Top = 1
+              Width = 133
+              Height = 13
+              Caption = 'Quantidade de Mudas Atual'
+            end
+            object EditQtdeMudaAtual: TcxSpinEdit
+              Left = 0
+              Top = 17
+              Properties.OnEditValueChanged = EditQtdeMudaAtualPropertiesEditValueChanged
+              TabOrder = 0
+              Width = 133
+            end
+          end
         end
       end
     end
     object tabCadastroCanteiro: TcxTabSheet
       Caption = 'tabCadastroCanteiro'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lb1: TLabel
         Left = 5
         Top = 56
@@ -629,6 +666,8 @@ inherited frmLoteMuda: TfrmLoteMuda
   end
   inherited dsDetail: TDataSource
     DataSet = dmViveiro.cdsClassificacao
+    Left = 312
+    Top = 224
   end
   object dsLote_Muda_Canteiro: TDataSource
     DataSet = dmViveiro.cdsLote_Muda_Canteiro

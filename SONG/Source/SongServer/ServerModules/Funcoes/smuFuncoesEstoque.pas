@@ -242,7 +242,10 @@ begin
       raise Exception.Create('Nenhum lote foi encontrado.');
 
     if ipQtde > ipDataSet.FieldByName('SALDO').AsInteger then
-      raise Exception.Create('A quantidade classificada não pode ser superior ao saldo do lote.');
+      raise Exception.Create('A quantidade perdida não pode ser superior ao saldo do lote.');
+
+    if ipQtde < 1 then
+      raise Exception.Create('A quantidade perdida deve ser superior a uma unidade.');
 
   end);
 end;

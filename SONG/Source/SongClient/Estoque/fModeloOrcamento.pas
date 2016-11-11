@@ -73,6 +73,9 @@ begin
   else
     vaMarcador := cbMarcador.Properties.Items[cbMarcador.SelectedItem].Description;
 
+  if not (dmEstoque.cdsModelo_Orcamento.State in [dsEdit,dsInsert]) then
+    dmEstoque.cdsModelo_Orcamento.Edit;
+
   frameEditor.Rich.SelText := coInicioMarcador + vaMarcador + coFimMarcador;
 end;
 

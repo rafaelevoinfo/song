@@ -10,7 +10,6 @@ uses
 
 type
   TfrmMatriz = class(TForm)
-    ImageList1: TImageList;
     pnPrincipal: TPanel;
     tbAcao: TToolBar;
     btnRetornar: TButton;
@@ -32,7 +31,7 @@ implementation
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
-
+{$R *.SmXhdpiPh.fmx ANDROID}
 
 procedure TfrmMatriz.btnRetornarClick(Sender: TObject);
 begin
