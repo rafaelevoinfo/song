@@ -1,0 +1,53 @@
+inherited frmMatriz_SmXhdpiPh: TfrmMatriz_SmXhdpiPh
+  ClientHeight = 375
+  ClientWidth = 250
+  DesignerMasterStyle = 3
+  inherited pnPrincipal: TPanel
+    Size.Width = 250.000000000000000000
+    Size.Height = 375.000000000000000000
+    inherited tbAcao: TToolBar
+      Size.Width = 250.000000000000000000
+      inherited btnSalvar: TButton
+        Position.X = 202.000000000000000000
+      end
+      inherited btnLatLong: TButton
+        Position.X = 58.000000000000000000
+      end
+      inherited btnFoto: TButton
+        Position.X = 106.000000000000000000
+      end
+      inherited btnGaleria: TButton
+        Position.X = 154.000000000000000000
+      end
+    end
+    inherited ScrollBox1: TScrollBox
+      Size.Width = 250.000000000000000000
+      Size.Height = 327.000000000000000000
+      Viewport.Width = 245.000000000000000000
+      Viewport.Height = 327.000000000000000000
+      inherited pnNome: TPanel
+        Size.Width = 245.000000000000000000
+        inherited EditNome: TEdit
+          Size.Width = 172.000000000000000000
+        end
+      end
+      inherited gbLocalizacao: TGroupBox
+        Size.Width = 245.000000000000000000
+        inherited Label4: TLabel
+          Size.Width = 245.000000000000000000
+        end
+        inherited mmoDescricaoLocalizacao: TMemo
+          Size.Width = 245.000000000000000000
+          Viewport.Width = 237.000000000000000000
+          Viewport.Height = 64.000000000000000000
+        end
+        inherited pnLatLong: TPanel
+          Size.Width = 245.000000000000000000
+        end
+      end
+      inherited pnFoto: TPanel
+        Size.Width = 245.000000000000000000
+      end
+    end
+  end
+end

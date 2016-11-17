@@ -7,12 +7,63 @@ inherited frmMatriz_NmXhdpiPh: TfrmMatriz_NmXhdpiPh
     Size.Height = 615.000000000000000000
     inherited tbAcao: TToolBar
       Size.Width = 400.000000000000000000
-      inherited btnIncluir: TButton
+      inherited btnSalvar: TButton
+        Action = Ac_Salvar
         Position.X = 352.000000000000000000
       end
-      inherited btnSincronizar: TButton
+      inherited btnLatLong: TButton
         Position.X = 304.000000000000000000
       end
+      inherited btnFoto: TButton
+        Position.X = 256.000000000000000000
+      end
+      inherited btnGaleria: TButton
+        Position.X = 208.000000000000000000
+      end
+    end
+    inherited ScrollBox1: TScrollBox
+      Size.Width = 400.000000000000000000
+      Size.Height = 567.000000000000000000
+      Viewport.Width = 400.000000000000000000
+      Viewport.Height = 567.000000000000000000
+      inherited pnNome: TPanel
+        Size.Width = 400.000000000000000000
+        inherited EditNome: TEdit
+          Size.Width = 327.000000000000000000
+        end
+      end
+      inherited gbLocalizacao: TGroupBox
+        Size.Width = 400.000000000000000000
+        inherited Label4: TLabel
+          Size.Width = 400.000000000000000000
+        end
+        inherited mmoDescricaoLocalizacao: TMemo
+          ControlType = Platform
+          Size.Width = 400.000000000000000000
+          Viewport.Width = 392.000000000000000000
+          Viewport.Height = 64.000000000000000000
+        end
+        inherited pnLatLong: TPanel
+          Size.Width = 400.000000000000000000
+        end
+      end
+      inherited pnFoto: TPanel
+        Size.Width = 400.000000000000000000
+        inherited imgFoto: TImage
+          Position.X = 77.000000000000000000
+        end
+      end
+      inherited pnEspecie: TPanel
+        Size.Width = 400.000000000000000000
+        inherited cbEspecie: TComboBox
+          Size.Width = 327.000000000000000000
+        end
+      end
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited Ac_Salvar: TAction
+      OnExecute = Ac_SalvarExecute
     end
   end
 end

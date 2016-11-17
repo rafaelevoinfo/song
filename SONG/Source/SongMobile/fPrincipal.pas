@@ -12,9 +12,10 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.SQLite,
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, Data.DB, FireDAC.Comp.Client,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, System.Rtti, System.Bindings.Outputs, Fmx.Bind.Editors,
-  Data.Bind.EngExt, Fmx.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope,
-  FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures;
+  FireDAC.Comp.DataSet, System.Rtti, System.Bindings.Outputs, FMX.Bind.Editors,
+  Data.Bind.EngExt, FMX.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope,
+  FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
+  dmuPrincipal;
 
 type
   TfrmPrincipal = class(TForm)
@@ -31,20 +32,20 @@ type
     tabMatrizes: TTabItem;
     lvLotes: TListView;
     lvMatrizes: TListView;
-    Connection: TFDConnection;
     BindSourceMatriz: TBindSourceDB;
-    LinkFillControlToFieldNOME: TLinkFillControlToField;
     BindingsList1: TBindingsList;
-    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
-    FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink;
     qMatriz: TRFQuery;
     qMatrizID: TFDAutoIncField;
     qMatrizNOME: TStringField;
+    LinkListControlToField1: TLinkListControlToField;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure ConnectionBeforeConnect(Sender: TObject);
     procedure lvMatrizesGesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
+    procedure FormShow(Sender: TObject);
+    procedure lvMatrizesItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
+    procedure lvMatrizesPullRefresh(Sender: TObject);
   private
     { Private declarations }
   public
@@ -60,27 +61,26 @@ implementation
 {$R *.SmXhdpiPh.fmx ANDROID}
 {$R *.NmXhdpiPh.fmx ANDROID}
 
+
 procedure TfrmPrincipal.Ac_AdicionarExecute(Sender: TObject);
 begin
   if tbcPrincipal.ActiveTab = tabMatrizes then
     begin
       Application.CreateForm(TfrmMatriz, frmMatriz);
-      frmMatriz.ShowModal;
+      frmMatriz.ppuIncluir;
+      frmMatriz.Show;
     end;
-end;
-
-procedure TfrmPrincipal.ConnectionBeforeConnect(Sender: TObject);
-begin
-   Connection.Params.Values['Database'] := TPath.Combine(TPath.GetDocumentsPath, 'song_mobile.db');
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
-  if not Connection.Connected then
-    Connection.Open();
-
   if not qMatriz.Active then
     qMatriz.Open();
+end;
+
+procedure TfrmPrincipal.FormShow(Sender: TObject);
+begin
+  qMatriz.Refresh;
 end;
 
 procedure TfrmPrincipal.lvMatrizesGesture(Sender: TObject;
@@ -88,8 +88,25 @@ procedure TfrmPrincipal.lvMatrizesGesture(Sender: TObject;
 begin
   if EventInfo.GestureID = igiLongTap then
     begin
-      lvMatrizes.EditMode := not lvMatrizes.EditMode;
+      // lvMatrizes.EditMode := not lvMatrizes.EditMode;
+    end
+  else if EventInfo.GestureID = igiPressAndTap then
+    begin
+      ShowMessage('Gesture: ' + qMatrizNOME.AsString);
     end;
+end;
+
+procedure TfrmPrincipal.lvMatrizesItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  Application.CreateForm(TfrmMatriz, frmMatriz);
+  frmMatriz.ppuAlterar(qMatrizID.AsInteger);
+  frmMatriz.Show;
+end;
+
+procedure TfrmPrincipal.lvMatrizesPullRefresh(Sender: TObject);
+begin
+  qMatriz.Refresh;
 end;
 
 end.
