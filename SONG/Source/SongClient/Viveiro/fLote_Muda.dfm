@@ -238,6 +238,10 @@ inherited frmLoteMuda: TfrmLoteMuda
             object tabDetailCanteiros: TcxTabSheet
               Caption = 'Canteiros'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnBotoesCanteiro: TPanel
                 Left = 0
                 Top = 0
@@ -465,7 +469,6 @@ inherited frmLoteMuda: TfrmLoteMuda
       ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
-        ExplicitTop = 52
         object Label8: TLabel
           Left = 5
           Top = 8
@@ -543,7 +546,6 @@ inherited frmLoteMuda: TfrmLoteMuda
             Align = alLeft
             BevelOuter = bvNone
             TabOrder = 1
-            ExplicitLeft = 136
             object Label9: TLabel
               Left = 4
               Top = 1
@@ -592,6 +594,10 @@ inherited frmLoteMuda: TfrmLoteMuda
     object tabCadastroCanteiro: TcxTabSheet
       Caption = 'tabCadastroCanteiro'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lb1: TLabel
         Left = 5
         Top = 56

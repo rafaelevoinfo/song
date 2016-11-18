@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/11/2016 23:43:39
+// 17/11/2016 22:11:18
 //
 
 unit uFuncoes;
@@ -126,6 +126,7 @@ type
     FppuCalcularQuantidadeMudasMixCommand: TDBXCommand;
     FfpuBuscarIdItemMudaCommand: TDBXCommand;
     FfpuCalcularQtdeMudasRocamboleCommand: TDBXCommand;
+    FfpuVerificarLoteMudaExisteCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -150,6 +151,7 @@ type
     procedure ppuCalcularQuantidadeMudasMix(ipIdMixMuda: Integer); virtual;
     function fpuBuscarIdItemMuda: Integer; virtual;
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant; virtual;
+    function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean; virtual;
     function fpuGetId(ipTabela: string): Integer; virtual;
     function fpuDataHoraAtual: string; virtual;
     function fpuTestarConexao: Boolean; virtual;
@@ -1133,6 +1135,20 @@ begin
   Result := FfpuCalcularQtdeMudasRocamboleCommand.Parameters[1].Value.AsVariant;
 end;
 
+function TsmFuncoesViveiroClient.fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
+begin
+  if FfpuVerificarLoteMudaExisteCommand = nil then
+  begin
+    FfpuVerificarLoteMudaExisteCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarLoteMudaExisteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarLoteMudaExisteCommand.Text := 'TsmFuncoesViveiro.fpuVerificarLoteMudaExiste';
+    FfpuVerificarLoteMudaExisteCommand.Prepare;
+  end;
+  FfpuVerificarLoteMudaExisteCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuVerificarLoteMudaExisteCommand.ExecuteUpdate;
+  Result := FfpuVerificarLoteMudaExisteCommand.Parameters[1].Value.GetBoolean;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -1259,6 +1275,7 @@ begin
   FppuCalcularQuantidadeMudasMixCommand.DisposeOf;
   FfpuBuscarIdItemMudaCommand.DisposeOf;
   FfpuCalcularQtdeMudasRocamboleCommand.DisposeOf;
+  FfpuVerificarLoteMudaExisteCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

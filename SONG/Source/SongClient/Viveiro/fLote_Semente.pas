@@ -334,9 +334,7 @@ begin
     dmViveiro.cdsGerminacao.Last; // ultimo registro cadastrado
 
     vaLoteMuda := TLoteMuda.Create;
-    vaLoteMuda.Id := dmViveiro.cdsLote_SementeID.AsInteger;
     vaLoteMuda.IdLoteSemente := dmViveiro.cdsLote_SementeID.AsInteger;
-
     vaLoteMuda.Qtde := dmViveiro.cdsGerminacaoQTDE_GERMINADA.AsInteger;
 
     vaFrmLoteMuda.ppuConfigurarPesquisa(vaFrmLoteMuda.coPesquisaLoteSemente, dmViveiro.cdsLote_SementeID.AsString);
@@ -367,6 +365,14 @@ begin
       end
     else
       begin
+        if dmViveiro.cdsLote_SementeID.AsInteger < 276 then // 276 sao lotes gerados antes da unificacao dos generators
+          begin
+            if not dmPrincipal.FuncoesViveiro.fpuVerificarLoteMudaExiste(dmViveiro.cdsLote_SementeID.AsInteger) then
+              vaLoteMuda.Id := dmViveiro.cdsLote_SementeID.AsInteger;
+          end
+        else
+          vaLoteMuda.Id := dmViveiro.cdsLote_SementeID.AsInteger; // vamos usar o mesmo ID para que o lote continue o mesmo
+
         vaLoteMuda.Data := dmViveiro.cdsGerminacaoDATA.AsDateTime;
         vaLoteMuda.IdEspecie := dmViveiro.cdsLote_SementeID_ESPECIE.AsInteger;
         vaLoteMuda.IdItemCompra := dmViveiro.cdsLote_SementeID_COMPRA_ITEM.AsInteger;
@@ -377,6 +383,11 @@ begin
           vaFrmLoteMuda.ppuConfigurarModoExecucao(meSomenteCadastro, vaLoteMuda);
           vaFrmLoteMuda.ppuIncluir;
           vaFrmLoteMuda.ppuSalvar;
+
+          if vaFrmLoteMuda.IdEscolhido <> dmViveiro.cdsLote_SementeID.AsInteger then
+            TMensagem.ppuShowMessage('Não foi possível manter o mesmo número de lote para o lote de mudas gerado.' +
+              ' Favor alterar as marcações nos canteiros mudando o código ' + dmViveiro.cdsLote_SementeID.AsString + ' para ' +
+              vaFrmLoteMuda.IdEscolhido.ToString() + '.');
         except
           on e: Exception do
             raise Exception.Create('Não foi possível incluir o lote de muda. Detalhes: ' + e.Message);

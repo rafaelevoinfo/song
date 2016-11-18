@@ -57,6 +57,8 @@ type
 
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
 
+    function fpuVerificarLoteMudaExiste(ipId:Integer):Boolean;
+
   end;
 
 var
@@ -507,6 +509,11 @@ function TsmFuncoesViveiro.fpuvalidarNomeTipoEspecie(ipId: Integer;
 ipNome: String): Boolean;
 begin
   Result := fprValidarCampoUnico('TIPO_ESPECIE', 'NOME', ipId, ipNome);
+end;
+
+function TsmFuncoesViveiro.fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
+begin
+  Result := not fprValidarCampoUnico('LOTE_MUDA','ID',0,ipId.ToString());
 end;
 
 procedure TsmFuncoesViveiro.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);
