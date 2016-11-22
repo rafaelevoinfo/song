@@ -33,8 +33,8 @@ type
   protected
     function fprGetPermissao: String; override;
     procedure pprValidarDados; override;
-    procedure ppuIncluir;override;
   public
+    procedure ppuIncluir; override;
 
   end;
 

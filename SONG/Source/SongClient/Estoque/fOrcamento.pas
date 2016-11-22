@@ -29,7 +29,8 @@ uses
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
   dxSkinsdxRibbonPainter, dxPSCore, dxPSContainerLnk, cxDBRichEdit, dxPSRELnk,
   dxPScxExtComCtrlsLnk, frxClass, frxDBSet, frxRich, Vcl.DBCtrls, frxExportPDF,
-  System.IOUtils, System.MaskUtils;
+  System.IOUtils, System.MaskUtils, System.StrUtils, Vcl.Clipbrd,
+  Winapi.RichEdit;
 
 type
   TfrmOrcamento = class(TfrmBasicoCrudMasterDetail)
@@ -183,6 +184,9 @@ const
   coPesquisaCliente = 5;
   coPesquisaVendedor = 6;
 
+var
+  ClipboardFormat_RTF: Word = 0;
+
 implementation
 
 {$R *.dfm}
@@ -198,8 +202,6 @@ procedure TfrmOrcamento.ppvSubstituirMarcadoresOrcamento;
 var
   vaMarcador, vaConteudo: String;
   vaPos: Integer;
-  ATableParams: TcxRichEditTableParams;
-  AIndex: Integer;
   vaValorTotal: Currency;
   vaQtdeTotal: Double;
 
@@ -230,7 +232,15 @@ begin
     end;
 
   vaConteudo := fpvInserirTabelaEspecies;
-  plSubstituir(MarcadorOrcamento[moTabelaEspecie], vaConteudo);
+  vaPos := frameEditor.Rich.FindTexT(coInicioMarcador + MarcadorOrcamento[moTabelaEspecie] + coFimMarcador, 0, Length(frameEditor.Rich.Text), []);
+  if vaPos <> -1 then
+    begin
+      frameEditor.Rich.SelStart := vaPos;
+      frameEditor.Rich.SelLength := Length(coInicioMarcador + MarcadorOrcamento[moTabelaEspecie] + coFimMarcador);
+      frameEditor.ppuCopyRTFtoClipboard(ClipboardFormat_RTF, vaConteudo);
+      frameEditor.Rich.PasteFromClipboard;
+    end;
+  // plSubstituir(MarcadorOrcamento[moTabelaEspecie], vaConteudo);
 
   plSubstituir(MarcadorOrcamento[moDataOrcamento], DateToStr(dmEstoque.cdsOrcamentoDATA.AsDateTime));
   plSubstituir(MarcadorOrcamento[moDataOrcamentoExtenso], FormatDateTime('dd "de" mmmm "de" yyyy', dmEstoque.cdsOrcamentoDATA.AsDateTime));
@@ -245,7 +255,7 @@ begin
     end);
   plSubstituir(MarcadorOrcamento[moValorTotal], FormatFloat('R$ ,0.00', vaValorTotal));
   plSubstituir(MarcadorOrcamento[moValorTotalExtenso], TUtils.fpuGetValorPorExtenso(vaValorTotal));
-  plSubstituir(MarcadorOrcamento[moTotalItens], FormatFloat(',0',vaQtdeTotal));
+  plSubstituir(MarcadorOrcamento[moTotalItens], FormatFloat(',0', vaQtdeTotal));
 
   dmEstoque.cdsOrcamento_Orcamento.Post;
 end;
@@ -267,7 +277,8 @@ begin
   // vamos fazer um refresh para garantir que vai conter todas as informacoes necessarias
   dmEstoque.cdsOrcamento_Item.Refresh;
 
-  Result := '{\rtf1\ansi\ansicpg1251 ' + coQuebraLinha;
+  Result := '{\rtf1\ansi\ansicpg1252 ' + coQuebraLinha;
+  // Result := '\par' + coQuebraLinha;
   for vaLinha := 0 to dmEstoque.cdsOrcamento_Item.RecordCount do
     begin
       if vaLinha > 0 then
@@ -294,7 +305,7 @@ begin
             begin
               case vaColuna of
                 0:
-                  Result := Result + flAddBold('ESPÉCIE');
+                  Result := Result + flAddBold('ESP\''c9CIE');
                 1:
                   Result := Result + flAddBold('NOME CIENTÍFICO');
                 2:
@@ -336,6 +347,7 @@ begin
       Result := Result + '\row' + coQuebraLinha;
     end;
   Result := Result + '}';
+  // Result := Result + '\par' + coQuebraLinha;
 end;
 
 procedure TfrmOrcamento.Ac_Editar_OrcamentoExecute(Sender: TObject);
@@ -383,7 +395,7 @@ begin
           begin
             ppvPrepararImpressao;
 
-            vaExportPDF := TfrxPDFExport.Create(nil);
+            vaExportPDF := TfrxPDFExport.CReate(nil);
             try
               vaMatchPrimeiroNome := TRegex.Match(dmEstoque.cdsOrcamentoCLIENTE.AsString, '^.+?(?=\s)', [roIgnoreCase]);
               if vaMatchPrimeiroNome.Success then
@@ -403,10 +415,10 @@ begin
               if Tfile.Exists(vaExportPDF.FileName) then
                 begin
                   // nao usei TfileStream para nao travar o arquivo e consequentemente nao conseguir deletar
-                  vaFile := TBytesStream.Create();
+                  vaFile := TBytesStream.CReate();
                   try
                     vaFile.LoadFromFile(vaExportPDF.FileName);
-                    vaFile.Position := 0;
+                    vaFile.position := 0;
                     dmPrincipal.FuncoesGeral.ppuEnviarEmail('Orçamento - Viveiro de Mudas da Oréades', mmoCorpoEmail.Lines.Text, cbEmails.Text,
                       vaExportPDF.FileName, vaFile);
 
@@ -443,11 +455,11 @@ begin
       if TMensagem.fpuPerguntar('Tem certeza que deseja gerar uma saída para este orçamento?', ppSimNao) = rpSim then
         begin
           vaIdSaida := 0;
-          vaFrmSaida := TfrmSaida.Create(nil);
+          vaFrmSaida := TfrmSaida.CReate(nil);
           try
             try
               vaFrmSaida.ModoSilencioso := true;
-              vaSaida := TSaida.Create;
+              vaSaida := TSaida.CReate;
               vaSaida.Data := Now;
               vaSaida.Tipo := tsConsumo;
 
@@ -468,7 +480,7 @@ begin
               dmEstoque.cdsOrcamento_Item.First;
               while not dmEstoque.cdsOrcamento_Item.eof do
                 begin
-                  vaItem := TItem.Create;
+                  vaItem := TItem.CReate;
                   vaItem.Id := dmEstoque.cdsOrcamento_ItemID_ITEM.AsInteger;
                   vaItem.IdEspecie := dmEstoque.cdsOrcamento_ItemID_ESPECIE.AsInteger;
                   vaItem.Qtde := dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
@@ -502,7 +514,7 @@ begin
         end;
     end
   else
-    raise Exception.Create('Já existe uma venda ou saída vinculada a este orçamento.');
+    raise Exception.CReate('Já existe uma venda ou saída vinculada a este orçamento.');
 
 end;
 
@@ -521,11 +533,11 @@ begin
   inherited;
   if (dmEstoque.cdsOrcamentoID_VENDA.IsNull and dmEstoque.cdsOrcamentoID_SAIDA.IsNull) then
     begin
-      vaFrmVenda := TfrmVenda.Create(nil);
+      vaFrmVenda := TfrmVenda.CReate(nil);
       try
         try
           vaFrmVenda.ModoSilencioso := true;
-          vaVenda := TVenda.Create;
+          vaVenda := TVenda.CReate;
           vaVenda.Data := dmEstoque.cdsOrcamentoDATA.AsDateTime;
           vaVenda.IdCliente := dmEstoque.cdsOrcamentoID_CLIENTE.AsInteger;
           vaVenda.IdVendedor := dmEstoque.cdsOrcamentoID_RESPONSAVEL.AsInteger;
@@ -545,7 +557,7 @@ begin
           dmEstoque.cdsOrcamento_Item.First;
           while not dmEstoque.cdsOrcamento_Item.eof do
             begin
-              vaItem := TItem.Create;
+              vaItem := TItem.CReate;
               vaItem.Id := dmEstoque.cdsOrcamento_ItemID_ITEM.AsInteger;
               vaItem.IdEspecie := dmEstoque.cdsOrcamento_ItemID_ESPECIE.AsInteger;
               vaItem.Qtde := dmEstoque.cdsOrcamento_ItemQTDE.AsFloat;
@@ -582,7 +594,7 @@ begin
       end;
     end
   else
-    raise Exception.Create('Já existe uma venda ou saída vinculada a este orçamento.');
+    raise Exception.CReate('Já existe uma venda ou saída vinculada a este orçamento.');
 
 end;
 
@@ -723,7 +735,7 @@ begin
         Result := true;
     end
   else
-    raise Exception.Create('Não foi possível encontrar o modelo para montar o orçamento.');
+    raise Exception.CReate('Não foi possível encontrar o modelo para montar o orçamento.');
 
 end;
 
@@ -741,12 +753,12 @@ begin
   if fpvLocalizarModeloOrcamento(dmEstoque.cdsOrcamentoID_MODELO_ORCAMENTO.AsInteger) then
     begin
       dmEstoque.cdsOrcamento_Customizado.DisableControls;
-      vaModelo := TStringStream.Create;
+      vaModelo := TStringStream.CReate;
       try
         RichAux.Properties.PlainText := false;
         RichAux.Lines.Clear;
         dmLookup.cdslkModelo_Orcamento_OrcamentoMODELO.SaveToStream(vaModelo);
-        vaModelo.Position := 0;
+        vaModelo.position := 0;
         RichAux.Lines.LoadFromStream(vaModelo);
         // vamos remover o RTF para conseguir encontrar os marcadores
         RichAux.Properties.PlainText := true;
@@ -808,19 +820,18 @@ begin
       end;
     end
   else
-    raise Exception.Create('Modelo de Orçamento não encontrado.');
+    raise Exception.CReate('Modelo de Orçamento não encontrado.');
 
 end;
 
 procedure TfrmOrcamento.ppvAdicionarCampoCustomizado(ipCampo: String; ipConteudo: String);
 var
-  i: Integer;
-  vaPanel, vaPanelCampo: TPanel;
+  vaPanel: TPanel;
   vaLabel: TLabel;
   vaEdit: TcxTextEdit;
 begin
 
-  vaPanel := TPanel.Create(Self);
+  vaPanel := TPanel.CReate(Self);
   vaPanel.Parent := ScrollCampos;
   vaPanel.Width := 0;
   vaPanel.Height := 22;
@@ -828,22 +839,7 @@ begin
   vaPanel.Align := alTop;
   vaPanel.Top := 100000;
 
-
-  // vaPanelCampo := TPanel.Create(Self);
-  // vaPanelCampo.Parent := vaPanel;
-  // vaPanelCampo.Height := 21;
-  /// /  vaPanelCampo.Width := 350;
-  // vaPanelCampo.Caption := '';
-  // vaPanelCampo.Align := alClient;
-  // vaPanelCampo.AlignWithMargins := true;
-  // vaPanelCampo.Margins.Top := 0;
-  // vaPanelCampo.Margins.Left := 0;
-  // vaPanelCampo.Margins.Bottom := 0;
-  // vaPanelCampo.BevelOuter := bvNone;
-  //
-  // vaPanel.Width := vaPanel.Width + vaPanelCampo.Width;
-
-  vaLabel := TLabel.Create(Self);
+  vaLabel := TLabel.CReate(Self);
   vaLabel.AutoSize := false;
   vaLabel.Caption := ipCampo;
   vaLabel.Height := 21;
@@ -851,7 +847,7 @@ begin
   vaLabel.Align := AlLeft;
   vaLabel.Parent := vaPanel;
 
-  vaEdit := TcxTextEdit.Create(Self);
+  vaEdit := TcxTextEdit.CReate(Self);
   vaEdit.Height := 21;
   vaEdit.Align := alClient;
   vaEdit.Parent := vaPanel;
@@ -908,7 +904,7 @@ procedure TfrmOrcamento.ppvAdicionarCliente;
 var
   vaFrmCliente: TfrmCliente;
 begin
-  vaFrmCliente := TfrmCliente.Create(nil);
+  vaFrmCliente := TfrmCliente.CReate(nil);
   try
     vaFrmCliente.ppuConfigurarModoExecucao(meSomenteCadastro);
     vaFrmCliente.ShowModal;
@@ -928,10 +924,10 @@ end;
 
 procedure TfrmOrcamento.FormCreate(Sender: TObject);
 begin
-  dmEstoque := TdmEstoque.Create(Self);
+  dmEstoque := TdmEstoque.CReate(Self);
   dmEstoque.Name := '';
 
-  dmLookup := TdmLookup.Create(Self);
+  dmLookup := TdmLookup.CReate(Self);
   dmLookup.Name := '';
 
   inherited;
@@ -941,7 +937,7 @@ begin
   pcCadastroDetail.ActivePage := tabCadastroItem;
   pcCadastroDetail.Properties.HideTabs := true;
 
-  FMarcadoresCustomizados := TDictionary<String, TcxTextEdit>.Create;
+  FMarcadoresCustomizados := TDictionary<String, TcxTextEdit>.CReate;
   dmLookup.ppuCarregarPessoas(0, [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria]);
 
   dmLookup.cdslkItem.ppuDataRequest([TParametros.coTipo], [Ord(tiMuda).ToString + coDelimitadorPadrao + Ord(tiSemente).ToString()]);
@@ -951,6 +947,11 @@ begin
 
   dmLookup.cdslkEspecie.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA']);
   ppvCarregarClientes;
+
+  //garante que o clipboard esta registrado para receber textos em RTF
+  ClipboardFormat_RTF := RegisterClipboardFormat(Winapi.RichEdit.CF_RTF);
+  if ClipboardFormat_RTF = 0 then
+    raise Exception.CReate('Unable to register the Rich Text clipboard format!');
 end;
 
 procedure TfrmOrcamento.FormDestroy(Sender: TObject);
@@ -999,7 +1000,7 @@ begin
       // se estava incluindo nao posso dar apply pq o codigo estara o mesmo do cds principal o que causaria um key violation
       if dmEstoque.cdsOrcamento_OrcamentoID.AsInteger = 1 then
         begin
-          vaOrcamento := TBytesStream.Create;
+          vaOrcamento := TBytesStream.CReate;
           try
             dmEstoque.cdsOrcamento_Orcamento.Edit;
             dmEstoque.cdsOrcamento_OrcamentoID.AsInteger := dmEstoque.cdsOrcamentoID.AsInteger;
@@ -1009,7 +1010,7 @@ begin
             dmEstoque.cdsOrcamento_Orcamento.MergeChangeLog;
 
             dmEstoque.cdsOrcamento_Orcamento.Edit;
-            vaOrcamento.Position := 0;
+            vaOrcamento.position := 0;
             dmEstoque.cdsOrcamento_OrcamentoORCAMENTO.LoadFromStream(vaOrcamento);
             dmEstoque.cdsOrcamento_Orcamento.Post;
           finally
@@ -1055,7 +1056,7 @@ begin
                   if TMensagem.fpuPerguntar('O saldo atual de mudas prontas desta espécie é inferior a quantidade informada.' + slinebreak +
                     'Não será possível fazer realizar a venda posteriormente.' + slinebreak + 'Tem certeza que deseja gravar esta quantidade?', ppSimNao) = rpNao
                   then
-                    raise TPararExecucaoException.Create('');
+                    raise TPararExecucaoException.CReate('');
                 end;
             end
           else
@@ -1064,7 +1065,7 @@ begin
               if TMensagem.fpuPerguntar('O saldo atual de sementes desta espécie é inferior a quantidade informada.' + slinebreak +
                 'Não será possível fazer realizar a venda posteriormente.' + slinebreak + 'Tem certeza que deseja gravar esta quantidade?', ppSimNao) = rpNao
               then
-                raise TPararExecucaoException.Create('');
+                raise TPararExecucaoException.CReate('');
             end;
         end;
     end;
@@ -1146,8 +1147,5 @@ begin
   else
     Result := true;
 end;
-
-// initialization
-// RegisterClass(TfrxRichView);
 
 end.

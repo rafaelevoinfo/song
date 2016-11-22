@@ -267,7 +267,6 @@ function TfrmVenda.fpvSelecionarLote(ipCdsLote: TClientDataSet; ipFieldSaldo: St
 var
   vaItem: TItem;
   vaMaiorQtde: Double;
-  vaIdLote: Integer;
 begin
   Result := 0;
   vaMaiorQtde := 0;
@@ -299,6 +298,7 @@ var
   vaQtdeRestante: Double;
 begin
   inherited;
+  vaQtdeRestante := 0;
   if (ModoExecucao in [meSomenteCadastro, meSomenteEdicao]) and Assigned(Modelo) and (Modelo is TItem) then
     begin
       vaItem := TItem(Modelo);

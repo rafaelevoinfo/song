@@ -236,7 +236,6 @@ end;
 procedure TfrmSaida.pprCarregarDadosModeloDetail;
 var
   vaItem: TItem;
-  vaIdLote: Integer;
   vaQtdeRestante: Double;
   vaTipo: TTipoItem;
 begin
