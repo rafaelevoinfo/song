@@ -55,6 +55,8 @@ type
     class function fpuGetValorPorExtenso(ipValor: Real): string;
 
     class function fpuCentimetroToPixel(ipCm:Double):Integer;
+
+    class procedure ppuHabilitarDesabilitarControles(ipContainer:TWinControl;ipHabilitar:Boolean);
   end;
 
 const
@@ -299,6 +301,17 @@ var
 begin
   vaArray := TRegex.Split(ipInput, ipDelimitador);
   opValor := vaArray[0];
+end;
+
+class procedure TUtils.ppuHabilitarDesabilitarControles(ipContainer: TWinControl; ipHabilitar:Boolean);
+var
+  I: Integer;
+begin
+  for I := 0 to ipContainer.ControlCount-1 do
+    begin
+      if ipContainer.Controls[i] is TWinControl then
+        ipContainer.Controls[i].Enabled := ipHabilitar;
+    end;
 end;
 
 class function TUtils.fpuCalcularDepreciacao(ipDataAquisicao: TDateTime;

@@ -82,6 +82,7 @@ type
 
   TOnErroRede = function(e: Exception): Boolean of object;
 
+  [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator or pidiOSDevice or pidAndroid)]
   TRFClientDataSet = class(TClientDataSet)
   private
     FParametros: TList<String>;

@@ -483,7 +483,9 @@ procedure TfrmSolicitacaoCompra.pprBeforeAlterar;
 begin
   inherited;
   if dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = Ord(sscAprovada) then
-    raise Exception.Create('Não é possível editar uma solicitação já aprovada.');
+    TUtils.ppuHabilitarDesabilitarControles(pnEditsCadastro, false)
+  else
+    TUtils.ppuHabilitarDesabilitarControles(pnEditsCadastro, true);
 
   pnMotivoNegacaoCadastro.Visible := dmEstoque.cdsSolicitacao_CompraSTATUS.AsInteger = ord(sscNegada);
 end;
@@ -505,6 +507,7 @@ end;
 procedure TfrmSolicitacaoCompra.pprBeforeIncluir;
 begin
   inherited;
+  TUtils.ppuHabilitarDesabilitarControles(pnEditsCadastro,true);
   pnMotivoNegacaoCadastro.Visible := false;
 end;
 

@@ -8,7 +8,8 @@ uses
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
   dxSkinsCore, dxSkinBlack, Vcl.StdCtrls, cxImage, cxProgressBar,
   dxGDIPlusClasses, fLogin, uMensagem, uTypes, uUtils, System.IOUtils,
-  Winapi.ShellAPI, System.Zip, System.ZLib, System.Types, Vcl.ExtCtrls;
+  Winapi.ShellAPI, System.Zip, System.ZLib, System.Types, Vcl.ExtCtrls,
+  cxGroupBox, cxRadioGroup, cxTextEdit;
 
 type
   TfrmSplash = class(TfrmBasico)
@@ -18,10 +19,20 @@ type
     pbProgresso: TcxProgressBar;
     imgLogoSong: TcxImage;
     pnBackground: TPanel;
+    pnLocalizacao: TPanel;
+    Label2: TLabel;
+    rgLocalizacao: TcxRadioGroup;
+    btnConectar: TButton;
+    EditHostPersonalizado: TcxTextEdit;
+    Label3: TLabel;
+    btnFechar: TButton;
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
-    FDirAtualizacoes:string;
+    FHost: String;
+    FDirAtualizacoes: string;
     procedure ppvAtualizar(ipArquivo: string);
+    procedure ppvRealizarConfiguracoes;
   protected
     procedure pprAfterShow(var ipMsg: TMessage); override;
     { Private declarations }
@@ -70,10 +81,10 @@ begin
     vaBatch.Add('@echo off');
     vaBatch.Add('del ' + vaExecutavelAtual);
     vaBatch.Add('if Exist ' + vaExecutavelAtual + ' goto Label1');
-    vaBatch.Add('Move '+vaNovoExecutavel+' SongClient.exe');
-    vaBatch.Add('Call '+vaExecutavelAtual);
-    vaBatch.Add('del '+ipArquivo);
-    vaBatch.Add('del '+vaBatchName);
+    vaBatch.Add('Move ' + vaNovoExecutavel + ' SongClient.exe');
+    vaBatch.Add('Call ' + vaExecutavelAtual);
+    vaBatch.Add('del ' + ipArquivo);
+    vaBatch.Add('del ' + vaBatchName);
 
     vaBatch.SaveToFile(vaBatchName);
     ShellExecute(Application.Handle, PWideChar('open'), PWideChar(vaBatchName), nil,
@@ -92,12 +103,24 @@ begin
     TDirectory.CreateDirectory(FDirAtualizacoes);
 end;
 
+procedure TfrmSplash.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+    if Key = Char(VK_RETURN) then
+    TUtils.fpuFocar(btnConectar);
+end;
+
 procedure TfrmSplash.pprAfterShow(var ipMsg: TMessage);
+begin
+  ppvRealizarConfiguracoes;
+end;
+
+procedure TfrmSplash.ppvRealizarConfiguracoes;
 var
   vaVersao, vaNovaVersao, vaNovoExecutavel: string;
   vaExecutavel: TBytesStream;
   vaStream: TStream;
-
+  vaForm: Tform;
 begin
   inherited;
 
@@ -107,7 +130,9 @@ begin
   try
     pbProgresso.Properties.Text := 'Configurando a conexão com o servidor.';
     Application.ProcessMessages;
-    dmPrincipal.ppuConfigurarConexao('', '');
+    dmPrincipal.ppuConfigurarConexao('', '', FHost);
+    if FHost <> '' then
+      dmPrincipal.ppuAtualizarArquivoConfiguracao(FHost);
 
     pbProgresso.Position := pbProgresso.Position + 1;
     // Buscando atualizacoes
@@ -132,7 +157,7 @@ begin
               vaStream.Position := 0;
               TUtils.ppuCopyStreamToByteStream(vaStream, vaExecutavel);
 
-              vaNovoExecutavel := IncludeTrailingBackslash(coPastaAtualizacoes)+ coNomePadraoSongClient + vaNovaVersao + coExtensaoCompactacao;
+              vaNovoExecutavel := IncludeTrailingBackslash(coPastaAtualizacoes) + coNomePadraoSongClient + vaNovaVersao + coExtensaoCompactacao;
               vaExecutavel.SaveToFile(vaNovoExecutavel);
 
             end;
@@ -151,10 +176,28 @@ begin
   except
     on e: Exception do
       begin
-        TMensagem.ppuShowException('Erro ao conectar no servidor. Certifique-se que o arquivo de configuração "' +
-          coArquivoConfiguracao + '" está preenchido corretamente.', e);
+        vaForm := TUtils.fpuEncapsularPanelForm('Sem Conexão', pnLocalizacao);
+        try
+          vaForm.Position := poScreenCenter;
+          vaForm.OnKeyPress := self.OnKeyPress;
+          if vaForm.ShowModal = mrOk then
+            begin
+              if Trim(EditHostPersonalizado.Text) <> '' then
+                FHost := Trim(EditHostPersonalizado.Text)
+              else if rgLocalizacao.ItemIndex = 0 then // dentro da oreades
+                FHost := '192.168.1.2'
+              else if rgLocalizacao.ItemIndex = 1 then // fora da oreades
+                FHost := 'oreades.ddns.net';
 
-        Application.Terminate;
+              ppvRealizarConfiguracoes;
+            end
+          else
+            ExitProcess(0);
+        finally
+          pnLocalizacao.Visible := false;
+          pnLocalizacao.Parent := self;
+          vaForm.Free;
+        end;
       end;
   end;
 end;

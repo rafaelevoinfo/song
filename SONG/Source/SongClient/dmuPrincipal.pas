@@ -73,6 +73,7 @@ type
     { Private declarations }
   public
     procedure ppuConfigurarConexao(ipUsuario, ipSenha: String; ipHost: String = '');
+    procedure ppuAtualizarArquivoConfiguracao(ipHost: String);
 
     property FuncoesGeral: TsmFuncoesGeralClient read FFuncoesGeral;
     property FuncoesAdm: TsmFuncoesAdministrativoClient read FFuncoesAdministrativo;
@@ -267,6 +268,29 @@ begin
     end;
 end;
 
+procedure TdmPrincipal.ppuAtualizarArquivoConfiguracao(ipHost: String);
+var
+  vaFilePath: String;
+  vaFile: TStringList;
+begin
+  vaFilePath := IncludeTrailingBackslash(TDirectory.GetCurrentDirectory) + coArquivoConfiguracao;
+
+  vaFile := TStringList.Create;
+  try
+    if Tfile.Exists(vaFilePath) then
+      vaFile.LoadFromFile(vaFilePath);
+
+    if vaFile.Count = 0 then
+      vaFile.Append(ipHost)
+    else
+      vaFile.Strings[0] := ipHost;
+
+    vaFile.SaveToFile(vaFilePath);
+  finally
+    vaFile.Free;
+  end;
+end;
+
 procedure TdmPrincipal.ppuConfigurarConexao(ipUsuario, ipSenha, ipHost: String);
 var
   vaHost: string;
@@ -279,7 +303,7 @@ begin
 
   vaFilePath := IncludeTrailingBackslash(TDirectory.GetCurrentDirectory) + coArquivoConfiguracao;
   // primeiro vamos ver se achamos um arquivo de configuracao
-  if TFile.Exists(vaFilePath) then
+  if Tfile.Exists(vaFilePath) then
     begin
       vaFile := TStringList.Create;
       try

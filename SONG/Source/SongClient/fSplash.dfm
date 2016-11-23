@@ -2,27 +2,24 @@ inherited frmSplash: TfrmSplash
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'SONG'
-  ClientHeight = 267
+  ClientHeight = 243
   ClientWidth = 543
   TransparentColorValue = clBtnFace
   OnCreate = FormCreate
   ExplicitWidth = 543
-  ExplicitHeight = 267
+  ExplicitHeight = 243
   PixelsPerInch = 96
   TextHeight = 13
   object pnBackground: TPanel
     Left = 0
     Top = 0
     Width = 543
-    Height = 267
+    Height = 243
     Align = alClient
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 176
-    ExplicitTop = 112
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitHeight = 249
     object Label1: TLabel
       Left = 8
       Top = 194
@@ -3614,10 +3611,93 @@ inherited frmSplash: TfrmSplash
     end
     object pbProgresso: TcxProgressBar
       Left = 8
-      Top = 239
+      Top = 215
       Properties.ShowTextStyle = cxtsText
       TabOrder = 2
       Width = 525
+    end
+    object pnLocalizacao: TPanel
+      Left = 0
+      Top = 26
+      Width = 525
+      Height = 165
+      Color = clActiveBorder
+      ParentBackground = False
+      TabOrder = 3
+      Visible = False
+      object Label2: TLabel
+        AlignWithMargins = True
+        Left = 4
+        Top = 4
+        Width = 517
+        Height = 39
+        Align = alTop
+        Caption = 
+          'N'#227'o foi poss'#237'vel conectar no servidor utilizando as configura'#231#245'e' +
+          's de conex'#227'o atuais. Informe sua localiza'#231#227'o abaixo para que o s' +
+          'istema corriga automaticamente suas configura'#231#245'es de conex'#227'o.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        WordWrap = True
+        ExplicitWidth = 475
+      end
+      object Label3: TLabel
+        Left = 213
+        Top = 63
+        Width = 250
+        Height = 13
+        Caption = 'Informe um host personalizado caso seja necess'#225'rio'
+      end
+      object rgLocalizacao: TcxRadioGroup
+        Left = 4
+        Top = 45
+        Caption = 'Onde voc'#234' est'#225'?'
+        Properties.Columns = 2
+        Properties.Items = <
+          item
+            Caption = 'Dentro da ONG'
+          end
+          item
+            Caption = 'Fora da ONG'
+          end>
+        ItemIndex = 0
+        TabOrder = 0
+        Height = 55
+        Width = 205
+      end
+      object btnConectar: TButton
+        Left = 337
+        Top = 106
+        Width = 161
+        Height = 47
+        Caption = 'Tentar Novamente'
+        ImageIndex = 6
+        Images = dmPrincipal.imgIcons_32
+        ModalResult = 1
+        TabOrder = 2
+      end
+      object EditHostPersonalizado: TcxTextEdit
+        Left = 210
+        Top = 79
+        TabStop = False
+        TabOrder = 1
+        Width = 288
+      end
+      object btnFechar: TButton
+        Left = 170
+        Top = 106
+        Width = 161
+        Height = 47
+        Caption = 'Sair'
+        ImageIndex = 5
+        Images = dmPrincipal.imgIcons_32
+        ModalResult = 2
+        TabOrder = 3
+      end
     end
   end
 end

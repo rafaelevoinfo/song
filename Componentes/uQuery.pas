@@ -6,6 +6,7 @@ uses
   FireDAC.Comp.Client, Classes, Datasnap.DBClient, Data.DB;
 
 type
+  [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator or pidiOSDevice or pidAndroid)]
   TRFQuery = class(TFDQuery)
   public
     function fpuCopiarToClientDataSet: TClientDataSet;
