@@ -1,5 +1,5 @@
 inherited frmMixMuda: TfrmMixMuda
-  ActiveControl = btnIncluir
+  ActiveControl = btnSalvar
   Caption = 'Mix de Mudas'
   ClientHeight = 611
   ExplicitWidth = 1000
@@ -8,7 +8,7 @@ inherited frmMixMuda: TfrmMixMuda
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Height = 611
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     ExplicitHeight = 611
     ClientRectBottom = 607
     inherited tabPesquisa: TcxTabSheet
@@ -333,15 +333,15 @@ inherited frmMixMuda: TfrmMixMuda
           BevelOuter = bvNone
           TabOrder = 0
           object Label3: TLabel
-            Left = 115
+            Left = 1
             Top = 46
-            Width = 160
+            Width = 77
             Height = 13
-            Caption = 'Qtde. de Mudas (Multiplo de 400)'
+            Caption = 'Qtde. de Mudas'
             FocusControl = EditQtde
           end
           object Label4: TLabel
-            Left = 283
+            Left = 196
             Top = 46
             Width = 102
             Height = 13
@@ -379,14 +379,6 @@ inherited frmMixMuda: TfrmMixMuda
             Height = 13
             Caption = 'Cliente (F2)'
             FocusControl = cbCliente
-          end
-          object Label6: TLabel
-            Left = 3
-            Top = 46
-            Width = 92
-            Height = 13
-            Caption = 'Qtde. de Carrinhos'
-            FocusControl = EditQtde
           end
           object btnAdicionarCliente: TButton
             Left = 166
@@ -432,36 +424,29 @@ inherited frmMixMuda: TfrmMixMuda
             Top = 102
             DataBinding.DataField = 'DESCRICAO'
             DataBinding.DataSource = dsMaster
-            TabOrder = 7
+            TabOrder = 6
             Height = 62
             Width = 525
           end
           object EditQtde: TcxDBCalcEdit
-            Left = 113
+            Left = -1
             Top = 63
             RepositoryItem = dmLookup.repCalcInteiro
             DataBinding.DataField = 'QTDE_MUDA'
             DataBinding.DataSource = dsMaster
             Properties.OnEditValueChanged = EditQtdePropertiesEditValueChanged
-            TabOrder = 5
-            Width = 162
+            TabOrder = 4
+            Width = 189
           end
           object EditQtdeRocambole: TcxDBCalcEdit
-            Left = 281
+            Left = 194
             Top = 63
             RepositoryItem = dmLookup.repCalcPadrao
             DataBinding.DataField = 'QTDE_MUDA_ROCAMBOLE'
             DataBinding.DataSource = dsMaster
             Properties.OnEditValueChanged = EditQtdePropertiesEditValueChanged
-            TabOrder = 6
+            TabOrder = 5
             Width = 104
-          end
-          object EditQtdeCarrinho: TcxSpinEdit
-            Left = 3
-            Top = 63
-            Properties.OnEditValueChanged = EditQtdeCarrinhoPropertiesEditValueChanged
-            TabOrder = 4
-            Width = 106
           end
         end
         inline frameGrids: TframeGrids
@@ -498,10 +483,15 @@ inherited frmMixMuda: TfrmMixMuda
             ExplicitWidth = 974
             ExplicitHeight = 344
             inherited cxGrid1: TcxGrid
+              Width = 456
+              Height = 342
               ExplicitWidth = 456
               ExplicitHeight = 342
             end
             inherited pnBotoes: TPanel
+              Left = 457
+              Width = 48
+              Height = 342
               ExplicitLeft = 457
               ExplicitWidth = 48
               ExplicitHeight = 342
@@ -519,6 +509,9 @@ inherited frmMixMuda: TfrmMixMuda
               end
             end
             inherited cxGrid2: TcxGrid
+              Left = 505
+              Width = 468
+              Height = 342
               ExplicitLeft = 505
               ExplicitWidth = 468
               ExplicitHeight = 342
@@ -547,11 +540,14 @@ inherited frmMixMuda: TfrmMixMuda
               ExplicitWidth = 972
               inherited lbInfoGridEsquerda: TLabel
                 Width = 229
+                Height = 15
                 Caption = 'Esp'#233'cies com mudas prontas dispon'#237'veis'
                 ExplicitWidth = 229
               end
               inherited lbInfoGridDireita: TLabel
+                Left = 504
                 Width = 124
+                Height = 15
                 Caption = 'Esp'#233'cies selecionadas'
                 ExplicitLeft = 504
                 ExplicitWidth = 124
@@ -754,7 +750,7 @@ inherited frmMixMuda: TfrmMixMuda
   end
   object ppMudas: TppReport [8]
     AutoStop = False
-    DataPipeline = DBPipeLotesCanteiro
+    DataPipeline = DBPipeImpressaoMix
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
     PrinterSetup.PaperName = 'A4'
@@ -807,7 +803,7 @@ inherited frmMixMuda: TfrmMixMuda
     Top = 240
     Version = '16.02'
     mmColumnWidth = 0
-    DataPipelineName = 'DBPipeLotesCanteiro'
+    DataPipelineName = 'DBPipeImpressaoMix'
     object ppHeaderBand1: TppHeaderBand
       Background.Brush.Style = bsClear
       mmBottomOffset = 0
@@ -937,55 +933,43 @@ inherited frmMixMuda: TfrmMixMuda
       Background1.Brush.Style = bsClear
       Background2.Brush.Color = clSilver
       mmBottomOffset = 0
-      mmHeight = 5292
+      mmHeight = 5821
       mmPrintPosition = 0
       object ppDBText2: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText2'
-        DataField = 'ESPECIE'
-        DataPipeline = DBPipeLotesCanteiro
+        DataField = 'CANTEIRO'
+        DataPipeline = DBPipeImpressaoMix
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = []
         Transparent = True
-        DataPipelineName = 'DBPipeLotesCanteiro'
+        DataPipelineName = 'DBPipeImpressaoMix'
         mmHeight = 4763
-        mmLeft = 8845
-        mmTop = 332
-        mmWidth = 64703
+        mmLeft = 3367
+        mmTop = 265
+        mmWidth = 43536
         BandType = 4
         LayerName = Foreground
       end
       object ppDBText3: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText3'
-        DataField = 'QTDE_MUDA_RETIRAR'
-        DataPipeline = DBPipeLotesCanteiro
-        DisplayFormat = ',0'
+        DataField = 'ESPECIE'
+        DataPipeline = DBPipeImpressaoMix
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = []
-        TextAlignment = taRightJustified
         Transparent = True
-        DataPipelineName = 'DBPipeLotesCanteiro'
+        DataPipelineName = 'DBPipeImpressaoMix'
         mmHeight = 4763
-        mmLeft = 136862
-        mmTop = 242
-        mmWidth = 20686
-        BandType = 4
-        LayerName = Foreground
-      end
-      object ppShape1: TppShape
-        DesignLayer = ppDesignLayer1
-        UserName = 'Shape1'
-        mmHeight = 4498
-        mmLeft = 2072
-        mmTop = 529
-        mmWidth = 5556
+        mmLeft = 47361
+        mmTop = 287
+        mmWidth = 63981
         BandType = 4
         LayerName = Foreground
       end
@@ -993,39 +977,38 @@ inherited frmMixMuda: TfrmMixMuda
         DesignLayer = ppDesignLayer1
         UserName = 'DBText4'
         DataField = 'LOTE'
-        DataPipeline = DBPipeLotesCanteiro
+        DataPipeline = DBPipeImpressaoMix
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = []
         Transparent = True
-        DataPipelineName = 'DBPipeLotesCanteiro'
+        DataPipelineName = 'DBPipeImpressaoMix'
         mmHeight = 4763
-        mmLeft = 75655
-        mmTop = 265
-        mmWidth = 59171
+        mmLeft = 112553
+        mmTop = 287
+        mmWidth = 44739
         BandType = 4
         LayerName = Foreground
       end
       object ppDBText9: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText9'
-        DataField = 'CALC_QTDE_CARRINHO'
-        DataPipeline = DBPipeLotesCanteiro
+        DataField = 'QTDE_MUDA'
+        DataPipeline = DBPipeImpressaoMix
         DisplayFormat = ',0'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = []
-        TextAlignment = taRightJustified
         Transparent = True
-        DataPipelineName = 'DBPipeLotesCanteiro'
+        DataPipelineName = 'DBPipeImpressaoMix'
         mmHeight = 4763
-        mmLeft = 159544
-        mmTop = 265
-        mmWidth = 36320
+        mmLeft = 158440
+        mmTop = 45
+        mmWidth = 36556
         BandType = 4
         LayerName = Foreground
       end
@@ -1251,40 +1234,33 @@ inherited frmMixMuda: TfrmMixMuda
         end
       end
     end
-    object ppGroup1: TppGroup
-      BreakName = 'ID_CANTEIRO'
-      DataPipeline = DBPipeLotesCanteiro
+    object ppGroup3: TppGroup
+      BreakName = 'NRO_CARRINHO'
+      DataPipeline = DBPipeImpressaoMix
       GroupFileSettings.NewFile = False
       GroupFileSettings.EmailFile = False
-      PreventOrphans = True
+      KeepTogether = True
       OutlineSettings.CreateNode = True
       StartOnOddPage = False
-      UserName = 'Group1'
+      UserName = 'Group3'
       mmNewColumnThreshold = 0
       mmNewPageThreshold = 0
-      DataPipelineName = 'DBPipeLotesCanteiro'
+      DataPipelineName = 'DBPipeImpressaoMix'
       NewFile = False
-      object ppGroupHeaderBand1: TppGroupHeaderBand
+      object ppGroupHeaderBand3: TppGroupHeaderBand
         Background.Brush.Style = bsClear
         mmBottomOffset = 0
-        mmHeight = 12700
+        mmHeight = 10319
         mmPrintPosition = 0
-        object ppDBText1: TppDBText
+        object ppShape1: TppShape
           DesignLayer = ppDesignLayer1
-          UserName = 'DBText1'
-          DataField = 'CANTEIRO'
-          DataPipeline = DBPipeLotesCanteiro
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = 'Arial'
-          Font.Size = 11
-          Font.Style = [fsBold]
-          Transparent = True
-          DataPipelineName = 'DBPipeLotesCanteiro'
-          mmHeight = 5027
-          mmLeft = 1588
-          mmTop = 1058
-          mmWidth = 89237
+          UserName = 'Shape1'
+          Brush.Color = clSilver
+          Shape = stRoundRect
+          mmHeight = 5489
+          mmLeft = 1684
+          mmTop = 265
+          mmWidth = 194349
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
@@ -1292,18 +1268,38 @@ inherited frmMixMuda: TfrmMixMuda
         object ppLabel1: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label3'
-          Caption = 'Esp'#233'cie'
+          Caption = 'Carrinho:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 12
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 8776
-          mmTop = 7938
-          mmWidth = 11377
+          mmHeight = 5027
+          mmLeft = 3281
+          mmTop = 264
+          mmWidth = 19314
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppDBText1: TppDBText
+          DesignLayer = ppDesignLayer1
+          UserName = 'DBText1'
+          DataField = 'NRO_CARRINHO'
+          DataPipeline = DBPipeImpressaoMix
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'DBPipeImpressaoMix'
+          mmHeight = 4763
+          mmLeft = 23215
+          mmTop = 528
+          mmWidth = 36801
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
@@ -1311,18 +1307,18 @@ inherited frmMixMuda: TfrmMixMuda
         object ppLabel2: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label4'
-          Caption = 'Lote'
+          Caption = 'Canteiro'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 10
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 75648
-          mmTop = 7938
-          mmWidth = 6615
+          mmHeight = 4233
+          mmLeft = 3282
+          mmTop = 5821
+          mmWidth = 14287
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
@@ -1330,18 +1326,37 @@ inherited frmMixMuda: TfrmMixMuda
         object ppLabel3: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label5'
-          Caption = 'Quantidade'
+          Caption = 'Esp'#233'cie'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 10
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 141552
-          mmTop = 7938
-          mmWidth = 16404
+          mmHeight = 4233
+          mmLeft = 47361
+          mmTop = 5821
+          mmWidth = 12964
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppLabel5: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label6'
+          Caption = 'Lote'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 112818
+          mmTop = 5821
+          mmWidth = 7408
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
@@ -1349,29 +1364,69 @@ inherited frmMixMuda: TfrmMixMuda
         object ppLabel6: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label7'
-          Caption = 'Quantidade por Carrinho'
+          Caption = 'Quantidade de Mudas'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
-          Font.Size = 8
+          Font.Size = 10
           Font.Style = [fsBold]
           FormField = False
           Transparent = True
-          mmHeight = 3704
-          mmLeft = 160867
-          mmTop = 7938
-          mmWidth = 35719
+          mmHeight = 4233
+          mmLeft = 158485
+          mmTop = 5821
+          mmWidth = 36778
           BandType = 3
           GroupNo = 0
           LayerName = Foreground
         end
       end
-      object ppGroupFooterBand1: TppGroupFooterBand
+      object ppGroupFooterBand3: TppGroupFooterBand
         Background.Brush.Style = bsClear
         HideWhenOneDetail = False
         mmBottomOffset = 0
-        mmHeight = 0
+        mmHeight = 6879
         mmPrintPosition = 0
+        object ppLabel7: TppLabel
+          DesignLayer = ppDesignLayer1
+          UserName = 'Label8'
+          Caption = 'Total de mudas no carrinho:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 109802
+          mmTop = 0
+          mmWidth = 47361
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground
+        end
+        object ppDBCalc1: TppDBCalc
+          DesignLayer = ppDesignLayer1
+          UserName = 'DBCalc1'
+          DataField = 'QTDE_MUDA'
+          DataPipeline = DBPipeImpressaoMix
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup3
+          Transparent = True
+          DataPipelineName = 'DBPipeImpressaoMix'
+          mmHeight = 4498
+          mmLeft = 158289
+          mmTop = 45
+          mmWidth = 36564
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground
+        end
       end
     end
     object ppDesignLayers1: TppDesignLayers
@@ -1384,121 +1439,94 @@ inherited frmMixMuda: TfrmMixMuda
     object ppParameterList1: TppParameterList
     end
   end
-  object DBPipeLotesCanteiro: TppDBPipeline [9]
-    DataSource = dsMix_Muda_Especie_Lote_Canteiro
-    UserName = 'DBPipeLotesCanteiro'
+  object DBPipeImpressaoMix: TppDBPipeline [9]
+    DataSource = dsLocalImpressaoMix
+    UserName = 'DBPipeImpressaoMix'
     Left = 88
     Top = 304
-    object DBPipeLotesCanteiroppField1: TppField
-      Alignment = taRightJustify
+    object DBPipeImpressaoMixppField1: TppField
+      FieldAlias = 'NRO_CARRINHO'
+      FieldName = 'NRO_CARRINHO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object DBPipeImpressaoMixppField2: TppField
       FieldAlias = 'ID_CANTEIRO'
       FieldName = 'ID_CANTEIRO'
       FieldLength = 0
-      DataType = dtInteger
+      DataType = dtNotKnown
       DisplayWidth = 0
-      Position = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
     end
-    object DBPipeLotesCanteiroppField2: TppField
+    object DBPipeImpressaoMixppField3: TppField
       FieldAlias = 'CANTEIRO'
       FieldName = 'CANTEIRO'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 1
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
     end
-    object DBPipeLotesCanteiroppField3: TppField
-      Alignment = taRightJustify
+    object DBPipeImpressaoMixppField4: TppField
       FieldAlias = 'ID_ESPECIE'
       FieldName = 'ID_ESPECIE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 2
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
     end
-    object DBPipeLotesCanteiroppField4: TppField
+    object DBPipeImpressaoMixppField5: TppField
       FieldAlias = 'ESPECIE'
       FieldName = 'ESPECIE'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 3
-    end
-    object DBPipeLotesCanteiroppField5: TppField
-      FieldAlias = 'LOTE'
-      FieldName = 'LOTE'
-      FieldLength = 100
-      DisplayWidth = 100
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
-    object DBPipeLotesCanteiroppField6: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTDE_MUDA_RETIRAR'
-      FieldName = 'QTDE_MUDA_RETIRAR'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 5
-    end
-    object DBPipeLotesCanteiroppField7: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'ID_CLIENTE'
-      FieldName = 'ID_CLIENTE'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 6
-    end
-    object DBPipeLotesCanteiroppField8: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'ID_PESSOA_RESPONSAVEL'
-      FieldName = 'ID_PESSOA_RESPONSAVEL'
-      FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 7
-    end
-    object DBPipeLotesCanteiroppField9: TppField
-      FieldAlias = 'RESPONSAVEL'
-      FieldName = 'RESPONSAVEL'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 8
-    end
-    object DBPipeLotesCanteiroppField10: TppField
-      FieldAlias = 'CLIENTE'
-      FieldName = 'CLIENTE'
-      FieldLength = 100
-      DisplayWidth = 100
-      Position = 9
-    end
-    object DBPipeLotesCanteiroppField11: TppField
-      Alignment = taRightJustify
+    object DBPipeImpressaoMixppField6: TppField
       FieldAlias = 'QTDE_MUDA'
       FieldName = 'QTDE_MUDA'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 10
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
     end
-    object DBPipeLotesCanteiroppField12: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'QTDE_MUDA_ROCAMBOLE'
-      FieldName = 'QTDE_MUDA_ROCAMBOLE'
+    object DBPipeImpressaoMixppField7: TppField
+      FieldAlias = 'ID_LOTE'
+      FieldName = 'ID_LOTE'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 11
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
     end
-    object DBPipeLotesCanteiroppField13: TppField
-      Alignment = taRightJustify
-      FieldAlias = 'CALC_QTDE_CARRINHO'
-      FieldName = 'CALC_QTDE_CARRINHO'
+    object DBPipeImpressaoMixppField8: TppField
+      FieldAlias = 'QTDE_TOTAL'
+      FieldName = 'QTDE_TOTAL'
       FieldLength = 0
-      DataType = dtInteger
-      DisplayWidth = 10
-      Position = 12
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
     end
   end
-  object dsMix_Muda_Especie_Lote_Canteiro: TDataSource [10]
-    DataSet = dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro
+  object dsLocalImpressaoMix: TDataSource [10]
+    DataSet = cdsLocalImpressaoMix
     Left = 296
     Top = 288
   end
@@ -1590,6 +1618,51 @@ inherited frmMixMuda: TfrmMixMuda
     object cdsQtdeMudaRocamboleQTDE: TIntegerField
       FieldName = 'QTDE'
       ProviderFlags = []
+    end
+  end
+  object cdsLocalImpressaoMix: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <
+      item
+        Name = 'ORDER'
+        DescFields = 'QTDE_MUDA'
+        Fields = 'SE_NECESSARIO;NRO_CARRINHO;CANTEIRO;ID_LOTE;QTDE_MUDA'
+      end>
+    IndexName = 'ORDER'
+    Params = <>
+    StoreDefs = True
+    Left = 184
+    Top = 168
+    object cdsLocalImpressaoMixNRO_CARRINHO: TIntegerField
+      FieldName = 'NRO_CARRINHO'
+    end
+    object cdsLocalImpressaoMixID_CANTEIRO: TIntegerField
+      FieldName = 'ID_CANTEIRO'
+    end
+    object cdsLocalImpressaoMixCANTEIRO: TStringField
+      FieldName = 'CANTEIRO'
+      Size = 100
+    end
+    object cdsLocalImpressaoMixID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+    end
+    object cdsLocalImpressaoMixESPECIE: TStringField
+      FieldName = 'ESPECIE'
+      Size = 100
+    end
+    object cdsLocalImpressaoMixQTDE_MUDA: TIntegerField
+      FieldName = 'QTDE_MUDA'
+    end
+    object cdsLocalImpressaoMixID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+    end
+    object cdsLocalImpressaoMixLOTE: TStringField
+      FieldName = 'LOTE'
+      Size = 100
+    end
+    object cdsLocalImpressaoMixSE_NECESSARIO: TIntegerField
+      FieldName = 'SE_NECESSARIO'
     end
   end
 end

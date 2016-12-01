@@ -1261,13 +1261,13 @@ inherited smViveiro: TsmViveiro
     end
   end
   object qMix_Muda_Especie_Lote_Canteiro: TRFQuery
-    OnCalcFields = qMix_Muda_Especie_Lote_CanteiroCalcFields
     Connection = dmPrincipal.conSong
     SQL.Strings = (
       'select Canteiro.Id as Id_Canteiro,'
       '       Canteiro.Nome as Canteiro,'
       '       Especie.Id as Id_Especie,'
       '       Especie.Nome as Especie,'
+      '       Lote_Muda.ID AS ID_LOTE,'
       '       case'
       '         when (select count(*) '
       '               from lote_muda lm'
@@ -1338,7 +1338,9 @@ inherited smViveiro: TsmViveiro
         ')'
       'inner join fin_for_cli on (fin_for_cli.id = mix_muda.id_cliente)'
       'where Mix_Muda.Id = :Id_Mix_Muda'
-      'Order by Canteiro.Nome, Especie.Nome, Lote_Muda.Nome')
+      
+        'Order by 2,4,5,6--Usei os numeros para nao ter q repetir todos o' +
+        's cases novamente')
     Left = 744
     Top = 216
     ParamData = <
@@ -1425,10 +1427,10 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = []
       Required = True
     end
-    object qMix_Muda_Especie_Lote_CanteiroCALC_QTDE_CARRINHO: TIntegerField
-      FieldKind = fkCalculated
-      FieldName = 'CALC_QTDE_CARRINHO'
-      Calculated = True
+    object qMix_Muda_Especie_Lote_CanteiroID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      ProviderFlags = []
     end
   end
 end

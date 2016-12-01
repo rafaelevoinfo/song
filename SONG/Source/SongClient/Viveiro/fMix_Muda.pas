@@ -18,7 +18,7 @@ uses
   uControleAcesso, uClientDataSet, uTypes, uExceptions, fSaida, uMensagem,
   fVenda, ppParameter, ppDesignLayer, ppProd, ppClass, ppReport, ppComm,
   ppRelatv, ppDB, ppDBPipe, ppVar, ppCtrls, ppPrnabl, ppBands, ppCache,
-  Vcl.Menus, ppStrtch, ppSubRpt, cxSpinEdit;
+  Vcl.Menus, ppStrtch, ppSubRpt, cxSpinEdit, System.Generics.Collections;
 
 type
   TfrmMixMuda = class(TfrmBasicoCrudMasterDetail)
@@ -84,23 +84,12 @@ type
     ppDBImage7: TppDBImage;
     ppLbTituloLoteMudaVendida: TppLabel;
     ppDBImage1: TppDBImage;
-    DBPipeLotesCanteiro: TppDBPipeline;
-    dsMix_Muda_Especie_Lote_Canteiro: TDataSource;
-    ppGroup1: TppGroup;
-    ppGroupHeaderBand1: TppGroupHeaderBand;
-    ppGroupFooterBand1: TppGroupFooterBand;
-    ppDBText1: TppDBText;
-    ppDBText2: TppDBText;
-    ppDBText3: TppDBText;
-    ppShape1: TppShape;
-    ppDBText4: TppDBText;
+    DBPipeImpressaoMix: TppDBPipeline;
+    dsLocalImpressaoMix: TDataSource;
     ppDBText5: TppDBText;
     ppSystemVariable1: TppSystemVariable;
     ppLabel13: TppLabel;
     ppDBText15: TppDBText;
-    ppLabel1: TppLabel;
-    ppLabel2: TppLabel;
-    ppLabel3: TppLabel;
     DBPipeRocamboles: TppDBPipeline;
     dsQtdeMudaRocambole: TDataSource;
     cdsQtdeMudaRocambole: TClientDataSet;
@@ -126,10 +115,32 @@ type
     ppLabel4: TppLabel;
     ppColumnHeaderBand1: TppColumnHeaderBand;
     ppColumnFooterBand1: TppColumnFooterBand;
-    Label6: TLabel;
-    EditQtdeCarrinho: TcxSpinEdit;
-    ppDBText9: TppDBText;
+    cdsLocalImpressaoMix: TClientDataSet;
+    cdsLocalImpressaoMixNRO_CARRINHO: TIntegerField;
+    cdsLocalImpressaoMixCANTEIRO: TStringField;
+    cdsLocalImpressaoMixID_CANTEIRO: TIntegerField;
+    cdsLocalImpressaoMixID_ESPECIE: TIntegerField;
+    cdsLocalImpressaoMixESPECIE: TStringField;
+    cdsLocalImpressaoMixQTDE_MUDA: TIntegerField;
+    cdsLocalImpressaoMixID_LOTE: TIntegerField;
+    ppGroup3: TppGroup;
+    ppGroupHeaderBand3: TppGroupHeaderBand;
+    ppGroupFooterBand3: TppGroupFooterBand;
+    ppLabel1: TppLabel;
+    ppDBText1: TppDBText;
+    ppLabel2: TppLabel;
+    ppDBText2: TppDBText;
+    ppDBText3: TppDBText;
+    ppLabel3: TppLabel;
+    ppDBText4: TppDBText;
+    ppLabel5: TppLabel;
     ppLabel6: TppLabel;
+    ppDBText9: TppDBText;
+    ppShape1: TppShape;
+    ppLabel7: TppLabel;
+    ppDBCalc1: TppDBCalc;
+    cdsLocalImpressaoMixLOTE: TStringField;
+    cdsLocalImpressaoMixSE_NECESSARIO: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure EditQtdePropertiesEditValueChanged(Sender: TObject);
@@ -142,7 +153,6 @@ type
     procedure Ac_Gerar_VendaExecute(Sender: TObject);
     procedure Ac_ImprimirExecute(Sender: TObject);
     procedure Ac_ImprimirUpdate(Sender: TObject);
-    procedure EditQtdeCarrinhoPropertiesEditValueChanged(Sender: TObject);
   private
     FIdItemMuda: integer;
     FCalcularQuantidades: Boolean;
@@ -153,6 +163,7 @@ type
     procedure ppvConfigurarEdits;
     procedure ppvIncluirEspecieCdsLocal;
     procedure ppvCarregarEspeciesAndSaldos;
+    procedure ppvCalcularMudasCarrinho;
     { Private declarations }
   protected
     procedure pprEfetuarPesquisa; override;
@@ -351,12 +362,102 @@ begin
 
 end;
 
+procedure TfrmMixMuda.ppvCalcularMudasCarrinho;
+var
+  vaQtdeMudas, vaQtdeCarrinhos, vaNroCarrinho, vaQtdeMudasAdd: integer;
+  vaMudasPorCarrinho: TDictionary<integer, integer>;
+
+  procedure plInsereRegistro(ipCarrinho, ipQtde: integer; ipSeNecessario: Boolean = false);
+  begin
+    vaMudasPorCarrinho.Items[vaNroCarrinho] := vaMudasPorCarrinho.Items[vaNroCarrinho] + ipQtde;
+
+    cdsLocalImpressaoMix.Append;
+    cdsLocalImpressaoMixNRO_CARRINHO.AsInteger := ipCarrinho;
+    cdsLocalImpressaoMixCANTEIRO.AsString := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroCANTEIRO.AsString;
+    cdsLocalImpressaoMixID_CANTEIRO.AsInteger := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroID_CANTEIRO.AsInteger;
+    cdsLocalImpressaoMixID_ESPECIE.AsInteger := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroID_ESPECIE.AsInteger;
+    cdsLocalImpressaoMixESPECIE.AsString := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroESPECIE.AsString;
+    cdsLocalImpressaoMixQTDE_MUDA.AsInteger := ipQtde;
+    cdsLocalImpressaoMixID_LOTE.AsInteger := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroID_LOTE.AsInteger;
+    cdsLocalImpressaoMixLOTE.AsString := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroLOTE.AsString;
+    if ipSeNecessario then
+      cdsLocalImpressaoMixSE_NECESSARIO.AsInteger := 1
+    else
+      cdsLocalImpressaoMixSE_NECESSARIO.AsInteger := 0;
+    cdsLocalImpressaoMix.Post;
+  end;
+
+begin
+
+  cdsLocalImpressaoMix.DisableControls;
+  try
+    vaQtdeCarrinhos := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA.AsInteger div coMudasPorCarrinho;
+    // se QTDE_MUDA maior q coMudasPorCarrinho, entao temos que add +1 para acomodar o resto.
+    // se QTDE_MUDA menor do que coMudasPorCarrinho, então temos que add +1 para não ficar com valor zero o vaQtdeCarrinhos
+    if dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA.AsInteger mod coMudasPorCarrinho <> 0 then
+      Inc(vaQtdeCarrinhos);
+
+    if cdsLocalImpressaoMix.Active then
+      cdsLocalImpressaoMix.EmptyDataSet
+    else
+      cdsLocalImpressaoMix.CreateDataSet;
+
+    vaMudasPorCarrinho := TDictionary<integer, integer>.Create;
+    try
+      // vamos iniciar o dictionary
+      for vaNroCarrinho := 1 to vaQtdeCarrinhos do
+        vaMudasPorCarrinho.Add(vaNroCarrinho, 0);
+
+      dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.First;
+      while (not dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.eof) do
+        begin
+          vaQtdeMudas := dmViveiro.cdsMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_RETIRAR.AsInteger;
+          for vaNroCarrinho := 1 to vaQtdeCarrinhos do
+            begin
+              if vaQtdeMudas = 0 then
+                begin
+                  // significa que é um registro de um canteiro que so vai pegar se for necessário, ou seja, nao houver muda suficiente no outro canteiro
+                  plInsereRegistro(vaQtdeCarrinhos, 0,true); // vamos jogar isso para o ultimo carrinho
+                  break;
+                end
+              else
+                begin
+                  if vaQtdeMudas + vaMudasPorCarrinho.Items[vaNroCarrinho] <= coMudasPorCarrinho then
+                    begin
+                      vaQtdeMudasAdd := vaQtdeMudas;
+                    end
+                  else
+                    begin
+                      vaQtdeMudasAdd := coMudasPorCarrinho - vaMudasPorCarrinho.Items[vaNroCarrinho];
+                      if vaQtdeMudasAdd < 1 then
+                        continue;
+                    end;
+
+                  plInsereRegistro(vaNroCarrinho, vaQtdeMudasAdd);
+                  Dec(vaQtdeMudas, vaQtdeMudasAdd);
+                  if vaQtdeMudas < 1 then
+                    break;
+                end;
+            end;
+          dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Next;
+        end;
+    finally
+      vaMudasPorCarrinho.Free;
+    end;
+  finally
+    cdsLocalImpressaoMix.EnableControls;
+  end;
+end;
+
 procedure TfrmMixMuda.Ac_ImprimirExecute(Sender: TObject);
 begin
   inherited;
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Close;
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.ParamByName('ID_MIX_MUDA').AsInteger := dmViveiro.cdsMix_MudaID.AsInteger;
   dmViveiro.cdsMix_Muda_Especie_Lote_Canteiro.Open;
+
+  // VAMOS CALCULAR QUANTAS MUDAS SERAO PEGAS DE CADA ESPECIE PARA CADA VEZ QUE O CARRINHO PASSAR
+  ppvCalcularMudasCarrinho;
 
   ppSubReportRocambole.Visible := True;
   try
@@ -417,30 +518,13 @@ begin
 
 end;
 
-procedure TfrmMixMuda.EditQtdeCarrinhoPropertiesEditValueChanged(
-  Sender: TObject);
-begin
-  inherited;
-  if (pcPrincipal.ActivePage = tabCadastro) and not VarIsNull(EditQtdeCarrinho.EditValue) then
-    begin
-      if not(dmViveiro.cdsMix_Muda.State in [dsEdit, dsInsert]) then
-        dmViveiro.cdsMix_Muda.Edit;
-
-      dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger := (EditQtdeCarrinho.EditValue * coMudasPorCarrinho);
-    end;
-end;
-
 procedure TfrmMixMuda.EditQtdePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastro then
     begin
       FCalcularQuantidades := True;
-      if dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger mod coMudasPorCarrinho = 0 then
-        begin
-          EditQtdeCarrinho.EditValue := dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger div coMudasPorCarrinho;
-          EditQtdeCarrinho.PostEditValue;
-        end;
+
     end;
 end;
 
@@ -500,7 +584,6 @@ begin
   // calcula as quantidades e insere os lotes para cada especie
   if FCalcularQuantidades then
     dmPrincipal.FuncoesViveiro.ppuCalcularQuantidadeMudasMix(dmViveiro.cdsMix_MudaID.AsInteger);
-
 end;
 
 procedure TfrmMixMuda.ppvConfigurarEdits;
@@ -532,12 +615,6 @@ begin
   if dmViveiro.cdsMix_Muda_Especie.RecordCount = 0 then
     raise Exception.Create('É necessário selecionar pelo menos uma espécie.');
 
-  if dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger < coMudasPorCarrinho then
-    raise TControlException.Create('A quantidade minima para se fazer um mix é de ' + coMudasPorCarrinho.ToString + ' mudas.', EditQtde);
-
-  if dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger mod coMudasPorCarrinho <> 0 then
-    raise TControlException.Create('A quantidade de mudas deve ser um número multiplo de ' + coMudasPorCarrinho.ToString, EditQtde);
-
   vaTotalMudasDisponiveis := 0;
   vaQtdeMinimaEspecie := (dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger div coMudasPorCarrinho);
   TUtils.ppuPercorrerCds(dmViveiro.cdsMix_Muda_Especie,
@@ -547,7 +624,7 @@ begin
         raise Exception.Create('A espécie ' + dmViveiro.cdsMix_Muda_EspecieESPECIE.AsString + ' deve possuir pelo menos ' + vaQtdeMinimaEspecie.ToString() +
           ' mudas prontas' + slinebreak + 'para plantio para poder fazer parte do mix.');
 
-      inc(vaTotalMudasDisponiveis, dmViveiro.cdsMix_Muda_EspecieQTDE_MUDA_PRONTA.AsInteger);
+      Inc(vaTotalMudasDisponiveis, dmViveiro.cdsMix_Muda_EspecieQTDE_MUDA_PRONTA.AsInteger);
     end);
 
   if vaTotalMudasDisponiveis < dmViveiro.cdsMix_MudaQTDE_MUDA.AsInteger then

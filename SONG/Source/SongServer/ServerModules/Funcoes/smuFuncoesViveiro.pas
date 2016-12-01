@@ -531,22 +531,8 @@ procedure TsmFuncoesViveiro.ppuCalcularQuantidadeMudasMix(
   ipIdMixMuda: Integer);
 var
   vaDataSet, vaDataSetLote: TRFQuery;
-  vaQtdeCarrinho, vaQtdeTotalMudas, vaQtdeCalculada, vaQtdeSomada, vaQtdeIncluir: Integer;
-  vaMenorValor, vaMaiorValor: Integer;
+  vaQtdeTotalMudas, vaQtdeCalculada, vaQtdeSomada, vaQtdeIncluir: Integer;
   vaPercentual: Double;
-
-  function flMenorMaiorDivisivel(ipValor: Integer; ipMenor: Boolean): Integer;
-  begin
-    while ipValor mod vaQtdeCarrinho <> 0 do
-      begin
-        if ipMenor then
-          Dec(ipValor)
-        else
-          Inc(ipValor);
-      end;
-    Exit(ipValor);
-  end;
-
 begin
   vaQtdeTotalMudas := 0;
   vaQtdeSomada := 0;
@@ -581,16 +567,9 @@ begin
       if vaQtdeTotalMudas < vaDataSet.FieldByName('Qtde_Muda').AsInteger then
         raise Exception.Create('As espécies selecionadas não possuem mudas suficientes para a quantidade de saidas.');
 
-      vaQtdeCarrinho := vaDataSet.FieldByName('Qtde_Muda').AsInteger div coMudasPorCarrinho;
-
       vaDataSet.First;
       while not vaDataSet.Eof do
         begin
-          // tem que ter pelo menos uma muda por carrinho
-          if vaDataSet.FieldByName('Qtde_Muda_Pronta').AsInteger < vaQtdeCarrinho then
-            raise Exception.Create('A espécie ' + vaDataSet.FieldByName('NOME_ESPECIE').AsString + ' deve possuir pelo menos ' + vaQtdeCarrinho.ToString +
-              ' mudas prontas para ser possível realizar o mix');
-
           vaPercentual := vaDataSet.FieldByName('Qtde_Muda_Pronta').AsInteger / vaQtdeTotalMudas;
           if vaDataSet.RecNo = vaDataSet.RecordCount then // ultimo registro
             vaQtdeCalculada := vaDataSet.FieldByName('Qtde_Muda').AsInteger - vaQtdeSomada
@@ -598,35 +577,12 @@ begin
             vaQtdeCalculada := Trunc(vaDataSet.FieldByName('Qtde_Muda').AsInteger * vaPercentual);
 
           // se a quantidade em estoque for muito baixa em relacao ao total pode dar valores muitos pequenos, por isso
-          // tenho essa condicao para garantir pelo menos uma muda por carrinho
+          // tenho essa condicao para garantir pelo menos uma muda
           if vaQtdeCalculada < 1 then
-            vaQtdeCalculada := vaQtdeCarrinho;
-
-          vaMenorValor := -1;
-          vaMaiorValor := -1;
-          if vaQtdeCalculada mod vaQtdeCarrinho <> 0 then
-            begin
-              vaMenorValor := flMenorMaiorDivisivel(vaQtdeCalculada, True);
-              vaMaiorValor := flMenorMaiorDivisivel(vaQtdeCalculada, false);
-              if vaMenorValor <= 0 then
-                vaQtdeCalculada := vaMaiorValor
-              else
-                begin
-                  // vamos ver que esta mais proximo
-                  if (vaQtdeCalculada - vaMenorValor) < (vaMaiorValor - vaQtdeCalculada) then
-                    vaQtdeCalculada := vaMenorValor
-                  else
-                    vaQtdeCalculada := vaMaiorValor;
-                end;
-            end;
+            vaQtdeCalculada := 1;
 
           if (vaQtdeSomada + vaQtdeCalculada) > vaDataSet.FieldByName('QTDE_MUDA').AsInteger then
-            begin
-              vaQtdeCalculada := vaMenorValor;
-              if (vaMenorValor <= 0) or ((vaQtdeSomada + vaQtdeCalculada) > vaDataSet.FieldByName('QTDE_MUDA').AsInteger) then
-                // espero que nunca aconteca
-                raise Exception.Create('Não foi possível calcular a quantidade de mudas de cada espécie. Procure o administrador do sistema.');
-            end;
+            vaQtdeCalculada := vaDataSet.FieldByName('QTDE_MUDA').AsInteger - vaQtdeSomada;
 
           Inc(vaQtdeSomada, vaQtdeCalculada);
 
