@@ -68,6 +68,10 @@ begin
     begin
       Application.CreateForm(TfrmMatriz, frmMatriz);
       frmMatriz.ppuIncluir;
+      frmMatriz.OnSalvar := procedure
+        begin
+          qMatriz.Refresh;
+        end;
       frmMatriz.Show;
     end;
 end;

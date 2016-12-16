@@ -31,23 +31,17 @@ inherited frmMatriz_SmXhdpiPh: TfrmMatriz_SmXhdpiPh
           Size.Width = 172.000000000000000000
         end
       end
-      inherited gbLocalizacao: TGroupBox
-        Size.Width = 245.000000000000000000
-        inherited Label4: TLabel
-          Size.Width = 245.000000000000000000
-        end
-        inherited mmoDescricaoLocalizacao: TMemo
-          Size.Width = 245.000000000000000000
-          Viewport.Width = 237.000000000000000000
-          Viewport.Height = 64.000000000000000000
-        end
-        inherited pnLatLong: TPanel
-          Size.Width = 245.000000000000000000
-        end
-      end
       inherited pnFoto: TPanel
         Size.Width = 245.000000000000000000
       end
+      inherited mmoDescricaoLocalizacao: TMemo
+        Viewport.Width = 476.000000000000000000
+        Viewport.Height = 64.000000000000000000
+      end
+    end
+    inherited recFade: TRectangle
+      Size.Width = 250.000000000000000000
+      Size.Height = 375.000000000000000000
     end
   end
 end

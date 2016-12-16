@@ -8,8 +8,8 @@ inherited frmMatriz_NmXhdpiPh: TfrmMatriz_NmXhdpiPh
     inherited tbAcao: TToolBar
       Size.Width = 400.000000000000000000
       inherited btnSalvar: TButton
-        Action = Ac_Salvar
         Position.X = 352.000000000000000000
+        Text = 'Button1'
       end
       inherited btnLatLong: TButton
         Position.X = 304.000000000000000000
@@ -32,26 +32,31 @@ inherited frmMatriz_NmXhdpiPh: TfrmMatriz_NmXhdpiPh
           Size.Width = 327.000000000000000000
         end
       end
-      inherited gbLocalizacao: TGroupBox
-        Size.Width = 400.000000000000000000
-        inherited Label4: TLabel
-          Size.Width = 400.000000000000000000
-        end
-        inherited mmoDescricaoLocalizacao: TMemo
-          ControlType = Platform
-          Size.Width = 400.000000000000000000
-          Viewport.Width = 392.000000000000000000
-          Viewport.Height = 64.000000000000000000
-        end
-        inherited pnLatLong: TPanel
-          Size.Width = 400.000000000000000000
-        end
-      end
       inherited pnFoto: TPanel
         Size.Width = 400.000000000000000000
         inherited imgFoto: TImage
           Position.X = 77.000000000000000000
         end
+      end
+      inherited pnLatLong: TPanel
+        Size.Width = 400.000000000000000000
+        inherited GridPanelLayout1: TGridPanelLayout
+          Size.Width = 400.000000000000000000
+          inherited EditLatitude: TNumberBox
+            Size.Width = 285.714294433593800000
+          end
+          inherited EditLongitude: TNumberBox
+            Size.Width = 285.714294433593800000
+          end
+        end
+      end
+      inherited Label4: TLabel
+        Size.Width = 400.000000000000000000
+      end
+      inherited mmoDescricaoLocalizacao: TMemo
+        Size.Width = 400.000000000000000000
+        Viewport.Width = 392.000000000000000000
+        Viewport.Height = 64.000000000000000000
       end
       inherited pnEspecie: TPanel
         Size.Width = 400.000000000000000000
@@ -60,10 +65,9 @@ inherited frmMatriz_NmXhdpiPh: TfrmMatriz_NmXhdpiPh
         end
       end
     end
-  end
-  inherited ActionList1: TActionList
-    inherited Ac_Salvar: TAction
-      OnExecute = Ac_SalvarExecute
+    inherited recFade: TRectangle
+      Size.Width = 400.000000000000000000
+      Size.Height = 615.000000000000000000
     end
   end
 end

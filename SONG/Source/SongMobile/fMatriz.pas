@@ -59,17 +59,9 @@ type
     btnRetornar: TButton;
     btnSalvar: TButton;
     FloatAnimation1: TFloatAnimation;
-    gbLocalizacao: TGroupBox;
     pnNome: TPanel;
     EditNome: TEdit;
     Label1: TLabel;
-    Label4: TLabel;
-    mmoDescricaoLocalizacao: TMemo;
-    pnLatLong: TPanel;
-    EditLatitude: TNumberBox;
-    Label2: TLabel;
-    Label3: TLabel;
-    EditLongitude: TNumberBox;
     btnLatLong: TButton;
     LocationSensor: TLocationSensor;
     btnFoto: TButton;
@@ -89,9 +81,6 @@ type
     BindSourceMatriz: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkControlToField1: TLinkControlToField;
-    LinkControlToField2: TLinkControlToField;
-    LinkControlToField3: TLinkControlToField;
-    LinkControlToField4: TLinkControlToField;
     LinkPropertyToFieldBitmap: TLinkPropertyToField;
     ActionList1: TActionList;
     Ac_Salvar: TAction;
@@ -100,10 +89,26 @@ type
     cbEspecie: TComboBox;
     qEspecie: TRFQuery;
     qEspecieNOME: TStringField;
-    BindSourceDB1: TBindSourceDB;
-    LinkListControlToField1: TLinkListControlToField;
+    BindSourceEspecie: TBindSourceDB;
     qEspecieID: TLargeintField;
-    procedure btnRetornarClick(Sender: TObject);
+    qMatrizID_ESPECIE: TIntegerField;
+    qMatrizESPECIE: TStringField;
+    LinkEspecie: TLinkFillControlToField;
+    mmoDescricaoLocalizacao: TMemo;
+    Label4: TLabel;
+    Label2: TLabel;
+    EditLatitude: TNumberBox;
+    Label3: TLabel;
+    pnLatLong: TPanel;
+    LinkControlToField5: TLinkControlToField;
+    LinkControlToField7: TLinkControlToField;
+    Ac_Retornar: TAction;
+    GridPanelLayout1: TGridPanelLayout;
+    EditLongitude: TNumberBox;
+    recFade: TRectangle;
+    recModal: TRectangle;
+    LoadLocalizacao: TAniIndicator;
+    Label6: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
       NewLocation: TLocationCoord2D);
@@ -113,13 +118,18 @@ type
     procedure Ac_SalvarUpdate(Sender: TObject);
     procedure Ac_SalvarExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Ac_RetornarExecute(Sender: TObject);
   private
+    FOnSalvar: TProc;
     procedure ppvFotoCapturada(ipFoto: TBitmap);
     procedure ppvImagemEscolhida(const Sender: TObject; const M: TMessage);
+    procedure SetOnSalvar(const Value: TProc);
     { Private declarations }
   public
+    property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
     procedure ppuAlterar(ipId: Integer);
     procedure ppuIncluir;
+
   end;
 
 var
@@ -132,15 +142,26 @@ implementation
 {$R *.SmXhdpiPh.fmx ANDROID}
 
 
+procedure TfrmMatriz.Ac_RetornarExecute(Sender: TObject);
+begin
+  Close;
+
+end;
+
 procedure TfrmMatriz.Ac_SalvarExecute(Sender: TObject);
 begin
   if qMatriz.State in [dsEdit, dsInsert] then
-    qMatriz.Post;
+    begin
+      qMatriz.Post;
+    end;
 
   if qMatriz.ChangeCount > 0 then
     begin
       qMatriz.ApplyUpdates(0);
       qMatriz.CommitUpdates;
+
+      if Assigned(FOnSalvar) then
+        FOnSalvar();
     end;
 
   Close;
@@ -148,7 +169,7 @@ end;
 
 procedure TfrmMatriz.Ac_SalvarUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := qMatriz.Active and (qMatriz.RecordCount > 0) and (qMatriz.State in [dsEdit, dsInsert]);
+  TAction(Sender).Enabled := qMatriz.Active and (qMatriz.State in [dsEdit, dsInsert]);
 end;
 
 procedure TfrmMatriz.btnFotoClick(Sender: TObject);
@@ -191,6 +212,11 @@ begin
     imgFoto.Bitmap.Assign(TMessageDidFinishTakingImageFromLibrary(M).Value);
 end;
 
+procedure TfrmMatriz.SetOnSalvar(const Value: TProc);
+begin
+  FOnSalvar := Value;
+end;
+
 procedure TfrmMatriz.btnGaleriaClick(Sender: TObject);
 var
   vaService: IFMXTakenImageService;
@@ -211,19 +237,18 @@ begin
   if not LocationSensor.Active then
     LocationSensor.Active := True;
 
-  btnLatLong.Enabled := False;
-end;
-
-procedure TfrmMatriz.btnRetornarClick(Sender: TObject);
-begin
-  Close;
+  recFade.Visible := True;
+  recModal.Visible := True;
 end;
 
 procedure TfrmMatriz.FormCreate(Sender: TObject);
 begin
   qEspecie.Open();
+  qMatriz.Open();
 
-  //TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
+  recFade.Visible := False;
+  recModal.Visible := False;
+  // TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
 end;
 
 procedure TfrmMatriz.FormShow(Sender: TObject);
@@ -235,10 +260,13 @@ end;
 procedure TfrmMatriz.LocationSensorLocationChanged(Sender: TObject;
   const OldLocation, NewLocation: TLocationCoord2D);
 begin
+  recFade.Visible := False;
+  recModal.Visible := False;
+
   EditLatitude.Text := Format('%2.6f', [NewLocation.Latitude]);
   EditLongitude.Text := Format('%2.6f', [NewLocation.Longitude]);
   LocationSensor.Active := False;
-  btnLatLong.Enabled := True;
+
 end;
 
 { TMatriz }
