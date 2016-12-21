@@ -18,6 +18,14 @@ object frmMatriz: TfrmMatriz
     Size.Height = 471.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
+    object recFade: TRectangle
+      Align = Contents
+      Fill.Color = claBlack
+      Opacity = 0.500000000000000000
+      Size.Width = 484.000000000000000000
+      Size.Height = 471.000000000000000000
+      Size.PlatformDefault = False
+    end
     object tbAcao: TToolBar
       Size.Width = 484.000000000000000000
       Size.Height = 48.000000000000000000
@@ -45,19 +53,8 @@ object frmMatriz: TfrmMatriz
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'donetoolbutton'
-        TabOrder = 4
-        Visible = True
-      end
-      object btnLatLong: TButton
-        Align = Right
-        Position.X = 388.000000000000000000
-        Size.Width = 48.000000000000000000
-        Size.Height = 48.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'pagecurltoolbutton'
         TabOrder = 3
-        Text = 'btnLatLong'
-        OnClick = btnLatLongClick
+        Visible = True
       end
       object btnFoto: TButton
         Align = Right
@@ -80,6 +77,68 @@ object frmMatriz: TfrmMatriz
         TabOrder = 1
         Text = 'btnLatLong'
         OnClick = btnGaleriaClick
+      end
+      object btnLocalizacao: TSpeedButton
+        Align = Right
+        ImageIndex = 0
+        Position.X = 388.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        OnClick = btnLocalizacaoClick
+        object imgLocalizacao: TImage
+          MultiResBitmap.Height = 32
+          MultiResBitmap.Width = 32
+          MultiResBitmap = <
+            item
+              Width = 32
+              Height = 32
+              PNG = {
+                89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+                F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+                0448494441545847B5975D681C5514C7CF9DD96C3656DBC4D06E1225E6A1566D
+                51127C08464C7CE98322A22208BEF5C917A11AF0A5FAA0A0A20FA51F82FA5445
+                28458350B5F8418BD5ED428B9636CD4A5BAB4D826D93266992A61F697677E61E
+                FF673C293BD9DDC94EC01F5CEE396776EEF9DF33F7CEDC35B40226FABAD633F3
+                CB86F929267A486218E80C93F99ED8DFDB92CD0D073FAC815802A67ABADAAC6B
+                FB91E825DC790F6E0EDD0F3116814BC4FC952177FBBA2327C6F552556A1670B9
+                B7EB59C3760F19D3ACA16898AF58E62DADD9A1031AA9484D02267A1F7981C8F9
+                5ADD58B0E5E75BB2A7F6AB5BC6B202A67A1E7EC026DC2198C9FF2241A903A7A1
+                E46E1F6D1E17E45A08A63C259C4DE9C327CE6B2484A37D557CD7D9812E947C15
+                DA55189F170C6D5B70E8FDBC433F170DA5104FC88F4A31544FBE7D4FBD32222B
+                30D5F7E88396FD33EA06DC813BFEF00DBD89C42396A80E317401CFD5316DABB7
+                41351663014C37D998CD2D99934735729BC80A58EB3FA366808B760D337F1733
+                BE800CCD107317DA1AED075091BDA8C42AD82124C4F655F5422CF70836681F90
+                C2C02731FB7398E26AD8A5CF5B06BA13B1839E83E9561CF871ED43440B30B45A
+                AD00A9C024060F95B78404044885A4950D6C68AD5A21A205305E2A257868F721
+                8908299DFD220504D71AA6BB31AAAC83104CB293CA8816409C53236001093A5D
+                A6C7124C334B1414D116D05EC442942D5326D098436A858814504C26BFC34837
+                D50D4AEFA2026F61A5F741C40D6499D326DBEF0DC49F86005903A530D345C733
+                9FA81B02C395333B3BDB287D5353D3D589DECE4F61BE22BE2063CB7E97121FC7
+                82FC1B6F7F2C71EA749836E0D988A825F9851DE9CC60BFDA212A0AC097CE191B
+                1B4B39ADADC6EFDE984A34D40F1B32A10529A5935DB1F81EC8236B412E2C01E1
+                EB5CB4EB5B8F0E4D6A2844C547608CB16D6D6DB7ECF838DFFBFBD96964785B2F
+                DD4692CAAB57CA7FBD4A72E59D6AC985C835904C265D54C3A4B3A776A13FABE1
+                9A81AE3FD3E9FB77AA5B9148018EE3348E8E8ED6A3D278D2FC9A866B0683BF6E
+                0606CA76642951028CE779C58E8E8EA0BAE923433FF9C4DF545C349539B02E33
+                F883DA5589AC403E9F9F93F5A02E9D9FB7FDD77CCECB8B2812E605B6FE56F522
+                A92A4012B7B7B7DF5237E089E3B9E17F0AC58FA67D5BFED92D0147B65DB59E0B
+                232B50099FEC07973C6FEE4A75113329F63F547B59620BD88C6D8919EEBCE0F9
+                148858B228B0F2B7376673B3EA2E4B6C014283E1DD2EF19C8898F24A2AC13C6D
+                4C61B77A35B122013DC74ECFB864F6C9CD17216212950816A6315FA47F3D7D43
+                CC5A599100C11AE763A9BE0C300611977D6BD71055FCE044B162014F1ECBE5F0
+                76FC6551C4A4E71D4A6506FF0A2EC660C502843AC77CA6261E81D9A3662C6209
+                90EF829A018E717F64629C4578BED9F0410DFF7F8C8C8CC85120C4E1EE8DBF65
+                BA3765D48D4DAC0AE0EB58F67B9CD0F6E15FF297EAC62696009C11E4D8178229
+                B1BFDE9A6FD58D09D1BF465D963A0E0D47310000000049454E44AE426082}
+              FileName = 'C:\Users\rafae\Repositorios\SONG\Source\Imagens\local_uso.png'
+            end>
+          Align = Client
+          HitTest = False
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+        end
       end
     end
     object FloatAnimation1: TFloatAnimation
@@ -279,14 +338,6 @@ object frmMatriz: TfrmMatriz
           TabOrder = 2
         end
       end
-    end
-    object recFade: TRectangle
-      Align = Contents
-      Fill.Color = claBlack
-      Opacity = 0.500000000000000000
-      Size.Width = 484.000000000000000000
-      Size.Height = 471.000000000000000000
-      Size.PlatformDefault = False
     end
     object recModal: TRectangle
       Align = Center
@@ -8349,6 +8400,13 @@ object frmMatriz: TfrmMatriz
       DataSource = BindSourceMatriz
       FieldName = 'ENDERECO'
       Control = mmoDescricaoLocalizacao
+      Track = False
+    end
+    object LinkControlToField2: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceMatriz
+      FieldName = 'LONGITUDE'
+      Control = EditLongitude
       Track = False
     end
   end

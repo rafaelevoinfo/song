@@ -62,7 +62,6 @@ type
     pnNome: TPanel;
     EditNome: TEdit;
     Label1: TLabel;
-    btnLatLong: TButton;
     LocationSensor: TLocationSensor;
     btnFoto: TButton;
     ScrollBox1: TScrollBox;
@@ -109,16 +108,19 @@ type
     recModal: TRectangle;
     LoadLocalizacao: TAniIndicator;
     Label6: TLabel;
+    btnLocalizacao: TSpeedButton;
+    imgLocalizacao: TImage;
+    LinkControlToField2: TLinkControlToField;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
       NewLocation: TLocationCoord2D);
-    procedure btnLatLongClick(Sender: TObject);
     procedure btnFotoClick(Sender: TObject);
     procedure btnGaleriaClick(Sender: TObject);
     procedure Ac_SalvarUpdate(Sender: TObject);
     procedure Ac_SalvarExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Ac_RetornarExecute(Sender: TObject);
+    procedure btnLocalizacaoClick(Sender: TObject);
   private
     FOnSalvar: TProc;
     procedure ppvFotoCapturada(ipFoto: TBitmap);
@@ -136,6 +138,9 @@ var
   frmMatriz: TfrmMatriz;
 
 implementation
+
+uses
+  fPrincipal;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -232,7 +237,7 @@ begin
 
 end;
 
-procedure TfrmMatriz.btnLatLongClick(Sender: TObject);
+procedure TfrmMatriz.btnLocalizacaoClick(Sender: TObject);
 begin
   if not LocationSensor.Active then
     LocationSensor.Active := True;
@@ -248,6 +253,9 @@ begin
 
   recFade.Visible := False;
   recModal.Visible := False;
+
+  recFade.BringToFront;
+  recModal.BringToFront;
   // TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
 end;
 
@@ -262,6 +270,9 @@ procedure TfrmMatriz.LocationSensorLocationChanged(Sender: TObject;
 begin
   recFade.Visible := False;
   recModal.Visible := False;
+
+  if not (qMatriz.State in [dsEdit, dsInsert]) then
+    qMatriz.Edit;
 
   EditLatitude.Text := Format('%2.6f', [NewLocation.Latitude]);
   EditLongitude.Text := Format('%2.6f', [NewLocation.Longitude]);

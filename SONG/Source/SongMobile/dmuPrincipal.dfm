@@ -10,7 +10,6 @@ object dmPrincipal: TdmPrincipal
         '.db'
       'DriverID=SQLite')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
     Left = 48
