@@ -14,7 +14,8 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, Data.Bind.EngExt, FMX.Bind.DBEngExt, System.Rtti,
   System.Bindings.Outputs, FMX.Bind.Editors, Data.Bind.Components,
-  Data.Bind.DBScope, System.Actions, FMX.ActnList, FMX.ListBox;
+  Data.Bind.DBScope, System.Actions, FMX.ActnList, FMX.ListBox, FMX.StdActns,
+  FMX.MediaLibrary.Actions;
 
 type
   TLocalizacao = class
@@ -57,17 +58,14 @@ type
     pnPrincipal: TPanel;
     tbAcao: TToolBar;
     btnRetornar: TButton;
-    btnSalvar: TButton;
     FloatAnimation1: TFloatAnimation;
     pnNome: TPanel;
     EditNome: TEdit;
     Label1: TLabel;
     LocationSensor: TLocationSensor;
-    btnFoto: TButton;
     ScrollBox1: TScrollBox;
     pnFoto: TPanel;
     imgFoto: TImage;
-    btnGaleria: TButton;
     StyleBook1: TStyleBook;
     qMatriz: TRFQuery;
     qMatrizID: TFDAutoIncField;
@@ -96,36 +94,45 @@ type
     mmoDescricaoLocalizacao: TMemo;
     Label4: TLabel;
     Label2: TLabel;
-    EditLatitude: TNumberBox;
     Label3: TLabel;
     pnLatLong: TPanel;
-    LinkControlToField5: TLinkControlToField;
     LinkControlToField7: TLinkControlToField;
     Ac_Retornar: TAction;
     GridPanelLayout1: TGridPanelLayout;
-    EditLongitude: TNumberBox;
     recFade: TRectangle;
     recModal: TRectangle;
     LoadLocalizacao: TAniIndicator;
     Label6: TLabel;
     btnLocalizacao: TSpeedButton;
     imgLocalizacao: TImage;
+    imgSalvar: TImage;
+    btnSalvar: TSpeedButton;
+    imgCamera: TImage;
+    imgGaleria: TImage;
+    EditLatitude: TEdit;
+    EditLongitude: TEdit;
     LinkControlToField2: TLinkControlToField;
+    LinkControlToField3: TLinkControlToField;
+    btnCamera: TSpeedButton;
+    btnGaleria: TSpeedButton;
+    Ac_Tirar_Foto: TTakePhotoFromCameraAction;
+    Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
       NewLocation: TLocationCoord2D);
-    procedure btnFotoClick(Sender: TObject);
-    procedure btnGaleriaClick(Sender: TObject);
     procedure Ac_SalvarUpdate(Sender: TObject);
-    procedure Ac_SalvarExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Ac_RetornarExecute(Sender: TObject);
     procedure btnLocalizacaoClick(Sender: TObject);
+    procedure Ac_SalvarExecute(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
+      Shift: TShiftState);
+    procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
   private
     FOnSalvar: TProc;
-    procedure ppvFotoCapturada(ipFoto: TBitmap);
-    procedure ppvImagemEscolhida(const Sender: TObject; const M: TMessage);
     procedure SetOnSalvar(const Value: TProc);
+    function fpvValidarDados(var opMsgErro: String): Boolean;
+    procedure ppvIniciarEdicao;
     { Private declarations }
   public
     property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
@@ -144,8 +151,6 @@ uses
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
-{$R *.SmXhdpiPh.fmx ANDROID}
-
 
 procedure TfrmMatriz.Ac_RetornarExecute(Sender: TObject);
 begin
@@ -153,23 +158,60 @@ begin
 
 end;
 
-procedure TfrmMatriz.Ac_SalvarExecute(Sender: TObject);
+function TfrmMatriz.fpvValidarDados(var opMsgErro: String): Boolean;
+var
+  vaErros: TStringList;
 begin
-  if qMatriz.State in [dsEdit, dsInsert] then
-    begin
-      qMatriz.Post;
-    end;
+  Result := true;
+  vaErros := TStringList.Create;
+  try
+    if EditNome.Text = '' then
+      vaErros.Add('Nome');
 
-  if qMatriz.ChangeCount > 0 then
-    begin
-      qMatriz.ApplyUpdates(0);
-      qMatriz.CommitUpdates;
+    if cbEspecie.ItemIndex = -1 then
+      vaErros.Add('Espécie');
 
-      if Assigned(FOnSalvar) then
-        FOnSalvar();
-    end;
+    if vaErros.Count > 0 then
+      begin
+        Result := false;
+        opMsgErro := 'Os seguintes campos são obrigatórios e não foram preenchidos:' + slinebreak + vaErros.DelimitedText;
+      end;
+  finally
+    vaErros.free;
+  end;
 
-  Close;
+end;
+
+procedure TfrmMatriz.Ac_SalvarExecute(Sender: TObject);
+var
+  vaMsgErro: String;
+  vaObj: TObject;
+begin
+  try
+    if fpvValidarDados(vaMsgErro) then
+      begin
+        if qMatriz.State in [dsEdit, dsInsert] then
+          begin
+            qMatriz.Post;
+          end;
+
+        if qMatriz.ChangeCount > 0 then
+          begin
+            qMatriz.ApplyUpdates(0);
+            qMatriz.CommitUpdates;
+
+            if Assigned(FOnSalvar) then
+              FOnSalvar();
+          end;
+
+        Close;
+      end
+    else
+      showMessage('Não foi possível salvar. Detalhes:' + vaMsgErro);
+  except
+    on e: Exception do
+      showMessage('Não foi possível salvar. Detalhes:' + slinebreak + e.Message);
+  end;
 end;
 
 procedure TfrmMatriz.Ac_SalvarUpdate(Sender: TObject);
@@ -177,20 +219,24 @@ begin
   TAction(Sender).Enabled := qMatriz.Active and (qMatriz.State in [dsEdit, dsInsert]);
 end;
 
-procedure TfrmMatriz.btnFotoClick(Sender: TObject);
+procedure TfrmMatriz.Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
 var
-  vaService: IFMXCameraService;
-  vaParams: TParamsPhotoQuery;
+  vaStream: TStream;
 begin
-  if TPlatformServices.Current.SupportsPlatformService(IFMXCameraService,
-    vaService) then
+  if Assigned(Image) then
     begin
-      vaParams.Editable := False;
-      vaParams.OnDidFinishTaking := ppvFotoCapturada;
-      vaService.TakePhoto(btnFoto, vaParams);
-    end
-  else
-    ShowMessage('Não existe suporte para camera neste dispositivo.');
+      vaStream := TBytesStream.Create();
+      try
+        Image.SaveToStream(vaStream);
+        vaStream.Position := 0;
+
+        ppvIniciarEdicao;
+        qMatrizFOTO.LoadFromStream(vaStream);
+      finally
+        vaStream.free;
+      end;
+
+    end;
 end;
 
 procedure TfrmMatriz.ppuAlterar(ipId: Integer);
@@ -206,44 +252,18 @@ begin
   qMatrizSYNC.AsInteger := 0;
 end;
 
-procedure TfrmMatriz.ppvFotoCapturada(ipFoto: TBitmap);
-begin
-  imgFoto.Bitmap.Assign(ipFoto);
-end;
-
-procedure TfrmMatriz.ppvImagemEscolhida(const Sender: TObject; const M: TMessage);
-begin
-  if M is TMessageDidFinishTakingImageFromLibrary then
-    imgFoto.Bitmap.Assign(TMessageDidFinishTakingImageFromLibrary(M).Value);
-end;
-
 procedure TfrmMatriz.SetOnSalvar(const Value: TProc);
 begin
   FOnSalvar := Value;
 end;
 
-procedure TfrmMatriz.btnGaleriaClick(Sender: TObject);
-var
-  vaService: IFMXTakenImageService;
-  vaParams: TParamsPhotoQuery;
-begin
-  if TPlatformServices.Current.SupportsPlatformService(IFMXCameraService, vaService) then
-    begin
-      vaParams.OnDidFinishTaking := ppvFotoCapturada;
-      vaService.TakeImageFromLibrary(btnGaleria, vaParams);
-    end
-  else
-    ShowMessage('Não existe suporte para camera neste dispositivo.');
-
-end;
-
 procedure TfrmMatriz.btnLocalizacaoClick(Sender: TObject);
 begin
   if not LocationSensor.Active then
-    LocationSensor.Active := True;
+    LocationSensor.Active := true;
 
-  recFade.Visible := True;
-  recModal.Visible := True;
+  recFade.Visible := true;
+  recModal.Visible := true;
 end;
 
 procedure TfrmMatriz.FormCreate(Sender: TObject);
@@ -251,12 +271,30 @@ begin
   qEspecie.Open();
   qMatriz.Open();
 
-  recFade.Visible := False;
-  recModal.Visible := False;
+  recFade.Visible := false;
+  recModal.Visible := false;
 
   recFade.BringToFront;
   recModal.BringToFront;
   // TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
+end;
+
+procedure TfrmMatriz.FormKeyDown(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
+begin
+  if Key = vkHardwareBack then
+    begin
+      if recModal.Visible then
+        begin
+          recFade.Visible := false;
+          recModal.Visible := false;
+
+          LocationSensor.Active := false;
+
+          Key := 0;
+        end;
+
+    end;
 end;
 
 procedure TfrmMatriz.FormShow(Sender: TObject);
@@ -268,16 +306,21 @@ end;
 procedure TfrmMatriz.LocationSensorLocationChanged(Sender: TObject;
   const OldLocation, NewLocation: TLocationCoord2D);
 begin
-  recFade.Visible := False;
-  recModal.Visible := False;
+  recFade.Visible := false;
+  recModal.Visible := false;
 
-  if not (qMatriz.State in [dsEdit, dsInsert]) then
+  ppvIniciarEdicao;
+
+  qMatrizLATITUDE.AsFloat := NewLocation.Latitude;
+  qMatrizLONGITUDE.AsFloat := NewLocation.Longitude;
+  LocationSensor.Active := false;
+
+end;
+
+procedure TfrmMatriz.ppvIniciarEdicao;
+begin
+  if not(qMatriz.State in [dsEdit, dsInsert]) then
     qMatriz.Edit;
-
-  EditLatitude.Text := Format('%2.6f', [NewLocation.Latitude]);
-  EditLongitude.Text := Format('%2.6f', [NewLocation.Longitude]);
-  LocationSensor.Active := False;
-
 end;
 
 { TMatriz }

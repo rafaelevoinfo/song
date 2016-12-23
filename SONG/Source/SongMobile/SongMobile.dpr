@@ -5,7 +5,8 @@ uses
   FMX.Forms,
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
   fMatriz in 'fMatriz.pas' {frmMatriz},
-  dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule};
+  dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
+  uConstantes in 'uConstantes.pas';
 
 {$R *.res}
 
