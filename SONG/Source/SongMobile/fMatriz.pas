@@ -64,9 +64,6 @@ type
     Label1: TLabel;
     LocationSensor: TLocationSensor;
     ScrollBox1: TScrollBox;
-    pnFoto: TPanel;
-    imgFoto: TImage;
-    StyleBook1: TStyleBook;
     qMatriz: TRFQuery;
     qMatrizID: TFDAutoIncField;
     qMatrizNOME: TStringField;
@@ -78,7 +75,6 @@ type
     BindSourceMatriz: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkControlToField1: TLinkControlToField;
-    LinkPropertyToFieldBitmap: TLinkPropertyToField;
     ActionList1: TActionList;
     Ac_Salvar: TAction;
     pnEspecie: TPanel;
@@ -117,6 +113,8 @@ type
     btnGaleria: TSpeedButton;
     Ac_Tirar_Foto: TTakePhotoFromCameraAction;
     Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
+    imgFoto: TImage;
+    LinkPropertyToFieldBitmap: TLinkPropertyToField;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
       NewLocation: TLocationCoord2D);
@@ -128,6 +126,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
+    procedure FormResize(Sender: TObject);
   private
     FOnSalvar: TProc;
     procedure SetOnSalvar(const Value: TProc);
@@ -151,6 +150,7 @@ uses
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
+{$R *.LgXhdpiPh.fmx ANDROID}
 
 procedure TfrmMatriz.Ac_RetornarExecute(Sender: TObject);
 begin
@@ -185,7 +185,6 @@ end;
 procedure TfrmMatriz.Ac_SalvarExecute(Sender: TObject);
 var
   vaMsgErro: String;
-  vaObj: TObject;
 begin
   try
     if fpvValidarDados(vaMsgErro) then
@@ -222,17 +221,20 @@ end;
 procedure TfrmMatriz.Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
 var
   vaStream: TStream;
+  vaFoto: TBitmap;
 begin
   if Assigned(Image) then
     begin
+      vaFoto := Image.CreateThumbnail(800, 600);
       vaStream := TBytesStream.Create();
       try
-        Image.SaveToStream(vaStream);
+        vaFoto.SaveToStream(vaStream);
         vaStream.Position := 0;
 
         ppvIniciarEdicao;
         qMatrizFOTO.LoadFromStream(vaStream);
       finally
+        vaFoto.free;
         vaStream.free;
       end;
 
@@ -297,10 +299,23 @@ begin
     end;
 end;
 
+procedure TfrmMatriz.FormResize(Sender: TObject);
+begin
+  ppvAjustarTamanhoFoto;
+end;
+
+procedure TfrmMatriz.ppvAjustarTamanhoFoto;
+begin
+  imgFoto.Width := Self.Width;
+  imgFoto.Height := Trunc(Self.Width * 0.75);
+  imgFoto.Position.Y := mmoDescricaoLocalizacao.Position.Y + mmoDescricaoLocalizacao.Height;
+end;
+
 procedure TfrmMatriz.FormShow(Sender: TObject);
 begin
-  FloatAnimation1.StartValue := Self.Width;
-  FloatAnimation1.Start;
+  // FloatAnimation1.StartValue := Self.Width;
+  // FloatAnimation1.Start;
+  ppvAjustarTamanhoFoto;
 end;
 
 procedure TfrmMatriz.LocationSensorLocationChanged(Sender: TObject;

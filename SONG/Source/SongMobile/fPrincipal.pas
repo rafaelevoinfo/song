@@ -40,13 +40,12 @@ type
     LinkListControlToField1: TLinkListControlToField;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure lvMatrizesGesture(Sender: TObject;
-      const EventInfo: TGestureEventInfo; var Handled: Boolean);
-    procedure FormShow(Sender: TObject);
     procedure lvMatrizesItemClick(const Sender: TObject;
       const AItem: TListViewItem);
     procedure lvMatrizesPullRefresh(Sender: TObject);
+    procedure lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
   private
+    procedure ppvAbrirMatriz(ipId: Integer);
     { Private declarations }
   public
     { Public declarations }
@@ -65,15 +64,22 @@ implementation
 procedure TfrmPrincipal.Ac_AdicionarExecute(Sender: TObject);
 begin
   if tbcPrincipal.ActiveTab = tabMatrizes then
+    ppvAbrirMatriz(0);
+end;
+
+procedure TfrmPrincipal.ppvAbrirMatriz(ipId:Integer);
+begin
+  Application.CreateForm(TfrmMatriz, frmMatriz);
+  if ipId = 0 then
+    frmMatriz.ppuIncluir
+  else
+    frmMatriz.ppuAlterar(ipId);
+
+  frmMatriz.OnSalvar := procedure
     begin
-      Application.CreateForm(TfrmMatriz, frmMatriz);
-      frmMatriz.ppuIncluir;
-      frmMatriz.OnSalvar := procedure
-        begin
-          qMatriz.Refresh;
-        end;
-      frmMatriz.Show;
+      qMatriz.Refresh;
     end;
+  frmMatriz.Show;
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
@@ -82,30 +88,15 @@ begin
     qMatriz.Open();
 end;
 
-procedure TfrmPrincipal.FormShow(Sender: TObject);
+procedure TfrmPrincipal.lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
 begin
-  qMatriz.Refresh;
-end;
-
-procedure TfrmPrincipal.lvMatrizesGesture(Sender: TObject;
-  const EventInfo: TGestureEventInfo; var Handled: Boolean);
-begin
-  if EventInfo.GestureID = igiLongTap then
-    begin
-      // lvMatrizes.EditMode := not lvMatrizes.EditMode;
-    end
-  else if EventInfo.GestureID = igiPressAndTap then
-    begin
-      ShowMessage('Gesture: ' + qMatrizNOME.AsString);
-    end;
+  qMatriz.Delete;
 end;
 
 procedure TfrmPrincipal.lvMatrizesItemClick(const Sender: TObject;
   const AItem: TListViewItem);
 begin
-  Application.CreateForm(TfrmMatriz, frmMatriz);
-  frmMatriz.ppuAlterar(qMatrizID.AsInteger);
-  frmMatriz.Show;
+  ppvAbrirMatriz(qMatrizID.AsInteger);
 end;
 
 procedure TfrmPrincipal.lvMatrizesPullRefresh(Sender: TObject);
