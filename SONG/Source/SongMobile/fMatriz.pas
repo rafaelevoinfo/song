@@ -73,8 +73,6 @@ type
     qMatrizFOTO: TBlobField;
     qMatrizSYNC: TIntegerField;
     BindSourceMatriz: TBindSourceDB;
-    BindingsList1: TBindingsList;
-    LinkControlToField1: TLinkControlToField;
     ActionList1: TActionList;
     Ac_Salvar: TAction;
     pnEspecie: TPanel;
@@ -86,13 +84,11 @@ type
     qEspecieID: TLargeintField;
     qMatrizID_ESPECIE: TIntegerField;
     qMatrizESPECIE: TStringField;
-    LinkEspecie: TLinkFillControlToField;
     mmoDescricaoLocalizacao: TMemo;
     Label4: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     pnLatLong: TPanel;
-    LinkControlToField7: TLinkControlToField;
     Ac_Retornar: TAction;
     GridPanelLayout1: TGridPanelLayout;
     recFade: TRectangle;
@@ -107,14 +103,17 @@ type
     imgGaleria: TImage;
     EditLatitude: TEdit;
     EditLongitude: TEdit;
-    LinkControlToField2: TLinkControlToField;
-    LinkControlToField3: TLinkControlToField;
     btnCamera: TSpeedButton;
     btnGaleria: TSpeedButton;
     Ac_Tirar_Foto: TTakePhotoFromCameraAction;
     Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
     imgFoto: TImage;
+    BindingsList1: TBindingsList;
+    LinkFillControlToField1: TLinkFillControlToField;
+    LinkControlToField1: TLinkControlToField;
     LinkPropertyToFieldBitmap: TLinkPropertyToField;
+    LinkControlToField2: TLinkControlToField;
+    LinkControlToField3: TLinkControlToField;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
       NewLocation: TLocationCoord2D);
@@ -132,6 +131,7 @@ type
     procedure SetOnSalvar(const Value: TProc);
     function fpvValidarDados(var opMsgErro: String): Boolean;
     procedure ppvIniciarEdicao;
+    procedure ppvAjustarTamanhoFoto;
     { Private declarations }
   public
     property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
@@ -149,8 +149,7 @@ uses
   fPrincipal;
 
 {$R *.fmx}
-{$R *.NmXhdpiPh.fmx ANDROID}
-{$R *.LgXhdpiPh.fmx ANDROID}
+
 
 procedure TfrmMatriz.Ac_RetornarExecute(Sender: TObject);
 begin
@@ -194,14 +193,8 @@ begin
             qMatriz.Post;
           end;
 
-        if qMatriz.ChangeCount > 0 then
-          begin
-            qMatriz.ApplyUpdates(0);
-            qMatriz.CommitUpdates;
-
-            if Assigned(FOnSalvar) then
-              FOnSalvar();
-          end;
+        if Assigned(FOnSalvar) then
+          FOnSalvar();
 
         Close;
       end
@@ -250,6 +243,7 @@ end;
 
 procedure TfrmMatriz.ppuIncluir;
 begin
+  qMatriz.Open();
   qMatriz.Append;
   qMatrizSYNC.AsInteger := 0;
 end;
@@ -271,7 +265,6 @@ end;
 procedure TfrmMatriz.FormCreate(Sender: TObject);
 begin
   qEspecie.Open();
-  qMatriz.Open();
 
   recFade.Visible := false;
   recModal.Visible := false;
