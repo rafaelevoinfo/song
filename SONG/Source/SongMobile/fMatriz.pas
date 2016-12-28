@@ -64,14 +64,6 @@ type
     Label1: TLabel;
     LocationSensor: TLocationSensor;
     ScrollBox1: TScrollBox;
-    qMatriz: TRFQuery;
-    qMatrizID: TFDAutoIncField;
-    qMatrizNOME: TStringField;
-    qMatrizLATITUDE: TFMTBCDField;
-    qMatrizLONGITUDE: TFMTBCDField;
-    qMatrizENDERECO: TStringField;
-    qMatrizFOTO: TBlobField;
-    qMatrizSYNC: TIntegerField;
     BindSourceMatriz: TBindSourceDB;
     ActionList1: TActionList;
     Ac_Salvar: TAction;
@@ -82,8 +74,6 @@ type
     qEspecieNOME: TStringField;
     BindSourceEspecie: TBindSourceDB;
     qEspecieID: TLargeintField;
-    qMatrizID_ESPECIE: TIntegerField;
-    qMatrizESPECIE: TStringField;
     mmoDescricaoLocalizacao: TMemo;
     Label4: TLabel;
     Label2: TLabel;
@@ -105,8 +95,6 @@ type
     EditLongitude: TEdit;
     btnCamera: TSpeedButton;
     btnGaleria: TSpeedButton;
-    Ac_Tirar_Foto: TTakePhotoFromCameraAction;
-    Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
     imgFoto: TImage;
     BindingsList1: TBindingsList;
     LinkFillControlToField1: TLinkFillControlToField;
@@ -114,6 +102,18 @@ type
     LinkPropertyToFieldBitmap: TLinkPropertyToField;
     LinkControlToField2: TLinkControlToField;
     LinkControlToField3: TLinkControlToField;
+    qMatriz: TRFQuery;
+    qMatrizID: TFDAutoIncField;
+    qMatrizNOME: TStringField;
+    qMatrizLATITUDE: TFMTBCDField;
+    qMatrizLONGITUDE: TFMTBCDField;
+    qMatrizENDERECO: TStringField;
+    qMatrizFOTO: TBlobField;
+    qMatrizSYNC: TIntegerField;
+    qMatrizID_ESPECIE: TIntegerField;
+    LinkControlToField4: TLinkControlToField;
+    Ac_Tirar_Foto: TTakePhotoFromCameraAction;
+    Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
       NewLocation: TLocationCoord2D);
@@ -124,8 +124,8 @@ type
     procedure Ac_SalvarExecute(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
-    procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
     procedure FormResize(Sender: TObject);
+    procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
   private
     FOnSalvar: TProc;
     procedure SetOnSalvar(const Value: TProc);
@@ -149,7 +149,6 @@ uses
   fPrincipal;
 
 {$R *.fmx}
-
 
 procedure TfrmMatriz.Ac_RetornarExecute(Sender: TObject);
 begin
@@ -230,7 +229,6 @@ begin
         vaFoto.free;
         vaStream.free;
       end;
-
     end;
 end;
 

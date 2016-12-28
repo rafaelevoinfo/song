@@ -3,7 +3,7 @@ unit uProxyGenerator;
 interface
 
 uses
-  Classes, System.SysUtils, Datasnap.DSProxyDelphiNative, CodeSiteLogging,
+  Classes, System.SysUtils, Datasnap.DSProxyDelphiNative,
   Datasnap.DSProxyWriter, System.RegularExpressions;
 
 type

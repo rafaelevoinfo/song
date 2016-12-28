@@ -42,8 +42,7 @@ requires
   DataSnapProviderClient,
   vcl,
   DataSnapClient,
-  DataSnapNativeClient,
-  CodeSiteExpressPkg;
+  DataSnapNativeClient;
 
 contains
   uClientDataSet in 'uClientDataSet.pas',

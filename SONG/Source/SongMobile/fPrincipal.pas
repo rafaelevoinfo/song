@@ -3,7 +3,8 @@ unit fPrincipal;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, fMatriz, System.ImageList,
   FMX.ImgList, System.Actions, FMX.ActnList, FMX.Objects, FMX.TabControl,
@@ -15,7 +16,7 @@ uses
   FireDAC.Comp.DataSet, System.Rtti, System.Bindings.Outputs, FMX.Bind.Editors,
   Data.Bind.EngExt, FMX.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope,
   FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
-  dmuPrincipal;
+  dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base;
 
 type
   TfrmPrincipal = class(TForm)
@@ -40,10 +41,10 @@ type
     LinkListControlToField1: TLinkListControlToField;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure lvMatrizesItemClick(const Sender: TObject;
-      const AItem: TListViewItem);
     procedure lvMatrizesPullRefresh(Sender: TObject);
     procedure lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
+    procedure lvMatrizesItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     procedure ppvAbrirMatriz(ipId: Integer);
     { Private declarations }
@@ -58,14 +59,13 @@ implementation
 
 {$R *.fmx}
 
-
 procedure TfrmPrincipal.Ac_AdicionarExecute(Sender: TObject);
 begin
   if tbcPrincipal.ActiveTab = tabMatrizes then
     ppvAbrirMatriz(0);
 end;
 
-procedure TfrmPrincipal.ppvAbrirMatriz(ipId:Integer);
+procedure TfrmPrincipal.ppvAbrirMatriz(ipId: Integer);
 begin
   Application.CreateForm(TfrmMatriz, frmMatriz);
   if ipId = 0 then
