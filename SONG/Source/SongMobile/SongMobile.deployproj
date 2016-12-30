@@ -56,15 +56,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\BancoDados\song_mobile.db" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SongMobile\assets\internal\</RemoteDir>
-            <RemoteName>song_mobile.db</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>SongMobile\res\drawable-small\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -196,6 +187,15 @@
             <RemoteDir>SongMobile\</RemoteDir>
             <RemoteName>libSongMobile.so</RemoteName>
             <DeployClass>AndroidLibnativeX86File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\BancoDados\song_mobile.db" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SongMobile\assets\internal\</RemoteDir>
+            <RemoteName>song_mobile.db</RemoteName>
+            <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>

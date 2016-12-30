@@ -4,7 +4,8 @@ interface
 
 uses
   FMX.MediaLibrary, FMX.Platform, System.Messaging,
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.StdCtrls, FMX.Controls.Presentation, System.ImageList, FMX.ImgList,
   FMX.Ani, FMX.EditBox, FMX.NumberBox, FMX.Edit, FMX.ScrollBox, FMX.Memo,
@@ -93,13 +94,10 @@ type
     imgGaleria: TImage;
     EditLatitude: TEdit;
     EditLongitude: TEdit;
-    btnCamera: TSpeedButton;
-    btnGaleria: TSpeedButton;
     imgFoto: TImage;
     BindingsList1: TBindingsList;
     LinkFillControlToField1: TLinkFillControlToField;
     LinkControlToField1: TLinkControlToField;
-    LinkPropertyToFieldBitmap: TLinkPropertyToField;
     LinkControlToField2: TLinkControlToField;
     LinkControlToField3: TLinkControlToField;
     qMatriz: TRFQuery;
@@ -114,9 +112,12 @@ type
     LinkControlToField4: TLinkControlToField;
     Ac_Tirar_Foto: TTakePhotoFromCameraAction;
     Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
+    LinkPropertyToFieldBitmap: TLinkPropertyToField;
+    btnGaleria: TButton;
+    btnCamera: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation,
-      NewLocation: TLocationCoord2D);
+    procedure LocationSensorLocationChanged(Sender: TObject;
+      const OldLocation, NewLocation: TLocationCoord2D);
     procedure Ac_SalvarUpdate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Ac_RetornarExecute(Sender: TObject);
@@ -170,10 +171,12 @@ begin
       vaErros.Add('Espécie');
 
     if vaErros.Count > 0 then
-      begin
-        Result := false;
-        opMsgErro := 'Os seguintes campos são obrigatórios e não foram preenchidos:' + slinebreak + vaErros.DelimitedText;
-      end;
+    begin
+      Result := false;
+      opMsgErro :=
+        'Os seguintes campos são obrigatórios e não foram preenchidos:' +
+        slinebreak + vaErros.DelimitedText;
+    end;
   finally
     vaErros.free;
   end;
@@ -186,28 +189,30 @@ var
 begin
   try
     if fpvValidarDados(vaMsgErro) then
+    begin
+      if qMatriz.State in [dsEdit, dsInsert] then
       begin
-        if qMatriz.State in [dsEdit, dsInsert] then
-          begin
-            qMatriz.Post;
-          end;
+        qMatriz.Post;
+      end;
 
-        if Assigned(FOnSalvar) then
-          FOnSalvar();
+      if Assigned(FOnSalvar) then
+        FOnSalvar();
 
-        Close;
-      end
+      Close;
+    end
     else
       showMessage('Não foi possível salvar. Detalhes:' + vaMsgErro);
   except
     on e: Exception do
-      showMessage('Não foi possível salvar. Detalhes:' + slinebreak + e.Message);
+      showMessage('Não foi possível salvar. Detalhes:' + slinebreak +
+        e.Message);
   end;
 end;
 
 procedure TfrmMatriz.Ac_SalvarUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := qMatriz.Active and (qMatriz.State in [dsEdit, dsInsert]);
+  TAction(Sender).Enabled := qMatriz.Active and
+    (qMatriz.State in [dsEdit, dsInsert]);
 end;
 
 procedure TfrmMatriz.Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
@@ -216,20 +221,20 @@ var
   vaFoto: TBitmap;
 begin
   if Assigned(Image) then
-    begin
-      vaFoto := Image.CreateThumbnail(800, 600);
-      vaStream := TBytesStream.Create();
-      try
-        vaFoto.SaveToStream(vaStream);
-        vaStream.Position := 0;
+  begin
+    vaFoto := Image.CreateThumbnail(800, 600);
+    vaStream := TBytesStream.Create();
+    try
+      vaFoto.SaveToStream(vaStream);
+      vaStream.Position := 0;
 
-        ppvIniciarEdicao;
-        qMatrizFOTO.LoadFromStream(vaStream);
-      finally
-        vaFoto.free;
-        vaStream.free;
-      end;
+      ppvIniciarEdicao;
+      qMatrizFOTO.LoadFromStream(vaStream);
+    finally
+      vaFoto.free;
+      vaStream.free;
     end;
+  end;
 end;
 
 procedure TfrmMatriz.ppuAlterar(ipId: Integer);
@@ -276,18 +281,18 @@ procedure TfrmMatriz.FormKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 begin
   if Key = vkHardwareBack then
+  begin
+    if recModal.Visible then
     begin
-      if recModal.Visible then
-        begin
-          recFade.Visible := false;
-          recModal.Visible := false;
+      recFade.Visible := false;
+      recModal.Visible := false;
 
-          LocationSensor.Active := false;
+      LocationSensor.Active := false;
 
-          Key := 0;
-        end;
-
+      Key := 0;
     end;
+
+  end;
 end;
 
 procedure TfrmMatriz.FormResize(Sender: TObject);
@@ -299,7 +304,8 @@ procedure TfrmMatriz.ppvAjustarTamanhoFoto;
 begin
   imgFoto.Width := Self.Width;
   imgFoto.Height := Trunc(Self.Width * 0.75);
-  imgFoto.Position.Y := mmoDescricaoLocalizacao.Position.Y + mmoDescricaoLocalizacao.Height;
+  imgFoto.Position.Y := mmoDescricaoLocalizacao.Position.Y +
+    mmoDescricaoLocalizacao.Height;
 end;
 
 procedure TfrmMatriz.FormShow(Sender: TObject);

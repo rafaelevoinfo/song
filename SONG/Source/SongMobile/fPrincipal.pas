@@ -16,7 +16,8 @@ uses
   FireDAC.Comp.DataSet, System.Rtti, System.Bindings.Outputs, FMX.Bind.Editors,
   Data.Bind.EngExt, FMX.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope,
   FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
-  dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base;
+  dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
+  System.Threading;
 
 type
   TfrmPrincipal = class(TForm)
@@ -88,13 +89,23 @@ end;
 
 procedure TfrmPrincipal.lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
 begin
+  qMatriz.RecNo := AIndex;
   qMatriz.Delete;
 end;
 
 procedure TfrmPrincipal.lvMatrizesItemClick(const Sender: TObject;
   const AItem: TListViewItem);
 begin
-  ppvAbrirMatriz(qMatrizID.AsInteger);
+  TTask.Run(
+    procedure()
+    begin
+      sleep(350);
+      TThread.Queue(TThread.CurrentThread,
+        procedure
+        begin
+          ppvAbrirMatriz(qMatrizID.AsInteger);
+        end);
+    end);
 end;
 
 procedure TfrmPrincipal.lvMatrizesPullRefresh(Sender: TObject);
