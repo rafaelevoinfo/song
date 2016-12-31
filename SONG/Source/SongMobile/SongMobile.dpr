@@ -6,7 +6,9 @@ uses
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
   fMatriz in 'fMatriz.pas' {frmMatriz},
   dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
-  uConstantes in 'uConstantes.pas';
+  uConstantes in 'uConstantes.pas',
+  fBasico in 'fBasico.pas' {frmBasico},
+  fBasicoCadastro in 'fBasicoCadastro.pas' {frmBasicoCadastro};
 
 {$R *.res}
 

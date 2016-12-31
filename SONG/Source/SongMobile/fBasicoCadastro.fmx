@@ -1,0 +1,115 @@
+inherited frmBasicoCadastro: TfrmBasicoCadastro
+  Caption = 'frmBasico1'
+  OnCreate = FormCreate
+  DesignerMasterStyle = 3
+  object recFade: TRectangle [0]
+    Align = Contents
+    Fill.Color = claBlack
+    Opacity = 0.500000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object recModal: TRectangle
+    Align = Center
+    Fill.Color = claWhite
+    Margins.Left = 10.000000000000000000
+    Margins.Right = 10.000000000000000000
+    Size.Width = 291.000000000000000000
+    Size.Height = 75.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    XRadius = 10.000000000000000000
+    YRadius = 10.000000000000000000
+    object LoadLocalizacao: TAniIndicator
+      Align = Bottom
+      Enabled = True
+      Position.Y = 26.000000000000000000
+      Size.Width = 291.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      Style = Circular
+    end
+    object Label6: TLabel
+      Align = Top
+      AutoSize = True
+      Size.Width = 291.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      TextSettings.WordWrap = False
+      Text = 'Procurando localiza'#231#227'o...'
+    end
+  end
+  object tbAcao: TToolBar
+    Size.Width = 640.000000000000000000
+    Size.Height = 48.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object btnRetornar: TButton
+      Action = Ac_Retornar
+      Align = Left
+      Enabled = True
+      Images = frmPrincipal.ImageList1
+      ImageIndex = -1
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'backtoolbutton'
+      TabOrder = 0
+      Visible = True
+    end
+    object btnSalvar: TButton
+      Action = Ac_Salvar
+      Align = MostRight
+      Enabled = True
+      Images = frmPrincipal.ImageList1
+      ImageIndex = 0
+      Position.X = 592.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'btnImgCentroStyle'
+      TabOrder = 1
+      Visible = True
+    end
+  end
+  object ActionList1: TActionList
+    Images = frmPrincipal.ImageList1
+    Left = 64
+    Top = 88
+    object Ac_Salvar: TAction
+      Text = ' '
+      ImageIndex = 0
+      OnExecute = Ac_SalvarExecute
+      OnUpdate = Ac_SalvarUpdate
+      ImageIndex = 0
+    end
+    object Ac_Retornar: TAction
+      Text = 'Ac_Retornar'
+      OnExecute = Ac_RetornarExecute
+    end
+    object Ac_Tirar_Foto: TTakePhotoFromCameraAction
+      Category = 'Media Library'
+      CustomText = ' '
+      ImageIndex = 2
+      ImageIndex = 2
+    end
+    object Ac_Carregar_Foto: TTakePhotoFromLibraryAction
+      Category = 'Media Library'
+      CustomText = ' '
+      ImageIndex = 3
+      ImageIndex = 3
+    end
+    object Ac_Pegar_Localizacao: TAction
+      Category = 'Media Library'
+      Text = ' '
+      ImageIndex = 1
+      ImageIndex = 1
+    end
+  end
+  object dsPrincipal: TDataSource
+    Left = 328
+    Top = 144
+  end
+end

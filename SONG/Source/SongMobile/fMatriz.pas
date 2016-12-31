@@ -16,49 +16,12 @@ uses
   FireDAC.Comp.Client, uQuery, Data.Bind.EngExt, FMX.Bind.DBEngExt, System.Rtti,
   System.Bindings.Outputs, FMX.Bind.Editors, Data.Bind.Components,
   Data.Bind.DBScope, System.Actions, FMX.ActnList, FMX.ListBox, FMX.StdActns,
-  FMX.MediaLibrary.Actions;
+  FMX.MediaLibrary.Actions, fBasicoCadastro, fBasico;
 
 type
-  TLocalizacao = class
-  private
-    FLatitude: Double;
-    FDescricao: String;
-    FLongitude: Double;
-    procedure SetDescricao(const Value: String);
-    procedure SetLatitude(const Value: Double);
-    procedure SetLongitude(const Value: Double);
-  public
-    property Latitude: Double read FLatitude write SetLatitude;
-    property Longitude: Double read FLongitude write SetLongitude;
-    property Descricao: String read FDescricao write SetDescricao;
-  end;
 
-  TEspecie = class
-  private
-    FNome: String;
-    procedure SetNome(const Value: String);
-  public
-    property Nome: String read FNome write SetNome;
-  end;
-
-  TMatriz = class
-  private
-    FFoto: TStream;
-    FLocalizacao: TLocalizacao;
-    FNome: String;
-    procedure SetFoto(const Value: TStream);
-    procedure SetLocalizacao(const Value: TLocalizacao);
-    procedure SetNome(const Value: String);
-  public
-    property Nome: String read FNome write SetNome;
-    property Localizacao: TLocalizacao read FLocalizacao write SetLocalizacao;
-    property Foto: TStream read FFoto write SetFoto;
-  end;
-
-  TfrmMatriz = class(TForm)
+  TfrmMatriz = class(TfrmBasicoCadastro)
     pnPrincipal: TPanel;
-    tbAcao: TToolBar;
-    btnRetornar: TButton;
     FloatAnimation1: TFloatAnimation;
     pnNome: TPanel;
     EditNome: TEdit;
@@ -66,8 +29,6 @@ type
     LocationSensor: TLocationSensor;
     ScrollBox1: TScrollBox;
     BindSourceMatriz: TBindSourceDB;
-    ActionList1: TActionList;
-    Ac_Salvar: TAction;
     pnEspecie: TPanel;
     Label5: TLabel;
     cbEspecie: TComboBox;
@@ -80,18 +41,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     pnLatLong: TPanel;
-    Ac_Retornar: TAction;
     GridPanelLayout1: TGridPanelLayout;
-    recFade: TRectangle;
-    recModal: TRectangle;
-    LoadLocalizacao: TAniIndicator;
-    Label6: TLabel;
-    btnLocalizacao: TSpeedButton;
-    imgLocalizacao: TImage;
-    imgSalvar: TImage;
-    btnSalvar: TSpeedButton;
-    imgCamera: TImage;
-    imgGaleria: TImage;
     EditLatitude: TEdit;
     EditLongitude: TEdit;
     imgFoto: TImage;
@@ -110,32 +60,28 @@ type
     qMatrizSYNC: TIntegerField;
     qMatrizID_ESPECIE: TIntegerField;
     LinkControlToField4: TLinkControlToField;
-    Ac_Tirar_Foto: TTakePhotoFromCameraAction;
-    Ac_Carregar_Foto: TTakePhotoFromLibraryAction;
     LinkPropertyToFieldBitmap: TLinkPropertyToField;
     btnGaleria: TButton;
     btnCamera: TButton;
+    btnLocalizacao: TButton;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject;
       const OldLocation, NewLocation: TLocationCoord2D);
-    procedure Ac_SalvarUpdate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Ac_RetornarExecute(Sender: TObject);
-    procedure btnLocalizacaoClick(Sender: TObject);
-    procedure Ac_SalvarExecute(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure FormResize(Sender: TObject);
     procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
+    procedure Ac_Pegar_LocalizacaoExecute(Sender: TObject);
   private
-    FOnSalvar: TProc;
-    procedure SetOnSalvar(const Value: TProc);
     function fpvValidarDados(var opMsgErro: String): Boolean;
     procedure ppvIniciarEdicao;
     procedure ppvAjustarTamanhoFoto;
     { Private declarations }
+  protected
+    function fprValidarDados(var opMsgErro: String): Boolean; override;
   public
-    property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
+
     procedure ppuAlterar(ipId: Integer);
     procedure ppuIncluir;
 
@@ -151,68 +97,13 @@ uses
 
 {$R *.fmx}
 
-procedure TfrmMatriz.Ac_RetornarExecute(Sender: TObject);
+procedure TfrmMatriz.Ac_Pegar_LocalizacaoExecute(Sender: TObject);
 begin
-  Close;
+  if not LocationSensor.Active then
+    LocationSensor.Active := true;
 
-end;
-
-function TfrmMatriz.fpvValidarDados(var opMsgErro: String): Boolean;
-var
-  vaErros: TStringList;
-begin
-  Result := true;
-  vaErros := TStringList.Create;
-  try
-    if EditNome.Text = '' then
-      vaErros.Add('Nome');
-
-    if cbEspecie.ItemIndex = -1 then
-      vaErros.Add('Espécie');
-
-    if vaErros.Count > 0 then
-    begin
-      Result := false;
-      opMsgErro :=
-        'Os seguintes campos são obrigatórios e não foram preenchidos:' +
-        slinebreak + vaErros.DelimitedText;
-    end;
-  finally
-    vaErros.free;
-  end;
-
-end;
-
-procedure TfrmMatriz.Ac_SalvarExecute(Sender: TObject);
-var
-  vaMsgErro: String;
-begin
-  try
-    if fpvValidarDados(vaMsgErro) then
-    begin
-      if qMatriz.State in [dsEdit, dsInsert] then
-      begin
-        qMatriz.Post;
-      end;
-
-      if Assigned(FOnSalvar) then
-        FOnSalvar();
-
-      Close;
-    end
-    else
-      showMessage('Não foi possível salvar. Detalhes:' + vaMsgErro);
-  except
-    on e: Exception do
-      showMessage('Não foi possível salvar. Detalhes:' + slinebreak +
-        e.Message);
-  end;
-end;
-
-procedure TfrmMatriz.Ac_SalvarUpdate(Sender: TObject);
-begin
-  TAction(Sender).Enabled := qMatriz.Active and
-    (qMatriz.State in [dsEdit, dsInsert]);
+  recFade.Visible := true;
+  recModal.Visible := true;
 end;
 
 procedure TfrmMatriz.Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
@@ -251,29 +142,9 @@ begin
   qMatrizSYNC.AsInteger := 0;
 end;
 
-procedure TfrmMatriz.SetOnSalvar(const Value: TProc);
-begin
-  FOnSalvar := Value;
-end;
-
-procedure TfrmMatriz.btnLocalizacaoClick(Sender: TObject);
-begin
-  if not LocationSensor.Active then
-    LocationSensor.Active := true;
-
-  recFade.Visible := true;
-  recModal.Visible := true;
-end;
-
 procedure TfrmMatriz.FormCreate(Sender: TObject);
 begin
   qEspecie.Open();
-
-  recFade.Visible := false;
-  recModal.Visible := false;
-
-  recFade.BringToFront;
-  recModal.BringToFront;
   // TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
 end;
 
@@ -315,6 +186,37 @@ begin
   ppvAjustarTamanhoFoto;
 end;
 
+function TfrmMatriz.fprValidarDados(var opMsgErro: String): Boolean;
+var
+  vaErros: TStringList;
+begin
+  Result := inherited;
+  Result := true;
+  vaErros := TStringList.Create;
+  try
+    if EditNome.Text = '' then
+      vaErros.Add('Nome');
+
+    if cbEspecie.ItemIndex = -1 then
+      vaErros.Add('Espécie');
+
+    if vaErros.Count > 0 then
+    begin
+      Result := false;
+      opMsgErro :=
+        'Os seguintes campos são obrigatórios e não foram preenchidos:' +
+        slinebreak + vaErros.DelimitedText;
+    end;
+  finally
+    vaErros.free;
+  end;
+end;
+
+function TfrmMatriz.fpvValidarDados(var opMsgErro: String): Boolean;
+begin
+
+end;
+
 procedure TfrmMatriz.LocationSensorLocationChanged(Sender: TObject;
   const OldLocation, NewLocation: TLocationCoord2D);
 begin
@@ -333,47 +235,6 @@ procedure TfrmMatriz.ppvIniciarEdicao;
 begin
   if not(qMatriz.State in [dsEdit, dsInsert]) then
     qMatriz.Edit;
-end;
-
-{ TMatriz }
-
-procedure TMatriz.SetFoto(const Value: TStream);
-begin
-  FFoto := Value;
-end;
-
-procedure TMatriz.SetLocalizacao(const Value: TLocalizacao);
-begin
-  FLocalizacao := Value;
-end;
-
-procedure TMatriz.SetNome(const Value: String);
-begin
-  FNome := Value;
-end;
-
-{ TLocalizacao }
-
-procedure TLocalizacao.SetDescricao(const Value: String);
-begin
-  FDescricao := Value;
-end;
-
-procedure TLocalizacao.SetLatitude(const Value: Double);
-begin
-  FLatitude := Value;
-end;
-
-procedure TLocalizacao.SetLongitude(const Value: Double);
-begin
-  FLongitude := Value;
-end;
-
-{ TEspecie }
-
-procedure TEspecie.SetNome(const Value: String);
-begin
-  FNome := Value;
 end;
 
 end.

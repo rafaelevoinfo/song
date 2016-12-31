@@ -40,6 +40,7 @@ type
     qMatrizID: TFDAutoIncField;
     qMatrizNOME: TStringField;
     LinkListControlToField1: TLinkListControlToField;
+    ImageList1: TImageList;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
