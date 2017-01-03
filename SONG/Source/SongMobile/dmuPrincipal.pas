@@ -42,6 +42,7 @@ end;
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
   Connection.Open();
+
 end;
 
 end.

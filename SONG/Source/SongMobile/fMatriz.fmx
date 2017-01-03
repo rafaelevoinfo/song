@@ -4,18 +4,13 @@ inherited frmMatriz: TfrmMatriz
   ClientWidth = 484
   Position = Designed
   StyleBook = Styles
-  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnResize = FormResize
   OnShow = FormShow
   DesignerMasterStyle = 3
-  inherited recModal: TRectangle [0]
-  end
-  inherited recFade: TRectangle [1]
+  inherited recFade: TRectangle
     Size.Width = 484.000000000000000000
     Size.Height = 471.000000000000000000
-  end
-  inherited Styles: TStyleBook [2]
   end
   inherited tbAcao: TToolBar
     Size.Width = 484.000000000000000000
@@ -279,6 +274,7 @@ inherited frmMatriz: TfrmMatriz
       ImageIndex = 2
     end
     inherited Ac_Carregar_Foto: TTakePhotoFromLibraryAction
+      OnDidFinishTaking = Ac_Tirar_FotoDidFinishTaking
       ImageIndex = 3
     end
     inherited Ac_Pegar_Localizacao: TAction
@@ -286,18 +282,21 @@ inherited frmMatriz: TfrmMatriz
       ImageIndex = 1
     end
   end
-  object LocationSensor: TLocationSensor [6]
+  inherited dsPrincipal: TDataSource
+    DataSet = qMatriz
+  end
+  object LocationSensor: TLocationSensor
     OnLocationChanged = LocationSensorLocationChanged
     Left = 72
     Top = 320
   end
-  object BindSourceMatriz: TBindSourceDB [7]
+  object BindSourceMatriz: TBindSourceDB
     DataSet = qMatriz
     ScopeMappings = <>
     Left = 144
     Top = 304
   end
-  object qEspecie: TRFQuery [8]
+  object qEspecie: TRFQuery
     Connection = dmPrincipal.Connection
     SQL.Strings = (
       'Select especie.id,'
@@ -319,13 +318,13 @@ inherited frmMatriz: TfrmMatriz
       Size = 100
     end
   end
-  object BindSourceEspecie: TBindSourceDB [9]
+  object BindSourceEspecie: TBindSourceDB
     DataSet = qEspecie
     ScopeMappings = <>
     Left = 312
     Top = 288
   end
-  object BindingsList1: TBindingsList [10]
+  object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
     Left = 412
@@ -380,7 +379,7 @@ inherited frmMatriz: TfrmMatriz
       ComponentProperty = 'Bitmap'
     end
   end
-  object qMatriz: TRFQuery [11]
+  object qMatriz: TRFQuery
     Connection = dmPrincipal.Connection
     SQL.Strings = (
       'SELECT matriz.ID,'
@@ -452,8 +451,5 @@ inherited frmMatriz: TfrmMatriz
       ProviderFlags = [pfInUpdate]
       Required = True
     end
-  end
-  inherited dsPrincipal: TDataSource
-    DataSet = qMatriz
   end
 end

@@ -8,7 +8,8 @@ uses
   dmuPrincipal in 'dmuPrincipal.pas' {dmPrincipal: TDataModule},
   uConstantes in 'uConstantes.pas',
   fBasico in 'fBasico.pas' {frmBasico},
-  fBasicoCadastro in 'fBasicoCadastro.pas' {frmBasicoCadastro};
+  fBasicoCadastro in 'fBasicoCadastro.pas' {frmBasicoCadastro},
+  fLote in 'fLote.pas' {frmLote};
 
 {$R *.res}
 

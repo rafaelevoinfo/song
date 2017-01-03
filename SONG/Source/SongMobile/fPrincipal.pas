@@ -41,12 +41,19 @@ type
     qMatrizNOME: TStringField;
     LinkListControlToField1: TLinkListControlToField;
     ImageList1: TImageList;
+    qLote: TRFQuery;
+    qLoteID: TFDAutoIncField;
+    qLoteLOTE: TStringField;
+    qLoteESPECIE: TStringField;
+    BindSourceLote: TBindSourceDB;
+    LinkListControlToField2: TLinkListControlToField;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
     procedure lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
     procedure lvMatrizesItemClick(const Sender: TObject;
       const AItem: TListViewItem);
+    procedure lvLotesPullRefresh(Sender: TObject);
   private
     procedure ppvAbrirMatriz(ipId: Integer);
     { Private declarations }
@@ -86,6 +93,15 @@ procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   if not qMatriz.Active then
     qMatriz.Open();
+
+  if not qLote.Active then
+    qLote.Open();
+end;
+
+procedure TfrmPrincipal.lvLotesPullRefresh(Sender: TObject);
+begin
+  qLote.Refresh;
+
 end;
 
 procedure TfrmPrincipal.lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);

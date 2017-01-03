@@ -1,0 +1,19 @@
+inherited frmLote: TfrmLote
+  Caption = 'frmBasicoCadastro1'
+  StyleBook = Styles
+  DesignerMasterStyle = 3
+  inherited ActionList1: TActionList
+    inherited Ac_Salvar: TAction
+      ImageIndex = 0
+    end
+    inherited Ac_Tirar_Foto: TTakePhotoFromCameraAction
+      ImageIndex = 2
+    end
+    inherited Ac_Carregar_Foto: TTakePhotoFromLibraryAction
+      ImageIndex = 3
+    end
+    inherited Ac_Pegar_Localizacao: TAction
+      ImageIndex = 1
+    end
+  end
+end
