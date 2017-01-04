@@ -2,7 +2,7 @@ inherited frmBasicoCadastro: TfrmBasicoCadastro
   Caption = 'frmBasico1'
   OnCreate = FormCreate
   DesignerMasterStyle = 3
-  object recFade: TRectangle [0]
+  object recFade: TRectangle
     Align = Contents
     Fill.Color = claBlack
     Opacity = 0.500000000000000000

@@ -81,9 +81,7 @@ type
   protected
     function fprValidarDados(var opMsgErro: String): Boolean; override;
   public
-
-    procedure ppuAlterar(ipId: Integer);
-    procedure ppuIncluir;
+    procedure ppuIncluir; override;
 
   end;
 
@@ -128,20 +126,6 @@ begin
   end;
 end;
 
-procedure TfrmMatriz.ppuAlterar(ipId: Integer);
-begin
-  qMatriz.Close;
-  qMatriz.ParamByName('ID').AsInteger := ipId;
-  qMatriz.Open();
-end;
-
-procedure TfrmMatriz.ppuIncluir;
-begin
-  qMatriz.Open();
-  qMatriz.Append;
-  qMatrizSYNC.AsInteger := 0;
-end;
-
 procedure TfrmMatriz.FormCreate(Sender: TObject);
 begin
   qEspecie.Open();
@@ -169,6 +153,12 @@ end;
 procedure TfrmMatriz.FormResize(Sender: TObject);
 begin
   ppvAjustarTamanhoFoto;
+end;
+
+procedure TfrmMatriz.ppuIncluir;
+begin
+  inherited;
+  qMatrizSYNC.AsInteger := 0;
 end;
 
 procedure TfrmMatriz.ppvAjustarTamanhoFoto;

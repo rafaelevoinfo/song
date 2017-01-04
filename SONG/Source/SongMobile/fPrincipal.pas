@@ -39,14 +39,16 @@ type
     qMatriz: TRFQuery;
     qMatrizID: TFDAutoIncField;
     qMatrizNOME: TStringField;
-    LinkListControlToField1: TLinkListControlToField;
+    LinkListMatrizToDataSet: TLinkListControlToField;
     ImageList1: TImageList;
     qLote: TRFQuery;
     qLoteID: TFDAutoIncField;
     qLoteLOTE: TStringField;
     qLoteESPECIE: TStringField;
     BindSourceLote: TBindSourceDB;
-    LinkListControlToField2: TLinkListControlToField;
+    LinkListControlToField1: TLinkListControlToField;
+    qLoteQTDE: TBCDField;
+    tmrAbrirLote: TTimer;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
@@ -54,8 +56,10 @@ type
     procedure lvMatrizesItemClick(const Sender: TObject;
       const AItem: TListViewItem);
     procedure lvLotesPullRefresh(Sender: TObject);
+    procedure tmrAbrirLoteTimer(Sender: TObject);
   private
     procedure ppvAbrirMatriz(ipId: Integer);
+    procedure ppvAbrirLote(ipId: Integer);
     { Private declarations }
   public
     { Public declarations }
@@ -66,12 +70,18 @@ var
 
 implementation
 
+uses
+  fLote;
+
 {$R *.fmx}
 
 procedure TfrmPrincipal.Ac_AdicionarExecute(Sender: TObject);
 begin
   if tbcPrincipal.ActiveTab = tabMatrizes then
-    ppvAbrirMatriz(0);
+    ppvAbrirMatriz(0)
+  else if tbcPrincipal.ActiveTab = tabLotes then
+    ppvAbrirLote(0);
+
 end;
 
 procedure TfrmPrincipal.ppvAbrirMatriz(ipId: Integer);
@@ -87,6 +97,26 @@ begin
       qMatriz.Refresh;
     end;
   frmMatriz.Show;
+end;
+
+procedure TfrmPrincipal.ppvAbrirLote(ipId: Integer);
+begin
+  Application.CreateForm(TfrmLote, frmLote);
+  if ipId = 0 then
+    frmLote.ppuIncluir
+  else
+    frmLote.ppuAlterar(ipId);
+
+  frmLote.OnSalvar := procedure
+    begin
+      qLote.Refresh;
+    end;
+  frmLote.Show;
+end;
+
+procedure TfrmPrincipal.tmrAbrirLoteTimer(Sender: TObject);
+begin
+  ppvAbrirLote(qLoteID.AsInteger);
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);

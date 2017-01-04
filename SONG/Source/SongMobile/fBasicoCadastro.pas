@@ -4,10 +4,13 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
-  System.Variants,
+  System.Variants, System.Rtti,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   fBasico, FMX.Controls.Presentation, FMX.MediaLibrary.Actions, FMX.StdActns,
-  System.Actions, FMX.ActnList, Data.DB, FMX.Objects;
+  System.Actions, FMX.ActnList, Data.DB, FMX.Objects, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, FMX.Edit;
 
 type
   TfrmBasicoCadastro = class(TfrmBasico)
@@ -32,11 +35,16 @@ type
   private
     FOnSalvar: TProc;
     procedure SetOnSalvar(const Value: TProc);
+
   protected
     function fprValidarDados(var opMsgErro: String): Boolean; virtual;
+    function fprValidarCamposObrigatorios(ipDataSet: TDataSet; var opMsgErro: String): Boolean;
     { Private declarations }
   public
     property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
+
+    procedure ppuAlterar(ipId: Integer); virtual;
+    procedure ppuIncluir; virtual;
   end;
 
 var
@@ -49,8 +57,7 @@ implementation
 procedure TfrmBasicoCadastro.Ac_SalvarUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and
-    (dsPrincipal.DataSet.State in [dsEdit, dsInsert]);
+  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and (dsPrincipal.DataSet.State in [dsEdit, dsInsert]);
 end;
 
 procedure TfrmBasicoCadastro.FormCreate(Sender: TObject);
@@ -65,7 +72,55 @@ end;
 
 function TfrmBasicoCadastro.fprValidarDados(var opMsgErro: String): Boolean;
 begin
+  Result := fprValidarCamposObrigatorios(dsPrincipal.DataSet, opMsgErro);
+
+end;
+
+procedure TfrmBasicoCadastro.ppuAlterar(ipId: Integer);
+begin
+  dsPrincipal.DataSet.Close;
+  TRFQuery(dsPrincipal.DataSet).ParamByName('ID').AsInteger := ipId;
+  dsPrincipal.DataSet.Open();
+end;
+
+procedure TfrmBasicoCadastro.ppuIncluir;
+begin
+  dsPrincipal.DataSet.Open();
+  dsPrincipal.DataSet.Append;
+
+end;
+
+function TfrmBasicoCadastro.fprValidarCamposObrigatorios(ipDataSet: TDataSet; var opMsgErro: String): Boolean;
+var
+  vaField: TField;
+  vaMsg: TStringList;
+begin
   Result := true;
+  // tem q estar em edit ou insert ou entao tem q ter algo no cds. Se isso nao acontecer é pq o usuario
+  // deletou todos os registros e mandou gravar. Isso é possivel quando se usa o frameGrids
+  if (ipDataSet.State in [dsInsert, dsEdit]) or (ipDataSet.RecordCount > 0) then
+    begin
+      vaMsg := TStringList.Create;
+      try
+        for vaField in ipDataSet.Fields do
+          begin
+            if vaField.Required and (vaField.IsNull or (vaField.AsString.Trim = '')) then
+              begin
+                vaMsg.Add(vaField.DisplayLabel);
+
+              end;
+          end;
+
+        if vaMsg.Count > 0 then
+          begin
+            opMsgErro := 'Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text;
+            Result := false;
+          end;
+
+      finally
+        vaMsg.Free;
+      end;
+    end;
 
 end;
 
@@ -86,21 +141,20 @@ var
 begin
   try
     if fprValidarDados(vaMsgErro) then
-    begin
-      if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
-        dsPrincipal.DataSet.Post;
+      begin
+        if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
+          dsPrincipal.DataSet.Post;
 
-      if Assigned(FOnSalvar) then
-        FOnSalvar();
+        if Assigned(FOnSalvar) then
+          FOnSalvar();
 
-      Close;
-    end
+        Close;
+      end
     else
       showMessage('Não foi possível salvar. Detalhes:' + vaMsgErro);
   except
     on e: Exception do
-      showMessage('Não foi possível salvar. Detalhes:' + slinebreak +
-        e.Message);
+      showMessage('Não foi possível salvar. Detalhes:' + slineBreak + e.Message);
   end;
 end;
 
