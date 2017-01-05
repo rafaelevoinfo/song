@@ -211,7 +211,7 @@ inherited frmMatriz: TfrmMatriz
         Size.PlatformDefault = False
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.WordWrap = False
-        Text = 'Descri'#231#227'o da Localiza'#231#227'o'
+        Text = 'Endere'#231'o'
       end
       object mmoDescricaoLocalizacao: TMemo
         Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -265,9 +265,6 @@ inherited frmMatriz: TfrmMatriz
   inherited ActionList1: TActionList
     inherited Ac_Salvar: TAction
       ImageIndex = 0
-    end
-    inherited Ac_Retornar: TAction
-      OnExecute = nil
     end
     inherited Ac_Tirar_Foto: TTakePhotoFromCameraAction
       OnDidFinishTaking = Ac_Tirar_FotoDidFinishTaking
@@ -408,6 +405,7 @@ inherited frmMatriz: TfrmMatriz
       ReadOnly = True
     end
     object qMatrizNOME: TStringField
+      DisplayLabel = 'Nome'
       FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = [pfInUpdate]
@@ -415,6 +413,7 @@ inherited frmMatriz: TfrmMatriz
       Size = 100
     end
     object qMatrizLATITUDE: TFMTBCDField
+      DisplayLabel = 'Latitude'
       FieldName = 'LATITUDE'
       Origin = 'LATITUDE'
       ProviderFlags = [pfInUpdate]
@@ -422,6 +421,7 @@ inherited frmMatriz: TfrmMatriz
       Size = 6
     end
     object qMatrizLONGITUDE: TFMTBCDField
+      DisplayLabel = 'Longitude'
       FieldName = 'LONGITUDE'
       Origin = 'LONGITUDE'
       ProviderFlags = [pfInUpdate]
@@ -429,6 +429,7 @@ inherited frmMatriz: TfrmMatriz
       Size = 6
     end
     object qMatrizENDERECO: TStringField
+      DisplayLabel = 'Endere'#231'o'
       FieldName = 'ENDERECO'
       Origin = 'ENDERECO'
       ProviderFlags = [pfInUpdate]
@@ -446,6 +447,7 @@ inherited frmMatriz: TfrmMatriz
       Required = True
     end
     object qMatrizID_ESPECIE: TIntegerField
+      DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
       Origin = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]

@@ -74,12 +74,10 @@ type
     procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
     procedure Ac_Pegar_LocalizacaoExecute(Sender: TObject);
   private
-    function fpvValidarDados(var opMsgErro: String): Boolean;
-    procedure ppvIniciarEdicao;
     procedure ppvAjustarTamanhoFoto;
     { Private declarations }
   protected
-    function fprValidarDados(var opMsgErro: String): Boolean; override;
+
   public
     procedure ppuIncluir; override;
 
@@ -97,11 +95,14 @@ uses
 
 procedure TfrmMatriz.Ac_Pegar_LocalizacaoExecute(Sender: TObject);
 begin
-  if not LocationSensor.Active then
-    LocationSensor.Active := true;
-
   recFade.Visible := true;
   recModal.Visible := true;
+
+  recFade.BringToFront;
+  recModal.BringToFront;
+
+  if not LocationSensor.Active then
+    LocationSensor.Active := true;
 end;
 
 procedure TfrmMatriz.Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
@@ -117,7 +118,6 @@ begin
       vaFoto.SaveToStream(vaStream);
       vaStream.Position := 0;
 
-      ppvIniciarEdicao;
       qMatrizFOTO.LoadFromStream(vaStream);
     finally
       vaFoto.free;
@@ -174,37 +174,8 @@ begin
   // FloatAnimation1.StartValue := Self.Width;
   // FloatAnimation1.Start;
   ppvAjustarTamanhoFoto;
-end;
-
-function TfrmMatriz.fprValidarDados(var opMsgErro: String): Boolean;
-var
-  vaErros: TStringList;
-begin
-  Result := inherited;
-  Result := true;
-  vaErros := TStringList.Create;
-  try
-    if EditNome.Text = '' then
-      vaErros.Add('Nome');
-
-    if cbEspecie.ItemIndex = -1 then
-      vaErros.Add('Espécie');
-
-    if vaErros.Count > 0 then
-    begin
-      Result := false;
-      opMsgErro :=
-        'Os seguintes campos são obrigatórios e não foram preenchidos:' +
-        slinebreak + vaErros.DelimitedText;
-    end;
-  finally
-    vaErros.free;
-  end;
-end;
-
-function TfrmMatriz.fpvValidarDados(var opMsgErro: String): Boolean;
-begin
-
+  if EditNome.CanFocus then
+    EditNome.SetFocus;
 end;
 
 procedure TfrmMatriz.LocationSensorLocationChanged(Sender: TObject;
@@ -213,18 +184,10 @@ begin
   recFade.Visible := false;
   recModal.Visible := false;
 
-  ppvIniciarEdicao;
-
   qMatrizLATITUDE.AsFloat := NewLocation.Latitude;
   qMatrizLONGITUDE.AsFloat := NewLocation.Longitude;
   LocationSensor.Active := false;
 
-end;
-
-procedure TfrmMatriz.ppvIniciarEdicao;
-begin
-  if not(qMatriz.State in [dsEdit, dsInsert]) then
-    qMatriz.Edit;
 end;
 
 end.

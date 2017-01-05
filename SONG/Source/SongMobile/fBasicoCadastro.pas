@@ -81,6 +81,8 @@ begin
   dsPrincipal.DataSet.Close;
   TRFQuery(dsPrincipal.DataSet).ParamByName('ID').AsInteger := ipId;
   dsPrincipal.DataSet.Open();
+  if not dsPrincipal.DataSet.Eof then
+    dsPrincipal.DataSet.Edit;
 end;
 
 procedure TfrmBasicoCadastro.ppuIncluir;
@@ -113,7 +115,7 @@ begin
 
         if vaMsg.Count > 0 then
           begin
-            opMsgErro := 'Os seguintes campos são obrigatórios e não foram preenchidos:' + slineBreak + vaMsg.Text;
+            opMsgErro := 'Os seguintes campos são obrigatórios:' + slineBreak + vaMsg.Text;
             Result := false;
           end;
 

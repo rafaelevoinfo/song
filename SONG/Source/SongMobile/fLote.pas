@@ -3,7 +3,7 @@ unit fLote;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   fBasicoCadastro, Data.DB, FMX.MediaLibrary.Actions, FMX.StdActns,
   System.Actions, FMX.ActnList, FMX.Controls.Presentation, FMX.Objects, dmPrincipal,
@@ -12,7 +12,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   uQuery, FMX.Edit, FMX.Layouts, FMX.ListBox, FMX.DateTimeCtrls,
   Data.Bind.Components, Data.Bind.DBScope, System.Rtti, System.Bindings.Outputs,
-  Fmx.Bind.Editors, Data.Bind.EngExt, Fmx.Bind.DBEngExt;
+  FMX.Bind.Editors, Data.Bind.EngExt, FMX.Bind.DBEngExt;
 
 type
   TfrmLote = class(TfrmBasicoCadastro)
@@ -27,7 +27,6 @@ type
     EditNome: TEdit;
     pnPrincipal: TPanel;
     lbMatriz: TLabel;
-    cbMatriz: TComboBox;
     lbQtde: TLabel;
     EditQtde: TEdit;
     lbData: TLabel;
@@ -38,6 +37,13 @@ type
     LinkControlToField2: TLinkControlToField;
     LinkControlToField3: TLinkControlToField;
     LinkFillControlToFieldID: TLinkFillControlToField;
+    pnMatriz: TPanel;
+    cbMatriz: TComboBox;
+    btnAdd: TButton;
+    Ac_Adicionar_Matriz: TAction;
+    LinkComboMatriz: TLinkFillControlToField;
+    procedure Ac_Adicionar_MatrizExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -50,8 +56,28 @@ var
 implementation
 
 uses
-  fPrincipal;
+  fPrincipal, fMatriz;
 
 {$R *.fmx}
+
+procedure TfrmLote.Ac_Adicionar_MatrizExecute(Sender: TObject);
+begin
+  inherited;
+  Application.CreateForm(TfrmMatriz, frmMatriz);
+  frmMatriz.ppuIncluir;
+  frmMatriz.OnSalvar := procedure
+    begin
+      frmPrincipal.qMatriz.Refresh;
+      LinkComboMatriz.BindList.FillList;
+    end;
+  frmMatriz.Show;
+end;
+
+procedure TfrmLote.FormShow(Sender: TObject);
+begin
+  inherited;
+  if EditNome.CanFocus then
+    EditNome.SetFocus;
+end;
 
 end.
