@@ -39,30 +39,26 @@ type
     qMatriz: TRFQuery;
     qMatrizID: TFDAutoIncField;
     qMatrizNOME: TStringField;
-    LinkListMatrizToDataSet: TLinkListControlToField;
     ImageList1: TImageList;
     qLote: TRFQuery;
     qLoteID: TFDAutoIncField;
     qLoteLOTE: TStringField;
     qLoteESPECIE: TStringField;
     BindSourceLote: TBindSourceDB;
-    LinkListLotesToDataSet: TLinkListControlToField;
     qLoteQTDE: TBCDField;
     tmrAbrirLote: TTimer;
     tmrAbrirMatriz: TTimer;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
-    procedure lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
     procedure lvMatrizesItemClick(const Sender: TObject; const AItem: TListViewItem);
     procedure lvLotesPullRefresh(Sender: TObject);
     procedure tmrAbrirLoteTimer(Sender: TObject);
     procedure lvLotesItemClick(const Sender: TObject; const AItem: TListViewItem);
     procedure tbcPrincipalChange(Sender: TObject);
     procedure tmrAbrirMatrizTimer(Sender: TObject);
-    procedure lvLotesDeleteItem(Sender: TObject; AIndex: Integer);
-    procedure LinkListMatrizToDataSetFillingListItem(Sender: TObject;
-      const AEditor: IBindListEditorItem);
+    procedure lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
+    procedure lvLotesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
   private
     procedure ppvAbrirMatriz(ipId: Integer);
     procedure ppvAbrirLote(ipId: Integer);
@@ -102,21 +98,68 @@ begin
 
   frmMatriz.OnSalvar := procedure
     begin
-      qMatriz.Refresh;
+      ppvCarregarMatrizes;
     end;
   frmMatriz.Show;
 end;
 
 procedure TfrmPrincipal.ppvCarregarMatrizes;
+var
+  vaItem: TListViewItem;
 begin
   if not qMatriz.Active then
-    qMatriz.Open();
+    qMatriz.Open()
+  else
+    qMatriz.Refresh;
+
+  qMatriz.DisableControls;
+  lvMatrizes.BeginUpdate;
+  try
+    lvMatrizes.Items.Clear;
+    qMatriz.First;
+    while not qMatriz.Eof do
+      begin
+        vaItem := lvMatrizes.Items.Add;
+        vaItem.Tag := qMatrizID.AsInteger;
+        vaItem.Text := qMatrizNOME.AsString;
+
+        qMatriz.Next;
+      end;
+  finally
+    lvMatrizes.EndUpdate;
+    qMatriz.EnableControls;
+  end;
 end;
 
 procedure TfrmPrincipal.ppvCarregarLotes;
+var
+  vaItem: TListViewItem;
 begin
   if not qLote.Active then
-    qLote.Open();
+    qLote.Open()
+  else
+    qLote.Refresh;
+
+  qLote.DisableControls;
+  lvLotes.BeginUpdate;
+  try
+    lvLotes.Items.Clear;
+    qLote.First;
+    while not qLote.Eof do
+      begin
+        vaItem := lvLotes.Items.Add;
+        vaItem.Tag := qLoteID.AsInteger;
+
+        vaItem.Data['txtNome'] := qLoteLOTE.AsString;
+        vaItem.Data['txtEspecie'] := qLoteESPECIE.AsString;
+        vaItem.Data['txtQtde'] := FormatFloat(',0.00',qLoteQTDE.AsFloat);
+
+        qLote.Next;
+      end;
+  finally
+    lvLotes.EndUpdate;
+    qLote.EnableControls;
+  end;
 end;
 
 procedure TfrmPrincipal.ppvAbrirLote(ipId: Integer);
@@ -131,7 +174,7 @@ begin
 
   frmLote.OnSalvar := procedure
     begin
-      qLote.Refresh;
+      ppvCarregarLotes;
     end;
   frmLote.Show;
 end;
@@ -151,13 +194,13 @@ end;
 procedure TfrmPrincipal.tmrAbrirLoteTimer(Sender: TObject);
 begin
   tmrAbrirLote.Enabled := false;
-  ppvAbrirLote(qLoteID.AsInteger);
+  ppvAbrirLote(TListViewItem(lvLotes.Selected).Tag);
 end;
 
 procedure TfrmPrincipal.tmrAbrirMatrizTimer(Sender: TObject);
 begin
   tmrAbrirMatriz.Enabled := false;
-  ppvAbrirMatriz(qMatrizID.AsInteger);
+  ppvAbrirMatriz(TListViewItem(lvMatrizes.Selected).Tag);
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
@@ -167,16 +210,14 @@ begin
   ppvCarregarLotes;
 end;
 
-procedure TfrmPrincipal.LinkListMatrizToDataSetFillingListItem(Sender: TObject;
-  const AEditor: IBindListEditorItem);
+procedure TfrmPrincipal.lvLotesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
 begin
-  showMessage(Sender.ClassName+' - '+AEditor.CurrentObject.ClassName);
-  TListViewItem(AEditor.CurrentObject).Tag := qMatrizID.AsInteger;
-end;
-
-procedure TfrmPrincipal.lvLotesDeleteItem(Sender: TObject; AIndex: Integer);
-begin
-  qLote.Delete;
+  ACanDelete := false;
+  if qLote.Locate('ID', lvLotes.Items[AIndex].Tag) then
+    begin
+      qLote.Delete;
+      ACanDelete := true;
+    end;
 end;
 
 procedure TfrmPrincipal.lvLotesItemClick(const Sender: TObject; const AItem: TListViewItem);
@@ -186,12 +227,17 @@ end;
 
 procedure TfrmPrincipal.lvLotesPullRefresh(Sender: TObject);
 begin
-  qLote.Refresh;
+  ppvCarregarLotes;
 end;
 
-procedure TfrmPrincipal.lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
+procedure TfrmPrincipal.lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
 begin
-  qMatriz.Delete;
+  ACanDelete := false;
+  if qMatriz.Locate('ID', lvMatrizes.Items[AIndex].Tag) then
+    begin
+      qMatriz.Delete;
+      ACanDelete := true;
+    end;
 end;
 
 procedure TfrmPrincipal.lvMatrizesItemClick(const Sender: TObject; const AItem: TListViewItem);
@@ -201,7 +247,7 @@ end;
 
 procedure TfrmPrincipal.lvMatrizesPullRefresh(Sender: TObject);
 begin
-  qMatriz.Refresh;
+  ppvCarregarMatrizes;
 end;
 
 end.
