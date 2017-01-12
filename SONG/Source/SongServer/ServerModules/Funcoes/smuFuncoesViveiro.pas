@@ -10,7 +10,8 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uTypes, Datasnap.DBClient, System.Generics.Collections,
   uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list,
-  System.Math, System.Types, uUtils;
+  System.Math, System.Types, uUtils, System.JSON, Data.FireDACJSONReflect,
+  Data.DBXJSON, REST.JSON;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -32,6 +33,7 @@ type
     cdsQtdeMudaRocamboleQTDE: TIntegerField;
     cdsQtdeMudaRocamboleQTDE_TOTAL: TAggregateField;
   private
+    function fpvBuscarEspecies(ipCodigos: String): TList<TEspecie>;
 
     { Private declarations }
   public
@@ -57,7 +59,9 @@ type
 
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
 
-    function fpuVerificarLoteMudaExiste(ipId:Integer):Boolean;
+    function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
+
+    function fpuSincronizarEspecies(ipDataUltimaSincronizacao: String): String;
 
   end;
 
@@ -188,12 +192,99 @@ begin
 
 end;
 
+function TsmFuncoesViveiro.fpvBuscarEspecies(ipCodigos: String): TList<TEspecie>;
+var
+  vaEspecies: TList<TEspecie>;
+begin
+  vaEspecies := nil;
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    var
+      vaEspecie: TEspecie;
+    begin
+      ipDataSet.SQL.Text := 'Select Especie.Id, Especie.Nome ' +
+        ' from Especie ';
+
+      if ipCodigos <> '' then
+        ipDataSet.SQL.add(' where Especie.codigo in (' + ipCodigos + ')');
+
+      ipDataSet.Open();
+      if not ipDataSet.Eof then
+        begin
+          vaEspecies := TList<TEspecie>.Create;
+          while not ipDataSet.Eof do
+            begin
+              vaEspecie := TEspecie.Create;
+              vaEspecie.Id := ipDataSet.FieldByName('ID').AsInteger;
+              vaEspecie.Nome := ipDataSet.FieldByName('NOME').AsString;
+
+              vaEspecies.Add(vaEspecie);
+              ipDataSet.Next;
+            end;
+        end;
+    end);
+
+  Result := vaEspecies;
+
+end;
+
+function TsmFuncoesViveiro.fpuSincronizarEspecies(ipDataUltimaSincronizacao: String): String;
+var
+  vaEspecies: TList<TEspecie>;
+  vaEspecie: TEspecie;
+begin
+  Result := '';
+  vaEspecies := nil;
+  if ipDataUltimaSincronizacao = '' then
+    begin
+      vaEspecies := fpvBuscarEspecies('');
+    end
+  else
+    begin
+      pprEncapsularConsulta(
+        procedure(ipDataSet: TRFQuery)
+        var
+          vaDataHoraUltSync: TdateTime;
+          vaCodigos: String;
+
+        begin
+          if TryStrToDateTime(ipDataUltimaSincronizacao, vaDataHoraUltSync) then
+            begin
+              ipDataSet.SQL.Text := 'Select Log.Id_tabela ' +
+                ' from log ' +
+                ' where log.operacao = 0 and ' +
+                '       log.tabela = ''ESPECIE'' and' +
+                '       log.data_hora > :DataHora';
+              ipDataSet.ParamByName('DATA_HORA').AsDateTime := vaDataHoraUltSync;
+              ipDataSet.Open();
+              if not ipDataSet.Eof then
+                begin
+                  vaCodigos := TUtils.fpuMontarStringCodigo(ipDataSet, 'ID_TABELA', ',');
+                  vaEspecies := fpvBuscarEspecies(vaCodigos);
+                end;
+            end
+          else
+            raise Exception.Create('Data inválida.');
+        end);
+    end;
+
+  if Assigned(vaEspecies) then
+    begin
+      Result := TJson.ObjectToJsonString(vaEspecies);
+      for vaEspecie in vaEspecies do
+        begin
+          vaEspecie.Free;
+        end;
+      vaEspecies.Free;
+    end;
+end;
+
 function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
 var
   vaEspecies: String;
   vaEspecie: TEspecie;
   vaDataSet: TRFQuery;
-  vaDataAtual, vaDataPrevisao, vaDataMudaPronta, vaDataMudaGerminada: TDateTime;
+  vaDataAtual, vaDataPrevisao, vaDataMudaPronta, vaDataMudaGerminada: TdateTime;
   vaQtdeMudaPronta, vaQtdeMudaGerminada, vaQtdeAplicadaTaxa: Integer;
 
   function flGetEspecie(ipId: Integer): TEspecie;
@@ -513,7 +604,7 @@ end;
 
 function TsmFuncoesViveiro.fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
 begin
-  Result := not fprValidarCampoUnico('LOTE_MUDA','ID',0,ipId.ToString());
+  Result := not fprValidarCampoUnico('LOTE_MUDA', 'ID', 0, ipId.ToString());
 end;
 
 procedure TsmFuncoesViveiro.ppuAjustarSaldoEspecie(ipIdEspecie: Integer);

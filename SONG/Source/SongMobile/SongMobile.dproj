@@ -5,7 +5,7 @@
         <FrameworkType>FMX</FrameworkType>
         <MainSource>SongMobile.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Android</Platform>
         <TargetedPlatforms>19</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -192,6 +192,9 @@
             <Form>frmLote</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="uFuncoes.pas"/>
+        <DCCReference Include="..\Comuns\aduna_ds_list.pas"/>
+        <DCCReference Include="..\Comuns\uTypes.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

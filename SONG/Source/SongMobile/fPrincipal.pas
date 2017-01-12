@@ -17,7 +17,7 @@ uses
   Data.Bind.EngExt, FMX.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope,
   FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
   dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
-  System.Threading;
+  System.Threading, uTypes, System.Generics.Collections, REST.Json;
 
 type
   TfrmPrincipal = class(TForm)
@@ -34,8 +34,6 @@ type
     tabMatrizes: TTabItem;
     lvLotes: TListView;
     lvMatrizes: TListView;
-    BindSourceMatriz: TBindSourceDB;
-    BindingsList1: TBindingsList;
     qMatriz: TRFQuery;
     qMatrizID: TFDAutoIncField;
     qMatrizNOME: TStringField;
@@ -44,10 +42,12 @@ type
     qLoteID: TFDAutoIncField;
     qLoteLOTE: TStringField;
     qLoteESPECIE: TStringField;
-    BindSourceLote: TBindSourceDB;
     qLoteQTDE: TBCDField;
     tmrAbrirLote: TTimer;
     tmrAbrirMatriz: TTimer;
+    qEspecie: TRFQuery;
+    qEspecieID: TLargeintField;
+    qEspecieNOME: TStringField;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
@@ -59,6 +59,7 @@ type
     procedure tmrAbrirMatrizTimer(Sender: TObject);
     procedure lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
     procedure lvLotesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
+    procedure Ac_SincronizarExecute(Sender: TObject);
   private
     procedure ppvAbrirMatriz(ipId: Integer);
     procedure ppvAbrirLote(ipId: Integer);
@@ -152,7 +153,7 @@ begin
 
         vaItem.Data['txtNome'] := qLoteLOTE.AsString;
         vaItem.Data['txtEspecie'] := qLoteESPECIE.AsString;
-        vaItem.Data['txtQtde'] := FormatFloat(',0.00',qLoteQTDE.AsFloat);
+        vaItem.Data['txtQtde'] := FormatFloat(',0.00', qLoteQTDE.AsFloat);
 
         qLote.Next;
       end;
@@ -201,6 +202,52 @@ procedure TfrmPrincipal.tmrAbrirMatrizTimer(Sender: TObject);
 begin
   tmrAbrirMatriz.Enabled := false;
   ppvAbrirMatriz(TListViewItem(lvMatrizes.Selected).Tag);
+end;
+
+procedure TfrmPrincipal.Ac_SincronizarExecute(Sender: TObject);
+var
+  vaResult, vaCodigos: String;
+  vaDataSet: TRFQuery;
+  vaEspecies: TList<TEspecie>;
+  vaEspecie: TEspecie;
+begin
+
+  vaDataSet := TRFQuery.Create(nil);
+  try
+    vaDataSet.SQL.Text := 'Select Data_Ultima_Sync from config';
+    vaDataSet.Open;
+    vaResult := dmPrincipal.FuncoesViveiro.fpuSincronizarEspecies(vaDataSet.FieldByName('DATA_ULTIMA_SYNC').AsString);
+    if vaResult <> '' then
+      begin
+        vaEspecies := TJson.JsonToObject < TList < TEspecie >> (vaResult);
+        qEspecie.Close;
+        if Assigned(vaEspecies) and (vaEspecies.Count > 0) then
+          begin
+            for vaEspecie in vaEspecies do
+              begin
+                if vaCodigos = '' then
+                  vaCodigos := vaEspecie.Id.ToString
+                else
+                  vaCodigos := vaCodigos + ',' + vaEspecie.Id.ToString;
+              end;
+            qEspecie.MacroByName('WHERE').AsRaw := ' where especie.id in ('+vaCodigos+')';
+            qEspecie.Open;
+
+            for vaEspecie in vaEspecies do
+              begin
+                if qEspecie.Locate('ID',vaEspecie.Id,[]) then
+                  begin
+                    qEspecie.Edit;
+                    qEspecieNOME.AsString := vaEspecie.Nome;
+                    qEspecie.Post;
+                  end;
+              end;
+          end;
+      end;
+  finally
+    vaDataSet.Free;
+  end;
+
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);

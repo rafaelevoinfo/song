@@ -9,7 +9,10 @@ uses
   uConstantes in 'uConstantes.pas',
   fBasico in 'fBasico.pas' {frmBasico},
   fBasicoCadastro in 'fBasicoCadastro.pas' {frmBasicoCadastro},
-  fLote in 'fLote.pas' {frmLote};
+  fLote in 'fLote.pas' {frmLote},
+  uFuncoes in 'uFuncoes.pas',
+  aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
+  uTypes in '..\Comuns\uTypes.pas';
 
 {$R *.res}
 

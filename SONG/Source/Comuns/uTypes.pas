@@ -3,7 +3,9 @@ unit uTypes;
 interface
 
 uses
-  Winapi.Messages, System.Classes, System.SysUtils, aduna_ds_list;
+{$IFDEF MSWINDOWS}
+  Winapi.Messages,
+{$ENDIF} System.Classes, System.SysUtils, aduna_ds_list;
 
 type
   TBancoDados = class
@@ -103,11 +105,14 @@ type
     FTempoGerminacao: Integer;
     FTempoDesenvolvimento: Integer;
     FTaxaGerminacao: Double;
+    FNome: String;
     procedure SetTaxaClassificacao(const Value: Double);
     procedure SetTaxaGerminacao(const Value: Double);
     procedure SetTempoDesenvolvimento(const Value: Integer);
     procedure SetTempoGerminacao(const Value: Integer);
+    procedure SetNome(const Value: String);
   public
+    property Nome: String read FNome write SetNome;
     property TaxaGerminacao: Double read FTaxaGerminacao write SetTaxaGerminacao;
     property TaxaClassificacao: Double read FTaxaClassificacao write SetTaxaClassificacao;
     property TempoDesenvolvimento: Integer read FTempoDesenvolvimento write SetTempoDesenvolvimento;
@@ -249,8 +254,8 @@ type
 
   TTipoFinForCli = (tfFinanciador = 1, tfFornecedor, tfCliente);
 
-  TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador, trpParceiro, trpEstagiario,
-    trpVoluntario, trpOutro);
+  TTipoRelacionamentoPessoa = (trpFuncionario, trpMembroDiretoria, trpCliente, trpFornecedor, trpFinanciador,
+    trpParceiro, trpEstagiario, trpVoluntario, trpOutro);
 
   TStatusSolicitacaoCompra = (sscSolicitacada, sscAprovada, sscNegada);
 
@@ -270,22 +275,26 @@ type
   TTipoSaida = (tsVenda, tsConsumo, tsPerda, tsPlantio, tsOutro);
 
   // ficou errado quando foi feito, para nao ter q fazer update no banco inteiro vamos começar com o valor 1
-  TFormaPagamento = (fpTransferencia = 1, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro, fpBoleto, fpOutro);
+  TFormaPagamento = (fpTransferencia = 1, fpDebitoConta, fpCartaoCredito, fpCartaoDebito, fpCheque, fpDinheiro,
+    fpBoleto, fpOutro);
 
   TStatusMuda = (smDesenvolvimento, smProntaPlantio);
 
-  TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo, tnAtividadeCadastrada,
-    tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario, tnEventoAgenda);
+  TTipoNotificacao = (tnContaPagarVencendo, tnContaReceberVencida, tnRubricaAtigindoSaldo, tnFundoFicandoSemSaldo,
+    tnAtividadeCadastrada, tnAtividadeAlterada, tnAtividadeVencendo, tnSolicitacaoCompra, tnAniversario,
+    tnEventoAgenda);
 
   TTipoAgenda = (taPessoal, taOutra);
   TTipoEvento = (teEventoAgenda, teEventoAtividade);
 
-  TMarcadorOrcamento = (moTabelaEspecie, moDataOrcamento, moDataOrcamentoExtenso,
-    moCliente, moResponsavel, moValorTotal, moValorTotalExtenso, moTotalItens, moCustomizado);
+  TMarcadorOrcamento = (moTabelaEspecie, moDataOrcamento, moDataOrcamentoExtenso, moCliente, moResponsavel,
+    moValorTotal, moValorTotalExtenso, moTotalItens, moCustomizado);
 
 const
   // mensagens customizadas do windows
+{$IFDEF MSWINDOWS}
   MSG_AFTER_SHOW = WM_USER + 1;
+{$ENDIF}
   coRegistroAtivo = 0;
   coRegistroInativo = 1;
 
@@ -299,17 +308,18 @@ const
   coRegexEmail = '.+?@.+?\..+';
   coMudasPorCarrinho = 400;
 
-  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar', 'Inativar');
-  TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário', 'Membro da Diretoria', 'Cliente', 'Fornecedor',
-    'Financiador', 'Parceiro', 'Estagiário', 'Voluntário', 'Outro');
-  FormaPagamennto: array [TFormaPagamento] of string = ('Transferência Bancária', 'Débito em Conta', 'Cartão de Crédito', 'Cartão de Débito',
-    'Cheque', 'Dinheiro', 'Boleto', 'Outro');
+  AcaoTelaDescricao: array [TAcaoTela] of string = ('Visualizar', 'Incluir', 'Alterar', 'Excluir', 'Ativar',
+    'Inativar');
+  TipoRelacionamentoPessoa: array [TTipoRelacionamentoPessoa] of string = ('Funcionário', 'Membro da Diretoria',
+    'Cliente', 'Fornecedor', 'Financiador', 'Parceiro', 'Estagiário', 'Voluntário', 'Outro');
+  FormaPagamennto: array [TFormaPagamento] of string = ('Transferência Bancária', 'Débito em Conta',
+    'Cartão de Crédito', 'Cartão de Débito', 'Cheque', 'Dinheiro', 'Boleto', 'Outro');
 
-  TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida', 'Rubrica atingindo limite',
-    'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
+  TiposNotificacao: array [TTipoNotificacao] of String = ('Conta a Pagar Vencendo/Vencida', 'Conta a Receber Vencida',
+    'Rubrica atingindo limite', 'Fundo atingindo limite', 'Atividade cadastrada', 'Atividade alterada',
     'Atividade vencendo prazo de execução', 'Solicitação de Compra', 'Aniversários', 'Eventos de Agendas');
-  MarcadorOrcamento: array [TMarcadorOrcamento] of String = ('Tabela de Espécies',
-    'Data do Orçamento', 'Data do Orçamento por Extenso', 'Cliente', 'Responsável', 'Valor Total', 'Valor Total por Extenso',
+  MarcadorOrcamento: array [TMarcadorOrcamento] of String = ('Tabela de Espécies', 'Data do Orçamento',
+    'Data do Orçamento por Extenso', 'Cliente', 'Responsável', 'Valor Total', 'Valor Total por Extenso',
     'Total de Itens', 'Customizado');
 
 implementation
@@ -381,6 +391,11 @@ begin
 end;
 
 { TEspecie }
+
+procedure TEspecie.SetNome(const Value: String);
+begin
+  FNome := Value;
+end;
 
 procedure TEspecie.SetTaxaClassificacao(const Value: Double);
 begin

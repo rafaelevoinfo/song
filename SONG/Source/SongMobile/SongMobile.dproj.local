@@ -25,11 +25,16 @@
     <Transaction>2016/12/30 23:59:49.000.513,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fBasicoCadastro.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.pas</Transaction>
     <Transaction>2016/12/31 00:00:05.000.433,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fBasicoCadastro.pas=</Transaction>
     <Transaction>2016/12/31 00:00:11.000.854,=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.pas</Transaction>
-    <Transaction>2016/12/31 00:00:18.000.343,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fBasicoCadastro.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.pas</Transaction>
     <Transaction>2016/12/31 00:00:18.000.343,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fBasicoCadastro.fmx=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.fmx</Transaction>
+    <Transaction>2016/12/31 00:00:18.000.343,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fBasicoCadastro.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.pas</Transaction>
     <Transaction>2017/01/02 22:12:31.000.333,=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.pas</Transaction>
     <Transaction>2017/01/02 22:12:44.000.224,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fLote.fmx=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.fmx</Transaction>
     <Transaction>2017/01/02 22:12:44.000.224,C:\Users\rafae\Repositorios\SONG\Source\SongMobile\fLote.pas=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\Unit1.pas</Transaction>
+    <Transaction>2017/01/11 23:09:55.000.760,=C:\Users\rafae\Repositorios\SONG\Source\SongMobile\uFuncoes.pas</Transaction>
+    <Transaction>2017/01/11 23:11:07.000.983,=C:\Users\rafae\Repositorios\SONG\Source\Comuns\uTypes.pas</Transaction>
+    <Transaction>2017/01/11 23:11:07.000.972,=C:\Users\rafae\Repositorios\SONG\Source\Comuns\aduna_ds_list.pas</Transaction>
+    <Transaction>2017/01/11 23:34:46.000.553,=C:\Users\rafae\Repositorios\SONG\Source\Comuns\uUtils.pas</Transaction>
+    <Transaction>2017/01/11 23:35:38.000.227,C:\Users\rafae\Repositorios\SONG\Source\Comuns\uUtils.pas=</Transaction>
   </Transactions>
 	<MobileDevice>0014668696-Android</MobileDevice>
 	<ActiveMobileDevice>
