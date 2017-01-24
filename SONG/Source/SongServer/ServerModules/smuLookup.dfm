@@ -979,12 +979,24 @@ inherited smLookup: TsmLookup
   object qlkLote_Semente: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Lote_Semente.Id,'
+      'select distinct Lote_Semente.Id,'
+      '       Lote_Semente.Id_Especie,'
+      '       Lote_Semente.Nome,'
+      '       Lote_Semente.Qtde_Armazenada,'
+      
+        '       cast(list(distinct semeadura.id_canteiro,'#39';'#39') as varchar(' +
+        '100)) as IDS_CANTEIROS'
+      'from Lote_Semente'
+      
+        'left join semeadura on (semeadura.id_lote_semente = lote_semente' +
+        '.id)'
+      '&where'
+      'group by Lote_Semente.Id,'
       '       Lote_Semente.Id_Especie,'
       '       Lote_Semente.Nome,'
       '       Lote_Semente.Qtde_Armazenada'
-      'from Lote_Semente'
-      '&where')
+      ''
+      '')
     Left = 48
     Top = 312
     MacroData = <
@@ -1018,17 +1030,35 @@ inherited smLookup: TsmLookup
       ProviderFlags = []
       Required = True
     end
+    object qlkLote_SementeIDS_CANTEIROS: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDS_CANTEIROS'
+      Origin = 'IDS_CANTEIROS'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object qlkLote_Muda: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (
-      'select Lote_Muda.Id,'
-      '       Lote_Muda.Id_Especie,'
-      '       Lote_Muda.Nome,'
-      '       Lote_Muda.Status,'
-      '       Lote_Muda.Saldo'
-      'from Lote_Muda  '
-      '&WHERE')
+      ''
+      'select Lote_muda.Id,'
+      '       Lote_muda.Id_especie,'
+      '       Lote_muda.Nome,'
+      '       Lote_muda.Status,'
+      '       Lote_muda.Saldo,'
+      
+        '       cast(list(distinct Lote_muda_canteiro.Id_canteiro, '#39';'#39') a' +
+        's varchar(100)) as Ids_canteiros'
+      'from Lote_muda'
+      
+        'left join Lote_muda_canteiro on (Lote_muda_canteiro.Id_lote_muda' +
+        ' = Lote_muda.Id)'
+      '&WHERE'
+      
+        'group by Lote_muda.Id, Lote_muda.Id_especie, Lote_muda.Nome, Lot' +
+        'e_muda.Status, Lote_muda.Saldo '
+      '')
     Left = 136
     Top = 312
     MacroData = <
@@ -1065,6 +1095,13 @@ inherited smLookup: TsmLookup
       Origin = 'STATUS'
       ProviderFlags = []
       Required = True
+    end
+    object qlkLote_MudaIDS_CANTEIROS: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDS_CANTEIROS'
+      Origin = 'IDS_CANTEIROS'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qlkProjeto_Rubrica: TRFQuery
@@ -1537,6 +1574,87 @@ inherited smLookup: TsmLookup
       Origin = 'MODELO'
       ProviderFlags = []
       Required = True
+    end
+  end
+  object qlkCanteiro_Semeado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Canteiro.Id,'
+      '                Canteiro.Nome,'
+      '                Lote_semente.id_especie'
+      'from Semeadura'
+      'inner join Canteiro on (Canteiro.Id = Semeadura.Id_canteiro)'
+      
+        'inner join Lote_semente on (Semeadura.Id_lote_semente = Lote_sem' +
+        'ente.Id)'
+      'where Lote_semente.id_especie = :ID_ESPECIE and'
+      
+        '      ((Lote_semente.Status is null) or (Lote_semente.Status = 0' +
+        '))')
+    Left = 784
+    Top = 448
+    ParamData = <
+      item
+        Name = 'ID_ESPECIE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object qlkCanteiro_SemeadoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkCanteiro_SemeadoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkCanteiro_SemeadoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+    end
+  end
+  object qlkCanteiro_Plantado: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select distinct Canteiro.Id,'
+      '                Canteiro.Nome,'
+      '                Lote_Muda.id_especie'
+      'from Lote_muda_canteiro'
+      
+        'inner join Canteiro on (Canteiro.Id = Lote_muda_canteiro.Id_cant' +
+        'eiro)'
+      
+        'inner join Lote_muda on (Lote_muda_canteiro.Id_lote_muda = Lote_' +
+        'muda.Id)'
+      'where Lote_muda.Id_especie = :ID_ESPECIE and'
+      '      Lote_muda.Saldo > 0')
+    Left = 904
+    Top = 448
+    ParamData = <
+      item
+        Name = 'ID_ESPECIE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qlkCanteiro_PlantadoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+    end
+    object qlkCanteiro_PlantadoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object qlkCanteiro_PlantadoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
     end
   end
 end

@@ -191,6 +191,16 @@ type
     qlkTipo_EspecieNATIVA: TSmallintField;
     qlkEspecieNATIVA: TSmallintField;
     qlkRubrica_AtividadeSALDO_REAL: TBCDField;
+    qlkCanteiro_Semeado: TRFQuery;
+    qlkCanteiro_Plantado: TRFQuery;
+    qlkCanteiro_SemeadoID: TIntegerField;
+    qlkCanteiro_SemeadoNOME: TStringField;
+    qlkCanteiro_PlantadoID: TIntegerField;
+    qlkCanteiro_PlantadoNOME: TStringField;
+    qlkCanteiro_SemeadoID_ESPECIE: TIntegerField;
+    qlkCanteiro_PlantadoID_ESPECIE: TIntegerField;
+    qlkLote_MudaIDS_CANTEIROS: TStringField;
+    qlkLote_SementeIDS_CANTEIROS: TStringField;
   private
     { Private declarations }
   protected

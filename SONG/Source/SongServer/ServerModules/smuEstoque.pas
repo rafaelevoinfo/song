@@ -198,6 +198,8 @@ type
     qOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField;
     qOrcamentoEMAIL_CLIENTE: TStringField;
     qOrcamentoEMAIL_CONTATO: TStringField;
+    qVenda_ItemID_CANTEIRO: TIntegerField;
+    qVenda_ItemCANTEIRO: TStringField;
     procedure dspqSaidaAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
       DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
     procedure dspqSaidaBeforeUpdateRecord(Sender: TObject; SourceDS: TDataSet;

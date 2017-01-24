@@ -909,6 +909,8 @@ inherited smEstoque: TsmEstoque
       '       Lote_Semente.Nome as Lote_Semente,'
       '       Venda_Item.Id_Lote_Muda,'
       '       Lote_Muda.nome as Lote_Muda,'
+      '       Venda_Item.Id_Canteiro,'
+      '       Canteiro.Nome as Canteiro,'
       '       Item.Unidade'
       'from Venda_Item'
       'inner join item on (item.id = venda_item.id_item)'
@@ -917,6 +919,7 @@ inherited smEstoque: TsmEstoque
         'left join lote_semente on (lote_semente.id = venda_item.id_lote_' +
         'semente)'
       'left join lote_muda on (lote_muda.id = Venda_Item.id_lote_muda)'
+      'left join canteiro on (canteiro.id=venda_item.id_canteiro)'
       'where Venda_Item.Id_Venda = :ID_VENDA')
     Left = 544
     Top = 232
@@ -1025,6 +1028,18 @@ inherited smEstoque: TsmEstoque
       Precision = 18
       Size = 2
       Calculated = True
+    end
+    object qVenda_ItemID_CANTEIRO: TIntegerField
+      FieldName = 'ID_CANTEIRO'
+      Origin = 'ID_CANTEIRO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qVenda_ItemCANTEIRO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'CANTEIRO'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object qLocal_Uso: TRFQuery
