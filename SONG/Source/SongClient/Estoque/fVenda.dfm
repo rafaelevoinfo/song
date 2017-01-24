@@ -1,11 +1,17 @@
 inherited frmVenda: TfrmVenda
   ActiveControl = btnIncluir
   Caption = 'Vendas'
+  ExplicitWidth = 1000
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
     Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         inherited pnEditsPesquisa: TPanel
           Left = 564
@@ -228,6 +234,10 @@ inherited frmVenda: TfrmVenda
           inherited pcDetails: TcxPageControl
             inherited tabDetail: TcxTabSheet
               Caption = 'Itens'
+              ExplicitLeft = 2
+              ExplicitTop = 25
+              ExplicitWidth = 965
+              ExplicitHeight = 195
               inherited cxGridRegistrosDetail: TcxGrid
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
@@ -300,6 +310,16 @@ inherited frmVenda: TfrmVenda
                     Visible = False
                     Options.Editing = False
                   end
+                  object viewRegistrosDetailID_CANTEIRO: TcxGridDBColumn [14]
+                    DataBinding.FieldName = 'ID_CANTEIRO'
+                    Visible = False
+                    Width = 84
+                  end
+                  object viewRegistrosDetailCANTEIRO: TcxGridDBColumn [15]
+                    DataBinding.FieldName = 'CANTEIRO'
+                    Visible = False
+                    Width = 212
+                  end
                   inherited ColumnExcluirDetail: TcxGridDBColumn
                     MinWidth = 40
                     Width = 40
@@ -312,6 +332,10 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl5: TLabel
           Left = 9
@@ -397,6 +421,10 @@ inherited frmVenda: TfrmVenda
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel
           Left = 7
@@ -461,25 +489,26 @@ inherited frmVenda: TfrmVenda
         object pnEspecieLotes: TPanel
           Left = 248
           Top = 9
-          Width = 572
+          Width = 721
           Height = 36
           BevelOuter = bvNone
           TabOrder = 1
           Visible = False
           object pnLoteSemente: TPanel
-            Left = 185
+            Left = 370
             Top = 0
             Width = 185
             Height = 36
             Align = alLeft
             AutoSize = True
             BevelOuter = bvNone
-            TabOrder = 1
+            TabOrder = 2
+            ExplicitLeft = 185
             object lb1: TLabel
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 81
+              Width = 182
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -487,6 +516,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Semente'
               FocusControl = cbLoteSemente
+              ExplicitWidth = 81
             end
             object cbLoteSemente: TcxDBLookupComboBox
               Left = 0
@@ -502,19 +532,20 @@ inherited frmVenda: TfrmVenda
             end
           end
           object pnLoteMuda: TPanel
-            Left = 370
+            Left = 555
             Top = 0
             Width = 185
             Height = 36
             Align = alLeft
             AutoSize = True
             BevelOuter = bvNone
-            TabOrder = 2
+            TabOrder = 3
+            ExplicitLeft = 370
             object Label3: TLabel
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 65
+              Width = 182
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -522,6 +553,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Lote de Muda'
               FocusControl = cbLoteMuda
+              ExplicitWidth = 65
             end
             object cbLoteMuda: TcxDBLookupComboBox
               Left = 0
@@ -548,7 +580,7 @@ inherited frmVenda: TfrmVenda
               AlignWithMargins = True
               Left = 3
               Top = 0
-              Width = 36
+              Width = 182
               Height = 13
               Margins.Top = 0
               Margins.Right = 0
@@ -556,6 +588,7 @@ inherited frmVenda: TfrmVenda
               Align = alTop
               Caption = 'Esp'#233'cie'
               FocusControl = cbEspecie
+              ExplicitWidth = 36
             end
             object cbEspecie: TcxDBLookupComboBox
               Left = 0
@@ -568,6 +601,49 @@ inherited frmVenda: TfrmVenda
               Properties.ListOptions.SyncMode = True
               Properties.OnEditValueChanged = cbEspeciePropertiesEditValueChanged
               TabOrder = 0
+              Width = 185
+            end
+          end
+          object pnCanteiro: TPanel
+            Left = 185
+            Top = 0
+            Width = 185
+            Height = 36
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 1
+            ExplicitLeft = 162
+            ExplicitTop = -3
+            object Label5: TLabel
+              AlignWithMargins = True
+              Left = 3
+              Top = 0
+              Width = 182
+              Height = 13
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 2
+              Align = alTop
+              Caption = 'Canteiro'
+              FocusControl = cbCanteiro
+              ExplicitLeft = 4
+              ExplicitTop = 1
+              ExplicitWidth = 41
+            end
+            object cbCanteiro: TcxDBLookupComboBox
+              Left = 0
+              Top = 15
+              Align = alTop
+              RepositoryItem = dmLookup.repLcbLoteSemente
+              DataBinding.DataField = 'ID_CANTEIRO'
+              DataBinding.DataSource = dsDetail
+              Properties.ListColumns = <>
+              Properties.ListOptions.SyncMode = True
+              Properties.OnEditValueChanged = cbCanteiroPropertiesEditValueChanged
+              TabOrder = 0
+              ExplicitLeft = 2
+              ExplicitTop = 9
+              ExplicitWidth = 183
               Width = 185
             end
           end

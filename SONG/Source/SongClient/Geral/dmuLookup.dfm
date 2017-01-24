@@ -893,6 +893,29 @@ inherited dmLookup: TdmLookup
         end>
       Properties.ListSource = dslkModelo_Orcamento
     end
+    object repLcbCanteiro_Semeado: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkCanteiro_Semeado
+    end
+    object repLcbCanteiro_Plantado: TcxEditRepositoryLookupComboBoxItem
+      Properties.ClearKey = 46
+      Properties.DropDownAutoSize = True
+      Properties.DropDownListStyle = lsFixedList
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'NOME'
+        end>
+      Properties.ListSource = dslkCanteiro_Plantado
+      Properties.OnEditValueChanged = DataModuleCreate
+    end
   end
   object dslkPerfil: TDataSource
     DataSet = cdslkPerfil
@@ -1820,6 +1843,11 @@ inherited dmLookup: TdmLookup
       ProviderFlags = []
       Required = True
     end
+    object cdslkLote_SementeIDS_CANTEIROS: TStringField
+      FieldName = 'IDS_CANTEIROS'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object cdslkLote_Muda: TRFClientDataSet
     Aggregates = <>
@@ -1852,6 +1880,11 @@ inherited dmLookup: TdmLookup
       FieldName = 'STATUS'
       ProviderFlags = []
       Required = True
+    end
+    object cdslkLote_MudaIDS_CANTEIROS: TStringField
+      FieldName = 'IDS_CANTEIROS'
+      ProviderFlags = []
+      Size = 100
     end
   end
   object dslkLote_Semente: TDataSource
@@ -2270,5 +2303,78 @@ inherited dmLookup: TdmLookup
     DataSet = cdslkModelo_Orcamento
     Left = 712
     Top = 848
+  end
+  object cdslkCanteiro_Semeado: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ESPECIE'
+    MasterFields = 'ID'
+    MasterSource = dslkEspecie
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_ESPECIE'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqlkCanteiro_Semeado'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 80
+    Top = 840
+    object cdslkCanteiro_SemeadoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkCanteiro_SemeadoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkCanteiro_SemeadoID_ESPECIE: TIntegerField
+      DisplayLabel = 'Id da Esp'#233'cie'
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+    end
+  end
+  object cdslkCanteiro_Plantado: TRFClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'ID_ESPECIE'
+    MasterFields = 'ID'
+    MasterSource = dslkEspecie
+    PacketRecords = 0
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID_ESPECIE'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspqlkCanteiro_Plantado'
+    RemoteServer = dmPrincipal.ProviderLookup
+    Left = 216
+    Top = 848
+    object cdslkCanteiro_PlantadoID: TIntegerField
+      FieldName = 'ID'
+      ProviderFlags = []
+    end
+    object cdslkCanteiro_PlantadoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      ProviderFlags = []
+      Size = 100
+    end
+    object cdslkCanteiro_PlantadoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      ProviderFlags = []
+    end
+  end
+  object dslkCanteiro_Semeado: TDataSource
+    DataSet = cdslkCanteiro_Semeado
+    Left = 72
+    Top = 904
+  end
+  object dslkCanteiro_Plantado: TDataSource
+    DataSet = cdslkCanteiro_Plantado
+    Left = 200
+    Top = 912
   end
 end

@@ -19,7 +19,8 @@ uses
   System.RegularExpressions, fConta_Receber, Vcl.ExtDlgs, fPessoa, ppPrnabl,
   ppClass, ppCtrls, ppBands, ppCache, ppDB, ppDesignLayer, ppParameter, ppProd,
   ppReport, ppComm, ppRelatv, ppDBPipe, ppVar, ppModule, raCodMod, ppUtils,
-  System.Generics.Collections, Vcl.Menus, Datasnap.DBClient;
+  System.Generics.Collections, Vcl.Menus, Datasnap.DBClient, uUtils,
+  System.StrUtils;
 
 type
   TVenda = class(TModelo)
@@ -178,6 +179,11 @@ type
     ppEditValorTotal: TppDBText;
     ppSystemVariable1: TppSystemVariable;
     cbPesquisaEspecie: TcxLookupComboBox;
+    pnCanteiro: TPanel;
+    cbCanteiro: TcxDBLookupComboBox;
+    Label5: TLabel;
+    viewRegistrosDetailID_CANTEIRO: TcxGridDBColumn;
+    viewRegistrosDetailCANTEIRO: TcxGridDBColumn;
     procedure cbItemPropertiesEditValueChanged(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Ac_Gerar_SaidaExecute(Sender: TObject);
@@ -193,6 +199,7 @@ type
     procedure Ac_Gerar_Conta_ReceberUpdate(Sender: TObject);
     procedure Ac_Gerar_SaidaUpdate(Sender: TObject);
     procedure ppReciboAfterPrint(Sender: TObject);
+    procedure cbCanteiroPropertiesEditValueChanged(Sender: TObject);
   private
     dmEstoque: TdmEstoque;
     dmLookup: TdmLookup;
@@ -205,6 +212,8 @@ type
     procedure ppvAdicionarCliente;
     procedure ppvCarregarClientes;
     function fpvSelecionarLote(ipCdsLote: TClientDataSet; ipFieldSaldo: String): Integer;
+    procedure ppvFiltrarLotes;
+    procedure ppvCarregarCanteiros;
 
   protected
     function fprConfigurarControlesPesquisa: TWinControl; override;
@@ -516,7 +525,12 @@ begin
   inherited;
   // vamos garantir que somente itens do tipo smente e muda vao estar vinculados a uma especie
   if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiOutro) then
-    dmEstoque.cdsVenda_ItemID_ESPECIE.Clear;
+    begin
+      dmEstoque.cdsVenda_ItemID_ESPECIE.Clear;
+      dmEstoque.cdsVenda_ItemID_CANTEIRO.Clear;
+      dmEstoque.cdsVenda_ItemID_LOTE_SEMENTE.Clear;
+      dmEstoque.cdsVenda_ItemID_LOTE_MUDA.Clear;
+    end;
 end;
 
 function TfrmVenda.fprConfigurarControlesPesquisa: TWinControl;
@@ -760,6 +774,13 @@ begin
     end;
 end;
 
+procedure TfrmVenda.cbCanteiroPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  if pcPrincipal.ActivePage = tabCadastroDetail then
+    ppvFiltrarLotes;
+end;
+
 procedure TfrmVenda.cbClienteKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -768,11 +789,26 @@ begin
     ppvAdicionarCliente;
 end;
 
+procedure TfrmVenda.ppvCarregarCanteiros;
+begin
+  if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
+    begin
+      if not dmLookup.cdslkCanteiro_Semeado.Active then
+        dmLookup.cdslkCanteiro_Semeado.Open;
+    end
+  else
+    begin
+      if not dmLookup.cdslkCanteiro_Plantado.Active then
+        dmLookup.cdslkCanteiro_Plantado.Open;
+    end;
+end;
+
 procedure TfrmVenda.cbEspeciePropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
   if pcPrincipal.ActivePage = tabCadastroDetail then
     begin
+      ppvCarregarCanteiros;
       ppvCarregarLotes;
       ppvCarregarPrecoPadrao;
     end;
@@ -795,7 +831,60 @@ begin
   if pcPrincipal.ActivePage = tabCadastroDetail then
     begin
       ppvConfigurarEdits;
+
       ppvCarregarPrecoPadrao;
+    end;
+end;
+
+procedure TfrmVenda.ppvFiltrarLotes;
+var
+  vaCds: TRFClientDataSet;
+  vaFiltro: String;
+begin
+
+  if (not VarIsNull(cbCanteiro.EditValue)) and (not VarIsNull(cbEspecie.EditValue)) then
+    begin
+      if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
+        vaCds := dmLookup.cdslkLote_Semente
+      else
+        vaCds := dmLookup.cdslkLote_Muda;
+      if vaCds.Active then
+        begin
+          vaFiltro := '';
+          vaCds.Filtered := false;
+          TUtils.ppuPercorrerCds(vaCds,
+            procedure
+            var
+              vaIds: TArray<String>;
+            begin
+              if vaCds.FieldByName(dmLookup.cdslkLote_SementeIDS_CANTEIROS.FieldName).AsString <> '' then
+                begin
+                  vaIds := vaCds.FieldByName(dmLookup.cdslkLote_SementeIDS_CANTEIROS.FieldName).AsString.Split([';']);
+                  if IndexText(cbCanteiro.EditValue, vaIds) <> -1 then
+                    begin
+                      if vaFiltro <> '' then
+                        vaFiltro := vaFiltro + ', ' + vaCds.FieldByName(TBancoDados.coId).AsString
+                      else
+                        vaFiltro := vaCds.FieldByName(TBancoDados.coId).AsString;
+                    end;
+                end;
+            end);
+
+          if vaFiltro <> '' then
+            begin
+              vaCds.Filter := 'ID IN ('+ vaFiltro+')';
+              vaCds.Filtered := True;
+            end
+          else
+            begin
+              vaCds.Filtered := false;
+            end;
+        end;
+    end
+  else
+    begin
+      dmLookup.cdslkLote_Semente.Filtered := false;
+      dmLookup.cdslkLote_Muda.Filtered := false;
     end;
 end;
 
@@ -821,6 +910,7 @@ begin
                 [cbEspecie.EditValue, True], TOperadores.coAnd, True);
             end;
         end;
+      ppvFiltrarLotes;
     end
   else
     begin
@@ -833,6 +923,7 @@ procedure TfrmVenda.ppuAlterarDetail(ipId: Integer);
 begin
   inherited;
   ppvConfigurarEdits;
+  ppvCarregarCanteiros;
   ppvCarregarLotes;
 end;
 
@@ -865,6 +956,13 @@ begin
       pnEspecieLotes.Visible := vaVisivel;
 
       lbUnidade.Caption := dmLookup.cdslkItemUNIDADE.AsString;
+      if vaVisivel then
+        begin
+          if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiSemente) then
+            cbCanteiro.RepositoryItem := dmLookup.replcbCanteiro_Semeado
+          else if dmLookup.cdslkItemTIPO.AsInteger = Ord(tiMuda) then
+            cbCanteiro.RepositoryItem := dmLookup.replcbCanteiro_Plantado;
+        end;
     end;
 end;
 

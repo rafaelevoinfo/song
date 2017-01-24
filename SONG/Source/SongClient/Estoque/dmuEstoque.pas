@@ -198,6 +198,8 @@ type
     cdsOrcamento_ItemCALC_VALOR_TOTAL: TCurrencyField;
     cdsOrcamentoEMAIL_CLIENTE: TStringField;
     cdsOrcamentoEMAIL_CONTATO: TStringField;
+    cdsVenda_ItemID_CANTEIRO: TIntegerField;
+    cdsVenda_ItemCANTEIRO: TStringField;
     procedure cdsItemCalcFields(DataSet: TDataSet);
     procedure cdsVendaCalcFields(DataSet: TDataSet);
   private

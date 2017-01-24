@@ -856,6 +856,17 @@ inherited dmEstoque: TdmEstoque
       Precision = 18
       Size = 2
     end
+    object cdsVenda_ItemID_CANTEIRO: TIntegerField
+      DisplayLabel = 'Id do Canteiro'
+      FieldName = 'ID_CANTEIRO'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsVenda_ItemCANTEIRO: TStringField
+      DisplayLabel = 'Canteiro'
+      FieldName = 'CANTEIRO'
+      ProviderFlags = []
+      Size = 100
+    end
   end
   object dsVenda: TDataSource
     DataSet = cdsVenda
