@@ -111,4 +111,9 @@ inherited smFuncoesViveiro: TsmFuncoesViveiro
       IndexName = 'cdsQtdeMudaRocamboleIndex1'
     end
   end
+  object DecoderBase64: TIdDecoderMIME
+    FillChar = '='
+    Left = 224
+    Top = 152
+  end
 end

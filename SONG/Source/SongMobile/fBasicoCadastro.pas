@@ -77,9 +77,13 @@ begin
 end;
 
 procedure TfrmBasicoCadastro.ppuAlterar(ipId: Integer);
+var
+  vaParam:TFDParam;
 begin
   dsPrincipal.DataSet.Close;
-  TRFQuery(dsPrincipal.DataSet).ParamByName('ID').AsInteger := ipId;
+  vaParam := TRFQuery(dsPrincipal.DataSet).FindParam('ID');
+  if Assigned(vaParam) then
+    vaParam.AsInteger := ipId;
   dsPrincipal.DataSet.Open();
   if not dsPrincipal.DataSet.Eof then
     dsPrincipal.DataSet.Edit;

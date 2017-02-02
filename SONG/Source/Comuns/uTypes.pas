@@ -26,12 +26,18 @@ type
     coAnd = ' AND ';
   end;
 
+  TStatusRegistro = (srNovo, srAlterado, srExcluido);
+
   TModelo = class
   private
     FId: Integer;
+    FRegistroNovo: Boolean;
+    FStatusRegistro: Integer;
     procedure SetId(const Value: Integer);
+    procedure SetStatusRegistro(const Value: Integer);
   public
     property Id: Integer read FId write SetId;
+    property StatusRegistro:Integer read FStatusRegistro write SetStatusRegistro;
   end;
 
   TConta = class(TModelo)
@@ -117,6 +123,30 @@ type
     property TaxaClassificacao: Double read FTaxaClassificacao write SetTaxaClassificacao;
     property TempoDesenvolvimento: Integer read FTempoDesenvolvimento write SetTempoDesenvolvimento;
     property TempoGerminacao: Integer read FTempoGerminacao write SetTempoGerminacao;
+  end;
+
+  TMatriz = class(TModelo)
+  private
+    FLatitude: Double;
+    FEspecie: TEspecie;
+    FFoto: string;
+    FLongitude: Double;
+    FNome: String;
+    FEndereco: String;
+    procedure SetEndereco(const Value: String);
+    procedure SetEspecie(const Value: TEspecie);
+    procedure SetFoto(const Value: string);
+    procedure SetLatitude(const Value: Double);
+    procedure SetLongitude(const Value: Double);
+    procedure SetNome(const Value: String);
+  public
+    destructor Destroy; override;
+    property Especie: TEspecie read FEspecie write SetEspecie;
+    property Nome: String read FNome write SetNome;
+    property Endereco: String read FEndereco write SetEndereco;
+    property Latitude: Double read FLatitude write SetLatitude;
+    property Longitude: Double read FLongitude write SetLongitude;
+    property Foto: string read FFoto write SetFoto;
   end;
 
   TItem = class(TModelo)
@@ -356,6 +386,11 @@ end;
 procedure TModelo.SetId(const Value: Integer);
 begin
   FId := Value;
+end;
+
+procedure TModelo.SetStatusRegistro(const Value: Integer);
+begin
+  FStatusRegistro := Value;
 end;
 
 { TItem }
@@ -601,6 +636,45 @@ end;
 procedure TAgenda.SetEventos(const Value: TadsObjectlist<TEventoAgenda>);
 begin
   FEventos := Value;
+end;
+
+{ TMatriz }
+
+destructor TMatriz.Destroy;
+begin
+  if Assigned(FEspecie) then
+    FEspecie.Free;
+  inherited;
+end;
+
+procedure TMatriz.SetEndereco(const Value: String);
+begin
+  FEndereco := Value;
+end;
+
+procedure TMatriz.SetEspecie(const Value: TEspecie);
+begin
+  FEspecie := Value;
+end;
+
+procedure TMatriz.SetFoto(const Value: string);
+begin
+  FFoto := Value;
+end;
+
+procedure TMatriz.SetLatitude(const Value: Double);
+begin
+  FLatitude := Value;
+end;
+
+procedure TMatriz.SetLongitude(const Value: Double);
+begin
+  FLongitude := Value;
+end;
+
+procedure TMatriz.SetNome(const Value: String);
+begin
+  FNome := Value;
 end;
 
 end.

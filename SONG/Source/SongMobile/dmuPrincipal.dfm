@@ -24,7 +24,7 @@ object dmPrincipal: TdmPrincipal
     Left = 287
     Top = 38
   end
-  object DataSnapConn: TRFSQLConnection
+  object SongServerCon: TRFSQLConnection
     DriverName = 'DataSnap'
     KeepConnection = False
     LoginPrompt = False
@@ -42,9 +42,10 @@ object dmPrincipal: TdmPrincipal
       'DSAuthenticationUser=1'
       
         'DSAuthenticationPassword=356A192B7913B04C54574D18C28D46E6395428A' +
-        'B')
-    AfterConnect = DataSnapConnAfterConnect
-    AfterDisconnect = DataSnapConnAfterDisconnect
+        'B'
+      'ConnectTimeout=3000')
+    AfterConnect = SongServerConAfterConnect
+    AfterDisconnect = SongServerConAfterDisconnect
     Left = 56
     Top = 128
   end
@@ -57,8 +58,47 @@ object dmPrincipal: TdmPrincipal
     Top = 128
   end
   object DSConnectionMetaDataProvider1: TDSConnectionMetaDataProvider
-    SQLConnection = DataSnapConn
+    SQLConnection = SongServerCon
     Left = 120
     Top = 208
+  end
+  object qConfig: TRFQuery
+    Connection = Connection
+    SQL.Strings = (
+      'SELECT ID,'
+      '       DATA_ULTIMA_SYNC,'
+      '       HOST_SERVIDOR_EXTERNO,'
+      '       HOST_SERVIDOR_INTERNO,'
+      '       ID_APARELHO'
+      '  FROM CONFIG;')
+    Left = 256
+    Top = 128
+    object qConfigID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object qConfigDATA_ULTIMA_SYNC: TDateTimeField
+      FieldName = 'DATA_ULTIMA_SYNC'
+      Origin = 'DATA_ULTIMA_SYNC'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qConfigHOST_SERVIDOR_EXTERNO: TWideStringField
+      FieldName = 'HOST_SERVIDOR_EXTERNO'
+      Origin = 'HOST_SERVIDOR_EXTERNO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qConfigHOST_SERVIDOR_INTERNO: TWideStringField
+      FieldName = 'HOST_SERVIDOR_INTERNO'
+      Origin = 'HOST_SERVIDOR_INTERNO'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qConfigID_APARELHO: TIntegerField
+      FieldName = 'ID_APARELHO'
+      Origin = 'ID_APARELHO'
+      ProviderFlags = [pfInUpdate]
+    end
   end
 end

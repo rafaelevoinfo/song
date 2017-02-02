@@ -301,11 +301,10 @@ inherited frmMatriz: TfrmMatriz
       'from especie')
     Left = 208
     Top = 304
-    object qEspecieID: TLargeintField
+    object qEspecieID: TFDAutoIncField
       FieldName = 'ID'
       Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
+      ProviderFlags = []
     end
     object qEspecieNOME: TStringField
       FieldName = 'NOME'

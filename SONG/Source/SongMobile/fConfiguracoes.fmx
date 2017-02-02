@@ -1,0 +1,107 @@
+inherited frmConfiguracoes: TfrmConfiguracoes
+  Caption = 'frmBasicoCadastro1'
+  DesignerMasterStyle = 3
+  inherited Styles: TStyleBook
+    Left = 256
+    Top = 80
+  end
+  object ListBox1: TListBox [4]
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 432.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 432.000000000000000000
+    object ListBoxGroupHeader1: TListBoxGroupHeader
+      Size.Width = 640.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Endere'#231'o Externo de Acesso ao SONG Server'
+    end
+    object ListBoxItem1: TListBoxItem
+      Position.Y = 30.000000000000000000
+      TabOrder = 1
+      object EditEnderecoExterno: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 0
+        Margins.Left = 20.000000000000000000
+        Size.Width = 620.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+    object ListBoxGroupHeader2: TListBoxGroupHeader
+      Position.Y = 74.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Endere'#231'o Interno de Acesso ao SONG Server'
+    end
+    object ListBoxItem2: TListBoxItem
+      Position.Y = 104.000000000000000000
+      TabOrder = 3
+      object EditEnderecoInterno: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 0
+        Margins.Left = 20.000000000000000000
+        Size.Width = 620.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited Ac_Salvar: TAction
+      ImageIndex = 0
+    end
+    inherited Ac_Tirar_Foto: TTakePhotoFromCameraAction
+      ImageIndex = 2
+    end
+    inherited Ac_Carregar_Foto: TTakePhotoFromLibraryAction
+      ImageIndex = 3
+    end
+    inherited Ac_Pegar_Localizacao: TAction
+      ImageIndex = 1
+    end
+  end
+  inherited dsPrincipal: TDataSource
+    DataSet = dmPrincipal.qConfig
+    Left = 416
+    Top = 208
+  end
+  object BindSource: TBindSourceDB
+    DataSet = dmPrincipal.qConfig
+    ScopeMappings = <>
+    Left = 304
+    Top = 224
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 164
+    Top = 221
+    object LinkControlToField1: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSource
+      FieldName = 'HOST_SERVIDOR_EXTERNO'
+      Control = EditEnderecoExterno
+      Track = False
+    end
+    object LinkControlToField2: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSource
+      FieldName = 'HOST_SERVIDOR_INTERNO'
+      Control = EditEnderecoInterno
+      Track = False
+    end
+  end
+end

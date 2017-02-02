@@ -35,7 +35,6 @@ type
     qEspecie: TRFQuery;
     qEspecieNOME: TStringField;
     BindSourceEspecie: TBindSourceDB;
-    qEspecieID: TLargeintField;
     mmoDescricaoLocalizacao: TMemo;
     Label4: TLabel;
     Label2: TLabel;
@@ -64,6 +63,7 @@ type
     btnGaleria: TButton;
     btnCamera: TButton;
     btnLocalizacao: TButton;
+    qEspecieID: TFDAutoIncField;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject;
       const OldLocation, NewLocation: TLocationCoord2D);

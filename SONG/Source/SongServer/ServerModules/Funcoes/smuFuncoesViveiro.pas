@@ -11,7 +11,7 @@ uses
   FireDAC.Comp.Client, uTypes, Datasnap.DBClient, System.Generics.Collections,
   uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list,
   System.Math, System.Types, uUtils, System.JSON, Data.FireDACJSONReflect,
-  Data.DBXJSON, REST.JSON;
+  Data.DBXJSON, REST.JSON, IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -32,8 +32,9 @@ type
     cdsQtdeMudaRocamboleESPECIE: TStringField;
     cdsQtdeMudaRocamboleQTDE: TIntegerField;
     cdsQtdeMudaRocamboleQTDE_TOTAL: TAggregateField;
+    DecoderBase64: TIdDecoderMIME;
   private
-    function fpvBuscarEspecies(ipCodigos: String): TList<TEspecie>;
+    function fpvBuscarEspecies(ipIds: String): TadsObjectlist<TEspecie>;
 
     { Private declarations }
   public
@@ -62,6 +63,10 @@ type
     function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
 
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: String): String;
+
+    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao:String; ipJsonMatrizes: String): String;
+
+    procedure ppuCadastrarLotes(ipJsonLotes: String);
 
   end;
 
@@ -192,9 +197,9 @@ begin
 
 end;
 
-function TsmFuncoesViveiro.fpvBuscarEspecies(ipCodigos: String): TList<TEspecie>;
+function TsmFuncoesViveiro.fpvBuscarEspecies(ipIds: String): TadsObjectlist<TEspecie>;
 var
-  vaEspecies: TList<TEspecie>;
+  vaEspecies: TadsObjectlist<TEspecie>;
 begin
   vaEspecies := nil;
   pprEncapsularConsulta(
@@ -205,13 +210,13 @@ begin
       ipDataSet.SQL.Text := 'Select Especie.Id, Especie.Nome ' +
         ' from Especie ';
 
-      if ipCodigos <> '' then
-        ipDataSet.SQL.add(' where Especie.codigo in (' + ipCodigos + ')');
+      if ipIds <> '' then
+        ipDataSet.SQL.Add(' where Especie.id in (' + ipIds + ')');
 
       ipDataSet.Open();
       if not ipDataSet.Eof then
         begin
-          vaEspecies := TList<TEspecie>.Create;
+          vaEspecies := TadsObjectlist<TEspecie>.Create;
           while not ipDataSet.Eof do
             begin
               vaEspecie := TEspecie.Create;
@@ -230,7 +235,7 @@ end;
 
 function TsmFuncoesViveiro.fpuSincronizarEspecies(ipDataUltimaSincronizacao: String): String;
 var
-  vaEspecies: TList<TEspecie>;
+  vaEspecies: TadsObjectlist<TEspecie>;
   vaEspecie: TEspecie;
 begin
   Result := '';
@@ -254,7 +259,7 @@ begin
                 ' from log ' +
                 ' where log.operacao = 0 and ' +
                 '       log.tabela = ''ESPECIE'' and' +
-                '       log.data_hora > :DataHora';
+                '       log.data_hora > :DATA_HORA';
               ipDataSet.ParamByName('DATA_HORA').AsDateTime := vaDataHoraUltSync;
               ipDataSet.Open();
               if not ipDataSet.Eof then
@@ -271,12 +276,78 @@ begin
   if Assigned(vaEspecies) then
     begin
       Result := TJson.ObjectToJsonString(vaEspecies);
-      for vaEspecie in vaEspecies do
-        begin
-          vaEspecie.Free;
-        end;
+      vaEspecies.Clear;
       vaEspecies.Free;
     end;
+end;
+
+function TsmFuncoesViveiro.fpuSincronizarMatrizes(ipDataUltimaSincronizacao:String; ipJsonMatrizes: String): String;
+var
+  vaMatrizes: TList<TMatriz>;
+  vaMatriz: TMatriz;
+  vaDataSet: TRFQuery;
+  vaStream: TStream;
+begin
+  Result := '';
+  pprCriarDataSet(vaDataSet);
+  try
+    if ipJsonMatrizes <> '' then
+      begin
+        vaDataSet.SQL.Text := 'select Matriz.Id,' +
+          '       Matriz.Id_especie,' +
+          '       Matriz.Id_mobile,' +
+          '       Matriz.Nome,' +
+          '       Matriz.Endereco,' +
+          '       Matriz.Latitude,' +
+          '       Matriz.Longitude,' +
+          '       Matriz.Foto' +
+          ' from Matriz' +
+          ' where Matriz.Id_mobile = :ID_MOBILE';
+        vaMatrizes := TJson.JsonToObject < TList < TMatriz >> (ipJsonMatrizes);
+        try
+          for vaMatriz in vaMatrizes do
+            begin
+              vaDataSet.Close;
+              vaDataSet.ParamByName('ID_MOBILE').AsInteger := vaMatriz.Id;
+              vaDataSet.Open();
+
+              if vaDataSet.Eof then
+                begin
+                  vaDataSet.Append;
+                  vaDataSet.FieldByName('ID').AsInteger := fpuGetId('LOTE_SEMENTE');
+                  vaDataSet.FieldByName('ID_MOBILE').AsInteger := vaMatriz.Id;
+                end
+              else
+                vaDataSet.Edit;
+
+              vaDataSet.FieldByName('ID_ESPECIE').AsInteger := vaMatriz.Especie.Id;
+              vaDataSet.FieldByName('NOME').AsString := vaMatriz.Nome;
+              vaDataSet.FieldByName('ENDERECO').AsString := vaMatriz.Endereco;
+              vaDataSet.FieldByName('LATITUDE').AsFloat := vaMatriz.Latitude;
+              vaDataSet.FieldByName('LONGITUDE').AsFloat := vaMatriz.Longitude;
+              if vaMatriz.Foto <> '' then
+                begin
+                  vaStream := TBytesStream.Create();
+                  try
+                    DecoderBase64.DecodeStream(vaMatriz.Foto, vaStream);
+                    vaStream.Position := 0;
+                    if vaStream.Size > 0 then
+                      TBlobField(vaDataSet.FieldByName('FOTO')).LoadFromStream(vaStream);
+                  finally
+                    vaStream.Free;
+                  end;
+                end;
+
+              vaDataSet.Post;
+            end;
+        finally
+          vaMatrizes.Free;
+        end;
+      end;
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+  end;
 end;
 
 function TsmFuncoesViveiro.fpuCalcularPrevisaoProducaoMuda(ipEspecies: TadsObjectlist<TEspecie>; ipDataPrevisao: String): OleVariant;
@@ -616,6 +687,37 @@ begin
 
   qAjusta_Saldo_Especie.ExecSQL;
   qAjusta_Saldo_Especie.Connection.Commit;
+end;
+
+procedure TsmFuncoesViveiro.ppuCadastrarLotes(ipJsonLotes: String);
+var
+  vaLotes: TList<TLote>;
+  vaLote: TLote;
+  vaDataSet: TRFQuery;
+begin
+  vaLotes := TJson.JsonToObject < TList < TLote >> (ipJsonLotes);
+  pprCriarDataSet(vaDataSet);
+  try
+    vaDataSet.SQL.Text := 'select Lote_semente.Id,' +
+      '       Lote_semente.Id_especie,' +
+      '       Lote_semente.Id_pessoa_coletou,' +
+      '       Lote_semente.Id_coleta,' +
+      '       Lote_semente.Nome,' +
+      '       Lote_semente.Data,' +
+      '       Lote_semente.Qtde,' +
+      '       Lote_semente.Qtde_armazenada ' +
+      ' from Lote_semente   ';
+
+    for vaLote in vaLotes do
+      begin
+
+      end;
+
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+    vaLotes.Free;
+  end;
 end;
 
 procedure TsmFuncoesViveiro.ppuCalcularQuantidadeMudasMix(

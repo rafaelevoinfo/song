@@ -17,7 +17,8 @@ uses
   Data.Bind.EngExt, FMX.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope,
   FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
   dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
-  System.Threading, uTypes, System.Generics.Collections, REST.Json;
+  System.Threading, uTypes, System.Generics.Collections, REST.Json,
+  IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME, fSincronizacao;
 
 type
   TfrmPrincipal = class(TForm)
@@ -41,13 +42,11 @@ type
     qLote: TRFQuery;
     qLoteID: TFDAutoIncField;
     qLoteLOTE: TStringField;
-    qLoteESPECIE: TStringField;
     qLoteQTDE: TBCDField;
     tmrAbrirLote: TTimer;
     tmrAbrirMatriz: TTimer;
-    qEspecie: TRFQuery;
-    qEspecieID: TLargeintField;
-    qEspecieNOME: TStringField;
+    qMatrizSYNC: TIntegerField;
+    qLoteESPECIE: TStringField;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
@@ -205,50 +204,21 @@ begin
 end;
 
 procedure TfrmPrincipal.Ac_SincronizarExecute(Sender: TObject);
-var
-  vaResult, vaCodigos: String;
-  vaDataSet: TRFQuery;
-  vaEspecies: TList<TEspecie>;
-  vaEspecie: TEspecie;
+
 begin
+  Application.CreateForm(TfrmSincronizacao, frmSincronizacao);
 
-  vaDataSet := TRFQuery.Create(nil);
-  try
-    vaDataSet.SQL.Text := 'Select Data_Ultima_Sync from config';
-    vaDataSet.Open;
-    vaResult := dmPrincipal.FuncoesViveiro.fpuSincronizarEspecies(vaDataSet.FieldByName('DATA_ULTIMA_SYNC').AsString);
-    if vaResult <> '' then
-      begin
-        vaEspecies := TJson.JsonToObject < TList < TEspecie >> (vaResult);
-        qEspecie.Close;
-        if Assigned(vaEspecies) and (vaEspecies.Count > 0) then
-          begin
-            for vaEspecie in vaEspecies do
-              begin
-                if vaCodigos = '' then
-                  vaCodigos := vaEspecie.Id.ToString
-                else
-                  vaCodigos := vaCodigos + ',' + vaEspecie.Id.ToString;
-              end;
-            qEspecie.MacroByName('WHERE').AsRaw := ' where especie.id in ('+vaCodigos+')';
-            qEspecie.Open;
-
-            for vaEspecie in vaEspecies do
-              begin
-                if qEspecie.Locate('ID',vaEspecie.Id,[]) then
-                  begin
-                    qEspecie.Edit;
-                    qEspecieNOME.AsString := vaEspecie.Nome;
-                    qEspecie.Post;
-                  end;
-              end;
-          end;
-      end;
-  finally
-    vaDataSet.Free;
-  end;
+//  frmSincronizacao.OnSalvar := procedure
+//    begin
+//      ppvCarregarMatrizes;
+//      ppvCarregarLotes;
+//    end;
+  frmSincronizacao.Show;
 
 end;
+
+
+
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin

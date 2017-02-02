@@ -36,18 +36,18 @@ type
     LinkControlToField1: TLinkControlToField;
     LinkControlToField2: TLinkControlToField;
     LinkControlToField3: TLinkControlToField;
-    LinkFillControlToFieldID: TLinkFillControlToField;
     pnMatriz: TPanel;
     cbMatriz: TComboBox;
     btnAdd: TButton;
     Ac_Adicionar_Matriz: TAction;
     LinkComboMatriz: TLinkFillControlToField;
+    BindSourceMatriz: TBindSourceDB;
     procedure Ac_Adicionar_MatrizExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+     procedure ppuIncluir;override;
   end;
 
 var
@@ -78,6 +78,12 @@ begin
   inherited;
   if EditNome.CanFocus then
     EditNome.SetFocus;
+end;
+
+procedure TfrmLote.ppuIncluir;
+begin
+  inherited;
+  qLoteDATA.AsDateTime := now;
 end;
 
 end.

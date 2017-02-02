@@ -1,13 +1,14 @@
 //
 // Created by the DataSnap proxy generator.
-// 11/01/2017 23:10:23
+// 01/02/2017 00:06:18
 //
 
 unit uFuncoes;
 
 interface
 
-uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, aduna_ds_list, Data.DBXJSONReflect, uTypes;
+uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, aduna_ds_list, Data.DBXJSONReflect,
+  uTypes;
 
 type
   TsmFuncoesViveiroClient = class(TDSAdminClient)
@@ -28,6 +29,8 @@ type
     FfpuCalcularQtdeMudasRocamboleCommand: TDBXCommand;
     FfpuVerificarLoteMudaExisteCommand: TDBXCommand;
     FfpuSincronizarEspeciesCommand: TDBXCommand;
+    FfpuSincronizarMatrizesCommand: TDBXCommand;
+    FppuCadastrarLotesCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -54,6 +57,8 @@ type
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
     function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: string): string;
+    function fpuSincronizarMatrizes(ipJsonMatrizes: string): string;
+    procedure ppuCadastrarLotes(ipJsonLotes: string);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     function fpuTestarConexao: Boolean;
@@ -303,6 +308,33 @@ begin
   Result := FfpuSincronizarEspeciesCommand.Parameters[1].Value.GetWideString;
 end;
 
+function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipJsonMatrizes: string): string;
+begin
+  if FfpuSincronizarMatrizesCommand = nil then
+  begin
+    FfpuSincronizarMatrizesCommand := FDBXConnection.CreateCommand;
+    FfpuSincronizarMatrizesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuSincronizarMatrizesCommand.Text := 'TsmFuncoesViveiro.fpuSincronizarMatrizes';
+    FfpuSincronizarMatrizesCommand.Prepare;
+  end;
+  FfpuSincronizarMatrizesCommand.Parameters[0].Value.SetWideString(ipJsonMatrizes);
+  FfpuSincronizarMatrizesCommand.ExecuteUpdate;
+  Result := FfpuSincronizarMatrizesCommand.Parameters[1].Value.GetWideString;
+end;
+
+procedure TsmFuncoesViveiroClient.ppuCadastrarLotes(ipJsonLotes: string);
+begin
+  if FppuCadastrarLotesCommand = nil then
+  begin
+    FppuCadastrarLotesCommand := FDBXConnection.CreateCommand;
+    FppuCadastrarLotesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuCadastrarLotesCommand.Text := 'TsmFuncoesViveiro.ppuCadastrarLotes';
+    FppuCadastrarLotesCommand.Prepare;
+  end;
+  FppuCadastrarLotesCommand.Parameters[0].Value.SetWideString(ipJsonLotes);
+  FppuCadastrarLotesCommand.ExecuteUpdate;
+end;
+
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -431,6 +463,8 @@ begin
   FfpuCalcularQtdeMudasRocamboleCommand.DisposeOf;
   FfpuVerificarLoteMudaExisteCommand.DisposeOf;
   FfpuSincronizarEspeciesCommand.DisposeOf;
+  FfpuSincronizarMatrizesCommand.DisposeOf;
+  FppuCadastrarLotesCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

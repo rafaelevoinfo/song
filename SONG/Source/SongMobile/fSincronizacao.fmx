@@ -1,0 +1,188 @@
+inherited frmSincronizacao: TfrmSincronizacao
+  Caption = 'Sincroniza'#231#227'o'
+  DesignerMasterStyle = 3
+  inherited Styles: TStyleBook
+    Left = 24
+    Top = 264
+  end
+  object tbPrincipal: TToolBar
+    Size.Width = 640.000000000000000000
+    Size.Height = 48.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object btnSincronizar: TButton
+      Align = Right
+      Position.X = 592.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'actiontoolbutton'
+      TabOrder = 0
+      Text = 'btnSincronizar'
+      OnClick = btnSincronizarClick
+    end
+    object btnConfiguracoes: TButton
+      Action = Ac_Configuracoes
+      Align = Right
+      Enabled = True
+      Images = frmPrincipal.ImageList1
+      ImageIndex = 5
+      Position.X = 544.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'btnImgCentroStyle'
+      TabOrder = 1
+      Visible = True
+    end
+    object btnRetornar: TButton
+      Align = Left
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'backtoolbutton'
+      TabOrder = 2
+      OnClick = btnRetornarClick
+    end
+  end
+  object lstAcoes: TListBox
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 432.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 432.000000000000000000
+    object ListBoxGroupHeader1: TListBoxGroupHeader
+      Size.Width = 640.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Itens a serem sincronizados'
+    end
+    object lbiEspecies: TListBoxItem
+      Position.Y = 30.000000000000000000
+      StyleLookup = 'listboxitemleftdetail'
+      TabOrder = 1
+      Text = 'Esp'#233'cies'
+    end
+    object lbiMatrizes: TListBoxItem
+      Position.Y = 74.000000000000000000
+      StyleLookup = 'listboxitemleftdetail'
+      TabOrder = 2
+      Text = 'Matrizes'
+    end
+    object lbiLotes: TListBoxItem
+      TextSettings.HorzAlign = Trailing
+      StyledSettings = [Family, Size, Style, FontColor]
+      Position.Y = 118.000000000000000000
+      StyleLookup = 'listboxitemleftdetail'
+      TabOrder = 3
+      Text = 'Lotes'
+    end
+  end
+  object qMatrizSincronizacao: TRFQuery
+    Connection = dmPrincipal.Connection
+    SQL.Strings = (
+      'select Matriz.Id,'
+      '       Matriz.Id_especie,'
+      '       Matriz.Nome,'
+      '       Matriz.Endereco,'
+      '       Matriz.Latitude,'
+      '       Matriz.Longitude,'
+      '       Matriz.Foto'
+      'from Matriz'
+      '&WHERE')
+    Left = 88
+    Top = 144
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qMatrizSincronizacaoID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qMatrizSincronizacaoID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      Required = True
+    end
+    object qMatrizSincronizacaoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object qMatrizSincronizacaoENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      Size = 150
+    end
+    object qMatrizSincronizacaoLATITUDE: TFMTBCDField
+      FieldName = 'LATITUDE'
+      Origin = 'LATITUDE'
+      Precision = 15
+      Size = 6
+    end
+    object qMatrizSincronizacaoLONGITUDE: TFMTBCDField
+      FieldName = 'LONGITUDE'
+      Origin = 'LONGITUDE'
+      Precision = 15
+      Size = 6
+    end
+    object qMatrizSincronizacaoFOTO: TBlobField
+      FieldName = 'FOTO'
+      Origin = 'FOTO'
+    end
+  end
+  object qEspecie: TRFQuery
+    Connection = dmPrincipal.Connection
+    SQL.Strings = (
+      'Select Especie.Id,'
+      '       Especie.Nome'
+      'from Especie'
+      '&WHERE')
+    Left = 272
+    Top = 320
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qEspecieID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object qEspecieNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+  end
+  object EncodeBase64: TIdEncoderMIME
+    FillChar = '='
+    Left = 184
+    Top = 368
+  end
+  object ActionList1: TActionList
+    Images = frmPrincipal.ImageList1
+    Left = 304
+    Top = 224
+    object Ac_Configuracoes: TAction
+      ImageIndex = 5
+      OnExecute = Ac_ConfiguracoesExecute
+      ImageIndex = 5
+    end
+  end
+end

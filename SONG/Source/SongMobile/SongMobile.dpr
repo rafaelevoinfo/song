@@ -12,7 +12,9 @@ uses
   fLote in 'fLote.pas' {frmLote},
   uFuncoes in 'uFuncoes.pas',
   aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
-  uTypes in '..\Comuns\uTypes.pas';
+  uTypes in '..\Comuns\uTypes.pas',
+  fSincronizacao in 'fSincronizacao.pas' {frmSincronizacao},
+  fConfiguracoes in 'fConfiguracoes.pas' {frmConfiguracoes};
 
 {$R *.res}
 
