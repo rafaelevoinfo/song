@@ -116,4 +116,59 @@ inherited smFuncoesViveiro: TsmFuncoesViveiro
     Left = 224
     Top = 152
   end
+  object qMatrizUpdate: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      
+        'update or insert into Matriz (Id, ID_ESPECIE, NOME, ENDERECO, LA' +
+        'TITUDE, LONGITUDE, FOTO)'
+      
+        '  values (:ID, :ID_ESPECIE, :NOME, :ENDERECO, :LATITUDE, :LONGIT' +
+        'UDE, :FOTO)'
+      '  matching (ID);')
+    Left = 80
+    Top = 216
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'ID_ESPECIE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'NOME'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'ENDERECO'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'LATITUDE'
+        DataType = ftBCD
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'LONGITUDE'
+        DataType = ftBCD
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'FOTO'
+        DataType = ftBlob
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
 end

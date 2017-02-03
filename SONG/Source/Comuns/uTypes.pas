@@ -26,8 +26,6 @@ type
     coAnd = ' AND ';
   end;
 
-  TStatusRegistro = (srNovo, srAlterado, srExcluido);
-
   TModelo = class
   private
     FId: Integer;
@@ -133,14 +131,17 @@ type
     FLongitude: Double;
     FNome: String;
     FEndereco: String;
+    FIdServer: Integer;
     procedure SetEndereco(const Value: String);
     procedure SetEspecie(const Value: TEspecie);
     procedure SetFoto(const Value: string);
     procedure SetLatitude(const Value: Double);
     procedure SetLongitude(const Value: Double);
     procedure SetNome(const Value: String);
+    procedure SetIdServer(const Value: Integer);
   public
     destructor Destroy; override;
+    property IdServer:Integer read FIdServer write SetIdServer;
     property Especie: TEspecie read FEspecie write SetEspecie;
     property Nome: String read FNome write SetNome;
     property Endereco: String read FEndereco write SetEndereco;
@@ -660,6 +661,11 @@ end;
 procedure TMatriz.SetFoto(const Value: string);
 begin
   FFoto := Value;
+end;
+
+procedure TMatriz.SetIdServer(const Value: Integer);
+begin
+  FIdServer := Value;
 end;
 
 procedure TMatriz.SetLatitude(const Value: Double);

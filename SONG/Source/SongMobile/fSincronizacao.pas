@@ -38,6 +38,9 @@ type
     Ac_Configuracoes: TAction;
     btnRetornar: TButton;
     qEspecieID: TFDAutoIncField;
+    qMatrizSincronizacaoSYNC: TIntegerField;
+    qMatrizSincronizacaoID_SERVER: TIntegerField;
+    DecoderBase64: TIdDecoderMIME;
     procedure btnSincronizarClick(Sender: TObject);
     procedure btnRetornarClick(Sender: TObject);
     procedure Ac_ConfiguracoesExecute(Sender: TObject);
@@ -87,7 +90,7 @@ begin
   dmPrincipal.ppuConectarServidor;
 
   ppvSincronizarEspecies(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
-  // ppvSincronizarMatrizes(dmPrincipal.qConfig.FieldByName('DATA_ULTIMA_SYNC').AsDateTime);
+  //ppvSincronizarMatrizes(dmPrincipal.qConfig.FieldByName('DATA_ULTIMA_SYNC').AsDateTime);
 
   if dmPrincipal.qConfig.Eof then
     dmPrincipal.qConfig.Append
@@ -105,7 +108,10 @@ var
   vaEspecie: TEspecie;
   vaResult, vaCodigos: String;
 begin
-  vaResult := dmPrincipal.FuncoesViveiro.fpuSincronizarEspecies(DateToStr(ipDataUltimoSincronismo));
+  if ipDataUltimoSincronismo = 0 then
+    vaResult := dmPrincipal.FuncoesViveiro.fpuSincronizarEspecies('')
+  else
+    vaResult := dmPrincipal.FuncoesViveiro.fpuSincronizarEspecies(DateToStr(ipDataUltimoSincronismo));
   if vaResult <> '' then
     begin
       vaEspecies := TJson.JsonToObject < TadsObjectlist < TEspecie >> (vaResult);
@@ -124,13 +130,14 @@ begin
 
           for vaEspecie in vaEspecies do
             begin
-              if vaEspecie.StatusRegistro <> Ord(srExcluido) then
+              if vaEspecie.StatusRegistro <> Ord(ukDelete) then
                 begin
                   if qEspecie.Locate('ID', vaEspecie.Id, []) then
                     qEspecie.Edit
                   else
                     qEspecie.Append;
 
+                  qEspecieID.AsInteger := vaEspecie.Id;
                   qEspecieNOME.AsString := vaEspecie.Nome;
                   qEspecie.Post;
                 end
@@ -141,15 +148,18 @@ begin
                 end;
             end;
 
-          // dmPrincipal.Connection.ExecSQL('delete from especie where especie.id not in ('+vaCodigos+')')
-
+          if (qEspecie.ChangeCount > 0) then
+            begin
+              qEspecie.ApplyUpdates(0);
+              qEspecie.CommitUpdates;
+            end;
         end;
     end;
 end;
 
 procedure TfrmSincronizacao.ppvSincronizarMatrizes(ipDataUltimoSincronismo: TDateTime);
 var
-  vaMatrizes: TList<TMatriz>;
+  vaMatrizes: TadsObjectlist<TMatriz>;
   vaMatriz: TMatriz;
   vaEspecie: TEspecie;
   vaStream: TStream;
@@ -158,58 +168,107 @@ begin
   qMatrizSincronizacao.DisableControls;
   try
     qMatrizSincronizacao.Close;
-    qMatrizSincronizacao.MacroByName('WHERE').AsRaw := 'where Matriz.SYNC = 0 ';
     qMatrizSincronizacao.Open();
 
     qMatrizSincronizacao.First;
     if not qMatrizSincronizacao.Eof then
       begin
-        vaMatrizes := TList<TMatriz>.Create;
+        vaMatrizes := TadsObjectlist<TMatriz>.Create;
         try
           while not qMatrizSincronizacao.Eof do
             begin
-              vaMatriz := TMatriz.Create;
-              vaMatriz.Id := qMatrizSincronizacaoID.AsInteger;
-
-              vaEspecie := TEspecie.Create;
-              vaEspecie.Id := qMatrizSincronizacaoID_ESPECIE.AsInteger;
-              vaMatriz.Especie := vaEspecie;
-
-              vaMatriz.Nome := qMatrizSincronizacaoNOME.AsString;
-              vaMatriz.Endereco := qMatrizSincronizacaoENDERECO.AsString;
-              vaMatriz.Latitude := qMatrizSincronizacaoLATITUDE.AsFloat;
-              vaMatriz.Longitude := qMatrizSincronizacaoID.AsFloat;
-              if not qMatrizSincronizacaoFOTO.IsNull then
+              if qMatrizSincronizacaoSYNC.AsInteger = 0 then
                 begin
-                  vaStream := TBytesStream.Create;
-                  try
-                    qMatrizSincronizacaoFOTO.SaveToStream(vaStream);
-                    vaStream.Position := 0;
+                  qMatrizSincronizacao.Edit;
+                  qMatrizSincronizacaoSYNC.AsInteger := 1;
+                  qMatrizSincronizacao.Post;
 
-                    vaMatriz.Foto := EncodeBase64.EncodeStream(vaStream);
-                  finally
-                    vaStream.Free;
-                  end;
+                  vaMatriz := TMatriz.Create;
+                  vaMatriz.Id := qMatrizSincronizacaoID.AsInteger;
+                  vaMatriz.IdServer := qMatrizSincronizacaoID_SERVER.AsInteger;
+
+                  vaEspecie := TEspecie.Create;
+                  vaEspecie.Id := qMatrizSincronizacaoID_ESPECIE.AsInteger;
+                  vaMatriz.Especie := vaEspecie;
+
+                  vaMatriz.Nome := qMatrizSincronizacaoNOME.AsString;
+                  vaMatriz.Endereco := qMatrizSincronizacaoENDERECO.AsString;
+                  vaMatriz.Latitude := qMatrizSincronizacaoLATITUDE.AsFloat;
+                  vaMatriz.Longitude := qMatrizSincronizacaoID.AsFloat;
+                  if not qMatrizSincronizacaoFOTO.IsNull then
+                    begin
+                      vaStream := TBytesStream.Create;
+                      try
+                        qMatrizSincronizacaoFOTO.SaveToStream(vaStream);
+                        vaStream.Position := 0;
+
+                        vaMatriz.Foto := EncodeBase64.EncodeStream(vaStream);
+                      finally
+                        vaStream.Free;
+                      end;
+                    end;
+                  vaMatrizes.Add(vaMatriz);
                 end;
 
-              vaMatrizes.Add(vaMatriz);
               qMatrizSincronizacao.Next;
             end;
 
           vaJsonMatrizes := TJson.ObjectToJsonString(vaMatrizes);
-          dmPrincipal.FuncoesViveiro.fpuSincronizarMatrizes(vaJsonMatrizes);
-
-        finally
+          vaJsonMatrizes := dmPrincipal.FuncoesViveiro.fpuSincronizarMatrizes(vaJsonMatrizes);
+          // VAMOS ATUALIZAR OS REGISTROS RETORNADOS
+          vaMatrizes.Clear;
+          vaMatrizes := TJson.JsonToObject < TadsObjectlist < TMatriz >> (vaJsonMatrizes);
           for vaMatriz in vaMatrizes do
             begin
-              vaMatriz.Free;
+              if vaMatriz.StatusRegistro = Ord(ukInsert) then
+                qMatrizSincronizacao.Append
+              else if qMatrizSincronizacao.Locate(qMatrizSincronizacaoID.FieldName, vaMatriz.Id, []) then
+                begin
+                  if vaMatriz.StatusRegistro = Ord(ukModify) then
+                    qMatrizSincronizacao.Edit
+                  else
+                    qMatrizSincronizacao.Delete;
+                end
+              else if vaMatriz.StatusRegistro <> Ord(ukDelete) then
+                qMatrizSincronizacao.Append;
+
+              if qMatrizSincronizacao.State in [dsEdit, dsInsert] then
+                begin
+                  qMatrizSincronizacaoID_SERVER.AsInteger := vaMatriz.Id;
+                  qMatrizSincronizacaoID_ESPECIE.AsInteger := vaMatriz.Especie.Id;
+                  qMatrizSincronizacaoNOME.AsString := vaMatriz.Nome;
+                  qMatrizSincronizacaoENDERECO.AsString := vaMatriz.Endereco;
+                  qMatrizSincronizacaoLATITUDE.AsFloat := vaMatriz.Latitude;
+                  qMatrizSincronizacaoLONGITUDE.AsFloat := vaMatriz.Longitude;
+                  if vaMatriz.Foto <> '' then
+                    begin
+                      vaStream := TBytesStream.Create;
+                      try
+                        DecoderBase64.DecodeStream(vaMatriz.Foto, vaStream);
+                        vaStream.Position := 0;
+
+                        qMatrizSincronizacaoFOTO.LoadFromStream(vaStream);
+                      finally
+                        vaStream.Free;
+                      end;
+
+                    end;
+
+                  qMatrizSincronizacao.Post;
+                end;
             end;
+        finally
           vaMatrizes.Clear;
           vaMatrizes.Free;
         end;
       end;
+
+    if qMatrizSincronizacao.ChangeCount > 0 then
+      begin
+        qMatrizSincronizacao.ApplyUpdates(0);
+        qMatrizSincronizacao.CommitUpdates;
+      end;
   finally
-    qMatrizSincronizacao.Filtered := false;
     qMatrizSincronizacao.EnableControls;
   end;
 

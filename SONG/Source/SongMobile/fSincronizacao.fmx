@@ -86,64 +86,82 @@ inherited frmSincronizacao: TfrmSincronizacao
     end
   end
   object qMatrizSincronizacao: TRFQuery
+    CachedUpdates = True
     Connection = dmPrincipal.Connection
     SQL.Strings = (
       'select Matriz.Id,'
+      '       Matriz.ID_SERVER,'
       '       Matriz.Id_especie,'
       '       Matriz.Nome,'
       '       Matriz.Endereco,'
       '       Matriz.Latitude,'
       '       Matriz.Longitude,'
-      '       Matriz.Foto'
-      'from Matriz'
-      '&WHERE')
+      '       Matriz.sync,'
+      '       CASE Matriz.SYNC '
+      '           WHEN 0 THEN Matriz.FOTO'
+      '           ELSE null'
+      '       END as Foto '
+      'from Matriz')
     Left = 88
     Top = 144
-    MacroData = <
-      item
-        Value = Null
-        Name = 'WHERE'
-      end>
     object qMatrizSincronizacaoID: TFDAutoIncField
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
+    object qMatrizSincronizacaoID_SERVER: TIntegerField
+      FieldName = 'ID_SERVER'
+      Origin = 'ID_SERVER'
+      ProviderFlags = [pfInUpdate]
+    end
     object qMatrizSincronizacaoID_ESPECIE: TIntegerField
       FieldName = 'ID_ESPECIE'
       Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
       Required = True
     end
     object qMatrizSincronizacaoNOME: TStringField
       FieldName = 'NOME'
       Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
       Required = True
       Size = 100
     end
     object qMatrizSincronizacaoENDERECO: TStringField
       FieldName = 'ENDERECO'
       Origin = 'ENDERECO'
+      ProviderFlags = [pfInUpdate]
       Size = 150
     end
     object qMatrizSincronizacaoLATITUDE: TFMTBCDField
       FieldName = 'LATITUDE'
       Origin = 'LATITUDE'
+      ProviderFlags = [pfInUpdate]
       Precision = 15
       Size = 6
     end
     object qMatrizSincronizacaoLONGITUDE: TFMTBCDField
       FieldName = 'LONGITUDE'
       Origin = 'LONGITUDE'
+      ProviderFlags = [pfInUpdate]
       Precision = 15
       Size = 6
+    end
+    object qMatrizSincronizacaoSYNC: TIntegerField
+      FieldName = 'SYNC'
+      Origin = 'SYNC'
+      ProviderFlags = [pfInUpdate]
+      Required = True
     end
     object qMatrizSincronizacaoFOTO: TBlobField
       FieldName = 'FOTO'
       Origin = 'FOTO'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object qEspecie: TRFQuery
+    CachedUpdates = True
     Connection = dmPrincipal.Connection
     SQL.Strings = (
       'Select Especie.Id,'
@@ -161,6 +179,7 @@ inherited frmSincronizacao: TfrmSincronizacao
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object qEspecieNOME: TStringField
       FieldName = 'NOME'
@@ -184,5 +203,10 @@ inherited frmSincronizacao: TfrmSincronizacao
       OnExecute = Ac_ConfiguracoesExecute
       ImageIndex = 5
     end
+  end
+  object DecoderBase64: TIdDecoderMIME
+    FillChar = '='
+    Left = 288
+    Top = 384
   end
 end
