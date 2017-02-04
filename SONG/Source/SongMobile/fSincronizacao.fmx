@@ -178,8 +178,8 @@ inherited frmSincronizacao: TfrmSincronizacao
     object qEspecieID: TFDAutoIncField
       FieldName = 'ID'
       Origin = 'ID'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      IdentityInsert = True
     end
     object qEspecieNOME: TStringField
       FieldName = 'NOME'

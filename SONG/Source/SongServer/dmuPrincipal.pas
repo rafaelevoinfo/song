@@ -151,11 +151,11 @@ begin
       qLogin.ParamByName('LOGIN').AsString := User;
       qLogin.ParamByName('SENHA').AsString := Password;
       qLogin.Open();
-      {$IFDEF DEBUG}
-        valid := true;
-      {$ELSE}
-         valid := not qLogin.Eof;
-      {$ENDIF}
+{$IFDEF DEBUG}
+      valid := True;
+{$ELSE}
+      valid := not qLogin.Eof;
+{$ENDIF}
       if valid then
         begin
           vaSessao := TSessaoUsuario.Create;
@@ -164,7 +164,6 @@ begin
         end;
       // end;
     end;
-
 
 end;
 

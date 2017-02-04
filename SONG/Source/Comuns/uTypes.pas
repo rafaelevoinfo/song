@@ -29,7 +29,6 @@ type
   TModelo = class
   private
     FId: Integer;
-    FRegistroNovo: Boolean;
     FStatusRegistro: Integer;
     procedure SetId(const Value: Integer);
     procedure SetStatusRegistro(const Value: Integer);

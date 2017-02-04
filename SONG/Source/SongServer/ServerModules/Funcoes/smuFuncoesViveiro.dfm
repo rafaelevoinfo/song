@@ -171,4 +171,9 @@ inherited smFuncoesViveiro: TsmFuncoesViveiro
         Value = Null
       end>
   end
+  object EncodeBase64: TIdEncoderMIME
+    FillChar = '='
+    Left = 336
+    Top = 160
+  end
 end

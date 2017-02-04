@@ -11,7 +11,8 @@ uses
   FireDAC.Comp.Client, uTypes, Datasnap.DBClient, System.Generics.Collections,
   uClientDataSet, System.Generics.Defaults, System.DateUtils, aduna_ds_list,
   System.Math, System.Types, uUtils, System.JSON, Data.FireDACJSONReflect,
-  Data.DBXJSON, REST.JSON, IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME;
+  Data.DBXJSON, REST.JSON, IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME,
+  Datasnap.DSSession;
 
 type
   TsmFuncoesViveiro = class(TsmFuncoesBasico)
@@ -34,6 +35,7 @@ type
     cdsQtdeMudaRocamboleQTDE_TOTAL: TAggregateField;
     DecoderBase64: TIdDecoderMIME;
     qMatrizUpdate: TRFQuery;
+    EncodeBase64: TIdEncoderMIME;
   private
     function fpvBuscarEspecies(ipIds: String): TadsObjectlist<TEspecie>;
 
@@ -309,54 +311,45 @@ var
   vaDataSet: TRFQuery;
   vaStream: TStream;
   vaDataSync: TdateTime;
-  vaId: Integer;
+  vaCodigosIgnorar: String;
+  vaMatrizesRetorno: TadsObjectlist<TMatriz>;
+  vaSessaoUsuario: TObject;
 begin
   Result := '';
+  vaCodigosIgnorar := '';
   pprCriarDataSet(vaDataSet);
+  vaMatrizesRetorno := TadsObjectlist<TMatriz>.Create(false);
+  vaMatrizes := nil;
+
+  Connection.StartTransaction;
   try
-    vaDataSet.CachedUpdates := True;
+    try
+      if ipJsonMatrizes <> '' then
+        begin
 
-    if ipJsonMatrizes <> '' then
-      begin
-        if ipDataUltimaSincronizacao = '' then
-          begin
-            vaDataSet.SQL.Text := 'select 1 as Operacao, ' +
-              '       Matriz.Id,' +
-              '       Matriz.Id_especie,' +
-              '       Matriz.Nome,' +
-              '       Matriz.Endereco,' +
-              '       Matriz.Latitude,' +
-              '       Matriz.Longitude,' +
-              '       Matriz.Foto' +
-              ' from Matriz ';
-          end
-        else
-          begin
-            if not TryStrToDateTime(ipDataUltimaSincronizacao, vaDataSync) then
-              raise Exception.Create('Data inválida.');
+          vaMatrizes := TJson.JsonToObject < TadsObjectlist < TMatriz >> (ipJsonMatrizes);
 
-            vaDataSet.SQL.Text := 'select Log.Operacao, ' +
-              '       Matriz.Id,' +
-              '       Matriz.Id_especie,' +
-              '       Matriz.Nome,' +
-              '       Matriz.Endereco,' +
-              '       Matriz.Latitude,' +
-              '       Matriz.Longitude,' +
-              '       Matriz.Foto' +
-              ' from Log ' +
-              ' left join matriz on (matriz.id = log.id_tabela)' +
-              ' where log.tabela = ''MATRIZ'' AND ' +
-              '       log.data_hora > :DATA_HORA';
-            vaDataSet.ParamByName('DATA_HORA').AsDateTime := vaDataSync;
-          end;
-        vaDataSet.Open();
-
-        vaMatrizes := TJson.JsonToObject < TadsObjectlist < TMatriz >> (ipJsonMatrizes);
-        try
           for vaMatriz in vaMatrizes do
             begin
+              vaSessaoUsuario := TDSSessionManager.GetThreadSession.GetObject(coKeySessaoUsuario);
+              if not Assigned(vaSessaoUsuario) then
+                raise Exception.Create('Usuário não logado.');
+
               if vaMatriz.IdServer = 0 then
-                vaMatriz.IdServer := fpuGetId('MATRIZ');
+                begin
+                  vaMatriz.IdServer := fpuGetId('MATRIZ');
+                  vaMatriz.Foto := '';//vamos limpar a foto para diminuir a quantidade de dados trafegados
+
+                  vaMatrizesRetorno.Add(vaMatriz);
+                  if vaCodigosIgnorar = '' then
+                    vaCodigosIgnorar := vaMatriz.IdServer.ToString()
+                  else
+                    vaCodigosIgnorar := vaCodigosIgnorar + ',' + vaMatriz.IdServer.ToString;
+                end;
+
+              Connection.ExecSQL('insert into log(log.Id, log.id_tabela, log.Tabela, log.Operacao, log.Usuario, log.Data_Hora)' +
+                ' values (next value for Gen_Log,:ID_TABELA, :TABELA, :OPERACAO, :USUARIO, current_timestamp) ',
+                [vaMatriz.IdServer, 'MATRIZ', Ord(vaMatriz.StatusRegistro), TSessaoUsuario(vaSessaoUsuario).Id]);
 
               qMatrizUpdate.ParamByName('ID').AsInteger := vaMatriz.IdServer;
               qMatrizUpdate.ParamByName('ID_ESPECIE').AsInteger := vaMatriz.Especie.Id;
@@ -370,7 +363,7 @@ begin
                   try
                     DecoderBase64.DecodeStream(vaMatriz.Foto, vaStream);
                     vaStream.Position := 0;
-                    qMatrizUpdate.ParamByName('FOTO').LoadFromStream(vaStream,ftBlob);
+                    qMatrizUpdate.ParamByName('FOTO').LoadFromStream(vaStream, ftBlob);
                   finally
                     vaStream.Free;
                   end;
@@ -380,38 +373,87 @@ begin
 
               qMatrizUpdate.ExecSQL;
 
-          
-
-              vaDataSet.FieldByName('ID_ESPECIE').AsInteger := vaMatriz.Especie.Id;
-              vaDataSet.FieldByName('NOME').AsString := vaMatriz.Nome;
-              vaDataSet.FieldByName('ENDERECO').AsString := vaMatriz.Endereco;
-              vaDataSet.FieldByName('LATITUDE').AsFloat := vaMatriz.Latitude;
-              vaDataSet.FieldByName('LONGITUDE').AsFloat := vaMatriz.Longitude;
-              if vaMatriz.Foto <> '' then
-                begin
-                  vaStream := TBytesStream.Create();
-                  try
-                    DecoderBase64.DecodeStream(vaMatriz.Foto, vaStream);
-                    vaStream.Position := 0;
-                    if vaStream.Size > 0 then
-                      TBlobField(vaDataSet.FieldByName('FOTO')).LoadFromStream(vaStream);
-                  finally
-                    vaStream.Free;
-                  end;
-                end;
-
-              vaDataSet.Post;
             end;
-        finally
-          vaMatrizes.Free;
+
         end;
-      end;
+
+      // pegando as matrizes alteradas
+      if ipDataUltimaSincronizacao = '' then
+        begin
+          vaDataSet.SQL.Text := 'select 1 as Operacao, ' +
+            '       Matriz.Id,' +
+            '       Matriz.Id_especie,' +
+            '       Matriz.Nome,' +
+            '       Matriz.Endereco,' +
+            '       Matriz.Latitude,' +
+            '       Matriz.Longitude,' +
+            '       Matriz.Foto' +
+            ' from Matriz ';
+          if vaCodigosIgnorar <> '' then
+            vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' where Matriz.Id not in (' + vaCodigosIgnorar + ')';
+
+        end
+      else
+        begin
+          if not TryStrToDateTime(ipDataUltimaSincronizacao, vaDataSync) then
+            raise Exception.Create('Data inválida.');
+
+          vaDataSet.SQL.Text := 'select Log.Operacao, ' +
+            '       Log.Id_Tabela as ID,' +
+            '       Matriz.Id_especie,' +
+            '       Matriz.Nome,' +
+            '       Matriz.Endereco,' +
+            '       Matriz.Latitude,' +
+            '       Matriz.Longitude,' +
+            '       Matriz.Foto' +
+            ' from Log ' +
+            ' left join matriz on (matriz.id = log.id_tabela)' +
+            ' where log.tabela = ''MATRIZ'' AND ' +
+            '       log.data_hora > :DATA_HORA';
+          if vaCodigosIgnorar <> '' then
+            vaDataSet.SQL.Text := vaDataSet.SQL.Text + ' and Log.Id_Tabela not in (' + vaCodigosIgnorar + ')';
+          vaDataSet.ParamByName('DATA_HORA').AsDateTime := vaDataSync;
+        end;
+
+      vaDataSet.Open();
+      while not vaDataSet.Eof do
+        begin
+          vaMatriz := TMatriz.Create;
+          vaMatriz.StatusRegistro := vaDataSet.FieldByName('OPERACAO').AsInteger;
+          vaMatriz.IdServer := vaDataSet.FieldByName('ID').AsInteger;
+          vaMatriz.Especie := TEspecie.Create;
+          vaMatriz.Especie.Id := vaDataSet.FieldByName('ID_ESPECIE').AsInteger;
+          vaMatriz.Nome := vaDataSet.FieldByName('NOME').AsString;
+          vaMatriz.Endereco := vaDataSet.FieldByName('ENDERECO').AsString;
+          vaMatriz.Latitude := vaDataSet.FieldByName('LATITUDE').AsFloat;
+          vaMatriz.Longitude := vaDataSet.FieldByName('LONGITUDE').AsFloat;
+          if not vaDataSet.FieldByName('FOTO').IsNull then
+            begin
+              vaStream := TBytesStream.Create();
+              try
+                TBlobField(vaDataSet.FieldByName('FOTO')).SaveToStream(vaStream);
+                vaStream.Position := 0;
+                vaMatriz.Foto := EncodeBase64.EncodeStream(vaStream);
+              finally
+                vaStream.Free;
+              end;
+            end;
+
+          vaMatrizesRetorno.Add(vaMatriz);
+          vaDataSet.Next;
+        end;
+
+      if vaMatrizesRetorno.Count > 0 then
+        Result := TJson.ObjectToJsonString(vaMatrizesRetorno);
+
+      Connection.Commit;
+    except
+      Connection.Rollback;
+      raise;
+    end;
   finally
-    if vaDataSet.ChangeCount > 0 then
-      begin
-        vaDataSet.ApplyUpdates(0);
-        vaDataSet.CommitUpdates;
-      end;
+    if Assigned(vaMatrizes) then
+      vaMatrizes.Free;
 
     vaDataSet.Close;
     vaDataSet.Free;

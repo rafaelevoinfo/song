@@ -77,6 +77,7 @@ object dmPrincipal: TdmPrincipal
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object qConfigDATA_ULTIMA_SYNC: TDateTimeField
       FieldName = 'DATA_ULTIMA_SYNC'

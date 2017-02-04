@@ -60,15 +60,14 @@ end;
 
 procedure TdmPrincipal.ppuAbrirConfig;
 begin
-  if not dmPrincipal.qConfig.Active then
-    dmPrincipal.qConfig.Open();
+  if not qConfig.Active then
+    qConfig.Open();
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
   Connection.Open();
   ppuAbrirConfig;
-  
 end;
 
 procedure TdmPrincipal.ppuConectarServidor;

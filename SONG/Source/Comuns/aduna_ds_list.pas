@@ -22,11 +22,13 @@ type
 
   TadsObjectlist<T: Class> = class
   private
+    FOwnerData: Boolean;
     FData: TArray<T>;
     function GetItem(AIndex: integer): T;
     procedure SetItem(AIndex: integer; const Value: T);
   public
-    constructor Create;
+    constructor Create;overload;
+    constructor Create(ipOwnerData: Boolean); overload;
     destructor Destroy; override;
 
     procedure Clear;
@@ -68,8 +70,11 @@ procedure TadsObjectlist<T>.Clear;
 var
   LItem: T;
 begin
-  for LItem in FData do
-    LItem.Free;
+  if FOwnerData then
+    begin
+      for LItem in FData do
+        LItem.Free;
+    end;
   SetLengtH(FData, 0);
 end;
 
@@ -80,7 +85,13 @@ end;
 
 constructor TadsObjectlist<T>.Create;
 begin
-  inherited;
+  Create(true);
+end;
+
+constructor TadsObjectlist<T>.Create(ipOwnerData: Boolean);
+begin
+  inherited Create;;
+  FOwnerData := ipOwnerData;
   SetLengtH(FData, 0);
 end;
 
@@ -101,7 +112,7 @@ begin
 end;
 
 function TadsObjectlist<T>.IndexOf(AItem: T): integer;
- { DONE : Implement IndexOf Method }
+{ DONE : Implement IndexOf Method }
 var
   i: integer;
 begin

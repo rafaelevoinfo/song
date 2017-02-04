@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 01/02/2017 00:06:18
+// 03/02/2017 23:13:24
 //
 
 unit uFuncoes;
@@ -57,7 +57,7 @@ type
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
     function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: string): string;
-    function fpuSincronizarMatrizes(ipJsonMatrizes: string): string;
+    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipJsonMatrizes: string): string;
     procedure ppuCadastrarLotes(ipJsonLotes: string);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
@@ -308,7 +308,7 @@ begin
   Result := FfpuSincronizarEspeciesCommand.Parameters[1].Value.GetWideString;
 end;
 
-function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipJsonMatrizes: string): string;
+function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipJsonMatrizes: string): string;
 begin
   if FfpuSincronizarMatrizesCommand = nil then
   begin
@@ -317,9 +317,10 @@ begin
     FfpuSincronizarMatrizesCommand.Text := 'TsmFuncoesViveiro.fpuSincronizarMatrizes';
     FfpuSincronizarMatrizesCommand.Prepare;
   end;
-  FfpuSincronizarMatrizesCommand.Parameters[0].Value.SetWideString(ipJsonMatrizes);
+  FfpuSincronizarMatrizesCommand.Parameters[0].Value.SetWideString(ipDataUltimaSincronizacao);
+  FfpuSincronizarMatrizesCommand.Parameters[1].Value.SetWideString(ipJsonMatrizes);
   FfpuSincronizarMatrizesCommand.ExecuteUpdate;
-  Result := FfpuSincronizarMatrizesCommand.Parameters[1].Value.GetWideString;
+  Result := FfpuSincronizarMatrizesCommand.Parameters[2].Value.GetWideString;
 end;
 
 procedure TsmFuncoesViveiroClient.ppuCadastrarLotes(ipJsonLotes: string);
