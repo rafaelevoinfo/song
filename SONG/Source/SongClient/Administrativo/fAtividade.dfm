@@ -6,7 +6,7 @@ inherited frmAtividade: TfrmAtividade
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabPesquisa
+    Properties.ActivePage = tabCadastro
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -223,11 +223,7 @@ inherited frmAtividade: TfrmAtividade
             end
           end
         end
-        inherited cxSplitter1: TcxSplitter
-          ExplicitTop = 145
-        end
         inherited pnDetail: TPanel
-          ExplicitTop = 151
           inherited pcDetails: TcxPageControl
             OnChange = pcDetailsChange
             object tabDetailComentario: TcxTabSheet [0]

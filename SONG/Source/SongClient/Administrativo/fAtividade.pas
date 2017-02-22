@@ -283,7 +283,7 @@ type
     procedure ppvPesquisarAtividade;
     procedure ppvCarregarAtividades(ipIdEspecifico: Integer = 0);
     procedure ppvAdicionarAreaAtuacao;
-    procedure ppvCarregarAreasAtuacao;
+    procedure ppvCarregarAreasAtuacao(ipRecarregar:Boolean=false);
     procedure ppvAdicionarAreaExecucao;
     procedure ppvCarregarAreaExecucao;
 
@@ -559,10 +559,13 @@ begin
   pcDetails.ActivePage := tabDetailComentario;
 end;
 
-procedure TfrmAtividade.ppvCarregarAreasAtuacao;
+procedure TfrmAtividade.ppvCarregarAreasAtuacao(ipRecarregar:Boolean);
 begin
-  if not dmLookup.cdslkArea_Atuacao_Projeto.Active then
+  if (not dmLookup.cdslkArea_Atuacao_Projeto.Active) or ipRecarregar then
     begin
+      dmLookup.cdslkArea_Execucao.Close;
+      dmLookup.cdslkArea_Atuacao_Projeto.Close;
+
       dmLookup.cdslkArea_Atuacao_Projeto.ppuDataRequest([TParametros.coTodos], ['NAO_IMPORTA'], TOperadores.coAnd, true);
       dmLookup.cdslkArea_Execucao.Open;
     end;
@@ -650,7 +653,6 @@ begin
 
   vaFrmAreaAtuacao := TfrmAreaAtuacao.Create(nil);
   try
-
     vaFrmAreaAtuacao.ppuConfigurarPesquisa(Ord(tppId), cbAreaAtuacao.EditValue);
     vaFrmAreaAtuacao.ppuPesquisar;
     if vaFrmAreaAtuacao.dsMaster.DataSet.RecordCount > 0 then
@@ -724,7 +726,7 @@ begin
 
   if vaIdEscolhido <> 0 then
     begin
-      ppvCarregarAreasAtuacao;
+      ppvCarregarAreasAtuacao(true);
       if dmLookup.cdslkArea_Atuacao_Projeto.Locate(TBancoDados.coId, vaIdEscolhido, []) then
         begin
           if not(dmAdministrativo.cdsAtividade.State in [dsInsert, dsEdit]) then
