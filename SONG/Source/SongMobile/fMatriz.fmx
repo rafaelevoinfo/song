@@ -305,6 +305,7 @@ inherited frmMatriz: TfrmMatriz
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = []
+      ReadOnly = True
     end
     object qEspecieNOME: TStringField
       FieldName = 'NOME'

@@ -11,7 +11,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, uTypes, System.Generics.Collections,
   System.JSON, REST.JSON, IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME,
-  System.Actions, FMX.ActnList, fConfiguracoes, aduna_ds_list;
+  System.Actions, FMX.ActnList, fConfiguracoes, aduna_ds_list, uConstantes;
 
 type
   TfrmSincronizacao = class(TfrmBasico)
@@ -29,7 +29,6 @@ type
     qMatrizSincronizacaoENDERECO: TStringField;
     qMatrizSincronizacaoLATITUDE: TFMTBCDField;
     qMatrizSincronizacaoLONGITUDE: TFMTBCDField;
-    qMatrizSincronizacaoFOTO: TBlobField;
     qEspecie: TRFQuery;
     qEspecieNOME: TStringField;
     EncodeBase64: TIdEncoderMIME;
@@ -41,6 +40,7 @@ type
     qMatrizSincronizacaoSYNC: TIntegerField;
     qMatrizSincronizacaoID_SERVER: TIntegerField;
     DecoderBase64: TIdDecoderMIME;
+    qMatrizSincronizacaoFOTO: TBlobField;
     procedure btnSincronizarClick(Sender: TObject);
     procedure btnRetornarClick(Sender: TObject);
     procedure Ac_ConfiguracoesExecute(Sender: TObject);
@@ -84,19 +84,24 @@ end;
 procedure TfrmSincronizacao.btnSincronizarClick(Sender: TObject);
 begin
   inherited;
-  dmPrincipal.ppuAbrirConfig;
-  dmPrincipal.ppuConectarServidor;
+  try
+    dmPrincipal.ppuAbrirConfig;
+    dmPrincipal.ppuConectarServidor;
 
-  ppvSincronizarEspecies(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
-  ppvSincronizarMatrizes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
+    ppvSincronizarEspecies(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
+    ppvSincronizarMatrizes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
 
-  if dmPrincipal.qConfig.Eof then
-    dmPrincipal.qConfig.Append
-  else
-    dmPrincipal.qConfig.Edit;
+    if dmPrincipal.qConfig.Eof then
+      dmPrincipal.qConfig.Append
+    else
+      dmPrincipal.qConfig.Edit;
 
-  dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime := now;
-  dmPrincipal.qConfig.Post;
+    dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime := now;
+    dmPrincipal.qConfig.Post;
+  except
+    on e: Exception do
+      showMessage(e.Message);
+  end;
 
 end;
 
@@ -161,24 +166,23 @@ var
   vaMatriz: TMatriz;
   vaEspecie: TEspecie;
   vaStream: TStream;
-  vaJsonMatrizes: String;
 begin
   qMatrizSincronizacao.DisableControls;
   try
-    qMatrizSincronizacao.Close;
-    qMatrizSincronizacao.Open();
+    try
+      qMatrizSincronizacao.Close;
+      qMatrizSincronizacao.Open();
 
-    qMatrizSincronizacao.First;
-    if not qMatrizSincronizacao.Eof then
-      begin
-        vaMatrizes := TadsObjectlist<TMatriz>.Create;
-        try
+      qMatrizSincronizacao.First;
+      if not qMatrizSincronizacao.Eof then
+        begin
+          vaMatrizes := TadsObjectlist<TMatriz>.Create;
           while not qMatrizSincronizacao.Eof do
             begin
               if qMatrizSincronizacaoSYNC.AsInteger = 0 then
                 begin
                   qMatrizSincronizacao.Edit;
-                  qMatrizSincronizacaoSYNC.AsInteger := 1;
+                  qMatrizSincronizacaoSYNC.AsInteger := coSincronizado;
                   qMatrizSincronizacao.Post;
 
                   vaMatriz := TMatriz.Create;
@@ -196,7 +200,7 @@ begin
                   vaMatriz.Nome := qMatrizSincronizacaoNOME.AsString;
                   vaMatriz.Endereco := qMatrizSincronizacaoENDERECO.AsString;
                   vaMatriz.Latitude := qMatrizSincronizacaoLATITUDE.AsFloat;
-                  vaMatriz.Longitude := qMatrizSincronizacaoID.AsFloat;
+                  vaMatriz.Longitude := qMatrizSincronizacaoLONGITUDE.AsFloat;
                   if not qMatrizSincronizacaoFOTO.IsNull then
                     begin
                       vaStream := TBytesStream.Create;
@@ -215,20 +219,19 @@ begin
               qMatrizSincronizacao.Next;
             end;
 
-          vaJsonMatrizes := TJson.ObjectToJsonString(vaMatrizes);
-
           dmPrincipal.ppuAbrirConfig;
-          vaJsonMatrizes := dmPrincipal.FuncoesViveiro.fpuSincronizarMatrizes(DateTimeToStr(ipDataUltimoSincronismo), vaJsonMatrizes);
+          vaMatrizes := dmPrincipal.FuncoesViveiro.fpuSincronizarMatrizes(DateTimeToStr(ipDataUltimoSincronismo),
+            vaMatrizes);
           // VAMOS ATUALIZAR OS REGISTROS RETORNADOS
-          if vaJsonMatrizes <> '' then
+          if Assigned(vaMatrizes) then
             begin
-              FreeAndNil(vaMatrizes); // evita leak
-
-              vaMatrizes := TJson.JsonToObject < TadsObjectlist < TMatriz >> (vaJsonMatrizes);
               for vaMatriz in vaMatrizes do
                 begin
-                  if qMatrizSincronizacao.Locate(qMatrizSincronizacaoID.FieldName, vaMatriz.Id, []) or
-                    qMatrizSincronizacao.Locate(qMatrizSincronizacaoID_SERVER.FieldName, vaMatriz.IdServer, []) then
+                  // se achar pelo ID significa que é o registro que acabou de ser enviado, entao preciso atualizar o ID_SERVER
+                  if qMatrizSincronizacao.Locate(qMatrizSincronizacaoID.FieldName, vaMatriz.Id, []) then
+                    qMatrizSincronizacao.Edit
+                  else if qMatrizSincronizacao.Locate(qMatrizSincronizacaoID_SERVER.FieldName, vaMatriz.IdServer, [])
+                  then
                     begin
                       if vaMatriz.StatusRegistro = Ord(ukModify) then
                         qMatrizSincronizacao.Edit
@@ -241,14 +244,15 @@ begin
                   if qMatrizSincronizacao.State in [dsEdit, dsInsert] then
                     begin
                       qMatrizSincronizacaoID_SERVER.AsInteger := vaMatriz.IdServer;
+                      qMatrizSincronizacaoSYNC.AsInteger := coSincronizado;
                       // se diferente de zero significa que é um dos registro que acabaram de ser enviados, entao, preciso atualizar somente o ID_SERVER
                       if vaMatriz.Id = 0 then
                         begin
-                          qMatrizSincronizacaoID_ESPECIE.AsInteger := vaMatriz.Especie.Id;
                           qMatrizSincronizacaoNOME.AsString := vaMatriz.Nome;
                           qMatrizSincronizacaoENDERECO.AsString := vaMatriz.Endereco;
                           qMatrizSincronizacaoLATITUDE.AsFloat := vaMatriz.Latitude;
                           qMatrizSincronizacaoLONGITUDE.AsFloat := vaMatriz.Longitude;
+                          qMatrizSincronizacaoID_ESPECIE.AsInteger := vaMatriz.Especie.Id;
                           if vaMatriz.Foto <> '' then
                             begin
                               vaStream := TBytesStream.Create;
@@ -269,16 +273,18 @@ begin
                     end;
                 end;
             end;
-        finally
-          vaMatrizes.Free;
-        end;
-      end;
 
-    if qMatrizSincronizacao.ChangeCount > 0 then
-      begin
-        qMatrizSincronizacao.ApplyUpdates(0);
-        qMatrizSincronizacao.CommitUpdates;
-      end;
+        end;
+
+      if qMatrizSincronizacao.ChangeCount > 0 then
+        begin
+          qMatrizSincronizacao.ApplyUpdates(0);
+          qMatrizSincronizacao.CommitUpdates;
+        end;
+    except
+      on e: Exception do
+        raise Exception.Create('Houve um erro ao sincronizar as matrizes. Detalhes: ' + e.Message);
+    end;
   finally
     qMatrizSincronizacao.EnableControls;
   end;

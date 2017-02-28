@@ -35,7 +35,8 @@ uses
   smuSistema in 'ServerModules\smuSistema.pas' {smSistema: TDSServerModule},
   smuFuncoesSistema in 'ServerModules\Funcoes\smuFuncoesSistema.pas' {smFuncoesSistema: TDSServerModule},
   uEnviarEmail in '..\Comuns\uEnviarEmail.pas',
-  uSMBIOS in 'uSMBIOS.pas';
+  uSMBIOS in 'uSMBIOS.pas',
+  pAtributos in '..\Comuns\pAtributos.pas';
 
 {$R *.res}
 

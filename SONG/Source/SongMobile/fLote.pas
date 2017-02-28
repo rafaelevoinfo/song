@@ -42,6 +42,8 @@ type
     Ac_Adicionar_Matriz: TAction;
     LinkComboMatriz: TLinkFillControlToField;
     BindSourceMatriz: TBindSourceDB;
+    recMatriz: TRectangle;
+    Label1: TLabel;
     procedure Ac_Adicionar_MatrizExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private

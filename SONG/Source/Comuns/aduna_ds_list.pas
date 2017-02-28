@@ -2,7 +2,7 @@ unit aduna_ds_list;
 
 interface
 
-uses System.Generics.Collections;
+uses System.Generics.Collections, System.Classes;
 
 type
 

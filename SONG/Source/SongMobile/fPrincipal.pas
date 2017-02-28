@@ -18,7 +18,8 @@ uses
   FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
   dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   System.Threading, uTypes, System.Generics.Collections, REST.Json,
-  IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME, fSincronizacao;
+  IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME, fSincronizacao,
+  aduna_ds_list;
 
 type
   TfrmPrincipal = class(TForm)

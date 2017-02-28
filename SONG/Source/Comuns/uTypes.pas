@@ -33,8 +33,11 @@ type
     procedure SetId(const Value: Integer);
     procedure SetStatusRegistro(const Value: Integer);
   public
+    constructor Create; // precisa ter um create para o json funcionar
+    [TJson]
     property Id: Integer read FId write SetId;
-    property StatusRegistro:Integer read FStatusRegistro write SetStatusRegistro;
+    [TJson]
+    property StatusRegistro: Integer read FStatusRegistro write SetStatusRegistro;
   end;
 
   TConta = class(TModelo)
@@ -140,12 +143,18 @@ type
     procedure SetIdServer(const Value: Integer);
   public
     destructor Destroy; override;
-    property IdServer:Integer read FIdServer write SetIdServer;
+    property IdServer: Integer read FIdServer write SetIdServer;
+
     property Especie: TEspecie read FEspecie write SetEspecie;
+
     property Nome: String read FNome write SetNome;
+
     property Endereco: String read FEndereco write SetEndereco;
+
     property Latitude: Double read FLatitude write SetLatitude;
+
     property Longitude: Double read FLongitude write SetLongitude;
+
     property Foto: string read FFoto write SetFoto;
   end;
 
@@ -382,6 +391,11 @@ begin
 end;
 
 { TModelo }
+
+constructor TModelo.Create;
+begin
+
+end;
 
 procedure TModelo.SetId(const Value: Integer);
 begin

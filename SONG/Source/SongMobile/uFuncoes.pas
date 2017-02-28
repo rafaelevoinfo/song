@@ -1,14 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 03/02/2017 23:13:24
+// 28/02/2017 18:07:05
 //
 
 unit uFuncoes;
 
 interface
 
-uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, aduna_ds_list, Data.DBXJSONReflect,
-  uTypes;
+uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, aduna_ds_list, Data.DBXJSONReflect, uTypes;
 
 type
   TsmFuncoesViveiroClient = class(TDSAdminClient)
@@ -57,7 +56,7 @@ type
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
     function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: string): string;
-    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipJsonMatrizes: string): string;
+    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): TadsObjectlist<uTypes.TMatriz>;
     procedure ppuCadastrarLotes(ipJsonLotes: string);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
@@ -308,7 +307,7 @@ begin
   Result := FfpuSincronizarEspeciesCommand.Parameters[1].Value.GetWideString;
 end;
 
-function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipJsonMatrizes: string): string;
+function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): TadsObjectlist<uTypes.TMatriz>;
 begin
   if FfpuSincronizarMatrizesCommand = nil then
   begin
@@ -318,9 +317,33 @@ begin
     FfpuSincronizarMatrizesCommand.Prepare;
   end;
   FfpuSincronizarMatrizesCommand.Parameters[0].Value.SetWideString(ipDataUltimaSincronizacao);
-  FfpuSincronizarMatrizesCommand.Parameters[1].Value.SetWideString(ipJsonMatrizes);
+  if not Assigned(ipMatrizes) then
+    FfpuSincronizarMatrizesCommand.Parameters[1].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FfpuSincronizarMatrizesCommand.Parameters[1].ConnectionHandler).GetJSONMarshaler;
+    try
+      FfpuSincronizarMatrizesCommand.Parameters[1].Value.SetJSONValue(FMarshal.Marshal(ipMatrizes), True);
+      if FInstanceOwner then
+        ipMatrizes.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
   FfpuSincronizarMatrizesCommand.ExecuteUpdate;
-  Result := FfpuSincronizarMatrizesCommand.Parameters[2].Value.GetWideString;
+  if not FfpuSincronizarMatrizesCommand.Parameters[2].Value.IsNull then
+  begin
+    FUnMarshal := TDBXClientCommand(FfpuSincronizarMatrizesCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TadsObjectlist<uTypes.TMatriz>(FUnMarshal.UnMarshal(FfpuSincronizarMatrizesCommand.Parameters[2].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FfpuSincronizarMatrizesCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
 end;
 
 procedure TsmFuncoesViveiroClient.ppuCadastrarLotes(ipJsonLotes: string);

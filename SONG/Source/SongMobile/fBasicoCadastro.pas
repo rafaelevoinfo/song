@@ -39,6 +39,8 @@ type
   protected
     function fprValidarDados(var opMsgErro: String): Boolean; virtual;
     function fprValidarCamposObrigatorios(ipDataSet: TDataSet; var opMsgErro: String): Boolean;
+
+    procedure pprBeforeSalvar;virtual;
     { Private declarations }
   public
     property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
@@ -74,6 +76,11 @@ function TfrmBasicoCadastro.fprValidarDados(var opMsgErro: String): Boolean;
 begin
   Result := fprValidarCamposObrigatorios(dsPrincipal.DataSet, opMsgErro);
 
+end;
+
+procedure TfrmBasicoCadastro.pprBeforeSalvar;
+begin
+//
 end;
 
 procedure TfrmBasicoCadastro.ppuAlterar(ipId: Integer);
@@ -148,6 +155,7 @@ begin
   try
     if fprValidarDados(vaMsgErro) then
       begin
+        pprBeforeSalvar;
         if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
           dsPrincipal.DataSet.Post;
 

@@ -744,6 +744,22 @@ inherited frmLote: TfrmLote
         end
       end
     end
+    object recMatriz: TRectangle
+      Align = Client
+      Size.Width = 640.000000000000000000
+      Size.Height = 295.000000000000000000
+      Size.PlatformDefault = False
+      object Label1: TLabel
+        Align = Top
+        AutoSize = True
+        StyledSettings = [Family, Size, Style]
+        Size.Width = 640.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.FontColor = claWhite
+        Text = 'Matrizes'
+      end
+    end
   end
   inherited ActionList1: TActionList
     Left = 80

@@ -89,6 +89,13 @@ inherited frmSincronizacao: TfrmSincronizacao
     CachedUpdates = True
     Connection = dmPrincipal.Connection
     SQL.Strings = (
+      'with Foto (ID, FOTO) as ('
+      '    Select Matriz.id,'
+      '           Matriz.Foto'
+      '    from matriz'
+      '    where matriz.sync = 0'
+      ')'
+      ''
       'select Matriz.Id,'
       '       Matriz.ID_SERVER,'
       '       Matriz.Id_especie,'
@@ -97,11 +104,9 @@ inherited frmSincronizacao: TfrmSincronizacao
       '       Matriz.Latitude,'
       '       Matriz.Longitude,'
       '       Matriz.sync,'
-      '       CASE Matriz.SYNC '
-      '           WHEN 0 THEN Matriz.FOTO'
-      '           ELSE null'
-      '       END as Foto '
-      'from Matriz')
+      '       Foto.FOTO'
+      'from Matriz'
+      'left join Foto on (Foto.id = Matriz.id)')
     Left = 88
     Top = 144
     object qMatrizSincronizacaoID: TFDAutoIncField
