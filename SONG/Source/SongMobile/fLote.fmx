@@ -1,6 +1,7 @@
 inherited frmLote: TfrmLote
   Caption = 'frmBasicoCadastro1'
   StyleBook = Styles
+  OnDestroy = FormDestroy
   OnShow = FormShow
   DesignerMasterStyle = 3
   inherited Styles: TStyleBook
@@ -570,7 +571,7 @@ inherited frmLote: TfrmLote
     object GridPanel: TGridPanelLayout
       Align = Top
       Size.Width = 640.000000000000000000
-      Size.Height = 137.000000000000000000
+      Size.Height = 102.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       ColumnCollection = <
@@ -593,39 +594,26 @@ inherited frmLote: TfrmLote
         end
         item
           Column = 0
-          Control = lbMatriz
-          Row = 1
-        end
-        item
-          Column = 1
-          Control = pnMatriz
-          Row = 1
-        end
-        item
-          Column = 0
           Control = lbQtde
-          Row = 2
+          Row = 1
         end
         item
           Column = 1
           Control = EditQtde
-          Row = 2
+          Row = 1
         end
         item
           Column = 0
           Control = lbData
-          Row = 0
+          Row = 2
         end
         item
           Column = 1
           Control = EditData
-          Row = 3
+          Row = 2
         end>
+      ExpandStyle = FixedSize
       RowCollection = <
-        item
-          SizeStyle = Absolute
-          Value = 35.000000000000000000
-        end
         item
           SizeStyle = Absolute
           Value = 35.000000000000000000
@@ -650,28 +638,17 @@ inherited frmLote: TfrmLote
       end
       object EditNome: TEdit
         Touch.InteractiveGestures = [LongTap, DoubleTap]
-        Align = Top
+        Align = Client
         TabOrder = 1
-        Position.X = 164.576660156250000000
         Size.Width = 475.423339843750000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
         TextPrompt = 'Nome do Lote'
       end
-      object lbMatriz: TLabel
-        Align = Top
-        StyledSettings = [Family, Size, FontColor]
-        Position.Y = 35.000000000000000000
-        Size.Width = 164.576660156250000000
-        Size.Height = 23.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        Text = 'Matriz'
-      end
       object lbQtde: TLabel
         Align = Top
         StyledSettings = [Family, Size, FontColor]
-        Position.Y = 70.000000000000000000
+        Position.Y = 35.000000000000000000
         Size.Width = 164.576660156250000000
         Size.Height = 23.000000000000000000
         Size.PlatformDefault = False
@@ -680,11 +657,9 @@ inherited frmLote: TfrmLote
       end
       object EditQtde: TEdit
         Touch.InteractiveGestures = [LongTap, DoubleTap]
-        Align = Top
+        Align = Client
         TabOrder = 3
         KeyboardType = NumberPad
-        Position.X = 164.576660156250000000
-        Position.Y = 70.000000000000000000
         Size.Width = 475.423339843750000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
@@ -694,8 +669,8 @@ inherited frmLote: TfrmLote
         Align = Top
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
-        Position.Y = 105.000000000000000000
-        Size.Width = 111.402023315429700000
+        Position.Y = 70.000000000000000000
+        Size.Width = 164.576660156250000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -703,61 +678,91 @@ inherited frmLote: TfrmLote
       end
       object EditData: TDateEdit
         Date = 42738.000000000000000000
-        Align = Top
-        Position.X = 164.576660156250000000
-        Position.Y = 105.000000000000000000
+        Align = Client
         Size.Width = 475.423339843750000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 5
       end
-      object pnMatriz: TPanel
-        Align = Top
-        Anchors = []
-        Position.X = 164.576660156250000000
-        Position.Y = 35.000000000000000000
-        Size.Width = 475.423339843750000000
-        Size.Height = 35.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 6
-        object cbMatriz: TComboBox
-          Align = Client
-          Size.Width = 424.423339843750000000
-          Size.Height = 32.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
-        end
-        object btnAdd: TButton
-          Action = Ac_Adicionar_Matriz
-          Align = Right
-          Enabled = True
-          Images = frmPrincipal.ImageList1
-          ImageIndex = 4
-          Position.X = 424.423339843750000000
-          Size.Width = 51.000000000000000000
-          Size.Height = 35.000000000000000000
-          Size.PlatformDefault = False
-          StyleLookup = 'btnImgCentroMenor'
-          TabOrder = 1
-          TintColor = x00808080
-          Visible = True
-        end
-      end
     end
     object recMatriz: TRectangle
+      Align = Top
+      Fill.Color = claNull
+      Position.Y = 102.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 43.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Thickness = 0.000000000000000000
+      object Label1: TLabel
+        Align = Left
+        AutoSize = True
+        StyledSettings = [Family, Size, FontColor]
+        Size.Width = 165.000000000000000000
+        Size.Height = 43.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'Matrizes'
+      end
+      object btnAddMatriz: TButton
+        StyleName = 'btnImgCentroStyle'
+        Action = Ac_Adicionar_Matriz
+        Align = Right
+        Enabled = True
+        Images = frmPrincipal.ImageList1
+        ImageIndex = 4
+        Position.X = 552.000000000000000000
+        Size.Width = 40.000000000000000000
+        Size.Height = 43.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        TintColor = x00808080
+        Visible = True
+      end
+      object cbMatriz: TComboBox
+        Align = Client
+        Margins.Top = 5.000000000000000000
+        Size.Width = 387.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+      end
+      object btnVincularMatriz: TButton
+        Action = Ac_Vincular_Matriz
+        Align = Right
+        Enabled = True
+        Images = frmPrincipal.ImageList1
+        ImageIndex = -1
+        Position.X = 592.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'donetoolbutton'
+        TabOrder = 3
+        TintColor = x00808080
+        Visible = True
+      end
+    end
+    object lvMatrizes: TListView
+      ItemAppearanceClassName = 'TListItemAppearance'
+      ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      Transparent = True
       Align = Client
       Size.Width = 640.000000000000000000
-      Size.Height = 295.000000000000000000
+      Size.Height = 287.000000000000000000
       Size.PlatformDefault = False
-      object Label1: TLabel
+      TabOrder = 2
+      ItemAppearanceObjects.ItemObjects.Accessory.Visible = False
+      OnDeletingItem = lvMatrizesDeletingItem
+      DeleteButtonText = 'Excluir'
+      object Line1: TLine
         Align = Top
-        AutoSize = True
-        StyledSettings = [Family, Size, Style]
+        LineType = Top
         Size.Width = 640.000000000000000000
-        Size.Height = 22.000000000000000000
+        Size.Height = 10.000000000000000000
         Size.PlatformDefault = False
-        TextSettings.FontColor = claWhite
-        Text = 'Matrizes'
+        Stroke.Thickness = 2.000000000000000000
       end
     end
   end
@@ -782,6 +787,9 @@ inherited frmLote: TfrmLote
       OnExecute = Ac_Adicionar_MatrizExecute
       ImageIndex = 4
     end
+    object Ac_Vincular_Matriz: TAction
+      OnExecute = Ac_Vincular_MatrizExecute
+    end
   end
   inherited dsPrincipal: TDataSource
     DataSet = qLote
@@ -789,11 +797,12 @@ inherited frmLote: TfrmLote
     Top = 328
   end
   object qLote: TRFQuery
+    OnCalcFields = qLoteCalcFields
+    CachedUpdates = True
     Connection = dmPrincipal.Connection
     SQL.Strings = (
       'Select Lote.Id,'
       '       Lote.Nome,'
-      '       Lote.Id_Matriz,'
       '       Lote.Qtde,'
       '       Lote.Data'
       'from Lote'
@@ -821,13 +830,6 @@ inherited frmLote: TfrmLote
       Required = True
       Size = 30
     end
-    object qLoteID_MATRIZ: TIntegerField
-      DisplayLabel = 'Matriz'
-      FieldName = 'ID_MATRIZ'
-      Origin = 'ID_MATRIZ'
-      ProviderFlags = [pfInUpdate]
-      Required = True
-    end
     object qLoteQTDE: TBCDField
       DisplayLabel = 'Quantidade'
       FieldName = 'QTDE'
@@ -843,6 +845,12 @@ inherited frmLote: TfrmLote
       Origin = 'DATA'
       ProviderFlags = [pfInUpdate]
       Required = True
+    end
+    object qLoteID_TEMP: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'ID_TEMP'
+      ProviderFlags = []
+      Calculated = True
     end
   end
   object BindSourceLote: TBindSourceDB
@@ -870,17 +878,8 @@ inherited frmLote: TfrmLote
       Control = EditQtde
       Track = False
     end
-    object LinkControlToField3: TLinkControlToField
-      Category = 'Quick Bindings'
-      DataSource = BindSourceLote
-      FieldName = 'DATA'
-      Control = EditData
-      Track = False
-    end
     object LinkComboMatriz: TLinkFillControlToField
       Category = 'Quick Bindings'
-      DataSource = BindSourceLote
-      FieldName = 'ID_MATRIZ'
       Control = cbMatriz
       Track = True
       FillDataSource = BindSourceMatriz
@@ -895,7 +894,65 @@ inherited frmLote: TfrmLote
   object BindSourceMatriz: TBindSourceDB
     DataSet = frmPrincipal.qMatriz
     ScopeMappings = <>
-    Left = 256
-    Top = 208
+    Left = 288
+    Top = 336
+  end
+  object qLote_Matriz: TRFQuery
+    CachedUpdates = True
+    IndexFieldNames = 'ID_LOTE'
+    MasterSource = dsPrincipal
+    MasterFields = 'ID'
+    DetailFields = 'ID_LOTE'
+    Connection = dmPrincipal.Connection
+    SchemaAdapter = SchemaAdapter
+    FetchOptions.AssignedValues = [evDetailCascade]
+    FetchOptions.DetailCascade = True
+    SQL.Strings = (
+      'SELECT lote_matriz.ID,'
+      '       lote_matriz.ID_LOTE,'
+      '       lote_matriz.ID_MATRIZ,'
+      '       matriz.nome as MATRIZ'
+      'FROM LOTE_MATRIZ'
+      'inner join matriz on (lote_matriz.id_matriz = matriz.id)'
+      'where LOTE_MATRIZ.ID_LOTE = :ID')
+    Left = 192
+    Top = 328
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qLote_MatrizID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qLote_MatrizID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLote_MatrizID_MATRIZ: TIntegerField
+      FieldName = 'ID_MATRIZ'
+      Origin = 'ID_MATRIZ'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
+    object qLote_MatrizMATRIZ: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'MATRIZ'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+  end
+  object SchemaAdapter: TFDSchemaAdapter
+    Left = 304
+    Top = 224
   end
 end
