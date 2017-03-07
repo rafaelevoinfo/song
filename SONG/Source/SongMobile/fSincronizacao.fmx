@@ -65,20 +65,24 @@ inherited frmSincronizacao: TfrmSincronizacao
       Text = 'Itens a serem sincronizados'
     end
     object lbiEspecies: TListBoxItem
+      StyledSettings = [Family, Size, Style, FontColor]
+      ItemData.Accessory = aCheckmark
       Position.Y = 30.000000000000000000
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 1
       Text = 'Esp'#233'cies'
     end
     object lbiMatrizes: TListBoxItem
+      StyledSettings = [Family, Size, Style, FontColor]
+      ItemData.Accessory = aCheckmark
       Position.Y = 74.000000000000000000
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 2
       Text = 'Matrizes'
     end
     object lbiLotes: TListBoxItem
-      TextSettings.HorzAlign = Trailing
       StyledSettings = [Family, Size, Style, FontColor]
+      ItemData.Accessory = aCheckmark
       Position.Y = 118.000000000000000000
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 3

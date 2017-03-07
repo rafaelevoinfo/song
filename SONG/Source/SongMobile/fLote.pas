@@ -38,7 +38,7 @@ type
     LinkComboMatriz: TLinkFillControlToField;
     BindSourceMatriz: TBindSourceDB;
     recMatriz: TRectangle;
-    Label1: TLabel;
+    lbMatrizes: TLabel;
     btnAddMatriz: TButton;
     lvMatrizes: TListView;
     qLote_Matriz: TRFQuery;
@@ -49,7 +49,6 @@ type
     EditData: TDateEdit;
     btnVincularMatriz: TButton;
     Line1: TLine;
-    qLoteID_TEMP: TIntegerField;
     qLote_MatrizMATRIZ: TStringField;
     SchemaAdapter: TFDSchemaAdapter;
     procedure Ac_Adicionar_MatrizExecute(Sender: TObject);
@@ -57,17 +56,16 @@ type
     procedure Ac_Vincular_MatrizExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
-    procedure qLoteCalcFields(DataSet: TDataSet);
     procedure FormCreate(Sender: TObject);
   private
     procedure ppvCarregarMatrizes;
     procedure ppvLimparCache(Sender:Tobject);
   protected
-    procedure pprAfterSalvar; override;
+    procedure pprExecutarSalvar;override;
+
+  public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: Integer); override;
-  public
-    procedure ppuSalvar; override;
   end;
 
 var
@@ -102,8 +100,11 @@ var
   vaIdMatriz: Integer;
 begin
   inherited;
+  if (qLote.State in [dsEdit, dsInsert]) and qLoteID.IsNull then
+    qLote.Post;
+
   qLote_Matriz.Append;
-  SE JA EXISTIR ALGUMA MATRIZ VALIDAR SE A ESPECIE É A MESMA, SE NAO FORR NAO DEIXAR ADICIONARS 
+//  SE JA EXISTIR ALGUMA MATRIZ VALIDAR SE A ESPECIE É A MESMA, SE NAO FORR NAO DEIXAR ADICIONARS
   vaIdMatriz := LinkComboMatriz.BindList.GetSelectedValue.AsString.ToInteger;
 
   qLote_MatrizID_MATRIZ.AsInteger := vaIdMatriz; // frmPrincipal.qMatrizID.AsInteger;
@@ -150,24 +151,16 @@ begin
     end;
 end;
 
-procedure TfrmLote.pprAfterSalvar;
+procedure TfrmLote.pprExecutarSalvar;
 begin
   inherited;
-  // qLote_Matriz.First;
-  // while not qLote_Matriz.Eof do
-  // begin
-  // qLote_Matriz.Edit;
-  // qLote_MatrizID_LOTE.AsInteger := qLoteID.AsInteger;
-  // qLote_Matriz.Post;
-  //
-  // qLote_Matriz.Next;
-  // end;
-  //
-  // if qLote_Matriz.ChangeCount > 0 then
-  // begin
-  // qLote_Matriz.ApplyUpdates(0);
-  // qLote_Matriz.CommitUpdates;
-  // end;
+  if qLote_Matriz.State in [dsEdit,dsInsert] then
+    qLote_Matriz.Post;
+
+  //Esse schemaAdapter serve para fazer o commitUpdates de uma so vez tanto no Master como no Detail
+  //e tbm já atualiza as chaves no detail para o novo valor gerado no master.
+  //Para melhores explicações procurar por Centralized Cache Updates na documentação do FireDac
+  SchemaAdapter.ApplyUpdates(0);
 
 end;
 
@@ -210,32 +203,6 @@ begin
   qLoteDATA.AsDateTime := now;
 
   qLote_Matriz.Open;
-end;
-
-procedure TfrmLote.ppuSalvar;
-begin
-  // nao chamar o inherited;
-  qLote.DisableControls;
-  try
-    pprBeforeSalvar;
-    SchemaAdapter.ApplyUpdates(0);
-
-    pprAfterSalvar;
-
-    if Assigned(OnSalvar) then
-      OnSalvar();
-  finally
-    qLote.EnableControls;
-  end;
-end;
-
-procedure TfrmLote.qLoteCalcFields(DataSet: TDataSet);
-begin
-  inherited;
-  if qLoteID.IsNull then
-    qLoteID_TEMP.AsInteger := coIDTemporario
-  else
-    qLoteID_TEMP.AsInteger := qLoteID.AsInteger;
 end;
 
 end.

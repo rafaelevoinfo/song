@@ -571,7 +571,7 @@ inherited frmLote: TfrmLote
     object GridPanel: TGridPanelLayout
       Align = Top
       Size.Width = 640.000000000000000000
-      Size.Height = 102.000000000000000000
+      Size.Height = 145.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       ColumnCollection = <
@@ -611,9 +611,23 @@ inherited frmLote: TfrmLote
           Column = 1
           Control = EditData
           Row = 2
+        end
+        item
+          Column = 0
+          Control = lbMatrizes
+          Row = 3
+        end
+        item
+          Column = 1
+          Control = recMatriz
+          Row = 3
         end>
       ExpandStyle = FixedSize
       RowCollection = <
+        item
+          SizeStyle = Absolute
+          Value = 35.000000000000000000
+        end
         item
           SizeStyle = Absolute
           Value = 35.000000000000000000
@@ -684,62 +698,63 @@ inherited frmLote: TfrmLote
         Size.PlatformDefault = False
         TabOrder = 5
       end
-    end
-    object recMatriz: TRectangle
-      Align = Top
-      Fill.Color = claNull
-      Position.Y = 102.000000000000000000
-      Size.Width = 640.000000000000000000
-      Size.Height = 43.000000000000000000
-      Size.PlatformDefault = False
-      Stroke.Thickness = 0.000000000000000000
-      object Label1: TLabel
+      object lbMatrizes: TLabel
         Align = Left
+        Anchors = []
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
+        Position.Y = 105.000000000000000000
         Size.Width = 165.000000000000000000
-        Size.Height = 43.000000000000000000
+        Size.Height = 35.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         Text = 'Matrizes'
       end
-      object btnAddMatriz: TButton
-        StyleName = 'btnImgCentroStyle'
-        Action = Ac_Adicionar_Matriz
-        Align = Right
-        Enabled = True
-        Images = frmPrincipal.ImageList1
-        ImageIndex = 4
-        Position.X = 552.000000000000000000
-        Size.Width = 40.000000000000000000
-        Size.Height = 43.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 1
-        TintColor = x00808080
-        Visible = True
-      end
-      object cbMatriz: TComboBox
+      object recMatriz: TRectangle
         Align = Client
-        Margins.Top = 5.000000000000000000
-        Size.Width = 387.000000000000000000
-        Size.Height = 32.000000000000000000
+        Fill.Color = claNull
+        Size.Width = 475.423339843750000000
+        Size.Height = 35.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 2
-      end
-      object btnVincularMatriz: TButton
-        Action = Ac_Vincular_Matriz
-        Align = Right
-        Enabled = True
-        Images = frmPrincipal.ImageList1
-        ImageIndex = -1
-        Position.X = 592.000000000000000000
-        Size.Width = 48.000000000000000000
-        Size.Height = 48.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'donetoolbutton'
-        TabOrder = 3
-        TintColor = x00808080
-        Visible = True
+        Stroke.Thickness = 0.000000000000000000
+        object btnAddMatriz: TButton
+          StyleName = 'btnImgCentroStyle'
+          Action = Ac_Adicionar_Matriz
+          Align = Right
+          Enabled = True
+          Images = frmPrincipal.ImageList1
+          ImageIndex = 4
+          Position.X = 387.423339843750000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 35.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          TintColor = x00808080
+          Visible = True
+        end
+        object cbMatriz: TComboBox
+          Align = Client
+          Margins.Top = 5.000000000000000000
+          Size.Width = 387.423339843750000000
+          Size.Height = 32.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+        end
+        object btnVincularMatriz: TButton
+          Action = Ac_Vincular_Matriz
+          Align = Right
+          Enabled = True
+          Images = frmPrincipal.ImageList1
+          ImageIndex = -1
+          Position.X = 427.423339843750000000
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'donetoolbutton'
+          TabOrder = 3
+          TintColor = x00808080
+          Visible = True
+        end
       end
     end
     object lvMatrizes: TListView
@@ -797,9 +812,9 @@ inherited frmLote: TfrmLote
     Top = 328
   end
   object qLote: TRFQuery
-    OnCalcFields = qLoteCalcFields
     CachedUpdates = True
     Connection = dmPrincipal.Connection
+    SchemaAdapter = SchemaAdapter
     SQL.Strings = (
       'Select Lote.Id,'
       '       Lote.Nome,'
@@ -845,12 +860,6 @@ inherited frmLote: TfrmLote
       Origin = 'DATA'
       ProviderFlags = [pfInUpdate]
       Required = True
-    end
-    object qLoteID_TEMP: TIntegerField
-      FieldKind = fkCalculated
-      FieldName = 'ID_TEMP'
-      ProviderFlags = []
-      Calculated = True
     end
   end
   object BindSourceLote: TBindSourceDB

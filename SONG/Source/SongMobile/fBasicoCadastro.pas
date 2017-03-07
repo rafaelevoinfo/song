@@ -10,7 +10,7 @@ uses
   System.Actions, FMX.ActnList, Data.DB, FMX.Objects, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, FMX.Edit;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, uQuery, FMX.Edit, uClientDataSet;
 
 type
   TfrmBasicoCadastro = class(TfrmBasico)
@@ -42,6 +42,7 @@ type
 
     procedure pprBeforeSalvar; virtual;
     procedure pprAfterSalvar; virtual;
+    procedure pprExecutarSalvar; virtual;
     { Private declarations }
   public
     property OnSalvar: TProc read FOnSalvar write SetOnSalvar;
@@ -61,7 +62,7 @@ implementation
 procedure TfrmBasicoCadastro.Ac_SalvarUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and (dsPrincipal.DataSet.State in [dsEdit, dsInsert]);
+  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and ((dsPrincipal.DataSet.State in [dsEdit, dsInsert]) or (TRFClientDataSet(dsPrincipal.DataSet).changeCount > 0));
 end;
 
 procedure TfrmBasicoCadastro.FormCreate(Sender: TObject);
@@ -110,11 +111,16 @@ begin
 
 end;
 
+procedure TfrmBasicoCadastro.pprExecutarSalvar;
+begin
+  if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
+    dsPrincipal.DataSet.Post;
+end;
+
 procedure TfrmBasicoCadastro.ppuSalvar;
 begin
   pprBeforeSalvar;
-  if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
-    dsPrincipal.DataSet.Post;
+  pprExecutarSalvar;
   pprAfterSalvar;
 
   if Assigned(FOnSalvar) then

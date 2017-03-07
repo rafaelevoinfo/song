@@ -47,6 +47,7 @@ type
   private
     procedure ppvSincronizarEspecies(ipDataUltimoSincronismo: TDateTime);
     procedure ppvSincronizarMatrizes(ipDataUltimoSincronismo: TDateTime);
+    procedure ppvSincronizarLotes(ipDataUltimoSincronismo: TDateTime);
     { Private declarations }
   public
     { Public declarations }
@@ -84,12 +85,22 @@ end;
 procedure TfrmSincronizacao.btnSincronizarClick(Sender: TObject);
 begin
   inherited;
+  lbiEspecies.ItemData.Accessory := aNone;
+  lbiMatrizes.ItemData.Accessory := aNone;
+  lbiLotes.ItemData.Accessory := aNone;
+
   try
     dmPrincipal.ppuAbrirConfig;
     dmPrincipal.ppuConectarServidor;
 
     ppvSincronizarEspecies(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
+    lbiEspecies.ItemData.Accessory := aCheckmark;
+
     ppvSincronizarMatrizes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
+    lbiMatrizes.ItemData.Accessory := aCheckmark;
+
+    ppvSincronizarLotes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
+    lbiMatrizes.ItemData.Accessory := aCheckmark;
 
     if dmPrincipal.qConfig.Eof then
       dmPrincipal.qConfig.Append
@@ -158,6 +169,11 @@ begin
             end;
         end;
     end;
+end;
+
+procedure TfrmSincronizacao.ppvSincronizarLotes(ipDataUltimoSincronismo: TDateTime);
+begin
+
 end;
 
 procedure TfrmSincronizacao.ppvSincronizarMatrizes(ipDataUltimoSincronismo: TDateTime);
