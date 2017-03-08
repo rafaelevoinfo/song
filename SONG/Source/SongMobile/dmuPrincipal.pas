@@ -28,16 +28,21 @@ type
     qConfigHOST_SERVIDOR_EXTERNO: TWideStringField;
     qConfigHOST_SERVIDOR_INTERNO: TWideStringField;
     qConfigID_APARELHO: TIntegerField;
+    qConfigLOGIN: TStringField;
+    qConfigSENHA: TStringField;
     procedure ConnectionBeforeConnect(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
     procedure SongServerConAfterConnect(Sender: TObject);
     procedure SongServerConAfterDisconnect(Sender: TObject);
   private
     FFuncoesViveiro: TSMFuncoesViveiroClient;
+    FFuncoesSistema: TSMfuncoesSistemaClient;
 
     { Private declarations }
   public
     property FuncoesViveiro: TSMFuncoesViveiroClient read FFuncoesViveiro;
+    property FuncoesSistema: TSMfuncoesSistemaClient read FFuncoesSistema;
+
     procedure ppuAbrirConfig;
     procedure ppuConectarServidor;
   end;
@@ -80,12 +85,15 @@ begin
   try
     SongServerCon.Open;
   except
-     SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
-     try
-       SongServerCon.Open;
-     except
+    SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
+    SongServerCon.Params.Values['Port'] := '3004';
+    SongServerCon.Params.Values['DSAuthenticationUser'] := qConfigLOGIN.AsString;
+    SongServerCon.Params.Values['DSAuthenticationPassword'] := qConfigSENHA.AsString;
+    try
+      SongServerCon.Open;
+    except
       raise Exception.Create('Não foi possível conectar ao servidor.');
-     end;
+    end;
   end;
 
   SongServerCon.Params.Delete(SongServerCon.Params.IndexOfName('ConnectTimeout'));
@@ -94,6 +102,7 @@ end;
 procedure TdmPrincipal.SongServerConAfterConnect(Sender: TObject);
 begin
   FFuncoesViveiro := TSMFuncoesViveiroClient.Create(SongServerCon.DBXConnection);
+  FFuncoesSistema := TSMfuncoesSistemaClient.Create(SongServerCon.DBXConnection);
 end;
 
 procedure TdmPrincipal.SongServerConAfterDisconnect(Sender: TObject);
@@ -101,6 +110,11 @@ begin
   if Assigned(FFuncoesViveiro) then
     begin
       FreeAndNil(FFuncoesViveiro);
+    end;
+
+  if Assigned(FFuncoesSistema) then
+    begin
+      FreeAndNil(FFuncoesSistema);
     end;
 end;
 

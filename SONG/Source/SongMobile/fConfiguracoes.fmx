@@ -5,7 +5,7 @@ inherited frmConfiguracoes: TfrmConfiguracoes
     Left = 256
     Top = 80
   end
-  object ListBox1: TListBox [4]
+  object lbxConfiguracoes: TListBox [4]
     Align = Client
     Size.Width = 640.000000000000000000
     Size.Height = 432.000000000000000000
@@ -58,6 +58,69 @@ inherited frmConfiguracoes: TfrmConfiguracoes
         Size.PlatformDefault = False
       end
     end
+    object ListBoxGroupHeader3: TListBoxGroupHeader
+      Position.Y = 148.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Login de Acesso ao SONG'
+    end
+    object ListBoxItem3: TListBoxItem
+      Position.Y = 178.000000000000000000
+      TabOrder = 5
+      object EditLogin: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 0
+        Margins.Left = 20.000000000000000000
+        Size.Width = 620.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        TextPrompt = 'Login'
+      end
+    end
+    object ListBoxItem4: TListBoxItem
+      Position.Y = 222.000000000000000000
+      TabOrder = 6
+      object EditSenha: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Client
+        TabOrder = 0
+        Margins.Left = 20.000000000000000000
+        Size.Width = 620.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        TextPrompt = 'Senha'
+        OnChange = EditSenhaChange
+      end
+    end
+    object ListBoxGroupHeader4: TListBoxGroupHeader
+      Position.Y = 266.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      Text = 'Identifica'#231#227'o do Aparelho'
+    end
+    object ListBoxItem5: TListBoxItem
+      Position.Y = 296.000000000000000000
+      TabOrder = 8
+      object lbIdAparelho: TLabel
+        Align = Center
+        Text = 'lbIdAparelho'
+        Visible = False
+      end
+      object btnRegistrarAparelho: TButton
+        Align = Center
+        Size.Width = 142.000000000000000000
+        Size.Height = 44.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Registrar'
+        OnClick = btnRegistrarAparelhoClick
+      end
+    end
   end
   inherited ActionList1: TActionList
     inherited Ac_Salvar: TAction
@@ -101,6 +164,20 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       DataSource = BindSource
       FieldName = 'HOST_SERVIDOR_INTERNO'
       Control = EditEnderecoInterno
+      Track = False
+    end
+    object LinkPropertyToFieldText: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSource
+      FieldName = 'ID_APARELHO'
+      Component = lbIdAparelho
+      ComponentProperty = 'Text'
+    end
+    object LinkControlToField3: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSource
+      FieldName = 'LOGIN'
+      Control = EditLogin
       Track = False
     end
   end

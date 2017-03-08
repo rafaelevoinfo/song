@@ -85,22 +85,25 @@ end;
 procedure TfrmSincronizacao.btnSincronizarClick(Sender: TObject);
 begin
   inherited;
-  lbiEspecies.ItemData.Accessory := aNone;
-  lbiMatrizes.ItemData.Accessory := aNone;
-  lbiLotes.ItemData.Accessory := aNone;
+  lbiEspecies.ItemData.Accessory := TListBoxItemData.TAccessory.aNone;
+  lbiMatrizes.ItemData.Accessory := TListBoxItemData.TAccessory.aNone;
+  lbiLotes.ItemData.Accessory := TListBoxItemData.TAccessory.aNone;
 
   try
     dmPrincipal.ppuAbrirConfig;
+    if dmPrincipal.qConfigID_APARELHO.IsNull then
+      raise Exception.Create('É necessário registrar o aparelho antes de qualquer sincronização.');
+
     dmPrincipal.ppuConectarServidor;
 
     ppvSincronizarEspecies(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
-    lbiEspecies.ItemData.Accessory := aCheckmark;
+    lbiEspecies.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
 
     ppvSincronizarMatrizes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
-    lbiMatrizes.ItemData.Accessory := aCheckmark;
+    lbiMatrizes.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
 
     ppvSincronizarLotes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
-    lbiMatrizes.ItemData.Accessory := aCheckmark;
+    lbiMatrizes.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
 
     if dmPrincipal.qConfig.Eof then
       dmPrincipal.qConfig.Append

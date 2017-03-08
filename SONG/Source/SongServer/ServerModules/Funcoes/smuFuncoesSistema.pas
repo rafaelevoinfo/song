@@ -31,7 +31,10 @@ type
     /// ipTipo - Tipo da Notificação a ser verificada. Informe -1 para verificar todas.
     function fpuVerificarNotificacoes(ipId, ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
       : TadsObjectlist<TNotificacao>;
+
     procedure ppuCriarAgendaPessoal(ipIdPessoa: integer);
+
+    function fpuRegistrarAparelhoExterno(ipNome, ipIMEI: String): integer;
   end;
 
 var
@@ -54,7 +57,7 @@ begin
       if (ipDataSetNoficiacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
         (ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString <> '') then
         begin
-          ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString,'',nil);
+          ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString, '', nil);
         end;
       ipDataSetNoficiacaoPessoa.next;
     end;
@@ -80,7 +83,7 @@ var
             if (qNotificacao_Pessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
               (qNotificacao_Pessoa.FieldByName('Email').AsString <> '') then
               begin
-                ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, qNotificacao_Pessoa.FieldByName('Email').AsString,'',nil);
+                ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, qNotificacao_Pessoa.FieldByName('Email').AsString, '', nil);
               end;
             qNotificacao_Pessoa.next;
           end;
@@ -772,7 +775,7 @@ begin
                         // se for o server q estiver solicitanto o envio de email eu irei enviar somente os eventos das agendas
                         // publicas e da propria agenda pessoal
                         if (ipIdPessoa <> -1) or (not vaDataSetAgendaPessoa.Eof) then
-                          ppuEnviarEmail(TiposNotificacao[tnEventoAgenda], vaMsg, ipDataSetNotificacaoPessoa.FieldByName('Email').AsString,'',nil);
+                          ppuEnviarEmail(TiposNotificacao[tnEventoAgenda], vaMsg, ipDataSetNotificacaoPessoa.FieldByName('Email').AsString, '', nil);
                       end;
                     ipDataSetNotificacaoPessoa.next;
                   end;
@@ -829,6 +832,33 @@ begin
         end;
 
     end);
+end;
+
+function TsmFuncoesSistema.fpuRegistrarAparelhoExterno(ipNome, ipIMEI: String): integer;
+var
+  vaId: integer;
+begin
+  pprEncapsularConsulta(
+    procedure(ipDataSet: TRFQuery)
+    begin
+      ipDataSet.SQL.Text := 'select Aparelho_externo.Id,' +
+        '       Aparelho_externo.Nome,' +
+        '       Aparelho_externo.Serial' +
+        ' from Aparelho_externo  ' +
+        ' where aparelho_externo.serial = :SERIAL';
+      ipDataSet.ParamByName('SERIAL').AsString := ipIMEI;
+      ipDataSet.Open();
+      if not ipDataSet.Eof then
+        vaId := ipDataSet.FieldByName('ID').AsInteger
+      else
+        begin
+          vaId := fpuGetId('APARELHO_EXTERNO');
+          Connection.ExecSQL('insert into aparelho_externo values (:ID,:NOME, :SERIAL)', [vaId, ipNome, ipIMEI]);
+          if Connection.InTransaction then
+            Connection.Commit;
+        end;
+    end);
+  Result := vaId;
 end;
 
 function TsmFuncoesSistema.fpuValidarTipoNotificacao(ipIdNotificacao,

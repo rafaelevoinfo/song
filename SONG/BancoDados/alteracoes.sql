@@ -71,3 +71,9 @@ Ex.:
 
 
 
+
+
+COMMENT ON COLUMN APARELHO_EXTERNO.SERIAL IS
+'Serial do aparelho que estiver conectando.
+Se for um Smarphone o Serial sera o IMEI do smartphone';
+

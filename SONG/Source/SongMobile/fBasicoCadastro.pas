@@ -62,7 +62,8 @@ implementation
 procedure TfrmBasicoCadastro.Ac_SalvarUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and ((dsPrincipal.DataSet.State in [dsEdit, dsInsert]) or (TRFClientDataSet(dsPrincipal.DataSet).changeCount > 0));
+  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and
+    ((dsPrincipal.DataSet.State in [dsEdit, dsInsert]) or (TRFClientDataSet(dsPrincipal.DataSet).changeCount > 0));
 end;
 
 procedure TfrmBasicoCadastro.FormCreate(Sender: TObject);
@@ -87,8 +88,11 @@ begin
 end;
 
 procedure TfrmBasicoCadastro.pprBeforeSalvar;
+var
+  vaMsgErro:String;
 begin
-  //
+  if not fprValidarDados(vaMsgErro) then
+    raise Exception.Create('Não foi possível salvar. Detalhes:' + vaMsgErro);
 end;
 
 procedure TfrmBasicoCadastro.ppuAlterar(ipId: Integer);
@@ -174,17 +178,10 @@ begin
 end;
 
 procedure TfrmBasicoCadastro.Ac_SalvarExecute(Sender: TObject);
-var
-  vaMsgErro: String;
 begin
   try
-    if fprValidarDados(vaMsgErro) then
-      begin
-        ppuSalvar;
-        Close;
-      end
-    else
-      showMessage('Não foi possível salvar. Detalhes:' + vaMsgErro);
+    ppuSalvar;
+    Close;
   except
     on e: Exception do
       showMessage('Não foi possível salvar. Detalhes:' + slineBreak + e.Message);

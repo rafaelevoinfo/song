@@ -1,13 +1,14 @@
 //
 // Created by the DataSnap proxy generator.
-// 28/02/2017 18:07:05
+// 08/03/2017 00:05:02
 //
 
 unit uFuncoes;
 
 interface
 
-uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, aduna_ds_list, Data.DBXJSONReflect, uTypes;
+uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, aduna_ds_list, Data.DBXJSONReflect,
+  uTypes;
 
 type
   TsmFuncoesViveiroClient = class(TDSAdminClient)
@@ -29,6 +30,7 @@ type
     FfpuVerificarLoteMudaExisteCommand: TDBXCommand;
     FfpuSincronizarEspeciesCommand: TDBXCommand;
     FfpuSincronizarMatrizesCommand: TDBXCommand;
+    FppuSincronizarLotesCommand: TDBXCommand;
     FppuCadastrarLotesCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
@@ -57,7 +59,36 @@ type
     function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: string): string;
     function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): TadsObjectlist<uTypes.TMatriz>;
+    procedure ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<uTypes.TLote>);
     procedure ppuCadastrarLotes(ipJsonLotes: string);
+    function fpuGetId(ipTabela: string): Integer;
+    function fpuDataHoraAtual: string;
+    function fpuTestarConexao: Boolean;
+    function fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+    procedure ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+    procedure DSServerModuleCreate(Sender: TObject);
+  end;
+
+  TsmFuncoesSistemaClient = class(TDSAdminClient)
+  private
+    FfpuValidarTipoNotificacaoCommand: TDBXCommand;
+    FfpuVerificarNotificacoesCommand: TDBXCommand;
+    FppuCriarAgendaPessoalCommand: TDBXCommand;
+    FfpuRegistrarAparelhoExternoCommand: TDBXCommand;
+    FfpuGetIdCommand: TDBXCommand;
+    FfpuDataHoraAtualCommand: TDBXCommand;
+    FfpuTestarConexaoCommand: TDBXCommand;
+    FfpuVerificarAlteracaoCommand: TDBXCommand;
+    FppuEnviarEmailCommand: TDBXCommand;
+    FDSServerModuleCreateCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean;
+    function fpuVerificarNotificacoes(ipId: Integer; ipIdPessoa: Integer; ipTipo: Integer; ipNotificacaoEmail: Boolean; ipNotificacaoSistema: Boolean): TadsObjectlist<uTypes.TNotificacao>;
+    procedure ppuCriarAgendaPessoal(ipIdPessoa: Integer);
+    function fpuRegistrarAparelhoExterno(ipNome: string; ipIMEI: string): Integer;
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     function fpuTestarConexao: Boolean;
@@ -346,6 +377,32 @@ begin
     Result := nil;
 end;
 
+procedure TsmFuncoesViveiroClient.ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<uTypes.TLote>);
+begin
+  if FppuSincronizarLotesCommand = nil then
+  begin
+    FppuSincronizarLotesCommand := FDBXConnection.CreateCommand;
+    FppuSincronizarLotesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuSincronizarLotesCommand.Text := 'TsmFuncoesViveiro.ppuSincronizarLotes';
+    FppuSincronizarLotesCommand.Prepare;
+  end;
+  FppuSincronizarLotesCommand.Parameters[0].Value.SetWideString(ipDataUltimaSincronizacao);
+  if not Assigned(ipLotes) then
+    FppuSincronizarLotesCommand.Parameters[1].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FppuSincronizarLotesCommand.Parameters[1].ConnectionHandler).GetJSONMarshaler;
+    try
+      FppuSincronizarLotesCommand.Parameters[1].Value.SetJSONValue(FMarshal.Marshal(ipLotes), True);
+      if FInstanceOwner then
+        ipLotes.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FppuSincronizarLotesCommand.ExecuteUpdate;
+end;
+
 procedure TsmFuncoesViveiroClient.ppuCadastrarLotes(ipJsonLotes: string);
 begin
   if FppuCadastrarLotesCommand = nil then
@@ -488,7 +545,206 @@ begin
   FfpuVerificarLoteMudaExisteCommand.DisposeOf;
   FfpuSincronizarEspeciesCommand.DisposeOf;
   FfpuSincronizarMatrizesCommand.DisposeOf;
+  FppuSincronizarLotesCommand.DisposeOf;
   FppuCadastrarLotesCommand.DisposeOf;
+  FfpuGetIdCommand.DisposeOf;
+  FfpuDataHoraAtualCommand.DisposeOf;
+  FfpuTestarConexaoCommand.DisposeOf;
+  FfpuVerificarAlteracaoCommand.DisposeOf;
+  FppuEnviarEmailCommand.DisposeOf;
+  FDSServerModuleCreateCommand.DisposeOf;
+  inherited;
+end;
+
+function TsmFuncoesSistemaClient.fpuValidarTipoNotificacao(ipIdNotificacao: Integer; ipTipo: Integer): Boolean;
+begin
+  if FfpuValidarTipoNotificacaoCommand = nil then
+  begin
+    FfpuValidarTipoNotificacaoCommand := FDBXConnection.CreateCommand;
+    FfpuValidarTipoNotificacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuValidarTipoNotificacaoCommand.Text := 'TsmFuncoesSistema.fpuValidarTipoNotificacao';
+    FfpuValidarTipoNotificacaoCommand.Prepare;
+  end;
+  FfpuValidarTipoNotificacaoCommand.Parameters[0].Value.SetInt32(ipIdNotificacao);
+  FfpuValidarTipoNotificacaoCommand.Parameters[1].Value.SetInt32(ipTipo);
+  FfpuValidarTipoNotificacaoCommand.ExecuteUpdate;
+  Result := FfpuValidarTipoNotificacaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TsmFuncoesSistemaClient.fpuVerificarNotificacoes(ipId: Integer; ipIdPessoa: Integer; ipTipo: Integer; ipNotificacaoEmail: Boolean; ipNotificacaoSistema: Boolean): TadsObjectlist<uTypes.TNotificacao>;
+begin
+  if FfpuVerificarNotificacoesCommand = nil then
+  begin
+    FfpuVerificarNotificacoesCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarNotificacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarNotificacoesCommand.Text := 'TsmFuncoesSistema.fpuVerificarNotificacoes';
+    FfpuVerificarNotificacoesCommand.Prepare;
+  end;
+  FfpuVerificarNotificacoesCommand.Parameters[0].Value.SetInt32(ipId);
+  FfpuVerificarNotificacoesCommand.Parameters[1].Value.SetInt32(ipIdPessoa);
+  FfpuVerificarNotificacoesCommand.Parameters[2].Value.SetInt32(ipTipo);
+  FfpuVerificarNotificacoesCommand.Parameters[3].Value.SetBoolean(ipNotificacaoEmail);
+  FfpuVerificarNotificacoesCommand.Parameters[4].Value.SetBoolean(ipNotificacaoSistema);
+  FfpuVerificarNotificacoesCommand.ExecuteUpdate;
+  if not FfpuVerificarNotificacoesCommand.Parameters[5].Value.IsNull then
+  begin
+    FUnMarshal := TDBXClientCommand(FfpuVerificarNotificacoesCommand.Parameters[5].ConnectionHandler).GetJSONUnMarshaler;
+    try
+      Result := TadsObjectlist<uTypes.TNotificacao>(FUnMarshal.UnMarshal(FfpuVerificarNotificacoesCommand.Parameters[5].Value.GetJSONValue(True)));
+      if FInstanceOwner then
+        FfpuVerificarNotificacoesCommand.FreeOnExecute(Result);
+    finally
+      FreeAndNil(FUnMarshal)
+    end
+  end
+  else
+    Result := nil;
+end;
+
+procedure TsmFuncoesSistemaClient.ppuCriarAgendaPessoal(ipIdPessoa: Integer);
+begin
+  if FppuCriarAgendaPessoalCommand = nil then
+  begin
+    FppuCriarAgendaPessoalCommand := FDBXConnection.CreateCommand;
+    FppuCriarAgendaPessoalCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuCriarAgendaPessoalCommand.Text := 'TsmFuncoesSistema.ppuCriarAgendaPessoal';
+    FppuCriarAgendaPessoalCommand.Prepare;
+  end;
+  FppuCriarAgendaPessoalCommand.Parameters[0].Value.SetInt32(ipIdPessoa);
+  FppuCriarAgendaPessoalCommand.ExecuteUpdate;
+end;
+
+function TsmFuncoesSistemaClient.fpuRegistrarAparelhoExterno(ipNome: string; ipIMEI: string): Integer;
+begin
+  if FfpuRegistrarAparelhoExternoCommand = nil then
+  begin
+    FfpuRegistrarAparelhoExternoCommand := FDBXConnection.CreateCommand;
+    FfpuRegistrarAparelhoExternoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuRegistrarAparelhoExternoCommand.Text := 'TsmFuncoesSistema.fpuRegistrarAparelhoExterno';
+    FfpuRegistrarAparelhoExternoCommand.Prepare;
+  end;
+  FfpuRegistrarAparelhoExternoCommand.Parameters[0].Value.SetWideString(ipNome);
+  FfpuRegistrarAparelhoExternoCommand.Parameters[1].Value.SetWideString(ipIMEI);
+  FfpuRegistrarAparelhoExternoCommand.ExecuteUpdate;
+  Result := FfpuRegistrarAparelhoExternoCommand.Parameters[2].Value.GetInt32;
+end;
+
+function TsmFuncoesSistemaClient.fpuGetId(ipTabela: string): Integer;
+begin
+  if FfpuGetIdCommand = nil then
+  begin
+    FfpuGetIdCommand := FDBXConnection.CreateCommand;
+    FfpuGetIdCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuGetIdCommand.Text := 'TsmFuncoesSistema.fpuGetId';
+    FfpuGetIdCommand.Prepare;
+  end;
+  FfpuGetIdCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuGetIdCommand.ExecuteUpdate;
+  Result := FfpuGetIdCommand.Parameters[1].Value.GetInt32;
+end;
+
+function TsmFuncoesSistemaClient.fpuDataHoraAtual: string;
+begin
+  if FfpuDataHoraAtualCommand = nil then
+  begin
+    FfpuDataHoraAtualCommand := FDBXConnection.CreateCommand;
+    FfpuDataHoraAtualCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuDataHoraAtualCommand.Text := 'TsmFuncoesSistema.fpuDataHoraAtual';
+    FfpuDataHoraAtualCommand.Prepare;
+  end;
+  FfpuDataHoraAtualCommand.ExecuteUpdate;
+  Result := FfpuDataHoraAtualCommand.Parameters[0].Value.GetWideString;
+end;
+
+function TsmFuncoesSistemaClient.fpuTestarConexao: Boolean;
+begin
+  if FfpuTestarConexaoCommand = nil then
+  begin
+    FfpuTestarConexaoCommand := FDBXConnection.CreateCommand;
+    FfpuTestarConexaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuTestarConexaoCommand.Text := 'TsmFuncoesSistema.fpuTestarConexao';
+    FfpuTestarConexaoCommand.Prepare;
+  end;
+  FfpuTestarConexaoCommand.ExecuteUpdate;
+  Result := FfpuTestarConexaoCommand.Parameters[0].Value.GetBoolean;
+end;
+
+function TsmFuncoesSistemaClient.fpuVerificarAlteracao(ipTabela: string; ipUltimaSincronizacao: string): Boolean;
+begin
+  if FfpuVerificarAlteracaoCommand = nil then
+  begin
+    FfpuVerificarAlteracaoCommand := FDBXConnection.CreateCommand;
+    FfpuVerificarAlteracaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FfpuVerificarAlteracaoCommand.Text := 'TsmFuncoesSistema.fpuVerificarAlteracao';
+    FfpuVerificarAlteracaoCommand.Prepare;
+  end;
+  FfpuVerificarAlteracaoCommand.Parameters[0].Value.SetWideString(ipTabela);
+  FfpuVerificarAlteracaoCommand.Parameters[1].Value.SetWideString(ipUltimaSincronizacao);
+  FfpuVerificarAlteracaoCommand.ExecuteUpdate;
+  Result := FfpuVerificarAlteracaoCommand.Parameters[2].Value.GetBoolean;
+end;
+
+procedure TsmFuncoesSistemaClient.ppuEnviarEmail(ipAssunto: string; ipMsg: string; ipDestinatario: string; ipNomeAnexo: string; ipAnexo: TStream);
+begin
+  if FppuEnviarEmailCommand = nil then
+  begin
+    FppuEnviarEmailCommand := FDBXConnection.CreateCommand;
+    FppuEnviarEmailCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FppuEnviarEmailCommand.Text := 'TsmFuncoesSistema.ppuEnviarEmail';
+    FppuEnviarEmailCommand.Prepare;
+  end;
+  FppuEnviarEmailCommand.Parameters[0].Value.SetWideString(ipAssunto);
+  FppuEnviarEmailCommand.Parameters[1].Value.SetWideString(ipMsg);
+  FppuEnviarEmailCommand.Parameters[2].Value.SetWideString(ipDestinatario);
+  FppuEnviarEmailCommand.Parameters[3].Value.SetWideString(ipNomeAnexo);
+  FppuEnviarEmailCommand.Parameters[4].Value.SetStream(ipAnexo, FInstanceOwner);
+  FppuEnviarEmailCommand.ExecuteUpdate;
+end;
+
+procedure TsmFuncoesSistemaClient.DSServerModuleCreate(Sender: TObject);
+begin
+  if FDSServerModuleCreateCommand = nil then
+  begin
+    FDSServerModuleCreateCommand := FDBXConnection.CreateCommand;
+    FDSServerModuleCreateCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDSServerModuleCreateCommand.Text := 'TsmFuncoesSistema.DSServerModuleCreate';
+    FDSServerModuleCreateCommand.Prepare;
+  end;
+  if not Assigned(Sender) then
+    FDSServerModuleCreateCommand.Parameters[0].Value.SetNull
+  else
+  begin
+    FMarshal := TDBXClientCommand(FDSServerModuleCreateCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
+    try
+      FDSServerModuleCreateCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(Sender), True);
+      if FInstanceOwner then
+        Sender.Free
+    finally
+      FreeAndNil(FMarshal)
+    end
+    end;
+  FDSServerModuleCreateCommand.ExecuteUpdate;
+end;
+
+
+constructor TsmFuncoesSistemaClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+
+constructor TsmFuncoesSistemaClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+
+destructor TsmFuncoesSistemaClient.Destroy;
+begin
+  FfpuValidarTipoNotificacaoCommand.DisposeOf;
+  FfpuVerificarNotificacoesCommand.DisposeOf;
+  FppuCriarAgendaPessoalCommand.DisposeOf;
+  FfpuRegistrarAparelhoExternoCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

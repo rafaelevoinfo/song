@@ -188,16 +188,22 @@ type
     FData: TDateTime;
     FQtde: Double;
     FIdItemCompra: Integer;
+    FMatrizes: TadsObjectlist<TMatriz>;
+    FIdColeta: String;
     procedure SetData(const Value: TDateTime);
     procedure SetIdEspecie(const Value: Integer);
     procedure SetNome(const Value: string);
     procedure SetQtde(const Value: Double);
     procedure SetIdItemCompra(const Value: Integer);
+    procedure SetMatrizes(const Value: TadsObjectlist<TMatriz>);
+    procedure SetIdColeta(const Value: String);
   public
+    property IdColeta:String read FIdColeta write SetIdColeta;
     property Nome: string read FNome write SetNome;
     property Data: TDateTime read FData write SetData;
     property IdEspecie: Integer read FIdEspecie write SetIdEspecie;
     property Qtde: Double read FQtde write SetQtde;
+    property Matrizes:TadsObjectlist<TMatriz> read FMatrizes write SetMatrizes;
 
     property IdItemCompra: Integer read FIdItemCompra write SetIdItemCompra;
   end;
@@ -373,6 +379,16 @@ end;
 procedure TLote.SetIdItemCompra(const Value: Integer);
 begin
   FIdItemCompra := Value;
+end;
+
+procedure TLote.SetMatrizes(const Value: TadsObjectlist<TMatriz>);
+begin
+  FMatrizes := Value;
+end;
+
+procedure TLote.SetIdColeta(const Value: String);
+begin
+  FIdColeta := Value;
 end;
 
 procedure TLote.SetIdEspecie(const Value: Integer);

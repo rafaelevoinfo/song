@@ -10,6 +10,7 @@ object dmPrincipal: TdmPrincipal
         '.db'
       'DriverID=SQLite')
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
     Left = 48
@@ -50,7 +51,7 @@ object dmPrincipal: TdmPrincipal
     Top = 128
   end
   object ProxyGenerator: TDSProxyGenerator
-    IncludeClasses = 'TSMFuncoesViveiro'
+    IncludeClasses = 'TSMFuncoesViveiro;TSMFuncoesSistema'
     MetaDataProvider = DSConnectionMetaDataProvider1
     TargetUnitName = 'uFuncoes'
     Writer = 'Object Pascal DBX'
@@ -69,7 +70,9 @@ object dmPrincipal: TdmPrincipal
       '       DATA_ULTIMA_SYNC,'
       '       HOST_SERVIDOR_EXTERNO,'
       '       HOST_SERVIDOR_INTERNO,'
-      '       ID_APARELHO'
+      '       ID_APARELHO,'
+      '       LOGIN,'
+      '       SENHA'
       '  FROM CONFIG;')
     Left = 256
     Top = 128
@@ -100,6 +103,18 @@ object dmPrincipal: TdmPrincipal
       FieldName = 'ID_APARELHO'
       Origin = 'ID_APARELHO'
       ProviderFlags = [pfInUpdate]
+    end
+    object qConfigLOGIN: TStringField
+      FieldName = 'LOGIN'
+      Origin = 'LOGIN'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object qConfigSENHA: TStringField
+      FieldName = 'SENHA'
+      Origin = 'SENHA'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
     end
   end
 end
