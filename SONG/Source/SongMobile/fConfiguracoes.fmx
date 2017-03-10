@@ -25,6 +25,7 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       Text = 'Endere'#231'o Externo de Acesso ao SONG Server'
     end
     object ListBoxItem1: TListBoxItem
+      Selectable = False
       Position.Y = 30.000000000000000000
       TabOrder = 1
       object EditEnderecoExterno: TEdit
@@ -46,6 +47,7 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       Text = 'Endere'#231'o Interno de Acesso ao SONG Server'
     end
     object ListBoxItem2: TListBoxItem
+      Selectable = False
       Position.Y = 104.000000000000000000
       TabOrder = 3
       object EditEnderecoInterno: TEdit
@@ -67,6 +69,7 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       Text = 'Login de Acesso ao SONG'
     end
     object ListBoxItem3: TListBoxItem
+      Selectable = False
       Position.Y = 178.000000000000000000
       TabOrder = 5
       object EditLogin: TEdit
@@ -81,6 +84,7 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       end
     end
     object ListBoxItem4: TListBoxItem
+      Selectable = False
       Position.Y = 222.000000000000000000
       TabOrder = 6
       object EditSenha: TEdit
@@ -104,16 +108,23 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       Text = 'Identifica'#231#227'o do Aparelho'
     end
     object ListBoxItem5: TListBoxItem
+      Selectable = False
       Position.Y = 296.000000000000000000
       TabOrder = 8
       object lbIdAparelho: TLabel
         Align = Center
-        Text = 'lbIdAparelho'
+        StyledSettings = [Family, Style, FontColor]
+        Size.Width = 82.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.HorzAlign = Center
+        Text = 'ID_APARELHO'
         Visible = False
       end
       object btnRegistrarAparelho: TButton
         Align = Center
-        Size.Width = 142.000000000000000000
+        Size.Width = 109.000000000000000000
         Size.Height = 44.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1

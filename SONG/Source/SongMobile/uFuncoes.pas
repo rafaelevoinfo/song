@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 08/03/2017 00:05:02
+// 09/03/2017 22:43:28
 //
 
 unit uFuncoes;
@@ -31,7 +31,6 @@ type
     FfpuSincronizarEspeciesCommand: TDBXCommand;
     FfpuSincronizarMatrizesCommand: TDBXCommand;
     FppuSincronizarLotesCommand: TDBXCommand;
-    FppuCadastrarLotesCommand: TDBXCommand;
     FfpuGetIdCommand: TDBXCommand;
     FfpuDataHoraAtualCommand: TDBXCommand;
     FfpuTestarConexaoCommand: TDBXCommand;
@@ -60,7 +59,6 @@ type
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: string): string;
     function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): TadsObjectlist<uTypes.TMatriz>;
     procedure ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<uTypes.TLote>);
-    procedure ppuCadastrarLotes(ipJsonLotes: string);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
     function fpuTestarConexao: Boolean;
@@ -403,19 +401,6 @@ begin
   FppuSincronizarLotesCommand.ExecuteUpdate;
 end;
 
-procedure TsmFuncoesViveiroClient.ppuCadastrarLotes(ipJsonLotes: string);
-begin
-  if FppuCadastrarLotesCommand = nil then
-  begin
-    FppuCadastrarLotesCommand := FDBXConnection.CreateCommand;
-    FppuCadastrarLotesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FppuCadastrarLotesCommand.Text := 'TsmFuncoesViveiro.ppuCadastrarLotes';
-    FppuCadastrarLotesCommand.Prepare;
-  end;
-  FppuCadastrarLotesCommand.Parameters[0].Value.SetWideString(ipJsonLotes);
-  FppuCadastrarLotesCommand.ExecuteUpdate;
-end;
-
 function TsmFuncoesViveiroClient.fpuGetId(ipTabela: string): Integer;
 begin
   if FfpuGetIdCommand = nil then
@@ -546,7 +531,6 @@ begin
   FfpuSincronizarEspeciesCommand.DisposeOf;
   FfpuSincronizarMatrizesCommand.DisposeOf;
   FppuSincronizarLotesCommand.DisposeOf;
-  FppuCadastrarLotesCommand.DisposeOf;
   FfpuGetIdCommand.DisposeOf;
   FfpuDataHoraAtualCommand.DisposeOf;
   FfpuTestarConexaoCommand.DisposeOf;

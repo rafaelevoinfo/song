@@ -293,34 +293,6 @@ inherited frmMatriz: TfrmMatriz
     Left = 144
     Top = 304
   end
-  object qEspecie: TRFQuery
-    Connection = dmPrincipal.Connection
-    SQL.Strings = (
-      'Select especie.id,'
-      '       especie.nome'
-      'from especie')
-    Left = 208
-    Top = 304
-    object qEspecieID: TFDAutoIncField
-      FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = []
-      ReadOnly = True
-    end
-    object qEspecieNOME: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Required = True
-      Size = 100
-    end
-  end
-  object BindSourceEspecie: TBindSourceDB
-    DataSet = qEspecie
-    ScopeMappings = <>
-    Left = 312
-    Top = 288
-  end
   object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
@@ -332,7 +304,7 @@ inherited frmMatriz: TfrmMatriz
       FieldName = 'ID_ESPECIE'
       Control = cbEspecie
       Track = True
-      FillDataSource = BindSourceEspecie
+      FillDataSource = dmPrincipal.BindSourceEspecie
       FillValueFieldName = 'ID'
       FillDisplayFieldName = 'NOME'
       AutoFill = True

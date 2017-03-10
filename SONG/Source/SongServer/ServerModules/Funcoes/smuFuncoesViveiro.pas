@@ -70,9 +70,6 @@ type
     function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: String; ipMatrizes: TadsObjectlist<TMatriz>): TadsObjectlist<TMatriz>;
 
     procedure ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<TLote>);
-
-    procedure ppuCadastrarLotes(ipJsonLotes: String);
-
   end;
 
 var
@@ -887,37 +884,6 @@ begin
 
   qAjusta_Saldo_Especie.ExecSQL;
   qAjusta_Saldo_Especie.Connection.Commit;
-end;
-
-procedure TsmFuncoesViveiro.ppuCadastrarLotes(ipJsonLotes: String);
-var
-  vaLotes: TList<TLote>;
-  vaLote: TLote;
-  vaDataSet: TRFQuery;
-begin
-  vaLotes := TJson.JsonToObject < TList < TLote >> (ipJsonLotes);
-  pprCriarDataSet(vaDataSet);
-  try
-    vaDataSet.SQL.Text := 'select Lote_semente.Id,' +
-      '       Lote_semente.Id_especie,' +
-      '       Lote_semente.Id_pessoa_coletou,' +
-      '       Lote_semente.Id_coleta,' +
-      '       Lote_semente.Nome,' +
-      '       Lote_semente.Data,' +
-      '       Lote_semente.Qtde,' +
-      '       Lote_semente.Qtde_armazenada ' +
-      ' from Lote_semente   ';
-
-    for vaLote in vaLotes do
-      begin
-
-      end;
-
-  finally
-    vaDataSet.Close;
-    vaDataSet.Free;
-    vaLotes.Free;
-  end;
 end;
 
 procedure TsmFuncoesViveiro.ppuCalcularQuantidadeMudasMix(

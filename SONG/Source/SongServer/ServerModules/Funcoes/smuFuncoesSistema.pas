@@ -20,8 +20,6 @@ type
   private
     function fpvVerificarNotificacoesAgendaPessoal(ipIdPessoa: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean;
       ipDataSetNotificacao, ipDataSetNotificacaoPessoa: TRFQuery): TList<TNotificacao>;
-    procedure ppvEnviarEmailTodosConfigurados(ipTipo: TTipoNotificacao;
-      ipMsg: String; ipDataSetNoficiacaoPessoa: TRFQuery);
     { Private declarations }
   public
     function fpuValidarTipoNotificacao(ipIdNotificacao, ipTipo: integer): Boolean;
@@ -48,21 +46,6 @@ uses
 {$R *.dfm}
 
 { TsmFuncoesSistema }
-
-procedure TsmFuncoesSistema.ppvEnviarEmailTodosConfigurados(ipTipo: TTipoNotificacao; ipMsg: String; ipDataSetNoficiacaoPessoa: TRFQuery);
-begin
-  ipDataSetNoficiacaoPessoa.First;
-  while not ipDataSetNoficiacaoPessoa.Eof do
-    begin
-      if (ipDataSetNoficiacaoPessoa.FieldByName('Notificacao_Email').AsInteger = 1) and
-        (ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString <> '') then
-        begin
-          ppuEnviarEmail(TiposNotificacao[ipTipo], ipMsg, ipDataSetNoficiacaoPessoa.FieldByName('Email').AsString, '', nil);
-        end;
-      ipDataSetNoficiacaoPessoa.next;
-    end;
-
-end;
 
 function TsmFuncoesSistema.fpuVerificarNotificacoes(ipId, ipIdPessoa: integer; ipTipo: integer; ipNotificacaoEmail, ipNotificacaoSistema: Boolean)
   : TadsObjectlist<TNotificacao>;

@@ -14,7 +14,8 @@ uses
   aduna_ds_list in '..\Comuns\aduna_ds_list.pas',
   uTypes in '..\Comuns\uTypes.pas',
   fSincronizacao in 'fSincronizacao.pas' {frmSincronizacao},
-  fConfiguracoes in 'fConfiguracoes.pas' {frmConfiguracoes};
+  fConfiguracoes in 'fConfiguracoes.pas' {frmConfiguracoes},
+  uMessage in 'uMessage.pas';
 
 {$R *.res}
 

@@ -112,6 +112,8 @@ begin
 
     dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime := now;
     dmPrincipal.qConfig.Post;
+
+    ShowMessage('Sincronização realizada com sucesso.');
   except
     on e: Exception do
       showMessage(e.Message);

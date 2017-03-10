@@ -36,11 +36,7 @@ type
     Authentication: TDSAuthenticationManager;
     SCAdministrativo: TDSServerClass;
     SCFuncoesGeral: TDSServerClass;
-    qLogin: TRFQuery;
-    qLoginLOGIN: TStringField;
-    qLoginSENHA: TStringField;
     ApplicationEvents1: TApplicationEvents;
-    qLoginID: TIntegerField;
     SCLookup: TDSServerClass;
     SCFuncoesAdministrativo: TDSServerClass;
     SCFinanceiro: TDSServerClass;
@@ -108,6 +104,7 @@ type
     function fpuBuscarAtualizacao(ipVersao: String; out opNovaVersao: String): string;
     function fpuPegarArquivoAtualizacao(ipVersao: string): string;
     function fpuCarregarAtualizacoes(): OleVariant;
+    function fpuValidarLogin(ipConnection: TFDConnection; ipUsuario, ipSenha: String): Integer;
 
     property Connection: TFDConnection read GetConnection;
   end;
@@ -140,29 +137,20 @@ procedure TdmPrincipal.AuthenticationUserAuthenticate(Sender: TObject; const Pro
   var valid: Boolean; UserRoles: TStrings);
 var
   vaSessao: TSessaoUsuario;
+  vaIdPessoa: Integer;
 begin
   valid := True;
 
   if (User <> '') or (Password <> '') then
     begin
-      // if (not qLogin.Active) or (qLoginLOGIN.AsString <> User) or (qLoginSENHA.AsString <> Password) then
-      // begin
-      qLogin.Close;
-      qLogin.ParamByName('LOGIN').AsString := User;
-      qLogin.ParamByName('SENHA').AsString := Password;
-      qLogin.Open();
-{$IFDEF DEBUG}
-      valid := True;
-{$ELSE}
-      valid := not qLogin.Eof;
-{$ENDIF}
+      vaIdPessoa := fpuValidarLogin(conSong, User, Password);
+      valid := vaIdPessoa <> 0;
       if valid then
         begin
           vaSessao := TSessaoUsuario.Create;
-          vaSessao.Id := qLogin.FieldByName('ID').AsInteger;
+          vaSessao.Id := vaIdPessoa;
           TDSSessionManager.GetThreadSession.PutObject(coKeySessaoUsuario, vaSessao);
         end;
-      // end;
     end;
 
 end;
@@ -171,7 +159,7 @@ procedure TdmPrincipal.AuthenticationUserAuthorize(Sender: TObject; AuthorizeEve
   var valid: Boolean);
 begin
   valid := True;
-{$IFNDEF DEBUG}
+  // {$IFNDEF DEBUG}
   // se nao tiver logado com um usuario e senha valido a unica coisa permitida vai ser baixar uma nova versao
   if (AuthorizeEventObject.UserName = '') and
     (AuthorizeEventObject.MethodAlias <> 'TsmFuncoesGeral.fpuVerificarNovaVersao') and
@@ -179,7 +167,7 @@ begin
     begin
       valid := false
     end;
-{$ENDIF}
+  // {$ENDIF}
 end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
@@ -317,6 +305,32 @@ begin
   finally
     FSyncroAtualizacoes.EndWrite;
   end;
+end;
+
+function TdmPrincipal.fpuValidarLogin(ipConnection: TFDConnection; ipUsuario, ipSenha: String): Integer;
+var
+  vaDataSet: TRFQuery;
+begin
+  Result := 0;
+  vaDataSet := TRFQuery.Create(nil);
+  try
+    vaDataSet.Connection := ipConnection;
+    vaDataSet.SQL.Text := 'select PESSOA.ID ' +
+      ' from PESSOA' +
+      ' where PESSOA.LOGIN = :LOGIN and' +
+      '      PESSOA.SENHA = :SENHA and' +
+      '      ((PESSOA.Ativo = 0) or (PESSOA.ATIVO is Null));';
+    vaDataSet.ParamByName('LOGIN').AsString := ipUsuario;
+    vaDataSet.ParamByName('SENHA').AsString := ipSenha;
+    vaDataSet.Open();
+    if not vaDataSet.Eof then
+      Result := vaDataSet.FieldByName('ID').AsInteger;
+
+  finally
+    vaDataSet.Close;
+    vaDataSet.Free;
+  end;
+
 end;
 
 function TdmPrincipal.GetConnection: TFDConnection;

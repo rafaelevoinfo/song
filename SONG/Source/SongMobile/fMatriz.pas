@@ -32,9 +32,6 @@ type
     pnEspecie: TPanel;
     Label5: TLabel;
     cbEspecie: TComboBox;
-    qEspecie: TRFQuery;
-    qEspecieNOME: TStringField;
-    BindSourceEspecie: TBindSourceDB;
     mmoDescricaoLocalizacao: TMemo;
     Label4: TLabel;
     Label2: TLabel;
@@ -63,7 +60,6 @@ type
     btnGaleria: TButton;
     btnCamera: TButton;
     btnLocalizacao: TButton;
-    qEspecieID: TFDAutoIncField;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation, NewLocation: TLocationCoord2D);
     procedure FormShow(Sender: TObject);
@@ -126,7 +122,7 @@ end;
 
 procedure TfrmMatriz.FormCreate(Sender: TObject);
 begin
-  qEspecie.Open();
+   dmPrincipal.ppuAbrirEspecie;
   // TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
 end;
 

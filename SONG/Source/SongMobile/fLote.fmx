@@ -571,7 +571,7 @@ inherited frmLote: TfrmLote
     object GridPanel: TGridPanelLayout
       Align = Top
       Size.Width = 640.000000000000000000
-      Size.Height = 145.000000000000000000
+      Size.Height = 185.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       ColumnCollection = <
@@ -615,15 +615,29 @@ inherited frmLote: TfrmLote
         item
           Column = 0
           Control = lbMatrizes
-          Row = 3
+          Row = 4
         end
         item
           Column = 1
           Control = recMatriz
+          Row = 4
+        end
+        item
+          Column = 0
+          Control = lbEspecie
+          Row = 3
+        end
+        item
+          Column = 1
+          Control = cbEspecie
           Row = 3
         end>
       ExpandStyle = FixedSize
       RowCollection = <
+        item
+          SizeStyle = Absolute
+          Value = 35.000000000000000000
+        end
         item
           SizeStyle = Absolute
           Value = 35.000000000000000000
@@ -703,7 +717,7 @@ inherited frmLote: TfrmLote
         Anchors = []
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
-        Position.Y = 105.000000000000000000
+        Position.Y = 140.000000000000000000
         Size.Width = 165.000000000000000000
         Size.Height = 35.000000000000000000
         Size.PlatformDefault = False
@@ -756,6 +770,27 @@ inherited frmLote: TfrmLote
           Visible = True
         end
       end
+      object lbEspecie: TLabel
+        Align = Left
+        Anchors = []
+        AutoSize = True
+        StyledSettings = [Family, Size, FontColor]
+        Position.Y = 105.000000000000000000
+        Size.Width = 165.000000000000000000
+        Size.Height = 35.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'Esp'#233'cie'
+      end
+      object cbEspecie: TComboBox
+        Align = Client
+        Margins.Top = 5.000000000000000000
+        Size.Width = 475.423339843750000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        OnChange = cbEspecieChange
+      end
     end
     object lvMatrizes: TListView
       ItemAppearanceClassName = 'TListItemAppearance'
@@ -765,7 +800,7 @@ inherited frmLote: TfrmLote
       Transparent = True
       Align = Client
       Size.Width = 640.000000000000000000
-      Size.Height = 287.000000000000000000
+      Size.Height = 247.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
       ItemAppearanceObjects.ItemObjects.Accessory.Visible = False
@@ -819,11 +854,12 @@ inherited frmLote: TfrmLote
       'Select Lote.Id,'
       '       Lote.Nome,'
       '       Lote.Qtde,'
-      '       Lote.Data'
+      '       Lote.Data,'
+      '       Lote.Id_Especie'
       'from Lote'
       'where Lote.Id = :ID')
-    Left = 16
-    Top = 392
+    Left = 408
+    Top = 296
     ParamData = <
       item
         Name = 'ID'
@@ -861,6 +897,12 @@ inherited frmLote: TfrmLote
       ProviderFlags = [pfInUpdate]
       Required = True
     end
+    object qLoteID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+    end
   end
   object BindSourceLote: TBindSourceDB
     DataSet = qLote
@@ -887,17 +929,26 @@ inherited frmLote: TfrmLote
       Control = EditQtde
       Track = False
     end
-    object LinkComboMatriz: TLinkFillControlToField
+    object LinkEspecie: TLinkFillControlToField
       Category = 'Quick Bindings'
-      Control = cbMatriz
+      DataSource = BindSourceLote
+      FieldName = 'ID_ESPECIE'
+      Control = cbEspecie
       Track = True
-      FillDataSource = BindSourceMatriz
+      FillDataSource = dmPrincipal.BindSourceEspecie
       FillValueFieldName = 'ID'
       FillDisplayFieldName = 'NOME'
       AutoFill = True
       FillExpressions = <>
       FillHeaderExpressions = <>
       FillBreakGroups = <>
+    end
+    object LinkControlToField3: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceLote
+      FieldName = 'DATA'
+      Control = EditData
+      Track = False
     end
   end
   object BindSourceMatriz: TBindSourceDB
@@ -961,7 +1012,7 @@ inherited frmLote: TfrmLote
     end
   end
   object SchemaAdapter: TFDSchemaAdapter
-    Left = 304
-    Top = 224
+    Left = 296
+    Top = 256
   end
 end

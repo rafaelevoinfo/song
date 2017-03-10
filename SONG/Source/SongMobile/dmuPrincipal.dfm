@@ -10,7 +10,6 @@ object dmPrincipal: TdmPrincipal
         '.db'
       'DriverID=SQLite')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
     Left = 48
@@ -116,5 +115,33 @@ object dmPrincipal: TdmPrincipal
       ProviderFlags = [pfInUpdate]
       Size = 100
     end
+  end
+  object qEspecie: TRFQuery
+    Connection = Connection
+    SQL.Strings = (
+      'Select especie.id,'
+      '       especie.nome'
+      'from especie')
+    Left = 280
+    Top = 202
+    object qEspecieID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qEspecieNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
+  object BindSourceEspecie: TBindSourceDB
+    DataSet = qEspecie
+    ScopeMappings = <>
+    Left = 280
+    Top = 258
   end
 end

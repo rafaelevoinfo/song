@@ -12,7 +12,8 @@ uses
   Datasnap.DSProxyDelphi, Datasnap.DSClientMetadata, Data.SqlExpr, uConnection,
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider, uFuncoes,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, uQuery;
+  FireDAC.Comp.DataSet, uQuery, Data.Bind.Components, Data.Bind.DBScope,
+  System.RegularExpressions;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -30,6 +31,10 @@ type
     qConfigID_APARELHO: TIntegerField;
     qConfigLOGIN: TStringField;
     qConfigSENHA: TStringField;
+    qEspecie: TRFQuery;
+    qEspecieID: TFDAutoIncField;
+    qEspecieNOME: TStringField;
+    BindSourceEspecie: TBindSourceDB;
     procedure ConnectionBeforeConnect(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
     procedure SongServerConAfterConnect(Sender: TObject);
@@ -44,6 +49,7 @@ type
     property FuncoesSistema: TSMfuncoesSistemaClient read FFuncoesSistema;
 
     procedure ppuAbrirConfig;
+    procedure ppuAbrirEspecie;
     procedure ppuConectarServidor;
   end;
 
@@ -69,6 +75,12 @@ begin
     qConfig.Open();
 end;
 
+procedure TdmPrincipal.ppuAbrirEspecie;
+begin
+  if not qEspecie.Active then
+    qEspecie.Open();
+end;
+
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
   Connection.Open();
@@ -79,21 +91,43 @@ procedure TdmPrincipal.ppuConectarServidor;
 begin
   SongServerCon.Close;
   SongServerCon.Params.Values['ConnectTimeout'] := '3000';
-  if not qConfig.Eof then
-    SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_INTERNO.AsString;
+
+  SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_INTERNO.AsString;
+  SongServerCon.Params.Values['Port'] := '3004';
+  if qConfigLOGIN.AsString = '' then
+    // tem que passar alguma coisa senao o song server vai deixar passar e so vai bloquear quando chamar uma funcao
+    SongServerCon.Params.Values['DSAuthenticationUser'] := 'USUARIO'
+  else
+    SongServerCon.Params.Values['DSAuthenticationUser'] := qConfigLOGIN.AsString;
+
+  if qConfigSENHA.AsString = '' then
+    SongServerCon.Params.Values['DSAuthenticationUser'] := 'SENHA'
+  else
+    SongServerCon.Params.Values['DSAuthenticationPassword'] := qConfigSENHA.AsString;
 
   try
     SongServerCon.Open;
   except
-    SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
-    SongServerCon.Params.Values['Port'] := '3004';
-    SongServerCon.Params.Values['DSAuthenticationUser'] := qConfigLOGIN.AsString;
-    SongServerCon.Params.Values['DSAuthenticationPassword'] := qConfigSENHA.AsString;
-    try
-      SongServerCon.Open;
-    except
-      raise Exception.Create('Não foi possível conectar ao servidor.');
-    end;
+    on e: Exception do
+      begin
+        if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
+          raise Exception.Create('O Usuário/Senha de acesso ao SONG incorreto.');
+
+        SongServerCon.Close;
+        SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
+        try
+          SongServerCon.Open;
+        except
+          on ex: Exception do
+            begin
+              if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
+                raise Exception.Create('O Usuário/Senha de acesso ao SONG incorreto.')
+              else
+                raise Exception.Create('Não foi possível conectar ao servidor. Detalhes: ' + ex.message);
+
+            end;
+        end;
+      end;
   end;
 
   SongServerCon.Params.Delete(SongServerCon.Params.IndexOfName('ConnectTimeout'));

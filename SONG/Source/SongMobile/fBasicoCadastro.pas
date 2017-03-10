@@ -62,8 +62,7 @@ implementation
 procedure TfrmBasicoCadastro.Ac_SalvarUpdate(Sender: TObject);
 begin
   inherited;
-  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and
-    ((dsPrincipal.DataSet.State in [dsEdit, dsInsert]) or (TRFClientDataSet(dsPrincipal.DataSet).changeCount > 0));
+  TAction(Sender).Enabled := dsPrincipal.DataSet.Active and (dsPrincipal.DataSet.State in [dsEdit, dsInsert]);
 end;
 
 procedure TfrmBasicoCadastro.FormCreate(Sender: TObject);
@@ -129,7 +128,6 @@ begin
 
   if Assigned(FOnSalvar) then
     FOnSalvar();
-
 end;
 
 function TfrmBasicoCadastro.fprValidarCamposObrigatorios(ipDataSet: TDataSet; var opMsgErro: String): Boolean;
@@ -181,6 +179,8 @@ procedure TfrmBasicoCadastro.Ac_SalvarExecute(Sender: TObject);
 begin
   try
     ppuSalvar;
+    //vamos remover o evento OnUpdate do botão salvar para evitar erros de segmentation fault
+    Ac_Salvar.OnUpdate := nil;
     Close;
   except
     on e: Exception do

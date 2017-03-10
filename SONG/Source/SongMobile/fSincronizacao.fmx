@@ -66,7 +66,6 @@ inherited frmSincronizacao: TfrmSincronizacao
     end
     object lbiEspecies: TListBoxItem
       StyledSettings = [Family, Size, Style, FontColor]
-      ItemData.Accessory = aCheckmark
       Position.Y = 30.000000000000000000
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 1
@@ -74,7 +73,6 @@ inherited frmSincronizacao: TfrmSincronizacao
     end
     object lbiMatrizes: TListBoxItem
       StyledSettings = [Family, Size, Style, FontColor]
-      ItemData.Accessory = aCheckmark
       Position.Y = 74.000000000000000000
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 2
@@ -82,7 +80,6 @@ inherited frmSincronizacao: TfrmSincronizacao
     end
     object lbiLotes: TListBoxItem
       StyledSettings = [Family, Size, Style, FontColor]
-      ItemData.Accessory = aCheckmark
       Position.Y = 118.000000000000000000
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 3

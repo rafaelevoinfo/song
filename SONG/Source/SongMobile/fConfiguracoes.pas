@@ -46,6 +46,7 @@ type
     LinkControlToField3: TLinkControlToField;
     procedure EditSenhaChange(Sender: TObject);
     procedure btnRegistrarAparelhoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     function fpvPegarIMEI: String;
     function fpvPegarNomeDispositivo: String;
@@ -103,6 +104,10 @@ begin
   dmPrincipal.qConfig.Edit;
   dmPrincipal.qConfigID_APARELHO.AsInteger := vaIdAparelho;
   dmPrincipal.qConfig.Post;
+
+  lbIdAparelho.Text := vaIdAparelho.ToString;
+  lbIdAparelho.Visible := true;
+  btnRegistrarAparelho.Visible := false;
 end;
 
 procedure TfrmConfiguracoes.EditSenhaChange(Sender: TObject);
@@ -110,6 +115,15 @@ begin
   inherited;
   if not(dsPrincipal.DataSet.State in [dsEdit, dsInsert]) then
     dsPrincipal.DataSet.Edit;
+end;
+
+procedure TfrmConfiguracoes.FormCreate(Sender: TObject);
+begin
+  inherited;
+  lbIdAparelho.Visible := not dmPrincipal.qConfigID_APARELHO.IsNull;
+  btnRegistrarAparelho.Visible := not lbIdAparelho.Visible;
+  if lbIdAparelho.Visible then
+    lbIdAparelho.Text := dmPrincipal.qConfigID_APARELHO.AsString;
 end;
 
 procedure TfrmConfiguracoes.pprBeforeSalvar;
