@@ -41,6 +41,17 @@ type
     qMatrizSincronizacaoID_SERVER: TIntegerField;
     DecoderBase64: TIdDecoderMIME;
     qMatrizSincronizacaoFOTO: TBlobField;
+    qLote: TRFQuery;
+    qLote_Matriz: TRFQuery;
+    qLote_MatrizID: TFDAutoIncField;
+    qLote_MatrizID_LOTE: TIntegerField;
+    qLote_MatrizID_MATRIZ: TIntegerField;
+    qLoteID_ESPECIE: TIntegerField;
+    qLoteDATA: TDateTimeField;
+    qLoteNOME: TStringField;
+    qLoteQTDE: TBCDField;
+    qLoteID: TFDAutoIncField;
+    qLote_MatrizID_SERVER: TIntegerField;
     procedure btnSincronizarClick(Sender: TObject);
     procedure btnRetornarClick(Sender: TObject);
     procedure Ac_ConfiguracoesExecute(Sender: TObject);
@@ -98,12 +109,14 @@ begin
 
     ppvSincronizarEspecies(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
     lbiEspecies.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
+    lbiEspecies.Repaint;
 
     ppvSincronizarMatrizes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
     lbiMatrizes.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
+    lbiMatrizes.Repaint;
 
     ppvSincronizarLotes(dmPrincipal.qConfigDATA_ULTIMA_SYNC.AsDateTime);
-    lbiMatrizes.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
+    lbiLotes.ItemData.Accessory := TListBoxItemData.TAccessory.aCheckmark;
 
     if dmPrincipal.qConfig.Eof then
       dmPrincipal.qConfig.Append
@@ -116,7 +129,7 @@ begin
     ShowMessage('Sincronização realizada com sucesso.');
   except
     on e: Exception do
-      showMessage(e.Message);
+      ShowMessage(e.Message);
   end;
 
 end;
@@ -177,8 +190,58 @@ begin
 end;
 
 procedure TfrmSincronizacao.ppvSincronizarLotes(ipDataUltimoSincronismo: TDateTime);
+var
+  vaLotes: TadsObjectlist<TLote>;
+  vaLote: TLote;
+  vaMatriz: TMatriz;
 begin
+  qLote.Open();
+  qLote_Matriz.Open();
+  vaLotes := TadsObjectlist<TLote>.Create;
+  try
+    while not qLote.Eof do
+      begin
+        vaLote := TLote.Create;
+        vaLote.IdColeta := dmPrincipal.qConfigID_APARELHO.AsString + '_' + qLoteID.AsString;
+        vaLote.Nome := qLoteNOME.AsString;
+        vaLote.Data := qLoteDATA.AsDateTime;
+        vaLote.IdEspecie := qLoteID_ESPECIE.AsInteger;
+        vaLote.Qtde := qLoteQTDE.AsFloat;
 
+        qLote_Matriz.Filter := qLote_MatrizID_LOTE.FieldName + ' = ' + qLoteID.AsString;
+        qLote_Matriz.Filtered := true;
+
+        if not qLote_Matriz.Eof then
+          begin
+            vaLote.Matrizes := TadsObjectlist<TMatriz>.Create;
+            while not qLote_Matriz.Eof do
+              begin
+                vaMatriz := TMatriz.Create;
+                vaMatriz.IdServer := qLote_MatrizID_SERVER.AsInteger;
+
+                vaLote.Matrizes.Add(vaMatriz);
+
+                qLote_Matriz.Next;
+              end;
+          end;
+
+        vaLotes.Add(vaLote);
+
+        qLote.Next;
+      end;
+
+    if vaLotes.Count > 0 then
+      begin
+        dmPrincipal.FuncoesViveiro.ppuSincronizarLotes(DateTimeToStr(ipDataUltimoSincronismo), vaLotes);
+        dmPrincipal.Connection.ExecSQL('delete from lote');
+        // vamos deletar todos os lotes caso a sincronização tenha dado certo
+      end
+    else
+      vaLotes.Free;
+  finally
+    qLote.Close;
+    qLote_Matriz.Close;
+  end;
 end;
 
 procedure TfrmSincronizacao.ppvSincronizarMatrizes(ipDataUltimoSincronismo: TDateTime);

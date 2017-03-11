@@ -570,16 +570,19 @@ inherited frmLote: TfrmLote
     TabOrder = 5
     object GridPanel: TGridPanelLayout
       Align = Top
+      Padding.Left = 5.000000000000000000
+      Padding.Right = 5.000000000000000000
       Size.Width = 640.000000000000000000
       Size.Height = 185.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       ColumnCollection = <
         item
-          Value = 25.715103843030440000
+          SizeStyle = Absolute
+          Value = 150.000000000000000000
         end
         item
-          Value = 74.284896156969560000
+          Value = 100.000000000000000000
         end>
       ControlCollection = <
         item
@@ -658,7 +661,8 @@ inherited frmLote: TfrmLote
         Align = Top
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
-        Size.Width = 164.576660156250000000
+        Position.X = 5.000000000000000000
+        Size.Width = 140.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -668,7 +672,7 @@ inherited frmLote: TfrmLote
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         Align = Client
         TabOrder = 1
-        Size.Width = 475.423339843750000000
+        Size.Width = 480.000000000000000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
         TextPrompt = 'Nome do Lote'
@@ -676,8 +680,9 @@ inherited frmLote: TfrmLote
       object lbQtde: TLabel
         Align = Top
         StyledSettings = [Family, Size, FontColor]
+        Position.X = 5.000000000000000000
         Position.Y = 35.000000000000000000
-        Size.Width = 164.576660156250000000
+        Size.Width = 140.000000000000000000
         Size.Height = 23.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -688,7 +693,7 @@ inherited frmLote: TfrmLote
         Align = Client
         TabOrder = 3
         KeyboardType = NumberPad
-        Size.Width = 475.423339843750000000
+        Size.Width = 480.000000000000000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
         TextPrompt = 'Quantidade em Kilos'
@@ -697,8 +702,9 @@ inherited frmLote: TfrmLote
         Align = Top
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
+        Position.X = 5.000000000000000000
         Position.Y = 70.000000000000000000
-        Size.Width = 164.576660156250000000
+        Size.Width = 140.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -707,7 +713,7 @@ inherited frmLote: TfrmLote
       object EditData: TDateEdit
         Date = 42738.000000000000000000
         Align = Client
-        Size.Width = 475.423339843750000000
+        Size.Width = 480.000000000000000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 5
@@ -717,6 +723,7 @@ inherited frmLote: TfrmLote
         Anchors = []
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
+        Position.X = 5.000000000000000000
         Position.Y = 140.000000000000000000
         Size.Width = 165.000000000000000000
         Size.Height = 35.000000000000000000
@@ -727,7 +734,7 @@ inherited frmLote: TfrmLote
       object recMatriz: TRectangle
         Align = Client
         Fill.Color = claNull
-        Size.Width = 475.423339843750000000
+        Size.Width = 480.000000000000000000
         Size.Height = 35.000000000000000000
         Size.PlatformDefault = False
         Stroke.Thickness = 0.000000000000000000
@@ -738,7 +745,7 @@ inherited frmLote: TfrmLote
           Enabled = True
           Images = frmPrincipal.ImageList1
           ImageIndex = 4
-          Position.X = 387.423339843750000000
+          Position.X = 392.000000000000000000
           Size.Width = 40.000000000000000000
           Size.Height = 35.000000000000000000
           Size.PlatformDefault = False
@@ -749,7 +756,7 @@ inherited frmLote: TfrmLote
         object cbMatriz: TComboBox
           Align = Client
           Margins.Top = 5.000000000000000000
-          Size.Width = 387.423339843750000000
+          Size.Width = 392.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 2
@@ -760,7 +767,7 @@ inherited frmLote: TfrmLote
           Enabled = True
           Images = frmPrincipal.ImageList1
           ImageIndex = -1
-          Position.X = 427.423339843750000000
+          Position.X = 432.000000000000000000
           Size.Width = 48.000000000000000000
           Size.Height = 48.000000000000000000
           Size.PlatformDefault = False
@@ -775,6 +782,7 @@ inherited frmLote: TfrmLote
         Anchors = []
         AutoSize = True
         StyledSettings = [Family, Size, FontColor]
+        Position.X = 5.000000000000000000
         Position.Y = 105.000000000000000000
         Size.Width = 165.000000000000000000
         Size.Height = 35.000000000000000000
@@ -785,7 +793,7 @@ inherited frmLote: TfrmLote
       object cbEspecie: TComboBox
         Align = Client
         Margins.Top = 5.000000000000000000
-        Size.Width = 475.423339843750000000
+        Size.Width = 480.000000000000000000
         Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
@@ -799,6 +807,8 @@ inherited frmLote: TfrmLote
       FooterAppearanceClassName = 'TListHeaderObjects'
       Transparent = True
       Align = Client
+      Padding.Left = 5.000000000000000000
+      Padding.Right = 5.000000000000000000
       Size.Width = 640.000000000000000000
       Size.Height = 247.000000000000000000
       Size.PlatformDefault = False
@@ -809,7 +819,8 @@ inherited frmLote: TfrmLote
       object Line1: TLine
         Align = Top
         LineType = Top
-        Size.Width = 640.000000000000000000
+        Position.X = 5.000000000000000000
+        Size.Width = 630.000000000000000000
         Size.Height = 10.000000000000000000
         Size.PlatformDefault = False
         Stroke.Thickness = 2.000000000000000000
@@ -898,6 +909,7 @@ inherited frmLote: TfrmLote
       Required = True
     end
     object qLoteID_ESPECIE: TIntegerField
+      DisplayLabel = 'Esp'#233'cie'
       FieldName = 'ID_ESPECIE'
       Origin = 'ID_ESPECIE'
       ProviderFlags = [pfInUpdate]

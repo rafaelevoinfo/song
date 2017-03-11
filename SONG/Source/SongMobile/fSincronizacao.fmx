@@ -202,8 +202,8 @@ inherited frmSincronizacao: TfrmSincronizacao
   end
   object ActionList1: TActionList
     Images = frmPrincipal.ImageList1
-    Left = 304
-    Top = 224
+    Left = 400
+    Top = 248
     object Ac_Configuracoes: TAction
       ImageIndex = 5
       OnExecute = Ac_ConfiguracoesExecute
@@ -214,5 +214,87 @@ inherited frmSincronizacao: TfrmSincronizacao
     FillChar = '='
     Left = 288
     Top = 384
+  end
+  object qLote: TRFQuery
+    Connection = dmPrincipal.Connection
+    SQL.Strings = (
+      'select lote.ID,'
+      '       lote.ID_ESPECIE,'
+      '       lote.DATA,'
+      '       lote.NOME,'
+      '       lote.QTDE'
+      'from lote        ')
+    Left = 208
+    Top = 232
+    object qLoteID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qLoteID_ESPECIE: TIntegerField
+      FieldName = 'ID_ESPECIE'
+      Origin = 'ID_ESPECIE'
+      ProviderFlags = []
+      Required = True
+    end
+    object qLoteDATA: TDateTimeField
+      FieldName = 'DATA'
+      Origin = 'DATA'
+      ProviderFlags = []
+      Required = True
+    end
+    object qLoteNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      Required = True
+      Size = 30
+    end
+    object qLoteQTDE: TBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = []
+      Required = True
+      Precision = 15
+      Size = 2
+    end
+  end
+  object qLote_Matriz: TRFQuery
+    Connection = dmPrincipal.Connection
+    SQL.Strings = (
+      'SELECT LOTE_MATRIZ.ID,'
+      '       LOTE_MATRIZ.ID_LOTE,'
+      '       LOTE_MATRIZ.ID_MATRIZ,'
+      '       MATRIZ.ID_SERVER'
+      '  FROM LOTE_MATRIZ'
+      '  INNER JOIN MATRIZ ON (MATRIZ.ID = LOTE_MATRIZ.ID_MATRIZ)')
+    Left = 288
+    Top = 240
+    object qLote_MatrizID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qLote_MatrizID_LOTE: TIntegerField
+      FieldName = 'ID_LOTE'
+      Origin = 'ID_LOTE'
+      ProviderFlags = []
+      Required = True
+    end
+    object qLote_MatrizID_MATRIZ: TIntegerField
+      FieldName = 'ID_MATRIZ'
+      Origin = 'ID_MATRIZ'
+      ProviderFlags = []
+      Required = True
+    end
+    object qLote_MatrizID_SERVER: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_SERVER'
+      Origin = 'ID_SERVER'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
 end

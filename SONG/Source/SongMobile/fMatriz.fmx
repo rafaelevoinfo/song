@@ -8,6 +8,10 @@ inherited frmMatriz: TfrmMatriz
   OnResize = FormResize
   OnShow = FormShow
   DesignerMasterStyle = 3
+  inherited Styles: TStyleBook
+    Left = 200
+    Top = 216
+  end
   inherited recFade: TRectangle
     Size.Width = 484.000000000000000000
     Size.Height = 471.000000000000000000
@@ -82,187 +86,230 @@ inherited frmMatriz: TfrmMatriz
       TabOrder = 0
       Viewport.Width = 484.000000000000000000
       Viewport.Height = 423.000000000000000000
-      object pnNome: TPanel
-        Align = MostTop
-        Size.Width = 484.000000000000000000
-        Size.Height = 33.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 0
-        object EditNome: TEdit
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          Align = Client
-          TabOrder = 1
-          CanParentFocus = True
-          Size.Width = 411.000000000000000000
-          Size.Height = 32.000000000000000000
-          Size.PlatformDefault = False
-        end
-        object Label1: TLabel
-          Align = Left
-          StyledSettings = [Family, Size, FontColor]
-          Size.Width = 73.000000000000000000
-          Size.Height = 33.000000000000000000
-          Size.PlatformDefault = False
-          TextSettings.Font.StyleExt = {00070000000000000004000000}
-          Text = 'Nome'
-        end
-      end
-      object pnLatLong: TPanel
-        Align = Top
-        Position.Y = 66.000000000000000000
-        Size.Width = 484.000000000000000000
-        Size.Height = 73.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 1
-        object GridPanelLayout1: TGridPanelLayout
-          Align = Client
-          Size.Width = 484.000000000000000000
-          Size.Height = 73.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 2
-          ColumnCollection = <
-            item
-              Value = 28.571428571428570000
-            end
-            item
-              Value = 71.428571428571430000
-            end>
-          ControlCollection = <
-            item
-              Column = 0
-              Control = Label2
-              Row = 0
-            end
-            item
-              Column = 0
-              Control = Label3
-              Row = 1
-            end
-            item
-              Column = 1
-              Control = EditLatitude
-              Row = 0
-            end
-            item
-              Column = 1
-              Control = EditLongitude
-              Row = 1
-            end>
-          RowCollection = <
-            item
-              Value = 50.000000000000000000
-            end
-            item
-              Value = 50.000000000000000000
-            end
-            item
-              SizeStyle = Auto
-            end>
-          object Label2: TLabel
-            Align = Left
-            AutoSize = True
-            StyledSettings = [Family, Size, FontColor]
-            Size.Width = 67.000000000000000000
-            Size.Height = 36.500000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.StyleExt = {00070000000000000004000000}
-            TextSettings.WordWrap = False
-            Text = 'Latitude'
-          end
-          object Label3: TLabel
-            Align = Left
-            AutoSize = True
-            StyledSettings = [Family, Size, FontColor]
-            Position.Y = 36.500000000000000000
-            Size.Width = 82.000000000000000000
-            Size.Height = 36.500000000000000000
-            Size.PlatformDefault = False
-            TextSettings.Font.StyleExt = {00070000000000000004000000}
-            TextSettings.WordWrap = False
-            Text = 'Longitude'
-          end
-          object EditLatitude: TEdit
-            Touch.InteractiveGestures = [LongTap, DoubleTap]
-            Align = Client
-            TabOrder = 2
-            KeyboardType = NumberPad
-            Size.Width = 345.714294433593700000
-            Size.Height = 32.000000000000000000
-            Size.PlatformDefault = False
-          end
-          object EditLongitude: TEdit
-            Touch.InteractiveGestures = [LongTap, DoubleTap]
-            Align = Client
-            TabOrder = 3
-            KeyboardType = NumberPad
-            Size.Width = 345.714294433593700000
-            Size.Height = 32.000000000000000000
-            Size.PlatformDefault = False
-          end
-        end
-      end
-      object Label4: TLabel
-        Align = Top
-        AutoSize = True
-        StyledSettings = [Family, Size, FontColor]
-        Position.Y = 139.000000000000000000
-        Size.Width = 484.000000000000000000
-        Size.Height = 22.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        TextSettings.WordWrap = False
-        Text = 'Endere'#231'o'
-      end
-      object mmoDescricaoLocalizacao: TMemo
-        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-        DataDetectorTypes = []
-        Align = Top
-        Position.Y = 161.000000000000000000
-        Size.Width = 484.000000000000000000
-        Size.Height = 72.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 3
-        Viewport.Width = 476.000000000000000000
-        Viewport.Height = 64.000000000000000000
-      end
-      object pnEspecie: TPanel
-        Align = Top
-        Position.Y = 33.000000000000000000
-        Size.Width = 484.000000000000000000
-        Size.Height = 33.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 4
-        object Label5: TLabel
-          Align = Left
-          StyledSettings = [Family, Size, FontColor]
-          Size.Width = 73.000000000000000000
-          Size.Height = 33.000000000000000000
-          Size.PlatformDefault = False
-          TextSettings.Font.StyleExt = {00070000000000000004000000}
-          Text = 'Esp'#233'cie'
-        end
-        object cbEspecie: TComboBox
-          Align = Client
-          Size.Width = 411.000000000000000000
-          Size.Height = 32.000000000000000000
-          Size.PlatformDefault = False
-          StyleLookup = 'cbEspecieStyle1'
-          TabOrder = 2
-        end
-      end
       object imgFoto: TImage
         MultiResBitmap = <
           item
           end>
-        Position.Y = 233.000000000000000000
+        Align = Client
         Size.Width = 484.000000000000000000
-        Size.Height = 152.000000000000000000
+        Size.Height = 174.000000000000000000
         Size.PlatformDefault = False
         WrapMode = Stretch
+      end
+      object GridPanelLayout1: TGridPanelLayout
+        Align = MostTop
+        Padding.Left = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Size.Width = 484.000000000000000000
+        Size.Height = 249.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        ColumnCollection = <
+          item
+            SizeStyle = Absolute
+            Value = 120.000000000000000000
+          end
+          item
+            Value = 100.000000000000000000
+          end>
+        ControlCollection = <
+          item
+            Column = 0
+            Control = lbLatitude
+            Row = 2
+          end
+          item
+            Column = 0
+            Control = lbLongitude
+            Row = 3
+          end
+          item
+            Column = 1
+            Control = EditLatitude
+            Row = 2
+          end
+          item
+            Column = 1
+            Control = EditLongitude
+            Row = 3
+          end
+          item
+            Column = 1
+            Control = cbEspecie
+            Row = 1
+          end
+          item
+            Column = 0
+            Control = lbEspecie
+            Row = 1
+          end
+          item
+            Column = 1
+            Control = EditNome
+            Row = 0
+          end
+          item
+            Column = 0
+            Control = lbNome
+            Row = 0
+          end
+          item
+            Column = 0
+            Control = lbEndereco
+            Row = 4
+          end
+          item
+            Column = 0
+            ColumnSpan = 2
+            Control = mmoDescricaoLocalizacao
+            Row = 5
+          end>
+        RowCollection = <
+          item
+            SizeStyle = Absolute
+            Value = 35.000000000000000000
+          end
+          item
+            SizeStyle = Absolute
+            Value = 35.000000000000000000
+          end
+          item
+            SizeStyle = Absolute
+            Value = 35.000000000000000000
+          end
+          item
+            SizeStyle = Absolute
+            Value = 35.000000000000000000
+          end
+          item
+            SizeStyle = Absolute
+            Value = 35.000000000000000000
+          end
+          item
+            Value = 100.000000000000000000
+          end>
+        object lbLatitude: TLabel
+          Align = Left
+          AutoSize = True
+          StyledSettings = [Family, Size, FontColor]
+          Position.X = 5.000000000000000000
+          Position.Y = 70.000000000000000000
+          Size.Width = 67.000000000000000000
+          Size.Height = 35.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.WordWrap = False
+          Text = 'Latitude'
+        end
+        object lbLongitude: TLabel
+          Align = Left
+          AutoSize = True
+          StyledSettings = [Family, Size, FontColor]
+          Position.X = 5.000000000000000000
+          Position.Y = 105.000000000000000000
+          Size.Width = 82.000000000000000000
+          Size.Height = 35.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.WordWrap = False
+          Text = 'Longitude'
+        end
+        object EditLatitude: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Client
+          TabOrder = 2
+          KeyboardType = NumberPad
+          Size.Width = 354.000000000000000000
+          Size.Height = 32.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = 'Latitude'
+        end
+        object EditLongitude: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Client
+          TabOrder = 3
+          KeyboardType = NumberPad
+          Size.Width = 354.000000000000000000
+          Size.Height = 32.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = 'Longitude'
+        end
+        object cbEspecie: TComboBox
+          Align = Client
+          Anchors = []
+          Size.Width = 354.000000000000000000
+          Size.Height = 32.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'cbEspecieStyle1'
+          TabOrder = 4
+        end
+        object lbEspecie: TLabel
+          Align = Left
+          Anchors = []
+          StyledSettings = [Family, Size, FontColor]
+          Position.X = 5.000000000000000000
+          Position.Y = 35.000000000000000000
+          Size.Width = 73.000000000000000000
+          Size.Height = 35.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Esp'#233'cie'
+        end
+        object EditNome: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Client
+          Anchors = []
+          TabOrder = 6
+          CanParentFocus = True
+          Size.Width = 354.000000000000000000
+          Size.Height = 32.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = 'Nome da Matriz'
+        end
+        object lbNome: TLabel
+          Align = Left
+          Anchors = []
+          StyledSettings = [Family, Size, FontColor]
+          Position.X = 5.000000000000000000
+          Size.Width = 73.000000000000000000
+          Size.Height = 35.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Nome'
+        end
+        object lbEndereco: TLabel
+          Align = Left
+          AutoSize = True
+          StyledSettings = [Family, Size, FontColor]
+          Position.X = 5.000000000000000000
+          Position.Y = 140.000000000000000000
+          Size.Width = 75.000000000000000000
+          Size.Height = 35.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.WordWrap = False
+          Text = 'Endere'#231'o'
+        end
+        object mmoDescricaoLocalizacao: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Top
+          Anchors = []
+          Position.X = 5.000000000000000000
+          Position.Y = 175.000000000000000000
+          Size.Width = 474.000000000000000000
+          Size.Height = 72.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 9
+          Viewport.Width = 466.000000000000000000
+          Viewport.Height = 64.000000000000000000
+        end
       end
     end
   end
   inherited ActionList1: TActionList
+    Left = 112
+    Top = 208
     inherited Ac_Salvar: TAction
       ImageIndex = 0
     end
@@ -408,11 +455,13 @@ inherited frmMatriz: TfrmMatriz
       Size = 150
     end
     object qMatrizFOTO: TBlobField
+      DisplayLabel = 'Foto'
       FieldName = 'FOTO'
       Origin = 'FOTO'
       ProviderFlags = [pfInUpdate]
     end
     object qMatrizSYNC: TIntegerField
+      DisplayLabel = 'Sync'
       FieldName = 'SYNC'
       Origin = 'SYNC'
       ProviderFlags = [pfInUpdate]

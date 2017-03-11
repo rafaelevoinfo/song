@@ -23,20 +23,17 @@ type
   TfrmMatriz = class(TfrmBasicoCadastro)
     pnPrincipal: TPanel;
     FloatAnimation1: TFloatAnimation;
-    pnNome: TPanel;
     EditNome: TEdit;
-    Label1: TLabel;
+    lbNome: TLabel;
     LocationSensor: TLocationSensor;
     ScrollBox1: TScrollBox;
     BindSourceMatriz: TBindSourceDB;
-    pnEspecie: TPanel;
-    Label5: TLabel;
+    lbEspecie: TLabel;
     cbEspecie: TComboBox;
     mmoDescricaoLocalizacao: TMemo;
-    Label4: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    pnLatLong: TPanel;
+    lbEndereco: TLabel;
+    lbLatitude: TLabel;
+    lbLongitude: TLabel;
     GridPanelLayout1: TGridPanelLayout;
     EditLatitude: TEdit;
     EditLongitude: TEdit;

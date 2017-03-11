@@ -77,7 +77,7 @@ var
   vaObj: JObject;
   vaTm: JTelephonyManager;
 begin
-  vaObj := SharedActivityContext.getSystemService(TJContext.JavaClass.TELEPHONY_SERVICE);
+  vaObj := TAndroidHelper.Context.getSystemService(TJContext.JavaClass.TELEPHONY_SERVICE);
   if vaObj <> nil then
     begin
       vaTm := TJTelephonyManager.Wrap((vaObj as ILocalObject).GetObjectID);
@@ -85,7 +85,7 @@ begin
         Result := JStringToString(vaTm.getDeviceId);
     end;
   if Result = '' then
-    Result := JStringToString(TJSettings_Secure.JavaClass.getString(SharedActivity.getContentResolver,
+    Result := JStringToString(TJSettings_Secure.JavaClass.getString(TAndroidHelper.Activity.getContentResolver,
       TJSettings_Secure.JavaClass.ANDROID_ID));
 end;
 

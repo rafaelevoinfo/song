@@ -339,16 +339,21 @@ begin
           if vaDataSet.Eof then
             begin
               vaIdLote := fpuGetId('LOTE_SEMENTE');
-              if Connection.ExecSQL('insert into Lote_semente (Lote_semente.Id, Lote_semente.Id_especie, Lote_semente.Id_coleta, Lote_semente.Nome,' +
+              if Connection.ExecSQL
+                ('insert into Lote_semente (Lote_semente.Id,Lote_semente.Id_Pessoa_Coletou, Lote_semente.Id_especie, Lote_semente.Id_coleta, Lote_semente.Nome,' +
                 '                          Lote_semente.Data, Lote_semente.Qtde)' +
-                ' values (:ID, :ID_ESPECIE, :ID_COLETA, :NOME, :DATA, :QTDE)', [vaIdLote, vaLote.IdEspecie, vaLote.IdColeta, vaLote.Nome, vaLote.Data,
+                ' values (:ID, :ID_PESSOA_COLETOU, :ID_ESPECIE, :ID_COLETA, :NOME, :DATA, :QTDE)',
+                [vaIdLote, TSessaoUsuario(vaSessaoUsuario).Id, vaLote.IdEspecie, vaLote.IdColeta, vaLote.Nome, vaLote.Data,
                 vaLote.Qtde]) > 0 then
                 begin
-                  for vaMatriz in vaLote.Matrizes do
+                  if Assigned(vaLote.Matrizes) and (vaLote.Matrizes.Count > 0) then
                     begin
-                      Connection.ExecSQL('insert into Lote_semente_matriz (Lote_semente_matriz.Id, Lote_semente_matriz.Id_lote_semente,' +
-                        '                                 Lote_semente_matriz.Id_matriz)' +
-                        ' values (next value for Gen_lote_semente_matriz, :Id_lote, :Id_matriz)  ', [vaIdLote, vaMatriz.IdServer]);
+                      for vaMatriz in vaLote.Matrizes do
+                        begin
+                          Connection.ExecSQL('insert into Lote_semente_matriz (Lote_semente_matriz.Id, Lote_semente_matriz.Id_lote_semente,' +
+                            '                                 Lote_semente_matriz.Id_matriz)' +
+                            ' values (next value for Gen_lote_semente_matriz, :Id_lote, :Id_matriz)  ', [vaIdLote, vaMatriz.IdServer]);
+                        end;
                     end;
                 end
               else

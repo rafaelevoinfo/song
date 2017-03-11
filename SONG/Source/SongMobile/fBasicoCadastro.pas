@@ -91,7 +91,7 @@ var
   vaMsgErro:String;
 begin
   if not fprValidarDados(vaMsgErro) then
-    raise Exception.Create('Não foi possível salvar. Detalhes:' + vaMsgErro);
+    raise Exception.Create(vaMsgErro);
 end;
 
 procedure TfrmBasicoCadastro.ppuAlterar(ipId: Integer);
@@ -136,8 +136,6 @@ var
   vaMsg: TStringList;
 begin
   Result := true;
-  // tem q estar em edit ou insert ou entao tem q ter algo no cds. Se isso nao acontecer é pq o usuario
-  // deletou todos os registros e mandou gravar. Isso é possivel quando se usa o frameGrids
   if (ipDataSet.State in [dsInsert, dsEdit]) or (ipDataSet.RecordCount > 0) then
     begin
       vaMsg := TStringList.Create;

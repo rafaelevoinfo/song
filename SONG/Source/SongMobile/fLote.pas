@@ -62,7 +62,6 @@ type
     procedure lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure cbEspecieChange(Sender: TObject);
-    procedure Ac_SalvarExecute(Sender: TObject);
   private
     procedure ppvCarregarMatrizes;
     procedure ppvLimparCache(Sender: TObject);
@@ -117,7 +116,7 @@ begin
     while not frmPrincipal.qMatriz.Eof do
       begin
         if (frmPrincipal.qMatrizID_ESPECIE.AsInteger = vaIdEspecie) and
-          (not qLote_Matriz.Locate('ID', frmPrincipal.qMatrizID.AsInteger)) then
+          (not qLote_Matriz.Locate(qLote_MatrizID_MATRIZ.FieldName, frmPrincipal.qMatrizID.AsInteger)) then
           begin
             vaItem := TListBoxItem.Create(cbMatriz);
             vaItem.Tag := frmPrincipal.qMatrizID.AsInteger;
@@ -133,13 +132,7 @@ begin
   end;
 end;
 
-procprocedure TfrmLote.Ac_SalvarExecute(Sender: TObject);
-begin
-  inherited;
-
-end;
-
-edure TfrmLote.Ac_Vincular_MatrizExecute(Sender: TObject);
+procedure TfrmLote.Ac_Vincular_MatrizExecute(Sender: TObject);
 var
   vaItem: TListViewItem;
   vaIdMatriz: Integer;
@@ -155,19 +148,20 @@ begin
     qLote.Post;
 
   qLote_Matriz.Append;
-  // SE JA EXISTIR ALGUMA MATRIZ VALIDAR SE A ESPECIE É A MESMA, SE NAO FORR NAO DEIXAR ADICIONARS
-  // vaIdMatriz := LinkComboMatriz.BindList.GetSelectedValue.AsString.ToInteger;
 
   vaIdMatriz := cbMatriz.Selected.Tag;
   qLote_MatrizID_LOTE.AsInteger := qLoteID.AsInteger;
-  qLote_MatrizID_MATRIZ.AsInteger := vaIdMatriz; // frmPrincipal.qMatrizID.AsInteger;
+  qLote_MatrizID_MATRIZ.AsInteger := vaIdMatriz;
   qLote_Matriz.Post;
 
   vaItem := lvMatrizes.Items.Add;
   vaItem.Tag := qLote_MatrizID.AsInteger;
   vaItem.Text := cbMatriz.Selected.Text;
 
-  cbMatriz.RemoveObject(cbMatriz.Selected);
+  cbMatriz.ListBox.RemoveObject(cbMatriz.Selected);
+  cbMatriz.ListBox.ClearSelection;
+
+  qLote.Edit;
 end;
 
 procedure TfrmLote.cbEspecieChange(Sender: TObject);
