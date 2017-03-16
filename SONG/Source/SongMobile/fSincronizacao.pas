@@ -33,8 +33,6 @@ type
     qEspecieNOME: TStringField;
     EncodeBase64: TIdEncoderMIME;
     btnConfiguracoes: TButton;
-    ActionList1: TActionList;
-    Ac_Configuracoes: TAction;
     btnRetornar: TButton;
     qEspecieID: TFDAutoIncField;
     qMatrizSincronizacaoSYNC: TIntegerField;
@@ -54,7 +52,7 @@ type
     qLote_MatrizID_SERVER: TIntegerField;
     procedure btnSincronizarClick(Sender: TObject);
     procedure btnRetornarClick(Sender: TObject);
-    procedure Ac_ConfiguracoesExecute(Sender: TObject);
+    procedure btnConfiguracoesClick(Sender: TObject);
   private
     procedure ppvSincronizarEspecies(ipDataUltimoSincronismo: TDateTime);
     procedure ppvSincronizarMatrizes(ipDataUltimoSincronismo: TDateTime);
@@ -74,7 +72,7 @@ uses
 
 {$R *.fmx}
 
-procedure TfrmSincronizacao.Ac_ConfiguracoesExecute(Sender: TObject);
+procedure TfrmSincronizacao.btnConfiguracoesClick(Sender: TObject);
 begin
   inherited;
   Application.CreateForm(TfrmConfiguracoes, frmConfiguracoes);

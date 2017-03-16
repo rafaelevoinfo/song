@@ -741,11 +741,11 @@ inherited frmLote: TfrmLote
         object btnAddMatriz: TButton
           StyleName = 'btnImgCentroStyle'
           Action = Ac_Adicionar_Matriz
-          Align = Right
+          Align = MostRight
           Enabled = True
           Images = frmPrincipal.ImageList1
           ImageIndex = 4
-          Position.X = 392.000000000000000000
+          Position.X = 440.000000000000000000
           Size.Width = 40.000000000000000000
           Size.Height = 35.000000000000000000
           Size.PlatformDefault = False
@@ -767,7 +767,7 @@ inherited frmLote: TfrmLote
           Enabled = True
           Images = frmPrincipal.ImageList1
           ImageIndex = -1
-          Position.X = 432.000000000000000000
+          Position.X = 392.000000000000000000
           Size.Width = 48.000000000000000000
           Size.Height = 48.000000000000000000
           Size.PlatformDefault = False

@@ -5,6 +5,11 @@ inherited frmConfiguracoes: TfrmConfiguracoes
     Left = 256
     Top = 80
   end
+  inherited tbAcao: TToolBar
+    inherited btnSalvar: TButton
+      StyleLookup = 'actiontoolbutton'
+    end
+  end
   object lbxConfiguracoes: TListBox [4]
     Align = Client
     Size.Width = 640.000000000000000000

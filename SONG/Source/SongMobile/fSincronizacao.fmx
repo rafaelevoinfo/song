@@ -12,6 +12,8 @@ inherited frmSincronizacao: TfrmSincronizacao
     TabOrder = 1
     object btnSincronizar: TButton
       Align = Right
+      Images = frmPrincipal.ImageList1
+      ImageIndex = 6
       Position.X = 592.000000000000000000
       Size.Width = 48.000000000000000000
       Size.Height = 48.000000000000000000
@@ -22,18 +24,16 @@ inherited frmSincronizacao: TfrmSincronizacao
       OnClick = btnSincronizarClick
     end
     object btnConfiguracoes: TButton
-      Action = Ac_Configuracoes
       Align = Right
-      Enabled = True
       Images = frmPrincipal.ImageList1
       ImageIndex = 5
       Position.X = 544.000000000000000000
       Size.Width = 48.000000000000000000
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
-      StyleLookup = 'btnImgCentroStyle'
+      StyleLookup = 'actiontoolbutton'
       TabOrder = 1
-      Visible = True
+      OnClick = btnConfiguracoesClick
     end
     object btnRetornar: TButton
       Align = Left
@@ -199,16 +199,6 @@ inherited frmSincronizacao: TfrmSincronizacao
     FillChar = '='
     Left = 184
     Top = 368
-  end
-  object ActionList1: TActionList
-    Images = frmPrincipal.ImageList1
-    Left = 400
-    Top = 248
-    object Ac_Configuracoes: TAction
-      ImageIndex = 5
-      OnExecute = Ac_ConfiguracoesExecute
-      ImageIndex = 5
-    end
   end
   object DecoderBase64: TIdDecoderMIME
     FillChar = '='

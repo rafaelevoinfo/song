@@ -49,6 +49,7 @@ type
     qMatrizSYNC: TIntegerField;
     qLoteESPECIE: TStringField;
     qMatrizID_ESPECIE: TIntegerField;
+    Glyph1: TGlyph;
     procedure Ac_AdicionarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMatrizesPullRefresh(Sender: TObject);
