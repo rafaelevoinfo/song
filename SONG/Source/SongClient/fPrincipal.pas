@@ -21,7 +21,8 @@ uses
   cxGridLayoutView, cxGridDBLayoutView, cxGridLevel, cxGrid,
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
-  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie, fMix_Muda, fOrcamento;
+  fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie, fMix_Muda, fOrcamento,
+  fAparelhosRegistrados;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -132,6 +133,8 @@ type
     ModelosdeOramento1: TMenuItem;
     Ac_Orcamento: TAction;
     Oramento1: TMenuItem;
+    Ac_Aparelho_Registrado: TAction;
+    AparelhosExternos1: TMenuItem;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);
@@ -182,6 +185,7 @@ type
     procedure Ac_Mix_MudaExecute(Sender: TObject);
     procedure Ac_Modelo_OrcamentoExecute(Sender: TObject);
     procedure Ac_OrcamentoExecute(Sender: TObject);
+    procedure Ac_Aparelho_RegistradoExecute(Sender: TObject);
   private
     dmLookup: TdmLookup;
     procedure ppvOnClickItem(ipItem: TdxTileControlItem);
@@ -218,6 +222,12 @@ procedure TfrmPrincipal.Ac_AgendamentoExecute(Sender: TObject);
 begin
   inherited;
   TUtils.ppuAbrirFormAba<TfrmAgendamento>(pcPrincipal, TfrmAgendamento, frmAgendamento);
+end;
+
+procedure TfrmPrincipal.Ac_Aparelho_RegistradoExecute(Sender: TObject);
+begin
+  inherited;
+  TUtils.ppuAbrirFormAba<TfrmAparelhoRegistrado>(pcPrincipal, TfrmAparelhoRegistrado, frmAparelhoRegistrado);
 end;
 
 procedure TfrmPrincipal.Ac_Area_AtuacaoExecute(Sender: TObject);

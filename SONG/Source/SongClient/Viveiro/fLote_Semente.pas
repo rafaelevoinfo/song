@@ -145,6 +145,7 @@ type
     viewRegistrosID_CAMARA_FRIA: TcxGridDBColumn;
     viewRegistrosID_LOTE_SEMENTE_ORIGEM: TcxGridDBColumn;
     viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn;
+    viewRegistrosID_COLETA: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure cbEspeciePropertiesEditValueChanged(Sender: TObject);
     procedure cbPessoaColetouKeyDown(Sender: TObject; var Key: Word;
@@ -214,6 +215,7 @@ type
   public const
     coLoteAberto = 0;
     coLoteFechado = 1;
+    coPesquisaIdColeta = 5;
     coTiposPessoaPadrao: Set of TTipoRelacionamentoPessoa = [trpFuncionario, trpEstagiario, trpVoluntario, trpMembroDiretoria];
   end;
 
@@ -652,7 +654,10 @@ begin
   ipCds.ppuAddParametro(TParametros.coStatus, rgStatus.ItemIndex);
 
   if not VarIsNull(cbEspeciePesquisa.EditValue) then
-    ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue)
+    ipCds.ppuAddParametro(TParametros.coEspecie, cbEspeciePesquisa.EditValue);
+
+  if (cbPesquisarPor.EditValue = coPesquisaIdColeta) then
+    ipCds.ppuAddParametro(TParametros.coIdColeta, EditPesquisa.Text);
 
 end;
 

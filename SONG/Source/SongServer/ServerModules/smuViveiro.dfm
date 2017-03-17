@@ -287,7 +287,8 @@ inherited smViveiro: TsmViveiro
       '       Lote_Semente.id_camara_fria,'
       '       Camara_Fria.nome as Camara_Fria,'
       '       Lote_Semente.id_lote_semente_origem,'
-      '       fin_for_cli.razao_social'
+      '       fin_for_cli.razao_social,'
+      '       Lote_Semente.ID_COLETA'
       'from Lote_Semente'
       'inner join Especie on (Especie.Id = Lote_Semente.Id_Especie)'
       
@@ -424,6 +425,12 @@ inherited smViveiro: TsmViveiro
       Origin = 'RAZAO_SOCIAL'
       ProviderFlags = []
       Size = 100
+    end
+    object qLote_SementeID_COLETA: TStringField
+      FieldName = 'ID_COLETA'
+      Origin = 'ID_COLETA'
+      ProviderFlags = []
+      Size = 30
     end
   end
   object qLote_Semente_Matriz: TRFQuery

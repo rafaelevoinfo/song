@@ -250,4 +250,34 @@ inherited dmSistema: TdmSistema
       Size = 150
     end
   end
+  object cdsAparelho_Externo: TRFClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspqAparelho_Externo'
+    RemoteServer = dmPrincipal.ProviderSistema
+    Left = 168
+    Top = 32
+    object cdsAparelho_ExternoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cdsAparelho_ExternoNOME: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object cdsAparelho_ExternoSERIAL: TStringField
+      DisplayLabel = 'Serial'
+      FieldName = 'SERIAL'
+      Origin = 'SERIAL'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

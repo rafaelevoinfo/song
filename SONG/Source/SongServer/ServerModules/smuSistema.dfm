@@ -389,4 +389,40 @@ inherited smSistema: TsmSistema
       Size = 150
     end
   end
+  object qAparelho_Externo: TRFQuery
+    Connection = dmPrincipal.conSong
+    SQL.Strings = (
+      'select Aparelho_externo.Id,'
+      '       Aparelho_externo.Nome,'
+      '       Aparelho_externo.Serial'
+      'from Aparelho_externo'
+      '&WHERE')
+    Left = 88
+    Top = 208
+    MacroData = <
+      item
+        Value = Null
+        Name = 'WHERE'
+      end>
+    object qAparelho_ExternoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qAparelho_ExternoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Required = True
+      Size = 100
+    end
+    object qAparelho_ExternoSERIAL: TStringField
+      FieldName = 'SERIAL'
+      Origin = 'SERIAL'
+      ProviderFlags = []
+      Required = True
+      Size = 100
+    end
+  end
 end

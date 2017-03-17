@@ -54,6 +54,10 @@ type
     qAgenda_RegistroOPTIONS: TIntegerField;
     qAgenda_RegistroTIPO: TIntegerField;
     qAgenda_RegistroLOCAL: TStringField;
+    qAparelho_Externo: TRFQuery;
+    qAparelho_ExternoID: TIntegerField;
+    qAparelho_ExternoNOME: TStringField;
+    qAparelho_ExternoSERIAL: TStringField;
   private
     { Private declarations }
   protected

@@ -3,6 +3,7 @@ inherited frmLoteSemente: TfrmLoteSemente
   Caption = 'Lotes de Sementes'
   ClientWidth = 1037
   ExplicitWidth = 1053
+  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -11,7 +12,10 @@ inherited frmLoteSemente: TfrmLoteSemente
     ExplicitWidth = 1037
     ClientRectRight = 1033
     inherited tabPesquisa: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 1029
+      ExplicitHeight = 448
       inherited pnPesquisa: TPanel
         Width = 1029
         ExplicitWidth = 1029
@@ -76,6 +80,10 @@ inherited frmLoteSemente: TfrmLoteSemente
               item
                 Description = 'Data da Coleta'
                 Value = 4
+              end
+              item
+                Description = 'ID da Coleta'
+                Value = 5
               end>
             TabOrder = 4
             ExplicitLeft = 296
@@ -148,76 +156,81 @@ inherited frmLoteSemente: TfrmLoteSemente
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [4]
+            object viewRegistrosID_COLETA: TcxGridDBColumn [4]
+              DataBinding.FieldName = 'ID_COLETA'
+              Options.Editing = False
+              Width = 86
+            end
+            object viewRegistrosNOME_ESPECIE: TcxGridDBColumn [5]
               DataBinding.FieldName = 'NOME_ESPECIE'
               Options.Editing = False
               Width = 121
             end
-            object viewRegistrosNOME: TcxGridDBColumn [5]
+            object viewRegistrosNOME: TcxGridDBColumn [6]
               DataBinding.FieldName = 'NOME'
               Options.Editing = False
               Width = 104
             end
-            object viewRegistrosDATA: TcxGridDBColumn [6]
+            object viewRegistrosDATA: TcxGridDBColumn [7]
               DataBinding.FieldName = 'DATA'
               Options.Editing = False
               Width = 84
             end
-            object viewRegistrosQTDE: TcxGridDBColumn [7]
+            object viewRegistrosQTDE: TcxGridDBColumn [8]
               DataBinding.FieldName = 'QTDE'
               RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
               Width = 158
             end
-            object viewRegistrosQTDE_SEMEADA: TcxGridDBColumn [8]
+            object viewRegistrosQTDE_SEMEADA: TcxGridDBColumn [9]
               DataBinding.FieldName = 'QTDE_SEMEADA'
               RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
               Width = 104
             end
-            object viewRegistrosQTDE_ARMAZENADA: TcxGridDBColumn [9]
+            object viewRegistrosQTDE_ARMAZENADA: TcxGridDBColumn [10]
               DataBinding.FieldName = 'QTDE_ARMAZENADA'
               RepositoryItem = dmLookup.repCalcPadrao
               Options.Editing = False
               Width = 118
             end
-            object viewRegistrosID_PESSOA_COLETOU: TcxGridDBColumn [10]
+            object viewRegistrosID_PESSOA_COLETOU: TcxGridDBColumn [11]
               DataBinding.FieldName = 'ID_PESSOA_COLETOU'
               Visible = False
               Options.Editing = False
               Width = 98
             end
-            object viewRegistrosPESSOA_COLETOU: TcxGridDBColumn [11]
+            object viewRegistrosPESSOA_COLETOU: TcxGridDBColumn [12]
               DataBinding.FieldName = 'PESSOA_COLETOU'
               Options.Editing = False
               Width = 103
             end
-            object viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn [12]
+            object viewRegistrosTAXA_GERMINACAO: TcxGridDBColumn [13]
               DataBinding.FieldName = 'TAXA_GERMINACAO'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = ',0.00 %'
               Options.Editing = False
               Width = 90
             end
-            object viewRegistrosTAXA_DESCARTE: TcxGridDBColumn [13]
+            object viewRegistrosTAXA_DESCARTE: TcxGridDBColumn [14]
               DataBinding.FieldName = 'TAXA_DESCARTE'
               PropertiesClassName = 'TcxCalcEditProperties'
               Properties.DisplayFormat = ',0.00 %'
               Options.Editing = False
               Width = 77
             end
-            object viewRegistrosID_CAMARA_FRIA: TcxGridDBColumn [14]
+            object viewRegistrosID_CAMARA_FRIA: TcxGridDBColumn [15]
               DataBinding.FieldName = 'ID_CAMARA_FRIA'
               Visible = False
               Options.Editing = False
             end
-            object viewRegistrosCAMARA_FRIA: TcxGridDBColumn [15]
+            object viewRegistrosCAMARA_FRIA: TcxGridDBColumn [16]
               DataBinding.FieldName = 'CAMARA_FRIA'
               Visible = False
               Options.Editing = False
               Width = 130
             end
-            object viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn [16]
+            object viewRegistrosRAZAO_SOCIAL: TcxGridDBColumn [17]
               DataBinding.FieldName = 'RAZAO_SOCIAL'
               Width = 165
             end
@@ -303,10 +316,6 @@ inherited frmLoteSemente: TfrmLoteSemente
             object tabDetailGerminacao: TcxTabSheet
               Caption = 'Hist'#243'rico de Germina'#231#227'o'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pn1: TPanel
                 Left = 0
                 Top = 0
@@ -410,10 +419,6 @@ inherited frmLoteSemente: TfrmLoteSemente
               Caption = 'Matrizes'
               ImageIndex = 2
               OnShow = tabDetailMatrizesShow
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object cxGrid2: TcxGrid
                 Left = 0
                 Top = 0
@@ -472,10 +477,7 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 1029
-      ExplicitHeight = 448
       inherited pnBotoesCadastro: TPanel
         Width = 1029
         ExplicitWidth = 1029
@@ -524,15 +526,10 @@ inherited frmLoteSemente: TfrmLoteSemente
               ExplicitWidth = 1025
               ExplicitHeight = 301
               inherited cxGrid1: TcxGrid
-                Width = 480
-                Height = 299
                 ExplicitWidth = 480
                 ExplicitHeight = 299
               end
               inherited pnBotoes: TPanel
-                Left = 481
-                Width = 51
-                Height = 299
                 ExplicitLeft = 481
                 ExplicitWidth = 51
                 ExplicitHeight = 299
@@ -555,9 +552,6 @@ inherited frmLoteSemente: TfrmLoteSemente
                 end
               end
               inherited cxGrid2: TcxGrid
-                Left = 532
-                Width = 492
-                Height = 299
                 ExplicitLeft = 532
                 ExplicitWidth = 492
                 ExplicitHeight = 299
@@ -587,7 +581,6 @@ inherited frmLoteSemente: TfrmLoteSemente
                   ExplicitWidth = 131
                 end
                 inherited lbInfoGridDireita: TLabel
-                  Left = 531
                   Width = 110
                   Caption = 'Matr'#237'zes desse lote'
                   ExplicitLeft = 531
@@ -737,7 +730,10 @@ inherited frmLoteSemente: TfrmLoteSemente
       end
     end
     inherited tabCadastroDetail: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 1029
+      ExplicitHeight = 448
       inherited pnBotoesCadastroDetail: TPanel
         Width = 1029
         ExplicitWidth = 1029
@@ -882,10 +878,6 @@ inherited frmLoteSemente: TfrmLoteSemente
     object tabCadastroGerminacao: TcxTabSheet
       Caption = 'tabCadastroGerminacao'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pnBotoesCadastroGerminacao: TPanel
         Left = 0
         Top = 0

@@ -7,6 +7,7 @@ object frmBasico: TfrmBasico
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnClose = FormClose
   DesignerMasterStyle = 0
   object Styles: TStyleBook
     Styles = <

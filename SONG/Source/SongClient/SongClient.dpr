@@ -74,7 +74,8 @@ uses
   fMix_Muda in 'Viveiro\fMix_Muda.pas' {frmMixMuda},
   fmEditor in 'Frames\fmEditor.pas' {frameEditor: TFrame},
   fModeloOrcamento in 'Estoque\fModeloOrcamento.pas' {frmModeloOrcamento},
-  fOrcamento in 'Estoque\fOrcamento.pas' {frmOrcamento};
+  fOrcamento in 'Estoque\fOrcamento.pas' {frmOrcamento},
+  fAparelhosRegistrados in 'Sistema\fAparelhosRegistrados.pas' {frmAparelhoRegistrado};
 
 {$R Localization.RES}
 {$R *.res}

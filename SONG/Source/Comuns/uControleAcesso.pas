@@ -76,7 +76,7 @@ type
    vivCamaraFria, vivTipoEspecie, vivMixMuda);
   TPermissaoEstoque = (estItem, estEntrada, estSolicitacaoCompra, estCompra, estAnalizarSolicitacaoCompra,
     estSaida, estVenda, estLocalUso, estModeloOrcamento, estOrcamento);
-  TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento);
+  TPermissaoSistema = (sisNotificacao, sisAgenda, sisAgendamento,sisAparelhoExterno);
   TPermissaoPatrimonio = (patItem, patPatrimonio);
   TPermissaoRelatorio = (relFinanceiro, relAdministrativo, relViveiro, relPatrimonio);
 
@@ -197,6 +197,7 @@ begin
 
   vaPermissoes := TList<TPermissao>.Create;
   plAddSistema(sisNotificacao, 'Notificações');
+  plAddSistema(sisAparelhoExterno, 'Aparelhos Externos');
   FItems.Add('Sistema', vaPermissoes);
 
   vaPermissoes := TList<TPermissao>.Create;

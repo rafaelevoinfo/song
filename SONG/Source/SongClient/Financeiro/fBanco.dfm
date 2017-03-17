@@ -1,6 +1,5 @@
 inherited frmBanco: TfrmBanco
   Caption = 'Bancos'
-  ExplicitWidth = 320
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -67,10 +66,7 @@ inherited frmBanco: TfrmBanco
       end
     end
     inherited tabCadastro: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 854
-      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object Label3: TLabel
           Left = 4
@@ -93,7 +89,7 @@ inherited frmBanco: TfrmBanco
     inherited tabCadastroDetail: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 854
+      ExplicitWidth = 976
       ExplicitHeight = 448
       inherited pnEditsCadastroDetail: TPanel
         object Label4: TLabel

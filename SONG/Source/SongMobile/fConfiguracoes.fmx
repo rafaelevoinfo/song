@@ -137,6 +137,38 @@ inherited frmConfiguracoes: TfrmConfiguracoes
         OnClick = btnRegistrarAparelhoClick
       end
     end
+    object ListBoxGroupHeader5: TListBoxGroupHeader
+      Position.Y = 340.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      Text = 'Data da '#218'ltima Sincroniza'#231#227'o'
+    end
+    object lbiSincronizacao: TListBoxItem
+      Selectable = False
+      Position.Y = 370.000000000000000000
+      TabOrder = 10
+      object lbDataUltimaAtualizacao: TLabel
+        Align = Client
+        StyledSettings = [Family, Style, FontColor]
+        Margins.Left = 20.000000000000000000
+        Size.Width = 484.000000000000000000
+        Size.Height = 44.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'lbDataUltimaAtualizacao'
+      end
+      object btnLimparSincronizacao: TButton
+        Align = Right
+        Position.X = 504.000000000000000000
+        Size.Width = 136.000000000000000000
+        Size.Height = 44.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Limpar'
+        OnClick = btnLimparSincronizacaoClick
+      end
+    end
   end
   inherited ActionList1: TActionList
     inherited Ac_Salvar: TAction
@@ -195,6 +227,14 @@ inherited frmConfiguracoes: TfrmConfiguracoes
       FieldName = 'LOGIN'
       Control = EditLogin
       Track = False
+    end
+    object LinkPropertyToFieldText2: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSource
+      FieldName = 'DATA_ULTIMA_SYNC'
+      Component = lbDataUltimaAtualizacao
+      ComponentProperty = 'Text'
+      OnAssigningValue = LinkPropertyToFieldText2AssigningValue
     end
   end
 end

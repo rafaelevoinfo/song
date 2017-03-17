@@ -18,7 +18,7 @@ uses
   Androidapi.JNIBridge,
   Androidapi.JNI.GraphicsContentViewText,
   Androidapi.JNI.JavaTypes,
-  FMX.Helpers.Android;
+  FMX.Helpers.Android, Androidapi.JNI.App;
 
 type
   TfrmConfiguracoes = class(TfrmBasicoCadastro)
@@ -44,9 +44,17 @@ type
     btnRegistrarAparelho: TButton;
     LinkPropertyToFieldText: TLinkPropertyToField;
     LinkControlToField3: TLinkControlToField;
+    ListBoxGroupHeader5: TListBoxGroupHeader;
+    lbiSincronizacao: TListBoxItem;
+    lbDataUltimaAtualizacao: TLabel;
+    btnLimparSincronizacao: TButton;
+    LinkPropertyToFieldText2: TLinkPropertyToField;
     procedure EditSenhaChange(Sender: TObject);
     procedure btnRegistrarAparelhoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnLimparSincronizacaoClick(Sender: TObject);
+    procedure LinkPropertyToFieldText2AssigningValue(Sender: TObject; AssignValueRec: TBindingAssignValueRec;
+      var Value: TValue; var Handled: Boolean);
   private
     function fpvPegarIMEI: String;
     function fpvPegarNomeDispositivo: String;
@@ -72,6 +80,14 @@ begin
   Result := JStringToString(TJBuild.JavaClass.MODEL); // Model name
 end;
 
+procedure TfrmConfiguracoes.LinkPropertyToFieldText2AssigningValue(Sender: TObject;
+  AssignValueRec: TBindingAssignValueRec; var Value: TValue; var Handled: Boolean);
+begin
+  inherited;
+  if Value.AsString = '' then
+    Value := TValue.FromVariant('Não Sincronizado');
+end;
+
 function TfrmConfiguracoes.fpvPegarIMEI: String;
 var
   vaObj: JObject;
@@ -89,14 +105,22 @@ begin
       TJSettings_Secure.JavaClass.ANDROID_ID));
 end;
 
+procedure TfrmConfiguracoes.btnLimparSincronizacaoClick(Sender: TObject);
+begin
+  inherited;
+  dmPrincipal.qConfig.Edit;
+  dmPrincipal.qConfigDATA_ULTIMA_SYNC.Clear;
+end;
+
 procedure TfrmConfiguracoes.btnRegistrarAparelhoClick(Sender: TObject);
 var
   vaNome, vaIMEI: String;
-  vaIdAparelho:Integer;
+  vaIdAparelho: Integer;
 begin
   inherited;
-  ppuSalvar; // vamos salvar as configuracoes ja feitas
+   ppuSalvar; // vamos salvar as configuracoes ja feitas
   dmPrincipal.ppuConectarServidor;
+
   vaIMEI := fpvPegarIMEI;
   vaNome := fpvPegarNomeDispositivo;
   vaIdAparelho := dmPrincipal.FuncoesSistema.fpuRegistrarAparelhoExterno(vaNome, vaIMEI);
@@ -108,6 +132,7 @@ begin
   lbIdAparelho.Text := vaIdAparelho.ToString;
   lbIdAparelho.Visible := true;
   btnRegistrarAparelho.Visible := false;
+
 end;
 
 procedure TfrmConfiguracoes.EditSenhaChange(Sender: TObject);
@@ -131,13 +156,15 @@ var
   vaSha1: TIdHashSHA1;
 begin
   inherited;
-
-  vaSha1 := TIdHashSHA1.Create;
-  try
-    dmPrincipal.qConfigSENHA.AsString := vaSha1.HashStringAsHex(EditSenha.text);
-  finally
-    vaSha1.free;
-  end;
+  if EditSenha.Text.Trim <> '' then
+    begin
+      vaSha1 := TIdHashSHA1.Create;
+      try
+        dmPrincipal.qConfigSENHA.AsString := vaSha1.HashStringAsHex(EditSenha.Text);
+      finally
+        vaSha1.free;
+      end;
+    end;
 end;
 
 end.

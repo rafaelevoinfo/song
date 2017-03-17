@@ -9,10 +9,13 @@ uses
 type
   TfrmBasico = class(TForm)
     Styles: TStyleBook;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
+    FOnReturn: TProc;
+    procedure SetOnReturn(const Value: TProc);
     { Private declarations }
   public
-    { Public declarations }
+    property OnReturn:TProc read FOnReturn write SetOnReturn;
   end;
 
 var
@@ -21,5 +24,18 @@ var
 implementation
 
 {$R *.fmx}
+
+{ TfrmBasico }
+
+procedure TfrmBasico.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if Assigned(FOnReturn) then
+    FOnReturn;
+end;
+
+procedure TfrmBasico.SetOnReturn(const Value: TProc);
+begin
+  FOnReturn := Value;
+end;
 
 end.

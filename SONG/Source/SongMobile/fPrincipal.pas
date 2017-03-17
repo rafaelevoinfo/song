@@ -154,6 +154,7 @@ begin
         vaItem.Tag := qLoteID.AsInteger;
 
         vaItem.Data['txtNome'] := qLoteLOTE.AsString;
+        vaItem.Data['txtIdColeta'] := dmPrincipal.qConfigID_APARELHO.AsString +'_'+qLoteID.AsString;
         vaItem.Data['txtEspecie'] := qLoteESPECIE.AsString;
         vaItem.Data['txtQtde'] := FormatFloat(',0.00', qLoteQTDE.AsFloat);
 
@@ -167,6 +168,12 @@ end;
 
 procedure TfrmPrincipal.ppvAbrirLote(ipId: Integer);
 begin
+  if dmPrincipal.qConfigID_APARELHO.IsNull then
+    begin
+      ShowMessage('É necessário registrar o aparelho antes de realizar um cadastro de lote.');
+      Exit;
+    end;
+
   ppvCarregarMatrizes;
 
   Application.CreateForm(TfrmLote, frmLote);
@@ -211,17 +218,14 @@ procedure TfrmPrincipal.Ac_SincronizarExecute(Sender: TObject);
 begin
   Application.CreateForm(TfrmSincronizacao, frmSincronizacao);
 
-//  frmSincronizacao.OnSalvar := procedure
-//    begin
-//      ppvCarregarMatrizes;
-//      ppvCarregarLotes;
-//    end;
+  frmSincronizacao.OnReturn := procedure
+    begin
+      ppvCarregarMatrizes;
+      ppvCarregarLotes;
+    end;
+
   frmSincronizacao.Show;
-
 end;
-
-
-
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin

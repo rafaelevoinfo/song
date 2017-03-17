@@ -246,6 +246,9 @@ inherited frmPrincipal: TfrmPrincipal
     end
     object Sistema1: TMenuItem
       Caption = 'Sistema'
+      object AparelhosExternos1: TMenuItem
+        Action = Ac_Aparelho_Registrado
+      end
       object ConfiguraodeNotificaes1: TMenuItem
         Action = Ac_Notificacao
       end
@@ -528,6 +531,12 @@ inherited frmPrincipal: TfrmPrincipal
       Caption = 'Or'#231'amento'
       ImageIndex = 62
       OnExecute = Ac_OrcamentoExecute
+    end
+    object Ac_Aparelho_Registrado: TAction
+      Category = 'Sistema'
+      Caption = 'Aparelhos Registrados'
+      ImageIndex = 63
+      OnExecute = Ac_Aparelho_RegistradoExecute
     end
   end
   object dxSkinController1: TdxSkinController

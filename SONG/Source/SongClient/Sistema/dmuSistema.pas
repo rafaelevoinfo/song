@@ -52,6 +52,10 @@ type
     cdsAgenda_RegistroOPTIONS: TIntegerField;
     cdsAgenda_RegistroTIPO: TIntegerField;
     cdsAgenda_RegistroLOCAL: TStringField;
+    cdsAparelho_Externo: TRFClientDataSet;
+    cdsAparelho_ExternoID: TIntegerField;
+    cdsAparelho_ExternoNOME: TStringField;
+    cdsAparelho_ExternoSERIAL: TStringField;
     procedure cdsAgenda_RegistroBeforePost(DataSet: TDataSet);
   private
     { Private declarations }

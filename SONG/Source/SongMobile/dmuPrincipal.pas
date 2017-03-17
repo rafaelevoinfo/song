@@ -43,6 +43,7 @@ type
     FFuncoesViveiro: TSMFuncoesViveiroClient;
     FFuncoesSistema: TSMfuncoesSistemaClient;
 
+
     { Private declarations }
   public
     property FuncoesViveiro: TSMFuncoesViveiroClient read FFuncoesViveiro;
@@ -51,6 +52,7 @@ type
     procedure ppuAbrirConfig;
     procedure ppuAbrirEspecie;
     procedure ppuConectarServidor;
+    procedure ppuDesconectarServidor;
   end;
 
 var
@@ -87,6 +89,14 @@ begin
   ppuAbrirConfig;
 end;
 
+procedure TdmPrincipal.ppuDesconectarServidor;
+begin
+   try
+     SongServerCon.Close;
+   except
+   end;
+end;
+
 procedure TdmPrincipal.ppuConectarServidor;
 begin
   SongServerCon.Close;
@@ -111,7 +121,7 @@ begin
     on e: Exception do
       begin
         if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
-          raise Exception.Create('O Usuário/Senha de acesso ao SONG incorreto.');
+          raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.');
 
         SongServerCon.Close;
         SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
@@ -121,7 +131,7 @@ begin
           on ex: Exception do
             begin
               if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
-                raise Exception.Create('O Usuário/Senha de acesso ao SONG incorreto.')
+                raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.')
               else
                 raise Exception.Create('Não foi possível conectar ao servidor. Detalhes: ' + ex.message);
 

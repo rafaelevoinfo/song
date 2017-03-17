@@ -322,6 +322,12 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = []
       Size = 100
     end
+    object cdsLote_SementeID_COLETA: TStringField
+      DisplayLabel = 'Id da Coleta'
+      FieldName = 'ID_COLETA'
+      ProviderFlags = []
+      Size = 30
+    end
   end
   object cdsLote_Semente_Matriz: TRFClientDataSet
     Aggregates = <>
@@ -1086,6 +1092,7 @@ inherited dmViveiro: TdmViveiro
         Name = 'ORDER'
         DescFields = 'QTDE_MUDA_RETIRAR'
         Fields = 'CANTEIRO;ESPECIE;ID_LOTE;QTDE_MUDA_RETIRAR'
+        Options = [ixDescending]
       end>
     Params = <
       item

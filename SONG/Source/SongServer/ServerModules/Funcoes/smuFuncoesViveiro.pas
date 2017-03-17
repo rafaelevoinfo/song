@@ -385,6 +385,9 @@ begin
   if not Assigned(vaSessaoUsuario) then
     raise Exception.Create('Usuário não logado.');
 
+  if not TryStrToDateTime(ipDataUltimaSincronizacao, vaDataSync) then
+    raise Exception.Create('Data inválida.');
+
   vaCodigosIgnorar := '';
   pprCriarDataSet(vaDataSet);
   // PENSAR EM COMO RESOLVER ISSO AQUI, PQ SE PASSO FALSE DA LEAK NO TMATRIZ, se passo TRUE da leak no AdsObjectList
@@ -475,7 +478,7 @@ begin
         end;
 
       // pegando as matrizes alteradas
-      if ipDataUltimaSincronizacao = '' then
+      if CompareDateTime(vaDataSync,EncodeDate(2000,01,01)) = LessThanValue  then
         begin
           vaDataSet.Close;
           vaDataSet.SQL.Text := 'select 1 as Operacao, ' +
@@ -493,9 +496,6 @@ begin
         end
       else
         begin
-          if not TryStrToDateTime(ipDataUltimaSincronizacao, vaDataSync) then
-            raise Exception.Create('Data inválida.');
-
           vaDataSet.SQL.Text := 'select Log.Operacao, ' +
             '       Log.Id_Tabela as ID,' +
             '       Matriz.Id_especie,' +

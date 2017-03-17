@@ -15,7 +15,7 @@ uses
   uTypes in '..\Comuns\uTypes.pas',
   fSincronizacao in 'fSincronizacao.pas' {frmSincronizacao},
   fConfiguracoes in 'fConfiguracoes.pas' {frmConfiguracoes},
-  uMessage in 'uMessage.pas';
+  Android.JNI.Toast in 'Android.JNI.Toast.pas';
 
 {$R *.res}
 

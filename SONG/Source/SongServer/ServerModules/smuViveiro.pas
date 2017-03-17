@@ -179,6 +179,7 @@ type
     qMix_Muda_Especie_Lote_CanteiroQTDE_MUDA_ROCAMBOLE: TIntegerField;
     qTipo_EspecieNATIVA: TSmallintField;
     qMix_Muda_Especie_Lote_CanteiroID_LOTE: TIntegerField;
+    qLote_SementeID_COLETA: TStringField;
     procedure dspqLote_MudaAfterUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind);
@@ -366,6 +367,8 @@ begin
           else
             Result := Result + ' (lote_Semente.status=1)' + vaOperador
         end
+      else if ipParam.Name = TParametros.coIdColeta then
+        Result := TSQLGenerator.fpuFilterString(Result, ipTabela, 'ID_COLETA', vaValor, vaOperador)
       else if ipParam.Name = TParametros.coData then
         Result := Result + ' (lote_Semente.DATA between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 0))) + ' AND ' +
           QuotedStr(FormatDateTime('dd.mm.yyyy', TUtils.fpuExtrairData(vaValor, 1))) + ') ' + vaOperador;
