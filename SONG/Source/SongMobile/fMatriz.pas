@@ -16,7 +16,9 @@ uses
   FireDAC.Comp.Client, uQuery, Data.Bind.EngExt, FMX.Bind.DBEngExt, System.Rtti,
   System.Bindings.Outputs, FMX.Bind.Editors, Data.Bind.Components,
   Data.Bind.DBScope, System.Actions, FMX.ActnList, FMX.ListBox, FMX.StdActns,
-  FMX.MediaLibrary.Actions, fBasicoCadastro, fBasico, uConstantes;
+  FMX.MediaLibrary.Actions, fBasicoCadastro, fBasico, uConstantes,
+  Androidapi.JNI.GraphicsContentViewText, Androidapi.Helpers,
+  FMX.Platform.Android, IdURI, Androidapi.JNI.Net;
 
 type
 
@@ -57,6 +59,8 @@ type
     btnGaleria: TButton;
     btnCamera: TButton;
     btnLocalizacao: TButton;
+    btnMaps: TButton;
+    Ac_Maps: TAction;
     procedure FormCreate(Sender: TObject);
     procedure LocationSensorLocationChanged(Sender: TObject; const OldLocation, NewLocation: TLocationCoord2D);
     procedure FormShow(Sender: TObject);
@@ -64,6 +68,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure Ac_Tirar_FotoDidFinishTaking(Image: TBitmap);
     procedure Ac_Pegar_LocalizacaoExecute(Sender: TObject);
+    procedure Ac_MapsExecute(Sender: TObject);
   private
     procedure ppvAjustarTamanhoFoto;
     { Private declarations }
@@ -71,6 +76,7 @@ type
     procedure pprBeforeSalvar; override;
   public
     procedure ppuIncluir; override;
+    procedure ppuAlterar(ipId:integer);override;
 
   end;
 
@@ -83,6 +89,23 @@ uses
   fPrincipal;
 
 {$R *.fmx}
+
+procedure TfrmMatriz.Ac_MapsExecute(Sender: TObject);
+var
+  vaUrl: String;
+  vaIntent: JIntent;
+begin
+  inherited;
+  if (EditLatitude.Text = '') or (EditLongitude.Text = '') then
+    raise Exception.Create('É necessário uma latitude e uma longitude para exibir o mapa.');
+
+  vaUrl := 'http://maps.google.com/maps?q=' + StringReplace(EditLatitude.Text, ',', '.', []) + ',' +
+    StringReplace(EditLongitude.Text, ',', '.', []) + '(' + EditNome.Text + ')';
+  vaIntent := TJIntent.JavaClass.init(TJIntent.JavaClass.ACTION_VIEW,
+    TJnet_Uri.JavaClass.parse(StringToJString(TIdURI.URLEncode(vaUrl))));
+
+  SharedActivity.startActivity(vaIntent);
+end;
 
 procedure TfrmMatriz.Ac_Pegar_LocalizacaoExecute(Sender: TObject);
 begin
@@ -119,7 +142,7 @@ end;
 
 procedure TfrmMatriz.FormCreate(Sender: TObject);
 begin
-   dmPrincipal.ppuAbrirEspecie;
+  dmPrincipal.ppuAbrirEspecie;
   // TMessageManager.DefaultManager.SubscribeToMessage(TMessageDidFinishTakingImageFromLibrary, ppvImagemEscolhida);
 end;
 
@@ -149,6 +172,12 @@ procedure TfrmMatriz.pprBeforeSalvar;
 begin
   inherited;
   qMatrizSYNC.AsInteger := coDesincronizado;
+end;
+
+procedure TfrmMatriz.ppuAlterar(ipId: integer);
+begin
+  inherited;
+
 end;
 
 procedure TfrmMatriz.ppuIncluir;

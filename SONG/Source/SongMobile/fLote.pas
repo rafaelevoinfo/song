@@ -13,7 +13,8 @@ uses
   uQuery, FMX.Edit, FMX.Layouts, FMX.ListBox, FMX.DateTimeCtrls,
   Data.Bind.Components, Data.Bind.DBScope, System.Rtti, System.Bindings.Outputs,
   FMX.Bind.Editors, Data.Bind.EngExt, FMX.Bind.DBEngExt, FMX.ListView.Types,
-  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView, uTypes, dmuPrincipal;
+  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView, uTypes, dmuPrincipal,
+  FMX.Maps;
 
 type
   TfrmLote = class(TfrmBasicoCadastro)
@@ -37,7 +38,6 @@ type
     BindSourceMatriz: TBindSourceDB;
     recMatriz: TRectangle;
     lbMatrizes: TLabel;
-    btnAddMatriz: TButton;
     lvMatrizes: TListView;
     qLote_Matriz: TRFQuery;
     qLote_MatrizID: TFDAutoIncField;
@@ -55,20 +55,23 @@ type
     qLoteID_ESPECIE: TIntegerField;
     qLoteID: TFDAutoIncField;
     LinkControlToField3: TLinkControlToField;
-    procedure Ac_Adicionar_MatrizExecute(Sender: TObject);
+    btnAddMatriz: TButton;
+    qLote_MatrizID_ESPECIE: TIntegerField;
     procedure FormShow(Sender: TObject);
     procedure Ac_Vincular_MatrizExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure cbEspecieChange(Sender: TObject);
+    procedure Ac_Adicionar_MatrizExecute(Sender: TObject);
+    procedure lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
   private
     procedure ppvCarregarMatrizes;
     procedure ppvLimparCache(Sender: TObject);
     procedure ppvFiltrarMatrizes;
   protected
     procedure pprExecutarSalvar; override;
-
+    function fprValidarDados(var opMsgErro: String): Boolean; override;
   public
     procedure ppuIncluir; override;
     procedure ppuAlterar(ipId: Integer); override;
@@ -87,6 +90,41 @@ uses
 
 {$R *.fmx}
 
+procedure TfrmLote.ppvFiltrarMatrizes;
+var
+  vaIdEspecie: Integer;
+  vaItem: TListBoxItem;
+begin
+  if not qLote_Matriz.Active then
+    Exit;
+
+  if (not LinkEspecie.BindList.GetSelectedValue.IsEmpty) then
+    begin
+      cbMatriz.Clear;
+      frmPrincipal.qMatriz.DisableControls;
+      try
+        vaIdEspecie := LinkEspecie.BindList.GetSelectedValue.AsString.ToInteger;
+        frmPrincipal.qMatriz.First;
+        while not frmPrincipal.qMatriz.Eof do
+          begin
+            if (frmPrincipal.qMatrizID_ESPECIE.AsInteger = vaIdEspecie) and
+              (not qLote_Matriz.Locate(qLote_MatrizID_MATRIZ.FieldName, frmPrincipal.qMatrizID.AsInteger)) then
+              begin
+                vaItem := TListBoxItem.Create(cbMatriz);
+                vaItem.Tag := frmPrincipal.qMatrizID.AsInteger;
+                vaItem.Text := frmPrincipal.qMatrizNOME.AsString;
+
+                cbMatriz.AddObject(vaItem);
+              end;
+
+            frmPrincipal.qMatriz.Next;
+          end;
+      finally
+        frmPrincipal.qMatriz.EnableControls;
+      end;
+    end;
+end;
+
 procedure TfrmLote.Ac_Adicionar_MatrizExecute(Sender: TObject);
 begin
   inherited;
@@ -100,47 +138,22 @@ begin
   frmMatriz.Show;
 end;
 
-procedure TfrmLote.ppvFiltrarMatrizes;
-var
-  vaIdEspecie: Integer;
-  vaItem: TListBoxItem;
-begin
-  if not qLote_Matriz.Active then
-    Exit;
-
-  cbMatriz.Clear;
-  frmPrincipal.qMatriz.DisableControls;
-  try
-    vaIdEspecie := LinkEspecie.BindList.GetSelectedValue.AsString.ToInteger;
-    frmPrincipal.qMatriz.First;
-    while not frmPrincipal.qMatriz.Eof do
-      begin
-        if (frmPrincipal.qMatrizID_ESPECIE.AsInteger = vaIdEspecie) and
-          (not qLote_Matriz.Locate(qLote_MatrizID_MATRIZ.FieldName, frmPrincipal.qMatrizID.AsInteger)) then
-          begin
-            vaItem := TListBoxItem.Create(cbMatriz);
-            vaItem.Tag := frmPrincipal.qMatrizID.AsInteger;
-            vaItem.Text := frmPrincipal.qMatrizNOME.AsString;
-
-            cbMatriz.AddObject(vaItem);
-          end;
-
-        frmPrincipal.qMatriz.Next;
-      end;
-  finally
-    frmPrincipal.qMatriz.EnableControls;
-  end;
-end;
-
 procedure TfrmLote.Ac_Vincular_MatrizExecute(Sender: TObject);
 var
   vaItem: TListViewItem;
   vaIdMatriz: Integer;
 begin
   inherited;
-  if not Assigned(cbMatriz.Selected) then
+  if (LinkEspecie.BindList.GetSelectedValue.IsEmpty) or (not Assigned(cbMatriz.Selected)) then
     begin
-      ShowMessage('Selecione a matriz a ser vinculada.');
+      ShowMessage('Selecione a espécie e a matriz a ser vinculada.');
+      Exit;
+    end;
+
+  if (qLote_Matriz.RecordCount > 0) and
+    (qLote_MatrizID_ESPECIE.AsInteger <> LinkEspecie.BindList.GetSelectedValue.AsString.ToInteger) then
+    begin
+      ShowMessage('Um lote só pode conter matrizes de uma mesma espécie.');
       Exit;
     end;
 
@@ -152,6 +165,7 @@ begin
   vaIdMatriz := cbMatriz.Selected.Tag;
   qLote_MatrizID_LOTE.AsInteger := qLoteID.AsInteger;
   qLote_MatrizID_MATRIZ.AsInteger := vaIdMatriz;
+  qLote_MatrizID_ESPECIE.AsInteger := LinkEspecie.BindList.GetSelectedValue.AsString.ToInteger;
   qLote_Matriz.Post;
 
   vaItem := lvMatrizes.Items.Add;
@@ -196,6 +210,25 @@ begin
     EditNome.SetFocus;
 end;
 
+function TfrmLote.fprValidarDados(var opMsgErro: String): Boolean;
+begin
+  Result := inherited;
+  if Result and (qLote_Matriz.Active) and (qLote_Matriz.RecordCount > 0) then
+    begin
+      if qLoteID_ESPECIE.AsInteger <> qLote_MatrizID_ESPECIE.AsInteger then
+        begin
+          opMsgErro := 'A espécie do lote deve ser a mesma das matrizes vinculadas.';
+          Result := false;
+        end;
+    end;
+end;
+
+procedure TfrmLote.lvMatrizesDeleteItem(Sender: TObject; AIndex: Integer);
+begin
+  inherited;
+  ppvFiltrarMatrizes;
+end;
+
 procedure TfrmLote.lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
 begin
   inherited;
@@ -226,7 +259,7 @@ begin
   inherited;
   qLote_Matriz.Open();
   ppvCarregarMatrizes;
-
+  ppvFiltrarMatrizes;
 end;
 
 procedure TfrmLote.ppvCarregarMatrizes;

@@ -43,7 +43,6 @@ type
     FFuncoesViveiro: TSMFuncoesViveiroClient;
     FFuncoesSistema: TSMfuncoesSistemaClient;
 
-
     { Private declarations }
   public
     property FuncoesViveiro: TSMFuncoesViveiroClient read FFuncoesViveiro;
@@ -51,8 +50,8 @@ type
 
     procedure ppuAbrirConfig;
     procedure ppuAbrirEspecie;
-    procedure ppuConectarServidor;
-    procedure ppuDesconectarServidor;
+    procedure ppuConectarServidor(ipConn: TRFSQLConnection = nil);
+    procedure ppuDesconectarServidor(ipConn: TRFSQLConnection = nil);
   end;
 
 var
@@ -89,44 +88,58 @@ begin
   ppuAbrirConfig;
 end;
 
-procedure TdmPrincipal.ppuDesconectarServidor;
+procedure TdmPrincipal.ppuDesconectarServidor(ipConn: TRFSQLConnection);
+var
+  vaConn: TRFSQLConnection;
 begin
-   try
-     SongServerCon.Close;
-   except
-   end;
-end;
-
-procedure TdmPrincipal.ppuConectarServidor;
-begin
-  SongServerCon.Close;
-  SongServerCon.Params.Values['ConnectTimeout'] := '3000';
-
-  SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_INTERNO.AsString;
-  SongServerCon.Params.Values['Port'] := '3004';
-  if qConfigLOGIN.AsString = '' then
-    // tem que passar alguma coisa senao o song server vai deixar passar e so vai bloquear quando chamar uma funcao
-    SongServerCon.Params.Values['DSAuthenticationUser'] := 'USUARIO'
+  if Assigned(ipConn) then
+    vaConn := ipConn
   else
-    SongServerCon.Params.Values['DSAuthenticationUser'] := qConfigLOGIN.AsString;
-
-  if qConfigSENHA.AsString = '' then
-    SongServerCon.Params.Values['DSAuthenticationUser'] := 'SENHA'
-  else
-    SongServerCon.Params.Values['DSAuthenticationPassword'] := qConfigSENHA.AsString;
+    vaConn := SongServerCon;
 
   try
-    SongServerCon.Open;
+    vaConn.Close;
+  except
+  end;
+end;
+
+procedure TdmPrincipal.ppuConectarServidor(ipConn: TRFSQLConnection);
+var
+  vaConn: TRFSQLConnection;
+begin
+  if Assigned(ipConn) then
+    vaConn := ipConn
+  else
+    vaConn := SongServerCon;
+
+  vaConn.Close;
+  vaConn.Params.Values['ConnectTimeout'] := '3000';
+
+  vaConn.Params.Values['hostname'] := qConfigHOST_SERVIDOR_INTERNO.AsString;
+  vaConn.Params.Values['Port'] := '3004';
+  if qConfigLOGIN.AsString = '' then
+    // tem que passar alguma coisa senao o song server vai deixar passar e so vai bloquear quando chamar uma funcao
+    vaConn.Params.Values['DSAuthenticationUser'] := 'USUARIO'
+  else
+    vaConn.Params.Values['DSAuthenticationUser'] := qConfigLOGIN.AsString;
+
+  if qConfigSENHA.AsString = '' then
+    vaConn.Params.Values['DSAuthenticationUser'] := 'SENHA'
+  else
+    vaConn.Params.Values['DSAuthenticationPassword'] := qConfigSENHA.AsString;
+
+  try
+    vaConn.Open;
   except
     on e: Exception do
       begin
         if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
           raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.');
 
-        SongServerCon.Close;
-        SongServerCon.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
+        vaConn.Close;
+        vaConn.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
         try
-          SongServerCon.Open;
+          vaConn.Open;
         except
           on ex: Exception do
             begin
@@ -140,7 +153,7 @@ begin
       end;
   end;
 
-  SongServerCon.Params.Delete(SongServerCon.Params.IndexOfName('ConnectTimeout'));
+  vaConn.Params.Delete(vaConn.Params.IndexOfName('ConnectTimeout'));
 end;
 
 procedure TdmPrincipal.SongServerConAfterConnect(Sender: TObject);

@@ -10,6 +10,7 @@ object dmPrincipal: TdmPrincipal
         '.db'
       'DriverID=SQLite')
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
     Left = 48
@@ -121,7 +122,8 @@ object dmPrincipal: TdmPrincipal
     SQL.Strings = (
       'Select especie.id,'
       '       especie.nome'
-      'from especie')
+      'from especie'
+      'order by especie.nome')
     Left = 280
     Top = 202
     object qEspecieID: TFDAutoIncField

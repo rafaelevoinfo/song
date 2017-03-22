@@ -243,6 +243,7 @@ end;
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   inherited;
+  ReportMemoryLeaksOnShutdown := true;
   Self.Caption := Self.Caption + ' - Versão: ' + TUtils.fpuVersaoExecutavel(Application.ExeName, viBuild);
   store.RestoreFrom;
 

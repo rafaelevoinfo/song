@@ -65,6 +65,20 @@ inherited frmMatriz: TfrmMatriz
       TabOrder = 4
       Visible = True
     end
+    object btnMaps: TButton
+      Action = Ac_Maps
+      Align = Right
+      Enabled = True
+      Images = frmPrincipal.ImageList1
+      ImageIndex = 9
+      Position.X = 244.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'actiontoolbutton'
+      TabOrder = 5
+      Visible = True
+    end
   end
   object pnPrincipal: TPanel [4]
     Align = Client
@@ -219,20 +233,24 @@ inherited frmMatriz: TfrmMatriz
           Align = Client
           TabOrder = 2
           KeyboardType = NumberPad
+          ReturnKeyType = Done
           Size.Width = 354.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Latitude'
+          KillFocusByReturn = True
         end
         object EditLongitude: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Client
           TabOrder = 3
           KeyboardType = NumberPad
+          ReturnKeyType = Done
           Size.Width = 354.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Longitude'
+          KillFocusByReturn = True
         end
         object cbEspecie: TComboBox
           Align = Client
@@ -261,10 +279,13 @@ inherited frmMatriz: TfrmMatriz
           Anchors = []
           TabOrder = 6
           CanParentFocus = True
+          ReturnKeyType = Done
           Size.Width = 354.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Nome da Matriz'
+          KillFocusByReturn = True
+          CheckSpelling = True
         end
         object lbNome: TLabel
           Align = Left
@@ -325,6 +346,11 @@ inherited frmMatriz: TfrmMatriz
       OnExecute = Ac_Pegar_LocalizacaoExecute
       ImageIndex = 1
     end
+    object Ac_Maps: TAction
+      ImageIndex = 9
+      OnExecute = Ac_MapsExecute
+      ImageIndex = 9
+    end
   end
   inherited dsPrincipal: TDataSource
     DataSet = qMatriz
@@ -364,7 +390,7 @@ inherited frmMatriz: TfrmMatriz
       DataSource = BindSourceMatriz
       FieldName = 'NOME'
       Control = EditNome
-      Track = False
+      Track = True
     end
     object LinkControlToField2: TLinkControlToField
       Category = 'Quick Bindings'

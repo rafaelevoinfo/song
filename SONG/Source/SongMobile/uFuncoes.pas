@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 09/03/2017 22:43:28
+// 19/03/2017 23:22:26
 //
 
 unit uFuncoes;
@@ -57,7 +57,7 @@ type
     function fpuCalcularQtdeMudasRocambole(ipIdMixMuda: Integer): OleVariant;
     function fpuVerificarLoteMudaExiste(ipId: Integer): Boolean;
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: string): string;
-    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): TadsObjectlist<uTypes.TMatriz>;
+    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): string;
     procedure ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<uTypes.TLote>);
     function fpuGetId(ipTabela: string): Integer;
     function fpuDataHoraAtual: string;
@@ -336,7 +336,7 @@ begin
   Result := FfpuSincronizarEspeciesCommand.Parameters[1].Value.GetWideString;
 end;
 
-function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): TadsObjectlist<uTypes.TMatriz>;
+function TsmFuncoesViveiroClient.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: string; ipMatrizes: TadsObjectlist<uTypes.TMatriz>): string;
 begin
   if FfpuSincronizarMatrizesCommand = nil then
   begin
@@ -360,19 +360,7 @@ begin
     end
     end;
   FfpuSincronizarMatrizesCommand.ExecuteUpdate;
-  if not FfpuSincronizarMatrizesCommand.Parameters[2].Value.IsNull then
-  begin
-    FUnMarshal := TDBXClientCommand(FfpuSincronizarMatrizesCommand.Parameters[2].ConnectionHandler).GetJSONUnMarshaler;
-    try
-      Result := TadsObjectlist<uTypes.TMatriz>(FUnMarshal.UnMarshal(FfpuSincronizarMatrizesCommand.Parameters[2].Value.GetJSONValue(True)));
-      if FInstanceOwner then
-        FfpuSincronizarMatrizesCommand.FreeOnExecute(Result);
-    finally
-      FreeAndNil(FUnMarshal)
-    end
-  end
-  else
-    Result := nil;
+  Result := FfpuSincronizarMatrizesCommand.Parameters[2].Value.GetWideString;
 end;
 
 procedure TsmFuncoesViveiroClient.ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<uTypes.TLote>);

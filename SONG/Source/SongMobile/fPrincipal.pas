@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
   System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  FMX.Controls.Presentation, FMX.StdCtrls, fMatriz, System.ImageList,
+  FMX.Controls.Presentation, FMX.StdCtrls, System.ImageList,
   FMX.ImgList, System.Actions, FMX.ActnList, FMX.Objects, FMX.TabControl,
   FMX.ListView.Types, FMX.ListView, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
@@ -18,7 +18,7 @@ uses
   FireDAC.FMXUI.Wait, FireDAC.Comp.UI, System.IOUtils, uQuery, FMX.Gestures,
   dmuPrincipal, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   System.Threading, uTypes, System.Generics.Collections, REST.Json,
-  IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME, fSincronizacao,
+  IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME,
   aduna_ds_list;
 
 type
@@ -62,6 +62,7 @@ type
     procedure lvMatrizesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
     procedure lvLotesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);
     procedure Ac_SincronizarExecute(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     procedure ppvAbrirMatriz(ipId: Integer);
     procedure ppvAbrirLote(ipId: Integer);
@@ -78,7 +79,7 @@ var
 implementation
 
 uses
-  fLote;
+  fSincronizacao, fMatriz, fLote;
 
 {$R *.fmx}
 
@@ -93,6 +94,9 @@ end;
 
 procedure TfrmPrincipal.ppvAbrirMatriz(ipId: Integer);
 begin
+  if Assigned(frmMatriz) then
+    FreeAndNil(frmMatriz);
+
   Application.CreateForm(TfrmMatriz, frmMatriz);
   if ipId = 0 then
     frmMatriz.ppuIncluir
@@ -154,7 +158,7 @@ begin
         vaItem.Tag := qLoteID.AsInteger;
 
         vaItem.Data['txtNome'] := qLoteLOTE.AsString;
-        vaItem.Data['txtIdColeta'] := dmPrincipal.qConfigID_APARELHO.AsString +'_'+qLoteID.AsString;
+        vaItem.Data['txtIdColeta'] := dmPrincipal.qConfigID_APARELHO.AsString + '_' + qLoteID.AsString;
         vaItem.Data['txtEspecie'] := qLoteESPECIE.AsString;
         vaItem.Data['txtQtde'] := FormatFloat(',0.00', qLoteQTDE.AsFloat);
 
@@ -176,7 +180,11 @@ begin
 
   ppvCarregarMatrizes;
 
+  if Assigned(frmLote) then
+    FreeAndNil(frmLote);
+
   Application.CreateForm(TfrmLote, frmLote);
+
   if ipId = 0 then
     frmLote.ppuIncluir
   else
@@ -214,8 +222,10 @@ begin
 end;
 
 procedure TfrmPrincipal.Ac_SincronizarExecute(Sender: TObject);
-
 begin
+  if Assigned(frmSincronizacao) then
+    FreeAndNil(frmSincronizacao);
+
   Application.CreateForm(TfrmSincronizacao, frmSincronizacao);
 
   frmSincronizacao.OnReturn := procedure
@@ -232,6 +242,18 @@ begin
   tbcPrincipal.ActiveTab := tabLotes;
 
   ppvCarregarLotes;
+end;
+
+procedure TfrmPrincipal.FormDestroy(Sender: TObject);
+begin
+  if Assigned(frmLote) then
+    FreeAndNil(frmLote);
+
+  if Assigned(frmMatriz) then
+    FreeAndNil(frmMatriz);
+
+  if Assigned(frmSincronizacao) then
+    FreeAndNil(frmSincronizacao);
 end;
 
 procedure TfrmPrincipal.lvLotesDeletingItem(Sender: TObject; AIndex: Integer; var ACanDelete: Boolean);

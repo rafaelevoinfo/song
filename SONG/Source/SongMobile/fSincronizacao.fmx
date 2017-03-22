@@ -1,6 +1,6 @@
 inherited frmSincronizacao: TfrmSincronizacao
   Caption = 'Sincroniza'#231#227'o'
-  OnClose = FormClose
+  OnCreate = FormCreate
   DesignerMasterStyle = 3
   inherited Styles: TStyleBook
     Left = 24
@@ -85,6 +85,45 @@ inherited frmSincronizacao: TfrmSincronizacao
       StyleLookup = 'listboxitemleftdetail'
       TabOrder = 3
       Text = 'Lotes'
+    end
+  end
+  object recFade: TRectangle
+    Align = Contents
+    Fill.Color = claBlack
+    Opacity = 0.500000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object recModal: TRectangle
+    Align = Center
+    Fill.Color = claWhite
+    Margins.Left = 10.000000000000000000
+    Margins.Right = 10.000000000000000000
+    Size.Width = 291.000000000000000000
+    Size.Height = 75.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    XRadius = 10.000000000000000000
+    YRadius = 10.000000000000000000
+    object LoadLocalizacao: TAniIndicator
+      Align = Bottom
+      Enabled = True
+      Position.Y = 26.000000000000000000
+      Size.Width = 291.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      Style = Circular
+    end
+    object Label6: TLabel
+      Align = Top
+      AutoSize = True
+      Size.Width = 291.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      TextSettings.WordWrap = False
+      Text = 'Sincronizando...'
     end
   end
   object qMatrizSincronizacao: TRFQuery

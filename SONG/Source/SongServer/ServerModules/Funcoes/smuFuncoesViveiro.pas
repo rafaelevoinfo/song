@@ -67,7 +67,7 @@ type
 
     function fpuSincronizarEspecies(ipDataUltimaSincronizacao: String): String;
 
-    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: String; ipMatrizes: TadsObjectlist<TMatriz>): TadsObjectlist<TMatriz>;
+    function fpuSincronizarMatrizes(ipDataUltimaSincronizacao: String; ipMatrizes: TadsObjectlist<TMatriz>): String;
 
     procedure ppuSincronizarLotes(ipDataUltimaSincronizacao: string; ipLotes: TadsObjectlist<TLote>);
   end;
@@ -371,7 +371,7 @@ begin
   end;
 end;
 
-function TsmFuncoesViveiro.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: String; ipMatrizes: TadsObjectlist<TMatriz>): TadsObjectlist<TMatriz>;
+function TsmFuncoesViveiro.fpuSincronizarMatrizes(ipDataUltimaSincronizacao: String; ipMatrizes: TadsObjectlist<TMatriz>): String;
 var
   vaMatriz: TMatriz;
   vaDataSet: TRFQuery;
@@ -380,6 +380,7 @@ var
   vaCodigosIgnorar: String;
   vaSessaoUsuario: TObject;
   vaFoto: String;
+  vaMatrizes:TadsObjectlist<TMatriz>;
 begin
   vaSessaoUsuario := TDSSessionManager.GetThreadSession.GetObject(coKeySessaoUsuario);
   if not Assigned(vaSessaoUsuario) then
@@ -390,8 +391,9 @@ begin
 
   vaCodigosIgnorar := '';
   pprCriarDataSet(vaDataSet);
-  // PENSAR EM COMO RESOLVER ISSO AQUI, PQ SE PASSO FALSE DA LEAK NO TMATRIZ, se passo TRUE da leak no AdsObjectList
-  Result := TadsObjectlist<TMatriz>.Create(True);
+
+  Result := '';
+  vaMatrizes := TadsObjectlist<TMatriz>.Create(True);
 
   Connection.StartTransaction;
   try
@@ -427,7 +429,7 @@ begin
                   vaMatriz.IdServer := vaDataSet.FieldByName('ID').AsInteger;
                   vaMatriz.Foto := ''; // vamos limpar a foto para diminuir a quantidade de dados trafegados
 
-                  Result.Add(vaMatriz);
+                  vaMatrizes.Add(vaMatriz);
                   if vaCodigosIgnorar = '' then
                     vaCodigosIgnorar := vaMatriz.IdServer.ToString()
                   else
@@ -442,7 +444,7 @@ begin
               vaMatriz.IdServer := fpuGetId('MATRIZ');
               vaMatriz.Foto := ''; // vamos limpar a foto para diminuir a quantidade de dados trafegados
 
-              Result.Add(vaMatriz);
+              vaMatrizes.Add(vaMatriz);
               if vaCodigosIgnorar = '' then
                 vaCodigosIgnorar := vaMatriz.IdServer.ToString()
               else
@@ -537,9 +539,12 @@ begin
               end;
             end;
 
-          Result.Add(vaMatriz);
+          vaMatrizes.Add(vaMatriz);
           vaDataSet.Next;
         end;
+
+      if vaMatrizes.count > 0 then
+        Result := TJson.ObjectToJsonString(vaMatrizes);
 
       Connection.Commit;
     except
@@ -547,6 +552,7 @@ begin
       raise;
     end;
   finally
+    vaMatrizes.Free;
     vaDataSet.Close;
     vaDataSet.Free;
   end;
