@@ -10,7 +10,6 @@ object dmPrincipal: TdmPrincipal
         '.db'
       'DriverID=SQLite')
     ConnectedStoredUsage = []
-    Connected = True
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
     Left = 48
@@ -44,7 +43,7 @@ object dmPrincipal: TdmPrincipal
       
         'DSAuthenticationPassword=356A192B7913B04C54574D18C28D46E6395428A' +
         'B'
-      'ConnectTimeout=3000')
+      'ConnectTimeout=5000')
     AfterConnect = SongServerConAfterConnect
     AfterDisconnect = SongServerConAfterDisconnect
     Left = 56

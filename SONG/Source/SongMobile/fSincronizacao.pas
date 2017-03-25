@@ -12,7 +12,8 @@ uses
   FireDAC.Comp.Client, uQuery, uTypes, System.Generics.Collections,
   System.JSON, REST.JSON, IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME,
   System.Actions, FMX.ActnList, fConfiguracoes, aduna_ds_list, uConstantes,
-  Android.JNI.Toast, uConnection, uFuncoes, FMX.Objects;
+  Android.JNI.Toast, uConnection, uFuncoes, FMX.Objects, uConexao,
+  Data.SqlExpr;
 
 type
   TSincronizacaoAtual = (saEspecie, saMatriz, saLote, saFim);
@@ -62,9 +63,12 @@ type
     procedure btnConfiguracoesClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
+    FGerenciadorConexao: TGerenciadorConexao;
+    FConnServidor: TSQLConnection;
     FProximaSincronizacao: TSincronizacaoAtual;
-    FConnServidor: TRFSQLConnection;
+
     procedure ppvSincronizarEspecies(ipDataUltimoSincronismo: TDateTime);
     procedure ppvSincronizarMatrizes(ipDataUltimoSincronismo: TDateTime);
     procedure ppvSincronizarLotes(ipDataUltimoSincronismo: TDateTime);
@@ -115,28 +119,46 @@ begin
   lbiMatrizes.Repaint;
   lbiLotes.Repaint;
 
-  if Assigned(FConnServidor) then
-    dmPrincipal.ppuDesconectarServidor(FConnServidor)
-  else
-    FConnServidor := TRFSQLConnection.Create(nil);
+  dmPrincipal.ppuAbrirConfig;
+  if dmPrincipal.qConfigID_APARELHO.IsNull then
+    raise Exception.Create('É necessário registrar o aparelho antes de qualquer sincronização.');
 
-  FConnServidor.Params.Assign(dmPrincipal.SongServerCon.Params);
-  FConnServidor.DriverName := dmPrincipal.SongServerCon.DriverName;
-  try
-    dmPrincipal.ppuConectarServidor(FConnServidor);
+  if (dmPrincipal.qConfigHOST_SERVIDOR_INTERNO.AsString = '') and
+    (dmPrincipal.qConfigHOST_SERVIDOR_EXTERNO.AsString = '') then
+    raise Exception.Create('Informe pelo menos um dos endereço de acesso do servidor.');
 
-    dmPrincipal.ppuAbrirConfig;
-    if dmPrincipal.qConfigID_APARELHO.IsNull then
-      raise Exception.Create('É necessário registrar o aparelho antes de qualquer sincronização.');
+  ppvExibirEsconderFade(true);
 
-    ppvExibirEsconderFade(true);
+  if not Assigned(FGerenciadorConexao) then
+    FGerenciadorConexao := TGerenciadorConexao.Create;
 
-    FProximaSincronizacao := saEspecie;
-    ppvProximoSincronismo(nil);
-  except
-    on e: Exception do
-      showMessage(e.message);
-  end;
+  FGerenciadorConexao.ppuConectarServidor(
+    procedure(ipConexao: TSQLConnection)
+    begin
+      if Assigned(ipConexao) then
+        begin
+          try
+            FConnServidor := ipConexao;
+
+            FProximaSincronizacao := saEspecie;
+            ppvProximoSincronismo(nil);
+          except
+            on e: Exception do
+              showMessage(e.message);
+          end;
+        end
+      else
+        ppvExibirEsconderFade(false);
+    end);
+
+
+  // if Assigned(FConnServidor) then
+  // dmPrincipal.ppuDesconectarServidor(FConnServidor)
+  // else
+  // FConnServidor := TRFSQLConnection.Create(nil);
+
+  // FConnServidor.Params.Assign(dmPrincipal.SongServerCon.Params);
+  // FConnServidor.DriverName := dmPrincipal.SongServerCon.DriverName;
 
 end;
 
@@ -162,6 +184,13 @@ procedure TfrmSincronizacao.FormCreate(Sender: TObject);
 begin
   inherited;
   ppvExibirEsconderFade(false);
+end;
+
+procedure TfrmSincronizacao.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  if Assigned(FGerenciadorConexao) then
+    FreeAndNil(FGerenciadorConexao);
 end;
 
 procedure TfrmSincronizacao.ppvSincronizarEspecies(ipDataUltimoSincronismo: TDateTime);

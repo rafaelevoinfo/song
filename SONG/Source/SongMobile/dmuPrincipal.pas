@@ -50,7 +50,8 @@ type
 
     procedure ppuAbrirConfig;
     procedure ppuAbrirEspecie;
-    procedure ppuConectarServidor(ipConn: TRFSQLConnection = nil);
+    procedure ppuConfigurarConexaoServidor(ipHost: String; ipParametros: TStrings);
+    procedure ppuConectarServidor(ipConn: TRFSQLConnection=nil);
     procedure ppuDesconectarServidor(ipConn: TRFSQLConnection = nil);
   end;
 
@@ -103,57 +104,76 @@ begin
   end;
 end;
 
+procedure TdmPrincipal.ppuConfigurarConexaoServidor(ipHost: String; ipParametros: TStrings);
+begin
+  //ipParametros.Values[TDBXPropertyNames.ConnectTimeout] := '3000';
+
+  ipParametros.Values[TDBXPropertyNames.HostName] := ipHost;
+  ipParametros.Values[TDBXPropertyNames.Port] := '3004';
+  if qConfigLOGIN.AsString = '' then
+    // tem que passar alguma coisa senao o song server vai deixar passar e so vai bloquear quando chamar uma funcao
+    ipParametros.Values[TDBXPropertyNames.DSAuthenticationUser] := 'USUARIO'
+  else
+    ipParametros.Values[TDBXPropertyNames.DSAuthenticationUser] := qConfigLOGIN.AsString;
+
+  if qConfigSENHA.AsString = '' then
+    ipParametros.Values[TDBXPropertyNames.DSAuthenticationUser] := 'SENHA'
+  else
+    ipParametros.Values[TDBXPropertyNames.DSAuthenticationPassword] := qConfigSENHA.AsString;
+end;
+
 procedure TdmPrincipal.ppuConectarServidor(ipConn: TRFSQLConnection);
 var
   vaConn: TRFSQLConnection;
 begin
-  if Assigned(ipConn) then
-    vaConn := ipConn
-  else
-    vaConn := SongServerCon;
-
-  vaConn.Close;
-  vaConn.Params.Values['ConnectTimeout'] := '3000';
-
-  vaConn.Params.Values['hostname'] := qConfigHOST_SERVIDOR_INTERNO.AsString;
-  vaConn.Params.Values['Port'] := '3004';
-  if qConfigLOGIN.AsString = '' then
-    // tem que passar alguma coisa senao o song server vai deixar passar e so vai bloquear quando chamar uma funcao
-    vaConn.Params.Values['DSAuthenticationUser'] := 'USUARIO'
-  else
-    vaConn.Params.Values['DSAuthenticationUser'] := qConfigLOGIN.AsString;
-
-  if qConfigSENHA.AsString = '' then
-    vaConn.Params.Values['DSAuthenticationUser'] := 'SENHA'
-  else
-    vaConn.Params.Values['DSAuthenticationPassword'] := qConfigSENHA.AsString;
-
-  try
-    vaConn.Open;
-  except
-    on e: Exception do
-      begin
-        if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
-          raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.');
-
-        vaConn.Close;
-        vaConn.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
-        try
-          vaConn.Open;
-        except
-          on ex: Exception do
-            begin
-              if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
-                raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.')
-              else
-                raise Exception.Create('Não foi possível conectar ao servidor. Detalhes: ' + ex.message);
-
-            end;
-        end;
-      end;
-  end;
-
-  vaConn.Params.Delete(vaConn.Params.IndexOfName('ConnectTimeout'));
+//  if Assigned(ipConn) then
+//    vaConn := ipConn
+//  else
+//    vaConn := SongServerCon;
+//
+//  vaConn.Close;
+//  ppuConfigurarConexaoServidor( vaConn.Params);
+//
+//  try
+//
+//
+//
+//    // else if qConfigHOST_SERVIDOR_EXTERNO.AsString <> '' then
+//    // vaConn.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString
+//    // else
+//    // raise Exception.Create('Informe pelo menos um dos endereço de acesso do servidor.');
+//
+//    vaConn.Open;
+//  except
+//    on e: Exception do
+//      begin
+//        if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
+//          raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.');
+//
+//        if (qConfigHOST_SERVIDOR_EXTERNO.AsString <> '') and
+//          (qConfigHOST_SERVIDOR_EXTERNO.AsString <> vaConn.Params.Values['hostname']) then
+//          begin
+//
+//            vaConn.Close;
+//            vaConn.Params.Values['hostname'] := qConfigHOST_SERVIDOR_EXTERNO.AsString;
+//            try
+//              vaConn.Open;
+//            except
+//              on ex: Exception do
+//                begin
+//                  if TRegEx.IsMatch(e.message, 'Authentication manager rejected user credentials', [roIgnoreCase]) then
+//                    raise Exception.Create('Usuário e/ou Senha de acesso ao SONG incorreto.')
+//                  else
+//                    raise Exception.Create('Não foi possível conectar ao servidor. Detalhes: ' + ex.message);
+//                end;
+//            end;
+//          end
+//        else
+//          raise Exception.Create('Não foi possível conectar ao servidor. Detalhes: ' + e.message);
+//      end;
+//  end;
+//
+//  vaConn.Params.Delete(vaConn.Params.IndexOfName('ConnectTimeout'));
 end;
 
 procedure TdmPrincipal.SongServerConAfterConnect(Sender: TObject);

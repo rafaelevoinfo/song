@@ -1,5 +1,8 @@
 inherited frmConfiguracoes: TfrmConfiguracoes
   Caption = 'frmBasicoCadastro1'
+  OnDestroy = FormDestroy
+  OnVirtualKeyboardShown = FormVirtualKeyboardShown
+  OnVirtualKeyboardHidden = FormVirtualKeyboardHidden
   DesignerMasterStyle = 3
   inherited Styles: TStyleBook
     Left = 256
@@ -88,7 +91,7 @@ inherited frmConfiguracoes: TfrmConfiguracoes
         TextPrompt = 'Login'
       end
     end
-    object ListBoxItem4: TListBoxItem
+    object lbiSenha: TListBoxItem
       Selectable = False
       Position.Y = 222.000000000000000000
       TabOrder = 6
@@ -168,6 +171,13 @@ inherited frmConfiguracoes: TfrmConfiguracoes
         Text = 'Limpar'
         OnClick = btnLimparSincronizacaoClick
       end
+    end
+    object PositionAnimate: TFloatAnimation
+      Duration = 0.100000001490116100
+      PropertyName = 'Position.Y'
+      StartValue = 0.000000000000000000
+      StartFromCurrent = True
+      StopValue = 0.000000000000000000
     end
   end
   inherited ActionList1: TActionList

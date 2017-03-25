@@ -18,7 +18,8 @@ uses
   Androidapi.JNIBridge,
   Androidapi.JNI.GraphicsContentViewText,
   Androidapi.JNI.JavaTypes,
-  FMX.Helpers.Android, Androidapi.JNI.App;
+  FMX.Helpers.Android, Androidapi.JNI.App, FMX.Ani, uConexao, Data.SqlExpr,
+  uFuncoes;
 
 type
   TfrmConfiguracoes = class(TfrmBasicoCadastro)
@@ -35,7 +36,7 @@ type
     LinkControlToField2: TLinkControlToField;
     ListBoxGroupHeader3: TListBoxGroupHeader;
     ListBoxItem3: TListBoxItem;
-    ListBoxItem4: TListBoxItem;
+    lbiSenha: TListBoxItem;
     ListBoxGroupHeader4: TListBoxGroupHeader;
     ListBoxItem5: TListBoxItem;
     EditLogin: TEdit;
@@ -49,15 +50,22 @@ type
     lbDataUltimaAtualizacao: TLabel;
     btnLimparSincronizacao: TButton;
     LinkPropertyToFieldText2: TLinkPropertyToField;
+    PositionAnimate: TFloatAnimation;
     procedure EditSenhaChange(Sender: TObject);
     procedure btnRegistrarAparelhoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnLimparSincronizacaoClick(Sender: TObject);
     procedure LinkPropertyToFieldText2AssigningValue(Sender: TObject; AssignValueRec: TBindingAssignValueRec;
       var Value: TValue; var Handled: Boolean);
+    procedure FormVirtualKeyboardShown(Sender: TObject; KeyboardVisible: Boolean; const Bounds: TRect);
+    procedure FormVirtualKeyboardHidden(Sender: TObject; KeyboardVisible: Boolean; const Bounds: TRect);
+    procedure FormDestroy(Sender: TObject);
   private
+    FGerenciadorConexao: TGerenciadorConexao;
+    FPosicaoAnterior: Double;
     function fpvPegarIMEI: String;
     function fpvPegarNomeDispositivo: String;
+    procedure ppvFinalizarAnimacao(Sender: TObject);
     { Private declarations }
   protected
     procedure pprBeforeSalvar; override;
@@ -113,25 +121,53 @@ begin
 end;
 
 procedure TfrmConfiguracoes.btnRegistrarAparelhoClick(Sender: TObject);
-var
-  vaNome, vaIMEI: String;
-  vaIdAparelho: Integer;
+
 begin
   inherited;
-   ppuSalvar; // vamos salvar as configuracoes ja feitas
-  dmPrincipal.ppuConectarServidor;
+  ppuSalvar; // vamos salvar as configuracoes ja feitas
 
-  vaIMEI := fpvPegarIMEI;
-  vaNome := fpvPegarNomeDispositivo;
-  vaIdAparelho := dmPrincipal.FuncoesSistema.fpuRegistrarAparelhoExterno(vaNome, vaIMEI);
+  if not Assigned(FGerenciadorConexao) then
+    FGerenciadorConexao := TGerenciadorConexao.Create;
 
-  dmPrincipal.qConfig.Edit;
-  dmPrincipal.qConfigID_APARELHO.AsInteger := vaIdAparelho;
-  dmPrincipal.qConfig.Post;
+  FGerenciadorConexao.ppuConectarServidor(
+    procedure(ipConexao: TSQLConnection)
+    var
+      vaNome, vaIMEI: String;
+      vaIdAparelho: Integer;
+      vaFuncoesSistema: TsmFuncoesSistemaClient;
+    begin
+      if Assigned(ipConexao) then
+        begin
+          try
+            try
+              vaIMEI := fpvPegarIMEI;
+              vaNome := fpvPegarNomeDispositivo;
+              vaFuncoesSistema := TsmFuncoesSistemaClient.Create(ipConexao.DBXConnection);
+              try
+                vaIdAparelho := vaFuncoesSistema.fpuRegistrarAparelhoExterno(vaNome, vaIMEI);
+              finally
+                vaFuncoesSistema.Free;
+              end;
 
-  lbIdAparelho.Text := vaIdAparelho.ToString;
-  lbIdAparelho.Visible := true;
-  btnRegistrarAparelho.Visible := false;
+              dmPrincipal.qConfig.Edit;
+              dmPrincipal.qConfigID_APARELHO.AsInteger := vaIdAparelho;
+              dmPrincipal.qConfig.Post;
+
+              lbIdAparelho.Text := vaIdAparelho.ToString;
+              lbIdAparelho.Visible := true;
+              btnRegistrarAparelho.Visible := false;
+
+            except
+              on e: Exception do
+                showmessage(e.Message);
+            end;
+          finally
+            ipConexao.Close;
+            ipConexao.Free;
+          end;
+        end;
+    end);
+  // dmPrincipal.ppuConectarServidor;
 
 end;
 
@@ -151,6 +187,59 @@ begin
     lbIdAparelho.Text := dmPrincipal.qConfigID_APARELHO.AsString;
 end;
 
+procedure TfrmConfiguracoes.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  if Assigned(FGerenciadorConexao) then
+    FreeAndNil(FGerenciadorConexao);
+end;
+
+procedure TfrmConfiguracoes.ppvFinalizarAnimacao(Sender: TObject);
+begin
+  lbxConfiguracoes.Align := TAlignLayout.Client;
+end;
+
+procedure TfrmConfiguracoes.FormVirtualKeyboardHidden(Sender: TObject; KeyboardVisible: Boolean; const Bounds: TRect);
+begin
+  inherited;
+  if lbxConfiguracoes.Align <> TAlignLayout.Client then
+    begin
+      PositionAnimate.StopValue := FPosicaoAnterior;
+      PositionAnimate.OnFinish := ppvFinalizarAnimacao;
+      PositionAnimate.Start;
+
+      // sleep(PositionAnimate.Duration*1000);
+    end;
+end;
+
+procedure TfrmConfiguracoes.FormVirtualKeyboardShown(Sender: TObject; KeyboardVisible: Boolean; const Bounds: TRect);
+var
+  vaControl: IControl;
+  vaItem: TListBoxItem;
+  vaEdit: TEdit;
+  vaPoint: TPointF;
+begin
+  inherited;
+  vaControl := Focused;
+  if Assigned(vaControl) and (vaControl.GetObject is TEdit) and (TEdit(vaControl.GetObject).Parent is TListBoxItem) then
+    begin
+      vaEdit := TEdit(vaControl.GetObject);
+      vaItem := vaEdit.Parent as TListBoxItem;
+      vaPoint := vaItem.LocalToAbsolute(TPointF.Create(0, vaItem.Height));
+      if Bounds.Location.Y < (vaPoint.Y) then
+        begin
+          PositionAnimate.OnFinish := nil;
+          FPosicaoAnterior := lbxConfiguracoes.Position.Y;
+          lbxConfiguracoes.Align := TAlignLayout.None;
+          lbxConfiguracoes.SendToBack;
+          PositionAnimate.StopValue := lbxConfiguracoes.Position.Y - (vaPoint.Y - Bounds.Location.Y);
+          PositionAnimate.Start;
+        end;
+
+    end;
+
+end;
+
 procedure TfrmConfiguracoes.pprBeforeSalvar;
 var
   vaSha1: TIdHashSHA1;
@@ -162,7 +251,7 @@ begin
       try
         dmPrincipal.qConfigSENHA.AsString := vaSha1.HashStringAsHex(EditSenha.Text);
       finally
-        vaSha1.free;
+        vaSha1.Free;
       end;
     end;
 end;

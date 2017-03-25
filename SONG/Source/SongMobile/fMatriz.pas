@@ -104,7 +104,7 @@ begin
   vaIntent := TJIntent.JavaClass.init(TJIntent.JavaClass.ACTION_VIEW,
     TJnet_Uri.JavaClass.parse(StringToJString(TIdURI.URLEncode(vaUrl))));
 
-  SharedActivity.startActivity(vaIntent);
+  TAndroidHelper.Activity.startActivity(vaIntent);
 end;
 
 procedure TfrmMatriz.Ac_Pegar_LocalizacaoExecute(Sender: TObject);

@@ -34,9 +34,7 @@ type
     procedure SetStatusRegistro(const Value: Integer);
   public
     constructor Create; // precisa ter um create para o json funcionar
-    [TJson]
     property Id: Integer read FId write SetId;
-    [TJson]
     property StatusRegistro: Integer read FStatusRegistro write SetStatusRegistro;
   end;
 

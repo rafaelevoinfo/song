@@ -1,6 +1,7 @@
 inherited frmSincronizacao: TfrmSincronizacao
   Caption = 'Sincroniza'#231#227'o'
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignerMasterStyle = 3
   inherited Styles: TStyleBook
     Left = 24
