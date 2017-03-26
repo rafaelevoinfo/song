@@ -48,6 +48,7 @@ type
     coLoteSemente = 'LOTE_SEMENTE';
     coVencida = 'VENCIDA';
     coCliente = 'CLIENTE';
+    coIdColeta = 'ID_COLETA';
 
     coTipo = 'TIPO';
     coTipoItem = 'TIPO_ITEM';

@@ -13,7 +13,7 @@ uses
   Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider, uFuncoes,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
   FireDAC.Comp.DataSet, uQuery, Data.Bind.Components, Data.Bind.DBScope,
-  System.RegularExpressions;
+  System.RegularExpressions, FMX.Dialogs;
 
 type
   TdmPrincipal = class(TDataModule)

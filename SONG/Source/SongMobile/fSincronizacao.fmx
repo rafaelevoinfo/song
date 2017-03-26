@@ -116,7 +116,7 @@ inherited frmSincronizacao: TfrmSincronizacao
       Size.PlatformDefault = False
       Style = Circular
     end
-    object Label6: TLabel
+    object lbStatus: TLabel
       Align = Top
       AutoSize = True
       Size.Width = 291.000000000000000000
