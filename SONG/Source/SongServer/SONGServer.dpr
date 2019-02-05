@@ -35,8 +35,7 @@ uses
   smuSistema in 'ServerModules\smuSistema.pas' {smSistema: TDSServerModule},
   smuFuncoesSistema in 'ServerModules\Funcoes\smuFuncoesSistema.pas' {smFuncoesSistema: TDSServerModule},
   uEnviarEmail in '..\Comuns\uEnviarEmail.pas',
-  uSMBIOS in 'uSMBIOS.pas',
-  pAtributos in '..\Comuns\pAtributos.pas';
+  uSMBIOS in 'uSMBIOS.pas';
 
 {$R *.res}
 
@@ -46,6 +45,9 @@ uses
 
 
 begin
+  {$IFDEF DEBUG}
+  ReportMemoryLeaksOnShutdown := true;
+  {$ENDIF}
   Application.Initialize;
   Application.MainFormOnTaskbar := true;
   Application.CreateForm(TdmPrincipal, dmPrincipal);

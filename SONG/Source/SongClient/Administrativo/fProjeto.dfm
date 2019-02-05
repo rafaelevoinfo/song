@@ -6,7 +6,7 @@ inherited frmProjeto: TfrmProjeto
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
-    Properties.ActivePage = tabCadastroDetailRubrica
+    Properties.ActivePage = tabPesquisa
     inherited tabPesquisa: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
@@ -179,6 +179,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailOrganizacao: TcxTabSheet
               Caption = 'Organiza'#231#245'es'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel1: TPanel
                 Left = 0
                 Top = 0
@@ -283,6 +287,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailRubrica: TcxTabSheet
               Caption = 'Rubricas'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel7: TPanel
                 Left = 0
                 Top = 0
@@ -723,6 +731,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailArea: TcxTabSheet
               Caption = #193'reas de Atua'#231#227'o'
               ImageIndex = 5
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -821,6 +833,10 @@ inherited frmProjeto: TfrmProjeto
             object tabDetailDocumento: TcxTabSheet
               Caption = 'Documentos'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel3: TPanel
                 Left = 0
                 Top = 0
@@ -1523,6 +1539,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailDocumento: TcxTabSheet
       Caption = 'tabCadastroDetailDocumento'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -1614,6 +1634,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailRubrica: TcxTabSheet
       Caption = 'tabCadastroDetailRubrica'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0
@@ -1703,6 +1727,10 @@ inherited frmProjeto: TfrmProjeto
     object tabCadastroDetailArea: TcxTabSheet
       Caption = 'tabCadastroDetailArea'
       ImageIndex = 7
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel9: TPanel
         Left = 0
         Top = 0
@@ -1823,9 +1851,9 @@ inherited frmProjeto: TfrmProjeto
         Height = 374
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 50
+        ExplicitTop = 74
         ExplicitWidth = 976
-        ExplicitHeight = 398
+        ExplicitHeight = 374
         inherited gpGrids: TGridPanel
           Width = 976
           Height = 355
@@ -1847,18 +1875,15 @@ inherited frmProjeto: TfrmProjeto
             end>
           TabOrder = 1
           ExplicitWidth = 976
-          ExplicitHeight = 379
+          ExplicitHeight = 355
           inherited cxGrid1: TcxGrid
-            Height = 353
-            ExplicitLeft = 2
             ExplicitWidth = 457
-            ExplicitHeight = 377
+            ExplicitHeight = 353
           end
           inherited pnBotoes: TPanel
-            Height = 353
             ExplicitLeft = 458
             ExplicitWidth = 48
-            ExplicitHeight = 377
+            ExplicitHeight = 353
             inherited btnAdd: TButton
               ExplicitWidth = 48
             end
@@ -1873,10 +1898,9 @@ inherited frmProjeto: TfrmProjeto
             end
           end
           inherited cxGrid2: TcxGrid
-            Height = 353
             ExplicitLeft = 506
             ExplicitWidth = 469
-            ExplicitHeight = 377
+            ExplicitHeight = 353
             inherited viewDireita: TcxGridDBTableView
               OptionsData.Editing = True
               OptionsView.Footer = True

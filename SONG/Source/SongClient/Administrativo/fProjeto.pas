@@ -725,6 +725,7 @@ end;
 procedure TfrmProjeto.pprValidarDadosDetail;
 var
   vaSaldoReal: Double;
+  vaValorTotalRubricas, vaValorTotalPagamento:Currency;
 begin
   inherited;
   if dsDetail.DataSet = dmAdministrativo.cdsProjeto_Area then
@@ -760,9 +761,11 @@ begin
     begin
       if pcPrincipal.ActivePage = tabCadastroDetailPagtoRubrica then
         begin
-          if CompareValue(StrToFloatDef(dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaAGG_SOMA_VALOR.AsString, 0),
-            dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat) <> EqualsValue then
-            raise Exception.Create('O valor total das rubricas deve ser exatamente o valor pago pelo financiador.');
+          vaValorTotalPagamento := FloatToCurr(dmAdministrativo.cdsProjeto_Financiador_PagtoVALOR.AsFloat);
+          vaValorTotalRubricas := StrToCurrDef(dmAdministrativo.cdsProjeto_Finan_Pagto_RubricaAGG_SOMA_VALOR.AsString, 0);
+          if CompareValue(vaValorTotalRubricas, vaValorTotalPagamento, 0.001) <> EqualsValue then
+            raise Exception.Create('O valor total das rubricas (R$ '+ CurrToStr(vaValorTotalRubricas)+
+            ') deve ser exatamente o valor pago pelo financiador (R$ '+CurrToStr(vaValorTotalPagamento)+').');
         end
       else
         begin
