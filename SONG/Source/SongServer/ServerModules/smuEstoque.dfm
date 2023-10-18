@@ -1,8 +1,8 @@
 inherited smEstoque: TsmEstoque
-  OldCreateOrder = True
   OnDestroy = DSServerModuleDestroy
   Height = 462
   Width = 841
+  PixelsPerInch = 96
   object qItem: TRFQuery
     Connection = dmPrincipal.conSong
     SQL.Strings = (

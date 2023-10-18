@@ -1,9 +1,9 @@
 object dmPrincipal: TdmPrincipal
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
   Height = 442
   Width = 911
+  PixelsPerInch = 96
   object Server: TDSServer
     AutoStart = False
     Left = 96
@@ -33,7 +33,9 @@ object dmPrincipal: TdmPrincipal
   end
   object conSong: TFDConnection
     Params.Strings = (
-      'Database=C:\Users\rafae\Repositorios\SONG\BancoDados\SONG.FDB'
+      
+        'Database=C:\Users\rafae\Repositorios\SONG\SONG\BancoDados\Oreade' +
+        's\SONG.FDB'
       'Server=localhost'
       'User_Name=sysdba'
       'Password=masterkey'
@@ -51,7 +53,9 @@ object dmPrincipal: TdmPrincipal
   object FDManager1: TFDManager
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    FormatOptions.AssignedValues = [fvDefaultParamDataType, fvDataSnapCompatibility]
+    FormatOptions.AssignedValues = [fvMaxBcdPrecision, fvMaxBcdScale, fvDefaultParamDataType, fvDataSnapCompatibility]
+    FormatOptions.MaxBcdPrecision = 24
+    FormatOptions.MaxBcdScale = 8
     FormatOptions.DefaultParamDataType = ftInteger
     FormatOptions.DataSnapCompatibility = True
     Active = True

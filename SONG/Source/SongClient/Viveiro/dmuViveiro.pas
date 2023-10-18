@@ -17,8 +17,8 @@ type
     cdsMatrizID: TIntegerField;
     cdsMatrizID_ESPECIE: TIntegerField;
     cdsMatrizENDERECO: TStringField;
-    cdsMatrizLATITUDE: TFMTBCDField;
-    cdsMatrizLONGITUDE: TFMTBCDField;
+    cdsMatrizLATITUDE: TBCDField;
+    cdsMatrizLONGITUDE: TBCDField;
     cdsMatrizESPECIE: TStringField;
     cdsMatrizNOME: TStringField;
     cdsMatrizFOTO: TBlobField;

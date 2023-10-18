@@ -13,7 +13,7 @@ uses
   ppClass, ppReport, dmuRelatorio, uExceptions, Data.DB, ppCtrls, ppPrnabl,
   ppBands, ppCache, ppDesignLayer, ppParameter, ppVar, Data.Bind.EngExt,
   Vcl.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors,
-  Data.Bind.Components, cxCheckBox, CodeSiteLogging,
+  Data.Bind.Components, cxCheckBox,
   System.Bindings.Expression, System.Bindings.NotifierContracts, System.Bindings.NotifierDefaults,
   System.Bindings.Helper, ppChrt, ppChrtDP, Vcl.ComCtrls, dxCore, cxDateUtils,
   cxCalendar, cxGroupBox, dxCheckGroupBox, Datasnap.DBClient, ppModule, raCodMod,

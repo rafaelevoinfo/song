@@ -1,9 +1,6 @@
 program SongClient;
 
 uses
-  {$IFDEF DEBUG}
-  FastMM4,
-  {$ENDIF }
   Vcl.Forms,
   fPrincipal in 'fPrincipal.pas' {frmPrincipal},
   fBasico in 'fBasico.pas' {frmBasico},
@@ -77,12 +74,7 @@ uses
   fOrcamento in 'Estoque\fOrcamento.pas' {frmOrcamento},
   fAparelhosRegistrados in 'Sistema\fAparelhosRegistrados.pas' {frmAparelhoRegistrado};
 
-{$R Localization.RES}
 {$R *.res}
-
-{$IFDEF DEBUG}
-{$INCLUDE FastMM4Options.inc}
-{$ENDIF}
 
 
 begin

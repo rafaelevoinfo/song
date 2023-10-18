@@ -12,7 +12,7 @@ uses System.SysUtils, System.Classes,
   FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.IBBase,
   System.Generics.Collections, System.Generics.Defaults, Datasnap.DSSession,
   uRoles, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, CodeSiteLogging, Datasnap.DBClient,
+  FireDAC.Comp.DataSet, uQuery, Vcl.AppEvnts, Datasnap.DBClient,
   System.IOUtils, System.RegularExpressions, FireDAC.Phys.FBDef,
   FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Phys.IBWrapper,
   DbxCompressionFilter, MidasLib, Datasnap.Midas;
@@ -340,7 +340,14 @@ begin
     if not FConnections.TryGetValue(TDSSessionManager.GetThreadSession.Id, Result) then
       begin
         Result := TFDConnection.Create(nil);
+//        Result.FormatOptions.OwnMapRules := True;
+//        with Result.FormatOptions.MapRules.Add do
+//          begin
+//            SourceDataType := dtFmtBCD;
+//            TargetDataType := dtBCD;
+//          end;
         Result.Params.Assign(conSong.Params);
+
         FSyncro.BeginWrite;
         try
           FConnections.Add(TDSSessionManager.GetThreadSession.Id, Result);

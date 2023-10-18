@@ -462,7 +462,7 @@ inherited smRelatorio: TsmRelatorio
         ParamType = ptInput
         Value = Null
       end>
-    object qGasto_Area_AtuacaoGASTO: TFMTBCDField
+    object qGasto_Area_AtuacaoGASTO: TBCDField
       FieldName = 'GASTO'
       Origin = 'GASTO'
       Precision = 18
@@ -917,7 +917,7 @@ inherited smRelatorio: TsmRelatorio
       Precision = 18
       Size = 2
     end
-    object qGasto_AtividadeVALOR_PAGO: TFMTBCDField
+    object qGasto_AtividadeVALOR_PAGO: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'VALOR_PAGO'
       Origin = 'VALOR_PAGO'

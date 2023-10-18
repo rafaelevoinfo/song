@@ -1,9 +1,6 @@
 program SongServer;
 
 uses
-  {$IFDEF DEBUG}
-  FastMM4,
-  {$ENDIF }
   Vcl.Forms,
   Web.WebReq,
   IdHTTPWebBrokerBridge,
@@ -38,10 +35,6 @@ uses
   uSMBIOS in 'uSMBIOS.pas';
 
 {$R *.res}
-
-{$IFDEF DEBUG}
-{$INCLUDE FastMM4Options.inc}
-{$ENDIF}
 
 
 begin

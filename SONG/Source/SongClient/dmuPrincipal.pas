@@ -3,17 +3,61 @@ unit dmuPrincipal;
 interface
 
 uses
-  System.SysUtils, System.Classes, Data.DBXDataSnap, IPPeerClient,
-  Data.DBXCommon, Data.DB, Data.SqlExpr, dxSkinsCore, dxSkinBlack, cxClasses,
-  cxLookAndFeels, dxSkinsForm, System.IOUtils, uTypes, uMensagem,
-  Datasnap.DSMetadata, Datasnap.DSConnectionMetaDataProvider,
-  Datasnap.DSClientMetadata, Datasnap.DSProxyDelphi, uFuncoes, Vcl.AppEvnts,
-  uExceptions, Vcl.ImgList, Vcl.Controls, cxGraphics, Vcl.StdCtrls,
-  Datasnap.DBClient, Datasnap.DSConnect, uConnection, uUtils, System.TypInfo,
-  uControleAcesso, Winapi.Windows, Winapi.Messages, System.RegularExpressions, MidasLib, Midas,
-  Vcl.Forms, uClientDataSet, cxEdit, cxDBEditRepository, System.ImageList,
-  cxLocalization, uProvider, System.Rtti, uProxyGenerator, Datasnap.DSProxy,
-  cxEditRepositoryItems, Vcl.Dialogs;
+  System.SysUtils,
+  System.Classes,
+  System.IOUtils,
+  System.TypInfo,
+  System.RegularExpressions,
+  System.ImageList,
+  System.Rtti,
+
+  IPPeerClient,
+  dxSkinsCore,
+  dxSkinBlack,
+  cxClasses,
+  cxLookAndFeels,
+  dxSkinsForm,
+  cxImageList,
+  cxGraphics,
+  cxEdit,
+  cxDBEditRepository,
+  cxEditRepositoryItems,
+
+  Data.DBXCommon,
+  Data.DB,
+  Data.SqlExpr,
+  Data.DBXDataSnap,
+  Datasnap.DSMetadata,
+  Datasnap.DSConnectionMetaDataProvider,
+  Datasnap.DSClientMetadata,
+  Datasnap.DSProxyDelphi,
+  Datasnap.DBClient,
+  Datasnap.DSConnect,
+  Datasnap.DSProxy,
+
+  Winapi.Windows,
+  Winapi.Messages,
+
+  Vcl.AppEvnts,
+  Vcl.ImgList,
+  Vcl.Controls,
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+
+  MidasLib,
+  Midas,
+
+  uProxyGenerator,
+  uProvider,
+  uClientDataSet,
+  uControleAcesso,
+  uConnection,
+  uUtils,
+  uTypes,
+  uMensagem,
+  uFuncoes,
+  uExceptions;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -21,7 +65,6 @@ type
     ProxyGenerator: TDSProxyGenerator;
     DSConnectionMetaDataProvider1: TDSConnectionMetaDataProvider;
     ApplicationEvents1: TApplicationEvents;
-    imgIcons_32: TcxImageList;
     imgIcons_16: TcxImageList;
     ProviderAdministrativo: TRFProviderConnection;
     ProviderLookup: TRFProviderConnection;
@@ -36,10 +79,10 @@ type
     repIcbTipoTransferencia: TcxEditRepositoryImageComboBoxItem;
     repIcbStatusAtividade: TcxEditRepositoryImageComboBoxItem;
     dslkCidade: TDataSource;
-    cxLocalizer1: TcxLocalizer;
     ProviderEstoque: TRFProviderConnection;
     ProviderRelatorio: TRFProviderConnection;
     ProviderSistema: TRFProviderConnection;
+    imgIcons_32: TcxImageList;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -132,8 +175,8 @@ begin
   // desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
 
-  cxLocalizer1.Active := True;
-  cxLocalizer1.Locale := 1046; // Portugues Brasil
+  // cxLocalizer1.Active := True;
+  // cxLocalizer1.Locale := 1046; // Portugues Brasil
 
   FInterceptorFuncoesGeral := TVirtualMethodInterceptor.Create(TsmFuncoesGeralClient);
   FInterceptorFuncoesAdministrativo := TVirtualMethodInterceptor.Create(TsmFuncoesAdministrativoClient);

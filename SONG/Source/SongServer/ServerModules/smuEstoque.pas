@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, uQuery, uUtils, uClientDataSet, uSQLGenerator,
   Datasnap.Provider, System.Generics.Collections, Datasnap.DBClient, ppMath,
-  System.Math;
+  System.Math, uTypes;
 
 type
   TsmEstoque = class(TsmBasico)

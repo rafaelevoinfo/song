@@ -22,7 +22,7 @@ uses
   dxCustomTileControl, dxTileControl, aduna_ds_list, dmuLookup, fAgenda,
   fAgendamento, fItemPatrimonio, uMensagem, fPatrimonio, fRelatorioPatrimonio,
   fDoacao, dmuPrincipal, fAreaAtuacao, fTipoEspecie, fMix_Muda, fOrcamento,
-  fAparelhosRegistrados;
+  fAparelhosRegistrados, dxCore;
 
 type
   TfrmPrincipal = class(TfrmBasico)
@@ -35,7 +35,6 @@ type
     PerfisdeUsurios1: TMenuItem;
     pcPrincipal: TcxPageControl;
     tabNotificacoes: TcxTabSheet;
-    dxSkinController1: TdxSkinController;
     Ac_Organizacao: TAction;
     Ac_Projeto: TAction;
     Ac_Financiador: TAction;
@@ -135,6 +134,7 @@ type
     Oramento1: TMenuItem;
     Ac_Aparelho_Registrado: TAction;
     AparelhosExternos1: TMenuItem;
+    dxSkinController1: TdxSkinController;
     procedure Ac_PerfisExecute(Sender: TObject);
     procedure Ac_PessoasExecute(Sender: TObject);
     procedure dxSkinController1SkinControl(Sender: TObject; AControl: TWinControl; var UseSkin: Boolean);

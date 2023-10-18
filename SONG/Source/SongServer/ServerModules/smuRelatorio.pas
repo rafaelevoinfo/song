@@ -51,7 +51,7 @@ type
     qGasto_Area_Atuacao: TRFQuery;
     qGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField;
     qGasto_Area_AtuacaoAREA_ATUACAO: TStringField;
-    qGasto_Area_AtuacaoGASTO: TFMTBCDField;
+    qGasto_Area_AtuacaoGASTO: TBCDField;
     qGasto_Area_AtuacaoPROJETO: TStringField;
     qTransferencia_Financeira: TRFQuery;
     qTransferencia_FinanceiraID: TIntegerField;
@@ -92,7 +92,7 @@ type
     qGasto_AtividadeDATA_FINAL: TSQLTimeStampField;
     qGasto_AtividadeDESCRICAO: TStringField;
     qGasto_AtividadeVALOR: TBCDField;
-    qGasto_AtividadeVALOR_PAGO: TFMTBCDField;
+    qGasto_AtividadeVALOR_PAGO: TBCDField;
     qMatriz_Produtiva: TRFQuery;
     qMatriz_ProdutivaID_ESPECIE: TIntegerField;
     qMatriz_ProdutivaESPECIE: TStringField;

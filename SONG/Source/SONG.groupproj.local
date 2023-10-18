@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2016/01/20 23:37:38.000.376,C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjectGroup1.groupproj=C:\Users\rafae\Repositorios\SONG\Source\SONG.groupproj</Transaction>
+    <Transaction>2016/01/20 23:37:38.000.376,C:\Users\rafae\Repositorios\SONG\Source\SONG.groupproj=C:\Users\rafae\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjectGroup1.groupproj</Transaction>
   </Transactions>
 	<Default.Personality>
-		<Projects ActiveProject="C:\Users\rafae\Repositorios\SONG\Source\SongServer\SONGServer.dproj"/>
+		<Projects ActiveProject="C:\Users\rafae\Repositorios\SONG\SONG\Source\SongClient\SongClient.dproj"/>
 	</Default.Personality>
 </BorlandProject>

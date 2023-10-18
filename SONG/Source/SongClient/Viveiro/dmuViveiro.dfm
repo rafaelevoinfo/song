@@ -174,14 +174,14 @@ inherited dmViveiro: TdmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 150
     end
-    object cdsMatrizLATITUDE: TFMTBCDField
+    object cdsMatrizLATITUDE: TBCDField
       DisplayLabel = 'Latitude'
       FieldName = 'LATITUDE'
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 6
     end
-    object cdsMatrizLONGITUDE: TFMTBCDField
+    object cdsMatrizLONGITUDE: TBCDField
       DisplayLabel = 'Longitude'
       FieldName = 'LONGITUDE'
       ProviderFlags = [pfInUpdate]

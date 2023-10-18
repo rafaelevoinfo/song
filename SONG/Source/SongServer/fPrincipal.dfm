@@ -10,7 +10,6 @@ object frmPrincipal: TfrmPrincipal
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -2189,7 +2188,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 251
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = tabBackup
+    Properties.ActivePage = tabConfiguracoes
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.NativeStyle = False
     ClientRectBottom = 246
@@ -2205,8 +2204,6 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Banco de Dados'
         Style.LookAndFeel.NativeStyle = False
         StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
         TabOrder = 0
         Height = 105
         Width = 385
@@ -2311,10 +2308,6 @@ object frmPrincipal: TfrmPrincipal
     object tabLog: TcxTabSheet
       Caption = 'Log de Erros'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -2324,6 +2317,7 @@ object frmPrincipal: TfrmPrincipal
         TabOrder = 0
         object viewLog: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataSource = dsLog
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -2350,10 +2344,6 @@ object frmPrincipal: TfrmPrincipal
     object tabAtualizacoes: TcxTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 25
@@ -2367,6 +2357,7 @@ object frmPrincipal: TfrmPrincipal
           Navigator.Buttons.Insert.Visible = False
           Navigator.Buttons.GotoBookmark.Visible = False
           Navigator.Buttons.Filter.Visible = False
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataSource = dsAtualizacoes
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -2551,7 +2542,6 @@ object frmPrincipal: TfrmPrincipal
         Top = 3
         Caption = 'Habilitar backup'
         TabOrder = 0
-        Width = 121
       end
       object EditUsuarioFTP: TcxTextEdit
         Left = 359

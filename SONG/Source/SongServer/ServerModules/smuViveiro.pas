@@ -24,8 +24,8 @@ type
     qMatrizID: TIntegerField;
     qMatrizID_ESPECIE: TIntegerField;
     qMatrizENDERECO: TStringField;
-    qMatrizLATITUDE: TFMTBCDField;
-    qMatrizLONGITUDE: TFMTBCDField;
+    qMatrizLATITUDE: TBCDField;
+    qMatrizLONGITUDE: TBCDField;
     qMatrizESPECIE: TStringField;
     qMatrizNOME: TStringField;
     qMatrizFOTO: TBlobField;

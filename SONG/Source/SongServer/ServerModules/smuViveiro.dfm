@@ -223,14 +223,14 @@ inherited smViveiro: TsmViveiro
       ProviderFlags = [pfInUpdate]
       Size = 150
     end
-    object qMatrizLATITUDE: TFMTBCDField
+    object qMatrizLATITUDE: TBCDField
       FieldName = 'LATITUDE'
       Origin = 'LATITUDE'
       ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 6
     end
-    object qMatrizLONGITUDE: TFMTBCDField
+    object qMatrizLONGITUDE: TBCDField
       FieldName = 'LONGITUDE'
       Origin = 'LONGITUDE'
       ProviderFlags = [pfInUpdate]

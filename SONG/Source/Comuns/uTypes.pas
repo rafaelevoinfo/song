@@ -26,6 +26,72 @@ type
     coAnd = ' AND ';
   end;
 
+  TParametros = class
+  public const
+    coTodos: string = 'TODOS';
+    coID: string = 'ID';
+    coID_ESPECIE = 'ID_ESPECIE';
+    coIdPai: string = 'ID_PAI';
+    coNome: string = 'NOME';
+    coData: string = 'DATA';
+    coDataCompra: string = 'DATA_COMPRA';
+    coDataVencimento:string = 'DATA_VENCIMENTO';
+    coDataPagamentoRecebimento:string = 'DATA_PAGAMENTO_RECEBIMENTO';
+    coActive: string = 'ACTIVE';
+    coLogin: string = 'LOGIN';
+    coAtivo: string = 'ATIVO';
+    coStatus: string = 'STATUS';
+    coStatusEntrega = 'STATUS_ENTREGA';
+    coStatusDiferente = 'STATUS_DIFERENTE';
+    coProjeto: string = 'PROJETO';
+    coProjetoAlocado: string = 'PROJETO_ALOCADO';
+    coAtividade: string = 'ATIVIDADE';
+    coNomeCientifico = 'NOME_CIENTIFICO';
+    coFamiliaBotanica = 'FAMILIA_BOTANICA';
+    coNomeFantasia = 'NOME_FANTASIA';
+    coRazaoSocial = 'RAZAO_SOCIAL';
+    coCpfCnpj = 'CPF_CNPJ';
+    coEspecie = 'ESPECIE';
+    coDescricao = 'DESCRICAO';
+    coFornecedor = 'FORNECEDOR';
+    coRubrica = 'RUBRICA';
+    coRubricaOrigemRecurso = 'RUBRICA_ORIGEM_RECURSO';
+    coPlanoConta = 'PLANO_CONTA';
+    coClienteFinanciador = 'CLIENTE_FINANCIADOR';
+    coSolicitante = 'PESSOA_SOLICITANTE';
+    coResponsavelAnalise = 'PESSOA_ANALISOU';
+    coComprador = 'PESSOA_COMPROU';
+    coVendedor = 'PESSOA_VENDEU';
+    coResponsavelDespesa = 'RESPONSAVEL_DESPESA';
+    coLoteSemente = 'LOTE_SEMENTE';
+    coVencida = 'VENCIDA';
+    coCliente = 'CLIENTE';
+    coIdColeta = 'ID_COLETA';
+    coTipo = 'TIPO';
+    coTipoItem = 'TIPO_ITEM';
+    coItem = 'ITEM';
+    coCompra = 'COMPRA';
+    coVenda = 'VENDA';
+    coCodigoRastreio = 'CODIGO_RASTREIO';
+    coFundo = 'FUNDO';
+    coPossuiEstoque = 'POSSUI_ESTOQUE';
+    coIdentificadorPlanoContasRubrica = 'IDENTIFICADOR_PLANO_CONTAS_RUBRICA';
+    coIdentificacao = 'IDENTIFICACAO';
+    coLocalizacao = 'LOCALIZACAO';
+    coNotaFiscal = 'NOTA_FISCAL';
+    coPessoa = 'PESSOA';
+    coOrganizacao = 'ORGANIZACAO';
+    coAberto = 'ABERTO';
+    coClassificacao = 'CLASSIFICACAO';
+    coBioma = 'BIOMA';
+    coDelimitador = '§';
+    coCategoria = 'CATEGORIA';
+    coSaldoPositivo = 'SALDO_POSITIVO';
+    coNativa = 'ESPECIE_NATIVA_CERRADO';
+  end;
+
+
+
   TModelo = class
   private
     FId: Integer;

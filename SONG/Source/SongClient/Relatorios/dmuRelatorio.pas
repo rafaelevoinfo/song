@@ -49,7 +49,7 @@ type
     cdsGasto_Area_Atuacao: TRFClientDataSet;
     cdsGasto_Area_AtuacaoID_AREA_ATUACAO_ORIGEM: TIntegerField;
     cdsGasto_Area_AtuacaoAREA_ATUACAO: TStringField;
-    cdsGasto_Area_AtuacaoGASTO: TFMTBCDField;
+    cdsGasto_Area_AtuacaoGASTO: TBCDField;
     cdsGasto_Area_AtuacaoPROJETO: TStringField;
     cdsTrasnferencia_Financeira: TRFClientDataSet;
     cdsTrasnferencia_FinanceiraID: TIntegerField;
@@ -91,7 +91,7 @@ type
     cdsGasto_AtividadeDATA_FINAL: TSQLTimeStampField;
     cdsGasto_AtividadeDESCRICAO: TStringField;
     cdsGasto_AtividadeVALOR: TBCDField;
-    cdsGasto_AtividadeVALOR_PAGO: TFMTBCDField;
+    cdsGasto_AtividadeVALOR_PAGO: TBCDField;
     cdsGasto_AtividadeCALC_STATUS: TStringField;
     cdsMatriz_Produtiva: TRFClientDataSet;
     cdsMatriz_ProdutivaID_ESPECIE: TIntegerField;

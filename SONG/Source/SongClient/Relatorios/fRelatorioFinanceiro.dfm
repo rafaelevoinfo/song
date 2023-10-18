@@ -21,13 +21,17 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       TabStop = False
       Properties.ActivePage = tabGastoPlanoContas
       Properties.CustomButtons.Buttons = <>
-      ClientRectBottom = 622
-      ClientRectLeft = 2
-      ClientRectRight = 894
-      ClientRectTop = 25
+      ClientRectBottom = 623
+      ClientRectLeft = 4
+      ClientRectRight = 895
+      ClientRectTop = 24
       object tabSaldos: TcxTabSheet
         Caption = 'Saldos'
         ImageIndex = 0
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cgbProjetoSaldo: TdxCheckGroupBox
           Left = 4
           Top = 3
@@ -51,7 +55,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkSaldoTodosProjetoPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
         object cgbFundoSaldo: TdxCheckGroupBox
@@ -77,13 +80,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkSaldoTodosFundoPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
       end
       object tabMovimentacao: TcxTabSheet
         Caption = 'Movimenta'#231#227'o Financeira'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cgbData: TdxCheckGroupBox
           Left = 4
           Top = 118
@@ -129,7 +135,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           State = cbsChecked
           TabOrder = 3
           Transparent = True
-          Width = 69
         end
         object chkDespesas: TcxCheckBox
           Left = 4
@@ -138,7 +143,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           State = cbsChecked
           TabOrder = 4
           Transparent = True
-          Width = 69
         end
         object chkSomenteTotais: TcxCheckBox
           Left = 4
@@ -146,7 +150,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Caption = 'Somente Totais'
           TabOrder = 5
           Transparent = True
-          Width = 130
         end
         object chkSomenteRegistrosAbertos: TcxCheckBox
           Left = 4
@@ -154,7 +157,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Caption = 'Somente Receitas/Despesas em Aberto'
           TabOrder = 6
           Transparent = True
-          Width = 222
         end
         object cgbProjetoMovimentacao: TdxCheckGroupBox
           Left = 4
@@ -179,7 +181,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkTodosSaldosProjetosPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
         object cgbFundoMovimentacao: TdxCheckGroupBox
@@ -205,13 +206,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkTodosFundoMovimentacaoPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
       end
       object tabSaldoRubrica: TcxTabSheet
         Caption = 'Saldo de Rubricas'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lb1: TLabel
           Left = 6
           Top = 3
@@ -234,12 +238,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Properties.OnEditValueChanged = chkTodosProjetoRubricasPropertiesEditValueChanged
           TabOrder = 1
           Transparent = True
-          Width = 69
         end
       end
       object tabGastoAreaAtuacao: TcxTabSheet
         Caption = 'Gasto por '#193'rea de Atua'#231#227'o'
         ImageIndex = 3
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cgbDataGasto: TdxCheckGroupBox
           Left = 1
           Top = 3
@@ -281,6 +288,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Caption = 'Transfer'#234'ncia de Recursos'
         ImageIndex = 4
         OnShow = tabTransferenciaRecursoShow
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label5: TLabel
           Left = 4
           Top = 72
@@ -350,7 +361,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           State = cbsChecked
           TabOrder = 2
           Transparent = True
-          Width = 50
         end
         object cbPessoaTransferencia: TcxLookupComboBox
           Left = 1
@@ -365,6 +375,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         Caption = 'Gastos por Fornecedor'
         ImageIndex = 5
         OnShow = tabGastoFornecedorShow
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label8: TLabel
           Left = 7
           Top = 8
@@ -425,12 +439,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Properties.OnEditValueChanged = chkTodosFornecedorPropertiesEditValueChanged
           TabOrder = 1
           Transparent = True
-          Width = 69
         end
       end
       object tabGastoAtividade: TcxTabSheet
         Caption = 'Gasto por Atividade'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label9: TLabel
           Left = 6
           Top = 3
@@ -486,13 +503,16 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           State = cbsChecked
           TabOrder = 2
           Transparent = True
-          Width = 69
         end
       end
       object tabGastoPlanoContas: TcxTabSheet
         Caption = 'Gastos por Plano de Contas'
         ImageIndex = 7
         OnShow = tabGastoPlanoContasShow
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label10: TLabel
           Left = 7
           Top = 118
@@ -523,7 +543,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkTodosProjetoPlanoContasPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
         object cgbFundoPlanoConta: TdxCheckGroupBox
@@ -549,7 +568,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkTodosFundoPlanoContasPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
         object cbPlanoConta: TcxLookupComboBox
@@ -567,7 +585,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Properties.OnEditValueChanged = chkTodosPlanoContaPropertiesEditValueChanged
           TabOrder = 3
           Transparent = True
-          Width = 69
         end
         object chkGastoPlanoContasDetalhado: TcxCheckBox
           Left = 4
@@ -576,12 +593,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
           Properties.OnEditValueChanged = chkTodosPlanoContaPropertiesEditValueChanged
           TabOrder = 4
           Transparent = True
-          Width = 149
         end
       end
       object tabContasPagar: TcxTabSheet
         Caption = 'Cont'#225'bil'
         ImageIndex = 8
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cgbDataContabil: TdxCheckGroupBox
           Left = 4
           Top = 116
@@ -641,7 +661,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkTodosProjetoContabilPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
         object cgbContaContabil: TdxCheckGroupBox
@@ -667,7 +686,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
             Properties.OnEditValueChanged = chkTodasContaContabilPropertiesEditValueChanged
             TabOrder = 1
             Transparent = True
-            Width = 69
           end
         end
       end
@@ -678,6 +696,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     TabOrder = 0
     ExplicitWidth = 1025
     inherited chkTodasOrganizacoes: TcxCheckBox
+      ExplicitWidth = 121
       ExplicitHeight = 19
     end
   end
@@ -844,6 +863,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeMovimentacao
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -859,6 +879,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -868,15 +892,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -891,26 +924,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 856
     Top = 360
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeMovimentacao'
     object ppHeaderBand3: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23813
       mmPrintPosition = 0
       object ppLbTituloMovimentacaoFinanceira: TppLabel
         DesignLayer = ppDesignLayer3
         UserName = 'TituloMovimentacaoFinanceira'
+        Border.mmPadding = 0
         Caption = 'Movimenta'#231#227'o Financeira'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -927,6 +970,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -942,6 +986,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable7: TppSystemVariable
         DesignLayer = ppDesignLayer3
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -959,6 +1004,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable8: TppSystemVariable
         DesignLayer = ppDesignLayer3
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -978,12 +1024,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBandMovimentacao: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 3704
       mmPrintPosition = 0
       object ppDBText19: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText9'
+        Border.mmPadding = 0
         DataField = 'VALOR_TOTAL_PAGO_RECEBIDO'
         DataPipeline = DBPipeMovimentacao
         DisplayFormat = '$ ,0.00'
@@ -1004,6 +1052,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText12: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText101'
+        Border.mmPadding = 0
         DataField = 'DESCRICAO_MOVIMENTACAO'
         DataPipeline = DBPipeMovimentacao
         Font.Charset = DEFAULT_CHARSET
@@ -1023,6 +1072,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText21: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText21'
+        Border.mmPadding = 0
         DataField = 'VALOR_TOTAL'
         DataPipeline = DBPipeMovimentacao
         DisplayFormat = '$ ,0.00'
@@ -1043,6 +1093,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText24: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText24'
+        Border.mmPadding = 0
         DataField = 'CALC_VALOR_RESTANTE'
         DataPipeline = DBPipeMovimentacao
         DisplayFormat = '$ ,0.00'
@@ -1064,6 +1115,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText10: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText10'
+        Border.mmPadding = 0
         DataField = 'DATA_PAGAMENTO_RECEBIMENTO'
         DataPipeline = DBPipeMovimentacao
         Font.Charset = DEFAULT_CHARSET
@@ -1083,6 +1135,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText11: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText11'
+        Border.mmPadding = 0
         DataField = 'CALC_DESCRICAO_FORMA_PGTO'
         DataPipeline = DBPipeMovimentacao
         Font.Charset = DEFAULT_CHARSET
@@ -1102,6 +1155,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText20: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText102'
+        Border.mmPadding = 0
         DataField = 'DATA'
         DataPipeline = DBPipeMovimentacao
         Font.Charset = DEFAULT_CHARSET
@@ -1121,19 +1175,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand3: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel17: TppLabel
         DesignLayer = ppDesignLayer3
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -1146,6 +1203,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText22: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -1167,6 +1225,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText23: TppDBText
         DesignLayer = ppDesignLayer3
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -1188,6 +1247,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable9: TppSystemVariable
         DesignLayer = ppDesignLayer3
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1219,6 +1279,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand2: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 5821
         mmPrintPosition = 0
@@ -1237,6 +1298,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText18: TppDBText
           DesignLayer = ppDesignLayer3
           UserName = 'DBText18'
+          Border.mmPadding = 0
           DataField = 'NOME_ORGANIZACAO'
           DataPipeline = DBPipeMovimentacao
           Font.Charset = DEFAULT_CHARSET
@@ -1258,6 +1320,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand2: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 7938
@@ -1265,13 +1328,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel3: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'Label3'
+          Border.mmPadding = 0
           Caption = 'Saldo'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 136250
@@ -1284,6 +1349,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc15: TppDBCalc
           DesignLayer = ppDesignLayer3
           UserName = 'DBCalc15'
+          Border.mmPadding = 0
           DataField = 'CALC_SALDO'
           DataPipeline = DBPipeMovimentacao
           DisplayFormat = '$ ,0.00'
@@ -1320,12 +1386,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand6: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 6615
         mmPrintPosition = 0
         object EditOrigemRecurso1: TppDBText
           DesignLayer = ppDesignLayer3
           UserName = 'EditOrigemRecurso1'
+          Border.mmPadding = 0
           DataField = 'ORIGEM_RECURSO'
           DataPipeline = DBPipeMovimentacao
           Font.Charset = DEFAULT_CHARSET
@@ -1346,6 +1414,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object EditOrigemRecurso: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 0
@@ -1366,19 +1435,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand4: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 12965
         mmPrintPosition = 0
         object ppLabelDescricao: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'LabelDescricao'
+          Border.mmPadding = 0
           Caption = 'Descri'#231#227'o'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 2645
@@ -1392,13 +1464,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabelValorPagoRecebido: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'LabelValorPagoRecebido'
+          Border.mmPadding = 0
           Caption = 'Valor Pago'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2645
           mmLeft = 145517
@@ -1411,13 +1485,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel22: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'Label201'
+          Border.mmPadding = 0
           Caption = 'Valor'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 2645
@@ -1431,13 +1507,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel20: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'LabelValorPagoRecebido1'
+          Border.mmPadding = 0
           Caption = 'Restante'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 2645
@@ -1451,6 +1529,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLine1: TppLine
           DesignLayer = ppDesignLayer3
           UserName = 'Line1'
+          Border.mmPadding = 0
           Weight = 0.750000000000000000
           mmHeight = 1058
           mmLeft = 2117
@@ -1463,6 +1542,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLine2: TppLine
           DesignLayer = ppDesignLayer3
           UserName = 'Line2'
+          Border.mmPadding = 0
           Weight = 0.750000000000000000
           mmHeight = 1058
           mmLeft = 1852
@@ -1475,13 +1555,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object lbDataPagamentoRecebimento: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'lbDataPagamentoRecebimento'
+          Border.mmPadding = 0
           Caption = 'Data Pgto/Receb'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2646
           mmLeft = 71968
@@ -1494,13 +1576,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object lbFormaPagamento: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'lbFormaPagamento'
+          Border.mmPadding = 0
           Caption = 'Forma de Pagamento'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           TextAlignment = taCentered
           Transparent = True
           mmHeight = 2645
@@ -1514,6 +1598,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText27: TppDBText
           DesignLayer = ppDesignLayer3
           UserName = 'DBText2'
+          Border.mmPadding = 0
           DataField = 'DESCRICAO_TIPO'
           DataPipeline = DBPipeMovimentacao
           Font.Charset = DEFAULT_CHARSET
@@ -1534,13 +1619,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel54: TppLabel
           DesignLayer = ppDesignLayer3
           UserName = 'lbDataPagamentoRecebimento1'
+          Border.mmPadding = 0
           Caption = 'Data do Registro'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 6
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2645
           mmLeft = 52123
@@ -1553,6 +1640,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand4: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 4763
@@ -1560,6 +1648,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc2: TppDBCalc
           DesignLayer = ppDesignLayer3
           UserName = 'DBCalc2'
+          Border.mmPadding = 0
           DataField = 'VALOR_TOTAL_PAGO_RECEBIDO'
           DataPipeline = DBPipeMovimentacao
           DisplayFormat = '$ ,0.00'
@@ -1583,6 +1672,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc3: TppDBCalc
           DesignLayer = ppDesignLayer3
           UserName = 'DBCalc3'
+          Border.mmPadding = 0
           DataField = 'VALOR_TOTAL'
           DataPipeline = DBPipeMovimentacao
           DisplayFormat = '$ ,0.00'
@@ -1606,6 +1696,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc5: TppDBCalc
           DesignLayer = ppDesignLayer3
           UserName = 'DBCalc5'
+          Border.mmPadding = 0
           DataField = 'CALC_VALOR_RESTANTE'
           DataPipeline = DBPipeMovimentacao
           DisplayFormat = '$ ,0.00'
@@ -1629,19 +1720,21 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule1: TraCodeModule
-      ProgramStream = {
-        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D65061F
-        4C6162656C56616C6F725061676F526563656269646F4F6E476574546578740B
-        50726F6772616D54797065070B747450726F63656475726506536F7572636506
-        BB70726F636564757265204C6162656C56616C6F725061676F52656365626964
-        6F4F6E476574546578742876617220546578743A20537472696E67293B0D0A62
-        6567696E0D0A0D0A20206966204442506970654D6F76696D656E746163616F5B
-        275449504F275D203D2030207468656E0D0A2020202054657874203A3D202027
-        56616C6F72205061676F270D0A2020656C73650D0A2020202054657874203A3D
-        202756616C6F7220526563656269646F273B0D0A0D0A656E643B0D0A0D436F6D
-        706F6E656E744E616D6506164C6162656C56616C6F725061676F526563656269
-        646F094576656E744E616D6506094F6E47657454657874074576656E74494402
-        35084361726574506F730102200204000000}
+      object raProgramInfo1: TraProgramInfo
+        raClassName = 'TraEventHandler'
+        raProgram.ProgramName = 'LabelValorPagoRecebidoOnGetText'
+        raProgram.ProgramType = ttProcedure
+        raProgram.Source = 
+          'procedure LabelValorPagoRecebidoOnGetText(var Text: String);'#13#10'be' +
+          'gin'#13#10#13#10'  if DBPipeMovimentacao['#39'TIPO'#39'] = 0 then'#13#10'    Text :=  '#39'V' +
+          'alor Pago'#39#13#10'  else'#13#10'    Text := '#39'Valor Recebido'#39';'#13#10#13#10'end;'#13#10
+        raProgram.ComponentName = 'LabelValorPagoRecebido'
+        raProgram.EventName = 'OnGetText'
+        raProgram.EventID = 53
+        raProgram.CaretPos = (
+          32
+          4)
+      end
     end
     object ppDesignLayers3: TppDesignLayers
       object ppDesignLayer3: TppDesignLayer
@@ -1658,6 +1751,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeSaldo
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -1673,6 +1767,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -1682,15 +1780,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -1705,26 +1812,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 736
     Top = 368
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeSaldo'
     object ppHeaderBand4: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23283
       mmPrintPosition = 0
       object ppLabel23: TppLabel
         DesignLayer = ppDesignLayer4
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Saldos'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -1741,6 +1858,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -1756,6 +1874,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable10: TppSystemVariable
         DesignLayer = ppDesignLayer4
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -1773,6 +1892,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable11: TppSystemVariable
         DesignLayer = ppDesignLayer4
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1792,12 +1912,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand4: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5821
       mmPrintPosition = 0
       object ppDBText25: TppDBText
         DesignLayer = ppDesignLayer4
         UserName = 'DBText9'
+        Border.mmPadding = 0
         DataField = 'SALDO'
         DataPipeline = DBPipeSaldo
         DisplayFormat = '$ ,0.00'
@@ -1819,6 +1941,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText26: TppDBText
         DesignLayer = ppDesignLayer4
         UserName = 'DBText101'
+        Border.mmPadding = 0
         DataField = 'ORIGEM_RECURSO'
         DataPipeline = DBPipeSaldo
         Font.Charset = DEFAULT_CHARSET
@@ -1838,19 +1961,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand4: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel24: TppLabel
         DesignLayer = ppDesignLayer4
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -1863,6 +1989,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText28: TppDBText
         DesignLayer = ppDesignLayer4
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -1884,6 +2011,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText29: TppDBText
         DesignLayer = ppDesignLayer4
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -1905,6 +2033,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable12: TppSystemVariable
         DesignLayer = ppDesignLayer4
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1935,6 +2064,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand5: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 5821
         mmPrintPosition = 0
@@ -1953,6 +2083,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText30: TppDBText
           DesignLayer = ppDesignLayer4
           UserName = 'DBText18'
+          Border.mmPadding = 0
           DataField = 'NOME_ORGANIZACAO'
           DataPipeline = DBPipeSaldo
           Font.Charset = DEFAULT_CHARSET
@@ -1974,6 +2105,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand5: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 5292
@@ -1981,6 +2113,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc4: TppDBCalc
           DesignLayer = ppDesignLayer4
           UserName = 'DBCalc4'
+          Border.mmPadding = 0
           DataField = 'SALDO'
           DataPipeline = DBPipeSaldo
           DisplayFormat = '$ ,0.00'
@@ -2004,7 +2137,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule2: TraCodeModule
-      ProgramStream = {00}
     end
     object ppDesignLayers4: TppDesignLayers
       object ppDesignLayer4: TppDesignLayer
@@ -2080,6 +2212,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeRubrica
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -2095,6 +2228,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -2104,15 +2241,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -2127,26 +2273,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 664
     Top = 368
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeRubrica'
     object ppHeaderBand1: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23019
       mmPrintPosition = 0
       object ppLabel1: TppLabel
         DesignLayer = ppDesignLayer1
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Saldo de Rubricas'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -2163,6 +2319,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -2178,6 +2335,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable1: TppSystemVariable
         DesignLayer = ppDesignLayer1
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -2195,6 +2353,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable2: TppSystemVariable
         DesignLayer = ppDesignLayer1
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2214,12 +2373,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand1: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5556
       mmPrintPosition = 0
       object ppDBText1: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText9'
+        Border.mmPadding = 0
         DataField = 'APROVISIONADO'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2241,6 +2402,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText2: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText101'
+        Border.mmPadding = 0
         DataField = 'ORCAMENTO'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2262,6 +2424,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText3: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText21'
+        Border.mmPadding = 0
         DataField = 'GASTO'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2283,6 +2446,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText4: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText27'
+        Border.mmPadding = 0
         DataField = 'NOME_RUBRICA'
         DataPipeline = DBPipeRubrica
         Font.Charset = DEFAULT_CHARSET
@@ -2303,6 +2467,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText5: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText24'
+        Border.mmPadding = 0
         DataField = 'SALDO_REAL'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2324,6 +2489,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText77: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText77'
+        Border.mmPadding = 0
         DataField = 'RECEBIDO'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2345,6 +2511,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText78: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText78'
+        Border.mmPadding = 0
         DataField = 'RECEBIDO_TRANSFERENCIA'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2366,6 +2533,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText79: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText79'
+        Border.mmPadding = 0
         DataField = 'GASTO_TRANSFERENCIA'
         DataPipeline = DBPipeRubrica
         DisplayFormat = '$ ,0.00'
@@ -2387,19 +2555,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand1: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel2: TppLabel
         DesignLayer = ppDesignLayer1
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -2412,6 +2583,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText6: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -2433,6 +2605,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText7: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -2454,6 +2627,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable3: TppSystemVariable
         DesignLayer = ppDesignLayer1
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2484,19 +2658,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand1: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 10054
         mmPrintPosition = 0
         object ppLabel4: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label4'
+          Border.mmPadding = 0
           Caption = 'Rubrica'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 2117
@@ -2509,13 +2686,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel5: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label5'
+          Border.mmPadding = 0
           Caption = 'Or'#231'amento'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 42333
@@ -2528,13 +2707,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel6: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label6'
+          Border.mmPadding = 0
           Caption = 'Recebido'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 66033
@@ -2547,13 +2728,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel7: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label7'
+          Border.mmPadding = 0
           Caption = 'Gasto'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 114542
@@ -2566,13 +2749,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel8: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label8'
+          Border.mmPadding = 0
           Caption = 'Aprovisionado'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 153368
@@ -2585,13 +2770,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel9: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label9'
+          Border.mmPadding = 0
           Caption = 'Saldo Real'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 172515
@@ -2616,6 +2803,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText8: TppDBText
           DesignLayer = ppDesignLayer1
           UserName = 'DBText18'
+          Border.mmPadding = 0
           DataField = 'NOME_PROJETO'
           DataPipeline = DBPipeRubrica
           Font.Charset = DEFAULT_CHARSET
@@ -2637,13 +2825,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel67: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label67'
+          Border.mmPadding = 0
           Caption = 'Recebido por Transf.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 89452
@@ -2656,13 +2846,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel68: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label68'
+          Border.mmPadding = 0
           Caption = 'Gasto Transf.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 7
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 2910
           mmLeft = 134544
@@ -2675,6 +2867,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand1: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 6085
@@ -2682,13 +2875,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel55: TppLabel
           DesignLayer = ppDesignLayer1
           UserName = 'Label55'
+          Border.mmPadding = 0
           Caption = 'Totais'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 10
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 4233
           mmLeft = 30697
@@ -2701,6 +2896,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc16: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc16'
+          Border.mmPadding = 0
           DataField = 'ORCAMENTO'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2723,6 +2919,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc17: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc17'
+          Border.mmPadding = 0
           DataField = 'RECEBIDO_TRANSFERENCIA'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2745,6 +2942,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc18: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc18'
+          Border.mmPadding = 0
           DataField = 'GASTO'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2767,6 +2965,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc19: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc19'
+          Border.mmPadding = 0
           DataField = 'APROVISIONADO'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2789,6 +2988,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc20: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc20'
+          Border.mmPadding = 0
           DataField = 'SALDO_REAL'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2811,6 +3011,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc22: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc22'
+          Border.mmPadding = 0
           DataField = 'RECEBIDO'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2833,6 +3034,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc23: TppDBCalc
           DesignLayer = ppDesignLayer1
           UserName = 'DBCalc23'
+          Border.mmPadding = 0
           DataField = 'GASTO_TRANSFERENCIA'
           DataPipeline = DBPipeRubrica
           DisplayFormat = '$ ,0.00'
@@ -2855,7 +3057,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule3: TraCodeModule
-      ProgramStream = {00}
     end
     object ppDesignLayers1: TppDesignLayers
       object ppDesignLayer1: TppDesignLayer
@@ -3099,6 +3300,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeGasto_Area_Atuacao
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -3114,6 +3316,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -3123,15 +3329,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -3146,26 +3361,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 560
     Top = 376
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeGasto_Area_Atuacao'
     object ppHeaderBand2: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 29898
       mmPrintPosition = 0
       object ppLabel12: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Gasto por '#193'rea de Atua'#231#227'o'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -3182,6 +3407,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -3197,6 +3423,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable4: TppSystemVariable
         DesignLayer = ppDesignLayer2
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3214,6 +3441,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable5: TppSystemVariable
         DesignLayer = ppDesignLayer2
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -3232,13 +3460,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel15: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label15'
+        Border.mmPadding = 0
         Caption = #193'rea de Atua'#231#227'o'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 4234
         mmLeft = 49745
@@ -3250,13 +3480,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel16: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label16'
+        Border.mmPadding = 0
         Caption = 'Valor Gasto'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 4234
         mmLeft = 175419
@@ -3268,13 +3500,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel18: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label18'
+        Border.mmPadding = 0
         Caption = 'Projeto'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 4234
         mmLeft = 2381
@@ -3287,12 +3521,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand2: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5292
       mmPrintPosition = 0
       object ppDBText13: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'AREA_ATUACAO'
         DataPipeline = DBPipeGasto_Area_Atuacao
         Font.Charset = DEFAULT_CHARSET
@@ -3312,6 +3548,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText14: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'GASTO'
         DataPipeline = DBPipeGasto_Area_Atuacao
         DisplayFormat = '$ ,0.00'
@@ -3333,6 +3570,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText17: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText17'
+        Border.mmPadding = 0
         DataField = 'PROJETO'
         DataPipeline = DBPipeGasto_Area_Atuacao
         Font.Charset = DEFAULT_CHARSET
@@ -3352,19 +3590,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand2: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel13: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -3377,6 +3618,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText15: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -3398,6 +3640,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText16: TppDBText
         DesignLayer = ppDesignLayer2
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -3419,6 +3662,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable6: TppSystemVariable
         DesignLayer = ppDesignLayer2
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -3437,19 +3681,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand1: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel14: TppLabel
         DesignLayer = ppDesignLayer2
         UserName = 'Label14'
+        Border.mmPadding = 0
         Caption = 'Total:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 5027
         mmLeft = 121179
@@ -3461,6 +3708,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBCalc1: TppDBCalc
         DesignLayer = ppDesignLayer2
         UserName = 'DBCalc1'
+        Border.mmPadding = 0
         DataField = 'GASTO'
         DataPipeline = DBPipeGasto_Area_Atuacao
         DisplayFormat = '$ ,0.00'
@@ -3481,7 +3729,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule4: TraCodeModule
-      ProgramStream = {00}
     end
     object ppDesignLayers2: TppDesignLayers
       object ppDesignLayer2: TppDesignLayer
@@ -3664,6 +3911,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeTransferencia
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -3679,6 +3927,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -3688,15 +3940,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -3711,26 +3972,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 432
     Top = 392
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeTransferencia'
     object ppHeaderBand5: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23019
       mmPrintPosition = 0
       object ppLabel19: TppLabel
         DesignLayer = ppDesignLayer5
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Transfer'#234'ncia de Recursos'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -3747,6 +4018,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -3762,6 +4034,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable13: TppSystemVariable
         DesignLayer = ppDesignLayer5
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -3779,6 +4052,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable14: TppSystemVariable
         DesignLayer = ppDesignLayer5
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -3798,12 +4072,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand3: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5292
       mmPrintPosition = 0
       object ppDBText31: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'DESTINO'
         DataPipeline = DBPipeTransferencia
         Font.Charset = DEFAULT_CHARSET
@@ -3823,6 +4099,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText32: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'VALOR'
         DataPipeline = DBPipeTransferencia
         DisplayFormat = '$ ,0.00'
@@ -3844,6 +4121,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText33: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText17'
+        Border.mmPadding = 0
         DataField = 'ORIGEM'
         DataPipeline = DBPipeTransferencia
         Font.Charset = DEFAULT_CHARSET
@@ -3863,6 +4141,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText37: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText37'
+        Border.mmPadding = 0
         DataField = 'RESPONSAVEL'
         DataPipeline = DBPipeTransferencia
         Font.Charset = DEFAULT_CHARSET
@@ -3882,6 +4161,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText38: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText38'
+        Border.mmPadding = 0
         DataField = 'DATA'
         DataPipeline = DBPipeTransferencia
         DisplayFormat = 'dd/mm/yyyy'
@@ -3902,19 +4182,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand5: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel27: TppLabel
         DesignLayer = ppDesignLayer5
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -3927,6 +4210,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText34: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -3948,6 +4232,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText35: TppDBText
         DesignLayer = ppDesignLayer5
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -3969,6 +4254,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable15: TppSystemVariable
         DesignLayer = ppDesignLayer5
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -3987,19 +4273,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand2: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 6085
       mmPrintPosition = 0
       object ppLabel31: TppLabel
         DesignLayer = ppDesignLayer5
         UserName = 'Label31'
+        Border.mmPadding = 0
         Caption = 'Total Geral:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 4234
         mmLeft = 111125
@@ -4011,6 +4300,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBCalc7: TppDBCalc
         DesignLayer = ppDesignLayer5
         UserName = 'DBCalc7'
+        Border.mmPadding = 0
         DataField = 'VALOR'
         DataPipeline = DBPipeTransferencia
         DisplayFormat = '$ ,0.00'
@@ -4044,6 +4334,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand3: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 9525
         mmPrintPosition = 0
@@ -4062,6 +4353,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText36: TppDBText
           DesignLayer = ppDesignLayer5
           UserName = 'DBText36'
+          Border.mmPadding = 0
           DataField = 'CALC_TIPO'
           DataPipeline = DBPipeTransferencia
           Font.Charset = DEFAULT_CHARSET
@@ -4082,13 +4374,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel26: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label18'
+          Border.mmPadding = 0
           Caption = 'Origem'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 16676
@@ -4101,13 +4395,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel21: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label15'
+          Border.mmPadding = 0
           Caption = 'Destino'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 72235
@@ -4120,13 +4416,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel25: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label16'
+          Border.mmPadding = 0
           Caption = 'Valor'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 187061
@@ -4139,13 +4437,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel29: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label29'
+          Border.mmPadding = 0
           Caption = 'Respons'#225'vel'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 131767
@@ -4158,13 +4458,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel30: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label30'
+          Border.mmPadding = 0
           Caption = 'Data'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 1588
@@ -4177,6 +4479,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand3: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 6085
@@ -4184,13 +4487,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel28: TppLabel
           DesignLayer = ppDesignLayer5
           UserName = 'Label14'
+          Border.mmPadding = 0
           Caption = 'Total:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 10
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 4234
           mmLeft = 121444
@@ -4203,6 +4508,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc6: TppDBCalc
           DesignLayer = ppDesignLayer5
           UserName = 'DBCalc1'
+          Border.mmPadding = 0
           DataField = 'VALOR'
           DataPipeline = DBPipeTransferencia
           DisplayFormat = '$ ,0.00'
@@ -4226,7 +4532,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule5: TraCodeModule
-      ProgramStream = {00}
     end
     object ppDesignLayers5: TppDesignLayers
       object ppDesignLayer5: TppDesignLayer
@@ -4318,6 +4623,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeGasto_Fornecedor
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -4333,6 +4639,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -4342,15 +4652,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -4365,26 +4684,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 312
     Top = 384
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeGasto_Fornecedor'
     object ppHeaderBand6: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23283
       mmPrintPosition = 0
       object ppLabel10: TppLabel
         DesignLayer = ppDesignLayer6
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Gasto por Fornecedor'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -4401,6 +4730,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -4416,6 +4746,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable16: TppSystemVariable
         DesignLayer = ppDesignLayer6
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -4433,6 +4764,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable17: TppSystemVariable
         DesignLayer = ppDesignLayer6
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -4452,12 +4784,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand5: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 4763
       mmPrintPosition = 0
       object ppDBText39: TppDBText
         DesignLayer = ppDesignLayer6
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'DATA_PAGAMENTO'
         DataPipeline = DBPipeGasto_Fornecedor
         Font.Charset = DEFAULT_CHARSET
@@ -4478,6 +4812,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText40: TppDBText
         DesignLayer = ppDesignLayer6
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeGasto_Fornecedor
         DisplayFormat = '$ ,0.00'
@@ -4499,6 +4834,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText44: TppDBText
         DesignLayer = ppDesignLayer6
         UserName = 'DBText44'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeGasto_Fornecedor
         DisplayFormat = '$ ,0.00'
@@ -4520,19 +4856,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand6: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel34: TppLabel
         DesignLayer = ppDesignLayer6
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -4545,6 +4884,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText42: TppDBText
         DesignLayer = ppDesignLayer6
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -4566,6 +4906,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText43: TppDBText
         DesignLayer = ppDesignLayer6
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -4587,6 +4928,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable18: TppSystemVariable
         DesignLayer = ppDesignLayer6
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -4605,6 +4947,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand3: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
@@ -4624,6 +4967,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand7: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 9790
         mmPrintPosition = 0
@@ -4642,13 +4986,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel32: TppLabel
           DesignLayer = ppDesignLayer6
           UserName = 'Label16'
+          Border.mmPadding = 0
           Caption = 'Valor Pago'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 100539
@@ -4661,13 +5007,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel11: TppLabel
           DesignLayer = ppDesignLayer6
           UserName = 'Label15'
+          Border.mmPadding = 0
           Caption = 'Data do Pagamento'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 2112
@@ -4680,6 +5028,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText41: TppDBText
           DesignLayer = ppDesignLayer6
           UserName = 'EditNome'
+          Border.mmPadding = 0
           DataField = 'NOME_FANTASIA'
           DataPipeline = DBPipeGasto_Fornecedor
           Font.Charset = DEFAULT_CHARSET
@@ -4701,13 +5050,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel33: TppLabel
           DesignLayer = ppDesignLayer6
           UserName = 'Label33'
+          Border.mmPadding = 0
           Caption = 'Valor Total'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 149493
@@ -4720,6 +5071,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand6: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 4498
@@ -4727,6 +5079,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc8: TppDBCalc
           DesignLayer = ppDesignLayer6
           UserName = 'DBCalc1'
+          Border.mmPadding = 0
           DataField = 'VALOR_PAGO'
           DataPipeline = DBPipeGasto_Fornecedor
           DisplayFormat = '$ ,0.00'
@@ -4749,6 +5102,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc12: TppDBCalc
           DesignLayer = ppDesignLayer6
           UserName = 'DBCalc12'
+          Border.mmPadding = 0
           DataField = 'VALOR_TOTAL'
           DataPipeline = DBPipeGasto_Fornecedor
           DisplayFormat = '$ ,0.00'
@@ -4771,20 +5125,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule6: TraCodeModule
-      ProgramStream = {
-        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650611
-        456469744E6F6D654F6E476574546578740B50726F6772616D54797065070B74
-        7450726F63656475726506536F7572636506F670726F63656475726520456469
-        744E6F6D654F6E476574546578742876617220546578743A20537472696E6729
-        3B0D0A626567696E0D0A202054657874203A3D20444250697065476173746F5F
-        466F726E656365646F725B2752415A414F5F534F4349414C275D3B0D0A202069
-        6620444250697065476173746F5F466F726E656365646F725B274E4F4D455F46
-        414E5441534941275D203C3E202727207468656E20202020200D0A2020202054
-        657874203A3D2020546578742B20272028272B444250697065476173746F5F46
-        6F726E656365646F725B274E4F4D455F46414E5441534941275D2B2729273B0D
-        0A0D0A656E643B0D0A0D436F6D706F6E656E744E616D650608456469744E6F6D
-        65094576656E744E616D6506094F6E47657454657874074576656E7449440235
-        084361726574506F730102400205000000}
+      object raProgramInfo2: TraProgramInfo
+        raClassName = 'TraEventHandler'
+        raProgram.ProgramName = 'EditNomeOnGetText'
+        raProgram.ProgramType = ttProcedure
+        raProgram.Source = 
+          'procedure EditNomeOnGetText(var Text: String);'#13#10'begin'#13#10'  Text :=' +
+          ' DBPipeGasto_Fornecedor['#39'RAZAO_SOCIAL'#39'];'#13#10'  if DBPipeGasto_Forne' +
+          'cedor['#39'NOME_FANTASIA'#39'] <> '#39#39' then     '#13#10'    Text :=  Text+ '#39' ('#39'+' +
+          'DBPipeGasto_Fornecedor['#39'NOME_FANTASIA'#39']+'#39')'#39';'#13#10#13#10'end;'#13#10
+        raProgram.ComponentName = 'EditNome'
+        raProgram.EventName = 'OnGetText'
+        raProgram.EventID = 53
+        raProgram.CaretPos = (
+          64
+          5)
+      end
     end
     object ppDesignLayers6: TppDesignLayers
       object ppDesignLayer6: TppDesignLayer
@@ -4917,6 +5273,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeGasto_Atividade
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -4932,6 +5289,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -4941,15 +5302,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -4964,26 +5334,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 184
     Top = 384
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeGasto_Atividade'
     object ppHeaderBand7: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23283
       mmPrintPosition = 0
       object ppLabel36: TppLabel
         DesignLayer = ppDesignLayer7
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Gasto por Atividade'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 15
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 6350
@@ -5000,6 +5380,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -5015,6 +5396,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable19: TppSystemVariable
         DesignLayer = ppDesignLayer7
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -5032,6 +5414,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable20: TppSystemVariable
         DesignLayer = ppDesignLayer7
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5050,13 +5433,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLbProjetoGastoAtividade: TppLabel
         DesignLayer = ppDesignLayer7
         UserName = 'LbProjetoGastoAtividade'
+        Border.mmPadding = 0
         Caption = 'Projeto: Guaraciaba'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 5027
         mmLeft = 34396
@@ -5069,12 +5454,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand6: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 4763
       mmPrintPosition = 0
       object ppDBText45: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'DESCRICAO'
         DataPipeline = DBPipeGasto_Atividade
         Font.Charset = DEFAULT_CHARSET
@@ -5095,6 +5482,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText46: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeGasto_Atividade
         DisplayFormat = '$ ,0.00'
@@ -5116,6 +5504,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText47: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText44'
+        Border.mmPadding = 0
         DataField = 'VALOR'
         DataPipeline = DBPipeGasto_Atividade
         DisplayFormat = '$ ,0.00'
@@ -5137,6 +5526,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText51: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText51'
+        Border.mmPadding = 0
         DataField = 'RESPONSAVEL'
         DataPipeline = DBPipeGasto_Atividade
         Font.Charset = DEFAULT_CHARSET
@@ -5157,6 +5547,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText52: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText52'
+        Border.mmPadding = 0
         DataField = 'CALC_STATUS'
         DataPipeline = DBPipeGasto_Atividade
         Font.Charset = DEFAULT_CHARSET
@@ -5177,6 +5568,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText53: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText53'
+        Border.mmPadding = 0
         DataField = 'DATA_INICIAL'
         DataPipeline = DBPipeGasto_Atividade
         Font.Charset = DEFAULT_CHARSET
@@ -5197,19 +5589,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand7: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel37: TppLabel
         DesignLayer = ppDesignLayer7
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -5222,6 +5617,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText48: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -5243,6 +5639,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText49: TppDBText
         DesignLayer = ppDesignLayer7
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -5264,6 +5661,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable21: TppSystemVariable
         DesignLayer = ppDesignLayer7
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5282,6 +5680,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand4: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
@@ -5301,6 +5700,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand8: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 9790
         mmPrintPosition = 0
@@ -5319,13 +5719,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel38: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label16'
+          Border.mmPadding = 0
           Caption = 'Valor Pago'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 163513
@@ -5338,13 +5740,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel39: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label15'
+          Border.mmPadding = 0
           Caption = 'Status'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 99748
@@ -5357,6 +5761,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText50: TppDBText
           DesignLayer = ppDesignLayer7
           UserName = 'EditNome'
+          Border.mmPadding = 0
           DataField = 'NOME'
           DataPipeline = DBPipeGasto_Atividade
           Font.Charset = DEFAULT_CHARSET
@@ -5378,13 +5783,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel40: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label33'
+          Border.mmPadding = 0
           Caption = 'Valor Total'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 127795
@@ -5397,13 +5804,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel42: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label42'
+          Border.mmPadding = 0
           Caption = 'Descri'#231#227'o do Gasto'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 20378
@@ -5416,13 +5825,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel43: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label43'
+          Border.mmPadding = 0
           Caption = 'Respons'#225'vel'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 62457
@@ -5435,13 +5846,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel44: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label44'
+          Border.mmPadding = 0
           Caption = 'Data'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3705
           mmLeft = 1588
@@ -5454,6 +5867,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand7: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 4498
@@ -5461,13 +5875,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel41: TppLabel
           DesignLayer = ppDesignLayer7
           UserName = 'Label14'
+          Border.mmPadding = 0
           Caption = 'Total Pago:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 10
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 4234
           mmLeft = 137851
@@ -5480,6 +5896,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc9: TppDBCalc
           DesignLayer = ppDesignLayer7
           UserName = 'DBCalc1'
+          Border.mmPadding = 0
           DataField = 'VALOR_PAGO'
           DataPipeline = DBPipeGasto_Atividade
           DisplayFormat = '$ ,0.00'
@@ -5616,6 +6033,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeGasto_Plano_Contas
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -5631,6 +6049,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -5640,15 +6062,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -5663,26 +6094,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 136
     Top = 424
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeGasto_Plano_Contas'
     object ppHeaderBand8: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23283
       mmPrintPosition = 0
       object ppLabel45: TppLabel
         DesignLayer = ppDesignLayer8
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Gasto por Plano de Contas'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 15
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 6350
@@ -5699,6 +6140,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -5714,6 +6156,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable22: TppSystemVariable
         DesignLayer = ppDesignLayer8
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -5731,6 +6174,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable23: TppSystemVariable
         DesignLayer = ppDesignLayer8
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5750,12 +6194,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand7: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 4763
       mmPrintPosition = 0
       object ppDBText54: TppDBText
         DesignLayer = ppDesignLayer8
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeGasto_Plano_Contas
         Font.Charset = DEFAULT_CHARSET
@@ -5776,6 +6222,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText55: TppDBText
         DesignLayer = ppDesignLayer8
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeGasto_Plano_Contas
         DisplayFormat = '$ ,0.00'
@@ -5797,6 +6244,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText56: TppDBText
         DesignLayer = ppDesignLayer8
         UserName = 'DBText44'
+        Border.mmPadding = 0
         DataField = 'VALOR_TOTAL'
         DataPipeline = DBPipeGasto_Plano_Contas
         DisplayFormat = '$ ,0.00'
@@ -5818,19 +6266,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand8: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel47: TppLabel
         DesignLayer = ppDesignLayer8
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -5843,6 +6294,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText60: TppDBText
         DesignLayer = ppDesignLayer8
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -5864,6 +6316,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText61: TppDBText
         DesignLayer = ppDesignLayer8
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -5885,6 +6338,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable24: TppSystemVariable
         DesignLayer = ppDesignLayer8
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5903,6 +6357,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand5: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 0
       mmPrintPosition = 0
@@ -5922,6 +6377,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand9: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 5292
         mmPrintPosition = 0
@@ -5940,6 +6396,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText62: TppDBText
           DesignLayer = ppDesignLayer8
           UserName = 'EditNome'
+          Border.mmPadding = 0
           DataField = 'CALC_ORIGEM'
           DataPipeline = DBPipeGasto_Plano_Contas
           Font.Charset = DEFAULT_CHARSET
@@ -5961,6 +6418,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand8: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 0
@@ -5982,19 +6440,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand10: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 9525
         mmPrintPosition = 0
         object ppLabel53: TppLabel
           DesignLayer = ppDesignLayer8
           UserName = 'Label44'
+          Border.mmPadding = 0
           Caption = 'Plano de Contas'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 4498
@@ -6007,13 +6468,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel50: TppLabel
           DesignLayer = ppDesignLayer8
           UserName = 'Label50'
+          Border.mmPadding = 0
           Caption = 'Valor Total'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 128059
@@ -6026,13 +6489,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel48: TppLabel
           DesignLayer = ppDesignLayer8
           UserName = 'Label16'
+          Border.mmPadding = 0
           Caption = 'Valor Pago'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 163777
@@ -6045,6 +6510,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText63: TppDBText
           DesignLayer = ppDesignLayer8
           UserName = 'EditNome1'
+          Border.mmPadding = 0
           DataField = 'RUBRICA'
           DataPipeline = DBPipeGasto_Plano_Contas
           Font.Charset = DEFAULT_CHARSET
@@ -6066,13 +6532,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel65: TppLabel
           DesignLayer = ppDesignLayer8
           UserName = 'Label65'
+          Border.mmPadding = 0
           Caption = 'Rubrica:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 9
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3969
           mmLeft = 2117
@@ -6085,6 +6553,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand9: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 4763
@@ -6092,6 +6561,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc10: TppDBCalc
           DesignLayer = ppDesignLayer8
           UserName = 'DBCalc1'
+          Border.mmPadding = 0
           DataField = 'VALOR_PAGO'
           DataPipeline = DBPipeGasto_Plano_Contas
           DisplayFormat = '$ ,0.00'
@@ -6114,6 +6584,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc11: TppDBCalc
           DesignLayer = ppDesignLayer8
           UserName = 'DBCalc11'
+          Border.mmPadding = 0
           DataField = 'VALOR_TOTAL'
           DataPipeline = DBPipeGasto_Plano_Contas
           DisplayFormat = '$ ,0.00'
@@ -6257,6 +6728,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -6272,6 +6744,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -6281,15 +6757,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -6304,26 +6789,36 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 24
     Top = 392
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeGasto_Plano_Contas_Detalhado'
     object ppHeaderBand9: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 23283
       mmPrintPosition = 0
       object ppLabel35: TppLabel
         DesignLayer = ppDesignLayer9
         UserName = 'Label1'
+        Border.mmPadding = 0
         Caption = 'Gasto por Plano de Contas'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 15
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 6350
@@ -6340,6 +6835,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -6355,6 +6851,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable25: TppSystemVariable
         DesignLayer = ppDesignLayer9
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -6372,6 +6869,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable26: TppSystemVariable
         DesignLayer = ppDesignLayer9
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -6391,12 +6889,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand8: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 4763
       mmPrintPosition = 0
       object ppDBText57: TppDBText
         DesignLayer = ppDesignLayer9
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'DESCRICAO'
         DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
         Font.Charset = DEFAULT_CHARSET
@@ -6417,6 +6917,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText58: TppDBText
         DesignLayer = ppDesignLayer9
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
         DisplayFormat = '$ ,0.00'
@@ -6438,6 +6939,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText59: TppDBText
         DesignLayer = ppDesignLayer9
         UserName = 'DBText44'
+        Border.mmPadding = 0
         DataField = 'VALOR_TOTAL'
         DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
         DisplayFormat = '$ ,0.00'
@@ -6459,19 +6961,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand9: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel46: TppLabel
         DesignLayer = ppDesignLayer9
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -6484,6 +6989,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText64: TppDBText
         DesignLayer = ppDesignLayer9
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -6505,6 +7011,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText65: TppDBText
         DesignLayer = ppDesignLayer9
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -6526,6 +7033,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable27: TppSystemVariable
         DesignLayer = ppDesignLayer9
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -6544,6 +7052,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand6: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 0
       mmPrintPosition = 0
@@ -6562,6 +7071,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand11: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 5292
         mmPrintPosition = 0
@@ -6580,6 +7090,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText66: TppDBText
           DesignLayer = ppDesignLayer9
           UserName = 'EditNome'
+          Border.mmPadding = 0
           DataField = 'CALC_ORIGEM'
           DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
           Font.Charset = DEFAULT_CHARSET
@@ -6601,6 +7112,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand10: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 0
@@ -6621,12 +7133,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand12: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 5292
         mmPrintPosition = 0
         object ppDBText67: TppDBText
           DesignLayer = ppDesignLayer9
           UserName = 'EditNome1'
+          Border.mmPadding = 0
           DataField = 'RUBRICA'
           DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
           Font.Charset = DEFAULT_CHARSET
@@ -6648,13 +7162,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel66: TppLabel
           DesignLayer = ppDesignLayer9
           UserName = 'Label66'
+          Border.mmPadding = 0
           Caption = 'Rubrica:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 9
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3969
           mmLeft = 2275
@@ -6667,6 +7183,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand11: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 4763
@@ -6674,6 +7191,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc13: TppDBCalc
           DesignLayer = ppDesignLayer9
           UserName = 'DBCalc1'
+          Border.mmPadding = 0
           DataField = 'VALOR_PAGO'
           DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
           DisplayFormat = '$ ,0.00'
@@ -6696,6 +7214,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBCalc14: TppDBCalc
           DesignLayer = ppDesignLayer9
           UserName = 'DBCalc11'
+          Border.mmPadding = 0
           DataField = 'VALOR_TOTAL'
           DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
           DisplayFormat = '$ ,0.00'
@@ -6731,19 +7250,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       NewFile = False
       object ppGroupHeaderBand13: TppGroupHeaderBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         mmBottomOffset = 0
         mmHeight = 8996
         mmPrintPosition = 0
         object ppLabel49: TppLabel
           DesignLayer = ppDesignLayer9
           UserName = 'Label44'
+          Border.mmPadding = 0
           Caption = 'Descri'#231#227'o do Gasto'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 6615
@@ -6756,13 +7278,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel51: TppLabel
           DesignLayer = ppDesignLayer9
           UserName = 'Label50'
+          Border.mmPadding = 0
           Caption = 'Valor Total'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 127529
@@ -6775,13 +7299,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppLabel52: TppLabel
           DesignLayer = ppDesignLayer9
           UserName = 'Label16'
+          Border.mmPadding = 0
           Caption = 'Valor Pago'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Name = 'Arial'
           Font.Size = 8
           Font.Style = [fsBold]
-          FormField = False
+          FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+          FormFieldSettings.FormFieldType = fftNone
           Transparent = True
           mmHeight = 3704
           mmLeft = 163248
@@ -6794,6 +7320,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         object ppDBText68: TppDBText
           DesignLayer = ppDesignLayer9
           UserName = 'DBText68'
+          Border.mmPadding = 0
           DataField = 'NOME'
           DataPipeline = DBPipeGasto_Plano_Contas_Detalhado
           Font.Charset = DEFAULT_CHARSET
@@ -6815,6 +7342,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
       object ppGroupFooterBand12: TppGroupFooterBand
         Background.Brush.Style = bsClear
+        Border.mmPadding = 0
         HideWhenOneDetail = False
         mmBottomOffset = 0
         mmHeight = 0
@@ -6912,6 +7440,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DataPipeline = DBPipeConta_Pagar
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Duplex = dpNone
     PrinterSetup.PaperName = 'A4'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.SaveDeviceSettings = False
@@ -6927,6 +7456,10 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     DeviceType = 'Screen'
     DefaultFileDeviceType = 'PDF'
     EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.ConnectionSettings.MailService = 'SMTP'
+    EmailSettings.ConnectionSettings.WebMail.GmailSettings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.WebMail.Outlook365Settings.OAuth2.RedirectPort = 0
+    EmailSettings.ConnectionSettings.EnableMultiPlugin = False
     LanguageID = 'Default'
     OpenFile = False
     OutlineSettings.CreateNode = True
@@ -6936,15 +7469,24 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     ThumbnailSettings.Enabled = True
     ThumbnailSettings.Visible = True
     ThumbnailSettings.DeadSpace = 30
+    ThumbnailSettings.PageHighlight.Width = 3
+    ThumbnailSettings.ThumbnailSize = tsSmall
     PDFSettings.EmbedFontOptions = [efUseSubset]
     PDFSettings.EncryptSettings.AllowCopy = True
     PDFSettings.EncryptSettings.AllowInteract = True
     PDFSettings.EncryptSettings.AllowModify = True
     PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.AllowExtract = True
+    PDFSettings.EncryptSettings.AllowAssemble = True
+    PDFSettings.EncryptSettings.AllowQualityPrint = True
     PDFSettings.EncryptSettings.Enabled = False
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.EncryptSettings.EncryptionType = etRC4
+    PDFSettings.DigitalSignatureSettings.SignPDF = False
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PDFSettings.PDFAFormat = pafNone
+    PreviewFormSettings.PageBorder.mmPadding = 0
     PreviewFormSettings.WindowState = wsMaximized
     PreviewFormSettings.ZoomSetting = zsPageWidth
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
@@ -6959,13 +7501,21 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
+    XLSSettings.WorksheetName = 'Report'
+    CloudDriveSettings.DropBoxSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.DropBoxSettings.DirectorySupport = True
+    CloudDriveSettings.GoogleDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.GoogleDriveSettings.DirectorySupport = False
+    CloudDriveSettings.OneDriveSettings.OAuth2.RedirectPort = 0
+    CloudDriveSettings.OneDriveSettings.DirectorySupport = True
     Left = 960
     Top = 368
-    Version = '16.02'
+    Version = '21.03'
     mmColumnWidth = 0
     DataPipelineName = 'DBPipeConta_Pagar'
     object ppHeaderBand10: TppHeaderBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 29898
       mmPrintPosition = 0
@@ -6973,13 +7523,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         DesignLayer = ppDesignLayer10
         UserName = 'Label1'
         AutoSize = False
+        Border.mmPadding = 0
         Caption = 'Relat'#243'rio Cont'#225'bil'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 12
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 5027
@@ -6996,6 +7548,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
         AlignVertical = avCenter
         MaintainAspectRatio = False
         Stretch = True
+        Border.mmPadding = 0
         DataField = 'LOGO'
         DataPipeline = DBPipeOrganizacao
         GraphicType = 'AutoDetect'
@@ -7011,6 +7564,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable28: TppSystemVariable
         DesignLayer = ppDesignLayer10
         UserName = 'SystemVariable1'
+        Border.mmPadding = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -7028,6 +7582,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable29: TppSystemVariable
         DesignLayer = ppDesignLayer10
         UserName = 'SystemVariable3'
+        Border.mmPadding = 0
         VarType = vtTime
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -7046,13 +7601,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel57: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label15'
+        Border.mmPadding = 0
         Caption = 'N'#186' do Documento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3704
         mmLeft = 90225
@@ -7064,13 +7621,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel58: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label16'
+        Border.mmPadding = 0
         Caption = 'Valor Pago'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3704
         mmLeft = 168283
@@ -7082,13 +7641,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel59: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label18'
+        Border.mmPadding = 0
         Caption = 'Fornecedor'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3705
         mmLeft = 2381
@@ -7100,13 +7661,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel62: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label62'
+        Border.mmPadding = 0
         Caption = 'CNPJ/CPF'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3704
         mmLeft = 60326
@@ -7118,13 +7681,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel63: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label63'
+        Border.mmPadding = 0
         Caption = 'Data do Pagamento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3704
         mmLeft = 116155
@@ -7136,13 +7701,15 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppLabel64: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label64'
+        Border.mmPadding = 0
         Caption = 'Valor Total'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 3704
         mmLeft = 145786
@@ -7155,12 +7722,14 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     object ppDetailBand9: TppDetailBand
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5292
       mmPrintPosition = 0
       object ppDBText69: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText13'
+        Border.mmPadding = 0
         DataField = 'CPF_CNPJ'
         DataPipeline = DBPipeConta_Pagar
         Font.Charset = DEFAULT_CHARSET
@@ -7180,6 +7749,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText70: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText14'
+        Border.mmPadding = 0
         DataField = 'VALOR'
         DataPipeline = DBPipeConta_Pagar
         DisplayFormat = '$ ,0.00'
@@ -7200,6 +7770,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText71: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText17'
+        Border.mmPadding = 0
         DataField = 'RAZAO_SOCIAL'
         DataPipeline = DBPipeConta_Pagar
         Font.Charset = DEFAULT_CHARSET
@@ -7219,6 +7790,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText74: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText74'
+        Border.mmPadding = 0
         DataField = 'NUMERO_DOCUMENTO'
         DataPipeline = DBPipeConta_Pagar
         Font.Charset = DEFAULT_CHARSET
@@ -7238,6 +7810,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText75: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText75'
+        Border.mmPadding = 0
         DataField = 'DATA_PAGAMENTO'
         DataPipeline = DBPipeConta_Pagar
         Font.Charset = DEFAULT_CHARSET
@@ -7257,6 +7830,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText76: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText76'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeConta_Pagar
         DisplayFormat = '$ ,0.00'
@@ -7277,19 +7851,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppFooterBand10: TppFooterBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel60: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label2'
+        Border.mmPadding = 0
         Caption = 'CNPJ:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 8
         Font.Style = []
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 3704
@@ -7302,6 +7879,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText72: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText7'
+        Border.mmPadding = 0
         DataField = 'CNPJ'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -7323,6 +7901,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBText73: TppDBText
         DesignLayer = ppDesignLayer10
         UserName = 'DBText1'
+        Border.mmPadding = 0
         DataField = 'NOME'
         DataPipeline = DBPipeOrganizacao
         Font.Charset = DEFAULT_CHARSET
@@ -7344,6 +7923,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppSystemVariable30: TppSystemVariable
         DesignLayer = ppDesignLayer10
         UserName = 'SystemVariable2'
+        Border.mmPadding = 0
         VarType = vtPageNo
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -7362,19 +7942,22 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
     end
     object ppSummaryBand7: TppSummaryBand
       Background.Brush.Style = bsClear
+      Border.mmPadding = 0
       mmBottomOffset = 0
       mmHeight = 5027
       mmPrintPosition = 0
       object ppLabel61: TppLabel
         DesignLayer = ppDesignLayer10
         UserName = 'Label14'
+        Border.mmPadding = 0
         Caption = 'Total Pago:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
         Font.Size = 10
         Font.Style = [fsBold]
-        FormField = False
+        FormFieldSettings.FormSubmitInfo.SubmitMethod = fstPost
+        FormFieldSettings.FormFieldType = fftNone
         Transparent = True
         mmHeight = 4233
         mmLeft = 149157
@@ -7386,6 +7969,7 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       object ppDBCalc21: TppDBCalc
         DesignLayer = ppDesignLayer10
         UserName = 'DBCalc1'
+        Border.mmPadding = 0
         DataField = 'VALOR_PAGO'
         DataPipeline = DBPipeConta_Pagar
         DisplayFormat = '$ ,0.00'
@@ -7405,7 +7989,6 @@ inherited frmRelatorioFinanceiro: TfrmRelatorioFinanceiro
       end
     end
     object raCodeModule7: TraCodeModule
-      ProgramStream = {00}
     end
     object ppDesignLayers10: TppDesignLayers
       object ppDesignLayer10: TppDesignLayer

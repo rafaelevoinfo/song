@@ -19,7 +19,8 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   FireDAC.Phys.IBWrapper, FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.IBBase,
   System.Actions, Vcl.ActnList, cxCheckBox, IdBaseComponent, IdComponent,
   IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdFTP,
-  Vcl.ComCtrls, smuFuncoesSistema, aduna_ds_list, uSMBIOS;
+  Vcl.ComCtrls, smuFuncoesSistema, aduna_ds_list, uSMBIOS, dxDateRanges,
+  dxScrollbarAnnotations, dxCore;
 
 type
   TfrmPrincipal = class(TForm)
@@ -202,7 +203,8 @@ begin
   if InputQuery('Informe a senha de ativação', 'Senha de Ativação', vaSenha) then
     begin
      // if TUtils.fpuCriptografarSha1(vaSenha) = '7CF0488FBF273704444494B01527892C37C2C59A' then
-      if TUtils.fpuCriptografarSha1(vaSenha) = 'B9E1A487D8637AFF926C6E5C2C056EB5E771113B' then
+      //if TUtils.fpuCriptografarSha1(vaSenha) = 'B9E1A487D8637AFF926C6E5C2C056EB5E771113B' then
+      if TUtils.fpuCriptografarSha1(vaSenha) = '798FFDA9D6B214128B7D4754E4BF1FF76207817C' then
         begin
           if Tfile.Exists(coLicenca) then
             Tfile.Delete(coLicenca);

@@ -539,13 +539,6 @@ inherited frmPrincipal: TfrmPrincipal
       OnExecute = Ac_Aparelho_RegistradoExecute
     end
   end
-  object dxSkinController1: TdxSkinController
-    NativeStyle = False
-    SkinName = 'Black'
-    OnSkinControl = dxSkinController1SkinControl
-    Left = 136
-    Top = 280
-  end
   object tmrAtualizacoes: TTimer
     Enabled = False
     Interval = 600000
@@ -581,5 +574,11 @@ inherited frmPrincipal: TfrmPrincipal
     Left = 672
     Top = 88
     PixelsPerInch = 96
+  end
+  object dxSkinController1: TdxSkinController
+    SkinName = 'Black'
+    OnSkinControl = dxSkinController1SkinControl
+    Left = 160
+    Top = 176
   end
 end
