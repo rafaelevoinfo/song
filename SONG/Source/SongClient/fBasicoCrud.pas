@@ -16,7 +16,7 @@ uses
   uTypes, uExceptions, uClientDataSet, System.Rtti, MidasLib, uUtils,
   uControleAcesso, System.TypInfo, cxGroupBox, cxRadioGroup, cxLocalization, dmuLookup,
   cxGridExportLink, Vcl.ExtDlgs, System.DateUtils, Vcl.Menus, cxLabel, cxButtons,
-  System.RegularExpressions;
+  System.RegularExpressions, dxDateRanges, dxScrollbarAnnotations;
 
 type
   TfrmBasicoCrud = class(TfrmBasico)

@@ -72,7 +72,9 @@ uses
   fmEditor in 'Frames\fmEditor.pas' {frameEditor: TFrame},
   fModeloOrcamento in 'Estoque\fModeloOrcamento.pas' {frmModeloOrcamento},
   fOrcamento in 'Estoque\fOrcamento.pas' {frmOrcamento},
-  fAparelhosRegistrados in 'Sistema\fAparelhosRegistrados.pas' {frmAparelhoRegistrado};
+  fAparelhosRegistrados in 'Sistema\fAparelhosRegistrados.pas' {frmAparelhoRegistrado},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 

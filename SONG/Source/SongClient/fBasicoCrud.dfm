@@ -3,7 +3,6 @@ inherited frmBasicoCrud: TfrmBasicoCrud
   Caption = 'frmBasicoCrud'
   ClientHeight = 476
   OnCreate = FormCreate
-  ExplicitWidth = 1000
   ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
@@ -249,6 +248,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             Navigator.Buttons.CustomButtons = <>
             FindPanel.DisplayMode = fpdmAlways
             FindPanel.InfoText = 'Informe aqui o filtro desejado...'
+            ScrollbarAnnotations.CustomAnnotations = <>
             DataController.DataSource = dsMaster
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
@@ -264,6 +264,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             OptionsView.GroupByBox = False
             object ColumnAlterar: TcxGridDBColumn
               Caption = 'Alterar'
+              DataBinding.IsNullValueType = True
               PropertiesClassName = 'TcxButtonEditProperties'
               Properties.Buttons = <
                 item
@@ -284,6 +285,7 @@ inherited frmBasicoCrud: TfrmBasicoCrud
             end
             object ColumnExcluir: TcxGridDBColumn
               Caption = 'Excluir'
+              DataBinding.IsNullValueType = True
               PropertiesClassName = 'TcxButtonEditProperties'
               Properties.Buttons = <
                 item
@@ -313,6 +315,10 @@ inherited frmBasicoCrud: TfrmBasicoCrud
     object tabCadastro: TcxTabSheet
       Caption = 'tabCadastro'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnBotoesCadastro: TPanel
         Left = 0
         Top = 0

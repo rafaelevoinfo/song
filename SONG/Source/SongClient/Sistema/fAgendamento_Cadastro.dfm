@@ -8,101 +8,62 @@ inherited frmAgendamentoCadastro: TfrmAgendamentoCadastro
   ExplicitHeight = 410
   PixelsPerInch = 96
   TextHeight = 13
-  inherited pnlButtons: TPanel
-    Top = 333
+  inherited lcMain: TdxLayoutControl
     Width = 447
-    ExplicitTop = 333
+    Height = 371
     ExplicitWidth = 447
-    inherited pnlThreeButtons: TPanel
-      Width = 337
-      ExplicitWidth = 337
-      inherited btnOk: TcxButton
-        Left = 12
-        ExplicitLeft = 12
-      end
-      inherited btnCancel: TcxButton
-        Left = 122
-        ExplicitLeft = 122
-      end
-      inherited btnDelete: TcxButton
-        Left = 232
-        ExplicitLeft = 232
-      end
-    end
-    inherited pnlRecurrence: TPanel
-      Left = 337
-      ExplicitLeft = 337
-    end
-  end
-  inherited pnlInformation: TPanel
-    Width = 447
-    ExplicitWidth = 447
-  end
-  inherited pnlCaption: TPanel
-    Width = 447
-    ExplicitWidth = 447
-    inherited lbSubject: TcxLabel
-      Caption = 'T'#237'tulo'
-      ExplicitWidth = 26
-    end
-    inherited lbLocation: TcxLabel
-      Caption = 'Local:'
-      ExplicitWidth = 28
-    end
-    inherited lbLabel: TcxLabel
-      Caption = 'Label:'
-    end
-  end
-  inherited pnlTime: TPanel
-    Width = 447
-    ExplicitWidth = 447
-    inherited lbStartTime: TcxLabel
-      Caption = 'In'#237'cio'
-      ExplicitWidth = 25
-    end
-    inherited lbEndTime: TcxLabel
-      Caption = 'Fim:'
-      ExplicitWidth = 20
-    end
+    ExplicitHeight = 371
     inherited cbAllDayEvent: TcxCheckBox
       Caption = 'Dia todo'
-    end
-  end
-  inherited pnlRecurrenceInfo: TPanel
-    Width = 447
-    ExplicitWidth = 447
-  end
-  inherited pnlPlaceHolder: TPanel
-    Width = 447
-    Visible = False
-    ExplicitWidth = 447
-    inherited Panel1: TPanel
-      Width = 447
-      ExplicitWidth = 447
-      inherited Bevel3: TdxBevel
-        Width = 436
-      end
-    end
-  end
-  inherited pnlMessage: TPanel
-    Width = 447
-    Height = 6
-    ExplicitWidth = 447
-    ExplicitHeight = 6
-    inherited Bevel1: TdxBevel
-      Top = -2
+      ExplicitWidth = 61
     end
     inherited meMessage: TcxMemo
-      ExplicitHeight = 0
-      Height = 0
+      ExplicitHeight = 24
+      Height = 24
+    end
+    inherited btnOk: TcxButton
+      Left = 119
+      ExplicitLeft = 119
+    end
+    inherited btnCancel: TcxButton
+      Left = 200
+      ExplicitLeft = 200
+    end
+    inherited btnDelete: TcxButton
+      Left = 281
+      ExplicitLeft = 281
+    end
+    inherited lbSubject: TdxLayoutItem
+      CaptionOptions.Text = 'T'#237'tulo'
+    end
+    inherited lbLocation: TdxLayoutItem
+      CaptionOptions.Text = 'Local:'
+    end
+    inherited lbLabel: TdxLayoutItem
+      CaptionOptions.Text = 'Label:'
+    end
+    inherited lbStartTime: TdxLayoutItem
+      CaptionOptions.Text = 'In'#237'cio'
+    end
+    inherited dxLayoutItem4: TdxLayoutItem
+      ControlOptions.OriginalWidth = 61
+    end
+    inherited lbEndTime: TdxLayoutItem
+      CaptionOptions.Text = 'Fim:'
+    end
+    inherited pnlPlaceHolder: TdxLayoutGroup
+      Visible = False
+    end
+    inherited pnlRecurrence: TdxLayoutItem
+      Left = 337
+    end
+    inherited pnlButtons: TdxLayoutGroup
+      Top = 333
     end
   end
-  inherited pnlResource: TPanel
-    Width = 447
-    ExplicitWidth = 447
-  end
-  inherited pnlTaskComplete: TPanel
-    Width = 447
-    ExplicitWidth = 447
+  inherited dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList
+    inherited dxLayoutCxLookAndFeel1: TdxLayoutCxLookAndFeel
+      PixelsPerInch = 96
+    end
   end
 end

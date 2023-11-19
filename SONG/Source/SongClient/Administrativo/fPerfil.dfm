@@ -1,6 +1,5 @@
 inherited frmPerfil: TfrmPerfil
   Caption = 'Perfis de Usu'#225'rio'
-  ExplicitHeight = 515
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -32,22 +31,29 @@ inherited frmPerfil: TfrmPerfil
       end
       inherited pnGrid: TPanel
         inherited cxGridRegistros: TcxGrid
-          ExplicitTop = 1
-          ExplicitHeight = 144
           inherited viewRegistros: TcxGridDBTableView
             object viewRegistrosID: TcxGridDBColumn [0]
               DataBinding.FieldName = 'ID'
+              DataBinding.IsNullValueType = True
               Options.Editing = False
             end
             object viewRegistrosNOME: TcxGridDBColumn [1]
               DataBinding.FieldName = 'NOME'
+              DataBinding.IsNullValueType = True
               Options.Editing = False
               Width = 397
             end
             object viewRegistrosDESCRICAO: TcxGridDBColumn [2]
               DataBinding.FieldName = 'DESCRICAO'
+              DataBinding.IsNullValueType = True
               Options.Editing = False
               Width = 215
+            end
+            inherited ColumnAlterar: TcxGridDBColumn
+              DataBinding.IsNullValueType = True
+            end
+            inherited ColumnExcluir: TcxGridDBColumn
+              DataBinding.IsNullValueType = True
             end
           end
         end
@@ -63,16 +69,19 @@ inherited frmPerfil: TfrmPerfil
                 inherited viewRegistrosDetail: TcxGridDBTableView
                   object viewRegistrosDetailID: TcxGridDBColumn [0]
                     DataBinding.FieldName = 'ID'
+                    DataBinding.IsNullValueType = True
                     Visible = False
                   end
                   object viewRegistrosDetailPERMISSAO: TcxGridDBColumn [1]
                     DataBinding.FieldName = 'PERMISSAO'
+                    DataBinding.IsNullValueType = True
                     OnGetDisplayText = viewRegistrosDetailPERMISSAOGetDisplayText
                     Options.Editing = False
                     Width = 229
                   end
                   object viewRegistrosDetailVISUALIZAR: TcxGridDBColumn [2]
                     DataBinding.FieldName = 'VISUALIZAR'
+                    DataBinding.IsNullValueType = True
                     PropertiesClassName = 'TcxImageComboBoxProperties'
                     Properties.Items = <
                       item
@@ -89,21 +98,30 @@ inherited frmPerfil: TfrmPerfil
                   end
                   object viewRegistrosDetailINCLUIR: TcxGridDBColumn [3]
                     DataBinding.FieldName = 'INCLUIR'
+                    DataBinding.IsNullValueType = True
                     RepositoryItem = dmLookup.RepIcbNaoSim
                     Options.Editing = False
                     Options.ShowEditButtons = isebNever
                   end
                   object viewRegistrosDetailALTERAR: TcxGridDBColumn [4]
                     DataBinding.FieldName = 'ALTERAR'
+                    DataBinding.IsNullValueType = True
                     RepositoryItem = dmLookup.RepIcbNaoSim
                     Options.Editing = False
                     Options.ShowEditButtons = isebNever
                   end
                   object viewRegistrosDetailEXCLUIR: TcxGridDBColumn [5]
                     DataBinding.FieldName = 'EXCLUIR'
+                    DataBinding.IsNullValueType = True
                     RepositoryItem = dmLookup.RepIcbNaoSim
                     Options.Editing = False
                     Options.ShowEditButtons = isebNever
+                  end
+                  inherited ColumnAlterarDetail: TcxGridDBColumn
+                    DataBinding.IsNullValueType = True
+                  end
+                  inherited ColumnExcluirDetail: TcxGridDBColumn
+                    DataBinding.IsNullValueType = True
                   end
                 end
               end
@@ -113,6 +131,10 @@ inherited frmPerfil: TfrmPerfil
       end
     end
     inherited tabCadastro: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 976
+      ExplicitHeight = 448
       inherited pnEditsCadastro: TPanel
         object lbl1: TLabel
           Left = 6
@@ -189,6 +211,7 @@ inherited frmPerfil: TfrmPerfil
           OptionsBehavior.IncSearch = True
           OptionsData.Deleting = False
           RootValue = -1
+          ScrollbarAnnotations.CustomAnnotations = <>
           TabOrder = 0
           OnEditValueChanged = tlPermissoesEditValueChanged
           object cxDBTreeList1PERMISSAO: TcxDBTreeListColumn
@@ -203,6 +226,7 @@ inherited frmPerfil: TfrmPerfil
           end
           object cxDBTreeList1VISUALIZAR: TcxDBTreeListColumn
             PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taRightJustify
             Properties.ImmediatePost = True
             Properties.NullStyle = nssUnchecked
             Properties.ValueChecked = 1
@@ -217,6 +241,7 @@ inherited frmPerfil: TfrmPerfil
           end
           object cxDBTreeList1INCLUIR: TcxDBTreeListColumn
             PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taRightJustify
             Properties.ImmediatePost = True
             Properties.NullStyle = nssUnchecked
             Properties.ValueChecked = 1
@@ -231,6 +256,7 @@ inherited frmPerfil: TfrmPerfil
           end
           object cxDBTreeList1ALTERAR: TcxDBTreeListColumn
             PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taRightJustify
             Properties.ImmediatePost = True
             Properties.NullStyle = nssUnchecked
             Properties.ValueChecked = 1
@@ -245,6 +271,7 @@ inherited frmPerfil: TfrmPerfil
           end
           object cxDBTreeList1EXCLUIR: TcxDBTreeListColumn
             PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taRightJustify
             Properties.ImmediatePost = True
             Properties.NullStyle = nssUnchecked
             Properties.ValueChecked = 1
@@ -260,6 +287,7 @@ inherited frmPerfil: TfrmPerfil
           object cxDBTreeList1ID_MODULO: TcxDBTreeListColumn
             Visible = False
             DataBinding.FieldName = 'ID_MODULO'
+            Width = 100
             Position.ColIndex = 5
             Position.RowIndex = 0
             Position.BandIndex = 0
@@ -269,6 +297,7 @@ inherited frmPerfil: TfrmPerfil
           object cxDBTreeList1ID: TcxDBTreeListColumn
             Visible = False
             DataBinding.FieldName = 'ID'
+            Width = 100
             Position.ColIndex = 6
             Position.RowIndex = 0
             Position.BandIndex = 0

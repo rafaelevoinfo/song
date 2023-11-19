@@ -14,7 +14,8 @@ uses
   cxImageComboBox, cxTextEdit, cxMaskEdit, cxCalendar, Vcl.ExtCtrls, cxPC,
   cxSplitter, dmuPrincipal, uTypes, Datasnap.DBClient, uMensagem, MidasLib,
   cxGroupBox, cxRadioGroup, cxLocalization, Vcl.ExtDlgs, cxGridExportLink,
-  System.Generics.Collections, Vcl.Menus, cxLabel, cxButtons;
+  System.Generics.Collections, Vcl.Menus, cxLabel, cxButtons, dxDateRanges,
+  dxScrollbarAnnotations;
 
 type
   TfrmBasicoCrudMasterDetail = class(TfrmBasicoCrud)

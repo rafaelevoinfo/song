@@ -1,8 +1,6 @@
 inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
   ActiveControl = btnSalvarDetail
   Caption = 'frmBasicoCrudMasterDetail'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcPrincipal: TcxPageControl
@@ -18,6 +16,12 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
           ExplicitHeight = 144
           inherited viewRegistros: TcxGridDBTableView
             Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+            inherited ColumnAlterar: TcxGridDBColumn
+              DataBinding.IsNullValueType = True
+            end
+            inherited ColumnExcluir: TcxGridDBColumn
+              DataBinding.IsNullValueType = True
+            end
           end
         end
         object cxSplitter1: TcxSplitter
@@ -108,6 +112,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   OnDblClick = viewRegistrosDetailDblClick
                   Navigator.Buttons.CustomButtons = <>
                   Navigator.InfoPanel.DisplayMask = '[RecordIndex] de [RecordCount]'
+                  ScrollbarAnnotations.CustomAnnotations = <>
                   DataController.DataSource = dsDetail
                   DataController.Summary.DefaultGroupSummaryItems = <>
                   DataController.Summary.FooterSummaryItems = <>
@@ -123,6 +128,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   OptionsView.GroupByBox = False
                   object ColumnAlterarDetail: TcxGridDBColumn
                     Caption = 'Alterar'
+                    DataBinding.IsNullValueType = True
                     PropertiesClassName = 'TcxButtonEditProperties'
                     Properties.Buttons = <
                       item
@@ -142,6 +148,7 @@ inherited frmBasicoCrudMasterDetail: TfrmBasicoCrudMasterDetail
                   end
                   object ColumnExcluirDetail: TcxGridDBColumn
                     Caption = 'Excluir'
+                    DataBinding.IsNullValueType = True
                     PropertiesClassName = 'TcxButtonEditProperties'
                     Properties.Buttons = <
                       item

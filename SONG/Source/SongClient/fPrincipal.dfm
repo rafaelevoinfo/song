@@ -576,6 +576,7 @@ inherited frmPrincipal: TfrmPrincipal
     PixelsPerInch = 96
   end
   object dxSkinController1: TdxSkinController
+    NativeStyle = False
     SkinName = 'Black'
     OnSkinControl = dxSkinController1SkinControl
     Left = 160

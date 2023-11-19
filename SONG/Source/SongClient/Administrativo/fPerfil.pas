@@ -17,7 +17,7 @@ uses
   uUtils, MidasLib, dmuLookup, dmuPrincipal, cxTL, cxTLdxBarBuiltInMenu,
   cxInplaceContainer, cxDBTL, cxTLData, uTypes, System.TypInfo, cxGroupBox,
   cxRadioGroup, cxLabel, cxDBLabel, cxLocalization, Vcl.ExtDlgs, Vcl.Menus,
-  cxButtons;
+  cxButtons, dxDateRanges, dxScrollbarAnnotations;
 
 type
   TfrmPerfil = class(TfrmBasicoCrudMasterDetail)
@@ -140,6 +140,7 @@ begin
       cdsLocalPermissoes.Append;
       cdsLocalPermissoesID.AsInteger := vaId;
       cdsLocalPermissoesDESCRICAO.AsString := vaModulo;
+      cdsLocalPermissoesID_MODULO.Clear;
       ppvZerarPermissoes;
       cdsLocalPermissoes.Post;
 

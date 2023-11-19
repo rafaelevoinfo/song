@@ -10,7 +10,9 @@ uses
   cxCheckBox, cxSpinEdit, cxCheckComboBox, cxMemo, cxDropDownEdit, cxTimeEdit,
   cxCalendar, cxMaskEdit, cxImageComboBox, cxTextEdit, cxLabel, cxGroupBox,
   dxBevel, Vcl.StdCtrls, cxButtons, Vcl.ExtCtrls, cxSchedulerEditorFormManager,
-  cxSchedulerCustomControls, cxSchedulerStorage;
+  cxSchedulerCustomControls, cxSchedulerStorage, dxLayoutcxEditAdapters,
+  dxLayoutControlAdapters, cxClasses, dxLayoutLookAndFeels, dxLayoutContainer,
+  dxLayoutControl;
 
 type
   TRFShedulerCustomizadoEventEditorFormStyleInfo = class(TcxShedulerEventEditorFormStyleInfo)
