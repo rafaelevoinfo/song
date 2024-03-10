@@ -77,7 +77,7 @@ uses
   Vcl.Styles;
 
 {$R *.res}
-
+{$R Localization.RES}
 
 begin
   Application.Initialize;

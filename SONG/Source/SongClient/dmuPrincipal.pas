@@ -57,7 +57,7 @@ uses
   uTypes,
   uMensagem,
   uFuncoes,
-  uExceptions;
+  uExceptions, cxLocalization;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -83,6 +83,7 @@ type
     ProviderRelatorio: TRFProviderConnection;
     ProviderSistema: TRFProviderConnection;
     imgIcons_32: TcxImageList;
+    cxLocalizer1: TcxLocalizer;
     procedure DataSnapConnAfterConnect(Sender: TObject);
     procedure DataSnapConnAfterDisconnect(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
@@ -175,8 +176,8 @@ begin
   // desabilita o Beep do windows tocado a cada enter. Porem desabilita para o windows todo. Espero que nao precisem em outros programas :)
   SystemParametersInfo(SPI_SETBEEP, 0, nil, SPIF_SENDWININICHANGE);
 
-  // cxLocalizer1.Active := True;
-  // cxLocalizer1.Locale := 1046; // Portugues Brasil
+   cxLocalizer1.Active := True;
+   cxLocalizer1.Locale := 1046; // Portugues Brasil
 
   FInterceptorFuncoesGeral := TVirtualMethodInterceptor.Create(TsmFuncoesGeralClient);
   FInterceptorFuncoesAdministrativo := TVirtualMethodInterceptor.Create(TsmFuncoesAdministrativoClient);

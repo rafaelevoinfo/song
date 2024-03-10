@@ -3,7 +3,6 @@ object dmPrincipal: TdmPrincipal
   OnDestroy = DataModuleDestroy
   Height = 427
   Width = 783
-  PixelsPerInch = 96
   object DataSnapConn: TRFSQLConnection
     DriverName = 'DataSnap'
     KeepConnection = False
@@ -11496,5 +11495,10 @@ object dmPrincipal: TdmPrincipal
     SQLConnection = DataSnapConn
     Left = 352
     Top = 296
+  end
+  object cxLocalizer1: TcxLocalizer
+    StorageType = lstResource
+    Left = 544
+    Top = 208
   end
 end
